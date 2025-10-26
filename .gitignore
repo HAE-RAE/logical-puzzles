@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual Environment
+.venv/
+venv/
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# macOS
+*.DS_Store
+*.AppleDouble
+*.LSOverride
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# data
+hrmcr/
+csv/
+json/
+results/
