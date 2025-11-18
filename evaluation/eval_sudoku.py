@@ -46,32 +46,32 @@ def create_prompt(puzzle_str: str, positions: list) -> str:
     positions_str = ', '.join(positions)
     k = len(positions)
 
-    prompt = f"""스도쿠 퍼즐을 풀고, 지정된 정답 좌표의 값들을 순서대로 출력하세요.
+    prompt = f"""Solve the Sudoku puzzle and output the values at the specified answer coordinates in order.
 
-퍼즐 (9x9 리스트, '.'은 빈칸):
+Puzzle (9x9 list, '.' represents empty cells):
 {grid_str}
 
-정답 좌표 (1-기반, r=행, c=열):
+Answer coordinates (1-based, r=row, c=column):
 {positions_str}
 
-문제해결 방식:
-1. 먼저 스도쿠를 완전히 푸세요.
-2. 완성된 9x9 그리드에서 정답 좌표 값들을 순서대로 출력하세요.
+Problem-solving approach:
+1. First, solve the Sudoku completely.
+2. Extract the values at the answer coordinates from the completed 9x9 grid in order.
 
-출력 형식:
-정답: [{k}자리 숫자]
+Output format:
+Answer: [{k}-digit number]
 
-예시: 정답: {'1' * k}"""
+Example: Answer: {'1' * k}"""
 
     return prompt
 
 
 def extract_answer_from_output(output: str, k: int) -> str:
-    """출력에서 '정답:' 뒤의 숫자만 추출"""
-    # "정답:" 뒤의 숫자 찾기
+    """Extract the k-digit number after 'Answer:' from output"""
+    # Find k-digit number after "Answer:"
     patterns = [
-        rf'정답:\s*([1-9]{{{k}}})',
-        rf'정답:\s*\[?([1-9]{{{k}}})\]?',
+        rf'Answer:\s*([1-9]{{{k}}})',
+        rf'Answer:\s*\[?([1-9]{{{k}}})\]?',
     ]
 
     for pattern in patterns:
@@ -79,15 +79,15 @@ def extract_answer_from_output(output: str, k: int) -> str:
         if match:
             return match.group(1)
 
-    # "정답:" 뒤의 모든 숫자 추출 (fallback)
-    answer_match = re.search(r'정답:\s*(.+)', output)
+    # Fallback: Extract all digits after "Answer:"
+    answer_match = re.search(r'Answer:\s*(.+)', output)
     if answer_match:
         answer_part = answer_match.group(1)
         digits = re.findall(r'[1-9]', answer_part)
         if len(digits) >= k:
             return ''.join(digits[:k])
 
-    # 최종 fallback: 모든 숫자 추출
+    # Final fallback: Extract all digits
     digits = re.findall(r'[1-9]', output)
     if len(digits) >= k:
         return ''.join(digits[:k])
@@ -102,7 +102,7 @@ def call_openai_api(model: str, prompt: str, max_retries: int = 3):
             kwargs = {
                 "model": model,
                 "messages": [
-                    {"role": "system", "content": "당신은 논리 퍼즐 전문가입니다."},
+                    {"role": "system", "content": "You are a logic puzzle expert."},
                     {"role": "user", "content": prompt}
                 ]
             }
