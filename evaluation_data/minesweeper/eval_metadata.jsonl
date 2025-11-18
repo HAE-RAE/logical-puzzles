@@ -1,0 +1,6 @@
+{"id": "puzzle_001", "difficulty": "easy", "rows": 6, "cols": 6, "num_mines": 6, "mine_density": 0.167, "revealed_cells": 10, "clue_density": 0.333, "seed": 10001}
+{"id": "puzzle_002", "difficulty": "easy", "rows": 8, "cols": 8, "num_mines": 10, "mine_density": 0.156, "revealed_cells": 17, "clue_density": 0.315, "seed": 10002}
+{"id": "puzzle_003", "difficulty": "medium", "rows": 10, "cols": 10, "num_mines": 15, "mine_density": 0.15, "revealed_cells": 22, "clue_density": 0.259, "seed": 10003}
+{"id": "puzzle_004", "difficulty": "medium", "rows": 10, "cols": 10, "num_mines": 18, "mine_density": 0.18, "revealed_cells": 30, "clue_density": 0.366, "seed": 10004}
+{"id": "puzzle_005", "difficulty": "hard", "rows": 12, "cols": 12, "num_mines": 25, "mine_density": 0.174, "revealed_cells": 35, "clue_density": 0.294, "seed": 10005}
+{"id": "puzzle_006", "difficulty": "hard", "rows": 12, "cols": 12, "num_mines": 30, "mine_density": 0.208, "revealed_cells": 43, "clue_density": 0.377, "seed": 10006}
