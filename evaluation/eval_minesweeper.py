@@ -9,6 +9,7 @@ import sys
 import time
 import re
 from pathlib import Path
+from typing import List, Tuple
 from openai import OpenAI
 from dotenv import load_dotenv
 import argparse

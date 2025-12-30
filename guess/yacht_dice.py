@@ -24,43 +24,43 @@ class YachtDiceConfig:
     optimization_goal: Literal["maximize", "minimize"] = "maximize"
 
     def get_system_prompt(self) -> str:
-        """설정에 따라 시스템 프롬프트를 생성"""
+        """Generate system prompt based on configuration"""
 
         if self.optimization_goal == "maximize":
-            goal_instruction = "너의 목표는 총점의 최댓값을 구하는 것이야. 가능한 한 가장 높은 점수를 얻도록 배정해야 해."
+            goal_instruction = "Your goal is to find the maximum total score. You must assign dice to categories to achieve the highest possible score."
         else:
-            goal_instruction = "너의 목표는 총점의 최솟값을 구하는 것이야. 가능한 한 가장 낮은 점수를 얻도록 배정해야 해."
+            goal_instruction = "Your goal is to find the minimum total score. You must assign dice to categories to achieve the lowest possible score."
 
-        prompt = f"""너는 Yacht Dice 점수 계산 전문가야. 아래 12개의 주사위 결과를 각각 하나의 항목에 할당하여 점수를 계산해야 해. 각 항목은 정확히 한 번씩만 사용할 수 있어.
+        prompt = f"""You are a Yacht Dice scoring expert. You need to assign each of the 12 dice results below to exactly one category and calculate the score. Each category can only be used once.
 
 {goal_instruction}
 
-각 항목에 해당하는 점수 규칙은 아래와 같아:
+The scoring rules for each category are as follows:
 
-[상단 항목]
-1. Aces: 주사위에서 1이 나온 눈의 합
-2. Twos: 주사위에서 2가 나온 눈의 합
-3. Threes: 주사위에서 3이 나온 눈의 합
-4. Fours: 주사위에서 4가 나온 눈의 합
-5. Fives: 주사위에서 5가 나온 눈의 합
-6. Sixes: 주사위에서 6이 나온 눈의 합
-(이 상단 6개 항목의 합이 {self.bonus_threshold}점 이상이면 {self.bonus_points}점 보너스를 받음)
+[Upper Section]
+1. Aces: Sum of all dice showing 1
+2. Twos: Sum of all dice showing 2
+3. Threes: Sum of all dice showing 3
+4. Fours: Sum of all dice showing 4
+5. Fives: Sum of all dice showing 5
+6. Sixes: Sum of all dice showing 6
+(If the sum of these 6 upper categories is {self.bonus_threshold} or more, you get a {self.bonus_points} point bonus)
 
-[하단 항목]
-7. Three-Of-A-Kind: 동일한 눈이 3개 이상일 경우, 주사위 눈의 총합
-8. Four-Of-A-Kind: 동일한 눈이 4개 이상일 경우, 주사위 눈의 총합
-9. Full House: 동일한 눈이 각각 3개, 2개일 경우 (예: 3-3-3-5-5), 고정 {self.full_house_points}점
-10. Small Straight: 4개의 연속된 수가 있을 경우 (예: 1-2-3-4), 고정 {self.small_straight_points}점
-11. Large Straight: 5개의 연속된 수가 있을 경우 (1-2-3-4-5 또는 2-3-4-5-6), 고정 {self.large_straight_points}점
-12. Yacht: 주사위 5개가 모두 같은 숫자일 경우, 고정 {self.yacht_points}점
+[Lower Section]
+7. Three-Of-A-Kind: If 3 or more dice show the same number, score is the sum of all dice
+8. Four-Of-A-Kind: If 4 or more dice show the same number, score is the sum of all dice
+9. Full House: If dice show 3 of one number and 2 of another (e.g., 3-3-3-5-5), fixed {self.full_house_points} points
+10. Small Straight: If 4 consecutive numbers are present (e.g., 1-2-3-4), fixed {self.small_straight_points} points
+11. Large Straight: If 5 consecutive numbers are present (1-2-3-4-5 or 2-3-4-5-6), fixed {self.large_straight_points} points
+12. Yacht: If all 5 dice show the same number, fixed {self.yacht_points} points
 
-각 주사위 결과는 하나의 항목에만 할당되어야 하고, 항목은 중복 없이 정확히 한 번씩만 사용해야 해.
+Each dice result must be assigned to exactly one category, and each category must be used exactly once without duplication.
 
-Step by Step으로 생각한 후 출력 형식대로 답변 해줘.
+Think step by step, then provide your answer in the following format.
 
-출력 형식은 다음과 같아:
-[항목명]: [d1, d2, d3, d4, d5] => 점수
-총점: XXX
+Output format:
+[Category]: [d1, d2, d3, d4, d5] => score
+Total: XXX
 """
 
         return prompt
@@ -92,20 +92,20 @@ def generate_random_dice(num_rounds: int = 12, dice_per_round: int = 5, seed: in
 
 def format_user_prompt(dice_results: List[List[int]]) -> str:
     """
-    주사위 결과를 유저 프롬프트 형식으로 포맷팅
+    Format dice results into user prompt
 
     Args:
-        dice_results: 주사위 결과 리스트
+        dice_results: List of dice results
 
     Returns:
-        str: 포맷팅된 유저 프롬프트
+        str: Formatted user prompt
     """
-    prompt = "다음은 12개의 주사위 결과야. 이 결과들을 위 항목 중 하나씩에 할당하여 점수를 계산해줘:\n\n"
+    prompt = "Here are 12 dice results. Assign each result to one of the categories above and calculate the score:\n\n"
 
     for i, dice in enumerate(dice_results, 1):
         prompt += f"{i}. {dice}\n"
 
-    prompt += "\n항목마다 하나씩 할당하고, 총점을 최대화하도록 점수를 계산해줘."
+    prompt += "\nAssign one dice result to each category and calculate the score to maximize the total."
 
     return prompt
 
