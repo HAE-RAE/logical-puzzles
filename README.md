@@ -193,6 +193,41 @@ Question: Who has which attributes?
   - 간접 제약 (Indirect): "The person with Red house drinks Coffee"
 - **언어+논리 융합**: 자연어 이해 + 조합 추론 능력 동시 평가
 
+### 12. SAT Puzzle (Boolean Satisfiability)
+Boolean 변수들이 주어진 논리식(CNF)을 만족시키는 값 조합을 찾는 NP-complete 문제.
+
+**예시:**
+```
+Variables: Alice, Bob, Carol (guilty or innocent)
+
+Constraints:
+  1. At least one of Alice or Bob is guilty
+  2. If Alice is not guilty, then Carol is guilty
+  3. Bob and Carol cannot both be guilty
+
+Question: Who is guilty?
+```
+→ 정답: Alice=guilty, Bob=innocent, Carol=guilty
+
+**특징:**
+- **NP-Complete 문제**: 이론적으로 어려운 문제
+- **CNF (Conjunctive Normal Form)**: 논리식을 표준 형태로 표현
+- **자연어 변환**: 범죄, 회의, 작업 배정 등 실제 상황으로 표현
+- **유일해 보장**: 역방향 생성으로 정답이 clauses를 만족함을 보장
+- **난이도 분류**:
+  - Easy: 3-4 변수, 3-5 조건, 30% 부정
+  - Medium: 5-7 변수, 8-12 조건, 50% 부정
+  - Hard: 10-12 변수, 20+ 조건, 70% 부정
+- **순수 논리 추론**: 자연어 힌트가 최소화되어 Boolean logic에 집중
+- **가장 어려운 벤치마크**: gpt-4o도 전체 10% 정확도
+
+**평가 결과 (150 samples):**
+
+| Model        | Easy  | Medium | Hard  | Overall |
+|--------------|-------|--------|-------|---------|
+| gpt-4o       | 14%   | 14%    | 2%    | 10%     |
+| gpt-4o-mini  | 24%   | 8%     | 2%    | 11%     |
+
 ## 주의사항
 
 - `data/` 디렉터리는 `.gitignore`에 포함되어 있어 레포지토리에 업로드되지 않습니다
