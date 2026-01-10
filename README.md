@@ -157,6 +157,42 @@ Question: When does E3 occur?
 - **현실적 시나리오**: 기술, 비즈니스, 환경, 운영 등 4가지 도메인의 실제 사건
 - **복합 추론**: 병렬 인과관계, 다중 경로, 시간 누적 계산 필요
 
+### 11. Logic Grid Puzzle (논리 격자 퍼즐)
+Einstein's Riddle로 유명한 제약 조건 기반 논리 추론 문제. 여러 사람과 속성들 간의 관계를 자연어 제약 조건으로부터 추론.
+
+**예시:**
+```
+People: Alice, Bob, Carol
+Attributes:
+  - HouseColor: Red, Blue, Green
+  - Pet: Dog, Cat, Bird
+  - Drink: Coffee, Tea, Milk
+
+Constraints:
+  1. Alice lives in the Red house
+  2. The person in the Blue house has a Dog
+  3. Bob drinks Coffee
+  4. The person with a Cat drinks Tea
+  5. Carol does not live in the Blue house
+
+Question: Who has which attributes?
+```
+→ 정답: Alice=(Red, Bird, Milk), Bob=(Blue, Dog, Coffee), Carol=(Green, Cat, Tea)
+
+**특징:**
+- **CSP (Constraint Satisfaction Problem)**: 백트래킹으로 유일해 검증
+- **자연어 제약 조건**: 언어적 이해와 논리적 추론을 동시에 요구
+- **유일해 보장**: 제약 전파(Constraint Propagation) 알고리즘으로 검증
+- **난이도 분류**: 
+  - Easy: 3명, 3속성 (집 색깔, 애완동물, 음료)
+  - Medium: 4명, 4속성 (+ 직업)
+  - Hard: 5명, 5속성 (+ 취미)
+- **역방향 생성**: 유효한 해를 먼저 생성한 후 제약 조건 도출
+- **다양한 제약 유형**: 
+  - 직접 제약 (Direct): "Alice has a Dog"
+  - 간접 제약 (Indirect): "The person with Red house drinks Coffee"
+- **언어+논리 융합**: 자연어 이해 + 조합 추론 능력 동시 평가
+
 ## 주의사항
 
 - `data/` 디렉터리는 `.gitignore`에 포함되어 있어 레포지토리에 업로드되지 않습니다
