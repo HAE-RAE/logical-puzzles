@@ -16,7 +16,7 @@ def summarized_status(file_path):
             summary[diff] = []
         summary[diff].append("OK" if r.get('correct') else "FAIL")
     
-    order = ["TUTORIAL", "EASY", "INTERMEDIATE", "MEDIUM", "HARD", "VERY_HARD", "EXTREME"]
+    order = ["EASY", "MEDIUM", "HARD", "VERY_HARD", "EXTREME"]
     for diff in order:
         if diff in summary:
             res = ", ".join(summary[diff])

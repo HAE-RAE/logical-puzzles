@@ -41,25 +41,11 @@ DIFFICULTY_CONFIG = {
         "description": "Single Vigenere / 12 Hints"
     },
     "LEVEL_4": {
-        "name": "INTERMEDIATE",
+        "name": "EASY",
         "cipher_stack": ["substitution", "reverse"],
         "keyword_logic": "direct",
-        "hint_count": 14,
-        "description": "Substitution + Reverse / 14 Hints"
-    },
-    "LEVEL_5": {
-        "name": "EASY",
-        "cipher_stack": ["substitution"],
-        "keyword_logic": "direct",
         "hint_count": 16,
-        "description": "Simple Substitution / 16 Hints"
-    },
-    "LEVEL_6": {
-        "name": "TUTORIAL",
-        "cipher_stack": ["substitution"],
-        "keyword_logic": "direct",
-        "hint_count": 20,
-        "description": "Simple Substitution / 20 Hints"
+        "description": "Substitution + Reverse / 16 Hints"
     }
 }
 
@@ -285,7 +271,7 @@ class SelfContainedCipherGenerator:
 
         # 알고리즘 상세 가이드 추가 (하위 난이도용)
         algo_details = ""
-        if config["name"] in ["TUTORIAL", "EASY", "INTERMEDIATE", "MEDIUM"]:
+        if config["name"] in ["EASY", "MEDIUM"]:
             details = []
             for s in config["cipher_stack"]:
                 if s == "substitution":

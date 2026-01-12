@@ -236,9 +236,10 @@ Final answer: (0,1) (0,3) (1,2) ...
 - **`root/`**: 전체 결과를 취합하는 리포트 도구 (예: `final_report.py`, `summary_v4.py`)
 
 ### 2. Cypher v260112 버전 (최신)
-최근 테스트를 통해 `EASY`와 `MEDIUM` 사이의 난이도 균형을 맞춘 버전입니다.
+최근 테스트를 통해 LLM의 변별력을 극대화한 5단계 난이도 체계입니다.
 - **파일**: `guess/cypher_v260112.py`
-- **변경 사항**: `INTERMEDIATE` (Substitution + Reverse) 단계 추가 및 힌트 개수 최적화.
+- **배경**: 정답의 의미성을 제거하고, EASY 단계부터 알고리즘 간 중첩(Substitution + Reverse)을 적용하여 순수 논리 추론 능력을 평가합니다.
+- **난이도 구성**: EASY(Sub+Rev), MEDIUM(Vig), HARD(Vig+Rev), VERY_HARD(Playfair+Vig), EXTREME(Play+Trans+Vig)
 
 ## 주의사항
 
