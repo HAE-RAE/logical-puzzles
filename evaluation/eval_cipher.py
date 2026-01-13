@@ -1,4 +1,4 @@
-"""Cypher LLM 평가 스크립트"""
+"""cipher LLM 평가 스크립트"""
 
 import json
 import os
@@ -21,8 +21,8 @@ load_dotenv(dotenv_path=env_path)
 client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 
 
-def load_cypher_data(jsonl_path: str) -> list:
-    """CYPHER JSONL 파일 로드"""
+def load_cipher_data(jsonl_path: str) -> list:
+    """cipher JSONL 파일 로드"""
     data = []
     with open(jsonl_path, 'r', encoding='utf-8') as f:
         for line in f:
@@ -165,7 +165,7 @@ def evaluate_puzzle(puzzle_data: dict, model: str, system_prompt: str) -> dict:
 
 def main():
     """메인 평가 함수"""
-    parser = argparse.ArgumentParser(description='Cypher LLM 평가')
+    parser = argparse.ArgumentParser(description='cipher LLM 평가')
     parser.add_argument('--model', type=str, default='gpt-4o',
                        choices=[
                            # GPT-4o series
@@ -179,7 +179,7 @@ def main():
                        ],
                        help='평가할 모델')
     parser.add_argument('--data', type=str,
-                       default='../data/json/CYPHER_MEDIUM_v1.jsonl',
+                       default='../data/json/cipher_MEDIUM_v1.jsonl',
                        help='평가 데이터 경로')
     parser.add_argument('--output', type=str, default=None,
                        help='결과 저장 경로')
@@ -193,22 +193,22 @@ def main():
         print(f"[X] 데이터 파일이 없습니다: {data_file}")
         print(f"먼저 퍼즐을 생성하세요:")
         print(f"  cd ../guess")
-        print(f"  python cypher.py")
+        print(f"  python cipher.py")
         return
 
     # 출력 경로 설정
     if args.output is None:
         results_dir = script_dir.parent / 'data' / 'results'
         results_dir.mkdir(parents=True, exist_ok=True)
-        output_path = results_dir / f'eval_results_cypher_{args.model}.json'
+        output_path = results_dir / f'eval_results_cipher_{args.model}.json'
     else:
         output_path = Path(args.output)
 
     # 평가 데이터 읽기
-    puzzles = load_cypher_data(str(data_file))
+    puzzles = load_cipher_data(str(data_file))
 
     print(f"{'='*70}")
-    print(f"Cypher LLM 평가")
+    print(f"cipher LLM 평가")
     print(f"{'='*70}")
     print(f"모델: {args.model}")
     print(f"데이터: {data_file.name}")

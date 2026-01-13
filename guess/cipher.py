@@ -1,4 +1,4 @@
-"""Cypher 퍼즐 v260112 - Intermediate Layer Added"""
+"""Cipher 퍼즐 v260112 - Intermediate Layer Added"""
 
 import random
 import json
