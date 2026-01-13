@@ -250,6 +250,104 @@ Final answer: (0,1) (0,3) (1,2) ...
 - **배경**: 정답의 의미성을 제거하고, EASY 단계부터 알고리즘 간 중첩(Substitution + Reverse)을 적용하여 순수 논리 추론 능력을 평가합니다.
 - **난이도 구성**: EASY(Sub+Rev), MEDIUM(Vig), HARD(Vig+Rev), VERY_HARD(Playfair+Vig), EXTREME(Play+Trans+Vig)
 
+### 10. Causal DAG (인과관계 그래프)
+시간 지연을 포함한 인과관계 그래프에서 사건 전파 시간을 추론하는 문제.
+
+**예시:**
+```
+Events:
+  E1: PowerOutage (정전 발생)
+  E2: ServerDown (서버 다운)
+  E3: DataLoss (데이터 손실)
+
+Causal Relationships:
+  E1 → E2: 15분 지연
+  E2 → E3: 25분 지연
+
+Initial: E1 occurs at minute 10
+Question: When does E3 occur?
+```
+→ 정답: 50분 (10 + 15 + 25)
+
+**특징:**
+- **DAG 기반 생성**: 방향성 비순환 그래프로 인과관계 표현
+- **최단 경로 알고리즘**: Dijkstra 알고리즘으로 정답 계산
+- **유일해 보장**: 결정론적 그래프 구조로 유일해 자동 보장
+- **난이도 분류**: 사건 수(4-12개)와 연결 밀도 기반 (Easy/Medium/Hard)
+- **현실적 시나리오**: 기술, 비즈니스, 환경, 운영 등 4가지 도메인의 실제 사건
+- **복합 추론**: 병렬 인과관계, 다중 경로, 시간 누적 계산 필요
+
+### 11. Logic Grid Puzzle (논리 격자 퍼즐)
+Einstein's Riddle로 유명한 제약 조건 기반 논리 추론 문제. 여러 사람과 속성들 간의 관계를 자연어 제약 조건으로부터 추론.
+
+**예시:**
+```
+People: Alice, Bob, Carol
+Attributes:
+  - HouseColor: Red, Blue, Green
+  - Pet: Dog, Cat, Bird
+  - Drink: Coffee, Tea, Milk
+
+Constraints:
+  1. Alice lives in the Red house
+  2. The person in the Blue house has a Dog
+  3. Bob drinks Coffee
+  4. The person with a Cat drinks Tea
+  5. Carol does not live in the Blue house
+
+Question: Who has which attributes?
+```
+→ 정답: Alice=(Red, Bird, Milk), Bob=(Blue, Dog, Coffee), Carol=(Green, Cat, Tea)
+
+**특징:**
+- **CSP (Constraint Satisfaction Problem)**: 백트래킹으로 유일해 검증
+- **자연어 제약 조건**: 언어적 이해와 논리적 추론을 동시에 요구
+- **유일해 보장**: 제약 전파(Constraint Propagation) 알고리즘으로 검증
+- **난이도 분류**: 
+  - Easy: 3명, 3속성 (집 색깔, 애완동물, 음료)
+  - Medium: 4명, 4속성 (+ 직업)
+  - Hard: 5명, 5속성 (+ 취미)
+- **역방향 생성**: 유효한 해를 먼저 생성한 후 제약 조건 도출
+- **다양한 제약 유형**: 
+  - 직접 제약 (Direct): "Alice has a Dog"
+  - 간접 제약 (Indirect): "The person with Red house drinks Coffee"
+- **언어+논리 융합**: 자연어 이해 + 조합 추론 능력 동시 평가
+
+### 12. SAT Puzzle (Boolean Satisfiability)
+Boolean 변수들이 주어진 논리식(CNF)을 만족시키는 값 조합을 찾는 NP-complete 문제.
+
+**예시:**
+```
+Variables: Alice, Bob, Carol (guilty or innocent)
+
+Constraints:
+  1. At least one of Alice or Bob is guilty
+  2. If Alice is not guilty, then Carol is guilty
+  3. Bob and Carol cannot both be guilty
+
+Question: Who is guilty?
+```
+→ 정답: Alice=guilty, Bob=innocent, Carol=guilty
+
+**특징:**
+- **NP-Complete 문제**: 이론적으로 어려운 문제
+- **CNF (Conjunctive Normal Form)**: 논리식을 표준 형태로 표현
+- **자연어 변환**: 범죄, 회의, 작업 배정 등 실제 상황으로 표현
+- **유일해 보장**: 역방향 생성으로 정답이 clauses를 만족함을 보장
+- **난이도 분류**:
+  - Easy: 3-4 변수, 3-5 조건, 30% 부정
+  - Medium: 5-7 변수, 8-12 조건, 50% 부정
+  - Hard: 10-12 변수, 20+ 조건, 70% 부정
+- **순수 논리 추론**: 자연어 힌트가 최소화되어 Boolean logic에 집중
+- **가장 어려운 벤치마크**: gpt-4o도 전체 10% 정확도
+
+**평가 결과 (150 samples):**
+
+| Model        | Easy  | Medium | Hard  | Overall |
+|--------------|-------|--------|-------|---------|
+| gpt-4o       | 14%   | 14%    | 2%    | 10%     |
+| gpt-4o-mini  | 24%   | 8%     | 2%    | 11%     |
+
 ## 주의사항
 
 - `data/` 디렉터리는 `.gitignore`에 포함되어 있어 레포지토리에 업로드되지 않습니다
