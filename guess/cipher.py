@@ -13,39 +13,32 @@ import math
 
 DIFFICULTY_CONFIG = {
     "LEVEL_0": {
-        "name": "EXTREME",
+        "name": "EXPERT",
         "cipher_stack": ["playfair", "transposition", "vigenere"],
         "keyword_logic": "extraction",
         "hint_count": 2,
         "description": "Playfair + Transposition + Vigenere with Conditional Key / 2 Hints"
     },
     "LEVEL_1": {
-        "name": "VERY_HARD",
+        "name": "HARD",
         "cipher_stack": ["playfair", "vigenere"],
         "keyword_logic": "positional",
         "hint_count": 4,
         "description": "Playfair + Vigenere / 4 Hints"
     },
     "LEVEL_2": {
-        "name": "HARD",
+        "name": "MEDIUM",
         "cipher_stack": ["vigenere", "reverse"],
         "keyword_logic": "positional",
         "hint_count": 6,
         "description": "Vigenere + Reverse / 6 Hints"
     },
     "LEVEL_3": {
-        "name": "MEDIUM",
+        "name": "EASY",
         "cipher_stack": ["vigenere"],
         "keyword_logic": "direct", # 키워드 직접 명시
         "hint_count": 12,
         "description": "Single Vigenere / 12 Hints"
-    },
-    "LEVEL_4": {
-        "name": "EASY",
-        "cipher_stack": ["substitution", "reverse"],
-        "keyword_logic": "direct",
-        "hint_count": 16,
-        "description": "Substitution + Reverse / 16 Hints"
     }
 }
 
@@ -344,13 +337,13 @@ def create_advanced_dataset(num_per_level: int = 2, version: str = "v260112"):
     # CSV 저장
     csv_dir = PROJECT_ROOT / "data" / "csv"
     csv_dir.mkdir(parents=True, exist_ok=True)
-    csv_path = csv_dir / f"CYPHER_{version}.csv"
+    csv_path = csv_dir / f"cipher_{version}.csv"
     df.to_csv(csv_path, index=False, encoding="utf-8-sig")
 
     # JSONL 저장
     json_dir = PROJECT_ROOT / "data" / "json"
     json_dir.mkdir(parents=True, exist_ok=True)
-    jsonl_path = json_dir / f"CYPHER_{version}.jsonl"
+    jsonl_path = json_dir / f"cipher_{version}.jsonl"
 
     with open(jsonl_path, 'w', encoding='utf-8') as f:
         for problem in all_problems:
@@ -366,5 +359,10 @@ def create_advanced_dataset(num_per_level: int = 2, version: str = "v260112"):
     return df
 
 if __name__ == '__main__':
-    # 각 난이도별 2개씩 생성
-    create_advanced_dataset(num_per_level=2)
+    import argparse
+    parser = argparse.ArgumentParser(description='Generate Cipher Puzzles')
+    parser.add_argument('--num', type=int, default=2, help='Number of puzzles per difficulty level')
+    args = parser.parse_args()
+    
+    # 각 난이도별 n개씩 생성
+    create_advanced_dataset(num_per_level=args.num)
