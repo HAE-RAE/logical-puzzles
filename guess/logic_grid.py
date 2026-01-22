@@ -414,13 +414,13 @@ def generate_dataset(
             print(f"Generated {i}/{num_samples} puzzles...")
     
     # Save as JSONL
-    jsonl_path = json_dir / "logic_grid_puzzles.jsonl"
+    jsonl_path = json_dir / "logic_grid.jsonl"
     with open(jsonl_path, 'w') as f:
         for puzzle in puzzles:
             f.write(json.dumps(puzzle.to_dict()) + '\n')
     
     # Save as CSV
-    csv_path = csv_dir / "logic_grid_puzzles.csv"
+    csv_path = csv_dir / "logic_grid.csv"
     with open(csv_path, 'w') as f:
         f.write("id,difficulty,num_people,num_categories,num_constraints\n")
         for puzzle in puzzles:
