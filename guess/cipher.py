@@ -296,12 +296,12 @@ class SelfContainedCipherGenerator:
 # 데이터셋 생성 및 저장
 # ============================================================================
 
-def create_advanced_dataset(num_per_level: int = 2, version: str = "v260112"):
+def create_advanced_dataset(num_per_level: int = 2):
     """자가완결형 고난도 암호 데이터셋 생성"""
     import pandas as pd
     import json
 
-    print(f"Algorithm-focused Cypher ({version}) 문제 생성 중...")
+    print(f"Algorithm-focused Cypher 문제 생성 중...")
     print(f"난이도별 {num_per_level}개씩 생성")
     print("="*70)
 
@@ -337,13 +337,13 @@ def create_advanced_dataset(num_per_level: int = 2, version: str = "v260112"):
     # CSV 저장
     csv_dir = PROJECT_ROOT / "data" / "csv"
     csv_dir.mkdir(parents=True, exist_ok=True)
-    csv_path = csv_dir / f"cipher_{version}.csv"
+    csv_path = csv_dir / f"cipher.csv"
     df.to_csv(csv_path, index=False, encoding="utf-8-sig")
 
     # JSONL 저장
     json_dir = PROJECT_ROOT / "data" / "json"
     json_dir.mkdir(parents=True, exist_ok=True)
-    jsonl_path = json_dir / f"cipher_{version}.jsonl"
+    jsonl_path = json_dir / f"cipher.jsonl"
 
     with open(jsonl_path, 'w', encoding='utf-8') as f:
         for problem in all_problems:

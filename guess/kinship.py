@@ -456,7 +456,7 @@ def generate_question():
 
     return question, answer, explanation
 
-def create_dataset_files(num_questions, version):
+def create_dataset_files(num_questions):
     import pandas as pd
     import json
     
@@ -477,7 +477,7 @@ def create_dataset_files(num_questions, version):
     csv_dir = PROJECT_ROOT / "data" / "csv"
     csv_dir.mkdir(parents=True, exist_ok=True)
     
-    csv_path = csv_dir / f"KINSHIP_{version}.csv"
+    csv_path = csv_dir / "kinship.csv"
     kinship_df.to_csv(csv_path, index=False, encoding="utf-8-sig")
     print(f"\nCSV file created! -> {csv_path}")
     
@@ -493,7 +493,7 @@ def create_dataset_files(num_questions, version):
         }
         kinship_json.append(question_data)
     
-    jsonl_path = json_dir / f"KINSHIP_{version}.jsonl"
+    jsonl_path = json_dir / "kinship.jsonl"
     with open(jsonl_path, 'w', encoding='utf-8') as f:
         for item in kinship_json:
             f.write(json.dumps(item, ensure_ascii=False) + '\n')
@@ -506,14 +506,21 @@ def create_dataset_files(num_questions, version):
     return kinship_df, kinship_json
 
 if __name__ == '__main__':
-    kinship_df, kinship_json = create_dataset_files(num_questions=50, version="v1")
+    import argparse
     
-    print("\n=== Sample Problem ===")
-    for _ in range(1):
-        question, answer, explanation = generate_question()
-        print("Q:", question)
-        print("A:", answer)
-        print("\n--- Explanation ---")
-        for step in explanation:
-            print(step)
-        print("-" * 40)
+    parser = argparse.ArgumentParser(description="Kinship Puzzle Generator")
+    parser.add_argument("--num", type=int, default=100, help="Number of questions to generate")
+    
+    args = parser.parse_args()
+    
+    create_dataset_files(num_questions=args.num)
+    
+    # print("\n=== Sample Problem ===")
+    # for _ in range(1):
+    #     question, answer, explanation = generate_question()
+    #     print("Q:", question)
+    #     print("A:", answer)
+    #     print("\n--- Explanation ---")
+    #     for step in explanation:
+    #         print(step)
+    #     print("-" * 40)

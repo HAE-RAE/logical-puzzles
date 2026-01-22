@@ -431,13 +431,18 @@ class SATPuzzleGenerator:
 
 def generate_dataset(
     num_samples: int,
-    output_dir: str = "data/sat",
     seed: Optional[int] = None
 ):
     """Generate a dataset of SAT puzzles"""
     import os
+    from pathlib import Path
     
-    os.makedirs(output_dir, exist_ok=True)
+    # Setup directories
+    PROJECT_ROOT = Path(__file__).resolve().parent.parent
+    csv_dir = PROJECT_ROOT / "data" / "csv"
+    json_dir = PROJECT_ROOT / "data" / "json"
+    csv_dir.mkdir(parents=True, exist_ok=True)
+    json_dir.mkdir(parents=True, exist_ok=True)
     
     generator = SATPuzzleGenerator(seed=seed)
     puzzles = []
@@ -462,13 +467,13 @@ def generate_dataset(
             print(f"Generated {i}/{num_samples} puzzles...")
     
     # Save as JSONL
-    jsonl_path = os.path.join(output_dir, "sat_puzzles.jsonl")
+    jsonl_path = json_dir / "sat_puzzles.jsonl"
     with open(jsonl_path, 'w') as f:
         for puzzle in puzzles:
             f.write(json.dumps(puzzle.to_dict()) + '\n')
     
     # Save as CSV
-    csv_path = os.path.join(output_dir, "sat_puzzles.csv")
+    csv_path = csv_dir / "sat_puzzles.csv"
     with open(csv_path, 'w') as f:
         f.write("id,difficulty,domain,num_vars,num_clauses\n")
         for puzzle in puzzles:
@@ -478,7 +483,6 @@ def generate_dataset(
     print(f"   - JSONL: {jsonl_path}")
     print(f"   - CSV: {csv_path}")
     print(f"\n✅ Dataset created successfully!")
-    print(f"   Location: {output_dir}")
     print(f"   Total puzzles: {num_samples}")
     
     # Count by difficulty
@@ -524,7 +528,7 @@ def main():
                 print(f"   {var}: {value}")
             print()
     else:
-        generate_dataset(args.num_samples, args.output_dir, args.seed)
+        generate_dataset(args.num_samples, args.seed)
 
 
 if __name__ == "__main__":

@@ -378,13 +378,18 @@ class LogicGridGenerator:
 
 def generate_dataset(
     num_samples: int,
-    output_dir: str = "data/logic_grid",
     seed: Optional[int] = None
 ):
     """Generate a dataset of logic grid puzzles"""
     import os
+    from pathlib import Path
     
-    os.makedirs(output_dir, exist_ok=True)
+    # Setup directories
+    PROJECT_ROOT = Path(__file__).resolve().parent.parent
+    csv_dir = PROJECT_ROOT / "data" / "csv"
+    json_dir = PROJECT_ROOT / "data" / "json"
+    csv_dir.mkdir(parents=True, exist_ok=True)
+    json_dir.mkdir(parents=True, exist_ok=True)
     
     generator = LogicGridGenerator(seed=seed)
     puzzles = []
@@ -409,13 +414,13 @@ def generate_dataset(
             print(f"Generated {i}/{num_samples} puzzles...")
     
     # Save as JSONL
-    jsonl_path = os.path.join(output_dir, "logic_grid_puzzles.jsonl")
+    jsonl_path = json_dir / "logic_grid_puzzles.jsonl"
     with open(jsonl_path, 'w') as f:
         for puzzle in puzzles:
             f.write(json.dumps(puzzle.to_dict()) + '\n')
     
     # Save as CSV
-    csv_path = os.path.join(output_dir, "logic_grid_puzzles.csv")
+    csv_path = csv_dir / "logic_grid_puzzles.csv"
     with open(csv_path, 'w') as f:
         f.write("id,difficulty,num_people,num_categories,num_constraints\n")
         for puzzle in puzzles:
@@ -425,7 +430,6 @@ def generate_dataset(
     print(f"   - JSONL: {jsonl_path}")
     print(f"   - CSV: {csv_path}")
     print(f"\n✅ Dataset created successfully!")
-    print(f"   Location: {output_dir}")
     print(f"   Total puzzles: {num_samples}")
     
     # Count by difficulty
@@ -470,7 +474,7 @@ def main():
             print(json.dumps(puzzle.answer, indent=2))
             print()
     else:
-        generate_dataset(args.num_samples, args.output_dir, args.seed)
+        generate_dataset(args.num_samples, args.seed)
 
 
 if __name__ == "__main__":

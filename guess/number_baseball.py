@@ -482,13 +482,12 @@ def generate_dataset(problems_per_difficulty: int = 3) -> List[Dict]:
     return dataset
 
 
-def create_dataset_files(num_questions: int, version: str):
+def create_dataset_files(num_questions: int):
     """
     Create dataset files for number baseball puzzles.
 
     Args:
         num_questions: Number of questions to generate
-        version: Version string for filenames
 
     Returns:
         Tuple[pd.DataFrame, List[Dict]]: (dataframe, json list)
@@ -531,14 +530,14 @@ def create_dataset_files(num_questions: int, version: str):
     # CSV
     csv_dir = PROJECT_ROOT / "data" / "csv"
     csv_dir.mkdir(parents=True, exist_ok=True)
-    csv_path = csv_dir / f"NUMBER_BASEBALL_{version}.csv"
+    csv_path = csv_dir / "number_baseball.csv"
     df.to_csv(csv_path, index=False, encoding="utf-8-sig")
     print(f"CSV file created: {csv_path}")
 
     # JSONL
     json_dir = PROJECT_ROOT / "data" / "json"
     json_dir.mkdir(parents=True, exist_ok=True)
-    jsonl_path = json_dir / f"NUMBER_BASEBALL_{version}.jsonl"
+    jsonl_path = json_dir / "number_baseball.jsonl"
     with open(jsonl_path, 'w', encoding='utf-8') as f:
         for item in all_puzzles:
             f.write(json.dumps(item, ensure_ascii=False) + '\n')
@@ -548,35 +547,43 @@ def create_dataset_files(num_questions: int, version: str):
 
 
 if __name__ == "__main__":
+    import argparse
+    
+    parser = argparse.ArgumentParser(description="Number Baseball Puzzle Generator")
+    parser.add_argument("--num", type=int, default=400, help="Number of questions to generate")
+    
+    args = parser.parse_args()
+    
     print("=" * 60)
     print("Number Baseball (Bulls and Cows) Puzzle Generator")
     print("=" * 60)
+    
+    create_dataset_files(num_questions=args.num)
 
     # Generate dataset
-    dataset = generate_dataset(problems_per_difficulty=3)
+    # dataset = generate_dataset(problems_per_difficulty=3)
 
-    print("\n" + "=" * 60)
-    print("Generated Puzzles Summary")
-    print("=" * 60)
+    # print("\n" + "=" * 60)
+    # print("Generated Puzzles Summary")
+    # print("=" * 60)
 
-    for problem in dataset:
-        print(f"[{problem['difficulty']:6}] Answer: {problem['answer']} ({len(problem['hints'])} hints)")
+    # for problem in dataset:
+    #     print(f"[{problem['difficulty']:6}] Answer: {problem['answer']} ({len(problem['hints'])} hints)")
 
-    # Validate all problems
-    print("\n" + "=" * 60)
-    print("Validating all problems...")
-    print("=" * 60)
+    # print("\n" + "=" * 60)
+    # print("Validating all problems...")
+    # print("=" * 60)
 
-    all_valid = True
-    for i, problem in enumerate(dataset):
-        is_valid, message = validate_problem(problem)
-        if is_valid:
-            print(f"  Problem {i+1}: ✓ Valid")
-        else:
-            print(f"  Problem {i+1}: ✗ Invalid - {message}")
-            all_valid = False
+    # all_valid = True
+    # for i, problem in enumerate(dataset):
+    #     is_valid, message = validate_problem(problem)
+    #     if is_valid:
+    #         print(f"  Problem {i+1}: ✓ Valid")
+    #     else:
+    #         print(f"  Problem {i+1}: ✗ Invalid - {message}")
+    #         all_valid = False
 
-    if all_valid:
-        print("\n✓ All problems validated successfully!")
-    else:
-        print("\n✗ Some problems have validation issues!")
+    # if all_valid:
+    #     print("\n✓ All problems validated successfully!")
+    # else:
+    #     print("\n✗ Some problems have validation issues!")

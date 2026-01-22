@@ -578,7 +578,7 @@ def generate_dataset(puzzles_per_difficulty: int = 3, verbose: bool = True) -> L
     return dataset
 
 
-def create_dataset_files(num_questions: int, version: str):
+def create_dataset_files(num_questions: int):
     """
     Create dataset files for causal DAG puzzles
     
@@ -628,14 +628,16 @@ def create_dataset_files(num_questions: int, version: str):
     # CSV
     csv_dir = PROJECT_ROOT / "data" / "csv"
     csv_dir.mkdir(parents=True, exist_ok=True)
-    csv_path = csv_dir / f"CAUSAL_DAG_{version}.csv"
+
+    # Lowercase filename
+    csv_path = csv_dir / "causal_dag.csv"
     df.to_csv(csv_path, index=False, encoding="utf-8-sig")
     print(f"CSV file created: {csv_path}")
     
     # JSONL
     json_dir = PROJECT_ROOT / "data" / "json"
     json_dir.mkdir(parents=True, exist_ok=True)
-    jsonl_path = json_dir / f"CAUSAL_DAG_{version}.jsonl"
+    jsonl_path = json_dir / "causal_dag.jsonl"
     with open(jsonl_path, 'w', encoding='utf-8') as f:
         for item in all_puzzles:
             f.write(json.dumps(item, ensure_ascii=False) + '\n')
@@ -645,59 +647,67 @@ def create_dataset_files(num_questions: int, version: str):
 
 
 if __name__ == "__main__":
+    import argparse
+    
+    parser = argparse.ArgumentParser(description="Causal DAG Puzzle Generator")
+    parser.add_argument("--num", type=int, default=300, help="Number of questions to generate")
+    
+    args = parser.parse_args()
+    
     print("=" * 70)
     print("Causal DAG Reasoning Puzzle Generator")
     print("=" * 70)
     
+    create_dataset_files(num_questions=args.num)
+    
     # Generate sample dataset
-    dataset = generate_dataset(puzzles_per_difficulty=2, verbose=True)
+    # dataset = generate_dataset(puzzles_per_difficulty=2, verbose=True)
     
-    print("\n" + "=" * 70)
-    print("Sample Puzzle")
-    print("=" * 70)
+    # print("\n" + "=" * 70)
+    # print("Sample Puzzle")
+    # print("=" * 70)
     
-    sample = dataset[0]
-    print(sample['question'])
-    print(f"\n✅ Answer: {sample['answer']} minutes")
+    # sample = dataset[0]
+    # print(sample['question'])
+    # print(f"\n✅ Answer: {sample['answer']} minutes")
     
-    # Validate all puzzles
-    print("\n" + "=" * 70)
-    print("Validation")
-    print("=" * 70)
+    # # Validate all puzzles
+    # print("\n" + "=" * 70)
+    # print("Validation")
+    # print("=" * 70)
     
-    generator = CausalPuzzleGenerator()
-    for i, puzzle_data in enumerate(dataset):
-        metadata = puzzle_data['metadata']
+    # generator = CausalPuzzleGenerator()
+    # for i, puzzle_data in enumerate(dataset):
+    #     metadata = puzzle_data['metadata']
         
-        # Reconstruct Event objects with proper EventType enum
-        events = {}
-        for k, v in metadata['events'].items():
-            events[k] = Event(
-                id=v['id'],
-                name=v['name'],
-                description=v['description'],
-                event_type=EventType(v['event_type'])
-            )
+    #     # Reconstruct Event objects with proper EventType enum
+    #     events = {}
+    #     for k, v in metadata['events'].items():
+    #         events[k] = Event(
+    #             id=v['id'],
+    #             name=v['name'],
+    #             description=v['description'],
+    #             event_type=EventType(v['event_type'])
+    #         )
         
-        puzzle = CausalPuzzle(
-            events=events,
-            edges=[CausalEdge(
-                from_event=e['from_event'],
-                to_event=e['to_event'],
-                delay=e['delay'],
-                from_events=e.get('from_events'),
-                condition=e.get('condition', 'OR')
-            ) for e in metadata['edges']],
-            trigger=metadata['trigger'],
-            trigger_time=metadata['trigger_time'],
-            target_event=metadata['target'],
-            answer=metadata['answer'],
-            difficulty=metadata['difficulty']
-        )
+    #     puzzle = CausalPuzzle(
+    #         events=events,
+    #         edges=[CausalEdge(
+    #             from_event=e['from_event'],
+    #             to_event=e['to_event'],
+    #             delay=e['delay'],
+    #             from_events=e.get('from_events'),
+    #             condition=e.get('condition', 'OR')
+    #         ) for e in metadata['edges']],
+    #         trigger=metadata['trigger'],
+    #         trigger_time=metadata['trigger_time'],
+    #         target_event=metadata['target'],
+    #         answer=metadata['answer'],
+    #         difficulty=metadata['difficulty']
+    #     )
         
-        is_valid = generator.has_unique_solution(puzzle)
-        status = "✓" if is_valid else "✗"
-        print(f"  Puzzle {i+1}: {status} {'Valid' if is_valid else 'Invalid'}")
+    #     is_valid = generator.has_unique_solution(puzzle)
+    #     status = "✓" if is_valid else "✗"
+    #     print(f"  Puzzle {i+1}: {status} {'Valid' if is_valid else 'Invalid'}")
     
-    print("\n✓ All puzzles generated successfully!")
-
+    # print("\n✓ All puzzles generated successfully!")

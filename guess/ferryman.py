@@ -14,30 +14,68 @@ class JourneyState:
         """전체 여행 시간 = 이동 시간 + 휴식 시간"""
         return self.total_moving_time_hours + self.total_rest_time_hours
 
-def generate_puzzle_question():
+def generate_puzzle_question(difficulty="medium"):
     max_retries = 100
     
     for attempt in range(max_retries):
         try:
+            # 난이도별 파라미터 설정
+            if difficulty == "easy":
+                params = {
+                    "distance_range": (50, 80),
+                    "zone_a_range": (30, 50),
+                    "zone_a_limit_range": (40, 60),  # 높은 제한 속도
+                    "zone_b_limit_range": (35, 55),
+                    "rest_trigger_range": (5, 8),  # 휴식 거의 없도록
+                    "rest_duration_range": (1, 2),  # 10-20분
+                    "heavy_threshold_range": (800, 1000),  # 높은 기준 (규정 미적용 가능성)
+                    "speed_reduction_range": (5, 10),
+                    "base_speed_bonus_range": (20, 30),
+                }
+            elif difficulty == "medium":
+                params = {
+                    "distance_range": (100, 150),
+                    "zone_a_range": (40, 70),
+                    "zone_a_limit_range": (25, 45),
+                    "zone_b_limit_range": (20, 40),
+                    "rest_trigger_range": (3, 4),  # 1-2회 휴식
+                    "rest_duration_range": (2, 4),  # 20-40분
+                    "heavy_threshold_range": (400, 600),  # 중간 기준
+                    "speed_reduction_range": (10, 15),
+                    "base_speed_bonus_range": (15, 25),
+                }
+            else:  # hard
+                params = {
+                    "distance_range": (180, 250),
+                    "zone_a_range": (30, 60),  # 작은 zone_a (빠른 전환)
+                    "zone_a_limit_range": (20, 35),  # 낮은 제한
+                    "zone_b_limit_range": (15, 30),
+                    "rest_trigger_range": (2, 3),  # 2-4회 휴식
+                    "rest_duration_range": (3, 5),  # 30-50분
+                    "heavy_threshold_range": (300, 500),  # 낮은 기준 (쉽게 초과)
+                    "speed_reduction_range": (15, 20),
+                    "base_speed_bonus_range": (10, 20),
+                }
+            
             # --- 1. 시스템 규칙 및 초기 변수 랜덤 설정 ---
             regulations = {
                 "speed_limit": {
-                    "zone_A_km": random.randint(30, 100),
-                    "zone_A_limit_kph": random.randint(20, 60),
-                    "zone_B_limit_kph": random.randint(20, 60),
+                    "zone_A_km": random.randint(*params["zone_a_range"]),
+                    "zone_A_limit_kph": random.randint(*params["zone_a_limit_range"]),
+                    "zone_B_limit_kph": random.randint(*params["zone_b_limit_range"]),
                 },
                 "mandatory_rest": {
-                    "trigger_hours": random.randint(2, 5),
-                    "duration_minutes": random.randint(2, 5) * 10,
+                    "trigger_hours": random.randint(*params["rest_trigger_range"]),
+                    "duration_minutes": random.randint(*params["rest_duration_range"]) * 10,
                 },
                 "cargo_effect": {
-                    "heavy_load_kg": random.randint(4, 6) * 100,
-                    "speed_reduction_percent": random.randint(10, 20),
+                    "heavy_load_kg": random.randint(params["heavy_threshold_range"][0]//100, params["heavy_threshold_range"][1]//100) * 100,
+                    "speed_reduction_percent": random.randint(*params["speed_reduction_range"]),
                 }
             }
 
-            total_distance = regulations["speed_limit"]["zone_A_km"] + random.randint(50, 100)
-            base_boat_speed_kph = regulations["speed_limit"]["zone_A_limit_kph"] + random.randint(15, 25)
+            total_distance = regulations["speed_limit"]["zone_A_km"] + random.randint(*params["distance_range"])
+            base_boat_speed_kph = regulations["speed_limit"]["zone_A_limit_kph"] + random.randint(*params["base_speed_bonus_range"])
 
             cargo_items = [
                 {"name": "구호품 상자", "weight_range": (30, 70)},
@@ -154,35 +192,56 @@ def generate_puzzle_question():
     # 최대 재시도 횟수 초과 시 예외 발생
     raise RuntimeError(f"최대 재시도 횟수({max_retries})를 초과했습니다. 문제를 생성할 수 없습니다.")
 
-def create_dataset_files(num_questions, version):
+def create_dataset_files(num_questions, difficulty=None):
     import pandas as pd
     import json
     
-    # 문제 생성
-    print(f"뱃사공 문제 {num_questions}개를 생성 중...")
+    if difficulty is None:
+        difficulties = ["easy", "medium", "hard"]
+        total_questions = num_questions * len(difficulties)
+        print(f"뱃사공 문제를 생성 중... (각 난이도별 {num_questions}개, 총 {total_questions}개)")
+    else:
+        difficulties = [difficulty]
+        total_questions = num_questions
+        print(f"뱃사공 문제 {num_questions}개를 생성 중... (난이도: {difficulty})")
+    
     output = []
     seen_questions = set()  # 중복 체크용
-    attempt_count = 0
-    max_total_attempts = num_questions * 200  # 최대 재시도 횟수
     
-    while len(output) < num_questions and attempt_count < max_total_attempts:
-        attempt_count += 1
-        q, answer, expl = generate_puzzle_question()
+    # 각 난이도별로 문제 생성
+    for diff in difficulties:
+        print(f"\n[{diff.upper()}] 난이도 {num_questions}개 생성 중...")
+        diff_count = 0
+        attempt_count = 0
+        max_attempts = num_questions * 200
         
-        if q not in seen_questions:
-            output.append([q, answer, "\n".join(expl)])
-            seen_questions.add(q)
+        while diff_count < num_questions and attempt_count < max_attempts:
+            attempt_count += 1
+            
+            try:
+                q, answer, expl = generate_puzzle_question(difficulty=diff)
+                
+                if q not in seen_questions:
+                    output.append([q, answer, "\n".join(expl), diff])
+                    seen_questions.add(q)
+                    diff_count += 1
+                    
+                    if diff_count % 10 == 0:
+                        print(f"  진행: {diff_count}/{num_questions}")
+            except Exception as e:
+                continue
         
-        if attempt_count % 1000 == 0:
-            print(f"  진행: {len(output)}/{num_questions} ({attempt_count}회 시도)")
+        if diff_count < num_questions:
+            print(f"  경고: [{diff}] 목표 {num_questions}개 중 {diff_count}개만 생성되었습니다.")
     
-    ferryman_df = pd.DataFrame(output, columns=['question', 'answer', 'solution'])
+    ferryman_df = pd.DataFrame(output, columns=['question', 'answer', 'solution', 'difficulty'])
     
     print(f"\n생성 통계:")
     print(f"  생성된 문제 수: {len(ferryman_df)}")
     print(f"  고유한 문제 수: {ferryman_df['question'].nunique()}")
     print(f"  고유한 정답 수: {ferryman_df['answer'].nunique()}")
-    print(f"  총 시도 횟수: {attempt_count}")
+    print(f"\n난이도별 분포:")
+    print(ferryman_df['difficulty'].value_counts().sort_index())
     
     PROJECT_ROOT = Path(__file__).resolve().parent.parent
     
@@ -190,7 +249,7 @@ def create_dataset_files(num_questions, version):
     csv_dir = PROJECT_ROOT / "data" / "csv"
     csv_dir.mkdir(parents=True, exist_ok=True)
     
-    csv_path = csv_dir / f"FERRYMAN_{version}.csv"
+    csv_path = csv_dir / "ferryman.csv"
     ferryman_df.to_csv(csv_path, index=False, encoding="utf-8-sig")
     print(f"\nCSV 파일이 생성: {csv_path}")
     
@@ -204,10 +263,11 @@ def create_dataset_files(num_questions, version):
             "question": row['question'],
             "answer": row['answer'],
             "solution": row['solution'],
+            "difficulty": row['difficulty'],
         }
         ferryman_json.append(question_data)
     
-    jsonl_path = json_dir / f"FERRYMAN_{version}.jsonl"
+    jsonl_path = json_dir / "ferryman.jsonl"
     with open(jsonl_path, 'w', encoding='utf-8') as f:
         for item in ferryman_json:
             f.write(json.dumps(item, ensure_ascii=False) + '\n')
@@ -218,15 +278,29 @@ def create_dataset_files(num_questions, version):
     return ferryman_df, ferryman_json
 
 if __name__ == '__main__':
-    ferryman_df, ferryman_json = create_dataset_files(num_questions=100, version="v4")
+    import argparse
+    
+    parser = argparse.ArgumentParser(description="Ferryman Puzzle Generator")
+    parser.add_argument("--num", type=int, default=100, 
+                        help="Number of questions to generate per difficulty level. If --difficulty is not specified, generates this many questions for EACH difficulty (easy, medium, hard).")
+    parser.add_argument("--difficulty", type=str, default=None, 
+                        choices=["easy", "medium", "hard"], 
+                        help="Difficulty level (easy/medium/hard). If not specified, generates questions for all three difficulty levels.")
+    
+    args = parser.parse_args()
+    
+    create_dataset_files(num_questions=args.num, difficulty=args.difficulty)
 
-    for i in range(3):
-        question, answer, solution = generate_puzzle_question()
-        print(f"\n========== 문제{i+1} ==========")
-        print("- question -\n", question)
-        print("\n- answer -\n", answer)
-        print("\n- solution -")
-        for step in solution:
-            print(step)
-        print("\n")
-
+    # 샘플 출력
+    # print("\n" + "="*80)
+    # print("샘플 문제 (각 난이도별 1개씩)")
+    # print("="*80)
+    # for diff in ["easy", "medium", "hard"]:
+    #     question, answer, solution = generate_puzzle_question(difficulty=diff)
+    #     print(f"\n========== [{diff.upper()}] 문제 샘플 ==========")
+    #     print("- question -\n", question)
+    #     print("\n- answer -\n", answer)
+    #     print("\n- solution -")
+    #     for step in solution:
+    #         print(step)
+        # print("\n")

@@ -695,7 +695,7 @@ def generate_question():
 
     return question, correct_letter, explanation, choices
 
-def create_dataset_files(num_questions, version):
+def create_dataset_files(num_questions):
     print(f"Generating {num_questions} kinship problems (Visual Benchmark)...")
     
     actors_db = get_actors_db()
@@ -726,12 +726,12 @@ def create_dataset_files(num_questions, version):
     
     PROJECT_ROOT = Path(__file__).resolve().parent.parent
     
-    csv_path = PROJECT_ROOT / "data" / "csv" / f"KINSHIP_VISION_{version}.csv"
+    csv_path = PROJECT_ROOT / "data" / "csv" / "kinship_vision.csv"
     csv_path.parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(csv_path, index=False, encoding="utf-8-sig")
     print(f"CSV saved: {csv_path}")
     
-    json_path = PROJECT_ROOT / "data" / "json" / f"KINSHIP_VISION_{version}.jsonl"
+    json_path = PROJECT_ROOT / "data" / "json" / "kinship_vision.jsonl"
     json_path.parent.mkdir(parents=True, exist_ok=True)
     
     json_data = [
@@ -757,14 +757,21 @@ def create_dataset_files(num_questions, version):
     return df, json_data
 
 if __name__ == '__main__':
-    kinship_df, kinship_json = create_dataset_files(num_questions=10, version="v5_hard")
+    import argparse
     
-    print("\n=== Sample Problem ===")
-    for _ in range(1):
-        question, answer, explanation, choices = generate_question()
-        print("Q:", question)
-        print("A:", answer)
-        print("\n--- Explanation ---")
-        for step in explanation:
-            print(step)
-        print("-" * 40)
+    parser = argparse.ArgumentParser(description="Kinship Vision Puzzle Generator")
+    parser.add_argument("--num", type=int, default=100, help="Number of questions to generate")
+    
+    args = parser.parse_args()
+    
+    create_dataset_files(num_questions=args.num)
+
+    # print("\n=== Sample Problem ===")
+    # for _ in range(1):
+    #     question, answer, explanation, choices = generate_question()
+    #     print("Q:", question)
+    #     print("A:", answer)
+    #     print("\n--- Explanation ---")
+    #     for step in explanation:
+    #         print(step)
+    #     print("-" * 40)
