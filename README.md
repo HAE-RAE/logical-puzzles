@@ -1,144 +1,170 @@
-# logical-puzzles
+# Logical Puzzles
+Logical Puzzle Evaluation Dataset and LLM Assessment Pipeline
 
-논리 퍼즐 평가 데이터셋 및 LLM 평가 파이프라인
 
-## 구조
+## Puzzle Types
 
+### 1. Array Formula
+Apply formulas to 2D arrays to calculate final results. Sequentially apply row/column operations and aggregate functions to derive answers.
+
+- **Multi-step Operations**: Apply functions like SUM, MEAN, MAX, MIN sequentially
+- **Row/Column Aggregation**: Perform aggregate functions on row or column units
+- **Complex Reasoning**: Track intermediate calculation results to derive final values
+- **Difficulty Levels**: Adjusted based on array size and number of operation steps
+
+### 2. Causal DAG Korean
+Infer event propagation time in causal relationship graphs with time delays. Events and causal relationships are described in Korean.
+
+- **DAG-based Generation**: Represent causal relationships as directed acyclic graphs
+- **Shortest Path Algorithm**: Calculate answers using Dijkstra's algorithm
+- **Unique Solution**: Automatically guaranteed by deterministic graph structure
+- **Difficulty Levels**: Based on number of events (4-12) and connection density (Easy/Medium/Hard)
+- **Realistic Scenarios**: Real events from technology, business, environment, operations domains
+
+### 3. Causal DAG
+Same as Causal DAG Korean, but events and causal relationships are described in English.
+
+### 4. Cipher Korean
+Decode multi-layer cipher algorithms. Evaluates LLM's pure algorithmic reasoning ability. Encrypts Korean strings.
+
+- **Multi-layer Algorithms**: Stack of Substitution, Vigenere, Reverse, Playfair, Transposition
+- **Meaningless Answers**: Use random strings to prevent linguistic guessing
+- **Variable Hints**: Adjust number of examples by difficulty (2-20 examples)
+- **Difficulty Levels**: EASY (Sub+Rev), MEDIUM (Vig), HARD (Vig+Rev), VERY_HARD (Playfair+Vig), EXTREME (Play+Trans+Vig)
+
+### 5. Cipher
+Same as Cipher Korean, but encrypts English strings.
+
+### 6. Cryptarithmetic
+Find the digit corresponding to each letter in arithmetic expressions represented by letters.
+
+- **Constraints**: No leading zeros, each letter is a unique digit
+- **Backtracking Solver**: Verify unique solution
+- **Various Operations**: Support addition, subtraction, multiplication
+- **Difficulty Levels**: Adjusted based on number of letters and digits
+
+### 7. Ferryman
+Calculate total time required for a ferryman to transport goods considering various navigation rules and constraints.
+
+- **Speed-limited Zones**: Speed changes in Zone A and Zone B
+- **Cargo Weight**: Speed reduction based on weight
+- **Mandatory Rest Time**: Compliance with navigation regulations
+- **Complex Condition Reasoning**: Consider multiple constraints simultaneously
+
+### 8. Hanoi
+Classic puzzle of moving disks from one peg to another. Calculate the minimum number of moves.
+
+- **Recursive Structure**: Requires divide-and-conquer thinking
+- **Constraints**: Only smaller disks can be placed on larger disks
+- **Minimum Moves**: 2^n - 1 moves (n is number of disks)
+- **Difficulty Levels**: Adjusted based on number of disks
+
+### 9. Inequality
+Find number placements that satisfy given inequality constraints.
+
+- **Constraint Satisfaction Problem**: Satisfy multiple inequalities simultaneously
+- **Backtracking Solver**: Verify unique solution
+- **Logical Reasoning**: Narrow value ranges from constraints
+- **Difficulty Levels**: Adjusted based on number of variables and constraints
+
+### 10. Kinship
+Infer family relationship clues presented through dialogue to derive final Korean kinship terms.
+
+- **Korean Kinship Terms**: Support various family relationships (paternal/maternal/in-laws)
+- **Dialogue-based Clues**: Provide relationship information in natural conversation format
+- **Multiple Answer Support**: Handle synonyms like "큰아버지, 백부"
+- **Relationship Chain Reasoning**: Derive final kinship term through stepwise relationship connections
+- **Language+Logic Fusion**: Simultaneously evaluate Korean honorific system understanding and logical reasoning
+
+### 11. Kinship Vision
+Multimodal problem combining family photo images and dialogue clues to identify people by visual features and infer relationships.
+
+- **Vision+Language Fusion**: Simultaneously perform person identification in images and relationship reasoning
+- **17-person Actor DB**: Consider gender (male/female) × age group (SENIOR/ADULT/YOUNG_ADULT/CHILD)
+- **Visual Feature Mapping**: Distinguish people using 3 features: clothing color, position, appearance
+- **Multiple Choice Format**: 1 correct answer + 3 distractors (inducing visual confusion)
+- **Multimodal Reasoning**: Understand dialogue context → Search image → Connect relationship chain
+
+### 12. Logic Grid Korean
+Constraint-based logical reasoning problem famous as Einstein's Riddle. Infer relationships among multiple people and attributes from Korean constraint conditions.
+
+- **CSP (Constraint Satisfaction Problem)**: Verify unique solution with backtracking
+- **Natural Language Constraints**: Simultaneously require linguistic understanding and logical reasoning
+- **Unique Solution Guaranteed**: Verified with Constraint Propagation algorithm
+- **Difficulty Levels**: Easy (3×3), Medium (4×4), Hard (5×5)
+- **Backward Generation**: Generate valid solution first, then derive constraint conditions
+
+### 13. Logic Grid
+Same as Logic Grid Korean, but names, attributes, and constraints are expressed in English.
+
+### 14. Minesweeper
+Minesweeper puzzle designed as a Constraint Satisfaction Problem (CSP). Evaluates LLM's logical reasoning ability.
+
+- **Unique Solution Guaranteed**: Verify unique solution with backtracking solver
+- **Minimal Hints**: Minimize hints while maintaining unique solution
+- **Difficulty Levels**: Easy (6×6), Medium (8×8), Hard (10×10)
+- **Coordinate-based Evaluation**: Output mine locations in (r,c) format
+- **Partial Scores**: Exact Match, Precision, Recall, F1 Score
+
+### 15. Number Baseball
+Infer hidden N-digit numbers through hints (Strike/Ball).
+
+- **Constraint Reasoning**: Narrow possible number ranges with Strike/Ball hints
+- **Variable Digits**: Adjust difficulty with 3-digit, 4-digit, 5-digit numbers
+- **No Duplicate Digits**: Each position has a different digit
+- **Stepwise Reasoning**: Derive answer by combining multiple hints
+
+### 16. SAT Puzzle Korean
+NP-complete problem of finding value combinations that satisfy given logical expressions (CNF) for Boolean variables. Problem scenarios and constraints are described in Korean.
+
+- **NP-Complete Problem**: Theoretically difficult problem
+- **CNF (Conjunctive Normal Form)**: Express logical expressions in standard form
+- **Natural Language Translation**: Represent as real situations like crime, meetings, task assignments
+- **Unique Solution Guaranteed**: Backward generation ensures answer satisfies clauses
+- **Difficulty Levels**: Easy (3-4 variables), Medium (5-7 variables), Hard (10-12 variables)
+- **Pure Logical Reasoning**: Focus on Boolean logic
+
+### 17. SAT Puzzle
+Same as SAT Puzzle Korean, but variable names and constraints are expressed in English.
+
+### 18. Sudoku
+9×9 Sudoku puzzle generation and difficulty-level evaluation dataset.
+
+- **Unique Solution Guaranteed**: All puzzles have exactly one solution
+- **Difficulty Evaluation**: Automatic classification into Easy, Medium, Hard, Expert, Extreme
+- **Spot-check Evaluation**: HMAC-based K-cell selection for LLM evaluation support
+- **Symmetry Support**: Improve aesthetic quality with rotation/reflection symmetry
+- **Reproducible**: Regenerate identical puzzles with fixed seeds
+
+### 19. Yacht Dice
+Combinatorial optimization problem of optimally assigning 12 dice results to 12 categories to maximize total score.
+
+- **Combinatorial Optimization**: 12! = 479,001,600 possible assignments
+- **Hungarian Algorithm**: Calculate optimal solution
+- **Bonus Score Calculation**: Bonus based on upper section total
+- **Various Rule Modifications**: Support changes to bonus, scores, optimization objectives
+- **Complex Scoring Rules**: Evaluate LLM's rule understanding and optimization ability
+
+
+## Usage
+
+### Puzzle Generation
+```bash
+# Generate all puzzles
+bash scripts/generate_all.sh
 ```
-logical-puzzles/
-├── guess/              # 문제 생성 코드
-│   ├── ferryman.py     # 뱃사공 문제 생성
-│   ├── yacht_dice.py   # Yacht Dice 문제 생성
-│   ├── sudoku.py       # 스도쿠 문제 생성
-│   ├── minesweeper.py  # 지뢰찾기 문제 생성
-│   ├── kinship.py      # 가족 관계 문제 생성 (텍스트)
-│   └── kinship_vision.py # 가족 관계 문제 생성 (비전)
-├── evaluation/         # 평가 코드
-│   ├── eval_ferryman.py    # 뱃사공 평가
-│   ├── eval_yacht_dice.py  # Yacht Dice 평가
-│   ├── eval_sudoku.py      # 스도쿠 평가
-│   ├── eval_minesweeper.py # 지뢰찾기 평가
-│   ├── eval_kinship.py     # 가족 관계 평가 (텍스트)
-│   └── eval_kinship_vision.py # 가족 관계 평가 (비전)
-├── data/              # 생성된 데이터 (로컬에만 저장)
-│   ├── csv/
-│   ├── json/
-│   ├── sudoku/
-│   └── minesweeper/
-└── evaluation_data/   # 평가용 정적 데이터
-    └── kinshop_vision/
-        └── kinship.jpg  # 가족 사진 (17인)
-```
 
-## 퍼즐 유형
-
-### 1. Ferryman (뱃사공)
-뱃사공의 물품 운송 문제로, 다양한 운항 규정과 제약 조건을 고려하여 총 소요 시간을 계산하는 문제
-
-**특징:**
-- 속도 제한 구역 (A구역, B구역)
-- 화물 무게에 따른 속도 감소
-- 의무 휴식 시간
-- 복잡한 조건 추론 필요
-
-### 2. Yacht Dice
-12개의 주사위 결과를 12개의 카테고리에 최적으로 할당하여 총점을 최대화하는 조합 최적화 문제
-
-**특징:**
-- 12! = 479,001,600 가지의 가능한 할당
-- 헝가리안 알고리즘을 사용한 최적해 계산
-- 보너스 점수 계산
-- 복잡한 점수 규칙 이해 필요
-- **다양한 룰 변경 지원** (보너스, 점수, 최적화 목표)
-
-### 3. Sudoku (스도쿠)
-9×9 스도쿠 퍼즐 생성 및 난이도별 평가 데이터셋
-
-**특징:**
-- **유일해 보장**: 모든 퍼즐이 정확히 하나의 해를 가짐
-- **난이도 평가**: Easy, Medium, Hard, Expert, Extreme 자동 분류
-- **Spot-check 평가**: HMAC 기반 K-셀 선택으로 LLM 평가 지원
-- **대칭 지원**: 회전/반사 대칭으로 미적 품질 향상
-- **재현 가능**: 시드 고정으로 동일한 퍼즐 재생성
-
-### 4. Minesweeper (지뢰찾기)
-제약 충족 문제(CSP)로 설계된 지뢰찾기 퍼즐 - LLM의 논리적 추론 능력 평가
-
-**특징:**
-- **유일해 보장**: 백트래킹 솔버로 유일해 검증
-- **최소 힌트**: 유일해를 유지하면서 힌트 최소화
-- **다양한 난이도**: Easy (6×6), Medium (8×8), Hard (10×10)
-- **좌표 기반 평가**: 지뢰 위치를 (r,c) 형식으로 출력
-- **부분 점수**: Exact Match, Precision, Recall, F1 Score
-
-### 5. Cypher (Advanced Cipher)
-LLM의 순수 알고리즘 추론 능력을 측정하기 위한 다중 레이어 암호 해독 퍼즐. 정답의 의미성을 완전히 제거하여 언어적 추측을 차단하고 논리적 연산 능력만 평가합니다.
-
-**특징:**
-- **다중 레이어 알고리즘**: Substitution, Vigenere, Reverse, Playfair, Transposition 등의 암호를 중첩 적용
-- **정답 의미성 제거**: 무작위 문자열(Random String)을 정답으로 사용하여 LLM의 '눈치' 기반 추론 차단
-- **가변 힌트**: 난이도별로 제공되는 예제(Hint) 개수를 조절하여 변별력 확보 (2개~20개)
-- **성능 임계점 파악**: `gpt-5-mini`와 `gpt-4o` 간의 알고리즘 추론 능력 차이를 극명하게 보여줌
-
-### 6. Logic Grid (Deduction)
-언어적 관계와 제약 조건을 통해 실체를 추론하는 전통적인 '아인슈타인 퍼즐(Zebra Puzzle)'입니다. LLM의 순수 관계 추론 및 소거법 논리 능력을 평가합니다.
-
-**특징:**
-- **관계 지향적**: 문자열 처리가 아닌, 엔티티 간의 논리적 연결 관계를 파악하는 능력 측정
-- **제약 조건 해결**: 긍정/부정/조건부 단서들을 결합하여 유일한 해 도출
-- **5단계 난이도**: EASY (3x2)부터 EXTREME (5x5)까지 데이터 복잡도 확장
-- **유일해 보장**: 백트래킹 솔버를 통한 정답 유효성 및 유일성 검증 완료
-
-### 7. Kinship (가족 관계 호칭 - 텍스트)
-대화를 통해 제시되는 가족 관계 단서를 추론하여 최종 한국어 호칭을 도출하는 문제.
-
-**특징:**
-- **한국어 호칭**: 친가/외가/시댁/처가 등 다양한 가족 관계 지원
-- **대화 기반 단서**: 친구와의 자연스러운 대화 형식으로 관계 정보 제공
-- **다중 정답 지원**: "큰아버지, 백부" 등 동의어 처리
-- **관계 체인 추론**: 단계적 관계 연결을 통한 최종 호칭 도출
-- **언어+논리 융합**: 한국어 존칭 체계 이해와 논리적 추론 동시 평가
-
-### 8. Kinship Vision (가족 관계 호칭 - 비전)
-가족 사진 이미지와 대화 단서를 결합하여 시각적 특징으로 인물을 식별하고 관계를 추론하는 멀티모달 문제.
-
-**특징:**
-- **비전+언어 융합**: 이미지 속 인물 식별과 관계 추론 동시 수행
-- **17인 배우 DB**: 성별(남/여) × 연령대(SENIOR/ADULT/YOUNG_ADULT/CHILD) 고려
-- **시각적 특징 매핑**: 의상 색상, 위치, 외모 등 3가지 특징으로 인물 구분
-- **4지선다 형식**: 정답 1개 + 오답 3개 (시각적 혼동 유도)
-- **멀티모달 추론**: 대화 맥락 이해 → 이미지 검색 → 관계 체인 연결
-
-## 사용법
-
-### 문제 생성
+### Evaluation
 
 ```bash
-# Ferryman 문제 생성
-cd guess
-python ferryman.py
-
-# Yacht Dice 문제 생성
-python yacht_dice.py
-
-# Sudoku 문제 생성 (5개 난이도별 데이터셋)
-python sudoku.py
-
-# Minesweeper 문제 생성 (난이도별 데이터셋)
-python minesweeper.py
-```
-
-### 평가 실행
-
-```bash
-# Ferryman 평가
+# Ferryman evaluation
 cd evaluation
 python eval_ferryman.py
 
-# Yacht Dice 평가 (기본 룰)
+# Yacht Dice evaluation (default rules)
 python eval_yacht_dice.py --model gpt-4o
 
-# Yacht Dice 평가 (커스텀 룰)
+# Yacht Dice evaluation (custom rules)
 python eval_yacht_dice.py \
   --model gpt-4o \
   --bonus-threshold 70 \
@@ -146,237 +172,88 @@ python eval_yacht_dice.py \
   --yacht-points 100 \
   --recalculate
 
-# Sudoku 평가
+# Sudoku evaluation
 python eval_sudoku.py --model gpt-4o
 python eval_sudoku.py --model gpt-4o-mini
 python eval_sudoku.py --model o1
 
-# Minesweeper 평가
+# Minesweeper evaluation
 python eval_minesweeper.py --model gpt-4o
 python eval_minesweeper.py --model o1
 ```
 
-### Yacht Dice 룰 변경
+## Data Format
+All puzzles are stored in two formats:
 
-Yacht Dice는 다양한 게임 규칙을 변경할 수 있습니다:
+- **CSV**: `data/csv/{puzzle_name}.csv` - Easy to view in spreadsheets
+- **JSONL**: `data/json/{puzzle_name}.jsonl` - Easy to process programmatically
 
-```python
-from yacht_dice import YachtDiceConfig
+**Common Fields:**
+- `id`: Unique identifier
+- `question`: Problem description
+- `answer`: Correct answer
+- `solution`: Step-by-step reasoning process
+- `difficulty`: Difficulty level (Easy/Medium/Hard, etc.)
+- Additional puzzle-specific metadata (optional)
 
-# 기본 룰
-config1 = YachtDiceConfig()
-
-# 보너스 변경
-config2 = YachtDiceConfig(bonus_threshold=70, bonus_points=50)
-
-# 하단 항목 점수 변경
-config3 = YachtDiceConfig(full_house_points=50, yacht_points=100)
-
-# 최적화 목표 변경
-config4 = YachtDiceConfig(optimization_goal="minimize")
+## Project Structure
+```
+logical-puzzles/
+├── data/                       # Generated datasets (local only, gitignored)
+│   ├── csv/                    # CSV format
+│   └── json/                   # JSONL format
+├── description/                # Puzzle documentation
+│   ├── array_formula.md
+│   └── YACHT_DICE_USAGE.md
+├── evaluation/                 # Evaluation scripts
+│   ├── eval_array_formula.py
+│   ├── eval_causal_dag.py
+│   ├── eval_cipher.py
+│   ├── eval_cryptarithmetic.py
+│   └── ... (19 evaluation scripts)
+├── evaluation_data/            # Static evaluation data
+│   ├── kinshop_vision/
+│   │   └── kinship.jpg         # Family photo (17 people)
+│   └── minesweeper/
+│       ├── eval_metadata.jsonl
+│       ├── eval_puzzles.jsonl
+│       ├── eval_solutions.jsonl
+│       └── solution.md
+├── guess/                      # Puzzle generators
+│   ├── array_formula.py
+│   ├── causal_dag.py
+│   ├── cipher.py
+│   ├── cryptarithmetic.py
+│   └── ... (19 puzzle types)
+├── scripts/                    # Automation scripts
+│   └── generate_all.sh
+├── validators/                 # Data validation tools
+│   ├── verify_logic_grid.py
+│   └── verify_sat.py
+├── .env.example
+├── .gitignore
+├── LICENSE
+└── README.md
 ```
 
-자세한 내용은 [YACHT_DICE_USAGE.md](YACHT_DICE_USAGE.md) 참고
+## Adding New Puzzles
+When adding a new puzzle, please follow this structure:
 
-### Sudoku 사용 예시
-
-```python
-from sudoku import generate_puzzle, generate_5diff_dataset
-
-# 단일 퍼즐 생성
-puzzle = generate_puzzle(difficulty='Hard', symmetry='rot180', seed=42, k=6)
-
-# 5개 난이도별 데이터셋 생성
-puzzles = generate_5diff_dataset(k=6, seed=2025)
+### Required Files
+```
+guess/{puzzle_name}.py           # Puzzle generation logic
+evaluation/eval_{puzzle_name}.py # Evaluation script
 ```
 
-**생성 옵션:**
-- `difficulty`: 'Easy', 'Medium', 'Hard', 'Expert', 'Extreme', 'Any'
-- `symmetry`: 'none', 'rot180' (180도 회전 대칭)
-- `k`: spot-check 좌표 개수 (기본값: 6)
-- `seed`: 랜덤 시드 (재현성)
+### Recommendations
+- **Difficulty Levels**: Minimum 3 levels (Easy/Medium/Hard)
+- **Validation Tools**: Consider adding validation scripts to `validators/` folder
 
-**평가 데이터 형식:**
-```json
-{
-  "id": "s9_002000",
-  "puzzle": "39.........8..15.6...",
-  "solution": "391654782278391546...",
-  "difficulty": {"label": "Easy", "search_nodes": 0},
-  "spotcheck": {
-    "k": 6,
-    "positions": ["r2c6", "r4c9", "r8c9", "r5c9", "r7c6", "r4c6"],
-    "code": "191796"
-  }
-}
-```
+## Notes
+- The `data/` directory is included in `.gitignore` and will not be uploaded to the repository
+- Evaluation results are stored locally only
+- Do not commit API keys or sensitive information
+- Generated data is automatically saved to `data/csv/` and `data/json/`
 
-### Minesweeper 사용 예시
-
-```python
-from minesweeper import generate_puzzle, generate_dataset
-
-# 단일 퍼즐 생성
-puzzle = generate_puzzle(rows=6, cols=6, num_mines=8, difficulty='easy', seed=42)
-
-# 난이도별 데이터셋 생성
-puzzles = generate_dataset(num_puzzles_per_level=5, seed=2025)
-```
-
-**생성 옵션:**
-- `rows, cols`: 그리드 크기 (6×6, 8×8, 10×10 등)
-- `num_mines`: 지뢰 개수 (총 셀의 12-20% 권장)
-- `difficulty`: 'easy', 'medium', 'hard'
-- `seed`: 랜덤 시드 (재현성)
-
-**평가 데이터 형식:**
-```json
-{
-  "id": "easy_6x6_2025",
-  "rows": 6,
-  "cols": 6,
-  "mines": 8,
-  "difficulty": "easy",
-  "puzzle": ["2#3##1", "2##442", "1#####", "##2#3#", "######", "#0##0#"],
-  "solution": ["010110", "010000", "001101", "000001", "000000", "000000"]
-}
-```
-
-**프롬프트 형식:**
-```
-You are solving a Minesweeper puzzle. The grid is 6x6 with 8 mines total.
-
-Grid notation:
-- '#' represents a hidden cell
-- Numbers (0-8) show count of adjacent mines
-
-Puzzle grid:
-2#3##1
-2##442
-1#####
-##2#3#
-######
-#0##0#
-
-Output format: (r,c) (r,c) ... (0-based indexing)
-Final answer: (0,1) (0,3) (1,2) ...
-```
-
-## PR 가이드 (Pull Request Guide)
-
-새로운 퍼즐이나 기능을 추가하여 PR을 보낼 때는 아래 구성에 맞춰 파일을 업로드해주세요.
-
-### 1. 필수 포함 파일
-- **`guess/`**: 문제 생성 로직 파일 (예: `cypher_v260112.py`, `logic_grid.py`)
-- **`evaluation/`**: 해당 퍼즐을 검증하는 평가 스크립트 (예: `eval_cypher.py`, `eval_logic.py`)
-- **`root/`**: 전체 결과를 취합하는 리포트 도구 (예: `final_report.py`, `summary_v4.py`)
-
-### 2. Cypher v260112 버전 (최신)
-최근 테스트를 통해 LLM의 변별력을 극대화한 5단계 난이도 체계입니다.
-- **파일**: `guess/cypher_v260112.py`
-- **배경**: 정답의 의미성을 제거하고, EASY 단계부터 알고리즘 간 중첩(Substitution + Reverse)을 적용하여 순수 논리 추론 능력을 평가합니다.
-- **난이도 구성**: EASY(Sub+Rev), MEDIUM(Vig), HARD(Vig+Rev), VERY_HARD(Playfair+Vig), EXTREME(Play+Trans+Vig)
-
-### 10. Causal DAG (인과관계 그래프)
-시간 지연을 포함한 인과관계 그래프에서 사건 전파 시간을 추론하는 문제.
-
-**예시:**
-```
-Events:
-  E1: PowerOutage (정전 발생)
-  E2: ServerDown (서버 다운)
-  E3: DataLoss (데이터 손실)
-
-Causal Relationships:
-  E1 → E2: 15분 지연
-  E2 → E3: 25분 지연
-
-Initial: E1 occurs at minute 10
-Question: When does E3 occur?
-```
-→ 정답: 50분 (10 + 15 + 25)
-
-**특징:**
-- **DAG 기반 생성**: 방향성 비순환 그래프로 인과관계 표현
-- **최단 경로 알고리즘**: Dijkstra 알고리즘으로 정답 계산
-- **유일해 보장**: 결정론적 그래프 구조로 유일해 자동 보장
-- **난이도 분류**: 사건 수(4-12개)와 연결 밀도 기반 (Easy/Medium/Hard)
-- **현실적 시나리오**: 기술, 비즈니스, 환경, 운영 등 4가지 도메인의 실제 사건
-- **복합 추론**: 병렬 인과관계, 다중 경로, 시간 누적 계산 필요
-
-### 11. Logic Grid Puzzle (논리 격자 퍼즐)
-Einstein's Riddle로 유명한 제약 조건 기반 논리 추론 문제. 여러 사람과 속성들 간의 관계를 자연어 제약 조건으로부터 추론.
-
-**예시:**
-```
-People: Alice, Bob, Carol
-Attributes:
-  - HouseColor: Red, Blue, Green
-  - Pet: Dog, Cat, Bird
-  - Drink: Coffee, Tea, Milk
-
-Constraints:
-  1. Alice lives in the Red house
-  2. The person in the Blue house has a Dog
-  3. Bob drinks Coffee
-  4. The person with a Cat drinks Tea
-  5. Carol does not live in the Blue house
-
-Question: Who has which attributes?
-```
-→ 정답: Alice=(Red, Bird, Milk), Bob=(Blue, Dog, Coffee), Carol=(Green, Cat, Tea)
-
-**특징:**
-- **CSP (Constraint Satisfaction Problem)**: 백트래킹으로 유일해 검증
-- **자연어 제약 조건**: 언어적 이해와 논리적 추론을 동시에 요구
-- **유일해 보장**: 제약 전파(Constraint Propagation) 알고리즘으로 검증
-- **난이도 분류**: 
-  - Easy: 3명, 3속성 (집 색깔, 애완동물, 음료)
-  - Medium: 4명, 4속성 (+ 직업)
-  - Hard: 5명, 5속성 (+ 취미)
-- **역방향 생성**: 유효한 해를 먼저 생성한 후 제약 조건 도출
-- **다양한 제약 유형**: 
-  - 직접 제약 (Direct): "Alice has a Dog"
-  - 간접 제약 (Indirect): "The person with Red house drinks Coffee"
-- **언어+논리 융합**: 자연어 이해 + 조합 추론 능력 동시 평가
-
-### 12. SAT Puzzle (Boolean Satisfiability)
-Boolean 변수들이 주어진 논리식(CNF)을 만족시키는 값 조합을 찾는 NP-complete 문제.
-
-**예시:**
-```
-Variables: Alice, Bob, Carol (guilty or innocent)
-
-Constraints:
-  1. At least one of Alice or Bob is guilty
-  2. If Alice is not guilty, then Carol is guilty
-  3. Bob and Carol cannot both be guilty
-
-Question: Who is guilty?
-```
-→ 정답: Alice=guilty, Bob=innocent, Carol=guilty
-
-**특징:**
-- **NP-Complete 문제**: 이론적으로 어려운 문제
-- **CNF (Conjunctive Normal Form)**: 논리식을 표준 형태로 표현
-- **자연어 변환**: 범죄, 회의, 작업 배정 등 실제 상황으로 표현
-- **유일해 보장**: 역방향 생성으로 정답이 clauses를 만족함을 보장
-- **난이도 분류**:
-  - Easy: 3-4 변수, 3-5 조건, 30% 부정
-  - Medium: 5-7 변수, 8-12 조건, 50% 부정
-  - Hard: 10-12 변수, 20+ 조건, 70% 부정
-- **순수 논리 추론**: 자연어 힌트가 최소화되어 Boolean logic에 집중
-- **가장 어려운 벤치마크**: gpt-4o도 전체 10% 정확도
-
-**평가 결과 (150 samples):**
-
-| Model        | Easy  | Medium | Hard  | Overall |
-|--------------|-------|--------|-------|---------|
-| gpt-4o       | 14%   | 14%    | 2%    | 10%     |
-| gpt-4o-mini  | 24%   | 8%     | 2%    | 11%     |
-
-## 주의사항
-
-- `data/` 디렉터리는 `.gitignore`에 포함되어 있어 레포지토리에 업로드되지 않습니다
-- 평가 결과는 로컬에만 저장됩니다
-- 공용 레포지토리이므로 API 키나 민감한 정보를 커밋하지 마세요
+## License
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
