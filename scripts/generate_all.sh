@@ -26,8 +26,8 @@ echo ""; echo "[5/19] cipher..."
 python guess/cipher.py --num 100
 
 # Cryptarithmetic (Easy, Medium, Hard, Expert)
-# echo ""; echo "[6/19] cryptarithmetic..."
-# python guess/cryptarithmetic.py
+echo ""; echo "[6/19] cryptarithmetic..."
+python guess/cryptarithmetic.py --num 400
 
 # Ferryman (Easy, Medium, Hard)
 echo ""; echo "[7/19] ferryman..."
@@ -58,8 +58,8 @@ echo ""; echo "[13/19] logic_grid..."
 python guess/logic_grid.py --num-samples 300
 
 # Minesweeper (Easy, Medium, Hard)
-# echo ""; echo "[14/19] minesweeper..."
-# python guess/minesweeper.py
+echo ""; echo "[14/19] minesweeper..."
+python guess/minesweeper.py
 
 # Number Baseball (Easy, Medium, Hard, Expert)
 echo ""; echo "[15/19] number_baseball..."
@@ -74,8 +74,8 @@ echo ""; echo "[17/19] sat_puzzle..."
 python guess/sat_puzzle.py --num-samples 300
 
 # Sudoku (Medium, Hard, Expert, Extreme)
-# echo ""; echo "[18/19] sudoku..."
-# python guess/sudoku.py
+echo ""; echo "[18/19] sudoku..."
+python guess/sudoku.py
 
 # Yacht Dice (No difficulty)
 echo ""; echo "[19/19] yacht_dice..."

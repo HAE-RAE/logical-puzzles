@@ -688,10 +688,10 @@ def generate_question():
     if choice_feature and choice_feature != person_map[last_index]:
         explanation.append(f"[STEP {final_step}] Confirm that '{person_map[last_index]}' and '{choice_feature}' are the same person.")
         explanation.append(f"[STEP {final_step + 1}] Therefore, the final title for the combined relationship '{temp_chain_str}' is '{answer}'.")
+        explanation.append(f"[STEP {final_step + 2}] Answer: {correct_letter}")
     else:
         explanation.append(f"[STEP {final_step}] Therefore, the final title for the combined relationship '{temp_chain_str}' is '{answer}'.")
-    
-    explanation.append(f"[Answer] {correct_letter}: {choices[correct_letter]}")
+        explanation.append(f"[STEP {final_step + 1}] Answer: {correct_letter}")
 
     return question, correct_letter, explanation, choices
 
