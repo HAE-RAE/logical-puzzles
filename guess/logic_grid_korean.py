@@ -418,13 +418,18 @@ class LogicGridGenerator:
 
 def generate_dataset(
     num_samples: int,
-    output_dir: str = "data/logic_grid_korean",
     seed: Optional[int] = None
 ):
     """논리 그리드 퍼즐 데이터셋 생성"""
     import os
+    from pathlib import Path
     
-    os.makedirs(output_dir, exist_ok=True)
+    # Setup directories
+    PROJECT_ROOT = Path(__file__).resolve().parent.parent
+    csv_dir = PROJECT_ROOT / "data" / "csv"
+    json_dir = PROJECT_ROOT / "data" / "json"
+    csv_dir.mkdir(parents=True, exist_ok=True)
+    json_dir.mkdir(parents=True, exist_ok=True)
     
     generator = LogicGridGenerator(seed=seed)
     puzzles = []
@@ -449,13 +454,13 @@ def generate_dataset(
             print(f"{i}/{num_samples} 퍼즐 생성 완료...")
     
     # JSONL로 저장
-    jsonl_path = os.path.join(output_dir, "logic_grid_puzzles_korean.jsonl")
+    jsonl_path = json_dir / "logic_grid_korean.jsonl"
     with open(jsonl_path, 'w', encoding='utf-8') as f:
         for puzzle in puzzles:
             f.write(json.dumps(puzzle.to_dict(), ensure_ascii=False) + '\n')
     
     # CSV로 저장
-    csv_path = os.path.join(output_dir, "logic_grid_puzzles_korean.csv")
+    csv_path = csv_dir / "logic_grid_korean.csv"
     with open(csv_path, 'w', encoding='utf-8') as f:
         f.write("id,difficulty,num_people,num_categories,num_constraints\n")
         for puzzle in puzzles:
@@ -465,7 +470,6 @@ def generate_dataset(
     print(f"   - JSONL: {jsonl_path}")
     print(f"   - CSV: {csv_path}")
     print(f"\n✅ 데이터셋 생성 완료!")
-    print(f"   위치: {output_dir}")
     print(f"   총 퍼즐 수: {num_samples}")
     
     # 난이도별 카운트
@@ -510,7 +514,7 @@ def main():
             print(json.dumps(puzzle.answer, indent=2, ensure_ascii=False))
             print()
     else:
-        generate_dataset(args.num_samples, args.output_dir, args.seed)
+        generate_dataset(args.num_samples, args.seed)
 
 
 if __name__ == "__main__":

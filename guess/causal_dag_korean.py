@@ -580,7 +580,7 @@ def generate_dataset(puzzles_per_difficulty: int = 3, verbose: bool = True) -> L
     return dataset
 
 
-def create_dataset_files(num_questions: int, version: str):
+def create_dataset_files(num_questions: int):
     """
     인과 DAG 퍼즐 데이터셋 파일 생성
     
@@ -630,14 +630,14 @@ def create_dataset_files(num_questions: int, version: str):
     # CSV
     csv_dir = PROJECT_ROOT / "data" / "csv"
     csv_dir.mkdir(parents=True, exist_ok=True)
-    csv_path = csv_dir / f"CAUSAL_DAG_KOREAN_{version}.csv"
+    csv_path = csv_dir / f"causal_dag_korean.csv"
     df.to_csv(csv_path, index=False, encoding="utf-8-sig")
     print(f"CSV 파일 생성: {csv_path}")
     
     # JSONL
     json_dir = PROJECT_ROOT / "data" / "json"
     json_dir.mkdir(parents=True, exist_ok=True)
-    jsonl_path = json_dir / f"CAUSAL_DAG_KOREAN_{version}.jsonl"
+    jsonl_path = json_dir / f"causal_dag_korean.jsonl"
     with open(jsonl_path, 'w', encoding='utf-8') as f:
         for item in all_puzzles:
             f.write(json.dumps(item, ensure_ascii=False) + '\n')
@@ -647,58 +647,67 @@ def create_dataset_files(num_questions: int, version: str):
 
 
 if __name__ == "__main__":
+    import argparse
+    
+    parser = argparse.ArgumentParser(description="Causal DAG Korean Puzzle Generator")
+    parser.add_argument("--num", type=int, default=300, help="Number of questions to generate")
+    
+    args = parser.parse_args()
+    
     print("=" * 70)
     print("인과 DAG 추론 퍼즐 생성기 (한국어)")
     print("=" * 70)
     
+    create_dataset_files(num_questions=args.num)
+    
     # 샘플 데이터셋 생성
-    dataset = generate_dataset(puzzles_per_difficulty=2, verbose=True)
+    # dataset = generate_dataset(puzzles_per_difficulty=2, verbose=True)
     
-    print("\n" + "=" * 70)
-    print("샘플 퍼즐")
-    print("=" * 70)
+    # print("\n" + "=" * 70)
+    # print("샘플 퍼즐")
+    # print("=" * 70)
     
-    sample = dataset[0]
-    print(sample['question'])
-    print(f"\n✅ 정답: {sample['answer']}분")
+    # sample = dataset[0]
+    # print(sample['question'])
+    # print(f"\n✅ 정답: {sample['answer']}분")
     
-    # 모든 퍼즐 검증
-    print("\n" + "=" * 70)
-    print("검증")
-    print("=" * 70)
+    # # 모든 퍼즐 검증
+    # print("\n" + "=" * 70)
+    # print("검증")
+    # print("=" * 70)
     
-    generator = CausalPuzzleGenerator()
-    for i, puzzle_data in enumerate(dataset):
-        metadata = puzzle_data['metadata']
+    # generator = CausalPuzzleGenerator()
+    # for i, puzzle_data in enumerate(dataset):
+    #     metadata = puzzle_data['metadata']
         
-        # EventType enum으로 Event 객체 재구성
-        events = {}
-        for k, v in metadata['events'].items():
-            events[k] = Event(
-                id=v['id'],
-                name=v['name'],
-                description=v['description'],
-                event_type=EventType(v['event_type'])
-            )
+    #     # EventType enum으로 Event 객체 재구성
+    #     events = {}
+    #     for k, v in metadata['events'].items():
+    #         events[k] = Event(
+    #             id=v['id'],
+    #             name=v['name'],
+    #             description=v['description'],
+    #             event_type=EventType(v['event_type'])
+    #         )
         
-        puzzle = CausalPuzzle(
-            events=events,
-            edges=[CausalEdge(
-                from_event=e['from_event'],
-                to_event=e['to_event'],
-                delay=e['delay'],
-                from_events=e.get('from_events'),
-                condition=e.get('condition', 'OR')
-            ) for e in metadata['edges']],
-            trigger=metadata['trigger'],
-            trigger_time=metadata['trigger_time'],
-            target_event=metadata['target'],
-            answer=metadata['answer'],
-            difficulty=metadata['difficulty']
-        )
+    #     puzzle = CausalPuzzle(
+    #         events=events,
+    #         edges=[CausalEdge(
+    #             from_event=e['from_event'],
+    #             to_event=e['to_event'],
+    #             delay=e['delay'],
+    #             from_events=e.get('from_events'),
+    #             condition=e.get('condition', 'OR')
+    #         ) for e in metadata['edges']],
+    #         trigger=metadata['trigger'],
+    #         trigger_time=metadata['trigger_time'],
+    #         target_event=metadata['target'],
+    #         answer=metadata['answer'],
+    #         difficulty=metadata['difficulty']
+    #     )
         
-        is_valid = generator.has_unique_solution(puzzle)
-        status = "✓" if is_valid else "✗"
-        print(f"  퍼즐 {i+1}: {status} {'유효' if is_valid else '무효'}")
+    #     is_valid = generator.has_unique_solution(puzzle)
+    #     status = "✓" if is_valid else "✗"
+    #     print(f"  퍼즐 {i+1}: {status} {'유효' if is_valid else '무효'}")
     
-    print("\n✓ 모든 퍼즐 생성 성공!")
+    # print("\n✓ 모든 퍼즐 생성 성공!")

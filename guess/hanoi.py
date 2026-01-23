@@ -9,6 +9,8 @@ Tower of Hanoi Rule-Based Problem Generator
 """
 
 import random
+import json
+from pathlib import Path
 from typing import List, Tuple, Dict, Callable, Any
 
 # -----------------------------
@@ -388,7 +390,68 @@ def demo_generate_many(num: int = 5, use_gpt_mini: bool = False) -> None:
         print("\n" + "=" * 40)
 
 
+def create_dataset_files(num_questions: int):
+    """
+    Hanoi 퍼즐 데이터셋 파일 생성
+    
+    Args:
+        num_questions: 생성할 질문 수
+    """
+    import pandas as pd
+    import json
+    
+    print(f"Hanoi 퍼즐 {num_questions}개 생성 중...")
+    
+    all_puzzles = []
+    
+    for i in range(num_questions):
+        raw_problem, raw_answer, meta = generate_raw_hanoi_problem()
+        puzzle_data = {
+            'question': raw_problem,
+            'answer': raw_answer,
+            'n': meta['n'],
+            'src': meta['src'],
+            'aux': meta['aux'],
+            'dst': meta['dst']
+        }
+        all_puzzles.append(puzzle_data)
+    
+    print(f"\n{len(all_puzzles)}개의 퍼즐 생성 완료")
+    
+    df = pd.DataFrame(all_puzzles)
+    
+    # 파일 저장
+    PROJECT_ROOT = Path(__file__).resolve().parent.parent
+    
+    # CSV
+    csv_dir = PROJECT_ROOT / "data" / "csv"
+    csv_dir.mkdir(parents=True, exist_ok=True)
+    csv_path = csv_dir / "hanoi.csv"
+    df.to_csv(csv_path, index=False, encoding="utf-8-sig")
+    print(f"CSV 파일 생성: {csv_path}")
+    
+    # JSONL
+    json_dir = PROJECT_ROOT / "data" / "json"
+    json_dir.mkdir(parents=True, exist_ok=True)
+    jsonl_path = json_dir / "hanoi.jsonl"
+    with open(jsonl_path, 'w', encoding='utf-8') as f:
+        for item in all_puzzles:
+            f.write(json.dumps(item, ensure_ascii=False) + '\n')
+    print(f"JSONL 파일 생성: {jsonl_path}")
+    
+    return df, all_puzzles
+
+
 if __name__ == "__main__":
-    # 예시 실행
-    # use_gpt_mini=True 로 두면 gpt mini를 호출해서 문제/정답을 JSON으로 포맷팅
-    demo_generate_many(num=5, use_gpt_mini=False)
+    import argparse
+    
+    parser = argparse.ArgumentParser(description="Hanoi Puzzle Generator")
+    parser.add_argument("--num", type=int, default=100, help="Number of questions to generate")
+    parser.add_argument("--demo", action="store_true", help="Run demo mode")
+    
+    args = parser.parse_args()
+    
+    if args.demo:
+        demo_generate_many(num=5, use_gpt_mini=False)
+    else:
+        create_dataset_files(num_questions=args.num)

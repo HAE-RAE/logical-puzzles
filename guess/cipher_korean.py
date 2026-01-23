@@ -226,12 +226,30 @@ def create_hangul_dataset(num_per_level: int = 3):
                 "difficulty": config["name"]
             })
 
-    output_path = Path(__file__).resolve().parent.parent / "data" / "json" / "HANGUL_CIPHER.jsonl"
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(output_path, "w", encoding="utf-8") as f:
+    # JSONL 저장
+    output_jsonl_path = Path(__file__).resolve().parent.parent / "data" / "json" / "cipher_korean.jsonl"
+    output_jsonl_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(output_jsonl_path, "w", encoding="utf-8") as f:
         for p in all_problems:
             f.write(json.dumps(p, ensure_ascii=False) + "\n")
-    print(f"생성 완료: {output_path}")
+
+    # CSV 저장 추가
+    import pandas as pd
+    output_csv_path = Path(__file__).resolve().parent.parent / "data" / "csv" / "cipher_korean.csv"
+    output_csv_path.parent.mkdir(parents=True, exist_ok=True)
+    df = pd.DataFrame(all_problems)
+    df.to_csv(output_csv_path, index=False, encoding="utf-8-sig")
+
+    print(f"생성 완료: {output_jsonl_path}")
+    print(f"CSV 파일 생성 완료: {output_csv_path}")
+
 
 if __name__ == "__main__":
-    create_hangul_dataset()
+    import argparse
+    
+    parser = argparse.ArgumentParser(description="Hangul Cipher Puzzle Generator")
+    parser.add_argument("--num-per-level", type=int, default=20, help="Number of puzzles per difficulty level")
+    
+    args = parser.parse_args()
+    
+    create_hangul_dataset(num_per_level=args.num_per_level)

@@ -366,13 +366,12 @@ def generate_and_validate(
     return None
 
 
-def create_dataset_files(num_questions: int, version: str):
+def create_dataset_files(num_questions: int):
     """
     Create dataset files for cryptarithmetic puzzles.
 
     Args:
         num_questions: Number of questions to generate
-        version: Version string for filenames
 
     Returns:
         Tuple[pd.DataFrame, List[Dict]]: (dataframe, json list)
@@ -387,13 +386,21 @@ def create_dataset_files(num_questions: int, version: str):
 
     difficulties = ["Easy", "Medium", "Hard", "Expert"]
     all_puzzles = []
-
     used_patterns = set()
 
     for i, difficulty in enumerate(difficulties):
-        count = puzzles_per_diff + (1 if i < remainder else 0)
-
-        for _ in range(count):
+        target_count = puzzles_per_diff + (1 if i < remainder else 0)
+        
+        if target_count == 0:
+            continue
+        
+        print(f"\n=== Generating {difficulty} puzzles ({target_count} needed) ===")
+        generated = 0
+        attempts = 0
+        max_total_attempts = 5000
+        
+        while generated < target_count and attempts < max_total_attempts:
+            attempts += 1
             candidate = generate_puzzle_by_difficulty(
                 difficulty,
                 max_attempts=200,
@@ -408,8 +415,13 @@ def create_dataset_files(num_questions: int, version: str):
                     "difficulty": difficulty
                 }
                 all_puzzles.append(puzzle_data)
+                generated += 1
+                print(f"  [{generated}/{target_count}] {candidate.puzzle_str} -> {candidate.answer}")
+        
+        if generated < target_count:
+            print(f"  Warning: Only generated {generated}/{target_count} {difficulty} puzzles")
 
-    print(f"\nGenerated {len(all_puzzles)} puzzles")
+    print(f"\nGenerated {len(all_puzzles)} puzzles total")
 
     df = pd.DataFrame(all_puzzles)
 
@@ -419,14 +431,14 @@ def create_dataset_files(num_questions: int, version: str):
     # CSV
     csv_dir = PROJECT_ROOT / "data" / "csv"
     csv_dir.mkdir(parents=True, exist_ok=True)
-    csv_path = csv_dir / f"CRYPTARITHMETIC_{version}.csv"
+    csv_path = csv_dir / f"cryptarithmetic.csv"
     df.to_csv(csv_path, index=False, encoding="utf-8-sig")
     print(f"CSV file created: {csv_path}")
 
     # JSONL
     json_dir = PROJECT_ROOT / "data" / "json"
     json_dir.mkdir(parents=True, exist_ok=True)
-    jsonl_path = json_dir / f"CRYPTARITHMETIC_{version}.jsonl"
+    jsonl_path = json_dir / f"cryptarithmetic.jsonl"
     with open(jsonl_path, 'w', encoding='utf-8') as f:
         for item in all_puzzles:
             f.write(json.dumps(item, ensure_ascii=False) + '\n')
@@ -435,43 +447,52 @@ def create_dataset_files(num_questions: int, version: str):
     return df, all_puzzles
 
 
-if __name__ == "__main__":
-    import time
+if __name__ == '__main__':
+    import argparse
+    
+    parser = argparse.ArgumentParser(description="Cryptarithmetic Puzzle Generator")
+    parser.add_argument("--num", type=int, default=12, help="Number of questions to generate")
+    
+    args = parser.parse_args()
+    
+    create_dataset_files(num_questions=args.num)
+    
+    # import time
 
-    print("=" * 60)
-    print("Cryptarithmetic Puzzle Generator")
-    print("=" * 60)
+    # print("=" * 60)
+    # print("Cryptarithmetic Puzzle Generator")
+    # print("=" * 60)
 
-    # Benchmark: Generate dataset
-    print("\n[1] Generating new dataset...")
-    start = time.time()
+    # # Benchmark: Generate dataset
+    # print("\n[1] Generating new dataset...")
+    # start = time.time()
 
-    dataset = generate_dataset(puzzles_per_difficulty=3, verbose=True)
+    # dataset = generate_dataset(puzzles_per_difficulty=3, verbose=True)
 
-    elapsed = time.time() - start
-    print(f"\nGenerated {len(dataset)} puzzles in {elapsed:.2f} seconds")
+    # elapsed = time.time() - start
+    # print(f"\nGenerated {len(dataset)} puzzles in {elapsed:.2f} seconds")
 
-    # Show all generated puzzles
-    print("\n" + "=" * 60)
-    print("Generated Puzzles Summary")
-    print("=" * 60)
+    # # Show all generated puzzles
+    # print("\n" + "=" * 60)
+    # print("Generated Puzzles Summary")
+    # print("=" * 60)
 
-    for puzzle in dataset:
-        print(f"[{puzzle['difficulty']:6}] {puzzle['puzzle']:30} -> {puzzle['answer']}")
+    # for puzzle in dataset:
+    #     print(f"[{puzzle['difficulty']:6}] {puzzle['puzzle']:30} -> {puzzle['answer']}")
 
-    # Benchmark: Validate custom puzzle
-    print("\n" + "=" * 60)
-    print("[2] Validating custom puzzles...")
-    print("=" * 60)
+    # # Benchmark: Validate custom puzzle
+    # print("\n" + "=" * 60)
+    # print("[2] Validating custom puzzles...")
+    # print("=" * 60)
 
-    custom_puzzles = [
-        ("SEND", "MORE", "MONEY"),
-        ("TO", "GO", "OUT"),
-    ]
+    # custom_puzzles = [
+    #     ("SEND", "MORE", "MONEY"),
+    #     ("TO", "GO", "OUT"),
+    # ]
 
-    for w1, w2, r in custom_puzzles:
-        result = generate_and_validate(w1, w2, r)
-        if result:
-            print(f"✓ {result['puzzle']} -> {result['answer']} ({result['difficulty']})")
-        else:
-            print(f"✗ {w1} + {w2} = {r}")
+    # for w1, w2, r in custom_puzzles:
+    #     result = generate_and_validate(w1, w2, r)
+    #     if result:
+    #         print(f"✓ {result['puzzle']} -> {result['answer']} ({result['difficulty']})")
+    #     else:
+    #         print(f"✗ {w1} + {w2} = {r}")
