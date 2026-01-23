@@ -17,39 +17,32 @@ import math
 
 DIFFICULTY_CONFIG = {
     "LEVEL_0": {
-        "name": "EXTREME",
+        "name": "EXPERT",
         "cipher_stack": ["cho_shift", "jung_sub", "reverse", "cho_shift"],
         "keyword_logic": "extraction",
         "hint_count": 0,
         "description": "Double Shift + Substitution + Reverse / 0 Hints"
     },
     "LEVEL_1": {
-        "name": "VERY_HARD",
+        "name": "HARD",
         "cipher_stack": ["cho_shift", "jung_sub", "reverse"],
         "keyword_logic": "positional",
         "hint_count": 1,
         "description": "Shift + Substitution + Reverse / 1 Hint"
     },
     "LEVEL_2": {
-        "name": "HARD",
+        "name": "MEDIUM",
         "cipher_stack": ["cho_shift", "jung_sub"],
         "keyword_logic": "positional",
         "hint_count": 2,
         "description": "Shift + Substitution / 2 Hints"
     },
     "LEVEL_3": {
-        "name": "MEDIUM",
+        "name": "EASY",
         "cipher_stack": ["cho_shift"],
         "keyword_logic": "direct",
         "hint_count": 2,
         "description": "Initial Consonant Shift / 2 Hints"
-    },
-    "LEVEL_4": {
-        "name": "EASY",
-        "cipher_stack": ["cho_shift"],
-        "keyword_logic": "direct",
-        "hint_count": 4,
-        "description": "Initial Consonant Shift / 4 Hints"
     }
 }
 
@@ -209,13 +202,21 @@ class HangulCipherGenerator:
             "solution": f"단계: {' -> '.join(process)} | 정답: {answer}"
         }
 
-def create_hangul_dataset(num_per_level: int = 3):
-    print("Hangul-based Cipher 문제 생성 중...")
+def create_hangul_dataset(num_per_level: int = 3, version: str = "v260112"):
+    import pandas as pd
+    print(f"Hangul-based Cipher ({version}) 문제 생성 중...")
+    print(f"난이도별 {num_per_level}개씩 생성")
+    print("="*70)
+
     generator = HangulCipherGenerator()
     all_problems = []
 
     for level_key in sorted(DIFFICULTY_CONFIG.keys()):
         config = DIFFICULTY_CONFIG[level_key]
+        difficulty = config["name"]
+        
+        print(f"\n[{difficulty}] {config['description']}")
+
         for i in range(num_per_level):
             seed = 5000 + len(all_problems)
             problem = generator.generate_problem(config, seed)
@@ -223,15 +224,43 @@ def create_hangul_dataset(num_per_level: int = 3):
                 "question": problem["problem"],
                 "answer": problem["answer"],
                 "solution": problem["solution"],
-                "difficulty": config["name"]
+                "difficulty": difficulty,
+                "description": config["description"]
             })
+            print(f"  {i+1}. {problem['answer'][:15]}... 생성 완료")
 
-    output_path = Path(__file__).resolve().parent.parent / "data" / "json" / "HANGUL_CIPHER.jsonl"
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(output_path, "w", encoding="utf-8") as f:
+    df = pd.DataFrame(all_problems)
+    PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
+    # CSV 저장
+    csv_dir = PROJECT_ROOT / "data" / "csv"
+    csv_dir.mkdir(parents=True, exist_ok=True)
+    csv_path = csv_dir / f"cipher_korean_{version}.csv"
+    df.to_csv(csv_path, index=False, encoding="utf-8-sig")
+
+    # JSONL 저장
+    json_dir = PROJECT_ROOT / "data" / "json"
+    json_dir.mkdir(parents=True, exist_ok=True)
+    jsonl_path = json_dir / f"cipher_korean_{version}.jsonl"
+
+    with open(jsonl_path, "w", encoding="utf-8") as f:
         for p in all_problems:
             f.write(json.dumps(p, ensure_ascii=False) + "\n")
-    print(f"생성 완료: {output_path}")
+
+    print(f"\n{'='*70}")
+    print(f"생성 완료:")
+    print(f"  총 문제 수: {len(all_problems)}개")
+    print(f"  CSV: {csv_path}")
+    print(f"  JSONL: {jsonl_path}")
+    print(f"{'='*70}")
+
+    return df
 
 if __name__ == "__main__":
-    create_hangul_dataset()
+    import argparse
+    parser = argparse.ArgumentParser(description='Generate Hangul Cipher Puzzles')
+    parser.add_argument('--num', type=int, default=2, help='Number of puzzles per difficulty level')
+    args = parser.parse_args()
+    
+    # 각 난이도별 n개씩 생성
+    create_hangul_dataset(num_per_level=args.num)
