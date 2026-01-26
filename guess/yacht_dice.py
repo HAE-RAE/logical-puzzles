@@ -380,7 +380,7 @@ def format_solution(dice_results: List[List[int]], assignment: Dict[int, str],
     return output
 
 
-def create_dataset_files(num_questions, version):
+def create_dataset_files(num_questions):
     """
     Yacht Dice 문제 데이터셋 파일 생성
 
@@ -430,7 +430,7 @@ def create_dataset_files(num_questions, version):
     csv_dir = PROJECT_ROOT / "data" / "csv"
     csv_dir.mkdir(parents=True, exist_ok=True)
 
-    csv_path = csv_dir / f"YACHT_DICE_{version}.csv"
+    csv_path = csv_dir / "yacht_dice.csv"
     yacht_df.to_csv(csv_path, index=False, encoding="utf-8-sig")
     print(f"\nCSV 파일이 생성: {csv_path}")
 
@@ -453,7 +453,7 @@ def create_dataset_files(num_questions, version):
         }
         yacht_json.append(question_data)
 
-    jsonl_path = json_dir / f"YACHT_DICE_{version}.jsonl"
+    jsonl_path = json_dir / "yacht_dice.jsonl"
     with open(jsonl_path, 'w', encoding='utf-8') as f:
         for item in yacht_json:
             f.write(json.dumps(item, ensure_ascii=False) + '\n')
@@ -464,19 +464,29 @@ def create_dataset_files(num_questions, version):
 
 
 if __name__ == '__main__':
+    import argparse
+    
+    parser = argparse.ArgumentParser(description="Yacht Dice Puzzle Generator")
+    parser.add_argument("--num", type=int, default=100, help="Number of questions to generate")
+    
+    args = parser.parse_args()
+    
+    create_dataset_files(num_questions=args.num)
+
     # 테스트: 샘플 문제 생성
-    yacht_df, yacht_json = create_dataset_files(num_questions=100, version="v1")
+    # yacht_df, yacht_json = create_dataset_files(num_questions=100, version="v1")
 
-    for i in range(3):
-        print(f"\n========== 문제{i+1} ==========")
-        config = YachtDiceConfig()
-        dice = generate_random_dice(seed=1000+i)
-        optimal_score, optimal_assignment = solve_yacht_dice(dice, config)
+    # for i in range(3):
+    #     print(f"\n========== 문제{i+1} ==========")
+    #     config = YachtDiceConfig()
+    #     dice = generate_random_dice(seed=1000+i)
+    #     optimal_score, optimal_assignment = solve_yacht_dice(dice, config)
 
-        print("- question -")
-        print(format_user_prompt(dice))
-        print("\n- answer -")
-        print(optimal_score)
-        print("\n- solution -")
-        print(format_solution(dice, optimal_assignment, config))
-        print("\n")
+    #     print("- question -")
+    #     print(format_user_prompt(dice))
+    #     print("\n- answer -")
+    #     print(optimal_score)
+    #     print("\n- solution -")
+    #     print(format_solution(dice, optimal_assignment, config))
+    #     print("\n")
+

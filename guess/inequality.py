@@ -284,13 +284,12 @@ def validate_dataset(filename: str = "inequality_dataset.json") -> bool:
     return all_valid
 
 
-def create_dataset_files(num_questions: int, version: str):
+def create_dataset_files(num_questions: int):
     """
     Create dataset files for inequality puzzles.
 
     Args:
         num_questions: Number of questions to generate
-        version: Version string for filenames
 
     Returns:
         Tuple[pd.DataFrame, List[Dict]]: (dataframe, json list)
@@ -332,14 +331,14 @@ def create_dataset_files(num_questions: int, version: str):
     # CSV
     csv_dir = PROJECT_ROOT / "data" / "csv"
     csv_dir.mkdir(parents=True, exist_ok=True)
-    csv_path = csv_dir / f"INEQUALITY_{version}.csv"
+    csv_path = csv_dir / "inequality.csv"
     df.to_csv(csv_path, index=False, encoding="utf-8-sig")
     print(f"CSV file created: {csv_path}")
 
     # JSONL
     json_dir = PROJECT_ROOT / "data" / "json"
     json_dir.mkdir(parents=True, exist_ok=True)
-    jsonl_path = json_dir / f"INEQUALITY_{version}.jsonl"
+    jsonl_path = json_dir / "inequality.jsonl"
     with open(jsonl_path, 'w', encoding='utf-8') as f:
         for item in all_puzzles:
             f.write(json.dumps(item, ensure_ascii=False) + '\n')
@@ -349,24 +348,37 @@ def create_dataset_files(num_questions: int, version: str):
 
 
 if __name__ == "__main__":
-    # Generate dataset
-    print("Generating Inequality Puzzle Dataset")
+    import argparse
+    
+    parser = argparse.ArgumentParser(description="Inequality Puzzle Generator")
+    parser.add_argument("--num", type=int, default=400, help="Number of questions to generate")
+    
+    args = parser.parse_args()
+    
     print("=" * 50)
+    print("Inequality Puzzle Generator")
+    print("=" * 50)
+    
+    create_dataset_files(num_questions=args.num)
 
-    dataset = generate_dataset(puzzles_per_difficulty=3)
+    # # Generate dataset
+    # print("Generating Inequality Puzzle Dataset")
+    # print("=" * 50)
 
-    # Save to project data directory
-    PROJECT_ROOT = Path(__file__).resolve().parent.parent
-    json_dir = PROJECT_ROOT / "data" / "json"
-    json_dir.mkdir(parents=True, exist_ok=True)
+    # dataset = generate_dataset(puzzles_per_difficulty=3)
 
-    output_path = json_dir / "inequality_dataset.json"
-    save_dataset(dataset, str(output_path))
+    # # Save to project data directory
+    # PROJECT_ROOT = Path(__file__).resolve().parent.parent
+    # json_dir = PROJECT_ROOT / "data" / "json"
+    # json_dir.mkdir(parents=True, exist_ok=True)
 
-    # Validate dataset
-    is_valid = validate_dataset(str(output_path))
+    # output_path = json_dir / "inequality_dataset.json"
+    # save_dataset(dataset, str(output_path))
 
-    if is_valid:
-        print("\n✓ All puzzles validated successfully!")
-    else:
-        print("\n✗ Some puzzles have validation issues!")
+    # # Validate dataset
+    # is_valid = validate_dataset(str(output_path))
+
+    # if is_valid:
+    #     print("\n✓ All puzzles validated successfully!")
+    # else:
+    #     print("\n✗ Some puzzles have validation issues!")

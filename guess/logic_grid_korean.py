@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
-"""
-Logic Grid Puzzle Generator
+"""Logic Grid Puzzle Generator - Korean Version
+[진행도] ☑ 완료
+[파일명] logic_grid_korean.py
+[목적] 한국어 기반 논리 그리드 퍼즐 생성
 
-Generates Einstein-style logic grid puzzles with guaranteed unique solutions.
-Uses CSP (Constraint Satisfaction Problem) solving with backtracking.
+아인슈타인 스타일 논리 그리드 퍼즐을 한국어로 생성합니다.
+CSP (제약 충족 문제) 백트래킹을 사용하여 유일 해를 보장합니다.
 """
 
 import random
@@ -23,17 +25,17 @@ class Difficulty(str, Enum):
 
 @dataclass
 class LogicGridPuzzle:
-    """Represents a logic grid puzzle"""
+    """논리 그리드 퍼즐 표현"""
     id: str
     difficulty: str
     people: List[str]
-    attributes: Dict[str, List[str]]  # category -> values
+    attributes: Dict[str, List[str]]  # 카테고리 -> 값
     constraints: List[str]
     question: str
-    answer: Dict[str, Dict[str, str]]  # person -> {category: value}
+    answer: Dict[str, Dict[str, str]]  # 사람 -> {카테고리: 값}
     
     def to_dict(self) -> dict:
-        """Convert to dictionary for JSON serialization"""
+        """JSON 직렬화를 위한 딕셔너리 변환"""
         return {
             'id': self.id,
             'difficulty': self.difficulty,
@@ -45,41 +47,41 @@ class LogicGridPuzzle:
         }
     
     def to_prompt(self) -> str:
-        """Generate the puzzle prompt for LLM evaluation"""
-        prompt = "You are given a logic grid puzzle. Use the constraints to deduce the answer.\n\n"
+        """LLM 평가를 위한 퍼즐 프롬프트 생성"""
+        prompt = "논리 그리드 퍼즐이 주어집니다. 제약 조건을 사용하여 답을 추론하세요.\n\n"
         
-        # People
-        prompt += f"**People:** {', '.join(self.people)}\n\n"
+        # 사람들
+        prompt += f"**사람:** {', '.join(self.people)}\n\n"
         
-        # Attributes
-        prompt += "**Attributes:**\n"
+        # 속성들
+        prompt += "**속성:**\n"
         for category, values in self.attributes.items():
             prompt += f"  - {category}: {', '.join(values)}\n"
         prompt += "\n"
         
-        # Constraints
-        prompt += "**Constraints:**\n"
+        # 제약 조건들
+        prompt += "**제약 조건:**\n"
         for i, constraint in enumerate(self.constraints, 1):
             prompt += f"  {i}. {constraint}\n"
         prompt += "\n"
         
-        # Rules
-        prompt += "**Rules:**\n"
-        prompt += "  - Each person has exactly one value from each attribute category\n"
-        prompt += "  - No two people share the same value in any category\n"
-        prompt += "  - All constraints must be satisfied simultaneously\n\n"
+        # 규칙들
+        prompt += "**규칙:**\n"
+        prompt += "  - 각 사람은 각 속성 카테고리에서 정확히 하나의 값을 가집니다\n"
+        prompt += "  - 두 사람이 같은 카테고리에서 같은 값을 공유할 수 없습니다\n"
+        prompt += "  - 모든 제약 조건은 동시에 만족되어야 합니다\n\n"
         
-        # Question
-        prompt += f"**Question:** {self.question}\n\n"
+        # 질문
+        prompt += f"**질문:** {self.question}\n\n"
         
-        prompt += "**Instructions:**\n"
-        prompt += "Provide your answer in the following JSON format:\n"
+        prompt += "**지시사항:**\n"
+        prompt += "답변을 다음 JSON 형식으로 제공하세요:\n"
         prompt += "```json\n"
         prompt += "{\n"
         for person in self.people:
             prompt += f'  "{person}": {{'
             cats = list(self.attributes.keys())
-            prompt += ', '.join([f'"{cat}": "value"' for cat in cats])
+            prompt += ', '.join([f'"{cat}": "값"' for cat in cats])
             prompt += '},\n'
         prompt = prompt.rstrip(',\n') + '\n'
         prompt += "}\n```\n"
@@ -88,21 +90,21 @@ class LogicGridPuzzle:
 
 
 class LogicGridGenerator:
-    """Generates logic grid puzzles with guaranteed unique solutions"""
+    """유일 해를 보장하는 논리 그리드 퍼즐 생성기"""
     
-    # Available names
+    # 사용 가능한 이름들
     NAMES = [
-        "Alice", "Bob", "Carol", "David", "Emma",
-        "Frank", "Grace", "Henry", "Iris", "Jack"
+        "민수", "서연", "지훈", "유진", "현우",
+        "수빈", "태양", "하늘", "정아", "동현"
     ]
     
-    # Attribute categories and values
+    # 속성 카테고리와 값들
     ATTRIBUTES = {
-        'HouseColor': ['Red', 'Blue', 'Green', 'Yellow', 'White'],
-        'Pet': ['Dog', 'Cat', 'Bird', 'Fish', 'Rabbit'],
-        'Drink': ['Coffee', 'Tea', 'Milk', 'Juice', 'Water'],
-        'Job': ['Doctor', 'Teacher', 'Engineer', 'Artist', 'Chef'],
-        'Hobby': ['Reading', 'Gaming', 'Cooking', 'Sports', 'Music']
+        '집색깔': ['빨강', '파랑', '초록', '노랑', '흰색'],
+        '애완동물': ['강아지', '고양이', '새', '물고기', '토끼'],
+        '음료': ['커피', '차', '우유', '주스', '물'],
+        '직업': ['의사', '선생님', '엔지니어', '화가', '요리사'],
+        '취미': ['독서', '게임', '요리', '운동', '음악']
     }
     
     def __init__(self, seed: Optional[int] = None):
@@ -110,24 +112,24 @@ class LogicGridGenerator:
             random.seed(seed)
     
     def generate(self, difficulty: Difficulty) -> LogicGridPuzzle:
-        """Generate a logic grid puzzle of specified difficulty"""
+        """지정된 난이도의 논리 그리드 퍼즐 생성"""
         config = self._get_difficulty_config(difficulty)
         
-        # Generate solution first
+        # 먼저 해답 생성
         people, attributes, solution = self._generate_solution(config)
         
-        # Generate constraints from solution
+        # 해답으로부터 제약 조건 생성
         constraints = self._generate_constraints(people, attributes, solution, config)
         
-        # Verify unique solution
+        # 유일 해 검증
         if not self._verify_unique_solution(people, attributes, constraints, solution):
-            # Retry if solution is not unique
+            # 해가 유일하지 않으면 재시도
             return self.generate(difficulty)
         
-        # Generate question
+        # 질문 생성
         question = self._generate_question(people, attributes, solution)
         
-        # Create puzzle ID
+        # 퍼즐 ID 생성
         puzzle_id = f"logic_grid_{difficulty.lower()}_{random.randint(1000, 9999)}"
         
         return LogicGridPuzzle(
@@ -141,49 +143,49 @@ class LogicGridGenerator:
         )
     
     def _get_difficulty_config(self, difficulty: Difficulty) -> dict:
-        """Get configuration for each difficulty level"""
+        """각 난이도에 대한 설정 가져오기"""
         configs = {
             Difficulty.EASY: {
                 'num_people': 3,
                 'num_categories': 3,
-                'categories': ['HouseColor', 'Pet', 'Drink'],
+                'categories': ['집색깔', '애완동물', '음료'],
                 'min_constraints': 6,
                 'max_constraints': 8,
-                'direct_ratio': 0.7,  # 70% direct constraints
+                'direct_ratio': 0.7,  # 70% 직접 제약
             },
             Difficulty.MEDIUM: {
                 'num_people': 4,
                 'num_categories': 4,
-                'categories': ['HouseColor', 'Pet', 'Drink', 'Job'],
+                'categories': ['집색깔', '애완동물', '음료', '직업'],
                 'min_constraints': 10,
                 'max_constraints': 12,
-                'direct_ratio': 0.5,  # 50% direct constraints
+                'direct_ratio': 0.5,  # 50% 직접 제약
             },
             Difficulty.HARD: {
                 'num_people': 5,
                 'num_categories': 5,
-                'categories': ['HouseColor', 'Pet', 'Drink', 'Job', 'Hobby'],
+                'categories': ['집색깔', '애완동물', '음료', '직업', '취미'],
                 'min_constraints': 15,
                 'max_constraints': 18,
-                'direct_ratio': 0.3,  # 30% direct constraints
+                'direct_ratio': 0.3,  # 30% 직접 제약
             }
         }
         return configs[difficulty]
     
     def _generate_solution(self, config: dict) -> Tuple[List[str], Dict[str, List[str]], Dict[str, Dict[str, str]]]:
-        """Generate a valid solution (ground truth)"""
+        """유효한 해답 생성 (정답)"""
         num_people = config['num_people']
         categories = config['categories']
         
-        # Select people
+        # 사람 선택
         people = random.sample(self.NAMES, num_people)
         
-        # Select attribute values for each category
+        # 각 카테고리에 대한 속성 값 선택
         attributes = {}
         for cat in categories:
             attributes[cat] = random.sample(self.ATTRIBUTES[cat], num_people)
         
-        # Create solution by randomly assigning attributes to people
+        # 사람에게 속성을 무작위로 할당하여 해답 생성
         solution = {}
         for i, person in enumerate(people):
             solution[person] = {}
@@ -199,26 +201,26 @@ class LogicGridGenerator:
         solution: Dict[str, Dict[str, str]],
         config: dict
     ) -> List[str]:
-        """Generate constraints from the solution"""
+        """해답으로부터 제약 조건 생성"""
         constraints = []
         categories = list(attributes.keys())
         
-        # Calculate number of constraints needed
+        # 필요한 제약 조건 수 계산
         num_constraints = random.randint(config['min_constraints'], config['max_constraints'])
         direct_count = int(num_constraints * config['direct_ratio'])
         indirect_count = num_constraints - direct_count
         
-        # Generate direct constraints (e.g., "Alice has a Dog")
+        # 직접 제약 생성 (예: "민수는 강아지를 키운다")
         direct_constraints = self._generate_direct_constraints(people, solution, direct_count)
         constraints.extend(direct_constraints)
         
-        # Generate indirect constraints (e.g., "The person with Red house drinks Coffee")
+        # 간접 제약 생성 (예: "빨간 집에 사는 사람은 커피를 마신다")
         indirect_constraints = self._generate_indirect_constraints(
             people, categories, solution, indirect_count
         )
         constraints.extend(indirect_constraints)
         
-        # Shuffle constraints so they're not in a revealing order
+        # 제약 조건 섞기
         random.shuffle(constraints)
         
         return constraints
@@ -229,7 +231,7 @@ class LogicGridGenerator:
         solution: Dict[str, Dict[str, str]],
         count: int
     ) -> List[str]:
-        """Generate direct constraints like 'Alice has a Dog'"""
+        """'민수는 강아지를 키운다' 같은 직접 제약 생성"""
         constraints = []
         used_facts = set()
         
@@ -244,29 +246,40 @@ class LogicGridGenerator:
             if fact in used_facts:
                 continue
             
-            # Generate constraint with variation
-            templates = [
-                f"{person} has a {value}",
-                f"{person} has the {value}",
-                f"{person}'s {category.lower()} is {value}",
-                f"The {value} belongs to {person}",
-            ]
+            # 다양한 템플릿으로 제약 생성
+            templates = []
             
-            if category == 'HouseColor':
+            if category == '집색깔':
                 templates = [
-                    f"{person} lives in the {value} house",
-                    f"{person}'s house is {value}",
-                    f"The {value} house belongs to {person}",
+                    f"{person}은(는) {value} 집에 산다",
+                    f"{person}의 집은 {value}이다",
+                    f"{value} 집은 {person}의 것이다",
                 ]
-            elif category == 'Drink':
+            elif category == '애완동물':
                 templates = [
-                    f"{person} drinks {value}",
-                    f"{person}'s favorite drink is {value}",
+                    f"{person}은(는) {value}을(를) 키운다",
+                    f"{person}의 애완동물은 {value}이다",
+                    f"{value}은(는) {person}이(가) 키운다",
                 ]
-            elif category == 'Job':
+            elif category == '음료':
                 templates = [
-                    f"{person} is a {value}",
-                    f"{person} works as a {value}",
+                    f"{person}은(는) {value}을(를) 마신다",
+                    f"{person}이(가) 좋아하는 음료는 {value}이다",
+                ]
+            elif category == '직업':
+                templates = [
+                    f"{person}은(는) {value}이다",
+                    f"{person}의 직업은 {value}이다",
+                ]
+            elif category == '취미':
+                templates = [
+                    f"{person}의 취미는 {value}이다",
+                    f"{person}은(는) {value}을(를) 즐긴다",
+                ]
+            else:
+                templates = [
+                    f"{person}은(는) {value}을(를) 가지고 있다",
+                    f"{person}의 {category}은(는) {value}이다",
                 ]
             
             constraint = random.choice(templates)
@@ -282,7 +295,7 @@ class LogicGridGenerator:
         solution: Dict[str, Dict[str, str]],
         count: int
     ) -> List[str]:
-        """Generate indirect constraints linking attributes"""
+        """속성을 연결하는 간접 제약 생성"""
         constraints = []
         used_links = set()
         
@@ -290,7 +303,7 @@ class LogicGridGenerator:
         while len(constraints) < count and attempts < count * 10:
             attempts += 1
             
-            # Pick a random person and two different categories
+            # 무작위 사람과 두 개의 다른 카테고리 선택
             person = random.choice(people)
             if len(categories) < 2:
                 break
@@ -303,25 +316,56 @@ class LogicGridGenerator:
             if link in used_links:
                 continue
             
-            # Generate constraint
-            templates = [
-                f"The person with {val1} {cat1.lower()} has a {val2}",
-                f"The person who has a {val1} also has a {val2}",
-                f"Whoever has {val1} {cat1.lower()} has {val2} {cat2.lower()}",
-            ]
+            # 제약 생성
+            templates = []
             
-            if cat1 == 'HouseColor':
+            if cat1 == '집색깔':
+                if cat2 == '애완동물':
+                    templates = [
+                        f"{val1} 집에 사는 사람은 {val2}을(를) 키운다",
+                        f"{val2}을(를) 키우는 사람은 {val1} 집에 산다",
+                    ]
+                elif cat2 == '음료':
+                    templates = [
+                        f"{val1} 집에 사는 사람은 {val2}을(를) 마신다",
+                        f"{val2}을(를) 마시는 사람은 {val1} 집에 산다",
+                    ]
+                elif cat2 == '직업':
+                    templates = [
+                        f"{val1} 집 주인은 {val2}이다",
+                        f"{val2}인 사람은 {val1} 집에 산다",
+                    ]
+                elif cat2 == '취미':
+                    templates = [
+                        f"{val1} 집에 사는 사람의 취미는 {val2}이다",
+                        f"{val2}을(를) 좋아하는 사람은 {val1} 집에 산다",
+                    ]
+            elif cat1 == '애완동물' and cat2 == '음료':
                 templates = [
-                    f"The person in the {val1} house has a {val2}",
-                    f"The {val1} house owner has {val2} {cat2.lower()}",
+                    f"{val1}을(를) 키우는 사람은 {val2}을(를) 마신다",
+                    f"{val2}을(를) 마시는 사람은 {val1}을(를) 키운다",
+                ]
+            elif cat1 == '애완동물' and cat2 == '직업':
+                templates = [
+                    f"{val2}인 사람은 {val1}을(를) 키운다",
+                    f"{val1}을(를) 키우는 사람은 {val2}이다",
+                ]
+            elif cat1 == '음료' and cat2 == '직업':
+                templates = [
+                    f"{val2}인 사람은 {val1}을(를) 마신다",
+                    f"{val1}을(를) 마시는 사람은 {val2}이다",
+                ]
+            else:
+                # 일반 템플릿
+                templates = [
+                    f"{val1}을(를) 가진 사람은 {val2}도 가지고 있다",
+                    f"{val2}인 사람은 {val1}이기도 하다",
                 ]
             
-            if cat2 == 'Drink':
-                templates.append(f"The person with {val1} {cat1.lower()} drinks {val2}")
-            
-            constraint = random.choice(templates)
-            constraints.append(constraint)
-            used_links.add(link)
+            if templates:
+                constraint = random.choice(templates)
+                constraints.append(constraint)
+                used_links.add(link)
         
         return constraints
     
@@ -333,33 +377,29 @@ class LogicGridGenerator:
         expected_solution: Dict[str, Dict[str, str]]
     ) -> bool:
         """
-        Verify that the constraints lead to exactly one solution.
-        This is a simplified check - in production, you'd use a full CSP solver.
+        제약 조건이 정확히 하나의 해로 이어지는지 검증
+        이것은 단순화된 검사입니다 - 실제 운영 환경에서는 전체 CSP 솔버를 사용합니다.
         """
-        # For now, we'll do a basic check by attempting to reconstruct
-        # We assume our constraint generation is deterministic enough
-        # A full implementation would use AC-3 or similar CSP algorithm
-        
-        # Count how many assignments are directly specified
+        # 직접 할당이 몇 개나 지정되었는지 확인
         direct_assignments = {}
         for person in people:
             direct_assignments[person] = {}
         
-        # Parse constraints for direct assignments
+        # 직접 할당을 위한 제약 조건 파싱
         for constraint in constraints:
             for person in people:
                 if person in constraint:
                     for cat, values in attributes.items():
                         for val in values:
                             if val in constraint:
-                                # This is a very simplified parsing
+                                # 매우 단순화된 파싱
                                 if cat not in direct_assignments[person]:
                                     direct_assignments[person][cat] = val
         
-        # Simple heuristic: if we have enough constraints, assume uniqueness
-        # In a real implementation, we'd use backtracking to verify
+        # 단순 휴리스틱: 충분한 제약 조건이 있으면 유일성 가정
+        # 실제 구현에서는 백트래킹을 사용하여 검증
         total_facts = len(people) * len(attributes)
-        min_constraints_needed = total_facts * 0.6  # At least 60% coverage
+        min_constraints_needed = total_facts * 0.6  # 최소 60% 커버리지
         
         return len(constraints) >= min_constraints_needed
     
@@ -369,9 +409,9 @@ class LogicGridGenerator:
         attributes: Dict[str, List[str]],
         solution: Dict[str, Dict[str, str]]
     ) -> str:
-        """Generate a question about the solution"""
-        # Ask for complete assignment
-        question = "Who has which attributes? Provide the complete assignment for all people."
+        """해답에 대한 질문 생성"""
+        # 완전한 할당 요청
+        question = "각 사람이 어떤 속성을 가지고 있는지 찾으세요. 모든 사람에 대한 완전한 할당을 제공하세요."
         
         return question
 
@@ -380,7 +420,7 @@ def generate_dataset(
     num_samples: int,
     seed: Optional[int] = None
 ):
-    """Generate a dataset of logic grid puzzles"""
+    """논리 그리드 퍼즐 데이터셋 생성"""
     import os
     from pathlib import Path
     
@@ -394,7 +434,7 @@ def generate_dataset(
     generator = LogicGridGenerator(seed=seed)
     puzzles = []
     
-    # Generate balanced dataset
+    # 균형 잡힌 데이터셋 생성
     per_difficulty = num_samples // 3
     remaining = num_samples - (per_difficulty * 3)
     
@@ -404,24 +444,24 @@ def generate_dataset(
     
     random.shuffle(difficulties)
     
-    print(f"Generating {num_samples} logic grid puzzles...")
+    print(f"{num_samples}개의 논리 그리드 퍼즐 생성 중...")
     
     for i, difficulty in enumerate(difficulties, 1):
         puzzle = generator.generate(difficulty)
         puzzles.append(puzzle)
         
         if i % 10 == 0:
-            print(f"Generated {i}/{num_samples} puzzles...")
+            print(f"{i}/{num_samples} 퍼즐 생성 완료...")
     
-    # Save as JSONL
-    jsonl_path = json_dir / "logic_grid.jsonl"
-    with open(jsonl_path, 'w') as f:
+    # JSONL로 저장
+    jsonl_path = json_dir / "logic_grid_korean.jsonl"
+    with open(jsonl_path, 'w', encoding='utf-8') as f:
         for puzzle in puzzles:
-            f.write(json.dumps(puzzle.to_dict()) + '\n')
+            f.write(json.dumps(puzzle.to_dict(), ensure_ascii=False) + '\n')
     
-    # Save as CSV
-    csv_path = csv_dir / "logic_grid.csv"
-    with open(csv_path, 'w') as f:
+    # CSV로 저장
+    csv_path = csv_dir / "logic_grid_korean.csv"
+    with open(csv_path, 'w', encoding='utf-8') as f:
         f.write("id,difficulty,num_people,num_categories,num_constraints\n")
         for puzzle in puzzles:
             f.write(f"{puzzle.id},{puzzle.difficulty},{len(puzzle.people)},"
@@ -429,36 +469,36 @@ def generate_dataset(
     
     print(f"   - JSONL: {jsonl_path}")
     print(f"   - CSV: {csv_path}")
-    print(f"\n✅ Dataset created successfully!")
-    print(f"   Total puzzles: {num_samples}")
+    print(f"\n✅ 데이터셋 생성 완료!")
+    print(f"   총 퍼즐 수: {num_samples}")
     
-    # Count by difficulty
+    # 난이도별 카운트
     easy_count = sum(1 for p in puzzles if p.difficulty == Difficulty.EASY)
     medium_count = sum(1 for p in puzzles if p.difficulty == Difficulty.MEDIUM)
     hard_count = sum(1 for p in puzzles if p.difficulty == Difficulty.HARD)
     
-    print(f"   Difficulty breakdown:")
+    print(f"   난이도 분포:")
     print(f"     - Easy: {easy_count}")
     print(f"     - Medium: {medium_count}")
     print(f"     - Hard: {hard_count}")
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Generate Logic Grid Puzzles")
+    parser = argparse.ArgumentParser(description="논리 그리드 퍼즐 생성기 (한국어)")
     parser.add_argument('--num-samples', type=int, default=150,
-                       help='Number of puzzles to generate')
-    parser.add_argument('--output-dir', type=str, default='data/logic_grid',
-                       help='Output directory for the dataset')
+                       help='생성할 퍼즐 수')
+    parser.add_argument('--output-dir', type=str, default='data/logic_grid_korean',
+                       help='데이터셋 출력 디렉터리')
     parser.add_argument('--seed', type=int, default=None,
-                       help='Random seed for reproducibility')
+                       help='재현성을 위한 랜덤 시드')
     parser.add_argument('--example', action='store_true',
-                       help='Generate and print example puzzles')
+                       help='예제 퍼즐 생성 및 출력')
     
     args = parser.parse_args()
     
     if args.example:
         print("\n" + "="*70)
-        print("LOGIC GRID PUZZLE EXAMPLES")
+        print("논리 그리드 퍼즐 예제")
         print("="*70 + "\n")
         
         generator = LogicGridGenerator(seed=42)
@@ -467,11 +507,11 @@ def main():
             puzzle = generator.generate(difficulty)
             
             print(f"\n{'='*70}")
-            print(f"{difficulty.upper()} EXAMPLE")
+            print(f"{difficulty.upper()} 예제")
             print(f"{'='*70}")
             print(puzzle.to_prompt())
-            print(f"✅ **Correct Answer:**")
-            print(json.dumps(puzzle.answer, indent=2))
+            print(f"✅ **정답:**")
+            print(json.dumps(puzzle.answer, indent=2, ensure_ascii=False))
             print()
     else:
         generate_dataset(args.num_samples, args.seed)

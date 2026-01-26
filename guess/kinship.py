@@ -356,6 +356,19 @@ def get_proper_particle(descriptor):
         return "은" if has_final else "는"
     return "은"
 
+def get_all_unique_titles():
+    """모든 호칭 목록을 추출합니다."""
+    title_map = get_relation_chain_to_title()
+    all_titles = set()
+    
+    for raw_answer in title_map.values():
+        if isinstance(raw_answer, list):
+            all_titles.update(raw_answer)
+        else:
+            all_titles.add(raw_answer)
+    
+    return list(all_titles)
+
 def generate_question():
     title_map = get_relation_chain_to_title()
     relative_names = get_friend_names()
@@ -371,8 +384,10 @@ def generate_question():
 
     if isinstance(raw_answer, list):
         answer = ", ".join(raw_answer)
+        correct_title = random.choice(raw_answer)
     else:
         answer = raw_answer
+        correct_title = raw_answer
 
     person_map = {}
     used_descriptors = set()
@@ -438,7 +453,35 @@ def generate_question():
 
     
     final_person = person_map[len(relation_chain) - 1]
-    dialogue_lines.append(f"\n이때, 나는 {final_person}을 어떻게 불러야 하는가?")
+    
+    all_titles = get_all_unique_titles()
+    
+    if isinstance(raw_answer, list):
+        wrong_titles = [t for t in all_titles if t not in raw_answer]
+    else:
+        wrong_titles = [t for t in all_titles if t != raw_answer]
+    
+    if len(wrong_titles) < 3:
+        logging.warning("Not enough wrong answers available. Regenerating...")
+        return generate_question()
+    
+    wrong_choices = random.sample(wrong_titles, 3)
+    
+    all_options = [correct_title] + wrong_choices
+    random.shuffle(all_options)
+    
+    choices = {}
+    correct_letter = None
+    for i, title in enumerate(all_options):
+        letter = chr(65 + i)
+        choices[letter] = title
+        if title == correct_title:
+            correct_letter = letter
+    
+    particle = get_proper_particle(final_person)
+    dialogue_lines.append(f"\n이때, 나는 {final_person}{particle} 어떻게 불러야 하는가?")
+    for letter in ['A', 'B', 'C', 'D']:
+        dialogue_lines.append(f"{letter}: {choices[letter]}")
     
     question = "\n".join(dialogue_lines)
 
@@ -452,21 +495,22 @@ def generate_question():
     
     final_step = len(relation_chain)
     explanation.append(f"[STEP {final_step}] Therefore, the final title for the combined relationship '{temp_chain_str}' is '{answer}'.")
+    explanation.append(f"[STEP {final_step + 1}] Answer: {correct_letter}")
     
 
-    return question, answer, explanation
+    return question, correct_letter, explanation, choices
 
-def create_dataset_files(num_questions, version):
+def create_dataset_files(num_questions):
     import pandas as pd
     import json
     
     print(f"Generating {num_questions} kinship problems...")
     output = []
     for i in range(num_questions):
-        q, answer, expl = generate_question()
-        output.append([q, answer, "\n".join(expl)])
+        q, answer, expl, choices = generate_question()
+        output.append([q, answer, "\n".join(expl), choices['A'], choices['B'], choices['C'], choices['D']])
     
-    kinship_df = pd.DataFrame(output, columns=['question', 'answer', 'solution'])
+    kinship_df = pd.DataFrame(output, columns=['question', 'answer', 'solution', 'choice_A', 'choice_B', 'choice_C', 'choice_D'])
     
     print(f"Total problems generated: {len(kinship_df)}")
     print(f"Unique problems: {kinship_df['question'].nunique()}")
@@ -477,7 +521,7 @@ def create_dataset_files(num_questions, version):
     csv_dir = PROJECT_ROOT / "data" / "csv"
     csv_dir.mkdir(parents=True, exist_ok=True)
     
-    csv_path = csv_dir / f"KINSHIP_{version}.csv"
+    csv_path = csv_dir / "kinship.csv"
     kinship_df.to_csv(csv_path, index=False, encoding="utf-8-sig")
     print(f"\nCSV file created! -> {csv_path}")
     
@@ -490,10 +534,16 @@ def create_dataset_files(num_questions, version):
             "question": row['question'],
             "answer": row['answer'],
             "solution": row['solution'],
+            "choices": {
+                "A": row['choice_A'],
+                "B": row['choice_B'],
+                "C": row['choice_C'],
+                "D": row['choice_D']
+            }
         }
         kinship_json.append(question_data)
     
-    jsonl_path = json_dir / f"KINSHIP_{version}.jsonl"
+    jsonl_path = json_dir / "kinship.jsonl"
     with open(jsonl_path, 'w', encoding='utf-8') as f:
         for item in kinship_json:
             f.write(json.dumps(item, ensure_ascii=False) + '\n')
@@ -506,13 +556,20 @@ def create_dataset_files(num_questions, version):
     return kinship_df, kinship_json
 
 if __name__ == '__main__':
-    kinship_df, kinship_json = create_dataset_files(num_questions=50, version="v1")
+    import argparse
+    
+    parser = argparse.ArgumentParser(description="Kinship Puzzle Generator")
+    parser.add_argument("--num", type=int, default=100, help="Number of questions to generate")
+    
+    args = parser.parse_args()
+    
+    create_dataset_files(num_questions=args.num)
     
     print("\n=== Sample Problem ===")
     for _ in range(1):
-        question, answer, explanation = generate_question()
-        print("Q:", question)
-        print("A:", answer)
+        question, answer, explanation, choices = generate_question()
+        print("[Q]", question)
+        print("[A]", answer)
         print("\n--- Explanation ---")
         for step in explanation:
             print(step)

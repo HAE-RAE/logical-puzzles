@@ -601,7 +601,7 @@ def puzzle_to_prompt(puzzle: Dict[str, Any], include_hint: bool = True) -> str:
 
 def save_dataset(
     puzzles: List[Dict],
-    base_dir: str = "../data"
+    base_dir: str = "./data"
 ):
     """
     Save dataset as CSV and JSONL
@@ -691,7 +691,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Array Formula Puzzle Generator")
     parser.add_argument("--num", type=int, default=5, help="Number of puzzles per config")
     parser.add_argument("--seed", type=int, default=2025, help="Random seed")
-    parser.add_argument("--output", type=str, default="../data", help="Output base directory")
+    parser.add_argument("--output", type=str, default="./data", help="Output base directory")
     parser.add_argument("--demo", action="store_true", help="Print demo puzzles")
 
     args = parser.parse_args()

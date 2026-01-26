@@ -1,13 +1,15 @@
-"""Causal DAG (Directed Acyclic Graph) Reasoning Puzzle Generator
+"""Causal DAG (Directed Acyclic Graph) Reasoning Puzzle Generator - Korean Version
+[진행도] ☑ 완료
+[파일명] causal_dag_korean.py
+[목적] 한국어 기반 인과관계 DAG 추론 퍼즐 생성
 
-Generates causal reasoning puzzles based on event chains and time propagation.
-Tests LLM's ability to reason about cause-effect relationships over time.
+한국어로 사건-원인 관계를 표현하고 시간 전파를 추론하는 퍼즐을 생성합니다.
 
-Key Features:
-1. DAG-based event graph (no cycles)
-2. Time-delayed causal relationships
-3. Shortest path reasoning (Dijkstra)
-4. Unique solution guarantee (deterministic graph)
+주요 기능:
+1. DAG 기반 사건 그래프 (순환 없음)
+2. 시간 지연 인과 관계
+3. 최단 경로 추론 (Dijkstra)
+4. 유일 해 보장 (결정적 그래프)
 """
 
 import random
@@ -20,32 +22,32 @@ from enum import Enum
 
 
 class EventType(Enum):
-    """Event categories for puzzle generation"""
-    TECHNICAL = "Technical"
-    BUSINESS = "Business"
-    ENVIRONMENTAL = "Environmental"
-    OPERATIONAL = "Operational"
+    """사건 카테고리"""
+    TECHNICAL = "기술"
+    BUSINESS = "비즈니스"
+    ENVIRONMENTAL = "환경"
+    OPERATIONAL = "운영"
 
 
 @dataclass
 class CausalEdge:
-    """Represents a causal relationship between events"""
+    """사건 간 인과 관계"""
     from_event: str
     to_event: str
-    delay: int  # Time delay in minutes
-    from_events: Optional[List[str]] = None  # Multiple prerequisites (for AND)
-    condition: str = 'OR'  # 'OR' or 'AND'
+    delay: int  # 분 단위 시간 지연
+    from_events: Optional[List[str]] = None  # 다중 전제 조건 (AND용)
+    condition: str = 'OR'  # 'OR' 또는 'AND'
     
     def __repr__(self):
         if self.from_events and len(self.from_events) > 1:
-            cond = ' AND ' if self.condition == 'AND' else ' OR '
-            return f"[{cond.join(self.from_events)}] → {self.to_event} (+{self.delay}min)"
-        return f"{self.from_event} → {self.to_event} (+{self.delay}min)"
+            cond = ' 그리고 ' if self.condition == 'AND' else ' 또는 '
+            return f"[{cond.join(self.from_events)}] → {self.to_event} (+{self.delay}분)"
+        return f"{self.from_event} → {self.to_event} (+{self.delay}분)"
 
 
 @dataclass
 class Event:
-    """Represents an event in the causal graph"""
+    """사건 노드"""
     id: str
     name: str
     description: str
@@ -57,7 +59,7 @@ class Event:
 
 @dataclass
 class CausalPuzzle:
-    """Complete causal reasoning puzzle"""
+    """완전한 인과관계 추론 퍼즐"""
     events: Dict[str, Event]
     edges: List[CausalEdge]
     trigger: str
@@ -67,7 +69,7 @@ class CausalPuzzle:
     difficulty: str
     
     def to_dict(self):
-        """Convert to dictionary for JSON serialization"""
+        """JSON 직렬화를 위한 딕셔너리 변환"""
         return {
             'events': {k: {
                 'id': v.id,
@@ -91,113 +93,113 @@ class CausalPuzzle:
 
 
 class CausalPuzzleGenerator:
-    """Generate causal DAG reasoning puzzles"""
+    """인과 DAG 추론 퍼즐 생성기"""
     
     def __init__(self):
-        """Initialize with event templates"""
+        """사건 템플릿 초기화"""
         self.event_templates = {
             EventType.TECHNICAL: [
-                ('PowerOutage', 'Main power grid fails'),
-                ('ServerDown', 'Application server becomes unavailable'),
-                ('DatabaseCrash', 'Database service stops responding'),
-                ('NetworkFailure', 'Network connectivity is lost'),
-                ('DiskFull', 'Storage capacity reaches 100%'),
-                ('MemoryLeak', 'Application memory usage spikes'),
-                ('BackupFailed', 'Automated backup process fails'),
-                ('SecurityBreach', 'Unauthorized access detected'),
-                ('APITimeout', 'External API stops responding'),
-                ('CacheExpired', 'Cache invalidation occurs'),
+                ('전력차단', '주 전력망 장애 발생'),
+                ('서버다운', '애플리케이션 서버 중단'),
+                ('데이터베이스장애', '데이터베이스 서비스 응답 중지'),
+                ('네트워크장애', '네트워크 연결 끊김'),
+                ('디스크포화', '저장 공간 100% 도달'),
+                ('메모리누수', '애플리케이션 메모리 사용량 급증'),
+                ('백업실패', '자동 백업 프로세스 실패'),
+                ('보안침해', '무단 접근 탐지'),
+                ('API타임아웃', '외부 API 응답 중지'),
+                ('캐시만료', '캐시 무효화 발생'),
             ],
             EventType.BUSINESS: [
-                ('OrderReceived', 'Customer places new order'),
-                ('PaymentProcessed', 'Payment transaction completes'),
-                ('InventoryLow', 'Stock level falls below threshold'),
-                ('ShipmentDelayed', 'Delivery schedule is pushed back'),
-                ('CustomerComplaint', 'Support ticket is created'),
-                ('RefundIssued', 'Money is returned to customer'),
-                ('PriceChanged', 'Product pricing is updated'),
-                ('PromotionStarted', 'Marketing campaign launches'),
-                ('ContractSigned', 'Legal agreement is finalized'),
-                ('InvoiceSent', 'Billing document is generated'),
+                ('주문접수', '고객 신규 주문 발생'),
+                ('결제완료', '결제 트랜잭션 완료'),
+                ('재고부족', '재고 수준이 임계치 이하로 하락'),
+                ('배송지연', '배송 일정 연기'),
+                ('고객불만', '고객 지원 티켓 생성'),
+                ('환불처리', '고객에게 금액 반환'),
+                ('가격변경', '제품 가격 업데이트'),
+                ('프로모션시작', '마케팅 캠페인 시작'),
+                ('계약체결', '법적 계약 최종 확정'),
+                ('청구서발송', '청구 문서 생성'),
             ],
             EventType.ENVIRONMENTAL: [
-                ('HeavyRain', 'Precipitation exceeds 50mm/hour'),
-                ('RoadFlooded', 'Water level blocks traffic'),
-                ('TrafficJam', 'Vehicle congestion occurs'),
-                ('PowerSurge', 'Electrical grid experiences spike'),
-                ('Earthquake', 'Seismic activity detected'),
-                ('HeatWave', 'Temperature exceeds 35°C'),
-                ('StormWarning', 'Severe weather alert issued'),
-                ('Snowfall', 'Snow accumulation begins'),
-                ('WindDamage', 'Strong winds cause infrastructure damage'),
-                ('Drought', 'Water supply becomes limited'),
+                ('폭우', '시간당 50mm 이상 강수량'),
+                ('도로침수', '수위 상승으로 교통 차단'),
+                ('교통체증', '차량 정체 발생'),
+                ('전력급등', '전력망 전압 급등'),
+                ('지진', '지진 활동 감지'),
+                ('폭염', '기온 35도 이상'),
+                ('폭풍경보', '기상 경보 발령'),
+                ('폭설', '적설량 누적 시작'),
+                ('강풍피해', '강풍으로 인한 기반 시설 손상'),
+                ('가뭄', '수자원 부족'),
             ],
             EventType.OPERATIONAL: [
-                ('MaintenanceScheduled', 'Planned system maintenance begins'),
-                ('StaffShortage', 'Available workforce drops below minimum'),
-                ('EquipmentFailure', 'Critical machinery stops working'),
-                ('QualityIssue', 'Product defect is discovered'),
-                ('SupplyChainDisruption', 'Vendor delivery is interrupted'),
-                ('CapacityReached', 'Maximum throughput is exceeded'),
-                ('PolicyChanged', 'New operational rules take effect'),
-                ('InspectionFailed', 'Compliance check does not pass'),
-                ('TrainingCompleted', 'Staff certification is achieved'),
-                ('SystemUpgrade', 'Software version is updated'),
+                ('정기점검', '계획된 시스템 유지보수 시작'),
+                ('인력부족', '가용 인력이 최소치 이하'),
+                ('설비고장', '핵심 설비 작동 중단'),
+                ('품질문제', '제품 결함 발견'),
+                ('공급망중단', '협력사 납품 지연'),
+                ('용량초과', '최대 처리량 초과'),
+                ('정책변경', '신규 운영 규정 시행'),
+                ('검사불합격', '규정 준수 검사 미통과'),
+                ('교육완료', '직원 자격 인증 취득'),
+                ('시스템업그레이드', '소프트웨어 버전 업데이트'),
             ]
         }
     
     def generate_puzzle(self, difficulty: str, seed: Optional[int] = None) -> CausalPuzzle:
         """
-        Generate a causal reasoning puzzle
+        인과관계 추론 퍼즐 생성
         
         Args:
-            difficulty: 'Easy', 'Medium', or 'Hard'
-            seed: Random seed for reproducibility
+            difficulty: 'Easy', 'Medium', 또는 'Hard'
+            seed: 재현성을 위한 난수 시드
         
         Returns:
-            CausalPuzzle with unique solution
+            유일 해를 갖는 CausalPuzzle
         """
         if seed is not None:
             random.seed(seed)
         
-        # Difficulty configuration (calibrated for gpt-4o ~70/40/10%)
+        # 난이도 설정
         config = {
             'Easy': {
                 'num_events': random.randint(18, 22),
                 'edge_density': 0.50,
                 'delay_range': (15, 80),
                 'max_out_degree': 3,
-                'and_probability': 0.4,  # 40% AND conditions
+                'and_probability': 0.4,
             },
             'Medium': {
                 'num_events': random.randint(45, 55),
                 'edge_density': 0.70,
                 'delay_range': (30, 150),
                 'max_out_degree': 5,
-                'and_probability': 0.92,  # 92% AND conditions
+                'and_probability': 0.92,
             },
             'Hard': {
                 'num_events': random.randint(80, 100),
                 'edge_density': 0.80,
                 'delay_range': (50, 250),
                 'max_out_degree': 7,
-                'and_probability': 0.99,  # 99% AND conditions
+                'and_probability': 0.99,
             }
         }[difficulty]
         
         max_attempts = 100
         for attempt in range(max_attempts):
             try:
-                # Generate events
+                # 사건 생성
                 events = self._generate_events(config['num_events'])
                 
-                # Generate causal graph (DAG)
+                # 인과 그래프 생성 (DAG)
                 edges = self._generate_causal_graph(events, config)
                 
                 if not edges:
                     continue
                 
-                # Select trigger (node with in-degree 0)
+                # 트리거 선택 (진입 차수 0인 노드)
                 in_degree = self._calculate_in_degree(events, edges)
                 possible_triggers = [e_id for e_id, degree in in_degree.items() 
                                     if degree == 0]
@@ -208,21 +210,21 @@ class CausalPuzzleGenerator:
                 trigger = random.choice(possible_triggers)
                 trigger_time = random.randint(0, 60)
                 
-                # Calculate reach times
+                # 도달 시간 계산
                 reach_times = self._calculate_reach_times(events, edges, trigger, trigger_time)
                 
-                # Select target (reachable event, not trigger)
+                # 타겟 선택 (도달 가능한 사건, 트리거 제외)
                 reachable = [e_id for e_id, time in reach_times.items() 
                            if time < float('inf') and e_id != trigger]
                 
                 if not reachable:
                     continue
                 
-                # Prefer events that are not too close or too far
+                # 너무 가깝거나 너무 먼 사건 제외
                 target_candidates = sorted(reachable, 
                                          key=lambda e: reach_times[e])
                 
-                # Pick from middle range for better difficulty
+                # 중간 범위에서 선택
                 mid_start = len(target_candidates) // 3
                 mid_end = 2 * len(target_candidates) // 3
                 if mid_end > mid_start:
@@ -245,14 +247,14 @@ class CausalPuzzleGenerator:
             except Exception as e:
                 continue
         
-        # If all attempts fail, generate simple linear chain
+        # 모든 시도 실패 시 단순 선형 체인 생성
         return self._generate_simple_puzzle(difficulty)
     
     def _generate_events(self, num_events: int) -> Dict[str, Event]:
-        """Generate event nodes"""
+        """사건 노드 생성"""
         events = {}
         
-        # Distribute events across types
+        # 사건 타입별 분배
         event_types = list(EventType)
         selected = []
         
@@ -278,35 +280,35 @@ class CausalPuzzleGenerator:
     
     def _generate_causal_graph(self, events: Dict[str, Event], 
                                config: Dict) -> List[CausalEdge]:
-        """Generate DAG of causal relationships with AND/OR conditions"""
+        """AND/OR 조건을 갖는 DAG 인과 관계 생성"""
         edges = []
         event_ids = sorted(events.keys())
         and_prob = config.get('and_probability', 0.0)
         
-        # Create edges for each target node
+        # 각 타겟 노드에 대해 간선 생성
         for i, to_id in enumerate(event_ids):
             if i == 0:
-                continue  # Skip first node (trigger candidate)
+                continue  # 첫 노드는 트리거 후보
             
-            # Determine number of prerequisites
+            # 전제 조건 수 결정
             max_prereqs = min(config['max_out_degree'], i)
             num_prereqs = random.randint(1, max(1, max_prereqs))
             
-            # Select prerequisite events (from earlier nodes)
+            # 전제 조건 사건 선택 (이전 노드들)
             possible_from = event_ids[:i]
             if not possible_from:
                 continue
             
             from_events = random.sample(possible_from, min(num_prereqs, len(possible_from)))
             
-            # Determine condition type
+            # 조건 타입 결정
             condition = 'OR'
             if len(from_events) > 1 and random.random() < and_prob:
                 condition = 'AND'
             
             delay = random.randint(*config['delay_range'])
             
-            # Create edge
+            # 간선 생성
             if len(from_events) == 1:
                 edges.append(CausalEdge(
                     from_event=from_events[0],
@@ -317,7 +319,7 @@ class CausalPuzzleGenerator:
                 ))
             else:
                 edges.append(CausalEdge(
-                    from_event=from_events[0],  # For compatibility
+                    from_event=from_events[0],
                     to_event=to_id,
                     delay=delay,
                     from_events=from_events,
@@ -328,7 +330,7 @@ class CausalPuzzleGenerator:
     
     def _calculate_in_degree(self, events: Dict[str, Event], 
                             edges: List[CausalEdge]) -> Dict[str, int]:
-        """Calculate in-degree for each node"""
+        """각 노드의 진입 차수 계산"""
         in_degree = {e_id: 0 for e_id in events}
         for edge in edges:
             in_degree[edge.to_event] += 1
@@ -339,12 +341,12 @@ class CausalPuzzleGenerator:
                                trigger: str,
                                trigger_time: int) -> Dict[str, int]:
         """
-        Calculate earliest time each event occurs with AND/OR conditions
+        AND/OR 조건으로 각 사건의 최초 발생 시간 계산
         
         Returns:
-            Dictionary mapping event_id -> earliest occurrence time
+            사건 ID -> 최초 발생 시간 매핑 딕셔너리
         """
-        # Build prerequisite tracking
+        # 전제 조건 추적 구조 구축
         prereqs_for_event = {}
         edges_for_event = {}
         
@@ -353,14 +355,14 @@ class CausalPuzzleGenerator:
             prereqs_for_event[edge.to_event] = from_events
             edges_for_event[edge.to_event] = edge
         
-        # Track earliest time each event occurs
+        # 각 사건의 최초 발생 시간 추적
         earliest_time = {e_id: float('inf') for e_id in events}
         earliest_time[trigger] = trigger_time
         
-        # Track when each prerequisite reaches an event
+        # 각 전제 조건이 사건에 도달하는 시간 추적
         prereq_arrival_times = {e_id: {} for e_id in events}
         
-        # Priority queue: (time, event_id)
+        # 우선순위 큐: (시간, 사건 ID)
         pq = [(trigger_time, trigger)]
         processed = set()
         
@@ -371,7 +373,7 @@ class CausalPuzzleGenerator:
                 continue
             processed.add(current_event)
             
-            # Find all events that depend on current_event
+            # current_event에 의존하는 모든 사건 찾기
             for edge in edges:
                 from_events = edge.from_events if edge.from_events else [edge.from_event]
                 if current_event not in from_events:
@@ -380,38 +382,38 @@ class CausalPuzzleGenerator:
                 to_event = edge.to_event
                 arrival_time = current_time + edge.delay
                 
-                # Record this prerequisite's arrival time
+                # 이 전제 조건의 도달 시간 기록
                 if current_event not in prereq_arrival_times[to_event]:
                     prereq_arrival_times[to_event][current_event] = arrival_time
                 else:
-                    # Keep earliest arrival from this prerequisite
+                    # 최초 도달 시간 유지
                     prereq_arrival_times[to_event][current_event] = min(
                         prereq_arrival_times[to_event][current_event],
                         arrival_time
                     )
                 
-                # Check if all prerequisites have arrived
+                # 모든 전제 조건이 도달했는지 확인
                 all_prereqs_arrived = all(
                     prereq in prereq_arrival_times[to_event]
                     for prereq in from_events
                 )
                 
                 if all_prereqs_arrived:
-                    # Calculate trigger time based on condition
+                    # 조건 타입에 따라 트리거 시간 계산
                     if edge.condition == 'AND':
-                        # Wait for ALL prerequisites
+                        # 모든 전제 조건 대기
                         trigger_time_for_event = max(
                             prereq_arrival_times[to_event][prereq]
                             for prereq in from_events
                         )
                     else:  # OR
-                        # Trigger on FIRST prerequisite
+                        # 첫 번째 전제 조건에서 트리거
                         trigger_time_for_event = min(
                             prereq_arrival_times[to_event][prereq]
                             for prereq in from_events
                         )
                     
-                    # Update if this is earlier than current best
+                    # 현재 최선보다 빠르면 업데이트
                     if trigger_time_for_event < earliest_time[to_event]:
                         earliest_time[to_event] = trigger_time_for_event
                         heapq.heappush(pq, (trigger_time_for_event, to_event))
@@ -419,7 +421,7 @@ class CausalPuzzleGenerator:
         return earliest_time
     
     def _generate_simple_puzzle(self, difficulty: str) -> CausalPuzzle:
-        """Generate simple linear chain as fallback"""
+        """폴백용 단순 선형 체인 생성"""
         num_events = 4
         events = self._generate_events(num_events)
         event_ids = sorted(events.keys())
@@ -451,12 +453,12 @@ class CausalPuzzleGenerator:
     
     def has_unique_solution(self, puzzle: CausalPuzzle) -> bool:
         """
-        Verify puzzle has unique solution
+        퍼즐의 유일 해 검증
         
-        Since Dijkstra is deterministic, solution is always unique for a given graph.
-        Just verify the graph is valid (DAG, connected).
+        Dijkstra는 결정적이므로 주어진 그래프에 대해 항상 유일 해를 가집니다.
+        그래프가 유효한지만 검증 (DAG, 연결됨).
         """
-        # Check if target is reachable
+        # 타겟이 도달 가능한지 확인
         reach_times = self._calculate_reach_times(
             puzzle.events,
             puzzle.edges,
@@ -468,9 +470,9 @@ class CausalPuzzleGenerator:
 
 
 def create_question(puzzle: CausalPuzzle) -> str:
-    """Generate English question text for the puzzle"""
+    """퍼즐에 대한 한국어 질문 텍스트 생성"""
     
-    # Format events
+    # 사건 형식화
     event_lines = []
     for event_id in sorted(puzzle.events.keys()):
         event = puzzle.events[event_id]
@@ -479,7 +481,7 @@ def create_question(puzzle: CausalPuzzle) -> str:
     
     events_description = '\n'.join(event_lines)
     
-    # Format causal relationships
+    # 인과 관계 형식화
     causal_lines = []
     sorted_edges = sorted(puzzle.edges, key=lambda e: e.to_event)
     
@@ -491,19 +493,19 @@ def create_question(puzzle: CausalPuzzle) -> str:
             from_name = puzzle.events[from_events[0]].name
             causal_lines.append(
                 f"  {from_events[0]} ({from_name}) → "
-                f"{edge.to_event} ({to_name}): {edge.delay} minutes"
+                f"{edge.to_event} ({to_name}): {edge.delay}분"
             )
         else:
             if edge.condition == 'AND':
-                prereq_str = ' AND '.join(f"{e} ({puzzle.events[e].name})" 
+                prereq_str = ' 그리고 '.join(f"{e} ({puzzle.events[e].name})" 
                                           for e in from_events)
-                line = f"  [{prereq_str}] → {edge.to_event} ({to_name}): {edge.delay} minutes"
-                line += "\n      (Requires ALL prerequisites)"
+                line = f"  [{prereq_str}] → {edge.to_event} ({to_name}): {edge.delay}분"
+                line += "\n      (모든 전제 조건 필요)"
             else:
-                prereq_str = ' OR '.join(f"{e} ({puzzle.events[e].name})" 
+                prereq_str = ' 또는 '.join(f"{e} ({puzzle.events[e].name})" 
                                          for e in from_events)
-                line = f"  [{prereq_str}] → {edge.to_event} ({to_name}): {edge.delay} minutes"
-                line += "\n      (Triggered by FIRST prerequisite)"
+                line = f"  [{prereq_str}] → {edge.to_event} ({to_name}): {edge.delay}분"
+                line += "\n      (첫 번째 전제 조건에서 트리거)"
             causal_lines.append(line)
     
     causality_description = '\n'.join(causal_lines)
@@ -511,28 +513,28 @@ def create_question(puzzle: CausalPuzzle) -> str:
     trigger_name = puzzle.events[puzzle.trigger].name
     target_name = puzzle.events[puzzle.target_event].name
     
-    question = f"""You are analyzing a system of causal events and their propagation over time.
+    question = f"""인과 관계 사건 시스템과 시간에 따른 전파를 분석하고 있습니다.
 
-Events:
+사건 목록:
 {events_description}
 
-Causal Relationships (showing time delays):
+인과 관계 (시간 지연 표시):
 {causality_description}
 
-Rules:
-- When an event occurs, it triggers its effects after the specified delay
-- OR condition: Event occurs when the FIRST prerequisite reaches it
-- AND condition: Event occurs only when ALL prerequisites have occurred
-- All times are measured in minutes from a reference point (minute 0)
+규칙:
+- 사건이 발생하면 지정된 지연 시간 후에 영향을 미칩니다
+- OR 조건: 첫 번째 전제 조건이 도달하면 사건이 발생합니다
+- AND 조건: 모든 전제 조건이 발생한 후에만 사건이 발생합니다
+- 모든 시간은 기준점(0분)에서부터 측정됩니다
 
-Initial Condition:
-- Event {puzzle.trigger} ({trigger_name}) occurs at minute {puzzle.trigger_time}
+초기 조건:
+- 사건 {puzzle.trigger} ({trigger_name})이(가) {puzzle.trigger_time}분에 발생합니다
 
-Question:
-At what minute does event {puzzle.target_event} ({target_name}) first occur?
+질문:
+사건 {puzzle.target_event} ({target_name})은(는) 몇 분에 처음 발생합니까?
 
-Provide your answer as a single integer representing the minute number.
-For example, if the event occurs 45 minutes after the start, answer: 45
+답변은 분 단위 정수로 제공하세요.
+예를 들어, 사건이 시작 후 45분에 발생하면 답변: 45
 """
     
     return question
@@ -540,14 +542,14 @@ For example, if the event occurs 45 minutes after the start, answer: 45
 
 def generate_dataset(puzzles_per_difficulty: int = 3, verbose: bool = True) -> List[Dict]:
     """
-    Generate a complete dataset of causal DAG puzzles
+    인과 DAG 퍼즐 전체 데이터셋 생성
     
     Args:
-        puzzles_per_difficulty: Number of puzzles per difficulty level
-        verbose: Print generation progress
+        puzzles_per_difficulty: 난이도별 퍼즐 수
+        verbose: 생성 진행 상황 출력
     
     Returns:
-        List of puzzle dictionaries ready for evaluation
+        평가 준비된 퍼즐 딕셔너리 리스트
     """
     generator = CausalPuzzleGenerator()
     difficulties = ['Easy', 'Medium', 'Hard']
@@ -555,7 +557,7 @@ def generate_dataset(puzzles_per_difficulty: int = 3, verbose: bool = True) -> L
     
     for difficulty in difficulties:
         if verbose:
-            print(f"\n=== Generating {difficulty} puzzles ===")
+            print(f"\n=== {difficulty} 퍼즐 생성 중 ===")
         
         for i in range(puzzles_per_difficulty):
             puzzle = generator.generate_puzzle(difficulty)
@@ -573,29 +575,29 @@ def generate_dataset(puzzles_per_difficulty: int = 3, verbose: bool = True) -> L
             if verbose:
                 print(f"  [{i+1}/{puzzles_per_difficulty}] "
                       f"{puzzle.trigger} → {puzzle.target_event}: "
-                      f"{puzzle.answer} minutes")
+                      f"{puzzle.answer}분")
     
     return dataset
 
 
 def create_dataset_files(num_questions: int):
     """
-    Create dataset files for causal DAG puzzles
+    인과 DAG 퍼즐 데이터셋 파일 생성
     
     Args:
-        num_questions: Number of questions to generate
-        version: Version string for filenames
+        num_questions: 생성할 질문 수
+        version: 파일명 버전 문자열
     
     Returns:
-        Tuple[pd.DataFrame, List[Dict]]: (dataframe, json list)
+        Tuple[pd.DataFrame, List[Dict]]: (데이터프레임, JSON 리스트)
     """
     import pandas as pd
     
-    print(f"Generating {num_questions} causal DAG puzzles...")
+    print(f"{num_questions}개의 인과 DAG 퍼즐 생성 중...")
     
     generator = CausalPuzzleGenerator()
     
-    # Calculate puzzles per difficulty
+    # 난이도별 퍼즐 계산
     puzzles_per_diff = num_questions // 3
     remainder = num_questions % 3
     
@@ -618,30 +620,28 @@ def create_dataset_files(num_questions: int):
             }
             all_puzzles.append(puzzle_data)
     
-    print(f"\nGenerated {len(all_puzzles)} puzzles")
+    print(f"\n{len(all_puzzles)}개의 퍼즐 생성 완료")
     
     df = pd.DataFrame(all_puzzles)
     
-    # Save files
+    # 파일 저장
     PROJECT_ROOT = Path(__file__).resolve().parent.parent
     
     # CSV
     csv_dir = PROJECT_ROOT / "data" / "csv"
     csv_dir.mkdir(parents=True, exist_ok=True)
-
-    # Lowercase filename
-    csv_path = csv_dir / "causal_dag.csv"
+    csv_path = csv_dir / f"causal_dag_korean.csv"
     df.to_csv(csv_path, index=False, encoding="utf-8-sig")
-    print(f"CSV file created: {csv_path}")
+    print(f"CSV 파일 생성: {csv_path}")
     
     # JSONL
     json_dir = PROJECT_ROOT / "data" / "json"
     json_dir.mkdir(parents=True, exist_ok=True)
-    jsonl_path = json_dir / "causal_dag.jsonl"
+    jsonl_path = json_dir / f"causal_dag_korean.jsonl"
     with open(jsonl_path, 'w', encoding='utf-8') as f:
         for item in all_puzzles:
             f.write(json.dumps(item, ensure_ascii=False) + '\n')
-    print(f"JSONL file created: {jsonl_path}")
+    print(f"JSONL 파일 생성: {jsonl_path}")
     
     return df, all_puzzles
 
@@ -649,38 +649,38 @@ def create_dataset_files(num_questions: int):
 if __name__ == "__main__":
     import argparse
     
-    parser = argparse.ArgumentParser(description="Causal DAG Puzzle Generator")
+    parser = argparse.ArgumentParser(description="Causal DAG Korean Puzzle Generator")
     parser.add_argument("--num", type=int, default=300, help="Number of questions to generate")
     
     args = parser.parse_args()
     
     print("=" * 70)
-    print("Causal DAG Reasoning Puzzle Generator")
+    print("인과 DAG 추론 퍼즐 생성기 (한국어)")
     print("=" * 70)
     
     create_dataset_files(num_questions=args.num)
     
-    # Generate sample dataset
+    # 샘플 데이터셋 생성
     # dataset = generate_dataset(puzzles_per_difficulty=2, verbose=True)
     
     # print("\n" + "=" * 70)
-    # print("Sample Puzzle")
+    # print("샘플 퍼즐")
     # print("=" * 70)
     
     # sample = dataset[0]
     # print(sample['question'])
-    # print(f"\n✅ Answer: {sample['answer']} minutes")
+    # print(f"\n✅ 정답: {sample['answer']}분")
     
-    # # Validate all puzzles
+    # # 모든 퍼즐 검증
     # print("\n" + "=" * 70)
-    # print("Validation")
+    # print("검증")
     # print("=" * 70)
     
     # generator = CausalPuzzleGenerator()
     # for i, puzzle_data in enumerate(dataset):
     #     metadata = puzzle_data['metadata']
         
-    #     # Reconstruct Event objects with proper EventType enum
+    #     # EventType enum으로 Event 객체 재구성
     #     events = {}
     #     for k, v in metadata['events'].items():
     #         events[k] = Event(
@@ -708,6 +708,6 @@ if __name__ == "__main__":
         
     #     is_valid = generator.has_unique_solution(puzzle)
     #     status = "✓" if is_valid else "✗"
-    #     print(f"  Puzzle {i+1}: {status} {'Valid' if is_valid else 'Invalid'}")
+    #     print(f"  퍼즐 {i+1}: {status} {'유효' if is_valid else '무효'}")
     
-    # print("\n✓ All puzzles generated successfully!")
+    # print("\n✓ 모든 퍼즐 생성 성공!")
