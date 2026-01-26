@@ -19,7 +19,7 @@ python guess/causal_dag.py --num 300
 
 # Cipher Korean (Easy, Medium, Hard, Very Hard, Extreme)
 echo ""; echo "[4/19] cipher_korean..."
-python guess/cipher_korean.py --num-per-level 100
+python guess/cipher_korean.py --num 100      
 
 # Cipher (Easy, Medium, Hard, Expert)
 echo ""; echo "[5/19] cipher..."

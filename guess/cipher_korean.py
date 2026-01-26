@@ -202,9 +202,8 @@ class HangulCipherGenerator:
             "solution": f"단계: {' -> '.join(process)} | 정답: {answer}"
         }
 
-def create_hangul_dataset(num_per_level: int = 3, version: str = "v260112"):
-    import pandas as pd
-    print(f"Hangul-based Cipher ({version}) 문제 생성 중...")
+def create_hangul_dataset(num_per_level: int = 3):
+    print(f"Hangul-based Cipher 문제 생성 중...")
     print(f"난이도별 {num_per_level}개씩 생성")
     print("="*70)
 
@@ -227,34 +226,25 @@ def create_hangul_dataset(num_per_level: int = 3, version: str = "v260112"):
                 "difficulty": difficulty,
                 "description": config["description"]
             })
-            print(f"  {i+1}. {problem['answer'][:15]}... 생성 완료")
-
-    df = pd.DataFrame(all_problems)
-    PROJECT_ROOT = Path(__file__).resolve().parent.parent
-
-    # CSV 저장
-    csv_dir = PROJECT_ROOT / "data" / "csv"
-    csv_dir.mkdir(parents=True, exist_ok=True)
-    csv_path = csv_dir / f"cipher_korean_{version}.csv"
-    df.to_csv(csv_path, index=False, encoding="utf-8-sig")
+            # print(f"  {i+1}. {problem['answer'][:15]}... 생성 완료")
 
     # JSONL 저장
-    json_dir = PROJECT_ROOT / "data" / "json"
-    json_dir.mkdir(parents=True, exist_ok=True)
-    jsonl_path = json_dir / f"cipher_korean_{version}.jsonl"
-
-    with open(jsonl_path, "w", encoding="utf-8") as f:
+    output_jsonl_path = Path(__file__).resolve().parent.parent / "data" / "json" / "cipher_korean.jsonl"
+    output_jsonl_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(output_jsonl_path, "w", encoding="utf-8") as f:
         for p in all_problems:
             f.write(json.dumps(p, ensure_ascii=False) + "\n")
 
-    print(f"\n{'='*70}")
-    print(f"생성 완료:")
-    print(f"  총 문제 수: {len(all_problems)}개")
-    print(f"  CSV: {csv_path}")
-    print(f"  JSONL: {jsonl_path}")
-    print(f"{'='*70}")
+    # CSV 저장 추가
+    import pandas as pd
+    output_csv_path = Path(__file__).resolve().parent.parent / "data" / "csv" / "cipher_korean.csv"
+    output_csv_path.parent.mkdir(parents=True, exist_ok=True)
+    df = pd.DataFrame(all_problems)
+    df.to_csv(output_csv_path, index=False, encoding="utf-8-sig")
 
-    return df
+    print(f"생성 완료: {output_jsonl_path}")
+    print(f"CSV 파일 생성 완료: {output_csv_path}")
+
 
 if __name__ == "__main__":
     import argparse
