@@ -514,17 +514,61 @@ def find_best_actor(actors, target_gender, target_age_group, exclude_ids, contex
     
     return random.choice(matches)
 
-def generate_question():
+def generate_question(difficulty="Medium"):
     title_map = get_relation_chain_to_title()
     actors_db = get_actors_db()
 
-    # 1. Select chain (only chains with length >= 3)
-    available_chains = [chain for chain in title_map.keys() if len(chain) >= 3]
+    # 1. Select chain based on difficulty
+    difficulty_config = {
+        "Easy": {
+            "chain_distribution": {
+                3: 0.30,
+                4: 0.30,
+                5: 0.40
+            }
+        },
+        "Medium": {
+            "chain_distribution": {
+                3: 0.20,
+                4: 0.30,
+                5: 0.50
+            }
+        },
+        "Hard": {
+            "chain_distribution": {
+                3: 0.10,
+                4: 0.30,
+                5: 0.60
+            }
+        }
+    }
+    
+    config = difficulty_config.get(difficulty, difficulty_config["Medium"])
+    chain_distribution = config["chain_distribution"]
+    
+    all_chains = list(title_map.keys())
+    chains_by_length = {
+        3: [chain for chain in all_chains if len(chain) == 3],
+        4: [chain for chain in all_chains if len(chain) == 4],
+        5: [chain for chain in all_chains if len(chain) >= 5]
+    }
+    
+    chain_lengths = list(chain_distribution.keys())
+    weights = list(chain_distribution.values())
+    selected_length = random.choices(chain_lengths, weights=weights, k=1)[0]
+    
+    available_chains = chains_by_length.get(selected_length, [])
+    
     if not available_chains:
-        logging.warning("[Chain Selection Failed] No relation chains with length >= 3 available.")
-        return generate_question()
+        logging.warning(f"[Chain Selection Failed] No chains found for length {selected_length}. Using all chains >= 3.")
+        available_chains = [chain for chain in all_chains if len(chain) >= 3]
+    
+    if not available_chains:
+        logging.warning("[Chain Selection Failed] No relation chains available.")
+        return generate_question(difficulty)
+    
     relation_chain = random.choice(available_chains)
-    logging.debug(f"[Chain Selected] {relation_chain}")
+    logging.debug(f"[Chain Selected] {relation_chain} (difficulty: {difficulty}, length: {len(relation_chain)})")
     
     # 2. Extract answer information (parse dict format)
     relation_info = title_map[relation_chain]
@@ -646,7 +690,7 @@ def generate_question():
     last_index = len(relation_chain) - 1
     
     available_for_wrong = [p for p in actors_db if p['id'] != target_actor['id']]
-    wrong_actors = random.sample(available_for_wrong, 3)
+    wrong_actors = random.sample(available_for_wrong, 4)
     
     all_options = [target_actor] + wrong_actors
     random.shuffle(all_options)
@@ -654,7 +698,7 @@ def generate_question():
     choices = {}
     correct_letter = None
     for i, actor in enumerate(all_options):
-        letter = chr(65 + i)  # A, B, C, D
+        letter = chr(65 + i)  # A, B, C, D, E
         feature = random.choice(actor['visual_features'])
         
         if actor['id'] == target_actor['id']:
@@ -670,7 +714,7 @@ def generate_question():
     
     particle = get_proper_particle(selected_title)
     dialogue_lines.append(f"\n이때, 나의 {selected_title}{particle} 누구인가?")
-    for letter in ['A', 'B', 'C', 'D']:
+    for letter in ['A', 'B', 'C', 'D', 'E']:
         dialogue_lines.append(f"{letter}: {choices[letter]}")
     
     question = "\n".join(dialogue_lines)
@@ -693,10 +737,10 @@ def generate_question():
         explanation.append(f"[STEP {final_step}] Therefore, the final title for the combined relationship '{temp_chain_str}' is '{answer}'.")
         explanation.append(f"[STEP {final_step + 1}] Answer: {correct_letter}")
 
-    return question, correct_letter, explanation, choices
+    return question, correct_letter, explanation, choices, difficulty
 
-def create_dataset_files(num_questions):
-    print(f"Generating {num_questions} kinship problems (Visual Benchmark)...")
+def create_dataset_files(num_questions_per_difficulty=100):
+    print(f"Generating kinship problems (Visual Benchmark) by difficulty...")
     
     actors_db = get_actors_db()
     title_map = get_relation_chain_to_title()
@@ -715,56 +759,74 @@ def create_dataset_files(num_questions):
         print(f"  {combo}: {count} people")
     print("=" * 40 + "\n")
     
+    difficulties = ["Easy", "Medium", "Hard"]
     output = []
+    all_generated_data = []
     
-    for i in range(num_questions):
-        q, a, e, choices = generate_question()
-        output.append([q, a, "\n".join(e), choices['A'], choices['B'], choices['C'], choices['D']])
+    for difficulty in difficulties:
+        print(f"\n=== Generating {difficulty} problems ({num_questions_per_difficulty} questions) ===")
+        for i in range(num_questions_per_difficulty):
+            try:
+                q, a, e, choices, diff = generate_question(difficulty=difficulty)
+                
+                output.append({
+                    'question': q,
+                    'answer': a,
+                    'solution': "\n".join(e),
+                    'difficulty': diff,
+                    'choices': json.dumps(choices, ensure_ascii=False)
+                })
+                
+                all_generated_data.append({
+                    'question': q,
+                    'answer': a,
+                    'solution': "\n".join(e),
+                    'difficulty': diff,
+                    'choices': choices
+                })
+                
+                if (i + 1) % 20 == 0:
+                    print(f"  Progress: {i + 1}/{num_questions_per_difficulty}")
+                    
+            except Exception as e:
+                logging.error(f"Error generating {difficulty} question: {e}")
+                continue
     
-    df = pd.DataFrame(output, columns=['question', 'answer', 'solution', 'choice_A', 'choice_B', 'choice_C', 'choice_D'])
+    df = pd.DataFrame(output)
+    print(f"\n=== Generation Summary ===")
     print(f"Total: {len(df)}, Unique: {df['question'].nunique()}")
+    print(f"\nDifficulty breakdown:")
+    print(df['difficulty'].value_counts().sort_index())
     
     PROJECT_ROOT = Path(__file__).resolve().parent.parent
     
+    # CSV (question, answer, solution, difficulty만)
     csv_path = PROJECT_ROOT / "data" / "csv" / "kinship_vision.csv"
     csv_path.parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(csv_path, index=False, encoding="utf-8-sig")
-    print(f"CSV saved: {csv_path}")
+    print(f"\nCSV saved: {csv_path}")
+    print(f"CSV columns: {list(df.columns)}")
     
+    # JSONL (choices 포함)
     json_path = PROJECT_ROOT / "data" / "json" / "kinship_vision.jsonl"
     json_path.parent.mkdir(parents=True, exist_ok=True)
     
-    json_data = [
-        {
-            "question": r['question'], 
-            "answer": r['answer'], 
-            "solution": r['solution'],
-            "choices": {
-                "A": r['choice_A'],
-                "B": r['choice_B'],
-                "C": r['choice_C'],
-                "D": r['choice_D']
-            }
-        } 
-        for _, r in df.iterrows()
-    ]
-    
     with open(json_path, 'w', encoding='utf-8') as f:
-        for item in json_data:
+        for item in all_generated_data:
             f.write(json.dumps(item, ensure_ascii=False) + '\n')
     print(f"JSONL saved: {json_path}")
     
-    return df, json_data
+    return df, all_generated_data
 
 if __name__ == '__main__':
     import argparse
     
     parser = argparse.ArgumentParser(description="Kinship Vision Puzzle Generator")
-    parser.add_argument("--num", type=int, default=100, help="Number of questions to generate")
+    parser.add_argument("--num", type=int, default=100, help="Number of questions per difficulty")
     
     args = parser.parse_args()
     
-    create_dataset_files(num_questions=args.num)
+    create_dataset_files(num_questions_per_difficulty=args.num)
 
     # print("\n=== Sample Problem ===")
     # for _ in range(1):
