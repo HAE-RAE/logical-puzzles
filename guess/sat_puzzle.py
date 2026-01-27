@@ -52,13 +52,13 @@ class SATPuzzle:
         """Convert to dictionary for JSON serialization"""
         return {
             'id': self.id,
+            'question': self.question,
+            'answer': self.answer,
             'difficulty': self.difficulty,
             'domain': self.domain,
             'variables': self.variables,
             'clauses': [[[lit[0], lit[1]] for lit in clause.literals] for clause in self.clauses],
-            'constraints': self.natural_constraints,
-            'question': self.question,
-            'answer': self.answer
+            'constraints': self.natural_constraints
         }
     
     def to_prompt(self) -> str:
@@ -171,22 +171,26 @@ class SATPuzzleGenerator:
         # Convert to natural language
         natural_constraints = self._clauses_to_natural_language(clauses, domain)
         
-        # Generate question
-        question = self.DOMAINS[domain]['question_template']
-        
         # Create puzzle ID
         puzzle_id = f"sat_{difficulty.lower()}_{random.randint(1000, 9999)}"
         
-        return SATPuzzle(
+        # Create temporary puzzle to generate full prompt
+        temp_puzzle = SATPuzzle(
             id=puzzle_id,
             difficulty=difficulty,
             domain=domain,
             variables=variables,
             clauses=clauses,
             natural_constraints=natural_constraints,
-            question=question,
+            question="",  # Temporary placeholder
             answer=solution
         )
+        
+        # Generate complete prompt as question
+        complete_prompt = temp_puzzle.to_prompt()
+        temp_puzzle.question = complete_prompt
+        
+        return temp_puzzle
     
     def _get_difficulty_config(self, difficulty: Difficulty) -> dict:
         """Get configuration parameters for each difficulty level"""
@@ -466,6 +470,10 @@ def generate_dataset(
         if i % 10 == 0:
             print(f"Generated {i}/{num_samples} puzzles...")
     
+    # Re-assign ids to follow index-based naming convention
+    for idx, puzzle in enumerate(puzzles):
+        puzzle.id = f'sat_puzzle_{idx}'
+    
     # Save as JSONL
     jsonl_path = json_dir / "sat_puzzles.jsonl"
     with open(jsonl_path, 'w') as f:
@@ -473,12 +481,21 @@ def generate_dataset(
             f.write(json.dumps(puzzle.to_dict()) + '\n')
     
     # Save as CSV
+    import csv as csv_module
     csv_path = csv_dir / "sat_puzzles.csv"
-    with open(csv_path, 'w') as f:
-        f.write("id,difficulty,domain,num_vars,num_clauses\n")
+    with open(csv_path, 'w', encoding='utf-8', newline='') as f:
+        # Use same columns as JSONL
+        fieldnames = ['id', 'question', 'answer', 'difficulty', 'domain', 'variables', 'clauses', 'constraints']
+        writer = csv_module.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
         for puzzle in puzzles:
-            f.write(f"{puzzle.id},{puzzle.difficulty},{puzzle.domain},"
-                   f"{len(puzzle.variables)},{len(puzzle.clauses)}\n")
+            row = puzzle.to_dict()
+            # Convert lists/dicts to JSON strings for CSV
+            row['variables'] = json.dumps(row['variables'])
+            row['clauses'] = json.dumps(row['clauses'])
+            row['constraints'] = json.dumps(row['constraints'])
+            row['answer'] = json.dumps(row['answer'])
+            writer.writerow(row)
     
     print(f"   - JSONL: {jsonl_path}")
     print(f"   - CSV: {csv_path}")

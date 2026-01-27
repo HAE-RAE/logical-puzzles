@@ -33,46 +33,8 @@ def load_puzzles(dataset_path: str) -> List[dict]:
 
 
 def create_prompt(puzzle: dict) -> str:
-    """Create evaluation prompt from puzzle data"""
-    prompt = "You are given a logic grid puzzle. Use the constraints to deduce the answer.\n\n"
-    
-    # People
-    prompt += f"**People:** {', '.join(puzzle['people'])}\n\n"
-    
-    # Attributes
-    prompt += "**Attributes:**\n"
-    for category, values in puzzle['attributes'].items():
-        prompt += f"  - {category}: {', '.join(values)}\n"
-    prompt += "\n"
-    
-    # Constraints
-    prompt += "**Constraints:**\n"
-    for i, constraint in enumerate(puzzle['constraints'], 1):
-        prompt += f"  {i}. {constraint}\n"
-    prompt += "\n"
-    
-    # Rules
-    prompt += "**Rules:**\n"
-    prompt += "  - Each person has exactly one value from each attribute category\n"
-    prompt += "  - No two people share the same value in any category\n"
-    prompt += "  - All constraints must be satisfied simultaneously\n\n"
-    
-    # Question
-    prompt += f"**Question:** {puzzle['question']}\n\n"
-    
-    prompt += "**Instructions:**\n"
-    prompt += "Provide your answer in the following JSON format:\n"
-    prompt += "```json\n"
-    prompt += "{\n"
-    for person in puzzle['people']:
-        prompt += f'  "{person}": {{'
-        cats = list(puzzle['attributes'].keys())
-        prompt += ', '.join([f'"{cat}": "value"' for cat in cats])
-        prompt += '},\n'
-    prompt = prompt.rstrip(',\n') + '\n'
-    prompt += "}\n```\n"
-    
-    return prompt
+    """Get the pre-generated prompt from puzzle data"""
+    return puzzle['question']
 
 
 def parse_answer(response: str, people: List[str], categories: List[str]) -> Optional[Dict[str, Dict[str, str]]]:

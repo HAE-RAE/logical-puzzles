@@ -36,12 +36,12 @@ class LogicGridPuzzle:
         """Convert to dictionary for JSON serialization"""
         return {
             'id': self.id,
+            'question': self.question,
+            'answer': self.answer,
             'difficulty': self.difficulty,
             'people': self.people,
             'attributes': self.attributes,
-            'constraints': self.constraints,
-            'question': self.question,
-            'answer': self.answer
+            'constraints': self.constraints
         }
     
     def to_prompt(self) -> str:
@@ -124,21 +124,25 @@ class LogicGridGenerator:
             # Retry if solution is not unique
             return self.generate(difficulty)
         
-        # Generate question
-        question = self._generate_question(people, attributes, solution)
-        
         # Create puzzle ID
         puzzle_id = f"logic_grid_{difficulty.lower()}_{random.randint(1000, 9999)}"
         
-        return LogicGridPuzzle(
+        # Create temporary puzzle to generate full prompt
+        temp_puzzle = LogicGridPuzzle(
             id=puzzle_id,
             difficulty=difficulty,
             people=people,
             attributes=attributes,
             constraints=constraints,
-            question=question,
+            question="",  # Temporary placeholder
             answer=solution
         )
+        
+        # Generate complete prompt as question
+        complete_prompt = temp_puzzle.to_prompt()
+        temp_puzzle.question = complete_prompt
+        
+        return temp_puzzle
     
     def _get_difficulty_config(self, difficulty: Difficulty) -> dict:
         """Get configuration for each difficulty level"""
@@ -413,6 +417,10 @@ def generate_dataset(
         if i % 10 == 0:
             print(f"Generated {i}/{num_samples} puzzles...")
     
+    # Re-assign ids to follow index-based naming convention
+    for idx, puzzle in enumerate(puzzles):
+        puzzle.id = f'logic_grid_{idx}'
+    
     # Save as JSONL
     jsonl_path = json_dir / "logic_grid.jsonl"
     with open(jsonl_path, 'w') as f:
@@ -420,12 +428,21 @@ def generate_dataset(
             f.write(json.dumps(puzzle.to_dict()) + '\n')
     
     # Save as CSV
+    import csv as csv_module
     csv_path = csv_dir / "logic_grid.csv"
-    with open(csv_path, 'w') as f:
-        f.write("id,difficulty,num_people,num_categories,num_constraints\n")
+    with open(csv_path, 'w', encoding='utf-8', newline='') as f:
+        # Use same columns as JSONL
+        fieldnames = ['id', 'question', 'answer', 'difficulty', 'people', 'attributes', 'constraints']
+        writer = csv_module.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
         for puzzle in puzzles:
-            f.write(f"{puzzle.id},{puzzle.difficulty},{len(puzzle.people)},"
-                   f"{len(puzzle.attributes)},{len(puzzle.constraints)}\n")
+            row = puzzle.to_dict()
+            # Convert lists/dicts to JSON strings for CSV
+            row['people'] = json.dumps(row['people'])
+            row['attributes'] = json.dumps(row['attributes'])
+            row['constraints'] = json.dumps(row['constraints'])
+            row['answer'] = json.dumps(row['answer'])
+            writer.writerow(row)
     
     print(f"   - JSONL: {jsonl_path}")
     print(f"   - CSV: {csv_path}")

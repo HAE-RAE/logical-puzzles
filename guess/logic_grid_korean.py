@@ -38,12 +38,12 @@ class LogicGridPuzzle:
         """JSON 직렬화를 위한 딕셔너리 변환"""
         return {
             'id': self.id,
+            'question': self.question,
+            'answer': self.answer,
             'difficulty': self.difficulty,
             'people': self.people,
             'attributes': self.attributes,
-            'constraints': self.constraints,
-            'question': self.question,
-            'answer': self.answer
+            'constraints': self.constraints
         }
     
     def to_prompt(self) -> str:
@@ -126,21 +126,25 @@ class LogicGridGenerator:
             # 해가 유일하지 않으면 재시도
             return self.generate(difficulty)
         
-        # 질문 생성
-        question = self._generate_question(people, attributes, solution)
-        
         # 퍼즐 ID 생성
         puzzle_id = f"logic_grid_{difficulty.lower()}_{random.randint(1000, 9999)}"
         
-        return LogicGridPuzzle(
+        # Create temporary puzzle to generate full prompt
+        temp_puzzle = LogicGridPuzzle(
             id=puzzle_id,
             difficulty=difficulty,
             people=people,
             attributes=attributes,
             constraints=constraints,
-            question=question,
+            question="",  # Temporary placeholder
             answer=solution
         )
+        
+        # Generate complete prompt as question
+        complete_prompt = temp_puzzle.to_prompt()
+        temp_puzzle.question = complete_prompt
+        
+        return temp_puzzle
     
     def _get_difficulty_config(self, difficulty: Difficulty) -> dict:
         """각 난이도에 대한 설정 가져오기"""
@@ -453,6 +457,10 @@ def generate_dataset(
         if i % 10 == 0:
             print(f"{i}/{num_samples} 퍼즐 생성 완료...")
     
+    # Re-assign ids to follow index-based naming convention
+    for idx, puzzle in enumerate(puzzles):
+        puzzle.id = f'logic_grid_korean_{idx}'
+    
     # JSONL로 저장
     jsonl_path = json_dir / "logic_grid_korean.jsonl"
     with open(jsonl_path, 'w', encoding='utf-8') as f:
@@ -460,12 +468,21 @@ def generate_dataset(
             f.write(json.dumps(puzzle.to_dict(), ensure_ascii=False) + '\n')
     
     # CSV로 저장
+    import csv as csv_module
     csv_path = csv_dir / "logic_grid_korean.csv"
-    with open(csv_path, 'w', encoding='utf-8') as f:
-        f.write("id,difficulty,num_people,num_categories,num_constraints\n")
+    with open(csv_path, 'w', encoding='utf-8', newline='') as f:
+        # Use same columns as JSONL
+        fieldnames = ['id', 'question', 'answer', 'difficulty', 'people', 'attributes', 'constraints']
+        writer = csv_module.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
         for puzzle in puzzles:
-            f.write(f"{puzzle.id},{puzzle.difficulty},{len(puzzle.people)},"
-                   f"{len(puzzle.attributes)},{len(puzzle.constraints)}\n")
+            row = puzzle.to_dict()
+            # Convert lists/dicts to JSON strings for CSV
+            row['people'] = json.dumps(row['people'], ensure_ascii=False)
+            row['attributes'] = json.dumps(row['attributes'], ensure_ascii=False)
+            row['constraints'] = json.dumps(row['constraints'], ensure_ascii=False)
+            row['answer'] = json.dumps(row['answer'], ensure_ascii=False)
+            writer.writerow(row)
     
     print(f"   - JSONL: {jsonl_path}")
     print(f"   - CSV: {csv_path}")
