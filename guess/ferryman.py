@@ -249,6 +249,9 @@ def create_dataset_files(num_questions, difficulty=None):
     csv_dir = PROJECT_ROOT / "data" / "csv"
     csv_dir.mkdir(parents=True, exist_ok=True)
     
+    # Add id column to DataFrame
+    ferryman_df.insert(0, 'id', [f"ferryman_{i}" for i in range(len(ferryman_df))])
+    
     csv_path = csv_dir / "ferryman.csv"
     ferryman_df.to_csv(csv_path, index=False, encoding="utf-8-sig")
     print(f"\nCSV 파일이 생성: {csv_path}")
@@ -260,10 +263,11 @@ def create_dataset_files(num_questions, difficulty=None):
     ferryman_json = []
     for idx, row in ferryman_df.iterrows():
         question_data = {
+            "id": row['id'],
             "question": row['question'],
             "answer": row['answer'],
             "solution": row['solution'],
-            "difficulty": row['difficulty'],
+            "difficulty": row['difficulty']
         }
         ferryman_json.append(question_data)
     

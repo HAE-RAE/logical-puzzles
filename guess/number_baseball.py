@@ -515,8 +515,18 @@ def create_dataset_files(num_questions: int):
             if problem:
                 is_valid, _ = validate_problem(problem)
                 if is_valid:
-                    problem['question'] = create_question(problem)
-                    all_puzzles.append(problem)
+                    # Reorder columns: id, question, answer, difficulty first
+                    reordered = {
+                        'id': f'number_baseball_{len(all_puzzles)}',
+                        'question': create_question(problem),
+                        'answer': problem['answer'],
+                        'difficulty': problem['difficulty'],
+                        'num_digits': problem['num_digits'],
+                        'hints': problem['hints'],
+                        'hint_text': problem['hint_text'],
+                        'problem_text': problem['problem_text']
+                    }
+                    all_puzzles.append(reordered)
                     generated += 1
             attempts += 1
 

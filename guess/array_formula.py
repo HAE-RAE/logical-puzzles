@@ -553,6 +553,7 @@ def generate_dataset(
                     problem_type=ptype,
                     seed=puzzle_seed
                 )
+                puzzle["id"] = f"array_formula_{len(puzzles)}"
                 puzzles.append(puzzle)
                 puzzle_seed += 1
 
@@ -627,10 +628,10 @@ def save_dataset(
 
         processed = {
             "id": puzzle["id"],
-            "difficulty": puzzle["difficulty"],
-            "type": puzzle["type"],
             "question": question,
             "answer": puzzle["answer"],
+            "difficulty": puzzle["difficulty"],
+            "type": puzzle["type"],
             "answer_type": puzzle.get("answer_type", "number"),
             "formula_hint": puzzle.get("formula_hint", ""),
             "tables": puzzle["tables"],
@@ -655,10 +656,10 @@ def save_dataset(
         for puzzle in processed_puzzles:
             row = {
                 "id": puzzle["id"],
-                "difficulty": puzzle["difficulty"],
-                "type": puzzle["type"],
                 "question": puzzle["question"],
                 "answer": puzzle["answer"],
+                "difficulty": puzzle["difficulty"],
+                "type": puzzle["type"],
                 "answer_type": puzzle["answer_type"],
                 "formula_hint": puzzle["formula_hint"],
                 "tables": json.dumps(puzzle["tables"], ensure_ascii=False),

@@ -409,6 +409,7 @@ def create_dataset_files(num_questions: int):
 
             if candidate:
                 puzzle_data = {
+                    "id": f"cryptarithmetic_{len(all_puzzles)}",
                     "question": create_question(candidate),
                     "answer": candidate.answer,
                     "solution": candidate.puzzle_str,

@@ -407,6 +407,7 @@ def create_dataset_files(num_questions: int):
     for i in range(num_questions):
         raw_problem, raw_answer, meta = generate_raw_hanoi_problem()
         puzzle_data = {
+            'id': f'hanoi_{i}',
             'question': raw_problem,
             'answer': raw_answer,
             'n': meta['n'],

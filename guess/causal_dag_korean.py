@@ -610,6 +610,7 @@ def create_dataset_files(num_questions: int):
         for j in range(count):
             puzzle = generator.generate_puzzle(difficulty, seed=i*1000+j)
             puzzle_data = {
+                'id': f'causal_dag_korean_{len(all_puzzles)}',
                 'question': create_question(puzzle),
                 'answer': str(puzzle.answer),
                 'difficulty': difficulty,
