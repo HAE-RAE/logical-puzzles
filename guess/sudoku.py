@@ -394,14 +394,14 @@ def generate_puzzle(difficulty: str = 'Any', symmetry: str = 'rot180',
 
         return {
             'id': f's9_{seed if seed else 0:06d}',
-            'puzzle': puzzle_str,
-            'solution': solution_str,
-            'givens_count': diff_info.givens_count,
-            'symmetry': symmetry,
             'difficulty': {
                 'label': diff_info.label,
                 'search_nodes': diff_info.search_nodes
             },
+            'puzzle': puzzle_str,
+            'solution': solution_str,
+            'givens_count': diff_info.givens_count,
+            'symmetry': symmetry,
             'spotcheck': {
                 'k': k,
                 'positions': positions,
@@ -439,6 +439,9 @@ def generate_5diff_dataset(output_path: str = None, k: int = 6, seed: int = 2025
             print(f"✗ {diff} 생성 실패: {e}")
             return None
 
+    for idx, puzzle in enumerate(puzzles):
+        puzzle['id'] = f'sudoku_{idx}'
+    
     # 저장
     if output_path is None:
         output_dir = Path(__file__).parent.parent / 'data' / 'sudoku'

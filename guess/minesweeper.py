@@ -320,10 +320,10 @@ def generate_puzzle(rows: int = 6, cols: int = 6, num_mines: int = 8,
 
             return {
                 'id': f'{difficulty}_{rows}x{cols}_{seed if seed else 0:04d}',
+                'difficulty': difficulty,
                 'rows': rows,
                 'cols': cols,
                 'mines': num_mines,
-                'difficulty': difficulty,
                 'puzzle': puzzle_str,
                 'solution': solution_str,
                 'revealed_cells': revealed,
@@ -384,6 +384,10 @@ def generate_dataset(output_path: str = None, num_puzzles_per_level: int = 5,
             except Exception as e:
                 print(f"  ✗ 생성 실패 (seed={puzzle_seed}): {e}")
 
+    # Re-assign ids to follow index-based naming convention
+    for idx, puzzle in enumerate(puzzles):
+        puzzle['id'] = f'minesweeper_{idx}'
+    
     # 저장
     if output_path is None:
         output_dir = Path(__file__).parent.parent / 'data' / 'minesweeper'

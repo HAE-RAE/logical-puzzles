@@ -33,46 +33,9 @@ def load_puzzles(dataset_path: str) -> List[dict]:
 
 
 def create_prompt(puzzle: dict) -> str:
-    """Create evaluation prompt from puzzle data"""
-    prompt = "You are given a logic puzzle. Determine which statements are true or false.\n\n"
-    
-    # Context
-    domain_contexts = {
-        'crime': "A crime has been committed. Based on the evidence, determine who is guilty.",
-        'meeting': "A meeting is being scheduled. Determine who will attend.",
-        'task': "Tasks are being assigned to teams. Determine which teams are assigned.",
-        'restaurant': "A group is ordering at a restaurant. Determine what will be ordered."
-    }
-    
-    if puzzle['domain'] in domain_contexts:
-        prompt += f"**Context:** {domain_contexts[puzzle['domain']]}\n\n"
-    
-    # Variables
-    prompt += f"**Variables:** {', '.join(puzzle['variables'])}\n\n"
-    
-    # Constraints
-    prompt += "**Constraints:**\n"
-    for i, constraint in enumerate(puzzle['constraints'], 1):
-        prompt += f"  {i}. {constraint}\n"
-    prompt += "\n"
-    
-    # Rules
-    prompt += "**Rules:**\n"
-    prompt += "  - Each variable is either True or False\n"
-    prompt += "  - All constraints must be satisfied simultaneously\n\n"
-    
-    # Question
-    prompt += f"**Question:** {puzzle['question']}\n\n"
-    
-    prompt += "**Instructions:**\n"
-    prompt += "Provide your answer in the following JSON format:\n"
-    prompt += "```json\n{\n"
-    for i, var in enumerate(puzzle['variables']):
-        comma = "," if i < len(puzzle['variables']) - 1 else ""
-        prompt += f'  "{var}": true{comma}  // or false\n'
-    prompt += "}\n```\n"
-    
-    return prompt
+    """Get the pre-generated prompt from puzzle data"""
+    # The complete prompt is already generated and stored in the 'question' field
+    return puzzle['question']
 
 
 def parse_answer(response: str, variables: List[str]) -> Optional[Dict[str, bool]]:

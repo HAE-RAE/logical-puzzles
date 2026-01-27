@@ -36,46 +36,8 @@ def load_puzzles(dataset_path: str) -> List[dict]:
 
 
 def create_prompt(puzzle: dict) -> str:
-    """퍼즐 데이터로부터 평가 프롬프트 생성"""
-    prompt = "논리 퍼즐이 주어집니다. 어떤 진술이 참이고 거짓인지 판단하세요.\n\n"
-    
-    # 맥락
-    domain_contexts = {
-        'crime': "범죄가 발생했습니다. 증거를 바탕으로 누가 유죄인지 판단하세요.",
-        'meeting': "회의 일정이 잡히고 있습니다. 누가 참석하는지 판단하세요.",
-        'task': "팀에게 작업이 할당되고 있습니다. 어떤 팀이 할당되는지 판단하세요.",
-        'restaurant': "단체가 식당에서 주문하고 있습니다. 무엇이 주문될지 판단하세요."
-    }
-    
-    if puzzle['domain'] in domain_contexts:
-        prompt += f"**상황:** {domain_contexts[puzzle['domain']]}\n\n"
-    
-    # 변수들
-    prompt += f"**변수:** {', '.join(puzzle['variables'])}\n\n"
-    
-    # 제약 조건들
-    prompt += "**제약 조건:**\n"
-    for i, constraint in enumerate(puzzle['constraints'], 1):
-        prompt += f"  {i}. {constraint}\n"
-    prompt += "\n"
-    
-    # 규칙들
-    prompt += "**규칙:**\n"
-    prompt += "  - 각 변수는 참(True) 또는 거짓(False)입니다\n"
-    prompt += "  - 모든 제약 조건은 동시에 만족되어야 합니다\n\n"
-    
-    # 질문
-    prompt += f"**질문:** {puzzle['question']}\n\n"
-    
-    prompt += "**지시사항:**\n"
-    prompt += "답변을 다음 JSON 형식으로 제공하세요:\n"
-    prompt += "```json\n{\n"
-    for i, var in enumerate(puzzle['variables']):
-        comma = "," if i < len(puzzle['variables']) - 1 else ""
-        prompt += f'  "{var}": true{comma}  // 또는 false\n'
-    prompt += "}\n```\n"
-    
-    return prompt
+    """퍼즐 데이터에서 미리 생성된 프롬프트 가져오기"""
+    return puzzle['question']
 
 
 def parse_answer(response: str, variables: List[str]) -> Optional[Dict[str, bool]]:

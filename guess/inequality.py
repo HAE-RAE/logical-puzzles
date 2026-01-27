@@ -313,6 +313,7 @@ def create_dataset_files(num_questions: int):
         for _ in range(count):
             puzzle = generator.generate_puzzle(difficulty)
             puzzle_data = {
+                "id": f"inequality_{len(all_puzzles)}",
                 "question": create_question(puzzle),
                 "answer": puzzle.get_answer_string(),
                 "solution": puzzle.to_problem_string(),
@@ -320,7 +321,6 @@ def create_dataset_files(num_questions: int):
                 "size": puzzle.size
             }
             all_puzzles.append(puzzle_data)
-
     print(f"\nGenerated {len(all_puzzles)} puzzles")
 
     df = pd.DataFrame(all_puzzles)

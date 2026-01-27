@@ -430,6 +430,8 @@ def create_dataset_files(num_questions):
     csv_dir = PROJECT_ROOT / "data" / "csv"
     csv_dir.mkdir(parents=True, exist_ok=True)
 
+    yacht_df.insert(0, 'id', [f"yacht_dice_{i}" for i in range(len(yacht_df))])
+
     csv_path = csv_dir / "yacht_dice.csv"
     yacht_df.to_csv(csv_path, index=False, encoding="utf-8-sig")
     print(f"\nCSV 파일이 생성: {csv_path}")
@@ -445,11 +447,12 @@ def create_dataset_files(num_questions):
         dice_results = generate_random_dice(seed=seed)
 
         question_data = {
+            "id": f"yacht_dice_{i}",
             "question": output[i][0],
             "answer": output[i][1],
             "solution": output[i][2],
-            "dice_results": dice_results,  # 추가
-            "seed": seed  # 추가
+            "dice_results": dice_results,
+            "seed": seed
         }
         yacht_json.append(question_data)
 

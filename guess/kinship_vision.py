@@ -770,6 +770,7 @@ def create_dataset_files(num_questions_per_difficulty=100):
                 q, a, e, choices, diff = generate_question(difficulty=difficulty)
                 
                 output.append({
+                    'id': f'kinship_vision_{len(output)}',
                     'question': q,
                     'answer': a,
                     'solution': "\n".join(e),
@@ -778,6 +779,7 @@ def create_dataset_files(num_questions_per_difficulty=100):
                 })
                 
                 all_generated_data.append({
+                    'id': f'kinship_vision_{len(all_generated_data)}',
                     'question': q,
                     'answer': a,
                     'solution': "\n".join(e),

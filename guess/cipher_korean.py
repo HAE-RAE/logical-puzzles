@@ -220,6 +220,7 @@ def create_hangul_dataset(num_per_level: int = 3):
             seed = 5000 + len(all_problems)
             problem = generator.generate_problem(config, seed)
             all_problems.append({
+                "id": f"cipher_korean_{len(all_problems)}",
                 "question": problem["problem"],
                 "answer": problem["answer"],
                 "solution": problem["solution"],

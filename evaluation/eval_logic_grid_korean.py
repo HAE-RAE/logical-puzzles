@@ -36,46 +36,8 @@ def load_puzzles(dataset_path: str) -> List[dict]:
 
 
 def create_prompt(puzzle: dict) -> str:
-    """퍼즐 데이터로부터 평가 프롬프트 생성"""
-    prompt = "논리 그리드 퍼즐이 주어집니다. 제약 조건을 사용하여 답을 추론하세요.\n\n"
-    
-    # 사람들
-    prompt += f"**사람:** {', '.join(puzzle['people'])}\n\n"
-    
-    # 속성들
-    prompt += "**속성:**\n"
-    for category, values in puzzle['attributes'].items():
-        prompt += f"  - {category}: {', '.join(values)}\n"
-    prompt += "\n"
-    
-    # 제약 조건들
-    prompt += "**제약 조건:**\n"
-    for i, constraint in enumerate(puzzle['constraints'], 1):
-        prompt += f"  {i}. {constraint}\n"
-    prompt += "\n"
-    
-    # 규칙들
-    prompt += "**규칙:**\n"
-    prompt += "  - 각 사람은 각 속성 카테고리에서 정확히 하나의 값을 가집니다\n"
-    prompt += "  - 두 사람이 같은 카테고리에서 같은 값을 공유할 수 없습니다\n"
-    prompt += "  - 모든 제약 조건은 동시에 만족되어야 합니다\n\n"
-    
-    # 질문
-    prompt += f"**질문:** {puzzle['question']}\n\n"
-    
-    prompt += "**지시사항:**\n"
-    prompt += "답변을 다음 JSON 형식으로 제공하세요:\n"
-    prompt += "```json\n"
-    prompt += "{\n"
-    for person in puzzle['people']:
-        prompt += f'  "{person}": {{'
-        cats = list(puzzle['attributes'].keys())
-        prompt += ', '.join([f'"{cat}": "값"' for cat in cats])
-        prompt += '},\n'
-    prompt = prompt.rstrip(',\n') + '\n'
-    prompt += "}\n```\n"
-    
-    return prompt
+    """퍼즐 데이터에서 미리 생성된 프롬프트 가져오기"""
+    return puzzle['question']
 
 
 def parse_answer(response: str, people: List[str], categories: List[str]) -> Optional[Dict[str, Dict[str, str]]]:
