@@ -357,7 +357,6 @@ def get_proper_particle(descriptor):
     return "은"
 
 def get_all_unique_titles():
-    """모든 호칭 목록을 추출합니다."""
     title_map = get_relation_chain_to_title()
     all_titles = set()
     
@@ -369,14 +368,61 @@ def get_all_unique_titles():
     
     return list(all_titles)
 
-def generate_question():
+def generate_question(difficulty="Medium"):
     title_map = get_relation_chain_to_title()
     relative_names = get_friend_names()
     descriptors = get_person_descriptors()
     dialogue_map = get_dialogue_templates()
 
+    difficulty_config = {
+        "Easy": {
+            "num_choices": 5,
+            "chain_distribution": {
+                3: 0.30,  # 30%
+                4: 0.30,  # 30%
+                5: 0.40   # 40%
+            }
+        },
+        "Medium": {
+            "num_choices": 5,
+            "chain_distribution": {
+                3: 0.20,  # 20%
+                4: 0.30,  # 30%
+                5: 0.50   # 50%
+            }
+        },
+        "Hard": {
+            "num_choices": 5,
+            "chain_distribution": {
+                3: 0.10,  # 10%
+                4: 0.30,  # 30%
+                5: 0.60   # 60%
+            }
+        }
+    }
+    
+    config = difficulty_config.get(difficulty, difficulty_config["Medium"])
+    num_choices = config["num_choices"]
+    chain_distribution = config["chain_distribution"]
+    
     all_chains = list(title_map.keys())
-    relation_chain = random.choice(all_chains)
+    chains_by_length = {
+        3: [chain for chain in all_chains if len(chain) == 3],
+        4: [chain for chain in all_chains if len(chain) == 4],
+        5: [chain for chain in all_chains if len(chain) >= 5]  # 5 이상
+    }
+    
+    chain_lengths = list(chain_distribution.keys())
+    weights = list(chain_distribution.values())
+    selected_length = random.choices(chain_lengths, weights=weights, k=1)[0]
+    
+    available_chains = chains_by_length.get(selected_length, [])
+    
+    if not available_chains:
+        logging.warning(f"No chains found for length {selected_length}. Using all chains.")
+        available_chains = all_chains
+    
+    relation_chain = random.choice(available_chains)
     raw_answer = title_map[relation_chain]
     
     # print(f"relation_chain: {relation_chain}")
@@ -407,8 +453,8 @@ def generate_question():
     
     intro_sentences = [
         "오랜만에 친구들이 우리 집에 놀러 왔다. 거실 벽에 걸린 가족사진을 보며 친구들이 이것저것 물어보았다.\n",
-        "집들이에 친구들을 초대했다. 새로 꾸민 거실을 구경하던 친구가 벽에 걸린 가족사진을 발견하고 물었다.\n",
-        "동창회에서 만난 친구와 카페에 앉아 이야기를 나누다가, 휴대폰 속 가족사진을 보여주며 이야기를 꺼냈다.\n"
+        "집들이에 친구들을 초대했다. 새로 꾸민 거실을 구경하던 친구들이 벽에 걸린 가족사진을 발견하고 물었다.\n",
+        "동창회에서 만난 친구들과 카페에 앉아 이야기를 나누다가, 휴대폰 속 가족사진을 보여주며 이야기를 꺼냈다.\n"
     ]
     
     dialogue_lines.append(random.choice(intro_sentences))
@@ -423,7 +469,7 @@ def generate_question():
         
         if clue_key not in dialogue_map:
             logging.warning(f"Dialogue template not found: {clue_key} (source_rel: {source_rel}, target_rel: {target_rel})")
-            return generate_question()
+            return generate_question(difficulty)
         
         available_speakers = [name for name in relative_names if name not in used_speakers]
         if not available_speakers:
@@ -461,11 +507,14 @@ def generate_question():
     else:
         wrong_titles = [t for t in all_titles if t != raw_answer]
     
-    if len(wrong_titles) < 3:
-        logging.warning("Not enough wrong answers available. Regenerating...")
-        return generate_question()
+    num_wrong_needed = num_choices - 1
     
-    wrong_choices = random.sample(wrong_titles, 3)
+    if len(wrong_titles) < num_wrong_needed:
+        logging.warning(f"Not enough wrong answers for difficulty {difficulty}. "
+                       f"Need {num_wrong_needed}, have {len(wrong_titles)}. Regenerating...")
+        return generate_question(difficulty)
+    
+    wrong_choices = random.sample(wrong_titles, num_wrong_needed)
     
     all_options = [correct_title] + wrong_choices
     random.shuffle(all_options)
@@ -480,7 +529,8 @@ def generate_question():
     
     particle = get_proper_particle(final_person)
     dialogue_lines.append(f"\n이때, 나는 {final_person}{particle} 어떻게 불러야 하는가?")
-    for letter in ['A', 'B', 'C', 'D']:
+    for i in range(num_choices):
+        letter = chr(65 + i)
         dialogue_lines.append(f"{letter}: {choices[letter]}")
     
     question = "\n".join(dialogue_lines)
@@ -498,79 +548,94 @@ def generate_question():
     explanation.append(f"[STEP {final_step + 1}] Answer: {correct_letter}")
     
 
-    return question, correct_letter, explanation, choices
+    return question, correct_letter, explanation, choices, difficulty
 
-def create_dataset_files(num_questions):
+def create_dataset_files(num_questions_per_difficulty=100):
     import pandas as pd
     import json
     
-    print(f"Generating {num_questions} kinship problems...")
+    difficulties = ["Easy", "Medium", "Hard"]
+    
+    print(f"Generating kinship problems by difficulty...")
     output = []
-    for i in range(num_questions):
-        q, answer, expl, choices = generate_question()
-        output.append([q, answer, "\n".join(expl), choices['A'], choices['B'], choices['C'], choices['D']])
+    all_generated_data = []
     
-    kinship_df = pd.DataFrame(output, columns=['question', 'answer', 'solution', 'choice_A', 'choice_B', 'choice_C', 'choice_D'])
+    for difficulty in difficulties:
+        print(f"\n=== Generating {difficulty} problems ({num_questions_per_difficulty} questions) ===")
+        for i in range(num_questions_per_difficulty):
+            try:
+                q, answer, expl, choices, diff = generate_question(difficulty=difficulty)
+                
+                output.append({
+                    'question': q,
+                    'answer': answer,
+                    'solution': "\n".join(expl),
+                    'difficulty': diff,
+                    'choices': json.dumps(choices, ensure_ascii=False)
+                })
+                
+                all_generated_data.append({
+                    'question': q,
+                    'answer': answer,
+                    'solution': "\n".join(expl),
+                    'difficulty': diff,
+                    'choices': choices
+                })
+                
+                if (i + 1) % 20 == 0:
+                    print(f"  Progress: {i + 1}/{num_questions_per_difficulty}")
+                    
+            except Exception as e:
+                logging.error(f"Error generating {difficulty} question: {e}")
+                continue
     
+    kinship_df = pd.DataFrame(output)
+    
+    print(f"\n=== Generation Summary ===")
     print(f"Total problems generated: {len(kinship_df)}")
     print(f"Unique problems: {kinship_df['question'].nunique()}")
     print(f"Duplicate problems: {len(kinship_df) - kinship_df['question'].nunique()}")
+    print(f"\nDifficulty breakdown:")
+    print(kinship_df['difficulty'].value_counts().sort_index())
     
+    # CSV 저장 (question, answer, solution, difficulty만)
     PROJECT_ROOT = Path(__file__).resolve().parent.parent
-    
     csv_dir = PROJECT_ROOT / "data" / "csv"
     csv_dir.mkdir(parents=True, exist_ok=True)
     
     csv_path = csv_dir / "kinship.csv"
     kinship_df.to_csv(csv_path, index=False, encoding="utf-8-sig")
     print(f"\nCSV file created! -> {csv_path}")
+    print(f"CSV columns: {list(kinship_df.columns)}")
     
+    # JSONL 저장 (choices 포함)
     json_dir = PROJECT_ROOT / "data" / "json"
     json_dir.mkdir(parents=True, exist_ok=True)
     
-    kinship_json = []
-    for idx, row in kinship_df.iterrows():
-        question_data = {
-            "question": row['question'],
-            "answer": row['answer'],
-            "solution": row['solution'],
-            "choices": {
-                "A": row['choice_A'],
-                "B": row['choice_B'],
-                "C": row['choice_C'],
-                "D": row['choice_D']
-            }
-        }
-        kinship_json.append(question_data)
-    
     jsonl_path = json_dir / "kinship.jsonl"
     with open(jsonl_path, 'w', encoding='utf-8') as f:
-        for item in kinship_json:
+        for item in all_generated_data:
             f.write(json.dumps(item, ensure_ascii=False) + '\n')
     
     print(f"JSONL file created! -> {jsonl_path}")
     
-    print("\nFirst problem example:")
-    print(json.dumps(kinship_json[0], ensure_ascii=False, indent=2))
-    
-    return kinship_df, kinship_json
+    return kinship_df, all_generated_data
 
 if __name__ == '__main__':
     import argparse
     
     parser = argparse.ArgumentParser(description="Kinship Puzzle Generator")
-    parser.add_argument("--num", type=int, default=100, help="Number of questions to generate")
+    parser.add_argument("--num", type=int, default=100, 
+                       help="Number of questions to generate per difficulty level")
     
     args = parser.parse_args()
     
-    create_dataset_files(num_questions=args.num)
-    
-    print("\n=== Sample Problem ===")
-    for _ in range(1):
-        question, answer, explanation, choices = generate_question()
-        print("[Q]", question)
-        print("[A]", answer)
-        print("\n--- Explanation ---")
-        for step in explanation:
-            print(step)
-        print("-" * 40)
+    create_dataset_files(num_questions_per_difficulty=args.num)
+
+    # print("\n=== Sample Problems by Difficulty ===")
+    # for diff in ["Easy", "Medium", "Hard"]:
+    #     question, answer, explanation, choices, difficulty = generate_question(difficulty=diff)
+    #     print(f"\n[{diff}] {len(choices)} choices")
+    #     print("[Q]", question)
+    #     print("[A]", answer)
+    #     print("-" * 60)

@@ -1,6 +1,8 @@
 import os
 import json
 import base64
+import re
+import time
 import pandas as pd
 from litellm import batch_completion
 from dotenv import load_dotenv
@@ -20,6 +22,31 @@ def load_kinship_vision_data(jsonl_path):
     
     df = pd.DataFrame(data)
     return df
+
+def extract_answer_letter(text):
+    """Extract answer letter (A-E) from model response"""
+    if not text:
+        return ""
+    
+    text = text.strip().upper()
+    
+    match = re.search(r'(?:^|\s)([A-E])(?:\s|$|[.,!?])', text)
+    if match:
+        return match.group(1)
+    
+    match = re.search(r'^([A-E])', text)
+    if match:
+        return match.group(1)
+    
+    match = re.search(r'([A-E])(?:[^A-Z]|$)', text)
+    if match:
+        return match.group(1)
+    
+    match = re.search(r'[A-E]', text)
+    if match:
+        return match.group(0)
+    
+    return ""
 
 def encode_image_to_base64(image_path):
     with open(image_path, 'rb') as image_file:
@@ -49,7 +76,7 @@ def get_queries(system_prompt, image_base64, kinship_data):
     
     return queries
 
-def get_response(qrys, model_name: str):
+def get_response(qrys, model_name: str, batch_size=3, delay_between_batches=3):
     if not qrys:
         raise ValueError("Query list is empty. Provide at least one query.")
     
@@ -57,23 +84,49 @@ def get_response(qrys, model_name: str):
     if uses_openai and not os.environ.get("OPENAI_API_KEY"):
         raise RuntimeError("OPENAI_API_KEY environment variable is not set. Please set it with: export OPENAI_API_KEY=...")
     
-    try:
-        temperature = 1.0 if "gpt-5" in model_name else 0.0
-        response = batch_completion(model=model_name, messages=qrys, temperature=temperature)
-    except Exception as e:
-        raise RuntimeError(f"LiteLLM batch_completion call failed: {e}")
-    
-    if not isinstance(response, list):
-        raise RuntimeError(f"Unexpected response type: {type(response)}")
-    
     contents = []
-    for idx, item in enumerate(response):
-        if not hasattr(item, "choices") or not item.choices:
-            raise RuntimeError(f"Invalid response received at index {idx}: {item}")
-        try:
-            contents.append(item.choices[0].message.content)
-        except Exception as e:
-            raise RuntimeError(f"Failed to parse response at index {idx}: {e}")
+    temperature = 1.0 if "gpt-5" in model_name else 0.0
+    total = len(qrys)
+    total_batches = (total + batch_size - 1) // batch_size
+    
+    for batch_idx in range(0, total, batch_size):
+        batch = qrys[batch_idx:batch_idx+batch_size]
+        current_batch_num = batch_idx // batch_size + 1
+        
+        print(f"Processing batch {current_batch_num}/{total_batches} ({len(batch)} questions)...")
+        
+        max_retries = 3
+        for retry in range(max_retries):
+            try:
+                response = batch_completion(model=model_name, messages=batch, temperature=temperature)
+                
+                if not isinstance(response, list):
+                    raise RuntimeError(f"Unexpected response type: {type(response)}")
+                
+                for idx, item in enumerate(response):
+                    if not hasattr(item, "choices") or not item.choices:
+                        raise RuntimeError(f"Invalid response at index {batch_idx+idx}: {item}")
+                    try:
+                        contents.append(item.choices[0].message.content)
+                    except Exception as e:
+                        raise RuntimeError(f"Failed to parse response at index {batch_idx+idx}: {e}")
+                
+                break
+                
+            except Exception as e:
+                error_str = str(e)
+                if "RateLimitError" in error_str or "rate limit" in error_str.lower():
+                    if retry < max_retries - 1:
+                        wait_time = delay_between_batches * (retry + 2)
+                        print(f"  Rate limit hit. Retrying in {wait_time}s... (attempt {retry+2}/{max_retries})")
+                        time.sleep(wait_time)
+                    else:
+                        raise RuntimeError(f"Rate limit exceeded after {max_retries} retries: {e}")
+                else:
+                    raise RuntimeError(f"LiteLLM batch_completion failed at batch {current_batch_num}: {e}")
+        
+        if current_batch_num < total_batches:
+            time.sleep(delay_between_batches)
     
     return contents
 
@@ -87,40 +140,61 @@ def save_results_to_excel(results_df, model_name, accuracy, output_dir="results"
     filepath = os.path.join(output_dir, filename)
     
     with pd.ExcelWriter(filepath, engine='openpyxl') as writer:
-        results_df.to_excel(writer, sheet_name='Detailed_Results', index=False)
+        detailed_columns = ['id', 'question', 'difficulty', 'correct_letter', 'model_response', 'model_letter', 'exact_match']
+        results_df[detailed_columns].to_excel(writer, sheet_name='Detailed_Results', index=False)
         
         summary_data = {
             'Model': [model_name],
             'Total_Questions': [len(results_df)],
-            'Correct_Answers': [results_df['Is_Correct'].sum()],
+            'Correct_Answers': [results_df['exact_match'].sum()],
             'Accuracy_Percentage': [accuracy],
             'Evaluation_Date': [datetime.now().strftime("%Y-%m-%d %H:%M:%S")]
         }
         summary_df = pd.DataFrame(summary_data)
         summary_df.to_excel(writer, sheet_name='Summary', index=False)
+        
+        # By_Difficulty
+        if 'difficulty' in results_df.columns:
+            difficulty_stats = []
+            for difficulty in ['Easy', 'Medium', 'Hard']:
+                diff_data = results_df[results_df['difficulty'] == difficulty]
+                if len(diff_data) > 0:
+                    correct = diff_data['exact_match'].sum()
+                    total = len(diff_data)
+                    accuracy_pct = (correct / total * 100) if total > 0 else 0
+                    difficulty_stats.append({
+                        'Difficulty': difficulty,
+                        'Total_Questions': total,
+                        'Correct_Answers': correct,
+                        'Accuracy_Percentage': accuracy_pct
+                    })
+            
+            if difficulty_stats:
+                difficulty_df = pd.DataFrame(difficulty_stats)
+                difficulty_df.to_excel(writer, sheet_name='By_Difficulty', index=False)
     
     print(f"\nEvaluation results saved to Excel file: {filepath}")
     return filepath
 
 def evaluate_kinship_vision_model(model_name, save_to_excel=True):
-    system_prompt = """당신은 한국어 가족 관계 호칭을 정확히 파악하는 전문가입니다. 
+    system_prompt = """당신은 한국어 가족 관계 호칭 문제를 푸는 전문가입니다. 
 
 ### 규칙
 1. 제공된 가족 사진을 참고하여, 주어진 대화에서 설명하는 인물을 찾으세요.
 2. 대화를 단계별로 분석하여 각 인물 간의 관계를 추론하세요.
-3. 최종 질문에 대한 답을 A, B, C, D 중에서 선택하세요.
-4. 답변은 반드시 알파벳 한 글자만 출력하세요 (예: A 또는 B 또는 C 또는 D).
-5. 추가 설명이나 다른 텍스트를 포함하지 마세요.
+3. 문제에 제시된 선택지 중 정답에 해당하는 알파벳(A, B, C, D, E)만 답하세요.
+4. 추가 설명 없이 알파벳 하나만 출력하세요.
 
-### Output Format
-Output only a single letter: A, B, C, D
+### 출력 형식
+정답 알파벳만 출력하세요. 예: A
+
 """
 
     print(f"Model: {model_name}")
     print(f"System Prompt: {system_prompt}")
     print("=" * 50)
     
-    jsonl_path = os.path.join(PROJECT_ROOT, 'data', 'json', 'KINSHIP_VISION_v5_hard.jsonl')
+    jsonl_path = os.path.join(PROJECT_ROOT, 'data', 'json', 'kinship_vision.jsonl')
     kinship_data = load_kinship_vision_data(jsonl_path)
     
     image_path = os.path.join(PROJECT_ROOT, 'evaluation_data', 'kinshop_vision', 'kinship.jpg')
@@ -142,19 +216,19 @@ Output only a single letter: A, B, C, D
         print("\n=== Evaluation Results ===")
         for i, (_, row) in enumerate(kinship_data.iterrows()):
             question = row['question']
-            correct_answer = row['answer']
-            model_answer = responses[i].strip().upper()
+            correct_letter = row['answer']
             
-            model_answer_clean = None
-            for char in model_answer:
-                if char in ['A', 'B', 'C', 'D']:
-                    model_answer_clean = char
-                    break
+            if 'choices' in row and isinstance(row['choices'], dict):
+                choices = row['choices']
+            else:
+                choices = {}
             
-            if model_answer_clean is None:
-                model_answer_clean = model_answer[:1] if model_answer else ""
+            difficulty = row.get('difficulty', 'Unknown')
             
-            is_correct = model_answer_clean == correct_answer
+            model_answer_raw = responses[i].strip()
+            model_letter = extract_answer_letter(model_answer_raw)
+            
+            is_correct = (model_letter == correct_letter)
             
             if is_correct:
                 correct_count += 1
@@ -162,22 +236,34 @@ Output only a single letter: A, B, C, D
             results_data.append({
                 'id': i + 1,
                 'question': question,
-                'target': correct_answer,
-                'resps': model_answer_clean,
-                'Is_Correct': is_correct,
+                'difficulty': difficulty,
+                'correct_letter': correct_letter,
+                'model_response': model_answer_raw,
+                'model_letter': model_letter,
+                'exact_match': 1 if is_correct else 0,
                 'model': model_name
             })
             
-            print(f"\nQuestion {i+1}: {question[:100]}...")
-            print(f"Correct Answer: {correct_answer}")
-            print(f"Model Answer: {model_answer_clean} (Raw: {model_answer})")
+            print(f"\nQuestion {i+1} ({difficulty}): {question[:100]}...")
+            print(f"Correct Answer: {correct_letter}")
+            print(f"Model Answer: {model_letter} (Raw: {model_answer_raw})")
             print(f"Result: {'✓' if is_correct else '✗'}")
         
         results_df = pd.DataFrame(results_data)
         
         accuracy = correct_count / total_count * 100
         print(f"\n=== Final Results ===")
-        print(f"Accuracy: {accuracy:.2f}% ({correct_count}/{total_count})")
+        print(f"Overall Accuracy: {accuracy:.2f}% ({correct_count}/{total_count})")
+        
+        if 'difficulty' in results_df.columns:
+            print(f"\n=== Accuracy by Difficulty ===")
+            for difficulty in ['Easy', 'Medium', 'Hard']:
+                diff_data = results_df[results_df['difficulty'] == difficulty]
+                if len(diff_data) > 0:
+                    diff_correct = diff_data['exact_match'].sum()
+                    diff_total = len(diff_data)
+                    diff_accuracy = (diff_correct / diff_total * 100) if diff_total > 0 else 0
+                    print(f"{difficulty}: {diff_accuracy:.2f}% ({diff_correct}/{diff_total})")
         
         if save_to_excel:
             excel_path = save_results_to_excel(results_df, model_name, accuracy)
