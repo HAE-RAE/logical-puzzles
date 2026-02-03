@@ -31,6 +31,6 @@ $RECYCLE.BIN/
 hrmcr/
 csv/
 json/
-results/
+results*/
 evaluation_results/
 data/
