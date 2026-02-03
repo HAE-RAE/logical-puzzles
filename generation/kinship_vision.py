@@ -519,22 +519,23 @@ def generate_question(difficulty="Medium"):
     actors_db = get_actors_db()
 
     # 1. Select chain based on difficulty
+    difficulty_lower = difficulty.lower() if isinstance(difficulty, str) else difficulty
     difficulty_config = {
-        "Easy": {
+        "easy": {
             "chain_distribution": {
                 3: 0.30,
                 4: 0.30,
                 5: 0.40
             }
         },
-        "Medium": {
+        "medium": {
             "chain_distribution": {
                 3: 0.20,
                 4: 0.30,
                 5: 0.50
             }
         },
-        "Hard": {
+        "hard": {
             "chain_distribution": {
                 3: 0.10,
                 4: 0.30,
@@ -543,7 +544,7 @@ def generate_question(difficulty="Medium"):
         }
     }
     
-    config = difficulty_config.get(difficulty, difficulty_config["Medium"])
+    config = difficulty_config.get(difficulty_lower, difficulty_config["medium"])
     chain_distribution = config["chain_distribution"]
     
     all_chains = list(title_map.keys())
@@ -737,7 +738,7 @@ def generate_question(difficulty="Medium"):
         explanation.append(f"[STEP {final_step}] Therefore, the final title for the combined relationship '{temp_chain_str}' is '{answer}'.")
         explanation.append(f"[STEP {final_step + 1}] Answer: {correct_letter}")
 
-    return question, correct_letter, explanation, choices, difficulty
+    return question, correct_letter, explanation, choices, difficulty.lower()
 
 def create_dataset_files(num_questions_per_difficulty=100):
     print(f"Generating kinship problems (Visual Benchmark) by difficulty...")
@@ -759,7 +760,7 @@ def create_dataset_files(num_questions_per_difficulty=100):
         print(f"  {combo}: {count} people")
     print("=" * 40 + "\n")
     
-    difficulties = ["Easy", "Medium", "Hard"]
+    difficulties = ["easy", "medium", "hard"]
     output = []
     all_generated_data = []
     

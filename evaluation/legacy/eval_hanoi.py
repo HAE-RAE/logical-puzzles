@@ -176,7 +176,8 @@ def evaluate_hanoi_model(model_name, save_to_excel=True):
             "gold_answer": row["answer"],
             "model_raw": responses[i],
             "model_extracted": model_ans,
-            "exact_match": ok
+            "exact_match": ok,
+            "difficulty": "medium"  # 난이도 임시 설정
         })
 
     acc = correct / len(data) * 100

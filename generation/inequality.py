@@ -19,6 +19,14 @@ class Difficulty(Enum):
     HARD = 3      # 5-6 numbers, few hints
     EXPERT = 4    # 6-7 numbers, minimal hints
 
+# 난이도 이름을 소문자로 매핑
+DIFFICULTY_NAME_MAP = {
+    Difficulty.EASY: "easy",
+    Difficulty.MEDIUM: "medium",
+    Difficulty.HARD: "hard",
+    Difficulty.EXPERT: "expert"
+}
+
 
 @dataclass
 class InequalityPuzzle:
@@ -52,7 +60,7 @@ class InequalityPuzzle:
         return {
             "problem": self.to_problem_string(),
             "answer": self.get_answer_string(),
-            "difficulty": self.difficulty.name,
+            "difficulty": DIFFICULTY_NAME_MAP[self.difficulty],
             "size": self.size,
             "given_positions": list(self.given_numbers.keys()),
             "given_values": list(self.given_numbers.values())
@@ -317,7 +325,7 @@ def create_dataset_files(num_questions: int):
                 "question": create_question(puzzle),
                 "answer": puzzle.get_answer_string(),
                 "solution": puzzle.to_problem_string(),
-                "difficulty": difficulty.name,
+                "difficulty": DIFFICULTY_NAME_MAP[difficulty],
                 "size": puzzle.size
             }
             all_puzzles.append(puzzle_data)

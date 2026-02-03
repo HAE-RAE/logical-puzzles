@@ -13,28 +13,28 @@ import math
 
 DIFFICULTY_CONFIG = {
     "LEVEL_0": {
-        "name": "EXPERT",
+        "name": "expert",
         "cipher_stack": ["playfair", "transposition", "vigenere"],
         "keyword_logic": "extraction",
         "hint_count": 2,
         "description": "Playfair + Transposition + Vigenere with Conditional Key / 2 Hints"
     },
     "LEVEL_1": {
-        "name": "HARD",
+        "name": "hard",
         "cipher_stack": ["playfair", "vigenere"],
         "keyword_logic": "positional",
         "hint_count": 4,
         "description": "Playfair + Vigenere / 4 Hints"
     },
     "LEVEL_2": {
-        "name": "MEDIUM",
+        "name": "medium",
         "cipher_stack": ["vigenere", "reverse"],
         "keyword_logic": "positional",
         "hint_count": 6,
         "description": "Vigenere + Reverse / 6 Hints"
     },
     "LEVEL_3": {
-        "name": "EASY",
+        "name": "easy",
         "cipher_stack": ["vigenere"],
         "keyword_logic": "direct", # 키워드 직접 명시
         "hint_count": 12,
@@ -308,7 +308,8 @@ def create_advanced_dataset(num_per_level: int = 2):
     generator = SelfContainedCipherGenerator()
     all_problems = []
 
-    for level_key in sorted(DIFFICULTY_CONFIG.keys()):
+    # 쉬운 난이도부터 어려운 순서로 생성 (LEVEL_3: EASY -> LEVEL_0: EXPERT)
+    for level_key in reversed(sorted(DIFFICULTY_CONFIG.keys())):
         config = DIFFICULTY_CONFIG[level_key]
         difficulty = config["name"]
 

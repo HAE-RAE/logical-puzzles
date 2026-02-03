@@ -153,7 +153,7 @@ class CausalPuzzleGenerator:
         인과관계 추론 퍼즐 생성
         
         Args:
-            difficulty: 'Easy', 'Medium', 또는 'Hard'
+            difficulty: 'easy', 'medium', 또는 'hard'
             seed: 재현성을 위한 난수 시드
         
         Returns:
@@ -164,21 +164,21 @@ class CausalPuzzleGenerator:
         
         # 난이도 설정
         config = {
-            'Easy': {
+            'easy': {
                 'num_events': random.randint(18, 22),
                 'edge_density': 0.50,
                 'delay_range': (15, 80),
                 'max_out_degree': 3,
                 'and_probability': 0.4,
             },
-            'Medium': {
+            'medium': {
                 'num_events': random.randint(45, 55),
                 'edge_density': 0.70,
                 'delay_range': (30, 150),
                 'max_out_degree': 5,
                 'and_probability': 0.92,
             },
-            'Hard': {
+            'hard': {
                 'num_events': random.randint(80, 100),
                 'edge_density': 0.80,
                 'delay_range': (50, 250),
@@ -601,7 +601,7 @@ def create_dataset_files(num_questions: int):
     puzzles_per_diff = num_questions // 3
     remainder = num_questions % 3
     
-    difficulties = ['Easy', 'Medium', 'Hard']
+    difficulties = ['easy', 'medium', 'hard']
     all_puzzles = []
     
     for i, difficulty in enumerate(difficulties):

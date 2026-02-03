@@ -38,6 +38,14 @@ class Difficulty(Enum):
     HARD = 3      # 4 digits, 4-5 hints, strategic hints
     EXPERT = 4    # 4 digits, minimal hints (3-4), requires deep reasoning
 
+# 난이도 이름을 소문자로 매핑
+DIFFICULTY_NAME_MAP = {
+    Difficulty.EASY: "easy",
+    Difficulty.MEDIUM: "medium",
+    Difficulty.HARD: "hard",
+    Difficulty.EXPERT: "expert"
+}
+
 
 class BullsAndCows:
     """Core game logic for Bulls and Cows (Number Baseball)"""
@@ -207,7 +215,7 @@ class ProblemGenerator:
 
         # Create problem dictionary
         problem = {
-            "difficulty": difficulty.name,
+            "difficulty": DIFFICULTY_NAME_MAP[difficulty],
             "num_digits": num_digits,
             "hints": [hint.to_dict() for hint in hints],
             "hint_text": self._format_hints(hints),
@@ -298,7 +306,7 @@ class ProblemGenerator:
             if len(solutions) == 1:
                 # Success! Unique solution found
                 return {
-                    "difficulty": difficulty.name,
+                    "difficulty": DIFFICULTY_NAME_MAP[difficulty],
                     "num_digits": game.num_digits,
                     "hints": [hint.to_dict() for hint in hints],
                     "hint_text": self._format_hints(hints),

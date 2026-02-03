@@ -151,7 +151,7 @@ class CausalPuzzleGenerator:
         Generate a causal reasoning puzzle
         
         Args:
-            difficulty: 'Easy', 'Medium', or 'Hard'
+            difficulty: 'easy', 'medium', or 'hard'
             seed: Random seed for reproducibility
         
         Returns:
@@ -162,21 +162,21 @@ class CausalPuzzleGenerator:
         
         # Difficulty configuration (calibrated for gpt-4o ~70/40/10%)
         config = {
-            'Easy': {
+            'easy': {
                 'num_events': random.randint(18, 22),
                 'edge_density': 0.50,
                 'delay_range': (15, 80),
                 'max_out_degree': 3,
                 'and_probability': 0.4,  # 40% AND conditions
             },
-            'Medium': {
+            'medium': {
                 'num_events': random.randint(45, 55),
                 'edge_density': 0.70,
                 'delay_range': (30, 150),
                 'max_out_degree': 5,
                 'and_probability': 0.92,  # 92% AND conditions
             },
-            'Hard': {
+            'hard': {
                 'num_events': random.randint(80, 100),
                 'edge_density': 0.80,
                 'delay_range': (50, 250),
@@ -599,7 +599,7 @@ def create_dataset_files(num_questions: int):
     puzzles_per_diff = num_questions // 3
     remainder = num_questions % 3
     
-    difficulties = ['Easy', 'Medium', 'Hard']
+    difficulties = ['easy', 'medium', 'hard']
     all_puzzles = []
     
     for i, difficulty in enumerate(difficulties):

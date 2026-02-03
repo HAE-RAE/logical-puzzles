@@ -1,0 +1,40 @@
+llm:
+  model: gemini/gemini-3-flash-preview
+  temperature: 1.0
+  max_tokens: 65536
+  top_p: 0.95
+  top_k: 64
+  # reasoning_effort: medium
+  timeout: 600.0
+
+data_dir: data/json
+
+output_dir: results
+
+evaluation:
+  use_async: true
+  max_concurrent: 30
+
+tasks:
+  - array_formula
+  - causal_dag
+  - causal_dag_korean
+  - cipher
+  - cipher_korean
+  - cryptarithmetic
+  - ferryman
+  - hanoi
+  - inequality
+  - kinship
+  - kinship_vision
+  - logic_grid
+  - logic_grid_korean
+  - number_baseball
+  - sat_puzzles
+  - sat_puzzles_korean
+  - yacht_dice
+
+# difficulties:
+#   - easy
+#   - medium
+#   - hard

@@ -17,28 +17,28 @@ import math
 
 DIFFICULTY_CONFIG = {
     "LEVEL_0": {
-        "name": "EXPERT",
+        "name": "expert",
         "cipher_stack": ["cho_shift", "jung_sub", "reverse", "cho_shift"],
         "keyword_logic": "extraction",
         "hint_count": 0,
         "description": "Double Shift + Substitution + Reverse / 0 Hints"
     },
     "LEVEL_1": {
-        "name": "HARD",
+        "name": "hard",
         "cipher_stack": ["cho_shift", "jung_sub", "reverse"],
         "keyword_logic": "positional",
         "hint_count": 1,
         "description": "Shift + Substitution + Reverse / 1 Hint"
     },
     "LEVEL_2": {
-        "name": "MEDIUM",
+        "name": "medium",
         "cipher_stack": ["cho_shift", "jung_sub"],
         "keyword_logic": "positional",
         "hint_count": 2,
         "description": "Shift + Substitution / 2 Hints"
     },
     "LEVEL_3": {
-        "name": "EASY",
+        "name": "easy",
         "cipher_stack": ["cho_shift"],
         "keyword_logic": "direct",
         "hint_count": 2,
@@ -210,7 +210,8 @@ def create_hangul_dataset(num_per_level: int = 3):
     generator = HangulCipherGenerator()
     all_problems = []
 
-    for level_key in sorted(DIFFICULTY_CONFIG.keys()):
+    # 쉬운 난이도부터 어려운 순서로 생성 (LEVEL_3: easy -> LEVEL_0: expert)
+    for level_key in reversed(sorted(DIFFICULTY_CONFIG.keys())):
         config = DIFFICULTY_CONFIG[level_key]
         difficulty = config["name"]
         

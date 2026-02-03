@@ -16,9 +16,9 @@ from itertools import permutations, combinations
 
 
 class Difficulty(str, Enum):
-    EASY = "Easy"
-    MEDIUM = "Medium"
-    HARD = "Hard"
+    EASY = "easy"
+    MEDIUM = "medium"
+    HARD = "hard"
 
 
 @dataclass
@@ -398,15 +398,14 @@ def generate_dataset(
     generator = LogicGridGenerator(seed=seed)
     puzzles = []
     
-    # Generate balanced dataset
+    # Generate balanced dataset - 쉬운 난이도부터 어려운 순서로 생성
     per_difficulty = num_samples // 3
     remaining = num_samples - (per_difficulty * 3)
     
+    # 쉬운 순서로 생성 (EASY -> MEDIUM -> HARD)
     difficulties = [Difficulty.EASY] * per_difficulty + \
                   [Difficulty.MEDIUM] * per_difficulty + \
                   [Difficulty.HARD] * (per_difficulty + remaining)
-    
-    random.shuffle(difficulties)
     
     print(f"Generating {num_samples} logic grid puzzles...")
     

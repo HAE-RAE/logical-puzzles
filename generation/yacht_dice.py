@@ -412,12 +412,12 @@ def create_dataset_files(num_questions):
         question = format_user_prompt(dice_results)
         answer = f"{optimal_score}"
 
-        output.append([question, answer, optimal_solution])
+        output.append([question, answer, optimal_solution, "medium"])
 
         if (i + 1) % 10 == 0:
             print(f"  진행: {i+1}/{num_questions}")
 
-    yacht_df = pd.DataFrame(output, columns=['question', 'answer', 'solution'])
+    yacht_df = pd.DataFrame(output, columns=['question', 'answer', 'solution', 'difficulty'])
 
     print(f"\n생성 통계:")
     print(f"  생성된 문제 수: {len(yacht_df)}")
@@ -451,6 +451,7 @@ def create_dataset_files(num_questions):
             "question": output[i][0],
             "answer": output[i][1],
             "solution": output[i][2],
+            "difficulty": output[i][3],
             "dice_results": dice_results,
             "seed": seed
         }

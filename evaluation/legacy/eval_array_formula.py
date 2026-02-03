@@ -30,7 +30,7 @@ except ImportError:
     OPENAI_AVAILABLE = False
 
 try:
-    import anthropic
+    import anthropic  # type: ignore
     ANTHROPIC_AVAILABLE = True
 except ImportError:
     ANTHROPIC_AVAILABLE = False

@@ -84,7 +84,7 @@ def template_min_moves(ctx: Context) -> Tuple[str, str]:
         f"following the usual rules (move one disk at a time, never placing a larger disk on a smaller one).\n"
         f"What is the minimum number of moves needed to complete the puzzle?"
     )
-    answer = f"The minimum number of moves is {total}."
+    answer = f"({total}, {total}, {total})"
     return problem, answer
 
 
@@ -93,12 +93,14 @@ def template_kth_disk(ctx: Context) -> Tuple[str, str]:
     src, aux, dst = ctx["src"], ctx["aux"], ctx["dst"]
     k = ctx["k"]
     disk_k = ctx["disk_k"]
+    from_k = ctx["from_k"]
+    to_k = ctx["to_k"]
     problem = (
         f"Consider the optimal solution of a Tower of Hanoi puzzle with {n} disks.\n"
         f"All disks start on Peg {src} and must be moved to Peg {dst} (Peg {aux} is auxiliary).\n"
         f"In this optimal sequence, which disk is moved on the {k}-th move?"
     )
-    answer = f"On the {k}-th move, Disk {disk_k} is moved."
+    answer = f"({disk_k}, {from_k}, {to_k})"
     return problem, answer
 
 
@@ -106,13 +108,14 @@ def template_kth_from_to(ctx: Context) -> Tuple[str, str]:
     n = ctx["n"]
     src, aux, dst = ctx["src"], ctx["aux"], ctx["dst"]
     k = ctx["k"]
+    disk_k = ctx["disk_k"]
     i_k, j_k = ctx["from_k"], ctx["to_k"]
     problem = (
         f"In the optimal {n}-disk Tower of Hanoi solution from Peg {src} to Peg {dst}\n"
         f"(with Peg {aux} as auxiliary), consider the {k}-th move in the sequence.\n"
         f"From which peg to which peg does the disk move on that {k}-th move?"
     )
-    answer = f"On the {k}-th move, the disk moves from Peg {i_k} to Peg {j_k}."
+    answer = f"({disk_k}, {i_k}, {j_k})"
     return problem, answer
 
 
@@ -126,7 +129,7 @@ def template_kth_full_triplet(ctx: Context) -> Tuple[str, str]:
         f"and must be moved to Peg {dst} using Peg {aux} as auxiliary.\n"
         f"Describe the {k}-th move in the form (disk, from_peg, to_peg)."
     )
-    answer = f"The {k}-th move is (disk, from_peg, to_peg) = ({disk_k}, {i_k}, {j_k})."
+    answer = f"({disk_k}, {i_k}, {j_k})"
     return problem, answer
 
 
@@ -137,12 +140,13 @@ def template_largest_disk_move(ctx: Context) -> Tuple[str, str]:
     largest = n
     move_index = next(
         idx for idx, (d, _, _) in enumerate(moves) if d == largest
-    ) + 1  # 1-based
+    )
+    disk_k, from_k, to_k = moves[move_index]
     problem = (
         f"In the optimal solution of a Tower of Hanoi puzzle with {n} disks,\n"
         f"on which move number does the largest disk (Disk {n}) move?"
     )
-    answer = f"The largest disk (Disk {n}) moves on move {move_index}."
+    answer = f"({disk_k}, {from_k}, {to_k})"
     return problem, answer
 
 
@@ -156,7 +160,7 @@ def template_disk_move_count(ctx: Context) -> Tuple[str, str]:
         f"In the optimal solution for a Tower of Hanoi puzzle with {n} disks,\n"
         f"how many times does Disk {disk} move in total?"
     )
-    answer = f"In the optimal solution, Disk {disk} moves {count} times."
+    answer = f"({disk}, {count}, {count})"
     return problem, answer
 
 
@@ -170,10 +174,12 @@ def template_disks_on_peg_after_k(ctx: Context) -> Tuple[str, str]:
     peg = random.choice([src, aux, dst])
     disks_on_peg = sorted(pegs_after_k[peg])
     if disks_on_peg:
-        disk_list_str = ", ".join(str(d) for d in disks_on_peg)
-        ans_str = f"Disks {disk_list_str} are on Peg {peg}."
+        # 첫 번째 디스크 사용
+        first_disk = disks_on_peg[0]
+        ans_str = f"({first_disk}, {peg}, {peg})"
     else:
-        ans_str = f"No disks are on Peg {peg}."
+        # 디스크가 없으면 peg 번호 사용
+        ans_str = f"({peg}, {peg}, {peg})"
 
     problem = (
         f"In a Tower of Hanoi puzzle with {n} disks (Peg {src} → Peg {dst}, Peg {aux} auxiliary),\n"
@@ -196,7 +202,7 @@ def template_inverse_find_n(ctx: Context) -> Tuple[str, str]:
         f"Assuming the puzzle uses the standard rules and the solution is minimal,\n"
         f"how many disks are in this Tower of Hanoi puzzle?"
     )
-    answer = f"The puzzle has {n} disks."
+    answer = f"({n}, {n}, {n})"
     return problem, answer
 
 
@@ -221,7 +227,7 @@ def template_where_is_disk_after_k(ctx: Context) -> Tuple[str, str]:
         f"and must be moved to Peg {dst}, using Peg {aux} as auxiliary.\n"
         f"After exactly {k} moves, on which peg is Disk {disk} located?"
     )
-    answer = f"After {k} moves, Disk {disk} is on Peg {peg_of_disk}."
+    answer = f"({disk}, {peg_of_disk}, {peg_of_disk})"
     return problem, answer
 
 
@@ -239,7 +245,7 @@ def template_disk_k_total_moves(ctx: Context) -> Tuple[str, str]:
         f"Let the disk moved at this step be called Disk X (here, X = Disk {disk_k}).\n"
         f"In the entire solution, how many times does this Disk X move?"
     )
-    answer = f"Disk {disk_k} (the disk moved on step {k}) moves {count} times in total."
+    answer = f"({disk_k}, {count}, {count})"
     return problem, answer
 
 
@@ -410,6 +416,7 @@ def create_dataset_files(num_questions: int):
             'id': f'hanoi_{i}',
             'question': raw_problem,
             'answer': raw_answer,
+            'difficulty': 'medium',
             'n': meta['n'],
             'src': meta['src'],
             'aux': meta['aux'],

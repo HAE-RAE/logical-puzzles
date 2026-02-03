@@ -294,7 +294,7 @@ def main():
     for r in all_results:
         by_difficulty[r['difficulty']].append(r)
 
-    for diff in ['Easy', 'Medium', 'Hard', 'Expert']:
+    for diff in ['easy', 'medium', 'hard', 'expert']:
         if diff in by_difficulty:
             items = by_difficulty[diff]
             correct = sum(1 for r in items if r['correct'])

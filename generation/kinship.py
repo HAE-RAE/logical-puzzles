@@ -374,8 +374,9 @@ def generate_question(difficulty="Medium"):
     descriptors = get_person_descriptors()
     dialogue_map = get_dialogue_templates()
 
+    difficulty_lower = difficulty.lower() if isinstance(difficulty, str) else difficulty
     difficulty_config = {
-        "Easy": {
+        "easy": {
             "num_choices": 5,
             "chain_distribution": {
                 3: 0.30,  # 30%
@@ -383,7 +384,7 @@ def generate_question(difficulty="Medium"):
                 5: 0.40   # 40%
             }
         },
-        "Medium": {
+        "medium": {
             "num_choices": 5,
             "chain_distribution": {
                 3: 0.20,  # 20%
@@ -391,7 +392,7 @@ def generate_question(difficulty="Medium"):
                 5: 0.50   # 50%
             }
         },
-        "Hard": {
+        "hard": {
             "num_choices": 5,
             "chain_distribution": {
                 3: 0.10,  # 10%
@@ -401,7 +402,7 @@ def generate_question(difficulty="Medium"):
         }
     }
     
-    config = difficulty_config.get(difficulty, difficulty_config["Medium"])
+    config = difficulty_config.get(difficulty_lower, difficulty_config["medium"])
     num_choices = config["num_choices"]
     chain_distribution = config["chain_distribution"]
     
@@ -548,7 +549,7 @@ def generate_question(difficulty="Medium"):
     explanation.append(f"[STEP {final_step + 1}] Answer: {correct_letter}")
     
 
-    return question, correct_letter, explanation, choices, difficulty
+    return question, correct_letter, explanation, choices, difficulty.lower()
 
 def create_dataset_files(num_questions_per_difficulty=100):
     import pandas as pd

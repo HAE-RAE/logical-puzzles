@@ -268,7 +268,7 @@ def generate_dataset(
         List of puzzle dictionaries ready for evaluation
     """
     if difficulties is None:
-        difficulties = ["Easy", "Medium", "Hard", "Expert"]
+        difficulties = ["easy", "medium", "hard", "expert"]
 
     dataset = []
     used_patterns = set()
@@ -347,13 +347,13 @@ def generate_and_validate(
 
         # Auto-determine difficulty
         if unique_letters <= 4:
-            difficulty = "Easy"
+            difficulty = "easy"
         elif unique_letters <= 6:
-            difficulty = "Medium"
+            difficulty = "medium"
         elif unique_letters <= 8:
-            difficulty = "Hard"
+            difficulty = "hard"
         else:
-            difficulty = "Expert"
+            difficulty = "expert"
 
         return {
             "question": question,
