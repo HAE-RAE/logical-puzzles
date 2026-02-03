@@ -1,0 +1,165 @@
+# Logical-Puzzles Dataset Generation Guide
+
+A collection of scripts for generating datasets for 19 logical puzzle tasks.
+
+## 📋 Supported Tasks
+
+| Task | Script | Difficulty | Default Count |
+|------|--------|------------|---------------|
+| Array Formula | `array_formula.py` | Easy, Medium, Hard | 25 |
+| Causal DAG Korean | `causal_dag_korean.py` | Easy, Medium, Hard | 300 |
+| Causal DAG | `causal_dag.py` | Easy, Medium, Hard | 300 |
+| Cipher Korean | `cipher_korean.py` | Easy, Medium, Hard, Very Hard, Extreme | 100 |
+| Cipher | `cipher.py` | Easy, Medium, Hard, Expert | 100 |
+| Cryptarithmetic | `cryptarithmetic.py` | Easy, Medium, Hard, Expert | 400 |
+| Ferryman | `ferryman.py` | Easy, Medium, Hard | 100 |
+| Hanoi | `hanoi.py` | - | 100 |
+| Inequality | `inequality.py` | Easy, Medium, Hard, Expert | 400 |
+| Kinship | `kinship.py` | - | 100 |
+| Kinship Vision | `kinship_vision.py` | - | 100 |
+| Logic Grid Korean | `logic_grid_korean.py` | Easy, Medium, Hard | 300 |
+| Logic Grid | `logic_grid.py` | Easy, Medium, Hard | 300 |
+| Minesweeper | `minesweeper.py` | Easy, Medium, Hard | - |
+| Number Baseball | `number_baseball.py` | Easy, Medium, Hard, Expert | 400 |
+| SAT Puzzle Korean | `sat_puzzle_korean.py` | Easy, Medium, Hard | 300 |
+| SAT Puzzle | `sat_puzzle.py` | Easy, Medium, Hard | 300 |
+| Sudoku | `sudoku.py` | Medium, Hard, Expert, Extreme | - |
+| Yacht Dice | `yacht_dice.py` | - | 100 |
+
+## 🚀 Usage
+
+### Individual Task Generation
+
+```bash
+# Run from project root
+cd logical-puzzles
+
+# Generate with default count
+python generation/kinship.py
+
+# Specify count
+python generation/kinship.py --num 200
+
+# Other task examples
+python generation/cipher.py --num 100
+python generation/logic_grid.py --num-samples 300
+```
+
+### Batch Generation
+
+```bash
+# Generate all tasks at once
+bash scripts/generate_all.sh
+```
+
+**Note**: Some tasks in `generate_all.sh` may be commented out. Modify as needed.
+
+## 📁 Output Format
+
+Generated data is saved in two formats:
+
+### 1. CSV Format (`data/csv/`)
+- Simple format for evaluation
+- Columns: `id`, `question`, `answer`, `difficulty`, `type`, etc.
+
+### 2. JSONL Format (`data/json/`)
+- Used by the evaluation system
+- Each line is a JSON object
+- Includes additional metadata (e.g., `choices`, `solution`, etc.)
+
+**Example:**
+```json
+{
+  "id": "kinship_0",
+  "question": "나의 아버지의 형의 아내는?",
+  "answer": "A",
+  "difficulty": "easy",
+  "type": "kinship",
+  "choices": ["큰어머니", "작은어머니", "고모", "이모", "할머니"]
+}
+```
+
+**Note:** Difficulty levels are stored in lowercase (`easy`, `medium`, `hard`, `expert`, etc.) for consistency with the evaluation system.
+
+## 🔧 Script-Specific Options
+
+### Common Options
+
+Most scripts support the following options:
+
+- `--num`: Number of problems to generate (by difficulty or total)
+- `--num-samples`: Number of samples (some scripts)
+
+### Special Options
+
+Some scripts may support additional options. Check each script's `--help` option:
+
+```bash
+python generation/kinship.py --help
+python generation/cipher.py --help
+```
+
+## 📊 Generation Statistics
+
+After generation, each script outputs the following information:
+
+- Total number of problems generated
+- Distribution by difficulty
+- Saved file paths
+
+**Example Output:**
+```
+Generated 100 questions
+Difficulty breakdown:
+easy      34
+medium    33
+hard      33
+
+CSV file created! -> data/csv/kinship.csv
+JSONL file created! -> data/json/kinship.jsonl
+```
+
+## ⚙️ Configuration and Customization
+
+### Difficulty Adjustment
+
+Each script can internally set the generation ratio by difficulty. Modify the difficulty settings within the script.
+
+### Generation Count Adjustment
+
+You can adjust the generation count for each task in the `scripts/generate_all.sh` file:
+
+```bash
+# Example: Change kinship problem count
+python generation/kinship.py --num 200  # 100 → 200
+```
+
+## 🔍 Data Validation
+
+Generated data can be checked at the following locations:
+
+```bash
+# Check CSV file
+head data/csv/kinship.csv
+
+# Check JSONL file
+head data/json/kinship.jsonl | python -m json.tool
+```
+
+## 📝 Notes
+
+1. **Repeated Execution**: Running the same script multiple times will overwrite existing files.
+2. **Generation Time**: Some complex tasks may take time to generate.
+3. **Memory**: Check memory usage when generating large quantities.
+
+## 📚 Additional Information
+
+- Evaluation system usage: [evaluation.md](evaluation.md)
+- Task-specific details: [puzzles/](puzzles/)
+- Project structure: [../README.md](../README.md)
+
+## 🔗 Related Files
+
+- Batch generation script: `../scripts/generate_all.sh`
+- Data storage location: `../data/`
+- Evaluation data: `../eval_data/`

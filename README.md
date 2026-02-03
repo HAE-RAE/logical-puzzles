@@ -1,5 +1,5 @@
 # Logical Puzzles
-Logical Puzzle Evaluation Dataset and LLM Assessment Pipeline
+Comprehensive Logical Puzzle Dataset with LLM Evaluation Framework
 
 
 ## Puzzle Types
@@ -104,7 +104,6 @@ Minesweeper puzzle designed as a Constraint Satisfaction Problem (CSP). Evaluate
 - **Minimal Hints**: Minimize hints while maintaining unique solution
 - **Difficulty Levels**: Easy (6×6), Medium (8×8), Hard (10×10)
 - **Coordinate-based Evaluation**: Output mine locations in (r,c) format
-- **Partial Scores**: Exact Match, Precision, Recall, F1 Score
 
 ### 15. Number Baseball
 Infer hidden N-digit numbers through hints (Strike/Ball).
@@ -146,41 +145,159 @@ Combinatorial optimization problem of optimally assigning 12 dice results to 12 
 - **Complex Scoring Rules**: Evaluate LLM's rule understanding and optimization ability
 
 
+## Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/HAE-RAE/logical-puzzles.git
+cd logical-puzzles
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+## Environment Setup
+
+Copy `.env.example` to `.env` and fill in your API keys:
+
+```bash
+cp .env.example .env
+```
+
 ## Usage
 
 ### Puzzle Generation
+
 ```bash
 # Generate all puzzles
 bash scripts/generate_all.sh
+
+# Generate specific puzzle type
+python generation/kinship.py --num 100
+python generation/cipher.py --num 100
 ```
+
+See [docs/eng/generation.md](docs/eng/generation.md) for detailed usage.
 
 ### Evaluation
 
+#### Unified Evaluation System (Recommended)
+
+**Basic Usage:**
+
 ```bash
-# Ferryman evaluation
-cd evaluation
-python eval_ferryman.py
+# Evaluate all tasks (uses config.yaml settings)
+python evaluation/run.py
 
-# Yacht Dice evaluation (default rules)
-python eval_yacht_dice.py --model gpt-4o
+# Evaluate specific tasks
+python evaluation/run.py --tasks kinship cipher hanoi
 
-# Yacht Dice evaluation (custom rules)
-python eval_yacht_dice.py \
-  --model gpt-4o \
-  --bonus-threshold 70 \
-  --bonus-points 50 \
-  --yacht-points 100 \
-  --recalculate
+# Use different models
+python evaluation/run.py --model gemini/gemini-3-flash-preview
+python evaluation/run.py --model gpt-4o
+python evaluation/run.py --model claude-3-5-sonnet-20241022
 
-# Sudoku evaluation
-python eval_sudoku.py --model gpt-4o
-python eval_sudoku.py --model gpt-4o-mini
-python eval_sudoku.py --model o1
-
-# Minesweeper evaluation
-python eval_minesweeper.py --model gpt-4o
-python eval_minesweeper.py --model o1
+# Filter by difficulty and limit
+python evaluation/run.py --difficulty easy --limit 10
 ```
+
+**Async Mode:**
+
+The async mode is controlled by `evaluation/config.yaml` (default: `use_async: true`):
+
+```bash
+# Async mode evaluation (default from config.yaml)
+python evaluation/run.py
+
+# Explicitly enable async mode (same as default if config.yaml has use_async: true)
+python evaluation/run.py --async
+
+# To disable async mode, modify evaluation/config.yaml: use_async: false
+# Then run without --async flag for sync mode
+
+# Adjust concurrent execution count (default: 30 from config.yaml)
+python evaluation/run.py --max-concurrent 50
+```
+
+**Configuration File (`evaluation/config.yaml`):**
+
+The evaluation system uses `evaluation/config.yaml` for default settings:
+- **LLM Configuration**: model, temperature, max_tokens (65536), timeout (600s)
+- **Evaluation Settings**: use_async (true), max_concurrent (30)
+- **Task List**: 17 tasks (excluding sudoku and minesweeper)
+- **Difficulty Levels**: easy, medium, hard
+
+You can modify this file to change default behavior, or override with command-line arguments.
+
+**Note:** Currently, `--async` flag has no effect because `config.yaml` already sets `use_async: true` as default. The flag is useful when you want to override a `false` setting in config.yaml.
+
+**Advanced Options:**
+
+```bash
+python evaluation/run.py \
+    --model gemini/gemini-3-flash-preview \
+    --tasks kinship cipher \
+    --difficulty medium \
+    --limit 20 \
+    --output-dir results/my_test \
+    --async \
+    --max-concurrent 50 \
+    --quiet
+```
+
+**Shell Scripts (Batch Evaluation of 17 Tasks):**
+
+Two scripts are available for batch evaluation:
+
+1. **Sequential Execution** (`evaluate_all.sh`):
+   ```bash
+   # Evaluate 17 tasks one by one (stable, slower)
+   bash scripts/evaluate_all.sh
+   ```
+   - Executes tasks sequentially (one at a time)
+   - More stable and easier to debug
+   - Lower resource usage
+   - Clearer log output
+
+2. **Parallel Execution** (`evaluate_all_parallel.sh`):
+   ```bash
+   # Evaluate 17 tasks in parallel (5 at a time, faster)
+   bash scripts/evaluate_all_parallel.sh
+   ```
+   - Executes up to 5 tasks simultaneously
+   - Significantly faster (approximately 3-5x speedup)
+   - Higher resource usage
+   - Both scripts evaluate all 17 tasks (excluding sudoku and minesweeper)
+
+**Monitoring Running Evaluations:**
+
+```bash
+# Simple table view
+bash scripts/monitor_eval.sh
+
+# Detailed view with full information
+bash scripts/monitor_eval.sh detailed
+
+# Show help
+bash scripts/monitor_eval.sh help
+```
+
+The monitoring script shows:
+- Running evaluation processes (PID, model, task)
+- Progress information from log files
+- Accuracy (when available)
+- Log file locations
+
+**Result Visualization:**
+
+```bash
+# Visualize results with Jupyter notebook
+jupyter notebook scripts/visualize_results.ipynb
+# or
+jupyter lab scripts/visualize_results.ipynb
+```
+
+See [docs/eng/evaluation.md](docs/eng/evaluation.md) for detailed usage.
 
 ## Data Format
 All puzzles are stored in two formats:
@@ -193,67 +310,114 @@ All puzzles are stored in two formats:
 - `question`: Problem description
 - `answer`: Correct answer
 - `solution`: Step-by-step reasoning process
-- `difficulty`: Difficulty level (Easy/Medium/Hard, etc.)
+- `difficulty`: Difficulty level (easy/medium/hard, etc.)
 - Additional puzzle-specific metadata (optional)
 
 ## Project Structure
+
 ```
 logical-puzzles/
-├── data/                       # Generated datasets (local only, gitignored)
-│   ├── csv/                    # CSV format
-│   └── json/                   # JSONL format
-├── description/                # Puzzle documentation
-│   ├── array_formula.md
-│   └── YACHT_DICE_USAGE.md
-├── evaluation/                 # Evaluation scripts
-│   ├── eval_array_formula.py
-│   ├── eval_causal_dag.py
-│   ├── eval_cipher.py
-│   ├── eval_cryptarithmetic.py
-│   └── ... (19 evaluation scripts)
-├── evaluation_data/            # Static evaluation data
-│   ├── kinshop_vision/
-│   │   └── kinship.jpg         # Family photo (17 people)
-│   └── minesweeper/
-│       ├── eval_metadata.jsonl
-│       ├── eval_puzzles.jsonl
-│       ├── eval_solutions.jsonl
-│       └── solution.md
-├── guess/                      # Puzzle generators
+├── data/                       # Generated datasets (gitignored)
+│   ├── csv/
+│   └── json/
+│
+├── docs/                       # Documentation
+│   ├── README.md
+│   ├── evaluation.md
+│   ├── generation.md
+│   └── puzzles/
+│       ├── array_formula.md
+│       └── YACHT_DICE_USAGE.md
+│
+├── evaluation/                 # Unified evaluation system
+│   ├── core/
+│   │   ├── base.py
+│   │   ├── llm_client.py
+│   │   └── result_handler.py
+│   ├── eval_data/              # Static evaluation data
+│   │   ├── kinship_vision/
+│   │   │   └── kinship.jpg
+│   │   └── minesweeper/
+│   │       ├── eval_metadata.jsonl
+│   │       ├── eval_puzzles.jsonl
+│   │       ├── eval_solutions.jsonl
+│   │       └── solution.md
+│   ├── evaluators/
+│   │   ├── cipher.py
+│   │   ├── ferryman.py
+│   │   ├── hanoi.py
+│   │   ├── kinship.py
+│   │   └── ... (more evaluators)
+│   ├── legacy/                 # Legacy evaluation scripts (deprecated)
+│   ├── __init__.py
+│   ├── config.yaml
+│   └── run.py
+│
+├── generation/                 # Puzzle generation scripts
 │   ├── array_formula.py
 │   ├── causal_dag.py
 │   ├── cipher.py
 │   ├── cryptarithmetic.py
 │   └── ... (19 puzzle types)
-├── scripts/                    # Automation scripts
-│   └── generate_all.sh
-├── validators/                 # Data validation tools
+│
+├── results/                    # Evaluation results (gitignored)
+│   └── {model_name}/
+│       └── {task_name}/
+│           ├── {model}_{task}_{timestamp}__{accuracy}.csv
+│           └── {model}_{task}_{timestamp}__{accuracy}.json
+│
+├── scripts/
+│   ├── generate_all.sh         # Generate all puzzles
+│   ├── evaluate_all.sh          # Sequential evaluation of 17 tasks
+│   ├── evaluate_all_parallel.sh # Parallel evaluation of 17 tasks (5 concurrent)
+│   ├── monitor_eval.sh          # Monitor running evaluations
+│   └── visualize_results.ipynb  # Result visualization notebook
+│
+├── validators/
 │   ├── verify_logic_grid.py
 │   └── verify_sat.py
+│
+├── .env                        # API keys (gitignored)
 ├── .env.example
 ├── .gitignore
 ├── LICENSE
-└── README.md
+├── README.md
+└── requirements.txt
+```
+
+## Evaluation Results
+
+Results are saved in `results/` directory with the following structure:
+
+```
+results/
+└── {model_name}/
+    └── {task_name}/
+        ├── {model}_{task}_{timestamp}__{accuracy}.csv  # Detailed results
+        └── {model}_{task}_{timestamp}__{accuracy}.json  # Summary by difficulty
 ```
 
 ## Adding New Puzzles
+
 When adding a new puzzle, please follow this structure:
 
 ### Required Files
 ```
-guess/{puzzle_name}.py           # Puzzle generation logic
-evaluation/eval_{puzzle_name}.py # Evaluation script
+generation/{puzzle_name}.py           # Puzzle generation logic
+evaluation/evaluators/{puzzle_name}.py # Evaluator (for unified system)
 ```
 
 ### Recommendations
-- **Difficulty Levels**: Minimum 3 levels (Easy/Medium/Hard)
+- **Difficulty Levels**: Minimum 3 levels (easy/medium/hard)
 - **Validation Tools**: Consider adding validation scripts to `validators/` folder
+- **Evaluator Integration**: Add to `evaluation/evaluators/__init__.py` registry
 
 ## Notes
-- The `data/` directory is included in `.gitignore` and will not be uploaded to the repository
-- Evaluation results are stored locally only
-- Do not commit API keys or sensitive information
+
+- The `data/` and `results/` directories are gitignored and stored locally only
+- Do not commit API keys or sensitive information (use `.env` file)
 - Generated data is automatically saved to `data/csv/` and `data/json/`
+- Evaluation results are saved in `results/{model}/{task}/` directory
 
 ## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
