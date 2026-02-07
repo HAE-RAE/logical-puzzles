@@ -1,12 +1,13 @@
 # Logical-Puzzles Dataset Generation Guide
 
-A collection of scripts for generating datasets for 19 logical puzzle tasks.
+A collection of scripts for generating datasets for 20 logical puzzle tasks.
 
 ## 📋 Supported Tasks
 
 | Task | Script | Difficulty | Default Count |
 |------|--------|------------|---------------|
-| Array Formula | `array_formula.py` | Easy, Medium, Hard | 25 |
+| Array Formula | `array_formula.py` | Easy, Medium, Hard | 100 |
+| Array Formula Korean | `array_formula_korean.py` | Easy, Medium, Hard | 100 |
 | Causal DAG Korean | `causal_dag_korean.py` | Easy, Medium, Hard | 300 |
 | Causal DAG | `causal_dag.py` | Easy, Medium, Hard | 300 |
 | Cipher Korean | `cipher_korean.py` | Easy, Medium, Hard, Very Hard, Extreme | 100 |

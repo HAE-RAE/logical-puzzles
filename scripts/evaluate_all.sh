@@ -21,6 +21,7 @@ echo ""
 # sudoku, minesweeper
 TASKS=(
     "array_formula"
+    "array_formula_korean"
     # "causal_dag_korean"
     # "causal_dag"
     # "cipher_korean"

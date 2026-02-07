@@ -17,6 +17,7 @@ evaluation:
 
 tasks:
   - array_formula
+  - array_formula_korean
   - causal_dag
   - causal_dag_korean
   - cipher
