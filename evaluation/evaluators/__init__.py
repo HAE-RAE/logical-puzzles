@@ -19,6 +19,7 @@ def _get_registry() -> Dict[str, Type]:
     
     return {
         "array_formula": ArrayFormulaEvaluator,
+        "array_formula_korean": ArrayFormulaEvaluator,  # The Korean version also uses the same evaluator
         "causal_dag": CausalDAGEvaluator,
         "causal_dag_korean": CausalDAGEvaluator,  # The Korean version also uses the same evaluator
         "cipher": CipherEvaluator,

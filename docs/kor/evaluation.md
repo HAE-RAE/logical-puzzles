@@ -1,10 +1,10 @@
 # Logical-Puzzles 통합 평가 시스템
 
-17개 논리 퍼즐 작업을 위한 통합 평가 시스템입니다.
+18개 논리 퍼즐 작업을 위한 통합 평가 시스템입니다.
 
 ## 지원 작업
 
-현재 17개 작업을 지원합니다 (배치 평가에서 sudoku와 minesweeper 제외):
+현재 18개 작업을 지원합니다 (배치 평가에서 sudoku와 minesweeper 제외):
 
 - `kinship`: 한국어 친족 관계 (다중 선택 A-E)
 - `kinship_vision`: 이미지 기반 친족 관계 (동일한 평가자 사용)
@@ -12,7 +12,8 @@
 - `cipher_korean`: 한국어 암호 해독 (동일한 평가자 사용)
 - `hanoi`: 하노이 탑 (디스크, 출발지, 목적지)
 - `ferryman`: 뱃사공 항해 (X시간 Y분)
-- `array_formula`: 배열 공식 계산
+- `array_formula`: 배열 공식 계산 (영어)
+- `array_formula_korean`: 배열 공식 계산 (한국어, 동일한 평가자 사용)
 - `causal_dag`: 인과 관계 DAG 추론 (영어)
 - `causal_dag_korean`: 인과 관계 DAG 추론 (한국어, 동일한 평가자 사용)
 - `cryptarithmetic`: 암호 산술 퍼즐
@@ -281,6 +282,7 @@ tasks:
   - hanoi
   - ferryman
   - array_formula
+  - array_formula_korean
   - causal_dag
   - causal_dag_korean
   - cryptarithmetic

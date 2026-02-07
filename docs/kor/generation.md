@@ -1,12 +1,13 @@
 # Logical-Puzzles 데이터셋 생성 가이드
 
-19개 논리 퍼즐 작업을 위한 데이터셋 생성 스크립트 모음입니다.
+20개 논리 퍼즐 작업을 위한 데이터셋 생성 스크립트 모음입니다.
 
 ## 📋 지원 작업
 
 | 작업 | 스크립트 | 난이도 | 기본 개수 |
 |------|--------|------------|---------------|
-| Array Formula | `array_formula.py` | Easy, Medium, Hard | 25 |
+| Array Formula | `array_formula.py` | Easy, Medium, Hard | 100 |
+| Array Formula Korean | `array_formula_korean.py` | Easy, Medium, Hard | 100 |
 | Causal DAG Korean | `causal_dag_korean.py` | Easy, Medium, Hard | 300 |
 | Causal DAG | `causal_dag.py` | Easy, Medium, Hard | 300 |
 | Cipher Korean | `cipher_korean.py` | Easy, Medium, Hard, Very Hard, Extreme | 100 |

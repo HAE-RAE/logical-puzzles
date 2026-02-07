@@ -1,10 +1,10 @@
 # Logical-Puzzles Unified Evaluation System
 
-A unified evaluation system for 17 logical puzzle tasks.
+A unified evaluation system for 18 logical puzzle tasks.
 
 ## Supported Tasks
 
-Currently supports 17 tasks (excluding sudoku and minesweeper from batch evaluation):
+Currently supports 18 tasks (excluding sudoku and minesweeper from batch evaluation):
 
 - `kinship`: Korean kinship relationships (multiple choice A-E)
 - `kinship_vision`: Image-based kinship relationships (uses same evaluator)
@@ -12,7 +12,8 @@ Currently supports 17 tasks (excluding sudoku and minesweeper from batch evaluat
 - `cipher_korean`: Korean cipher decryption (uses same evaluator)
 - `hanoi`: Tower of Hanoi (disk, from, to)
 - `ferryman`: Ferryman navigation (X hours Y minutes)
-- `array_formula`: Array formula calculations
+- `array_formula`: Array formula calculations (English)
+- `array_formula_korean`: Array formula calculations (Korean, uses same evaluator)
 - `causal_dag`: Causal DAG inference (English)
 - `causal_dag_korean`: Causal DAG inference (Korean, uses same evaluator)
 - `cryptarithmetic`: Cryptarithmetic puzzles
@@ -281,6 +282,7 @@ tasks:
   - hanoi
   - ferryman
   - array_formula
+  - array_formula_korean
   - causal_dag
   - causal_dag_korean
   - cryptarithmetic
