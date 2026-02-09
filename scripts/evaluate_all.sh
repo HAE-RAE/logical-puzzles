@@ -56,7 +56,6 @@ for task in "${TASKS[@]}"; do
     set +e
     if python evaluation/run.py \
         --tasks "$task" \
-        --limit 5 \
         --async \
         --max-concurrent 30; then
         echo -e "${GREEN}✓ $task Completed${NC}"
