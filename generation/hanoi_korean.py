@@ -1,22 +1,23 @@
 """
-Tower of Hanoi Rule-Based Problem Generator (v2 - Difficulty Rebalance)
+Tower of Hanoi Rule-Based Problem Generator (v2 - Difficulty Rebalance, Korean)
+하노이 탑 규칙 기반 문제 생성기 - 한국어 버전
 
 Problem Types:
-1. min_moves: Minimum number of moves
-2. kth_disk: Which disk moves on k-th step
-3. kth_from_to: From/to peg on k-th move
-4. kth_full_triplet: Full (disk, from, to) on k-th move
-5. largest_disk_move: When does the largest disk move
-6. disk_move_count: How many times does disk X move
-7. disks_on_peg_after_k: State of a peg after k moves
-8. where_is_disk_after_k: Where is disk X after k moves
-9. inverse_find_n: Deduce number of disks from a known move
-10. disk_k_total_moves: Total moves of the disk moved at step k
+1. min_moves: 최소 이동 횟수
+2. kth_disk: k번째 이동에서 움직이는 디스크
+3. kth_from_to: k번째 이동의 출발/도착 기둥
+4. kth_full_triplet: k번째 이동의 전체 정보 (디스크, 출발, 도착)
+5. largest_disk_move: 가장 큰 디스크의 이동 시점
+6. disk_move_count: 특정 디스크의 총 이동 횟수
+7. disks_on_peg_after_k: k번 이동 후 특정 기둥의 상태
+8. where_is_disk_after_k: k번 이동 후 특정 디스크의 위치
+9. inverse_find_n: 이동 정보로부터 디스크 수 역추론
+10. disk_k_total_moves: k번째에 움직인 디스크의 총 이동 횟수
 
-Difficulty Levels (calibrated for gemini-3-flash-preview):
-- easy: 2-3 disks, direct lookup templates → target 85-90%
-- medium: 4-5 disks, multi-step reasoning templates → target 65-75%
-- hard: 6-8 disks, state simulation / inverse templates → target 40-55%
+Difficulty Levels (gemini-3-flash-preview 기준):
+- easy: 2-3개 디스크, 직접 조회 템플릿 → 목표 85-90%
+- medium: 4-5개 디스크, 다단계 추론 템플릿 → 목표 65-75%
+- hard: 6-8개 디스크, 상태 시뮬레이션/역추론 템플릿 → 목표 40-55%
 """
 
 import random
@@ -100,9 +101,9 @@ def _format_peg_state(pegs: Dict[int, List[int]]) -> str:
     for peg in sorted(pegs.keys()):
         disks = pegs[peg]
         if disks:
-            parts.append(f"Peg {peg}: [{', '.join(str(d) for d in disks)}]")
+            parts.append(f"기둥 {peg}: [{', '.join(str(d) for d in disks)}]")
         else:
-            parts.append(f"Peg {peg}: []")
+            parts.append(f"기둥 {peg}: []")
     return ", ".join(parts)
 
 
@@ -123,59 +124,59 @@ def _build_templates_easy(ctx: Context, rng) -> list:
 
     return [
         (
-            f"In a Tower of Hanoi puzzle with {n} disks, all disks start on Peg {src}.\n"
-            f"The goal is to move all disks to Peg {dst} using Peg {aux} as auxiliary,\n"
-            f"following the usual rules (move one disk at a time, never place a larger disk on a smaller one).\n"
-            f"What is the minimum number of moves needed to complete the puzzle?",
+            f"하노이 탑 퍼즐에 디스크가 {n}개 있습니다. 모든 디스크는 기둥 {src}에서 시작합니다.\n"
+            f"목표는 기둥 {aux}를 보조 기둥으로 사용하여 모든 디스크를 기둥 {dst}로 옮기는 것입니다.\n"
+            f"일반적인 규칙을 따릅니다 (한 번에 하나의 디스크만 이동, 큰 디스크를 작은 디스크 위에 놓을 수 없음).\n"
+            f"퍼즐을 완성하는 데 필요한 최소 이동 횟수는 몇 번입니까?",
             f"({total}, {total}, {total})",
             3,
             "min_moves",
-            f"Step 1: The minimum moves for n disks = 2^n - 1\n"
-            f"Step 2: n = {n}, so 2^{n} - 1 = {total}\n"
-            f"Final answer: {total}"
+            f"1단계: n개 디스크의 최소 이동 횟수 = 2^n - 1\n"
+            f"2단계: n = {n}이므로 2^{n} - 1 = {total}\n"
+            f"최종 답: {total}"
         ),
         (
-            f"Consider the optimal solution of a Tower of Hanoi puzzle with {n} disks.\n"
-            f"All disks start on Peg {src} and must be moved to Peg {dst} (Peg {aux} is auxiliary).\n"
-            f"In this optimal sequence, which disk is moved on the {k}-th move?",
+            f"디스크 {n}개의 하노이 탑 퍼즐의 최적 풀이를 생각해보세요.\n"
+            f"모든 디스크는 기둥 {src}에서 시작하여 기둥 {dst}로 옮겨야 합니다 (기둥 {aux}는 보조 기둥).\n"
+            f"이 최적 순서에서 {k}번째 이동에서 어떤 디스크가 움직입니까?",
             f"({disk_k}, {from_k}, {to_k})",
             3,
             "kth_disk",
-            f"Step 1: Generate optimal move sequence for {n} disks: Peg {src} → Peg {dst}\n"
-            f"Step 2: Total moves = {total}\n"
-            f"Step 3: The {k}-th move is Disk {disk_k} from Peg {from_k} to Peg {to_k}\n"
-            f"Final answer: Disk {disk_k}"
+            f"1단계: {n}개 디스크의 최적 이동 순서 생성: 기둥 {src} → 기둥 {dst}\n"
+            f"2단계: 총 이동 횟수 = {total}\n"
+            f"3단계: {k}번째 이동은 디스크 {disk_k} (기둥 {from_k} → 기둥 {to_k})\n"
+            f"최종 답: 디스크 {disk_k}"
         ),
         (
-            f"In the optimal {n}-disk Tower of Hanoi solution from Peg {src} to Peg {dst}\n"
-            f"(with Peg {aux} as auxiliary), from which peg to which peg does the disk move on the {k}-th move?",
+            f"기둥 {src}에서 기둥 {dst}로의 최적 {n}-디스크 하노이 탑 풀이에서\n"
+            f"(기둥 {aux}가 보조 기둥), {k}번째 이동에서 디스크는 어느 기둥에서 어느 기둥으로 움직입니까?",
             f"({disk_k}, {from_k}, {to_k})",
             2,
             "kth_from_to",
-            f"Step 1: Generate optimal move sequence for {n} disks\n"
-            f"Step 2: The {k}-th move: Disk {disk_k}, Peg {from_k} → Peg {to_k}\n"
-            f"Final answer: Peg {from_k} → Peg {to_k}"
+            f"1단계: {n}개 디스크의 최적 이동 순서 생성\n"
+            f"2단계: {k}번째 이동: 디스크 {disk_k}, 기둥 {from_k} → 기둥 {to_k}\n"
+            f"최종 답: 기둥 {from_k} → 기둥 {to_k}"
         ),
         (
-            f"In the optimal solution of a Tower of Hanoi puzzle with {n} disks,\n"
-            f"on which move number does the largest disk (Disk {n}) move?",
+            f"디스크 {n}개의 하노이 탑 퍼즐의 최적 풀이에서\n"
+            f"가장 큰 디스크(디스크 {n})는 몇 번째 이동에서 움직입니까?",
             f"({l_disk}, {l_from}, {l_to})",
             2,
             "largest_disk_move",
-            f"Step 1: The largest disk (Disk {n}) moves exactly once in the optimal solution\n"
-            f"Step 2: It moves on step {largest_idx + 1}: Peg {l_from} → Peg {l_to}\n"
-            f"Final answer: Move {largest_idx + 1}"
+            f"1단계: 가장 큰 디스크(디스크 {n})는 최적 풀이에서 정확히 한 번 이동합니다\n"
+            f"2단계: {largest_idx + 1}번째 단계에서 이동: 기둥 {l_from} → 기둥 {l_to}\n"
+            f"최종 답: {largest_idx + 1}번째 이동"
         ),
         (
-            f"In the optimal solution for a Tower of Hanoi puzzle with {n} disks,\n"
-            f"how many times does Disk {disk_target} move in total?",
+            f"디스크 {n}개의 하노이 탑 퍼즐의 최적 풀이에서\n"
+            f"디스크 {disk_target}은(는) 총 몇 번 이동합니까?",
             f"({disk_target}, {disk_count}, {disk_count})",
             2,
             "disk_move_count",
-            f"Step 1: In optimal solution, Disk d moves 2^(d-1) times? No — Disk d moves 2^(n-d) times\n"
-            f"Step 2: Disk {disk_target} with n={n}: moves = 2^({n}-{disk_target}) = {2**(n - disk_target)}\n"
-            f"Step 3: Verify by counting: {disk_count}\n"
-            f"Final answer: {disk_count}"
+            f"1단계: 최적 하노이에서 디스크 d는 2^(n-d)번 이동\n"
+            f"2단계: 디스크 {disk_target}, n={n}: 이동 횟수 = 2^({n}-{disk_target}) = {2**(n - disk_target)}\n"
+            f"3단계: 카운팅으로 검증: {disk_count}\n"
+            f"최종 답: {disk_count}"
         ),
     ]
 
@@ -203,64 +204,64 @@ def _build_templates_medium(ctx: Context, rng) -> list:
 
     return [
         (
-            f"In an optimal Tower of Hanoi puzzle with {n} disks, all disks start on Peg {src}\n"
-            f"and must be moved to Peg {dst} using Peg {aux} as auxiliary.\n"
-            f"Describe the {k}-th move in the form (disk, from_peg, to_peg).",
+            f"디스크 {n}개의 최적 하노이 탑 퍼즐에서, 모든 디스크는 기둥 {src}에서 시작하여\n"
+            f"기둥 {aux}를 보조 기둥으로 사용해 기둥 {dst}로 옮겨야 합니다.\n"
+            f"{k}번째 이동을 (디스크, 출발_기둥, 도착_기둥) 형태로 설명하세요.",
             f"({disk_k}, {from_k}, {to_k})",
             3,
             "kth_full_triplet",
-            f"Step 1: Generate optimal sequence for {n} disks: Peg {src} → Peg {dst}, auxiliary Peg {aux}\n"
-            f"Step 2: Total moves = 2^{n} - 1 = {total}\n"
-            f"Step 3: The {k}-th move is (Disk {disk_k}, Peg {from_k}, Peg {to_k})\n"
-            f"Final answer: ({disk_k}, {from_k}, {to_k})"
+            f"1단계: {n}개 디스크의 최적 순서 생성: 기둥 {src} → 기둥 {dst}, 보조 기둥 {aux}\n"
+            f"2단계: 총 이동 횟수 = 2^{n} - 1 = {total}\n"
+            f"3단계: {k}번째 이동은 (디스크 {disk_k}, 기둥 {from_k}, 기둥 {to_k})\n"
+            f"최종 답: ({disk_k}, {from_k}, {to_k})"
         ),
         (
-            f"In an optimal Tower of Hanoi solution with {n} disks, all disks start on Peg {src}\n"
-            f"and must be moved to Peg {dst}, using Peg {aux} as auxiliary.\n"
-            f"After exactly {k} moves, on which peg is Disk {disk_query} located?",
+            f"디스크 {n}개의 최적 하노이 탑 풀이에서, 모든 디스크는 기둥 {src}에서 시작하여\n"
+            f"기둥 {aux}를 보조 기둥으로 사용해 기둥 {dst}로 옮겨야 합니다.\n"
+            f"정확히 {k}번 이동한 후, 디스크 {disk_query}은(는) 어느 기둥에 있습니까?",
             f"({disk_query}, {peg_of_disk}, {peg_of_disk})",
             3,
             "where_is_disk_after_k",
-            f"Step 1: Generate optimal sequence for {n} disks\n"
-            f"Step 2: Simulate {k} moves from initial state\n"
-            f"Step 3: State after {k} moves: {_format_peg_state(pegs_after_k)}\n"
-            f"Step 4: Disk {disk_query} is on Peg {peg_of_disk}\n"
-            f"Final answer: Peg {peg_of_disk}"
+            f"1단계: {n}개 디스크의 최적 순서 생성\n"
+            f"2단계: 초기 상태에서 {k}번 이동 시뮬레이션\n"
+            f"3단계: {k}번 이동 후 상태: {_format_peg_state(pegs_after_k)}\n"
+            f"4단계: 디스크 {disk_query}은(는) 기둥 {peg_of_disk}에 위치\n"
+            f"최종 답: 기둥 {peg_of_disk}"
         ),
         (
-            f"In a Tower of Hanoi puzzle with {n} disks (Peg {src} → Peg {dst}, Peg {aux} auxiliary),\n"
-            f"consider the optimal sequence of moves. After exactly {k} moves have been performed,\n"
-            f"which disks are on Peg {peg_target}?",
+            f"디스크 {n}개의 하노이 탑 퍼즐 (기둥 {src} → 기둥 {dst}, 기둥 {aux} 보조)에서\n"
+            f"최적 이동 순서를 따를 때, 정확히 {k}번 이동 후\n"
+            f"기둥 {peg_target}에 어떤 디스크들이 있습니까?",
             f"({', '.join(str(d) for d in disks_on_peg) if disks_on_peg else 'none'}, {peg_target}, {peg_target})",
             2,
             "disks_on_peg_after_k",
-            f"Step 1: Generate optimal sequence for {n} disks\n"
-            f"Step 2: Simulate {k} moves\n"
-            f"Step 3: State after {k} moves: {_format_peg_state(pegs_after_k)}\n"
-            f"Step 4: Peg {peg_target} has: {disks_on_peg if disks_on_peg else 'no disks'}\n"
-            f"Final answer: {disks_on_peg if disks_on_peg else 'none'}"
+            f"1단계: {n}개 디스크의 최적 순서 생성\n"
+            f"2단계: {k}번 이동 시뮬레이션\n"
+            f"3단계: {k}번 이동 후 상태: {_format_peg_state(pegs_after_k)}\n"
+            f"4단계: 기둥 {peg_target}: {disks_on_peg if disks_on_peg else '디스크 없음'}\n"
+            f"최종 답: {disks_on_peg if disks_on_peg else '없음'}"
         ),
         (
-            f"In an optimal Tower of Hanoi solution, look at the {k}-th move of the sequence.\n"
-            f"Let the disk moved at this step be called Disk X (here, X = Disk {disk_k}).\n"
-            f"In the entire solution, how many times does this Disk X move?",
+            f"최적 하노이 탑 풀이에서 {k}번째 이동을 보세요.\n"
+            f"이 단계에서 이동한 디스크를 디스크 X라 합시다 (여기서 X = 디스크 {disk_k}).\n"
+            f"전체 풀이에서 이 디스크 X는 총 몇 번 이동합니까?",
             f"({disk_k}, {disk_count_k}, {disk_count_k})",
             2,
             "disk_k_total_moves",
-            f"Step 1: The {k}-th move involves Disk {disk_k}\n"
-            f"Step 2: Count all occurrences of Disk {disk_k} in the full sequence\n"
-            f"Step 3: Disk {disk_k} moves {disk_count_k} times total\n"
-            f"Final answer: {disk_count_k}"
+            f"1단계: {k}번째 이동은 디스크 {disk_k}를 움직임\n"
+            f"2단계: 전체 순서에서 디스크 {disk_k}의 출현 횟수 카운팅\n"
+            f"3단계: 디스크 {disk_k}은(는) 총 {disk_count_k}번 이동\n"
+            f"최종 답: {disk_count_k}"
         ),
         (
-            f"In the optimal solution for a Tower of Hanoi puzzle with {n} disks,\n"
-            f"how many times does Disk {disk_query} move in total?",
+            f"디스크 {n}개의 하노이 탑 퍼즐의 최적 풀이에서\n"
+            f"디스크 {disk_query}은(는) 총 몇 번 이동합니까?",
             f"({disk_query}, {sum(1 for d, _, _ in moves if d == disk_query)}, {sum(1 for d, _, _ in moves if d == disk_query)})",
             2,
             "disk_move_count",
-            f"Step 1: In optimal Hanoi with {n} disks, Disk d moves 2^(n-d) times\n"
-            f"Step 2: Disk {disk_query}: 2^({n}-{disk_query}) = {2**(n - disk_query)}\n"
-            f"Final answer: {2**(n - disk_query)}"
+            f"1단계: 최적 하노이에서 디스크 d는 2^(n-d)번 이동\n"
+            f"2단계: 디스크 {disk_query}: 2^({n}-{disk_query}) = {2**(n - disk_query)}\n"
+            f"최종 답: {2**(n - disk_query)}"
         ),
     ]
 
@@ -313,76 +314,76 @@ def _build_templates_hard(ctx: Context, rng) -> list:
 
     return [
         (
-            f"In a certain optimal Tower of Hanoi puzzle, all disks start on Peg {src}\n"
-            f"and the goal is to move them to Peg {dst} using Peg {aux} as auxiliary.\n"
-            f"It is known that on move {k}, Disk {disk_k} moves from Peg {from_k} to Peg {to_k}.\n"
-            f"How many disks are in this Tower of Hanoi puzzle?",
+            f"어떤 최적 하노이 탑 퍼즐에서, 모든 디스크는 기둥 {src}에서 시작하여\n"
+            f"기둥 {aux}를 보조 기둥으로 사용해 기둥 {dst}로 옮기는 것이 목표입니다.\n"
+            f"{k}번째 이동에서 디스크 {disk_k}이(가) 기둥 {from_k}에서 기둥 {to_k}로 이동한다고 알려져 있습니다.\n"
+            f"이 하노이 탑 퍼즐에는 디스크가 몇 개 있습니까?",
             f"({n}, {n}, {n})",
             3,
             "inverse_find_n",
-            f"Step 1: We know move {k} is Disk {disk_k}: Peg {from_k} → Peg {to_k}\n"
-            f"Step 2: The largest disk number seen is {disk_k}, so n >= {disk_k}\n"
-            f"Step 3: Total moves = 2^n - 1 >= {k}, so n >= {len(bin(k)) - 2} roughly\n"
-            f"Step 4: The puzzle has {n} disks (verified: move {k} matches)\n"
-            f"Final answer: {n}"
+            f"1단계: {k}번째 이동이 디스크 {disk_k}: 기둥 {from_k} → 기둥 {to_k}임을 알고 있음\n"
+            f"2단계: 확인된 가장 큰 디스크 번호는 {disk_k}이므로 n >= {disk_k}\n"
+            f"3단계: 총 이동 횟수 = 2^n - 1 >= {k}이므로 n을 추론\n"
+            f"4단계: 퍼즐에는 {n}개의 디스크가 있음 (검증: {k}번째 이동이 일치)\n"
+            f"최종 답: {n}"
         ),
         (
-            f"In an optimal Tower of Hanoi solution with {n} disks (Peg {src} → Peg {dst}, Peg {aux} auxiliary),\n"
-            f"after exactly {k2} moves, which disks are on Peg {peg_target2}?\n"
-            f"List all disk numbers in ascending order.",
+            f"디스크 {n}개의 최적 하노이 탑 풀이 (기둥 {src} → 기둥 {dst}, 기둥 {aux} 보조)에서\n"
+            f"정확히 {k2}번 이동 후, 기둥 {peg_target2}에 어떤 디스크들이 있습니까?\n"
+            f"모든 디스크 번호를 오름차순으로 나열하세요.",
             f"({', '.join(str(d) for d in disks_on_peg2) if disks_on_peg2 else 'none'}, {peg_target2}, {peg_target2})",
             3,
             "disks_on_peg_after_k",
-            f"Step 1: Generate optimal sequence for {n} disks: Peg {src} → Peg {dst}\n"
-            f"Step 2: Simulate {k2} moves step by step\n"
-            f"Step 3: State after {k2} moves: {_format_peg_state(pegs_after_k2)}\n"
-            f"Step 4: Peg {peg_target2}: {disks_on_peg2 if disks_on_peg2 else 'empty'}\n"
-            f"Final answer: {disks_on_peg2 if disks_on_peg2 else 'none'}"
+            f"1단계: {n}개 디스크의 최적 순서 생성: 기둥 {src} → 기둥 {dst}\n"
+            f"2단계: {k2}번 이동을 단계별로 시뮬레이션\n"
+            f"3단계: {k2}번 이동 후 상태: {_format_peg_state(pegs_after_k2)}\n"
+            f"4단계: 기둥 {peg_target2}: {disks_on_peg2 if disks_on_peg2 else '비어있음'}\n"
+            f"최종 답: {disks_on_peg2 if disks_on_peg2 else '없음'}"
         ),
         (
-            f"In an optimal Tower of Hanoi solution with {n} disks (Peg {src} → Peg {dst}, Peg {aux} auxiliary),\n"
-            f"after exactly {k2} moves, on which peg is Disk {disk_query2} located?",
+            f"디스크 {n}개의 최적 하노이 탑 풀이 (기둥 {src} → 기둥 {dst}, 기둥 {aux} 보조)에서\n"
+            f"정확히 {k2}번 이동 후, 디스크 {disk_query2}은(는) 어느 기둥에 있습니까?",
             f"({disk_query2}, {peg_of_disk2}, {peg_of_disk2})",
             3,
             "where_is_disk_after_k",
-            f"Step 1: Generate optimal sequence for {n} disks\n"
-            f"Step 2: Simulate {k2} moves from initial state\n"
-            f"Step 3: State after {k2} moves: {_format_peg_state(pegs_after_k2)}\n"
-            f"Step 4: Disk {disk_query2} is on Peg {peg_of_disk2}\n"
-            f"Final answer: Peg {peg_of_disk2}"
+            f"1단계: {n}개 디스크의 최적 순서 생성\n"
+            f"2단계: 초기 상태에서 {k2}번 이동 시뮬레이션\n"
+            f"3단계: {k2}번 이동 후 상태: {_format_peg_state(pegs_after_k2)}\n"
+            f"4단계: 디스크 {disk_query2}은(는) 기둥 {peg_of_disk2}에 위치\n"
+            f"최종 답: 기둥 {peg_of_disk2}"
         ),
         (
-            f"In an optimal Tower of Hanoi puzzle with {n} disks (Peg {src} → Peg {dst}, Peg {aux} auxiliary),\n"
-            f"describe the {k2}-th move in the form (disk, from_peg, to_peg).",
+            f"디스크 {n}개의 최적 하노이 탑 퍼즐 (기둥 {src} → 기둥 {dst}, 기둥 {aux} 보조)에서\n"
+            f"{k2}번째 이동을 (디스크, 출발_기둥, 도착_기둥) 형태로 설명하세요.",
             f"({disk_k2}, {from_k2}, {to_k2})",
             2,
             "kth_full_triplet",
-            f"Step 1: Generate optimal sequence for {n} disks: Peg {src} → Peg {dst}\n"
-            f"Step 2: Total moves = 2^{n} - 1 = {total}\n"
-            f"Step 3: The {k2}-th move is (Disk {disk_k2}, Peg {from_k2}, Peg {to_k2})\n"
-            f"Final answer: ({disk_k2}, {from_k2}, {to_k2})"
+            f"1단계: {n}개 디스크의 최적 순서 생성: 기둥 {src} → 기둥 {dst}\n"
+            f"2단계: 총 이동 횟수 = 2^{n} - 1 = {total}\n"
+            f"3단계: {k2}번째 이동은 (디스크 {disk_k2}, 기둥 {from_k2}, 기둥 {to_k2})\n"
+            f"최종 답: ({disk_k2}, {from_k2}, {to_k2})"
         ),
         (
-            f"In an optimal Tower of Hanoi solution with {n} disks (Peg {src} → Peg {dst}, Peg {aux} auxiliary),\n"
-            f"on which move number does Disk {target_disk_fl} first move, and on which move number does it last move?",
+            f"디스크 {n}개의 최적 하노이 탑 풀이 (기둥 {src} → 기둥 {dst}, 기둥 {aux} 보조)에서\n"
+            f"디스크 {target_disk_fl}이(가) 처음 이동하는 것은 몇 번째이고, 마지막으로 이동하는 것은 몇 번째입니까?",
             f"({first_info[0]}, {last_info[0]}, {target_disk_fl})",
             2,
             "first_last_move",
-            f"Step 1: Trace Disk {target_disk_fl} through the entire sequence\n"
-            f"Step 2: First move of Disk {target_disk_fl}: step {first_info[0]} (Peg {first_info[1]} → Peg {first_info[2]})\n"
-            f"Step 3: Last move of Disk {target_disk_fl}: step {last_info[0]} (Peg {last_info[1]} → Peg {last_info[2]})\n"
-            f"Final answer: first = {first_info[0]}, last = {last_info[0]}"
+            f"1단계: 전체 순서에서 디스크 {target_disk_fl}을(를) 추적\n"
+            f"2단계: 디스크 {target_disk_fl}의 첫 이동: {first_info[0]}번째 (기둥 {first_info[1]} → 기둥 {first_info[2]})\n"
+            f"3단계: 디스크 {target_disk_fl}의 마지막 이동: {last_info[0]}번째 (기둥 {last_info[1]} → 기둥 {last_info[2]})\n"
+            f"최종 답: 첫 이동 = {first_info[0]}, 마지막 이동 = {last_info[0]}"
         ),
         (
-            f"In an optimal Tower of Hanoi solution, the {k}-th move involves Disk {disk_k}.\n"
-            f"How many times does Disk {disk_k} move in the entire optimal solution for {n} disks?",
+            f"최적 하노이 탑 풀이에서 {k}번째 이동은 디스크 {disk_k}을(를) 움직입니다.\n"
+            f"디스크 {n}개의 전체 최적 풀이에서 디스크 {disk_k}은(는) 총 몇 번 이동합니까?",
             f"({disk_k}, {disk_count_k}, {disk_count_k})",
             2,
             "disk_k_total_moves",
-            f"Step 1: The {k}-th move involves Disk {disk_k}\n"
-            f"Step 2: In optimal {n}-disk Hanoi, Disk {disk_k} moves 2^({n}-{disk_k}) = {2**(n-disk_k)} times\n"
-            f"Step 3: Verified by counting: {disk_count_k}\n"
-            f"Final answer: {disk_count_k}"
+            f"1단계: {k}번째 이동은 디스크 {disk_k}을(를) 움직임\n"
+            f"2단계: 최적 {n}-디스크 하노이에서 디스크 {disk_k}은(는) 2^({n}-{disk_k}) = {2**(n-disk_k)}번 이동\n"
+            f"3단계: 카운팅으로 검증: {disk_count_k}\n"
+            f"최종 답: {disk_count_k}"
         ),
     ]
 
@@ -441,7 +442,7 @@ def generate_puzzle(difficulty: str = "medium", seed: Optional[int] = None) -> D
         "aux": aux,
         "dst": dst,
         "seed": seed,
-        "id": f"hanoi_{difficulty}_{qtype}_{puzzle_hash}",
+        "id": f"hanoi_kr_{difficulty}_{qtype}_{puzzle_hash}",
     }
 
 
@@ -453,7 +454,7 @@ def generate_dataset(num_per_difficulty: int = 100, seed: int = 2025) -> List[Di
     for difficulty in difficulties:
         for _ in range(num_per_difficulty):
             puzzle = generate_puzzle(difficulty=difficulty, seed=puzzle_seed)
-            puzzle["id"] = f"hanoi_{len(puzzles)}"
+            puzzle["id"] = f"hanoi_korean_{len(puzzles)}"
             puzzles.append(puzzle)
             puzzle_seed += 1
 
@@ -468,8 +469,8 @@ def save_dataset(puzzles: List[Dict], base_dir: str = "./data"):
     csv_dir.mkdir(parents=True, exist_ok=True)
     json_dir.mkdir(parents=True, exist_ok=True)
 
-    csv_path = csv_dir / "hanoi.csv"
-    jsonl_path = json_dir / "hanoi.jsonl"
+    csv_path = csv_dir / "hanoi_korean.csv"
+    jsonl_path = json_dir / "hanoi_korean.jsonl"
 
     csv_columns = ["id", "question", "answer", "solution", "difficulty"]
 
@@ -515,7 +516,7 @@ def save_dataset(puzzles: List[Dict], base_dir: str = "./data"):
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description="Hanoi Puzzle Generator")
+    parser = argparse.ArgumentParser(description="Hanoi Puzzle Generator (Korean)")
     parser.add_argument("--num", type=int, default=100, help="Number of puzzles per difficulty level")
     parser.add_argument("--seed", type=int, default=2025, help="Random seed")
     parser.add_argument("--output", type=str, default="./data", help="Output base directory")
@@ -525,15 +526,15 @@ if __name__ == "__main__":
 
     if args.demo:
         print("=" * 60)
-        print("Hanoi Puzzle Demo")
+        print("하노이 탑 퍼즐 데모 (한국어)")
         print("=" * 60)
         for difficulty in ["easy", "medium", "hard"]:
             puzzle = generate_puzzle(difficulty=difficulty, seed=42)
             print(f"\n[{difficulty} - {puzzle['type']}]")
             print("-" * 40)
             print(puzzle["question"])
-            print(f"\nAnswer: {puzzle['answer']}")
-            print(f"Solution: {puzzle['solution']}")
+            print(f"\n답: {puzzle['answer']}")
+            print(f"풀이: {puzzle['solution']}")
             print("=" * 60)
     else:
         puzzles = generate_dataset(num_per_difficulty=args.num, seed=args.seed)
