@@ -130,13 +130,15 @@ class UnifiedLLMClient:
     async def _async_generate(
         self,
         messages: List[Dict],
+        max_retries: int = 3,
         **kwargs
     ) -> Tuple[str, Dict]:
         """
-        Async single generation (internal use)
+        Async single generation with retry logic (internal use)
         
         Args:
             messages: Message list [{"role": "user", "content": "..."}]
+            max_retries: Maximum number of retry attempts (default: 3)
             **kwargs: Additional parameters (temperature, max_tokens, etc.)
             
         Returns:
@@ -144,12 +146,22 @@ class UnifiedLLMClient:
             usage_dict includes latency_ms, tokens, etc.
         """
         start = time.time()
-        try:
-            params = self._prepare_params(messages, **kwargs)
-            response = await acompletion(**params)
-            return self._extract_response(response, (time.time() - start) * 1000)
-        except Exception as e:
-            self._handle_error(e, (time.time() - start) * 1000, is_async=True)
+        for attempt in range(max_retries):
+            try:
+                params = self._prepare_params(messages, **kwargs)
+                response = await acompletion(**params)
+                return self._extract_response(response, (time.time() - start) * 1000)
+            except Exception as e:
+                latency_ms = (time.time() - start) * 1000
+                if attempt == max_retries - 1:
+                    self._handle_error(e, latency_ms, is_async=True)
+                
+                wait_time = min(2 ** attempt, 30)
+                logger.warning(
+                    f"LLM async generation failed (attempt {attempt + 1}/{max_retries}): {str(e)[:200]}. "
+                    f"Retrying in {wait_time}s..."
+                )
+                await asyncio.sleep(wait_time)
     
     async def async_batch_generate(
         self,
