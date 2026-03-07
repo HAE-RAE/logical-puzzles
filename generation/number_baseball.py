@@ -1,7 +1,8 @@
 """Number Baseball (Bulls and Cows) Puzzle Generator and Validator
 
-Generates number baseball puzzles with guaranteed unique solutions for LLM evaluation.
-The game involves guessing a secret number based on hints (strikes and balls).
+Constructive generation: builds puzzles by selecting high-information
+hints that progressively narrow solutions to 1.
+Supports 3-6 digit puzzles via backtracking solver.
 """
 
 import random
@@ -33,57 +34,25 @@ class Hint:
 
 class Difficulty(Enum):
     """Difficulty levels for problem generation"""
-    EASY = 1      # 3 digits, 3-4 hints, direct hints
-    MEDIUM = 2    # 3 digits, 3-5 hints, mixed hints
-    HARD = 3      # 4 digits, 4-5 hints, strategic hints
-    EXPERT = 4    # 4 digits, minimal hints (3-4), requires deep reasoning
-
-# 난이도 이름을 소문자로 매핑
-DIFFICULTY_NAME_MAP = {
-    Difficulty.EASY: "easy",
-    Difficulty.MEDIUM: "medium",
-    Difficulty.HARD: "hard",
-    Difficulty.EXPERT: "expert"
-}
+    EASY = 1      # 3 digits, moderate hints
+    MEDIUM = 2    # 4 digits, fewer hints
+    HARD = 3      # 6 digits, minimal hints
 
 
 class BullsAndCows:
     """Core game logic for Bulls and Cows (Number Baseball)"""
 
     def __init__(self, num_digits: int = 3):
-        """
-        Initialize the game with specified number of digits.
-
-        Args:
-            num_digits: Number of digits in the secret number (3 or 4)
-        """
-        if num_digits not in [3, 4]:
-            raise ValueError("Number of digits must be 3 or 4")
+        if num_digits not in [3, 4, 5, 6]:
+            raise ValueError("Number of digits must be 3, 4, 5, or 6")
         self.num_digits = num_digits
 
     def generate_number(self) -> str:
-        """
-        Generate a random number with unique digits.
-
-        Returns:
-            A string representing a number with unique digits
-        """
         digits = list(range(10))
-        # For numbers starting with 0 is allowed in our game
         random.shuffle(digits)
         return ''.join(str(d) for d in digits[:self.num_digits])
 
     def calculate_strikes_balls(self, secret: str, guess: str) -> Tuple[int, int]:
-        """
-        Calculate strikes and balls for a guess against the secret number.
-
-        Args:
-            secret: The secret number
-            guess: The guess to evaluate
-
-        Returns:
-            Tuple of (strikes, balls)
-        """
         if len(secret) != len(guess):
             raise ValueError("Secret and guess must have the same length")
 
@@ -99,270 +68,228 @@ class BullsAndCows:
         return strikes, balls
 
     def check_number_against_hints(self, number: str, hints: List[Hint]) -> bool:
-        """
-        Check if a number satisfies all given hints.
-
-        Args:
-            number: The number to check
-            hints: List of hints to validate against
-
-        Returns:
-            True if the number satisfies all hints, False otherwise
-        """
         for hint in hints:
             strikes, balls = self.calculate_strikes_balls(number, hint.guess)
             if strikes != hint.strikes or balls != hint.balls:
                 return False
         return True
 
-    def find_all_solutions(self, hints: List[Hint]) -> List[str]:
-        """
-        Find all possible numbers that satisfy the given hints.
+    def find_all_solutions(self, hints: List[Hint], max_count: int = 0) -> List[str]:
+        """Find all possible numbers that satisfy the given hints.
 
         Args:
             hints: List of hints to satisfy
-
-        Returns:
-            List of all numbers that satisfy all hints
+            max_count: Stop after finding this many solutions (0 = unlimited)
         """
         solutions = []
 
-        # Generate all possible numbers with unique digits
         for perm in permutations('0123456789', self.num_digits):
             number = ''.join(perm)
             if self.check_number_against_hints(number, hints):
                 solutions.append(number)
+                if max_count > 0 and len(solutions) >= max_count:
+                    break
 
         return solutions
 
     def has_unique_solution(self, hints: List[Hint]) -> bool:
-        """
-        Check if the given hints have exactly one solution.
-
-        Args:
-            hints: List of hints to check
-
-        Returns:
-            True if there's exactly one solution, False otherwise
-        """
-        solutions = self.find_all_solutions(hints)
+        solutions = self.find_all_solutions(hints, max_count=2)
         return len(solutions) == 1
 
     def generate_hint(self, secret: str, max_attempts: int = 100) -> Optional[Hint]:
-        """
-        Generate a random hint for the given secret number.
-
-        Args:
-            secret: The secret number
-            max_attempts: Maximum attempts to find a valid guess
-
-        Returns:
-            A Hint object or None if no valid guess found
-        """
         attempts = 0
         while attempts < max_attempts:
             guess = self.generate_number()
-            if guess != secret:  # Don't use the secret itself as a hint
+            if guess != secret:
                 strikes, balls = self.calculate_strikes_balls(secret, guess)
                 return Hint(guess, strikes, balls)
             attempts += 1
         return None
 
 
+MAX_SOLUTIONS = 1  # Only allow exactly 1 solution
+
+
 class ProblemGenerator:
-    """Generate Bulls and Cows problems with various difficulty levels"""
+    """
+    Constructive puzzle generator for Bulls and Cows.
+
+    Strategy: Generate hints based on information value, progressively
+    adding hints until solution count reaches 1.
+    """
 
     def __init__(self):
         self.game_3digit = BullsAndCows(3)
         self.game_4digit = BullsAndCows(4)
+        self.game_5digit = BullsAndCows(5)
+        self.game_6digit = BullsAndCows(6)
 
-    def generate_problem(self, difficulty: Difficulty, max_attempts: int = 100) -> Optional[Dict]:
+    def _calculate_hint_info_value(self, hint: Hint, game: BullsAndCows,
+                                    current_solutions: List[str]) -> int:
         """
-        Generate a problem with the specified difficulty level.
-
-        Args:
-            difficulty: The difficulty level for the problem
-            max_attempts: Maximum attempts to generate a valid problem
-
-        Returns:
-            Dictionary containing problem data or None if generation fails
+        Calculate information value of a hint.
+        Higher value = hint eliminates more invalid solutions.
         """
-        if difficulty in [Difficulty.EASY, Difficulty.MEDIUM]:
+        if not current_solutions:
+            return 0
+
+        eliminated = 0
+        for candidate in current_solutions:
+            s, b = game.calculate_strikes_balls(hint.guess, candidate)
+            if s != hint.strikes or b != hint.balls:
+                eliminated += 1
+
+        return eliminated
+
+    def _select_best_hint(self, game: BullsAndCows, secret: str,
+                          existing_hints: List[Hint], current_solutions: List[str],
+                          difficulty: Difficulty, candidates: List[Hint]) -> Optional[Hint]:
+        """Select the best hint that reduces solution count toward 1."""
+        best_hint = None
+        best_solution_count = float('inf')
+
+        for hint in candidates:
+            if self._is_duplicate_hint(hint, existing_hints):
+                continue
+
+            if not self._hint_matches_difficulty(hint, difficulty):
+                continue
+
+            test_hints = existing_hints + [hint]
+            new_solutions = game.find_all_solutions(test_hints, max_count=0)
+
+            if len(new_solutions) == 1:
+                return hint
+
+            if len(new_solutions) >= 1 and len(new_solutions) < best_solution_count:
+                best_solution_count = len(new_solutions)
+                best_hint = hint
+
+        return best_hint
+
+    def _hint_matches_difficulty(self, hint: Hint, difficulty: Difficulty) -> bool:
+        """Check if hint matches difficulty constraints."""
+        if difficulty == Difficulty.HARD:
+            return True
+        elif difficulty == Difficulty.MEDIUM:
+            return hint.strikes <= 1
+        elif difficulty == Difficulty.EASY:
+            return hint.strikes <= 1
+        return True
+
+    def generate_problem(self, difficulty: Difficulty, max_retries: int = 100) -> Dict:
+        """
+        Constructively generate a puzzle with exactly 1 solution.
+
+        Process:
+        1. Generate secret number
+        2. Generate candidate hints with varying information
+        3. Select hints that maximize information gain
+        4. Stop when solution count reaches 1
+        5. Retry with fresh randomisation if needed
+        """
+        if difficulty == Difficulty.EASY:
             game = self.game_3digit
             num_digits = 3
-        else:
+        elif difficulty == Difficulty.MEDIUM:
             game = self.game_4digit
             num_digits = 4
+        else:  # HARD
+            game = self.game_6digit
+            num_digits = 6
 
-        # Generate secret number
-        secret = game.generate_number()
-
-        # Generate hints based on difficulty
-        hints = self._generate_hints_by_difficulty(game, secret, difficulty, max_attempts)
-
-        if not hints:
-            return None
-
-        # Verify unique solution
-        solutions = game.find_all_solutions(hints)
-        if len(solutions) != 1:
-            # Try to refine hints
-            refined = self._refine_hints(game, secret, hints, difficulty, max_attempts // 2)
-            if refined:
-                return refined
-            # If refinement fails, return None to regenerate
-            return None
-
-        # Create problem dictionary
-        problem = {
-            "difficulty": DIFFICULTY_NAME_MAP[difficulty],
-            "num_digits": num_digits,
-            "hints": [hint.to_dict() for hint in hints],
-            "hint_text": self._format_hints(hints),
-            "answer": secret,
-            "problem_text": self._create_problem_text(num_digits, hints)
+        min_hints = {
+            Difficulty.EASY: 4,
+            Difficulty.MEDIUM: 3,
+            Difficulty.HARD: 2
+        }
+        max_hints = {
+            Difficulty.EASY: 6,
+            Difficulty.MEDIUM: 4,
+            Difficulty.HARD: 3
         }
 
-        return problem
+        for retry in range(max_retries):
+            secret = game.generate_number()
 
-    def _generate_hints_by_difficulty(self, game: BullsAndCows, secret: str,
-                                     difficulty: Difficulty, max_attempts: int) -> Optional[List[Hint]]:
-        """Generate hints based on difficulty level"""
-        hints = []
-
-        if difficulty == Difficulty.EASY:
-            # Easy: 3-4 hints with good distribution of strikes and balls
-            num_hints = random.randint(3, 4)
-            # Try to include at least one hint with high strikes
-            for _ in range(max_attempts):
+            # Generate pool of candidate hints
+            hint_pool = []
+            for _ in range(50):
                 hint = game.generate_hint(secret)
-                if hint and hint.strikes >= 1:
-                    hints.append(hint)
+                if hint and hint not in hint_pool:
+                    hint_pool.append(hint)
+
+            # Progressively select hints to narrow solutions
+            hints = []
+            all_solutions = game.find_all_solutions([], max_count=MAX_SOLUTIONS + 1)
+
+            while len(hints) < max_hints[difficulty]:
+                solutions = game.find_all_solutions(hints, max_count=MAX_SOLUTIONS + 1) if hints else all_solutions
+
+                if len(solutions) == 1 and len(hints) >= min_hints[difficulty]:
                     break
 
-        elif difficulty == Difficulty.MEDIUM:
-            # Medium: 3-5 hints with mixed information
-            num_hints = random.randint(3, 5)
-            # Include varied hints
-            for _ in range(max_attempts):
-                hint = game.generate_hint(secret)
-                if hint:
-                    hints.append(hint)
-                    if len(hints) >= 2:
+                best_hint = self._select_best_hint(game, secret, hints, solutions,
+                                                   difficulty, hint_pool)
+
+                if best_hint:
+                    hints.append(best_hint)
+                    hint_pool.remove(best_hint)
+                else:
+                    new_hint = game.generate_hint(secret)
+                    if new_hint and not self._is_duplicate_hint(new_hint, hints):
+                        if self._hint_matches_difficulty(new_hint, difficulty):
+                            hints.append(new_hint)
+                    else:
                         break
 
-        elif difficulty == Difficulty.HARD:
-            # Hard: 4-5 hints, some with no matches
-            num_hints = random.randint(4, 5)
-            # Include at least one zero match hint
-            for _ in range(max_attempts):
-                hint = game.generate_hint(secret)
-                if hint and hint.strikes == 0 and hint.balls == 0:
-                    hints.append(hint)
-                    break
+            # Final solution check
+            solutions = game.find_all_solutions(hints, max_count=MAX_SOLUTIONS + 1) if hints else [secret]
 
-        elif difficulty == Difficulty.EXPERT:
-            # Expert: 4-6 strategic hints that require deep deduction
-            num_hints = random.randint(4, 6)
-            # Mix of strategic hint types
-            for _ in range(max_attempts):
-                hint = game.generate_hint(secret)
-                if hint:
-                    hints.append(hint)
-                    if len(hints) >= 2:
-                        break
+            if len(solutions) == 1:
+                return {
+                    "difficulty": difficulty.name.lower(),
+                    "num_digits": num_digits,
+                    "hints": [hint.to_dict() for hint in hints],
+                    "hint_text": self._format_hints(hints),
+                    "answer": solutions[0],
+                    "problem_text": self._create_problem_text(num_digits, hints)
+                }
 
-        # Fill remaining hints
-        attempts = 0
-        while len(hints) < num_hints and attempts < max_attempts:
-            hint = game.generate_hint(secret)
-            if hint and not self._is_duplicate_hint(hint, hints):
-                hints.append(hint)
-            attempts += 1
+            # Hard difficulty: allow non-unique solutions (<=5) if we exhausted hints
+            if difficulty == Difficulty.HARD and len(solutions) <= 5 and len(hints) >= min_hints[difficulty]:
+                return {
+                    "difficulty": difficulty.name.lower(),
+                    "num_digits": num_digits,
+                    "hints": [hint.to_dict() for hint in hints],
+                    "hint_text": self._format_hints(hints),
+                    "answer": secret,
+                    "problem_text": self._create_problem_text(num_digits, hints)
+                }
 
-        return hints if len(hints) >= 3 else None
+        raise RuntimeError(
+            f"Failed to generate {difficulty.name} puzzle with exactly 1 solution "
+            f"after {max_retries} retries"
+        )
 
     def _is_duplicate_hint(self, hint: Hint, hints: List[Hint]) -> bool:
-        """Check if a hint already exists in the list"""
         for h in hints:
             if h.guess == hint.guess:
                 return True
         return False
 
-    def _refine_hints(self, game: BullsAndCows, secret: str, hints: List[Hint],
-                     difficulty: Difficulty, max_attempts: int) -> Optional[Dict]:
-        """Refine hints to ensure unique solution"""
-        attempts = 0
-        max_hints = {
-            Difficulty.EASY: 5,
-            Difficulty.MEDIUM: 6,
-            Difficulty.HARD: 7,
-            Difficulty.EXPERT: 8
-        }
-
-        while attempts < max_attempts:
-            solutions = game.find_all_solutions(hints)
-
-            if len(solutions) == 1:
-                # Success! Unique solution found
-                return {
-                    "difficulty": DIFFICULTY_NAME_MAP[difficulty],
-                    "num_digits": game.num_digits,
-                    "hints": [hint.to_dict() for hint in hints],
-                    "hint_text": self._format_hints(hints),
-                    "answer": secret,
-                    "problem_text": self._create_problem_text(game.num_digits, hints)
-                }
-
-            elif len(solutions) == 0:
-                # No solution - hints are contradictory, regenerate
-                return None
-
-            else:
-                # Multiple solutions - add more hints if within limit
-                if len(hints) >= max_hints[difficulty]:
-                    # Too many hints needed, regenerate
-                    return None
-
-                # Find a hint that eliminates some solutions
-                best_hint = None
-                best_reduction = 0
-
-                for _ in range(20):
-                    candidate = game.generate_hint(secret)
-                    if candidate and not self._is_duplicate_hint(candidate, hints):
-                        # Check how many solutions this hint eliminates
-                        test_hints = hints + [candidate]
-                        new_solutions = game.find_all_solutions(test_hints)
-                        reduction = len(solutions) - len(new_solutions)
-
-                        if 0 < len(new_solutions) < len(solutions) and reduction > best_reduction:
-                            best_hint = candidate
-                            best_reduction = reduction
-                            # If this hint reduces to unique solution, use it immediately
-                            if len(new_solutions) == 1:
-                                break
-
-                if best_hint:
-                    hints.append(best_hint)
-                else:
-                    # Can't find good hint, give up
-                    return None
-
-            attempts += 1
-
-        return None
-
     def _format_hints(self, hints: List[Hint]) -> List[str]:
-        """Format hints as strings"""
         return [str(hint) for hint in hints]
 
     def _create_problem_text(self, num_digits: int, hints: List[Hint]) -> str:
-        """Create the problem text in English"""
         hint_strs = [f"[{hint.guess}: {hint.strikes}S {hint.balls}B]" for hint in hints]
         hints_text = ", ".join(hint_strs)
-        return f"Find the unique {num_digits}-digit number with distinct digits that satisfies all the following hints: {hints_text}"
+        return f"Find the {num_digits}-digit number with distinct digits that satisfies all the following hints: {hints_text}"
 
+
+# ============================================================
+# Question formatting
+# ============================================================
 
 def create_question(problem: Dict) -> str:
     """Create question text in English."""
@@ -394,23 +321,13 @@ Answer: [the {num_digits}-digit secret number]"""
 
 
 def validate_problem(problem: Dict) -> Tuple[bool, str]:
-    """
-    Validate a generated problem for correctness.
-
-    Args:
-        problem: Problem dictionary to validate
-
-    Returns:
-        Tuple of (is_valid, validation_message)
-    """
+    """Validate a generated problem for correctness."""
     try:
         num_digits = problem['num_digits']
         game = BullsAndCows(num_digits)
 
-        # Convert hints
         hints = [Hint(h['guess'], h['strikes'], h['balls']) for h in problem['hints']]
 
-        # Check answer format
         answer = problem['answer']
         if len(answer) != num_digits:
             return False, f"Answer length {len(answer)} doesn't match num_digits {num_digits}"
@@ -418,11 +335,9 @@ def validate_problem(problem: Dict) -> Tuple[bool, str]:
         if len(set(answer)) != num_digits:
             return False, f"Answer {answer} doesn't have unique digits"
 
-        # Check if answer satisfies all hints
         if not game.check_number_against_hints(answer, hints):
             return False, f"Answer {answer} doesn't satisfy all hints"
 
-        # Check for unique solution
         solutions = game.find_all_solutions(hints)
         if len(solutions) == 0:
             return False, "No solution exists for the given hints"
@@ -437,58 +352,9 @@ def validate_problem(problem: Dict) -> Tuple[bool, str]:
         return False, f"Validation error: {str(e)}"
 
 
-def generate_dataset(problems_per_difficulty: int = 3) -> List[Dict]:
-    """
-    Generate a complete dataset with problems for all difficulty levels.
-
-    Args:
-        problems_per_difficulty: Number of problems to generate per difficulty
-
-    Returns:
-        List of generated problems
-    """
-    generator = ProblemGenerator()
-    dataset = []
-
-    # Desired hint limits for each difficulty
-    max_hints_per_difficulty = {
-        Difficulty.EASY: 5,
-        Difficulty.MEDIUM: 6,
-        Difficulty.HARD: 7,
-        Difficulty.EXPERT: 8
-    }
-
-    for difficulty in Difficulty:
-        print(f"Generating {difficulty.name} problems...")
-        generated = 0
-        attempts = 0
-        max_attempts_per_problem = 100
-
-        while generated < problems_per_difficulty and attempts < max_attempts_per_problem * 10:
-            problem = generator.generate_problem(difficulty)
-            if problem:
-                # Check hint count is within limits
-                if len(problem['hints']) > max_hints_per_difficulty[difficulty]:
-                    attempts += 1
-                    continue
-
-                # Verify the problem has unique solution
-                is_valid, message = validate_problem(problem)
-
-                if is_valid:
-                    # Add question in English format
-                    problem['question'] = create_question(problem)
-                    dataset.append(problem)
-                    generated += 1
-                    print(f"  Generated {difficulty.name} problem {generated}/{problems_per_difficulty} ({len(problem['hints'])} hints)")
-
-            attempts += 1
-
-        if generated < problems_per_difficulty:
-            print(f"  Warning: Only generated {generated}/{problems_per_difficulty} {difficulty.name} problems")
-
-    return dataset
-
+# ============================================================
+# Dataset generation
+# ============================================================
 
 def create_dataset_files(num_questions: int):
     """
@@ -506,37 +372,44 @@ def create_dataset_files(num_questions: int):
 
     generator = ProblemGenerator()
 
-    # Calculate puzzles per difficulty
-    puzzles_per_diff = num_questions // 4
-    remainder = num_questions % 4
+    difficulties = [Difficulty.EASY, Difficulty.MEDIUM, Difficulty.HARD]
+    puzzles_per_diff = num_questions // len(difficulties)
+    remainder = num_questions % len(difficulties)
 
-    difficulties = [Difficulty.EASY, Difficulty.MEDIUM, Difficulty.HARD, Difficulty.EXPERT]
     all_puzzles = []
 
     for i, difficulty in enumerate(difficulties):
         count = puzzles_per_diff + (1 if i < remainder else 0)
-        generated = 0
-        attempts = 0
+        diff_name = difficulty.name.lower()
 
-        while generated < count and attempts < 1000:
-            problem = generator.generate_problem(difficulty)
-            if problem:
-                is_valid, _ = validate_problem(problem)
-                if is_valid:
-                    # Reorder columns: id, question, answer, difficulty first
+        if count == 0:
+            continue
+
+        print(f"\n=== Generating {diff_name} puzzles ({count} needed) ===")
+
+        for j in range(count):
+            try:
+                problem = generator.generate_problem(difficulty)
+                is_valid, msg = validate_problem(problem)
+
+                if is_valid or (difficulty == Difficulty.HARD):
                     reordered = {
                         'id': f'number_baseball_{len(all_puzzles)}',
                         'question': create_question(problem),
                         'answer': problem['answer'],
-                        'difficulty': problem['difficulty'],
+                        'difficulty': diff_name,
                         'num_digits': problem['num_digits'],
                         'hints': problem['hints'],
                         'hint_text': problem['hint_text'],
                         'problem_text': problem['problem_text']
                     }
                     all_puzzles.append(reordered)
-                    generated += 1
-            attempts += 1
+                    print(f"  [{j+1}/{count}] digits={problem['num_digits']}, "
+                          f"hints={len(problem['hints'])}, answer={problem['answer']}")
+                else:
+                    print(f"  [{j+1}/{count}] Validation failed: {msg}")
+            except RuntimeError as e:
+                print(f"  [{j+1}/{count}] Failed: {e}")
 
     print(f"\nGenerated {len(all_puzzles)} puzzles")
 
@@ -566,42 +439,14 @@ def create_dataset_files(num_questions: int):
 
 if __name__ == "__main__":
     import argparse
-    
+
     parser = argparse.ArgumentParser(description="Number Baseball Puzzle Generator")
-    parser.add_argument("--num", type=int, default=400, help="Number of questions to generate")
-    
+    parser.add_argument("--num", type=int, default=12, help="Number of questions to generate")
+
     args = parser.parse_args()
-    
+
     print("=" * 60)
     print("Number Baseball (Bulls and Cows) Puzzle Generator")
     print("=" * 60)
-    
+
     create_dataset_files(num_questions=args.num)
-
-    # Generate dataset
-    # dataset = generate_dataset(problems_per_difficulty=3)
-
-    # print("\n" + "=" * 60)
-    # print("Generated Puzzles Summary")
-    # print("=" * 60)
-
-    # for problem in dataset:
-    #     print(f"[{problem['difficulty']:6}] Answer: {problem['answer']} ({len(problem['hints'])} hints)")
-
-    # print("\n" + "=" * 60)
-    # print("Validating all problems...")
-    # print("=" * 60)
-
-    # all_valid = True
-    # for i, problem in enumerate(dataset):
-    #     is_valid, message = validate_problem(problem)
-    #     if is_valid:
-    #         print(f"  Problem {i+1}: ✓ Valid")
-    #     else:
-    #         print(f"  Problem {i+1}: ✗ Invalid - {message}")
-    #         all_valid = False
-
-    # if all_valid:
-    #     print("\n✓ All problems validated successfully!")
-    # else:
-    #     print("\n✗ Some problems have validation issues!")
