@@ -1,119 +1,100 @@
-"""지뢰찾기(Minesweeper) 퍼즐 생성 및 평가 모듈
+"""Minesweeper Puzzle Generator with Difficulty Levels
 
-유일해가 보장된 지뢰찾기 퍼즐을 생성하고 LLM 평가를 위한 데이터셋을 만듭니다.
+Constructive generation: progressively reveals cells while monitoring
+solution count, guaranteeing valid puzzle generation.
+Includes scoring via weighted coordinate sum format.
 """
 
+MAX_SOLUTIONS = 1  # Only allow exactly 1 solution
+
 import random
+import re
 import json
-from pathlib import Path
-from typing import List, Tuple, Optional, Set
-from collections import defaultdict
 from itertools import product
+from collections import defaultdict
+from pathlib import Path
+from typing import List, Tuple, Optional, Dict, Set
 
 
-# ============================================================================
-# 타입 정의
-# ============================================================================
+# ============================================================
+# Core utility functions
+# ============================================================
 
-Grid = List[List[int]]  # 0=safe, 1=mine
-PuzzleGrid = List[List[Optional[int]]]  # None=hidden, 0-8=revealed number
-
-
-# ============================================================================
-# 그리드 기본 함수
-# ============================================================================
-
-def neighbors(r: int, c: int, rows: int, cols: int) -> List[Tuple[int, int]]:
-    """셀 (r, c)의 8방향 이웃 좌표 반환"""
+def neighbors(r: int, c: int, R: int, C: int) -> List[Tuple[int, int]]:
+    """Get 8-directional neighbors of cell (r, c) within R x C grid."""
     result = []
     for dr in (-1, 0, 1):
         for dc in (-1, 0, 1):
             if dr == 0 and dc == 0:
                 continue
             nr, nc = r + dr, c + dc
-            if 0 <= nr < rows and 0 <= nc < cols:
+            if 0 <= nr < R and 0 <= nc < C:
                 result.append((nr, nc))
     return result
 
 
-def compute_numbers(mine_grid: Grid) -> PuzzleGrid:
+def compute_numbers(mask: List[List[int]]) -> List[List[Optional[int]]]:
     """
-    지뢰 배치로부터 숫자 힌트 계산
-
-    Args:
-        mine_grid: 1=지뢰, 0=안전
-
-    Returns:
-        숫자 그리드 (지뢰=None, 안전=이웃 지뢰 개수)
+    Compute number hints for each cell.
+    mask: 1=mine, 0=safe
+    Returns: grid where mines are None, safe cells have neighbor mine count (0-8)
     """
-    rows, cols = len(mine_grid), len(mine_grid[0])
-    numbers = [[0] * cols for _ in range(rows)]
-
-    for r in range(rows):
-        for c in range(cols):
-            if mine_grid[r][c] == 1:
-                numbers[r][c] = None  # 지뢰 셀
+    R, C = len(mask), len(mask[0])
+    nums = [[0] * C for _ in range(R)]
+    for r in range(R):
+        for c in range(C):
+            if mask[r][c] == 1:
+                nums[r][c] = None
             else:
-                count = sum(mine_grid[nr][nc] == 1
-                           for nr, nc in neighbors(r, c, rows, cols))
-                numbers[r][c] = count
+                count = sum(mask[nr][nc] == 1 for nr, nc in neighbors(r, c, R, C))
+                nums[r][c] = count
+    return nums
 
-    return numbers
-
-
-# ============================================================================
-# 유일해 검증 솔버
-# ============================================================================
 
 def solve_puzzle(
-    puzzle_grid: PuzzleGrid,
-    rows: int,
-    cols: int,
-    total_mines: int,
-    max_solutions: int = 2
-) -> List[Grid]:
+    puzzle_nums: List[List[Optional[int]]],
+    R: int,
+    C: int,
+    max_solutions: int = 2,
+    total_mines: Optional[int] = None
+) -> List[List[List[int]]]:
     """
-    백트래킹으로 지뢰찾기 퍼즐 해결
+    Solve minesweeper puzzle using backtracking with constraint propagation.
 
     Args:
-        puzzle_grid: None=숨김, 0-8=드러난 숫자
-        rows, cols: 그리드 크기
-        total_mines: 전체 지뢰 개수
-        max_solutions: 최대 해 개수 (조기 종료)
+        puzzle_nums: Grid where revealed cells have numbers 0-8, hidden cells are None
+        R, C: Grid dimensions
+        max_solutions: Stop after finding this many solutions
+        total_mines: Optional global constraint on total mine count
 
     Returns:
-        해 리스트 (각 해는 Grid 형식)
+        List of solutions (mine masks), up to max_solutions
     """
-    # 이웃 사전 계산
-    nbs = [[neighbors(r, c, rows, cols) for c in range(cols)] for r in range(rows)]
+    nbs = [[neighbors(r, c, R, C) for c in range(C)] for r in range(R)]
 
-    # 제약 조건 수집
     constraints = []
-    for r in range(rows):
-        for c in range(cols):
-            v = puzzle_grid[r][c]
+    for r in range(R):
+        for c in range(C):
+            v = puzzle_nums[r][c]
             if v is not None:
                 constraints.append((r, c, v, nbs[r][c]))
 
-    # 초기 할당: 드러난 셀은 안전(0)
-    assignment = [[None] * cols for _ in range(rows)]
-    for r in range(rows):
-        for c in range(cols):
-            if puzzle_grid[r][c] is not None:
+    assignment = [[None] * C for _ in range(R)]
+    for r in range(R):
+        for c in range(C):
+            if puzzle_nums[r][c] is not None:
                 assignment[r][c] = 0
 
-    # 변수 순서: 제약이 많은 셀부터
     constraints_per_cell = defaultdict(list)
     for idx, (_, _, _, nlist) in enumerate(constraints):
         for (nr, nc) in nlist:
             constraints_per_cell[(nr, nc)].append(idx)
 
-    unknown_cells = [(r, c) for r in range(rows) for c in range(cols)
+    unknown_cells = [(r, c) for r in range(R) for c in range(C)
                      if assignment[r][c] is None]
     unknown_cells.sort(key=lambda rc: -len(constraints_per_cell[rc]))
 
     def check_constraints() -> bool:
-        """현재 할당이 제약을 만족할 수 있는지 확인"""
         for (rr, cc, v, nlist) in constraints:
             assigned_mines = 0
             unknown_count = 0
@@ -122,23 +103,20 @@ def solve_puzzle(
                     unknown_count += 1
                 elif assignment[nr][nc] == 1:
                     assigned_mines += 1
-
-            # 지뢰가 너무 많음
             if assigned_mines > v:
                 return False
-            # 남은 셀로 제약 만족 불가
             if assigned_mines + unknown_count < v:
                 return False
         return True
 
     def check_global_mines() -> bool:
-        """전체 지뢰 개수 제약 확인"""
+        if total_mines is None:
+            return True
         assigned_mines = sum(assignment[r][c] == 1
-                           for r in range(rows) for c in range(cols)
+                           for r in range(R) for c in range(C)
                            if assignment[r][c] is not None)
         unknown_count = sum(assignment[r][c] is None
-                          for r in range(rows) for c in range(cols))
-
+                          for r in range(R) for c in range(C))
         if assigned_mines > total_mines:
             return False
         if assigned_mines + unknown_count < total_mines:
@@ -148,277 +126,411 @@ def solve_puzzle(
     solutions = []
 
     def backtrack(i: int):
-        """백트래킹 탐색"""
         if len(solutions) >= max_solutions:
             return
 
         if i == len(unknown_cells):
-            # 최종 검증
             if not check_global_mines():
                 return
-
-            # 모든 제약 정확히 만족하는지 확인
             for (_, _, v, nlist) in constraints:
                 actual = sum(assignment[nr][nc] == 1 for (nr, nc) in nlist)
                 if actual != v:
                     return
-
-            # 유효한 해 발견
             solutions.append([row[:] for row in assignment])
             return
 
         r, c = unknown_cells[i]
 
-        # 0 시도 (안전)
-        assignment[r][c] = 0
-        if check_constraints() and check_global_mines():
-            backtrack(i + 1)
-        assignment[r][c] = None
+        for val in (0, 1):
+            assignment[r][c] = val
+            if check_global_mines() and check_constraints():
+                backtrack(i + 1)
+            assignment[r][c] = None
 
-        if len(solutions) >= max_solutions:
-            return
-
-        # 1 시도 (지뢰)
-        assignment[r][c] = 1
-        if check_constraints() and check_global_mines():
-            backtrack(i + 1)
-        assignment[r][c] = None
+            if len(solutions) >= max_solutions:
+                return
 
     backtrack(0)
     return solutions
 
 
-def has_unique_solution(puzzle_grid: PuzzleGrid, rows: int, cols: int,
-                        total_mines: int) -> bool:
-    """퍼즐이 유일해를 가지는지 확인"""
-    solutions = solve_puzzle(puzzle_grid, rows, cols, total_mines, max_solutions=2)
-    return len(solutions) == 1
+def random_mask(R: int, C: int, M: int, rng: random.Random) -> List[List[int]]:
+    """Generate random mine placement."""
+    cells = list(product(range(R), range(C)))
+    mines = set(rng.sample(cells, M))
+    return [[1 if (r, c) in mines else 0 for c in range(C)] for r in range(R)]
 
 
-# ============================================================================
-# 퍼즐 생성
-# ============================================================================
-
-def generate_random_mines(rows: int, cols: int, num_mines: int,
-                         seed: int = None) -> Grid:
-    """무작위 지뢰 배치 생성"""
-    rng = random.Random(seed)
-
-    # 모든 셀 위치
-    cells = list(product(range(rows), range(cols)))
-    rng.shuffle(cells)
-
-    # 지뢰 배치
-    mine_grid = [[0] * cols for _ in range(rows)]
-    for i in range(num_mines):
-        r, c = cells[i]
-        mine_grid[r][c] = 1
-
-    return mine_grid
+def mask_to_solution_string(mask: List[List[int]]) -> str:
+    """Convert mine mask to a single bitstring format."""
+    return "".join("".join(str(cell) for cell in row) for row in mask)
 
 
-def minimize_clues(mine_grid: Grid, rows: int, cols: int, num_mines: int,
-                   max_attempts: int = 100) -> PuzzleGrid:
+def puzzle_to_string(puzzle: List[List[Optional[int]]]) -> List[str]:
+    """Convert puzzle to string format with # for hidden cells."""
+    return [''.join(str(cell) if cell is not None else '#' for cell in row)
+            for row in puzzle]
+
+
+# ============================================================
+# Scorer functions (weighted coordinate sum)
+# ============================================================
+
+def bitstring_to_coordinates(solution_str: str, R: int, C: int) -> Set[Tuple[int, int]]:
+    """Convert solution bitstring to coordinate set."""
+    coords = set()
+    for i, cell in enumerate(solution_str):
+        if cell == '1':
+            r, c = divmod(i, C)
+            coords.add((r, c))
+    return coords
+
+
+def compute_total_sum(coords: Set[Tuple[int, int]], C: int) -> int:
+    """Compute weighted coordinate sum: sum(row * C + col) for each mine."""
+    if not coords:
+        return 0
+    return sum(r * C + c for r, c in coords)
+
+
+def parse_total_sum(output: str) -> Optional[int]:
+    """Parse LLM output to extract total sum as single integer."""
+    output = re.sub(r'```[a-z]*\n?', '', output)
+    output = re.sub(r'```', '', output)
+    output = output.strip()
+
+    answer_matches = re.findall(
+        r'(?:Answer|Output|Final\s*Answer)\s*[:\s]*(\d+)',
+        output, re.IGNORECASE
+    )
+    if answer_matches:
+        return int(answer_matches[-1])
+
+    lines = output.strip().split('\n')
+    last_lines = lines[-5:]
+    for line in reversed(last_lines):
+        match = re.search(r'\b(\d{2,})\b', line.strip())
+        if match:
+            return int(match.group(1))
+
+    matches = re.findall(r'\b(\d{2,})\b', output)
+    if matches:
+        return int(matches[-1])
+
+    return None
+
+
+def score_from_solution(solution_str: str, R: int, C: int, pred_output: str) -> Dict:
+    """Score LLM prediction against solution using weighted sum."""
+    truth_coords = bitstring_to_coordinates(solution_str, R, C)
+    truth_sum = compute_total_sum(truth_coords, C)
+    pred_sum = parse_total_sum(pred_output)
+
+    if pred_sum is None:
+        return {'score': 0.0, 'truth_sum': truth_sum, 'pred_sum': None, 'error': 'Failed to parse'}
+
+    score = 1.0 if truth_sum == pred_sum else 0.0
+    return {'score': score, 'truth_sum': truth_sum, 'pred_sum': pred_sum, 'error': None}
+
+
+# ============================================================
+# Prompt template functions
+# ============================================================
+
+def format_puzzle_grid(puzzle_rows: List[str]) -> str:
+    """Format puzzle grid as multi-line string."""
+    return '\n'.join(puzzle_rows)
+
+
+def create_prompt(puzzle_data: Dict) -> str:
+    """Create prompt for minesweeper puzzle evaluation."""
+    puzzle_grid = format_puzzle_grid(puzzle_data['puzzle'])
+    rows = puzzle_data['rows']
+    cols = puzzle_data['cols']
+    mines = puzzle_data.get('total_mines', puzzle_data.get('mines', 0))
+    difficulty = puzzle_data.get('difficulty', 'medium')
+
+    if difficulty == 'easy':
+        mine_info = f"2. Total mines: {mines} hidden in the grid"
+        task_info = f"Determine the exact location of ALL {mines} mines."
+    else:
+        mine_info = "2. Some cells contain hidden mines"
+        task_info = "Determine the exact location of ALL mines."
+
+    if difficulty == 'easy':
+        uniqueness_info = "\n6. This puzzle has exactly one unique solution"
+    else:
+        uniqueness_info = ""
+
+    prompt = f"""You are solving a minesweeper puzzle with the following rules:
+
+GAME RULES:
+1. Grid size: {rows} rows x {cols} columns (0-indexed)
+{mine_info}
+3. Each revealed number (0-8) indicates how many of its 8 neighbors contain mines
+4. '#' represents a hidden cell that could be either a mine or safe
+5. Adjacent cells include all 8 directions: horizontal, vertical, and diagonal{uniqueness_info}
+
+PUZZLE:
+{puzzle_grid}
+
+YOUR TASK:
+{task_info}
+
+OUTPUT FORMAT (STRICT):
+- Find ALL mine coordinates using 0-based indexing (row 0 to {rows-1}, col 0 to {cols-1})
+- For each mine at (row, col), compute its linear index: row * {cols} + col
+- Sum all linear indices to get a single number
+- Output ONLY this single integer
+
+Example (with {cols} columns per row):
+If mines are at (1,2) and (3,0):
+- Linear indices: (1*{cols}+2) = {1*cols+2}, (3*{cols}+0) = {3*cols}
+- Sum = {1*cols+2} + {3*cols} = {1*cols+2 + 3*cols}
+- Output: {1*cols+2 + 3*cols}
+
+Answer:"""
+
+    return prompt
+
+
+# ============================================================
+# Difficulty-based puzzle generator
+# ============================================================
+
+class DifficultyPuzzleGenerator:
+    """Generate puzzles with varying difficulty levels using progressive revelation."""
+
+    DIFFICULTY_CONFIGS = {
+        'easy': {
+            'grid_size': (5, 5),
+            'mine_ratio': 0.22,
+            'reveal_ratio': 0.45,
+            'description': 'Small grid, balanced reveals'
+        },
+        'medium': {
+            'grid_size': (6, 6),
+            'mine_ratio': 0.33,
+            'reveal_ratio': 0.25,
+            'description': 'Medium grid, more mines, no mine count hint'
+        },
+        'hard': {
+            'grid_size': (7, 7),
+            'mine_ratio': 0.28,
+            'reveal_ratio': 0.25,
+            'description': 'Larger grid, no mine count hint'
+        }
+    }
+
+    def __init__(self, seed: int = 42):
+        self.rng = random.Random(seed)
+        self.seed = seed
+
+    def _rank_cells_by_information(self, nums: List[List[Optional[int]]],
+                                     mask: List[List[int]], R: int, C: int) -> List[Tuple[int, int]]:
+        """Rank safe cells by information value for progressive revelation."""
+        safe_cells = [(r, c) for r in range(R) for c in range(C) if mask[r][c] == 0]
+
+        def cell_info_score(pos):
+            r, c = pos
+            num = nums[r][c]
+            adjacency_bonus = 1 if num > 0 else 0
+            return num * 2 + adjacency_bonus
+
+        safe_cells.sort(key=cell_info_score, reverse=True)
+        return safe_cells
+
+    def _count_solutions_fast(self, puzzle: List[List[Optional[int]]],
+                              R: int, C: int, total_mines: int) -> int:
+        solutions = solve_puzzle(puzzle, R, C, max_solutions=MAX_SOLUTIONS + 1, total_mines=total_mines)
+        return len(solutions)
+
+    def generate_puzzle_with_difficulty(
+        self,
+        difficulty: str,
+        puzzle_id: str,
+        max_attempts: int = 100
+    ) -> Optional[Dict]:
+        """Generate a puzzle with exactly 1 solution."""
+        if difficulty not in self.DIFFICULTY_CONFIGS:
+            raise ValueError(f"Unknown difficulty: {difficulty}")
+
+        config = self.DIFFICULTY_CONFIGS[difficulty]
+        R, C = config['grid_size']
+        total_cells = R * C
+        num_mines = max(1, int(total_cells * config['mine_ratio']))
+        target_reveals = max(2, int((total_cells - num_mines) * config['reveal_ratio']))
+        max_reveals = int(target_reveals * 1.5)
+
+        for attempt in range(max_attempts):
+            cells = [(r, c) for r in range(R) for c in range(C)]
+            mine_positions = set(self.rng.sample(cells, num_mines))
+            mask = [[1 if (r, c) in mine_positions else 0 for c in range(C)] for r in range(R)]
+
+            nums = compute_numbers(mask)
+            ranked_cells = self._rank_cells_by_information(nums, mask, R, C)
+
+            puzzle = [[None] * C for _ in range(R)]
+            revealed: Set[Tuple[int, int]] = set()
+
+            initial_reveals = min(target_reveals // 2, len(ranked_cells))
+            for i in range(initial_reveals):
+                r, c = ranked_cells[i]
+                puzzle[r][c] = nums[r][c]
+                revealed.add((r, c))
+
+            solution_count = self._count_solutions_fast(puzzle, R, C, num_mines)
+
+            reveal_idx = initial_reveals
+            while solution_count > MAX_SOLUTIONS and reveal_idx < len(ranked_cells):
+                r, c = ranked_cells[reveal_idx]
+                puzzle[r][c] = nums[r][c]
+                revealed.add((r, c))
+                reveal_idx += 1
+                solution_count = self._count_solutions_fast(puzzle, R, C, num_mines)
+
+                if len(revealed) >= max_reveals:
+                    break
+
+            if solution_count == 1:
+                solutions = solve_puzzle(puzzle, R, C, max_solutions=1, total_mines=num_mines)
+
+                puzzle_display = []
+                for row in puzzle:
+                    row_str = ''.join(str(cell) if cell is not None else '#' for cell in row)
+                    puzzle_display.append(row_str)
+
+                answer_bitstring = mask_to_solution_string(solutions[0])
+
+                # Compute weighted coordinate sum as the answer
+                coords = bitstring_to_coordinates(answer_bitstring, R, C)
+                answer_sum = compute_total_sum(coords, C)
+
+                return {
+                    'id': puzzle_id,
+                    'difficulty': difficulty,
+                    'rows': R,
+                    'cols': C,
+                    'total_mines': num_mines,
+                    'puzzle': puzzle_display,
+                    'answer': str(answer_sum),
+                    'solution': answer_bitstring,
+                    'answer_type': 'weighted_sum',
+                    'description': f"{R}x{C} grid with {num_mines} mines",
+                    'cells_revealed': len(revealed)
+                }
+
+        return None
+
+    def verify_solutions(self, problem: Dict) -> bool:
+        """Verify that the puzzle has exactly 1 solution."""
+        R, C = problem['rows'], problem['cols']
+        total_mines = problem['total_mines']
+
+        puzzle = []
+        for row_str in problem['puzzle']:
+            row = []
+            for char in row_str:
+                if char == '#':
+                    row.append(None)
+                else:
+                    row.append(int(char))
+            puzzle.append(row)
+
+        solutions = solve_puzzle(puzzle, R, C, max_solutions=2, total_mines=total_mines)
+        return len(solutions) == 1
+
+
+# ============================================================
+# Dataset generation
+# ============================================================
+
+def create_dataset_files(num_questions: int):
     """
-    유일해를 유지하면서 힌트를 최소화
+    Create dataset files for minesweeper puzzles.
 
     Args:
-        mine_grid: 지뢰 배치
-        rows, cols: 그리드 크기
-        num_mines: 지뢰 개수
-        max_attempts: 최대 시도 횟수
+        num_questions: Number of questions to generate
 
     Returns:
-        최소 힌트 퍼즐 (None=숨김, 0-8=드러남)
+        Tuple[pd.DataFrame, List[Dict]]: (dataframe, json list)
     """
-    # 모든 숫자 계산
-    full_numbers = compute_numbers(mine_grid)
+    import pandas as pd
 
-    # 초기: 모든 안전 셀 드러남
-    puzzle = [[full_numbers[r][c] for c in range(cols)] for r in range(rows)]
+    print(f"Generating {num_questions} minesweeper puzzles...")
 
-    # 안전 셀 위치들
-    safe_cells = [(r, c) for r in range(rows) for c in range(cols)
-                  if mine_grid[r][c] == 0]
+    generator = DifficultyPuzzleGenerator(seed=42)
 
-    # 무작위 순서로 숨기기 시도
-    random.shuffle(safe_cells)
+    difficulties = ['easy', 'medium', 'hard']
+    puzzles_per_diff = num_questions // len(difficulties)
+    remainder = num_questions % len(difficulties)
 
-    for r, c in safe_cells:
-        if puzzle[r][c] is None:
+    all_puzzles = []
+
+    for i, difficulty in enumerate(difficulties):
+        count = puzzles_per_diff + (1 if i < remainder else 0)
+
+        if count == 0:
             continue
 
-        # 숨기기 시도
-        original_value = puzzle[r][c]
-        puzzle[r][c] = None
+        print(f"\n=== Generating {difficulty} puzzles ({count} needed) ===")
 
-        # 유일해 검증
-        if not has_unique_solution(puzzle, rows, cols, num_mines):
-            # 유일해가 깨지면 복원
-            puzzle[r][c] = original_value
+        for j in range(count):
+            puzzle_id = f"minesweeper_{len(all_puzzles)}"
 
-    return puzzle
+            # Try with different seeds
+            puzzle_generated = False
+            for seed_offset in range(10):
+                generator.rng = random.Random(generator.seed + seed_offset + j * 100 + i * 1000)
 
-
-def generate_puzzle(rows: int = 6, cols: int = 6, num_mines: int = 8,
-                   difficulty: str = 'easy', seed: int = None,
-                   max_attempts: int = 20) -> dict:
-    """
-    유일해가 보장된 지뢰찾기 퍼즐 생성
-
-    Args:
-        rows, cols: 그리드 크기
-        num_mines: 지뢰 개수
-        difficulty: 난이도 ('easy', 'medium', 'hard')
-        seed: 랜덤 시드
-        max_attempts: 최대 시도 횟수
-
-    Returns:
-        퍼즐 데이터 (dict)
-    """
-    rng = random.Random(seed)
-
-    for attempt in range(max_attempts):
-        # 지뢰 배치
-        mine_grid = generate_random_mines(rows, cols, num_mines,
-                                         rng.randint(0, 1_000_000))
-
-        # 힌트 최소화
-        puzzle_grid = minimize_clues(mine_grid, rows, cols, num_mines)
-
-        # 드러난 셀 개수 계산
-        revealed = sum(1 for r in range(rows) for c in range(cols)
-                      if puzzle_grid[r][c] is not None)
-
-        # 최소 힌트 수 확인 (난이도 조절)
-        min_clues = {
-            'easy': rows * cols * 0.4,
-            'medium': rows * cols * 0.3,
-            'hard': rows * cols * 0.2
-        }.get(difficulty, rows * cols * 0.3)
-
-        if revealed >= min_clues:
-            # 문자열 형식으로 변환
-            puzzle_str = []
-            solution_str = []
-
-            for r in range(rows):
-                puzzle_row = ''
-                solution_row = ''
-                for c in range(cols):
-                    # 퍼즐: 숨김='#', 드러남=숫자
-                    if puzzle_grid[r][c] is None:
-                        puzzle_row += '#'
-                    else:
-                        puzzle_row += str(puzzle_grid[r][c])
-
-                    # 솔루션: 지뢰=1, 안전=0
-                    solution_row += str(mine_grid[r][c])
-
-                puzzle_str.append(puzzle_row)
-                solution_str.append(solution_row)
-
-            return {
-                'id': f'{difficulty}_{rows}x{cols}_{seed if seed else 0:04d}',
-                'difficulty': difficulty,
-                'rows': rows,
-                'cols': cols,
-                'mines': num_mines,
-                'puzzle': puzzle_str,
-                'solution': solution_str,
-                'revealed_cells': revealed,
-                'clue_density': revealed / (rows * cols),
-                'mine_density': num_mines / (rows * cols)
-            }
-
-    raise Exception(f"Failed to generate puzzle after {max_attempts} attempts")
-
-
-# ============================================================================
-# 데이터셋 생성
-# ============================================================================
-
-def generate_dataset(output_path: str = None, num_puzzles_per_level: int = 5,
-                    seed: int = 2025) -> List[dict]:
-    """
-    난이도별 평가 데이터셋 생성
-
-    Args:
-        output_path: 출력 파일 경로
-        num_puzzles_per_level: 난이도당 퍼즐 개수
-        seed: 랜덤 시드
-
-    Returns:
-        퍼즐 리스트
-    """
-    configs = [
-        # (rows, cols, mines, difficulty)
-        (6, 6, 8, 'easy'),
-        (8, 8, 12, 'easy'),
-        (8, 8, 15, 'medium'),
-        (10, 10, 18, 'medium'),
-        (10, 10, 22, 'hard'),
-    ]
-
-    puzzles = []
-
-    print("="*70)
-    print("지뢰찾기 평가 데이터셋 생성")
-    print("="*70)
-
-    for config_idx, (rows, cols, mines, difficulty) in enumerate(configs):
-        print(f"\n[{config_idx+1}/{len(configs)}] {difficulty} {rows}×{cols} (지뢰 {mines}개)")
-
-        for i in range(num_puzzles_per_level):
-            puzzle_seed = seed + config_idx * 1000 + i
-            try:
-                puzzle = generate_puzzle(
-                    rows=rows,
-                    cols=cols,
-                    num_mines=mines,
+                result = generator.generate_puzzle_with_difficulty(
                     difficulty=difficulty,
-                    seed=puzzle_seed
+                    puzzle_id=puzzle_id
                 )
-                puzzles.append(puzzle)
-                print(f"  ✓ {puzzle['id']}: {puzzle['revealed_cells']}개 힌트")
-            except Exception as e:
-                print(f"  ✗ 생성 실패 (seed={puzzle_seed}): {e}")
 
-    # Re-assign ids to follow index-based naming convention
-    for idx, puzzle in enumerate(puzzles):
-        puzzle['id'] = f'minesweeper_{idx}'
-    
-    # 저장
-    if output_path is None:
-        output_dir = Path(__file__).parent.parent / 'data' / 'minesweeper'
-        output_dir.mkdir(parents=True, exist_ok=True)
-        output_path = output_dir / 'eval_dataset.jsonl'
+                if result:
+                    # Add question (prompt)
+                    result['question'] = create_prompt(result)
+                    all_puzzles.append(result)
+                    print(f"  [{j+1}/{count}] {result['description']}, answer_sum={result['answer']}")
+                    puzzle_generated = True
+                    break
 
-    with open(output_path, 'w', encoding='utf-8') as f:
-        for puzzle in puzzles:
-            f.write(json.dumps(puzzle, ensure_ascii=False) + '\n')
+            if not puzzle_generated:
+                print(f"  [{j+1}/{count}] Failed to generate")
 
-    print(f"\n{'='*70}")
-    print(f"✓ {len(puzzles)}개 퍼즐 생성 완료")
-    print(f"✓ 저장 위치: {output_path}")
-    print(f"{'='*70}")
+    print(f"\nGenerated {len(all_puzzles)} puzzles total")
 
-    # 통계 출력
-    by_difficulty = defaultdict(int)
-    for p in puzzles:
-        by_difficulty[p['difficulty']] += 1
+    df = pd.DataFrame(all_puzzles)
 
-    print("\n난이도별 분포:")
-    for diff, count in sorted(by_difficulty.items()):
-        print(f"  {diff:8s}: {count}개")
+    # Save files
+    PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
-    return puzzles
+    # CSV
+    csv_dir = PROJECT_ROOT / "data" / "csv"
+    csv_dir.mkdir(parents=True, exist_ok=True)
+    csv_path = csv_dir / "minesweeper.csv"
+    df.to_csv(csv_path, index=False, encoding="utf-8-sig")
+    print(f"CSV file created: {csv_path}")
 
+    # JSONL
+    json_dir = PROJECT_ROOT / "data" / "json"
+    json_dir.mkdir(parents=True, exist_ok=True)
+    jsonl_path = json_dir / "minesweeper.jsonl"
+    with open(jsonl_path, 'w', encoding='utf-8') as f:
+        for item in all_puzzles:
+            f.write(json.dumps(item, ensure_ascii=False) + '\n')
+    print(f"JSONL file created: {jsonl_path}")
 
-# ============================================================================
-# 메인 실행
-# ============================================================================
+    return df, all_puzzles
+
 
 if __name__ == '__main__':
-    # 데이터셋 생성
-    generate_dataset(num_puzzles_per_level=5, seed=2025)
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Minesweeper Puzzle Generator")
+    parser.add_argument("--num", type=int, default=12, help="Number of questions to generate")
+
+    args = parser.parse_args()
+
+    create_dataset_files(num_questions=args.num)
