@@ -8,21 +8,22 @@
 
 - `kinship`: 한국어 친족 관계 (다중 선택 A-E)
 - `kinship_vision`: 이미지 기반 친족 관계 (동일한 평가자 사용)
-- `cipher`: 영어 암호 해독
-- `cipher_korean`: 한국어 암호 해독 (동일한 평가자 사용)
-- `hanoi`: 하노이 탑 (디스크, 출발지, 목적지)
-- `ferryman`: 뱃사공 항해 (X시간 Y분)
-- `array_formula`: 배열 공식 계산 (영어)
-- `array_formula_korean`: 배열 공식 계산 (한국어, 동일한 평가자 사용)
-- `causal_dag`: 인과 관계 DAG 추론 (영어)
-- `causal_dag_korean`: 인과 관계 DAG 추론 (한국어, 동일한 평가자 사용)
+- `cipher_en`: 영어 암호 해독
+- `cipher_ko`: 한국어 암호 해독 (동일한 평가자 사용)
+- `hanoi_en`: 하노이 탑 (디스크, 출발지, 목적지)
+- `ferryman_en`: 뱃사공 항해 (X hours Y minutes)
+- `ferryman_ko`: 뱃사공 항해 (X시간 Y분)
+- `array_formula_en`: 배열 공식 계산 (영어)
+- `array_formula_ko`: 배열 공식 계산 (한국어, 동일한 평가자 사용)
+- `causal_dag_en`: 인과 관계 DAG 추론 (영어)
+- `causal_dag_ko`: 인과 관계 DAG 추론 (한국어, 동일한 평가자 사용)
 - `cryptarithmetic`: 암호 산술 퍼즐
 - `inequality`: 부등식 제약 조건 만족
-- `logic_grid`: 로직 그리드 퍼즐 (영어)
-- `logic_grid_korean`: 로직 그리드 퍼즐 (한국어, 동일한 평가자 사용)
+- `logic_grid_en`: 로직 그리드 퍼즐 (영어)
+- `logic_grid_ko`: 로직 그리드 퍼즐 (한국어, 동일한 평가자 사용)
 - `number_baseball`: 숫자 야구 (스트라이크/볼)
-- `sat_puzzles`: SAT 퍼즐 풀이 (영어)
-- `sat_puzzles_korean`: SAT 퍼즐 풀이 (한국어, 동일한 평가자 사용)
+- `sat_puzzles_en`: SAT 퍼즐 풀이 (영어)
+- `sat_puzzles_ko`: SAT 퍼즐 풀이 (한국어, 동일한 평가자 사용)
 - `yacht_dice`: 야트 다이스 최적화
 
 ## 설치
@@ -277,21 +278,22 @@ evaluation:
 tasks:
   - kinship
   - kinship_vision
-  - cipher
-  - cipher_korean
-  - hanoi
-  - ferryman
-  - array_formula
-  - array_formula_korean
-  - causal_dag
-  - causal_dag_korean
+  - cipher_en
+  - cipher_ko
+  - hanoi_en
+  - ferryman_en
+  - ferryman_ko
+  - array_formula_en
+  - array_formula_ko
+  - causal_dag_en
+  - causal_dag_ko
   - cryptarithmetic
   - inequality
-  - logic_grid
-  - logic_grid_korean
+  - logic_grid_en
+  - logic_grid_ko
   - number_baseball
-  - sat_puzzles
-  - sat_puzzles_korean
+  - sat_puzzles_en
+  - sat_puzzles_ko
   - yacht_dice
 
 difficulties:

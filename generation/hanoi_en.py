@@ -468,8 +468,8 @@ def save_dataset(puzzles: List[Dict], base_dir: str = "./data"):
     csv_dir.mkdir(parents=True, exist_ok=True)
     json_dir.mkdir(parents=True, exist_ok=True)
 
-    csv_path = csv_dir / "hanoi.csv"
-    jsonl_path = json_dir / "hanoi.jsonl"
+    csv_path = csv_dir / "hanoi_en.csv"
+    jsonl_path = json_dir / "hanoi_en.jsonl"
 
     csv_columns = ["id", "question", "answer", "solution", "difficulty"]
 
