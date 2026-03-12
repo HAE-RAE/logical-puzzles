@@ -15,11 +15,11 @@ class JourneyState:
 
 def _fmt_hour(h):
     if h < 12:
-        return f"{h}:00 AM"
+        return f"오전 {h}시"
     elif h == 12:
-        return "12:00 PM"
+        return "낮 12시"
     else:
-        return f"{h - 12}:00 PM"
+        return f"오후 {h - 12}시"
 
 
 def generate_puzzle_question(difficulty="easy", rest_count_target=None):
@@ -103,7 +103,7 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
             if rest_count_target is not None:
                 params["rest_count_range"] = (rest_count_target, rest_count_target)
 
-            # --- 1. System rules and random variable initialization ---
+            # --- 1. 시스템 규칙 및 초기 변수 랜덤 설정 ---
             zone_a_reduction = random.randint(*params["zone_a_reduction_range"])
             if params.get("uniform_reduction"):
                 zone_b_reduction = zone_a_reduction
@@ -145,10 +145,10 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
             current_favorable_zone = random.choice(["A", "B"])
 
             cargo_items = [
-                {"name": "relief supply box", "weight_range": (30, 70)},
-                {"name": "medical kit", "weight_range": (5, 15)},
-                {"name": "water barrel", "weight_range": (15, 25)},
-                {"name": "construction material", "weight_range": (50, 80)}
+                {"name": "구호품 상자", "weight_range": (30, 70)},
+                {"name": "의료품 키트", "weight_range": (5, 15)},
+                {"name": "식수통", "weight_range": (15, 25)},
+                {"name": "건축 자재", "weight_range": (50, 80)}
             ]
             item1_spec, item2_spec = random.sample(cargo_items, 2)
             item1_weight = random.randint(*item1_spec["weight_range"])
@@ -166,7 +166,7 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
 
             cargo_weight_kg = (item1_weight * item1_qty) + (item2_weight * item2_qty)
 
-            # Mid-journey delivery setup
+            # 중간 하역 설정
             delivery_km = None
             delivery_spec = None
             delivery_qty = 0
@@ -194,7 +194,7 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
 
             rest_increment = random.randint(*params["rest_increment_range"])
 
-            # Congestion time setup
+            # 혼잡시간 설정
             departure_hour = random.randint(7, 9)
             cong_offset = random.randint(*params["congestion_start_offset_range"])
             congestion_start_hour = departure_hour + cong_offset
@@ -206,37 +206,35 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
 
             career_years = random.randint(5, 15)
 
-            # --- 2. Simulation ---
+            # --- 2. 시뮬레이션 ---
             journey = JourneyState()
-            solution = ["[STEP 0] Initial conditions"]
+            solution = ["[STEP 0] 초기 조건"]
             solution.append(
-                f"  Total distance={total_distance}km, "
-                f"boat still-water speed={base_boat_speed_kph}km/h, "
-                f"departure={_fmt_hour(departure_hour)}")
+                f"  총 거리={total_distance}km, 배 정수속력="
+                f"{base_boat_speed_kph}km/h, 출발={_fmt_hour(departure_hour)}")
             solution.append(
-                f"  Current: {current_speed_kph}km/h "
-                f"(downstream in Zone {current_favorable_zone})")
+                f"  유속: {current_speed_kph}km/h "
+                f"({current_favorable_zone}구역 순류)")
             solution.append(
-                f"  Cargo: {item1_weight}kg {item1_spec['name']}x{item1_qty}"
-                f" + {item2_weight}kg {item2_spec['name']}x{item2_qty}")
+                f"  화물: {item1_weight}kg {item1_spec['name']}×{item1_qty}"
+                f" + {item2_weight}kg {item2_spec['name']}×{item2_qty}")
             solution.append(
-                f"  Congestion: {_fmt_hour(congestion_start_hour)}~"
+                f"  혼잡: {_fmt_hour(congestion_start_hour)}~"
                 f"{_fmt_hour(congestion_end_hour)}, "
-                f"{'all zones' if congestion_affected_zone == 'all' else 'Zone ' + congestion_affected_zone}"
+                f"{'전 구역' if congestion_affected_zone == 'all' else congestion_affected_zone + '구역'}"
                 f" -{congestion_reduction_pct}%")
             if delivery_km:
                 solution.append(
-                    f"  Mid-journey delivery: {delivery_km}km, "
-                    f"{delivery_spec['name']} x{delivery_qty}")
+                    f"  중간 하역: {delivery_km}km에서 "
+                    f"{delivery_spec['name']} {delivery_qty}개")
             if rest_increment > 0:
-                solution.append(
-                    f"  Cumulative fatigue: +{rest_increment}min per rest")
-            solution.append(f"  Regulations: {regulations}")
+                solution.append(f"  누적 휴식: 매 휴식마다 +{rest_increment}분")
+            solution.append(f"  규정: {regulations}")
             step_cnt = 1
 
             solution.append(
-                f"[STEP {step_cnt}] Cargo weight: "
-                f"({item1_weight}x{item1_qty})+({item2_weight}x{item2_qty})"
+                f"[STEP {step_cnt}] 화물 무게: "
+                f"({item1_weight}×{item1_qty})+({item2_weight}×{item2_qty})"
                 f"={cargo_weight_kg}kg")
             step_cnt += 1
 
@@ -257,9 +255,9 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                 ra = regulations["cargo_effect"]["zone_A_reduction_percent"]
                 rb = regulations["cargo_effect"]["zone_B_reduction_percent"]
                 solution.append(
-                    f"[STEP {step_cnt}] Cargo regulation: {cargo_weight_kg}kg > "
-                    f"{regulations['cargo_effect']['heavy_load_kg']}kg -> "
-                    f"Zone A -{ra}%({adj_A:.2f}), Zone B -{rb}%({adj_B:.2f})")
+                    f"[STEP {step_cnt}] 화물규정: {cargo_weight_kg}kg > "
+                    f"{regulations['cargo_effect']['heavy_load_kg']}kg → "
+                    f"A구역 -{ra}%({adj_A:.2f}), B구역 -{rb}%({adj_B:.2f})")
                 step_cnt += 1
 
             distance_to_go = total_distance
@@ -271,7 +269,7 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
             rest_count = 0
             delivered = delivery_km is None
 
-            # --- Continuous operation constraint pre-validation ---
+            # --- 연속운항 제약 모순 사전 검증 ---
             for _zone in ("A", "B"):
                 if _zone == current_favorable_zone:
                     _eff = base_boat_speed_kph + current_speed_kph
@@ -283,10 +281,14 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                     _lim *= (1 - congestion_reduction_pct / 100)
                 _worst_speed = min(_eff, _lim)
                 if _worst_speed <= 0:
-                    raise ValueError("Worst-case speed <= 0")
+                    raise ValueError("최악 조건 속도 0 이하")
                 if rest_stop_interval_km / _worst_speed >= trigger_hours:
                     raise ValueError(
-                        f"Continuous operation contradiction: Zone {_zone}")
+                        f"연속운항 모순: {_zone}구역 최악속도 "
+                        f"{_worst_speed:.2f}km/h, "
+                        f"{rest_stop_interval_km}km 이동 "
+                        f"{rest_stop_interval_km/_worst_speed*60:.0f}분 "
+                        f">= 한계 {trigger_hours*60:.0f}분")
 
             def _next_rest_stop_dist(current_km):
                 eps = 1e-9
@@ -337,7 +339,7 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                         eff = base_boat_speed_kph - current_speed_kph
                     spd = min(eff, lim)
                     if spd <= 0:
-                        raise ValueError("_compute_time_to: speed <= 0")
+                        raise ValueError("_compute_time_to: 속도 0 이하")
 
                     if not in_cong:
                         t_to_s = congestion_start_hour - cur_abs
@@ -353,19 +355,19 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                                 dz = d_to_e
 
                     if dz < 1e-12:
-                        raise ValueError("_compute_time_to: zero distance")
+                        raise ValueError("_compute_time_to: 이동 거리 0")
 
                     t += dz / spd
                     pos += dz
                     remaining -= dz
                 else:
-                    raise ValueError("_compute_time_to: max iterations")
+                    raise ValueError("_compute_time_to: 최대 반복 초과")
                 return t
 
             max_favorable_speed = base_boat_speed_kph + current_speed_kph
             zone_a_boundary = regulations["speed_limit"]["zone_A_km"]
 
-            # --- Main simulation loop ---
+            # --- 메인 시뮬레이션 루프 ---
             while distance_to_go > 0.001:
                 current_pos = journey.current_position_km
 
@@ -378,6 +380,7 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                     distance_in_zone = total_distance - current_pos
                     in_zone = "B"
 
+                # 혼잡시간 체크
                 abs_time = (departure_hour
                             + journey.total_moving_time_hours
                             + journey.total_rest_time_hours)
@@ -394,23 +397,23 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
 
                 if in_zone == current_favorable_zone:
                     eff_speed = base_boat_speed_kph + current_speed_kph
-                    cur_label = "downstream"
+                    cur_label = "순류"
                 else:
                     eff_speed = base_boat_speed_kph - current_speed_kph
-                    cur_label = "upstream"
+                    cur_label = "역류"
 
                 actual_speed = min(eff_speed, speed_limit)
                 if actual_speed <= 0:
-                    raise ValueError("Invalid speed")
+                    raise ValueError("유효하지 않은 속도")
 
-                cong_tag = " [CONGESTED]" if cong_applies else ""
+                cong_tag = " [혼잡]" if cong_applies else ""
                 solution.append(
-                    f"[STEP {step_cnt}] Zone {in_zone} "
+                    f"[STEP {step_cnt}] {in_zone}구역 "
                     f"({current_pos:.1f}km, {abs_time:.2f}h){cong_tag}: "
                     f"{base_boat_speed_kph}"
-                    f"{'+' if cur_label == 'downstream' else '-'}"
+                    f"{'+' if cur_label == '순류' else '-'}"
                     f"{current_speed_kph}={eff_speed:.1f}, "
-                    f"limit {speed_limit:.2f} -> {actual_speed:.2f}km/h")
+                    f"제한 {speed_limit:.2f} → {actual_speed:.2f}km/h")
                 step_cnt += 1
 
                 dist_to_stop = _next_rest_stop_dist(current_pos)
@@ -423,6 +426,7 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                     if dist_to_delivery > 1e-6:
                         boundaries.append(dist_to_delivery)
 
+                # 혼잡시간 경계 (시간 기반 → 거리 변환)
                 if not in_congestion:
                     t_to_cong = congestion_start_hour - abs_time
                     if t_to_cong > 1e-9:
@@ -445,9 +449,10 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                 distance_to_go -= seg_dist
 
                 solution.append(
-                    f"  -> {seg_dist:.2f}km / {actual_speed:.2f}km/h "
+                    f"  → {seg_dist:.2f}km / {actual_speed:.2f}km/h "
                     f"= {seg_time:.4f}h")
 
+                # 중간 하역
                 if (not delivered
                         and abs(journey.current_position_km - delivery_km)
                         < 1e-6):
@@ -458,25 +463,26 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                     adj_A, adj_B, is_heavy = _apply_cargo_effect(
                         cargo_weight_kg)
                     solution.append(
-                        f"  * Unload: {delivery_spec['name']} x{delivery_qty}"
-                        f"({unloaded_kg}kg) -> remaining {cargo_weight_kg}kg")
+                        f"  ★ 하역: {delivery_spec['name']} {delivery_qty}개"
+                        f"({unloaded_kg}kg) → 잔여 {cargo_weight_kg}kg")
                     if old_heavy and not is_heavy:
                         solution.append(
-                            f"    -> Cargo regulation lifted! "
+                            f"    → 화물규정 해제! "
                             f"A:{adj_A:.2f}, B:{adj_B:.2f}")
                     elif is_heavy:
-                        solution.append(
-                            "    -> Still overweight, regulation maintained")
+                        solution.append("    → 여전히 초과, 규정 유지")
 
+                # 연속 운항 트리거 (fallback)
                 if ((not rest_due)
                         and journey.continuous_moving_time_hours
                         >= trigger_hours - 1e-9):
                     rest_due = True
                     solution.append(
-                        f"  >> Continuous "
+                        f"  ▶ 연속 "
                         f"{regulations['mandatory_rest']['trigger_minutes']}"
-                        f"min reached")
+                        f"분 도달")
 
+                # 휴게 지점 도착 → 휴식 판단
                 at_stop = abs(
                     (journey.current_position_km / rest_stop_interval_km)
                     - round(journey.current_position_km
@@ -494,12 +500,12 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                     next_rest_km = (k + 1) * rest_stop_interval_km
                     target_km = min(next_rest_km, total_distance)
 
+                    # 빠른 판정: 물리적으로 가능한 최고 속도를 가정해도
+                    # 연속 운항 한계를 넘는다면 정밀 예측 없이 즉시 휴식.
                     distance_to_target = target_km - cur_pos
-                    max_possible_speed = min(
-                        max_favorable_speed, max(adj_A, adj_B))
+                    max_possible_speed = min(max_favorable_speed, max(adj_A, adj_B))
                     if max_possible_speed > 1e-9:
-                        optimistic_time = (
-                            distance_to_target / max_possible_speed)
+                        optimistic_time = distance_to_target / max_possible_speed
                     else:
                         optimistic_time = float("inf")
 
@@ -507,9 +513,9 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                             >= trigger_hours - 1e-9):
                         need_rest = True
                         solution.append(
-                            f"  >> Next segment expected to exceed "
+                            f"  ▶ 다음 구간 연속 "
                             f"{regulations['mandatory_rest']['trigger_minutes']}"
-                            f"min continuous")
+                            f"분 초과 예상")
                     else:
                         if (not delivered
                                 and delivery_km is not None
@@ -528,14 +534,13 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                         else:
                             time_to_target = _compute_time_to(
                                 cur_pos, target_km)
-                        if (journey.continuous_moving_time_hours
-                                + time_to_target
+                        if (journey.continuous_moving_time_hours + time_to_target
                                 >= trigger_hours - 1e-9):
                             need_rest = True
                             solution.append(
-                                f"  >> Next segment expected to exceed "
+                                f"  ▶ 다음 구간 연속 "
                                 f"{regulations['mandatory_rest']['trigger_minutes']}"
-                                f"min continuous")
+                                f"분 초과 예상")
 
                 if need_rest:
                     base_rest = (
@@ -548,127 +553,118 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                     rest_count += 1
                     if extra > 0:
                         solution.append(
-                            f"  # Rest#{rest_count}: "
-                            f"at {journey.current_position_km:.0f}km, "
-                            f"{base_rest}+{extra}={this_rest}min")
+                            f"  ■ 휴식#{rest_count}: "
+                            f"{journey.current_position_km:.0f}km에서 "
+                            f"{base_rest}+{extra}={this_rest}분")
                     else:
                         solution.append(
-                            f"  # Rest#{rest_count}: "
-                            f"at {journey.current_position_km:.0f}km, "
-                            f"{this_rest}min")
+                            f"  ■ 휴식#{rest_count}: "
+                            f"{journey.current_position_km:.0f}km에서 "
+                            f"{this_rest}분")
 
             if rest_due:
-                raise ValueError(
-                    "Last segment exceeds continuous limit (no rest stop)")
+                raise ValueError("마지막 구간 연속 운항 한계 초과 (휴게소 없음)")
 
             max_segments = params.get("max_segments", 20)
             if step_cnt > max_segments:
-                raise ValueError(f"Segment count({step_cnt}) exceeded")
+                raise ValueError(f"구간 수({step_cnt}) 초과")
 
             rc_range = params.get("rest_count_range")
             if rc_range:
                 rc_min, rc_max = rc_range
                 if rc_min is not None and rest_count < rc_min:
                     raise ValueError(
-                        f"Rest count({rest_count}) < min({rc_min})")
+                        f"휴식 횟수({rest_count}) < 최소({rc_min})")
                 if rc_max is not None and rest_count > rc_max:
                     raise ValueError(
-                        f"Rest count({rest_count}) > max({rc_max})")
+                        f"휴식 횟수({rest_count}) > 최대({rc_max})")
 
-            # --- 3. Final question and answer ---
+            # --- 3. 최종 질문 및 정답 ---
             protagonist = random.choice([
-                "Ferryman Kim", "Cargo transporter Park", "River scout Lee",
-                "Marine operator Choi", "Freight captain Han",
-                "Inland navigator Jung", "Riverside logistics driver Yoon",
-                "Waterway officer Jang", "Vessel operator Cho",
-                "River courier Seo", "Channel guide Oh",
-                "River engineer Hwang"])
+                "뱃사공 김씨", "물품 운송원 박씨", "하천 탐사대원 이씨",
+                "수상 운송기사 최씨", "화물선 선장 한씨", "내수면 조종사 정씨",
+                "강변 물류기사 윤씨", "수운 담당관 장씨", "선박 운항원 조씨",
+                "하천 배달원 서씨", "수로 안내원 오씨", "강운 기관사 황씨"])
             opp_zone = "B" if current_favorable_zone == "A" else "A"
 
             if congestion_affected_zone == "all":
-                cong_zone_desc = "the speed limits in all zones are"
+                cong_zone_desc = "모든 구역의 제한속도가"
             else:
-                cong_zone_desc = (
-                    f"the speed limit in Zone "
-                    f"{congestion_affected_zone} is")
+                cong_zone_desc = (f"{congestion_affected_zone}구역의 "
+                                  f"제한속도가")
 
             q_parts = [
-                (f"{protagonist} is a veteran who has worked on this river "
-                 f"for {career_years} years and has been assigned to "
-                 f"transport goods to an upstream region spanning a total "
-                 f"of {total_distance}km. "
-                 f"He departs at {_fmt_hour(departure_hour)} carrying "
-                 f"{item1_qty} units of {item1_spec['name']} "
-                 f"({item1_weight}kg each) and "
-                 f"{item2_qty} units of {item2_spec['name']} "
-                 f"({item2_weight}kg each). "
-                 f"The boat can travel at {base_boat_speed_kph}km/h "
-                 f"in still water."),
+                (f"{protagonist}는 이 강에서만 {career_years}년을 일한 "
+                 f"베테랑으로, 총 길이 {total_distance}km의 상류 지역에 "
+                 f"물품을 운송하는 임무를 맡았다. "
+                 f"그는 {_fmt_hour(departure_hour)}에 "
+                 f"{item1_weight}kg짜리 {item1_spec['name']} {item1_qty}개와 "
+                 f"{item2_weight}kg짜리 {item2_spec['name']} {item2_qty}개를 "
+                 f"싣고 출발했다. "
+                 f"배는 정수(靜水)에서 시속 {base_boat_speed_kph}km로 "
+                 f"이동 가능하다."),
 
-                (f"The river has a current of {current_speed_kph}km/h. "
-                 f"In Zone {current_favorable_zone}, the current is "
-                 f"downstream (effective speed = boat speed + current speed), "
-                 f"while in Zone {opp_zone}, the current is upstream "
-                 f"(effective speed = boat speed - current speed)."),
+                (f"이 강에는 시속 {current_speed_kph}km의 물살이 있는데, "
+                 f"{current_favorable_zone}구역에서는 순류"
+                 f"(실효 속력 = 배 속력 + 유속), "
+                 f"{opp_zone}구역에서는 역류"
+                 f"(실효 속력 = 배 속력 - 유속)이다."),
 
-                (f"The first {regulations['speed_limit']['zone_A_km']}km "
-                 f"is Zone A (speed limit: "
+                (f"첫 {regulations['speed_limit']['zone_A_km']}km는 A구역"
+                 f"(제한속도 "
                  f"{regulations['speed_limit']['zone_A_limit_kph']}km/h), "
-                 f"followed by Zone B (speed limit: "
-                 f"{regulations['speed_limit']['zone_B_limit_kph']}km/h). "
-                 f"Speed limits apply to the effective speed after "
-                 f"accounting for the current."),
+                 f"이후 B구역"
+                 f"(제한속도 "
+                 f"{regulations['speed_limit']['zone_B_limit_kph']}km/h)이다."
+                 f" 제한 속도는 유속 반영 후 실효 속력에 적용된다."),
 
-                (f"If the cargo exceeds the safety weight threshold "
-                 f"({regulations['cargo_effect']['heavy_load_kg']}kg), "
-                 + (f"the speed limits in all zones are reduced by "
+                (f"안전 중량 기준"
+                 f"({regulations['cargo_effect']['heavy_load_kg']}kg) "
+                 f"초과 시, "
+                 + (f"모든 구역의 제한속도가 "
                     f"{regulations['cargo_effect']['zone_A_reduction_percent']}"
-                    f"%."
+                    f"% 감소한다."
                     if zone_a_reduction == zone_b_reduction
                     else
-                    f"the Zone A speed limit is reduced by "
+                    f"A구역 제한속도는 "
                     f"{regulations['cargo_effect']['zone_A_reduction_percent']}"
-                    f"% and the Zone B speed limit is reduced by "
+                    f"% 감소하고 "
+                    f"B구역 제한속도는 "
                     f"{regulations['cargo_effect']['zone_B_reduction_percent']}"
-                    f"%.")),
+                    f"% 감소한다.")),
 
-                (f"From {_fmt_hour(congestion_start_hour)} to "
-                 f"{_fmt_hour(congestion_end_hour)} is a congestion period, "
-                 f"during which {cong_zone_desc} additionally reduced by "
-                 f"{congestion_reduction_pct}%. "
-                 f"This reduction is applied on top of the speed limit "
-                 f"after the cargo regulation has been applied."),
+                (f"{_fmt_hour(congestion_start_hour)}부터 "
+                 f"{_fmt_hour(congestion_end_hour)}까지는 혼잡시간대로, "
+                 f"{cong_zone_desc} 추가로 "
+                 f"{congestion_reduction_pct}% 감소한다. "
+                 f"이 감속은 화물 규정 적용 후 제한속도에 추가 적용된다."),
             ]
 
             if delivery_km:
                 q_parts.append(
-                    f"At the {delivery_km}km waypoint, "
-                    f"{delivery_qty} units of {delivery_spec['name']} "
-                    f"are to be unloaded. After unloading, the cargo "
-                    f"regulation is reapplied based on the remaining "
-                    f"cargo weight.")
+                    f"{delivery_km}km 지점의 중간 기착지에서 "
+                    f"{delivery_spec['name']} {delivery_qty}개를 하역한다. "
+                    f"하역 후 잔여 화물 무게에 따라 화물 규정이 재적용된다.")
 
             rest_desc = (
-                f"The boat cannot operate continuously for more than "
-                f"{regulations['mandatory_rest']['trigger_minutes']} minutes. "
-                f"Rest is only permitted at designated rest points "
-                f"(every {rest_stop_interval_km}km). "
-                f"The base rest duration is "
-                f"{regulations['mandatory_rest']['duration_minutes']} minutes.")
+                f"연속 {regulations['mandatory_rest']['trigger_minutes']}분 "
+                f"이상 운항할 수 없으며, 휴게 지점"
+                f"(매 {rest_stop_interval_km}km)에서만 쉴 수 있다. "
+                f"기본 휴식 시간은 "
+                f"{regulations['mandatory_rest']['duration_minutes']}분이다.")
             if rest_increment > 0:
                 base_r = regulations["mandatory_rest"]["duration_minutes"]
                 rest_desc += (
-                    f" However, due to cumulative fatigue regulations, "
-                    f"each rest period increases by {rest_increment} minutes "
-                    f"(1st: {base_r}min, 2nd: {base_r + rest_increment}min, "
-                    f"3rd: {base_r + rest_increment * 2}min, ...).")
+                    f" 단, 누적 피로 규정에 따라 매 휴식마다 "
+                    f"{rest_increment}분씩 추가된다"
+                    f"(첫째 {base_r}분, 둘째 {base_r + rest_increment}분, "
+                    f"셋째 {base_r + rest_increment * 2}분, …).")
             q_parts.append(rest_desc)
 
             q_parts.append(
-                "Following all of the above rules, what is the total "
-                "travel time including mandatory rest stops to reach the "
-                "final destination? Express in hours and minutes "
-                "(round minutes to the nearest whole number).")
+                "이 모든 조건을 준수하여 최종 목적지까지 도착했을 때, "
+                "의무 휴식을 포함한 총 소요 시간은 몇 시간 몇 분입니까? "
+                "(분은 소숫점 첫째 자리에서 반올림)")
 
             question = "\n\n".join(q_parts)
 
@@ -679,10 +675,8 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                 hours += 1
                 minutes = 0
 
-            answer = f"{hours} hours {minutes} minutes"
-            solution.append(
-                f"[STEP {step_cnt}] Total {total_hours:.4f}h "
-                f"= {answer}")
+            answer = f"{hours}시간 {minutes}분"
+            solution.append(f"[STEP {step_cnt}] 총 {total_hours:.4f}시간 = {answer}")
 
             return question, answer, solution
 
@@ -690,11 +684,11 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
             continue
 
     raise RuntimeError(
-        f"Maximum retries ({max_retries}) exceeded.")
+        f"최대 재시도 횟수({max_retries})를 초과했습니다.")
 
 
 def _build_rest_count_targets(num_questions, rest_count_range):
-    """Build evenly distributed rest count targets from rest_count_range."""
+    """rest_count_range를 num_questions에 맞게 균등 배분한 타겟 리스트 반환."""
     if rest_count_range is None:
         return [None] * num_questions
     rc_min, rc_max = rest_count_range
@@ -726,14 +720,13 @@ def create_dataset_files(num_questions, difficulty=None):
     if difficulty is None:
         difficulties = ["easy", "medium", "hard"]
         total_questions = num_questions * len(difficulties)
-        print(f"Generating ferryman puzzles... "
-              f"({num_questions} per difficulty, "
-              f"{total_questions} total)")
+        print(f"뱃사공 문제를 생성 중... (각 난이도별 {num_questions}개, "
+              f"총 {total_questions}개)")
     else:
         difficulties = [difficulty]
         total_questions = num_questions
-        print(f"Generating {num_questions} ferryman puzzles... "
-              f"(difficulty: {difficulty})")
+        print(f"뱃사공 문제 {num_questions}개를 생성 중... "
+              f"(난이도: {difficulty})")
 
     output = []
     seen_questions = set()
@@ -745,10 +738,10 @@ def create_dataset_files(num_questions, difficulty=None):
             num_questions, REST_COUNT_RANGES.get(diff))
         if REST_COUNT_RANGES.get(diff):
             dist = Counter(targets)
-            print(f"\n[{diff.upper()}] Generating {num_questions}... "
-                  f"(rest count distribution: {dict(sorted(dist.items()))})")
+            print(f"\n[{diff.upper()}] 난이도 {num_questions}개 생성 중... "
+                  f"(휴식 횟수 배분: {dict(sorted(dist.items()))})")
         else:
-            print(f"\n[{diff.upper()}] Generating {num_questions}...")
+            print(f"\n[{diff.upper()}] 난이도 {num_questions}개 생성 중...")
 
         diff_count = 0
         attempt_count = 0
@@ -767,19 +760,19 @@ def create_dataset_files(num_questions, difficulty=None):
                     difficulty_counts[diff] += 1
                     diff_count += 1
                     if diff_count % 10 == 0:
-                        print(f"  Progress: {diff_count}/{num_questions}")
+                        print(f"  진행: {diff_count}/{num_questions}")
             except Exception:
                 continue
 
         if diff_count < num_questions:
-            print(f"  Warning: [{diff}] Only {diff_count}/{num_questions} "
-                  f"generated.")
+            print(f"  경고: [{diff}] 목표 {num_questions}개 중 "
+                  f"{diff_count}개만 생성되었습니다.")
 
-    print(f"\nGeneration stats:")
-    print(f"  Total puzzles: {len(output)}")
-    print(f"  Unique puzzles: {len(seen_questions)}")
-    print(f"  Unique answers: {len(unique_answers)}")
-    print(f"\nDifficulty distribution:")
+    print(f"\n생성 통계:")
+    print(f"  생성된 문제 수: {len(output)}")
+    print(f"  고유한 문제 수: {len(seen_questions)}")
+    print(f"  고유한 정답 수: {len(unique_answers)}")
+    print(f"\n난이도별 분포:")
     for diff in sorted(difficulty_counts):
         print(f"{diff:<6} {difficulty_counts[diff]}")
 
@@ -787,13 +780,13 @@ def create_dataset_files(num_questions, difficulty=None):
 
     csv_dir = PROJECT_ROOT / "data" / "csv"
     csv_dir.mkdir(parents=True, exist_ok=True)
-    csv_path = csv_dir / "ferryman.csv"
+    csv_path = csv_dir / "ferryman_korean.csv"
     ferryman_json = []
     with open(csv_path, "w", encoding="utf-8-sig", newline="") as f:
         writer = csv.writer(f)
         writer.writerow(["id", "question", "answer", "solution", "difficulty"])
         for i, (question, answer, solution, diff) in enumerate(output):
-            qid = f"ferryman_{i}"
+            qid = f"ferryman_korean_{i}"
             row = {
                 "id": qid,
                 "question": question,
@@ -803,28 +796,26 @@ def create_dataset_files(num_questions, difficulty=None):
             }
             ferryman_json.append(row)
             writer.writerow([qid, question, answer, solution, diff])
-    print(f"\nCSV file created: {csv_path}")
+    print(f"\nCSV 파일이 생성: {csv_path}")
 
     json_dir = PROJECT_ROOT / "data" / "json"
     json_dir.mkdir(parents=True, exist_ok=True)
 
-    jsonl_path = json_dir / "ferryman.jsonl"
+    jsonl_path = json_dir / "ferryman_korean.jsonl"
     with open(jsonl_path, 'w', encoding='utf-8') as f:
         for item in ferryman_json:
             f.write(json.dumps(item, ensure_ascii=False) + '\n')
-    print(f"JSONL file created: {jsonl_path}")
+    print(f"JSONL 파일이 생성: {jsonl_path}")
 
     ferryman_df = pd.DataFrame(
-        ferryman_json,
-        columns=["id", "question", "answer", "solution", "difficulty"])
+        ferryman_json, columns=["id", "question", "answer", "solution", "difficulty"])
     return ferryman_df, ferryman_json
 
 
 if __name__ == '__main__':
     import argparse
 
-    parser = argparse.ArgumentParser(
-        description="Ferryman Puzzle Generator (English)")
+    parser = argparse.ArgumentParser(description="Ferryman Puzzle Generator")
     parser.add_argument(
         "--num", type=int, default=100,
         help="Number of questions per difficulty level.")
@@ -836,12 +827,13 @@ if __name__ == '__main__':
     args = parser.parse_args()
     create_dataset_files(num_questions=args.num, difficulty=args.difficulty)
 
+    # 샘플 출력
     print("\n" + "="*80)
-    print("Sample puzzles (one per difficulty)")
+    print("샘플 문제 (각 난이도별 1개씩)")
     print("="*80)
     for diff in ["easy", "medium", "hard"]:
         question, answer, solution = generate_puzzle_question(difficulty=diff)
-        print(f"\n========== [{diff.upper()}] Sample ==========")
+        print(f"\n========== [{diff.upper()}] 문제 샘플 ==========")
         print("- question -\n", question)
         print("\n- answer -\n", answer)
         print("\n- solution -")
