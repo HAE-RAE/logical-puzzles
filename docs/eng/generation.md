@@ -6,24 +6,24 @@ A collection of scripts for generating datasets for 20 logical puzzle tasks.
 
 | Task | Script | Difficulty | Default Count |
 |------|--------|------------|---------------|
-| Array Formula | `array_formula.py` | Easy, Medium, Hard | 100 |
-| Array Formula Korean | `array_formula_korean.py` | Easy, Medium, Hard | 100 |
-| Causal DAG Korean | `causal_dag_korean.py` | Easy, Medium, Hard | 300 |
-| Causal DAG | `causal_dag.py` | Easy, Medium, Hard | 300 |
-| Cipher Korean | `cipher_korean.py` | Easy, Medium, Hard, Very Hard, Extreme | 100 |
-| Cipher | `cipher.py` | Easy, Medium, Hard, Expert | 100 |
+| Array Formula (EN) | `array_formula_en.py` | Easy, Medium, Hard | 100 |
+| Array Formula (KO) | `array_formula_ko.py` | Easy, Medium, Hard | 100 |
+| Causal DAG (KO) | `causal_dag_ko.py` | Easy, Medium, Hard | 300 |
+| Causal DAG (EN) | `causal_dag_en.py` | Easy, Medium, Hard | 300 |
+| Cipher (KO) | `cipher_ko.py` | Easy, Medium, Hard, Very Hard, Extreme | 100 |
+| Cipher (EN) | `cipher_en.py` | Easy, Medium, Hard, Expert | 100 |
 | Cryptarithmetic | `cryptarithmetic.py` | Easy, Medium, Hard, Expert | 400 |
-| Ferryman | `ferryman.py` | Easy, Medium, Hard | 100 |
-| Hanoi | `hanoi.py` | - | 100 |
+| Ferryman (EN) | `ferryman_en.py` | Easy, Medium, Hard | 100 |
+| Hanoi (EN) | `hanoi_en.py` | - | 100 |
 | Inequality | `inequality.py` | Easy, Medium, Hard, Expert | 400 |
 | Kinship | `kinship.py` | - | 100 |
 | Kinship Vision | `kinship_vision.py` | - | 100 |
-| Logic Grid Korean | `logic_grid_korean.py` | Easy, Medium, Hard | 300 |
-| Logic Grid | `logic_grid.py` | Easy, Medium, Hard | 300 |
+| Logic Grid (KO) | `logic_grid_ko.py` | Easy, Medium, Hard | 300 |
+| Logic Grid (EN) | `logic_grid_en.py` | Easy, Medium, Hard | 300 |
 | Minesweeper | `minesweeper.py` | Easy, Medium, Hard | - |
 | Number Baseball | `number_baseball.py` | Easy, Medium, Hard, Expert | 400 |
-| SAT Puzzle Korean | `sat_puzzle_korean.py` | Easy, Medium, Hard | 300 |
-| SAT Puzzle | `sat_puzzle.py` | Easy, Medium, Hard | 300 |
+| SAT Puzzle (KO) | `sat_puzzle_ko.py` | Easy, Medium, Hard | 300 |
+| SAT Puzzle (EN) | `sat_puzzle_en.py` | Easy, Medium, Hard | 300 |
 | Sudoku | `sudoku.py` | Medium, Hard, Expert, Extreme | - |
 | Yacht Dice | `yacht_dice.py` | - | 100 |
 
@@ -42,8 +42,8 @@ python generation/kinship.py
 python generation/kinship.py --num 200
 
 # Other task examples
-python generation/cipher.py --num 100
-python generation/logic_grid.py --num-samples 300
+python generation/cipher_en.py --num 100
+python generation/logic_grid_en.py --num-samples 300
 ```
 
 ### Batch Generation
@@ -97,7 +97,7 @@ Some scripts may support additional options. Check each script's `--help` option
 
 ```bash
 python generation/kinship.py --help
-python generation/cipher.py --help
+python generation/cipher_en.py --help
 ```
 
 ## 📊 Generation Statistics

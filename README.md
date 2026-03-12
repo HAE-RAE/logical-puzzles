@@ -4,7 +4,7 @@ Comprehensive Logical Puzzle Dataset with LLM Evaluation Framework
 
 ## Puzzle Types
 
-### 1. Array Formula
+### 1. Array Formula (EN / KO)
 Apply formulas to 2D arrays to calculate final results. Sequentially apply row/column operations and aggregate functions to derive answers.
 
 - **Multi-step Operations**: Apply functions like SUM, MEAN, MAX, MIN sequentially
@@ -12,8 +12,8 @@ Apply formulas to 2D arrays to calculate final results. Sequentially apply row/c
 - **Complex Reasoning**: Track intermediate calculation results to derive final values
 - **Difficulty Levels**: Adjusted based on array size and number of operation steps
 
-### 2. Causal DAG Korean
-Infer event propagation time in causal relationship graphs with time delays. Events and causal relationships are described in Korean.
+### 2. Causal DAG (EN / KO)
+Infer event propagation time in causal relationship graphs with time delays.
 
 - **DAG-based Generation**: Represent causal relationships as directed acyclic graphs
 - **Shortest Path Algorithm**: Calculate answers using Dijkstra's algorithm
@@ -21,21 +21,15 @@ Infer event propagation time in causal relationship graphs with time delays. Eve
 - **Difficulty Levels**: Based on number of events (4-12) and connection density (Easy/Medium/Hard)
 - **Realistic Scenarios**: Real events from technology, business, environment, operations domains
 
-### 3. Causal DAG
-Same as Causal DAG Korean, but events and causal relationships are described in English.
-
-### 4. Cipher Korean
-Decode multi-layer cipher algorithms. Evaluates LLM's pure algorithmic reasoning ability. Encrypts Korean strings.
+### 3. Cipher (EN / KO)
+Decode multi-layer cipher algorithms. Evaluates LLM's pure algorithmic reasoning ability.
 
 - **Multi-layer Algorithms**: Stack of Substitution, Vigenere, Reverse, Playfair, Transposition
 - **Meaningless Answers**: Use random strings to prevent linguistic guessing
 - **Variable Hints**: Adjust number of examples by difficulty (2-20 examples)
 - **Difficulty Levels**: EASY (Sub+Rev), MEDIUM (Vig), HARD (Vig+Rev), VERY_HARD (Playfair+Vig), EXTREME (Play+Trans+Vig)
 
-### 5. Cipher
-Same as Cipher Korean, but encrypts English strings.
-
-### 6. Cryptarithmetic
+### 4. Cryptarithmetic
 Find the digit corresponding to each letter in arithmetic expressions represented by letters.
 
 - **Constraints**: No leading zeros, each letter is a unique digit
@@ -43,7 +37,7 @@ Find the digit corresponding to each letter in arithmetic expressions represente
 - **Various Operations**: Support addition, subtraction, multiplication
 - **Difficulty Levels**: Adjusted based on number of letters and digits
 
-### 7. Ferryman
+### 5. Ferryman (EN / KO)
 Calculate total time required for a ferryman to transport goods considering various navigation rules and constraints.
 
 - **Speed-limited Zones**: Speed changes in Zone A and Zone B
@@ -51,7 +45,7 @@ Calculate total time required for a ferryman to transport goods considering vari
 - **Mandatory Rest Time**: Compliance with navigation regulations
 - **Complex Condition Reasoning**: Consider multiple constraints simultaneously
 
-### 8. Hanoi
+### 6. Hanoi (EN / KO)
 Classic puzzle of moving disks from one peg to another. Calculate the minimum number of moves.
 
 - **Recursive Structure**: Requires divide-and-conquer thinking
@@ -59,7 +53,7 @@ Classic puzzle of moving disks from one peg to another. Calculate the minimum nu
 - **Minimum Moves**: 2^n - 1 moves (n is number of disks)
 - **Difficulty Levels**: Adjusted based on number of disks
 
-### 9. Inequality
+### 7. Inequality
 Find number placements that satisfy given inequality constraints.
 
 - **Constraint Satisfaction Problem**: Satisfy multiple inequalities simultaneously
@@ -67,7 +61,7 @@ Find number placements that satisfy given inequality constraints.
 - **Logical Reasoning**: Narrow value ranges from constraints
 - **Difficulty Levels**: Adjusted based on number of variables and constraints
 
-### 10. Kinship
+### 8. Kinship (KO)
 Infer family relationship clues presented through dialogue to derive final Korean kinship terms.
 
 - **Korean Kinship Terms**: Support various family relationships (paternal/maternal/in-laws)
@@ -76,7 +70,7 @@ Infer family relationship clues presented through dialogue to derive final Korea
 - **Relationship Chain Reasoning**: Derive final kinship term through stepwise relationship connections
 - **Language+Logic Fusion**: Simultaneously evaluate Korean honorific system understanding and logical reasoning
 
-### 11. Kinship Vision
+### 9. Kinship Vision (KO)
 Multimodal problem combining family photo images and dialogue clues to identify people by visual features and infer relationships.
 
 - **Vision+Language Fusion**: Simultaneously perform person identification in images and relationship reasoning
@@ -85,8 +79,8 @@ Multimodal problem combining family photo images and dialogue clues to identify 
 - **Multiple Choice Format**: 1 correct answer + 3 distractors (inducing visual confusion)
 - **Multimodal Reasoning**: Understand dialogue context → Search image → Connect relationship chain
 
-### 12. Logic Grid Korean
-Constraint-based logical reasoning problem famous as Einstein's Riddle. Infer relationships among multiple people and attributes from Korean constraint conditions.
+### 10. Logic Grid (EN / KO)
+Constraint-based logical reasoning problem famous as Einstein's Riddle. Infer relationships among multiple people and attributes from constraint conditions.
 
 - **CSP (Constraint Satisfaction Problem)**: Verify unique solution with backtracking
 - **Natural Language Constraints**: Simultaneously require linguistic understanding and logical reasoning
@@ -94,10 +88,7 @@ Constraint-based logical reasoning problem famous as Einstein's Riddle. Infer re
 - **Difficulty Levels**: Easy (3×3), Medium (4×4), Hard (5×5)
 - **Backward Generation**: Generate valid solution first, then derive constraint conditions
 
-### 13. Logic Grid
-Same as Logic Grid Korean, but names, attributes, and constraints are expressed in English.
-
-### 14. Minesweeper
+### 11. Minesweeper
 Minesweeper puzzle designed as a Constraint Satisfaction Problem (CSP). Evaluates LLM's logical reasoning ability.
 
 - **Unique Solution Guaranteed**: Verify unique solution with backtracking solver
@@ -105,7 +96,7 @@ Minesweeper puzzle designed as a Constraint Satisfaction Problem (CSP). Evaluate
 - **Difficulty Levels**: Easy (6×6), Medium (8×8), Hard (10×10)
 - **Coordinate-based Evaluation**: Output mine locations in (r,c) format
 
-### 15. Number Baseball
+### 12. Number Baseball
 Infer hidden N-digit numbers through hints (Strike/Ball).
 
 - **Constraint Reasoning**: Narrow possible number ranges with Strike/Ball hints
@@ -113,8 +104,8 @@ Infer hidden N-digit numbers through hints (Strike/Ball).
 - **No Duplicate Digits**: Each position has a different digit
 - **Stepwise Reasoning**: Derive answer by combining multiple hints
 
-### 16. SAT Puzzle Korean
-NP-complete problem of finding value combinations that satisfy given logical expressions (CNF) for Boolean variables. Problem scenarios and constraints are described in Korean.
+### 13. SAT Puzzle (EN / KO)
+NP-complete problem of finding value combinations that satisfy given logical expressions (CNF) for Boolean variables.
 
 - **NP-Complete Problem**: Theoretically difficult problem
 - **CNF (Conjunctive Normal Form)**: Express logical expressions in standard form
@@ -123,10 +114,7 @@ NP-complete problem of finding value combinations that satisfy given logical exp
 - **Difficulty Levels**: Easy (3-4 variables), Medium (5-7 variables), Hard (10-12 variables)
 - **Pure Logical Reasoning**: Focus on Boolean logic
 
-### 17. SAT Puzzle
-Same as SAT Puzzle Korean, but variable names and constraints are expressed in English.
-
-### 18. Sudoku
+### 14. Sudoku
 9×9 Sudoku puzzle generation and difficulty-level evaluation dataset.
 
 - **Unique Solution Guaranteed**: All puzzles have exactly one solution
@@ -135,7 +123,7 @@ Same as SAT Puzzle Korean, but variable names and constraints are expressed in E
 - **Symmetry Support**: Improve aesthetic quality with rotation/reflection symmetry
 - **Reproducible**: Regenerate identical puzzles with fixed seeds
 
-### 19. Yacht Dice
+### 15. Yacht Dice
 Combinatorial optimization problem of optimally assigning 12 dice results to 12 categories to maximize total score.
 
 - **Combinatorial Optimization**: 12! = 479,001,600 possible assignments
@@ -174,7 +162,7 @@ bash scripts/generate_all.sh
 
 # Generate specific puzzle type
 python generation/kinship.py --num 100
-python generation/cipher.py --num 100
+python generation/cipher_en.py --num 100
 ```
 
 See [docs/eng/generation.md](docs/eng/generation.md) for detailed usage.
@@ -354,11 +342,13 @@ logical-puzzles/
 │   └── run.py
 │
 ├── generation/                 # Puzzle generation scripts
-│   ├── array_formula.py
-│   ├── causal_dag.py
-│   ├── cipher.py
+│   ├── array_formula_en.py
+│   ├── array_formula_ko.py
+│   ├── causal_dag_en.py
+│   ├── cipher_en.py
 │   ├── cryptarithmetic.py
-│   └── ... (19 puzzle types)
+│   ├── kinship.py
+│   └── ... (15 puzzle types, _en/_ko for bilingual)
 │
 ├── results/                    # Evaluation results (gitignored)
 │   └── {model_name}/

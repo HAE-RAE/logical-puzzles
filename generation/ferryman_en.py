@@ -787,7 +787,7 @@ def create_dataset_files(num_questions, difficulty=None):
 
     csv_dir = PROJECT_ROOT / "data" / "csv"
     csv_dir.mkdir(parents=True, exist_ok=True)
-    csv_path = csv_dir / "ferryman.csv"
+    csv_path = csv_dir / "ferryman_en.csv"
     ferryman_json = []
     with open(csv_path, "w", encoding="utf-8-sig", newline="") as f:
         writer = csv.writer(f)
@@ -808,7 +808,7 @@ def create_dataset_files(num_questions, difficulty=None):
     json_dir = PROJECT_ROOT / "data" / "json"
     json_dir.mkdir(parents=True, exist_ok=True)
 
-    jsonl_path = json_dir / "ferryman.jsonl"
+    jsonl_path = json_dir / "ferryman_en.jsonl"
     with open(jsonl_path, 'w', encoding='utf-8') as f:
         for item in ferryman_json:
             f.write(json.dumps(item, ensure_ascii=False) + '\n')

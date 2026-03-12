@@ -221,7 +221,7 @@ def create_hangul_dataset(num_per_level: int = 3):
             seed = 5000 + len(all_problems)
             problem = generator.generate_problem(config, seed)
             all_problems.append({
-                "id": f"cipher_korean_{len(all_problems)}",
+                "id": f"cipher_ko_{len(all_problems)}",
                 "question": problem["problem"],
                 "answer": problem["answer"],
                 "solution": problem["solution"],
@@ -231,7 +231,7 @@ def create_hangul_dataset(num_per_level: int = 3):
             # print(f"  {i+1}. {problem['answer'][:15]}... 생성 완료")
 
     # JSONL 저장
-    output_jsonl_path = Path(__file__).resolve().parent.parent / "data" / "json" / "cipher_korean.jsonl"
+    output_jsonl_path = Path(__file__).resolve().parent.parent / "data" / "json" / "cipher_ko.jsonl"
     output_jsonl_path.parent.mkdir(parents=True, exist_ok=True)
     with open(output_jsonl_path, "w", encoding="utf-8") as f:
         for p in all_problems:
@@ -239,7 +239,7 @@ def create_hangul_dataset(num_per_level: int = 3):
 
     # CSV 저장 추가
     import pandas as pd
-    output_csv_path = Path(__file__).resolve().parent.parent / "data" / "csv" / "cipher_korean.csv"
+    output_csv_path = Path(__file__).resolve().parent.parent / "data" / "csv" / "cipher_ko.csv"
     output_csv_path.parent.mkdir(parents=True, exist_ok=True)
     df = pd.DataFrame(all_problems)
     df.to_csv(output_csv_path, index=False, encoding="utf-8-sig")

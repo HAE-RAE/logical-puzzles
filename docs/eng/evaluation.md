@@ -8,21 +8,21 @@ Currently supports 18 tasks (excluding sudoku and minesweeper from batch evaluat
 
 - `kinship`: Korean kinship relationships (multiple choice A-E)
 - `kinship_vision`: Image-based kinship relationships (uses same evaluator)
-- `cipher`: English cipher decryption
-- `cipher_korean`: Korean cipher decryption (uses same evaluator)
-- `hanoi`: Tower of Hanoi (disk, from, to)
-- `ferryman`: Ferryman navigation (X hours Y minutes)
-- `array_formula`: Array formula calculations (English)
-- `array_formula_korean`: Array formula calculations (Korean, uses same evaluator)
-- `causal_dag`: Causal DAG inference (English)
-- `causal_dag_korean`: Causal DAG inference (Korean, uses same evaluator)
+- `cipher_en`: English cipher decryption
+- `cipher_ko`: Korean cipher decryption (uses same evaluator)
+- `hanoi_en`: Tower of Hanoi (disk, from, to)
+- `ferryman_en`: Ferryman navigation (X hours Y minutes)
+- `array_formula_en`: Array formula calculations (English)
+- `array_formula_ko`: Array formula calculations (Korean, uses same evaluator)
+- `causal_dag_en`: Causal DAG inference (English)
+- `causal_dag_ko`: Causal DAG inference (Korean, uses same evaluator)
 - `cryptarithmetic`: Cryptarithmetic puzzles
 - `inequality`: Inequality constraint satisfaction
-- `logic_grid`: Logic grid puzzles (English)
-- `logic_grid_korean`: Logic grid puzzles (Korean, uses same evaluator)
+- `logic_grid_en`: Logic grid puzzles (English)
+- `logic_grid_ko`: Logic grid puzzles (Korean, uses same evaluator)
 - `number_baseball`: Number baseball (Strike/Ball)
-- `sat_puzzles`: SAT puzzle solving (English)
-- `sat_puzzles_korean`: SAT puzzle solving (Korean, uses same evaluator)
+- `sat_puzzles_en`: SAT puzzle solving (English)
+- `sat_puzzles_ko`: SAT puzzle solving (Korean, uses same evaluator)
 - `yacht_dice`: Yacht dice optimization
 
 ## Installation
@@ -277,21 +277,22 @@ evaluation:
 tasks:
   - kinship
   - kinship_vision
-  - cipher
-  - cipher_korean
-  - hanoi
-  - ferryman
-  - array_formula
-  - array_formula_korean
-  - causal_dag
-  - causal_dag_korean
+  - cipher_en
+  - cipher_ko
+  - hanoi_en
+  - ferryman_en
+  - ferryman_ko
+  - array_formula_en
+  - array_formula_ko
+  - causal_dag_en
+  - causal_dag_ko
   - cryptarithmetic
   - inequality
-  - logic_grid
-  - logic_grid_korean
+  - logic_grid_en
+  - logic_grid_ko
   - number_baseball
-  - sat_puzzles
-  - sat_puzzles_korean
+  - sat_puzzles_en
+  - sat_puzzles_ko
   - yacht_dice
 
 difficulties:

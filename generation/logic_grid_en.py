@@ -421,14 +421,14 @@ def generate_dataset(
         puzzle.id = f'logic_grid_{idx}'
     
     # Save as JSONL
-    jsonl_path = json_dir / "logic_grid.jsonl"
+    jsonl_path = json_dir / "logic_grid_en.jsonl"
     with open(jsonl_path, 'w') as f:
         for puzzle in puzzles:
             f.write(json.dumps(puzzle.to_dict()) + '\n')
     
     # Save as CSV
     import csv as csv_module
-    csv_path = csv_dir / "logic_grid.csv"
+    csv_path = csv_dir / "logic_grid_en.csv"
     with open(csv_path, 'w', encoding='utf-8', newline='') as f:
         # Use same columns as JSONL
         fieldnames = ['id', 'question', 'answer', 'difficulty', 'people', 'attributes', 'constraints']

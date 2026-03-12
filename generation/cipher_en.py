@@ -339,13 +339,13 @@ def create_advanced_dataset(num_per_level: int = 2):
     # CSV 저장
     csv_dir = PROJECT_ROOT / "data" / "csv"
     csv_dir.mkdir(parents=True, exist_ok=True)
-    csv_path = csv_dir / f"cipher.csv"
+    csv_path = csv_dir / f"cipher_en.csv"
     df.to_csv(csv_path, index=False, encoding="utf-8-sig")
 
     # JSONL 저장
     json_dir = PROJECT_ROOT / "data" / "json"
     json_dir.mkdir(parents=True, exist_ok=True)
-    jsonl_path = json_dir / f"cipher.jsonl"
+    jsonl_path = json_dir / f"cipher_en.jsonl"
 
     with open(jsonl_path, 'w', encoding='utf-8') as f:
         for problem in all_problems:

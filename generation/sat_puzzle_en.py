@@ -474,14 +474,14 @@ def generate_dataset(
         puzzle.id = f'sat_puzzle_{idx}'
     
     # Save as JSONL
-    jsonl_path = json_dir / "sat_puzzles.jsonl"
+    jsonl_path = json_dir / "sat_puzzles_en.jsonl"
     with open(jsonl_path, 'w') as f:
         for puzzle in puzzles:
             f.write(json.dumps(puzzle.to_dict()) + '\n')
     
     # Save as CSV
     import csv as csv_module
-    csv_path = csv_dir / "sat_puzzles.csv"
+    csv_path = csv_dir / "sat_puzzles_en.csv"
     with open(csv_path, 'w', encoding='utf-8', newline='') as f:
         # Use same columns as JSONL
         fieldnames = ['id', 'question', 'answer', 'difficulty', 'domain', 'variables', 'clauses', 'constraints']

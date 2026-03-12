@@ -780,13 +780,13 @@ def create_dataset_files(num_questions, difficulty=None):
 
     csv_dir = PROJECT_ROOT / "data" / "csv"
     csv_dir.mkdir(parents=True, exist_ok=True)
-    csv_path = csv_dir / "ferryman_korean.csv"
+    csv_path = csv_dir / "ferryman_ko.csv"
     ferryman_json = []
     with open(csv_path, "w", encoding="utf-8-sig", newline="") as f:
         writer = csv.writer(f)
         writer.writerow(["id", "question", "answer", "solution", "difficulty"])
         for i, (question, answer, solution, diff) in enumerate(output):
-            qid = f"ferryman_korean_{i}"
+            qid = f"ferryman_ko_{i}"
             row = {
                 "id": qid,
                 "question": question,
@@ -801,7 +801,7 @@ def create_dataset_files(num_questions, difficulty=None):
     json_dir = PROJECT_ROOT / "data" / "json"
     json_dir.mkdir(parents=True, exist_ok=True)
 
-    jsonl_path = json_dir / "ferryman_korean.jsonl"
+    jsonl_path = json_dir / "ferryman_ko.jsonl"
     with open(jsonl_path, 'w', encoding='utf-8') as f:
         for item in ferryman_json:
             f.write(json.dumps(item, ensure_ascii=False) + '\n')

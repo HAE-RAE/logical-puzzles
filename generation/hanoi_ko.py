@@ -454,7 +454,7 @@ def generate_dataset(num_per_difficulty: int = 100, seed: int = 2025) -> List[Di
     for difficulty in difficulties:
         for _ in range(num_per_difficulty):
             puzzle = generate_puzzle(difficulty=difficulty, seed=puzzle_seed)
-            puzzle["id"] = f"hanoi_korean_{len(puzzles)}"
+            puzzle["id"] = f"hanoi_ko_{len(puzzles)}"
             puzzles.append(puzzle)
             puzzle_seed += 1
 
@@ -469,8 +469,8 @@ def save_dataset(puzzles: List[Dict], base_dir: str = "./data"):
     csv_dir.mkdir(parents=True, exist_ok=True)
     json_dir.mkdir(parents=True, exist_ok=True)
 
-    csv_path = csv_dir / "hanoi_korean.csv"
-    jsonl_path = json_dir / "hanoi_korean.jsonl"
+    csv_path = csv_dir / "hanoi_ko.csv"
+    jsonl_path = json_dir / "hanoi_ko.jsonl"
 
     csv_columns = ["id", "question", "answer", "solution", "difficulty"]
 
