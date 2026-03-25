@@ -158,7 +158,7 @@ cp .env.example .env
 
 ```bash
 # Generate all puzzles
-bash scripts/generate_all.sh
+bash scripts/gen_data.sh
 
 # Generate specific puzzle type
 python generation/kinship.py --num 100
@@ -169,120 +169,53 @@ See [docs/eng/generation.md](docs/eng/generation.md) for detailed usage.
 
 ### Evaluation
 
-#### Unified Evaluation System (Recommended)
+The evaluation system supports two model routers:
 
-**Basic Usage:**
+- **liteLLM**: Call cloud APIs (Gemini, OpenAI, Anthropic, etc.) via liteLLM library
+- **remote**: Call a self-hosted server (e.g. vLLM on Colab) via OpenAI-compatible API
 
-```bash
-# Evaluate all tasks (uses config.yaml settings)
-python evaluation/run.py
-
-# Evaluate specific tasks
-python evaluation/run.py --tasks kinship cipher hanoi
-
-# Use different models
-python evaluation/run.py --model gemini/gemini-3-flash-preview
-python evaluation/run.py --model gpt-4o
-python evaluation/run.py --model claude-3-5-sonnet-20241022
-
-# Filter by difficulty and limit
-python evaluation/run.py --difficulty easy --limit 10
-```
-
-**Async Mode:**
-
-The async mode is controlled by `evaluation/config.yaml` (default: `use_async: true`):
-
-```bash
-# Async mode evaluation (default from config.yaml)
-python evaluation/run.py
-
-# Explicitly enable async mode (same as default if config.yaml has use_async: true)
-python evaluation/run.py --async
-
-# To disable async mode, modify evaluation/config.yaml: use_async: false
-# Then run without --async flag for sync mode
-
-# Adjust concurrent execution count (default: 30 from config.yaml)
-python evaluation/run.py --max-concurrent 50
-```
-
-**Configuration File (`evaluation/config.yaml`):**
-
-The evaluation system uses `evaluation/config.yaml` for default settings:
-- **LLM Configuration**: model, temperature, max_tokens (65536), timeout (600s)
-- **Evaluation Settings**: use_async (true), max_concurrent (30)
-- **Task List**: 17 tasks (excluding sudoku and minesweeper)
-- **Difficulty Levels**: easy, medium, hard
-
-You can modify this file to change default behavior, or override with command-line arguments.
-
-**Note:** Currently, `--async` flag has no effect because `config.yaml` already sets `use_async: true` as default. The flag is useful when you want to override a `false` setting in config.yaml.
-
-**Advanced Options:**
+**liteLLM mode (cloud APIs):**
 
 ```bash
 python evaluation/run.py \
     --model gemini/gemini-3-flash-preview \
-    --tasks kinship cipher \
-    --difficulty medium \
-    --limit 20 \
-    --output-dir results/my_test \
-    --async \
-    --max-concurrent 50 \
-    --quiet
+    --model_router litellm \
+    --gen-kwargs "temperature=1.0,max_tokens=65536,top_p=0.95,top_k=64" \
+    --tasks kinship --async
 ```
 
-**Shell Scripts (Batch Evaluation of 17 Tasks):**
-
-Two scripts are available for batch evaluation:
-
-1. **Sequential Execution** (`evaluate_all.sh`):
-   ```bash
-   # Evaluate 17 tasks one by one (stable, slower)
-   bash scripts/evaluate_all.sh
-   ```
-   - Executes tasks sequentially (one at a time)
-   - More stable and easier to debug
-   - Lower resource usage
-   - Clearer log output
-
-2. **Parallel Execution** (`evaluate_all_parallel.sh`):
-   ```bash
-   # Evaluate 17 tasks in parallel (5 at a time, faster)
-   bash scripts/evaluate_all_parallel.sh
-   ```
-   - Executes up to 5 tasks simultaneously
-   - Significantly faster (approximately 3-5x speedup)
-   - Higher resource usage
-   - Both scripts evaluate all 17 tasks (excluding sudoku and minesweeper)
-
-**Monitoring Running Evaluations:**
+**Remote mode (self-hosted vLLM, etc.):**
 
 ```bash
-# Simple table view
-bash scripts/monitor_eval.sh
-
-# Detailed view with full information
-bash scripts/monitor_eval.sh detailed
-
-# Show help
-bash scripts/monitor_eval.sh help
+python evaluation/run.py \
+    --model Qwen/Qwen3-0.6B \
+    --model_router remote \
+    --remote_url "https://xxxx.ngrok-free.app" \
+    --gen-kwargs "temperature=0.6,max_tokens=16384,top_p=0.95,top_k=20,reasoning=on" \
+    --tasks kinship --async --max-concurrent 30
 ```
 
-The monitoring script shows:
-- Running evaluation processes (PID, model, task)
-- Progress information from log files
-- Accuracy (when available)
-- Log file locations
+**Shell Scripts (Batch Evaluation):**
 
-**Result Visualization:**
+| Script | Mode | Execution |
+|--------|------|-----------|
+| `eval_litellm.sh` | liteLLM | Sequential |
+| `eval_litellm_parallel.sh` | liteLLM | Parallel (5 concurrent) |
+| `eval_remote.sh` | Remote | Sequential |
+| `eval_remote_parallel.sh` | Remote | Parallel (5 concurrent) |
 
 ```bash
-# Visualize results with Jupyter notebook
-jupyter notebook scripts/visualize_results.ipynb
-# or
-jupyter lab scripts/visualize_results.ipynb
+bash scripts/eval_litellm_parallel.sh   # liteLLM (Gemini, etc.)
+bash scripts/eval_remote_parallel.sh    # Remote (Colab vLLM, etc.)
+```
+
+**Monitoring & Visualization:**
+
+```bash
+bash scripts/monitor.sh              # Monitor running evaluations
+bash scripts/monitor.sh detailed     # Detailed view
+
+jupyter notebook scripts/viz_results.ipynb   # Visualize results
 ```
 
 See [docs/eng/evaluation.md](docs/eng/evaluation.md) for detailed usage.
@@ -320,16 +253,12 @@ logical-puzzles/
 ├── evaluation/                 # Unified evaluation system
 │   ├── core/
 │   │   ├── base.py
-│   │   ├── llm_client.py
 │   │   └── result_handler.py
-│   ├── eval_data/              # Static evaluation data
-│   │   ├── kinship_vision/
-│   │   │   └── kinship.jpg
-│   │   └── minesweeper/
-│   │       ├── eval_metadata.jsonl
-│   │       ├── eval_puzzles.jsonl
-│   │       ├── eval_solutions.jsonl
-│   │       └── solution.md
+│   ├── model/                  # LLM client package
+│   │   ├── __init__.py         # create_client() factory
+│   │   ├── base.py             # BaseLLMClient (ABC)
+│   │   ├── litellm.py          # LiteLLMClient
+│   │   └── remote.py           # RemoteLLMClient (OpenAI-compatible)
 │   ├── evaluators/
 │   │   ├── cipher.py
 │   │   ├── ferryman.py
@@ -337,8 +266,6 @@ logical-puzzles/
 │   │   ├── kinship.py
 │   │   └── ... (more evaluators)
 │   ├── legacy/                 # Legacy evaluation scripts (deprecated)
-│   ├── __init__.py
-│   ├── config.yaml
 │   └── run.py
 │
 ├── generation/                 # Puzzle generation scripts
@@ -357,11 +284,15 @@ logical-puzzles/
 │           └── {model}_{task}_{timestamp}__{accuracy}.json
 │
 ├── scripts/
-│   ├── generate_all.sh         # Generate all puzzles
-│   ├── evaluate_all.sh          # Sequential evaluation of 17 tasks
-│   ├── evaluate_all_parallel.sh # Parallel evaluation of 17 tasks (5 concurrent)
-│   ├── monitor_eval.sh          # Monitor running evaluations
-│   └── visualize_results.ipynb  # Result visualization notebook
+│   ├── gen_data.sh              # Generate all puzzles
+│   ├── eval_litellm.sh          # liteLLM evaluation (sequential)
+│   ├── eval_litellm_parallel.sh # liteLLM evaluation (parallel)
+│   ├── eval_remote.sh           # Remote evaluation (sequential)
+│   ├── eval_remote_parallel.sh  # Remote evaluation (parallel)
+│   ├── calltest.py              # API connection smoke test
+│   ├── qwen_baseline.ipynb      # Colab vLLM server for Qwen baseline
+│   ├── monitor.sh               # Monitor running evaluations
+│   └── viz_results.ipynb        # Result visualization notebook
 │
 ├── validators/
 │   ├── verify_logic_grid.py
