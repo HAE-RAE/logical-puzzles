@@ -217,7 +217,7 @@ elif [ "$MODE" = "help" ] || [ "$MODE" = "h" ]; then
     echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
     echo ""
     echo -e "${YELLOW}Usage:${NC}"
-    echo "  bash scripts/monitor_eval.sh [mode]    # or ./scripts/monitor_eval.sh [mode]"
+    echo "  bash scripts/monitor.sh [mode]    # or ./scripts/monitor.sh [mode]"
     echo ""
     echo -e "${YELLOW}Modes:${NC}"
     echo -e "  ${GREEN}simple${NC}, ${GREEN}s${NC}    - Simple table view with progress (default)"
@@ -225,9 +225,9 @@ elif [ "$MODE" = "help" ] || [ "$MODE" = "h" ]; then
     echo -e "  ${GREEN}help${NC}, ${GREEN}h${NC}      - Show this help message"
     echo ""
     echo -e "${YELLOW}Examples:${NC}"
-    echo "  bash scripts/monitor_eval.sh              # Simple table"
-    echo "  bash scripts/monitor_eval.sh detailed     # Detailed view"
-    echo "  bash scripts/monitor_eval.sh d           # Same as detailed"
+    echo "  bash scripts/monitor.sh              # Simple table"
+    echo "  bash scripts/monitor.sh detailed     # Detailed view"
+    echo "  bash scripts/monitor.sh d           # Same as detailed"
     echo ""
     echo -e "${YELLOW}Log Location:${NC}"
     echo "  $LOG_DIR"
@@ -241,4 +241,4 @@ else
     exit 1
 fi
 
-# bash scripts/monitor_eval.sh
+# bash scripts/monitor.sh

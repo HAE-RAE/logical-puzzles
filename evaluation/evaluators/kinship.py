@@ -8,7 +8,7 @@ from typing import List, Dict, Any, Tuple, Optional, TYPE_CHECKING
 from ..core.base import BaseEvaluator, EvaluationResult
 
 if TYPE_CHECKING:
-    from ..core.llm_client import UnifiedLLMClient
+    from ..model.base import BaseLLMClient
 
 logger = logging.getLogger(__name__)
 
@@ -17,7 +17,7 @@ class KinshipEvaluator(BaseEvaluator):
     """
     Kinship 퍼즐 평가자
     
-    객관식 문제 (A-E 중 선택)
+    객관식 문제 (선택지 수 가변)
     kinship_vision의 경우 이미지도 함께 전송
     """
     
@@ -25,11 +25,10 @@ class KinshipEvaluator(BaseEvaluator):
 
 ### 규칙
 1. 주어진 가족 관계를 단계별로 분석하여 올바른 호칭을 찾으세요.
-2. 문제에 제시된 선택지 중 정답에 해당하는 알파벳(A, B, C, D, E)만 답하세요.
-3. 추가 설명 없이 알파벳 하나만 출력하세요.
+2. 최종 정답을 아래 형식으로 작성하세요.
 
 ### 출력 형식
-정답 알파벳만 출력하세요. 예: A
+최종 답변을 $\\boxed{A}$ 형식으로 작성하세요. (A~Z 중 하나)
 """
     
     VISION_SYSTEM_PROMPT = """당신은 한국어 가족 관계 호칭 문제를 푸는 전문가입니다. 
@@ -37,11 +36,10 @@ class KinshipEvaluator(BaseEvaluator):
 ### 규칙
 1. 제공된 가족 사진을 참고하여, 주어진 대화에서 설명하는 인물을 찾으세요.
 2. 대화를 단계별로 분석하여 각 인물 간의 관계를 추론하세요.
-3. 문제에 제시된 선택지 중 정답에 해당하는 알파벳(A, B, C, D, E)만 답하세요.
-4. 추가 설명 없이 알파벳 하나만 출력하세요.
+3. 최종 정답을 아래 형식으로 작성하세요.
 
 ### 출력 형식
-정답 알파벳만 출력하세요. 예: A
+최종 답변을 $\\boxed{A}$ 형식으로 작성하세요. (A~Z 중 하나)
 """
     
     def __init__(self):
@@ -115,41 +113,46 @@ class KinshipEvaluator(BaseEvaluator):
     
     def _parse_answer(self, response: str, puzzle: Dict) -> Optional[str]:
         """
-        LLM 응답에서 알파벳 A-E 추출
-        
-        여러 패턴을 시도하여 가장 적절한 알파벳을 찾습니다.
-        
-        Args:
-            response: LLM 응답 텍스트
-            puzzle: 퍼즐 데이터 (사용하지 않음)
+        Extract choice letter from LLM response.
+        Tries \\boxed{} first, then falls back to heuristic patterns.
         """
-        response = response.upper().strip()
-        
-        # 패턴 1: 단독으로 나타나는 A-E
-        match = re.search(r'(?:^|[^A-Z])([A-E])(?:[^A-Z]|$)', response)
-        if match:
+        valid_choices = set(puzzle.get("choices", {}).keys()) if isinstance(puzzle.get("choices"), dict) else None
+        if valid_choices:
+            max_letter = max(valid_choices)
+        else:
+            max_letter = "Z"
+
+        def _valid(letter: str) -> bool:
+            return valid_choices is None or letter in valid_choices
+
+        boxed = re.search(r'\\boxed\{([^}]+)\}', response)
+        if boxed:
+            letter = boxed.group(1).strip().upper()
+            if len(letter) == 1 and letter.isalpha() and letter <= max_letter and _valid(letter):
+                return letter
+
+        upper = response.upper().strip()
+
+        match = re.search(r'(?:^|[^A-Z])([A-' + max_letter + r'])(?:[^A-Z]|$)', upper)
+        if match and _valid(match.group(1)):
             return match.group(1)
-        
-        # 패턴 2: 시작 부분의 A-E
-        match = re.search(r'^([A-E])', response)
-        if match:
+
+        match = re.search(r'^([A-' + max_letter + r'])', upper)
+        if match and _valid(match.group(1)):
             return match.group(1)
-        
-        # 패턴 3: 끝 부분의 A-E
-        match = re.search(r'([A-E])(?:[^A-Z]|$)', response)
-        if match:
+
+        match = re.search(r'([A-' + max_letter + r'])(?:[^A-Z]|$)', upper)
+        if match and _valid(match.group(1)):
             return match.group(1)
-        
-        # 패턴 4: 답변/정답 뒤의 A-E
-        match = re.search(r'[답정][변답]?\s*[:：]?\s*([A-E])', response)
-        if match:
+
+        match = re.search(r'[답정][변답]?\s*[:：]?\s*([A-' + max_letter + r'])', upper)
+        if match and _valid(match.group(1)):
             return match.group(1)
-        
-        # 패턴 5: 아무 A-E (마지막 수단)
-        match = re.search(r'([A-E])', response)
-        if match:
+
+        match = re.search(r'([A-' + max_letter + r'])', upper)
+        if match and _valid(match.group(1)):
             return match.group(1)
-        
+
         return None
     
     def _check_answer(
@@ -172,7 +175,7 @@ class KinshipEvaluator(BaseEvaluator):
     def evaluate(
         self,
         puzzles: List[Dict[str, Any]],
-        llm_client: "UnifiedLLMClient",
+        llm_client: "BaseLLMClient",
         verbose: bool = True,
         use_async: bool = False,
         max_concurrent: int = 10,
@@ -187,7 +190,7 @@ class KinshipEvaluator(BaseEvaluator):
     def _evaluate_single(
         self,
         puzzle: Dict[str, Any],
-        llm_client: "UnifiedLLMClient"
+        llm_client: "BaseLLMClient"
     ) -> EvaluationResult:
         """
         단일 퍼즐 평가 (이미지 포함 가능)
@@ -207,7 +210,7 @@ class KinshipEvaluator(BaseEvaluator):
     async def _evaluate_async(
         self,
         puzzles: List[Dict[str, Any]],
-        llm_client: "UnifiedLLMClient",
+        llm_client: "BaseLLMClient",
         verbose: bool = True,
         max_concurrent: int = 10
     ) -> List[EvaluationResult]:

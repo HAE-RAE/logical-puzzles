@@ -6,7 +6,7 @@ from typing import List, Dict, Any, Tuple, Optional, TYPE_CHECKING
 from ..core.base import BaseEvaluator, EvaluationResult
 
 if TYPE_CHECKING:
-    from ..core.llm_client import UnifiedLLMClient
+    from ..model.base import BaseLLMClient
 
 logger = logging.getLogger(__name__)
 
@@ -46,39 +46,130 @@ class FerrymanEvaluator(BaseEvaluator):
             return self.KOREAN_SYSTEM_PROMPT
         return self.SYSTEM_PROMPT
 
+    @staticmethod
+    def _strip_latex(text: str) -> str:
+        """Remove LaTeX markup: \\text{}, \\,, $, $$, etc."""
+        text = re.sub(r'\\text\s*\{([^}]*)\}', r'\1', text)
+        text = re.sub(r'\\[,;!]', ' ', text)
+        text = text.replace('$', '').replace('\\boxed', '')
+        text = re.sub(r'[{}]', ' ', text)
+        return re.sub(r'\s+', ' ', text).strip()
+
     def _parse_answer(self, response: str, puzzle: Dict) -> Optional[str]:
         """
         Extract time answer from LLM response and normalize.
         Routes to Korean or English parser based on puzzle answer format.
         """
-        match = re.search(r'\\boxed\{([^}]+)\}', response)
-        text = match.group(1).strip() if match else response
-
         if self._is_korean(puzzle):
-            return self._normalize_time_korean(text)
-        return self._normalize_time_english(text)
+            return self._extract_korean(response)
+        return self._extract_english(response)
 
-    def _normalize_time_korean(self, time_str: str) -> Optional[str]:
-        match = re.search(r'(\d+)\s*시간\s*(\d+)\s*분', time_str)
-        if match:
-            return f"{int(match.group(1))}시간 {int(match.group(2))}분"
-        numbers = re.findall(r'\d+', time_str)
-        if len(numbers) >= 2:
-            return f"{numbers[0]}시간 {numbers[1]}분"
+    def _extract_korean(self, response: str) -> Optional[str]:
+        # 1) \boxed{X시간 Y분} (with optional \text{})
+        m = re.search(r'\\boxed\{((?:[^{}]|\{[^}]*\})*시간[^}]*분[^}]*)\}', response)
+        if m:
+            clean = self._strip_latex(m.group(1))
+            return self._normalize_korean(clean)
+
+        # 2) \boxed{X}시간 ... Y분  or  \boxed{X}$시간 $\boxed{Y}$분
+        m = re.search(
+            r'\\boxed\{(\d+)\}\s*\$?\s*시간\s*\$?\\boxed\{(\d+)\}\s*\$?\s*분', response)
+        if m:
+            return f"{int(m.group(1))}시간 {int(m.group(2))}분"
+
+        # 3) \boxed{X}시간 Y분  (only hours boxed)
+        m = re.search(r'\\boxed\{(\d+)\}\s*\$?\s*시간\s*(\d+)\s*분', response)
+        if m:
+            return f"{int(m.group(1))}시간 {int(m.group(2))}분"
+
+        # 4) \boxed{HH:MM} or \boxed{XhYY}
+        m = re.search(r'\\boxed\{(\d+)\s*[:hH]\s*(\d+)\s*\}', response)
+        if m:
+            return f"{int(m.group(1))}시간 {int(m.group(2))}분"
+
+        # 5) Single \boxed{} — strip latex and try to parse
+        m = re.search(r'\\boxed\{((?:[^{}]|\{[^}]*\})*)\}', response)
+        if m:
+            clean = self._strip_latex(m.group(1))
+            result = self._normalize_korean(clean)
+            if result:
+                return result
+            result = self._normalize_english(clean)
+            if result:
+                return result
+
+        # 6) Fallback: last "X시간 Y분" anywhere in the stripped response
+        clean = self._strip_latex(response)
+        matches = list(re.finditer(r'(\d+)\s*시간\s*(\d+)\s*분', clean))
+        if matches:
+            m = matches[-1]
+            return f"{int(m.group(1))}시간 {int(m.group(2))}분"
+
+        # 7) Fallback: last "X hours Y minutes" (Korean problem with English answer)
+        return self._normalize_english(clean)
+
+    def _extract_english(self, response: str) -> Optional[str]:
+        # 1) \boxed{X hours Y minutes} (with optional \text{})
+        m = re.search(
+            r'\\boxed\{((?:[^{}]|\{[^}]*\})*hours?[^}]*minutes?[^}]*)\}',
+            response, re.IGNORECASE)
+        if m:
+            clean = self._strip_latex(m.group(1))
+            return self._normalize_english(clean)
+
+        # 2) \boxed{X} ... hours ... \boxed{Y} ... minutes
+        m = re.search(
+            r'\\boxed\{(\d+)\}\s*[\\,\s]*(?:\\text\{[^}]*\}|hours?)'
+            r'\s*[\\,\s]*\\boxed\{(\d+)\}\s*[\\,\s]*(?:\\text\{[^}]*\}|minutes?)?',
+            response, re.IGNORECASE)
+        if m:
+            return f"{int(m.group(1))} hours {int(m.group(2))} minutes"
+
+        # 3) \boxed{X} hours Y minutes  (only hours boxed)
+        m = re.search(
+            r'\\boxed\{(\d+)\}\s*\$?\s*hours?\s+(\d+)\s*minutes?',
+            response, re.IGNORECASE)
+        if m:
+            return f"{int(m.group(1))} hours {int(m.group(2))} minutes"
+
+        # 4) \boxed{HH:MM} or \boxed{XhYY}
+        m = re.search(r'\\boxed\{(\d+)\s*[:hH]\s*(\d+)\s*\}', response)
+        if m:
+            return f"{int(m.group(1))} hours {int(m.group(2))} minutes"
+
+        # 5) Single \boxed{} — strip latex and try
+        m = re.search(r'\\boxed\{((?:[^{}]|\{[^}]*\})*)\}', response)
+        if m:
+            clean = self._strip_latex(m.group(1))
+            result = self._normalize_english(clean)
+            if result:
+                return result
+
+        # 6) Fallback: last "X hours Y minutes" anywhere
+        clean = self._strip_latex(response)
+        matches = list(re.finditer(
+            r'(\d+)\s*hours?\s+(\d+)\s*minutes?', clean, re.IGNORECASE))
+        if matches:
+            m = matches[-1]
+            return f"{int(m.group(1))} hours {int(m.group(2))} minutes"
+
         return None
 
-    def _normalize_time_english(self, time_str: str) -> Optional[str]:
-        match = re.search(
-            r'(\d+)\s*hours?\s*(\d+)\s*minutes?', time_str, re.IGNORECASE)
-        if match:
-            return f"{int(match.group(1))} hours {int(match.group(2))} minutes"
-        match = re.search(
-            r'(\d+)\s*hr?s?\s*(\d+)\s*min', time_str, re.IGNORECASE)
-        if match:
-            return f"{int(match.group(1))} hours {int(match.group(2))} minutes"
-        numbers = re.findall(r'\d+', time_str)
-        if len(numbers) >= 2:
-            return f"{numbers[0]} hours {numbers[1]} minutes"
+    @staticmethod
+    def _normalize_korean(text: str) -> Optional[str]:
+        m = re.search(r'(\d+)\s*시간\s*(\d+)\s*분', text)
+        if m:
+            return f"{int(m.group(1))}시간 {int(m.group(2))}분"
+        return None
+
+    @staticmethod
+    def _normalize_english(text: str) -> Optional[str]:
+        m = re.search(r'(\d+)\s*hours?\s+(\d+)\s*minutes?', text, re.IGNORECASE)
+        if m:
+            return f"{int(m.group(1))} hours {int(m.group(2))} minutes"
+        m = re.search(r'(\d+)\s*hr?s?\s+(\d+)\s*min', text, re.IGNORECASE)
+        if m:
+            return f"{int(m.group(1))} hours {int(m.group(2))} minutes"
         return None
 
     def _parse_time_to_minutes(self, time_str: str) -> Optional[int]:
@@ -111,7 +202,7 @@ class FerrymanEvaluator(BaseEvaluator):
     def _evaluate_single(
         self,
         puzzle: Dict[str, Any],
-        llm_client: "UnifiedLLMClient"
+        llm_client: "BaseLLMClient"
     ) -> "EvaluationResult":
         system_prompt = self._get_system_prompt(puzzle)
         messages = [
@@ -132,7 +223,7 @@ class FerrymanEvaluator(BaseEvaluator):
     async def _evaluate_async(
         self,
         puzzles: List[Dict[str, Any]],
-        llm_client: "UnifiedLLMClient",
+        llm_client: "BaseLLMClient",
         verbose: bool = True,
         max_concurrent: int = 10
     ) -> List["EvaluationResult"]:

@@ -13,38 +13,50 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 cd "$PROJECT_ROOT"
 
-LOG_DIR="$PROJECT_ROOT/results/log"
+# ============ Gemini 설정 ============
+MODEL="gemini/gemini-3-flash-preview"
+GEN_KWARGS="temperature=1.0,max_tokens=65536,top_p=0.95,top_k=64"
+# =====================================
+
+MODEL_DIR_NAME="${MODEL//\//_}"
+LOG_DIR="$PROJECT_ROOT/results/$MODEL_DIR_NAME/log"
 mkdir -p "$LOG_DIR"
 
 echo -e "${BLUE}========================================${NC}"
-echo -e "${BLUE}All Tasks Evaluation Started${NC}"
+echo -e "${BLUE}All Tasks Evaluation Started (Gemini)${NC}"
 echo -e "${BLUE}========================================${NC}"
+echo -e "Model: ${MODEL}"
+echo -e "Mode: liteLLM"
+echo -e "Gen kwargs: ${GEN_KWARGS}"
 echo -e "Log saved location: ${LOG_DIR}"
 echo ""
 
+python generation/kinship.py --num 100
+python generation/kinship_vision.py --num 20
+
 TASKS=(
-    "array_formula_en"
-    "array_formula_ko"
-    "causal_dag_en"
-    "causal_dag_ko"
-    "cipher_en"
-    "cipher_ko"
-    "cryptarithmetic"
-    "ferryman_en"
-    "ferryman_ko"
-    "hanoi_en"
-    "hanoi_ko"
-    "inequality"
-    "kinship_vision"
-    "kinship"
-    "logic_grid_en"
-    "logic_grid_ko"
-    "minesweeper"
-    "number_baseball"
-    "sat_puzzles_en"
-    "sat_puzzles_ko"
-    "sudoku"
-    "yacht_dice"
+    # "array_formula_en"
+    # "array_formula_ko"
+    # "causal_dag_en"
+    # "causal_dag_ko"
+    # "cipher_en"
+    # "cipher_ko"
+    # "cryptarithmetic"
+    # "ferryman_en"
+    # "ferryman_ko"
+    # "hanoi_en"
+    # "hanoi_ko"
+    # "inequality"
+    # "kinship_vision"
+    # "kinship"
+    # "logic_grid_en"
+    # "logic_grid_ko"
+    # "minesweeper"
+    # "number_baseball"
+    # "sat_puzzles_en"
+    # "sat_puzzles_ko"
+    # "sudoku"
+    # "yacht_dice"
 )
 
 START_TIME=$(date +%s)
@@ -72,6 +84,9 @@ run_task() {
     
     set +e
     if python evaluation/run.py \
+        --model "$MODEL" \
+        --model_router litellm \
+        --gen-kwargs "$GEN_KWARGS" \
         --tasks "$task" \
         --async \
         --max-concurrent 30 2>&1 | tee -a "$log_file"; then
@@ -127,7 +142,7 @@ MINUTES=$(((ELAPSED_TIME % 3600) / 60))
 SECONDS=$((ELAPSED_TIME % 60))
 
 echo -e "${BLUE}========================================${NC}"
-echo -e "${BLUE}Evaluation Completed${NC}"
+echo -e "${BLUE}Evaluation Completed (Gemini)${NC}"
 echo -e "${BLUE}========================================${NC}"
 echo -e "Total Tasks: ${TOTAL_TASKS}개"
 echo -e "${GREEN}Success: ${SUCCESS_COUNT}개${NC}"
@@ -146,4 +161,4 @@ fi
 
 exit 0
 
-# bash scripts/evaluate_all_parallel.sh
+# bash scripts/eval_litellm_parallel.sh
