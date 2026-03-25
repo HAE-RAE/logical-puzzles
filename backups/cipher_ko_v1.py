@@ -17,25 +17,32 @@ import math
 
 DIFFICULTY_CONFIG = {
     "LEVEL_0": {
-        "name": "easy",
-        "cipher_stack": ["cho_shift"],
-        "keyword_logic": "direct",
-        "hint_count": 3,
-        "description": "Easy (Avg Accuracy ~75%): Cho_shift / Direct Logic / 3 Hints"
-    },
-    "LEVEL_1": {
-        "name": "medium",
-        "cipher_stack": ["cho_shift", "jung_sub"],
-        "keyword_logic": "positional",
-        "hint_count": 1,
-        "description": "Medium (Avg Accuracy ~50%): Cho_shift + Jung_sub / Positional Logic / 1 Hint"
-    },
-    "LEVEL_2": {
-        "name": "hard",
+        "name": "expert",
         "cipher_stack": ["cho_shift", "jung_sub", "reverse", "cho_shift"],
         "keyword_logic": "extraction",
         "hint_count": 0,
-        "description": "Hard (Avg Accuracy ~25%): Double Shift + Jung_sub + Reverse / Extraction Logic / 0 Hints"
+        "description": "Double Shift + Substitution + Reverse / 0 Hints"
+    },
+    "LEVEL_1": {
+        "name": "hard",
+        "cipher_stack": ["cho_shift", "jung_sub", "reverse"],
+        "keyword_logic": "positional",
+        "hint_count": 1,
+        "description": "Shift + Substitution + Reverse / 1 Hint"
+    },
+    "LEVEL_2": {
+        "name": "medium",
+        "cipher_stack": ["cho_shift", "jung_sub"],
+        "keyword_logic": "positional",
+        "hint_count": 2,
+        "description": "Shift + Substitution / 2 Hints"
+    },
+    "LEVEL_3": {
+        "name": "easy",
+        "cipher_stack": ["cho_shift"],
+        "keyword_logic": "direct",
+        "hint_count": 2,
+        "description": "Initial Consonant Shift / 2 Hints"
     }
 }
 
@@ -203,8 +210,8 @@ def create_hangul_dataset(num_per_level: int = 3):
     generator = HangulCipherGenerator()
     all_problems = []
 
-    # 쉬운 난이도부터 어려운 순서로 생성 (LEVEL_0: easy -> LEVEL_2: hard)
-    for level_key in sorted(DIFFICULTY_CONFIG.keys()):
+    # 쉬운 난이도부터 어려운 순서로 생성 (LEVEL_3: easy -> LEVEL_0: expert)
+    for level_key in reversed(sorted(DIFFICULTY_CONFIG.keys())):
         config = DIFFICULTY_CONFIG[level_key]
         difficulty = config["name"]
         

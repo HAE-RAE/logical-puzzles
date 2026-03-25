@@ -13,25 +13,32 @@ import math
 
 DIFFICULTY_CONFIG = {
     "LEVEL_0": {
-        "name": "easy",
-        "cipher_stack": ["vigenere"],
-        "keyword_logic": "direct",
-        "hint_count": 8,
-        "description": "Easy (Avg Accuracy ~75%): Vigenere / Direct / 8 Hints"
+        "name": "expert",
+        "cipher_stack": ["playfair", "transposition", "vigenere"],
+        "keyword_logic": "extraction",
+        "hint_count": 2,
+        "description": "Playfair + Transposition + Vigenere with Conditional Key / 2 Hints"
     },
     "LEVEL_1": {
-        "name": "medium",
+        "name": "hard",
         "cipher_stack": ["playfair", "vigenere"],
         "keyword_logic": "positional",
         "hint_count": 4,
-        "description": "Medium (Avg Accuracy ~50%): Playfair + Vigenere / Positional / 4 Hints"
+        "description": "Playfair + Vigenere / 4 Hints"
     },
     "LEVEL_2": {
-        "name": "hard",
-        "cipher_stack": ["playfair", "transposition", "vigenere"],
-        "keyword_logic": "extraction",
-        "hint_count": 0,
-        "description": "Hard (Avg Accuracy ~25%): Playfair + Transposition + Vigenere / Extraction / 0 Hints"
+        "name": "medium",
+        "cipher_stack": ["vigenere", "reverse"],
+        "keyword_logic": "positional",
+        "hint_count": 6,
+        "description": "Vigenere + Reverse / 6 Hints"
+    },
+    "LEVEL_3": {
+        "name": "easy",
+        "cipher_stack": ["vigenere"],
+        "keyword_logic": "direct", # 키워드 직접 명시
+        "hint_count": 12,
+        "description": "Single Vigenere / 12 Hints"
     }
 }
 
@@ -301,8 +308,8 @@ def create_advanced_dataset(num_per_level: int = 2):
     generator = SelfContainedCipherGenerator()
     all_problems = []
 
-    # 쉬운 난이도부터 어려운 순서로 생성 (LEVEL_0: EASY -> LEVEL_2: HARD)
-    for level_key in sorted(DIFFICULTY_CONFIG.keys()):
+    # 쉬운 난이도부터 어려운 순서로 생성 (LEVEL_3: EASY -> LEVEL_0: EXPERT)
+    for level_key in reversed(sorted(DIFFICULTY_CONFIG.keys())):
         config = DIFFICULTY_CONFIG[level_key]
         difficulty = config["name"]
 
