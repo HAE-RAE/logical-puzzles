@@ -50,10 +50,10 @@ python generation/logic_grid_en.py --num-samples 300
 
 ```bash
 # Generate all tasks at once
-bash scripts/generate_all.sh
+bash scripts/gen_data.sh
 ```
 
-**Note**: Some tasks in `generate_all.sh` may be commented out. Modify as needed.
+**Note**: Some tasks in `gen_data.sh` may be commented out. Modify as needed.
 
 ## 📁 Output Format
 
@@ -128,7 +128,7 @@ Each script can internally set the generation ratio by difficulty. Modify the di
 
 ### Generation Count Adjustment
 
-You can adjust the generation count for each task in the `scripts/generate_all.sh` file:
+You can adjust the generation count for each task in the `scripts/gen_data.sh` file:
 
 ```bash
 # Example: Change kinship problem count
@@ -161,6 +161,6 @@ head data/json/kinship.jsonl | python -m json.tool
 
 ## 🔗 Related Files
 
-- Batch generation script: `../scripts/generate_all.sh`
+- Batch generation script: `../scripts/gen_data.sh`
 - Data storage location: `../data/`
 - Evaluation data: `../eval_data/`

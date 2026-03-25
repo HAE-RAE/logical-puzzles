@@ -50,10 +50,10 @@ python generation/logic_grid_en.py --num-samples 300
 
 ```bash
 # 모든 작업을 한 번에 생성
-bash scripts/generate_all.sh
+bash scripts/gen_data.sh
 ```
 
-**참고**: `generate_all.sh`의 일부 작업은 주석 처리되어 있을 수 있습니다. 필요에 따라 수정하세요.
+**참고**: `gen_data.sh`의 일부 작업은 주석 처리되어 있을 수 있습니다. 필요에 따라 수정하세요.
 
 ## 📁 출력 형식
 
@@ -116,7 +116,7 @@ JSONL file created! -> data/json/kinship.jsonl
 
 ### 생성 개수 조정
 
-`scripts/generate_all.sh` 파일에서 각 작업의 생성 개수를 조정할 수 있습니다:
+`scripts/gen_data.sh` 파일에서 각 작업의 생성 개수를 조정할 수 있습니다:
 
 ```bash
 # 예시: kinship 문제 개수 변경
@@ -149,6 +149,6 @@ head data/json/kinship.jsonl | python -m json.tool
 
 ## 🔗 관련 파일
 
-- 배치 생성 스크립트: `../scripts/generate_all.sh`
+- 배치 생성 스크립트: `../scripts/gen_data.sh`
 - 데이터 저장 위치: `../data/`
 - 평가 데이터: `../eval_data/`

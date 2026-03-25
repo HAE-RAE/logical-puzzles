@@ -5,7 +5,7 @@ from typing import List, Dict, Any, Tuple, Optional, TYPE_CHECKING
 from ..core.base import BaseEvaluator, EvaluationResult
 
 if TYPE_CHECKING:
-    from ..core.llm_client import UnifiedLLMClient
+    from ..model.base import BaseLLMClient
 
 logger = logging.getLogger(__name__)
 
@@ -139,7 +139,7 @@ class CipherEvaluator(BaseEvaluator):
     def _evaluate_single(
         self,
         puzzle: Dict[str, Any],
-        llm_client: "UnifiedLLMClient"
+        llm_client: "BaseLLMClient"
     ) -> "EvaluationResult":
         """
         단일 퍼즐 평가 (한글/영문에 따라 적절한 SYSTEM_PROMPT 사용)
@@ -163,7 +163,7 @@ class CipherEvaluator(BaseEvaluator):
     async def _evaluate_async(
         self,
         puzzles: List[Dict[str, Any]],
-        llm_client: "UnifiedLLMClient",
+        llm_client: "BaseLLMClient",
         verbose: bool = True,
         max_concurrent: int = 10
     ) -> List["EvaluationResult"]:

@@ -47,124 +47,98 @@ The system automatically loads the `.env` file to use API keys.
 
 ## Usage
 
-### Basic Usage
+The evaluation system supports two model routers:
+
+- **liteLLM**: Call cloud APIs (Gemini, OpenAI, Anthropic, etc.) via liteLLM library
+- **remote**: Call a self-hosted server (e.g. vLLM on Colab) via OpenAI-compatible API
+
+All configuration is done through CLI arguments (no config file needed).
+
+### liteLLM Mode (Cloud APIs)
 
 ```bash
-# Run from project root
-cd logical-puzzles
+# Basic usage
+python evaluation/run.py \
+    --model gemini/gemini-3-flash-preview \
+    --model_router litellm \
+    --gen-kwargs "temperature=1.0,max_tokens=65536,top_p=0.95,top_k=64" \
+    --tasks kinship --async
 
-# Evaluate all tasks (uses config.yaml settings)
-python evaluation/run.py
-python -m evaluation.run
-
-# Evaluate specific tasks
-python evaluation/run.py --tasks kinship cipher hanoi
-
-# Use different models
-python evaluation/run.py --model gemini/gemini-3-flash-preview
-python evaluation/run.py --model gemini/gemini-2.5-flash
-python evaluation/run.py --model gpt-4o
-python evaluation/run.py --model claude-3-5-sonnet-20241022
-
-# Filter by difficulty and limit
-python evaluation/run.py --difficulty easy --limit 10
+# Evaluate specific tasks with difficulty filter
+python evaluation/run.py \
+    --model gemini/gemini-3-flash-preview \
+    --model_router litellm \
+    --gen-kwargs "temperature=1.0,max_tokens=65536" \
+    --tasks kinship cipher hanoi \
+    --difficulty medium --limit 20 \
+    --async --max-concurrent 50
 ```
 
-### Async Mode
-
-The async mode is controlled by `evaluation/config.yaml` (default: `use_async: true`):
-
-```bash
-# Async mode evaluation (default from config.yaml)
-python evaluation/run.py
-
-# Explicitly enable async mode (same as default if config.yaml has use_async: true)
-python evaluation/run.py --async
-
-# Adjust concurrent execution count (default: 30 from config.yaml)
-python evaluation/run.py --max-concurrent 50
-```
-
-**Note:** Currently, `--async` flag has no effect because `config.yaml` already sets `use_async: true` as default. The flag is useful when you want to override a `false` setting in config.yaml.
-
-### Advanced Options
+### Remote Mode (Self-hosted vLLM, etc.)
 
 ```bash
 python evaluation/run.py \
-    --model gemini/gemini-3-flash-preview \
-    --tasks kinship cipher hanoi \
-    --difficulty medium \
-    --limit 20 \
-    --output-dir results/my_test \
-    --async \
-    --max-concurrent 50 \
-    --quiet
+    --model Qwen/Qwen3-0.6B \
+    --model_router remote \
+    --remote_url "https://xxxx.ngrok-free.app" \
+    --gen-kwargs "temperature=0.6,max_tokens=16384,top_p=0.95,top_k=20,reasoning=on" \
+    --tasks kinship --async --max-concurrent 30
 ```
 
-### Shell Scripts (Batch Evaluation of 17 Tasks)
+### CLI Arguments
 
-Two scripts are available for batch evaluation:
+| Argument | Required | Description |
+|----------|----------|-------------|
+| `--model` | Yes | Model name (e.g. `gemini/gemini-3-flash-preview`, `Qwen/Qwen3-0.6B`) |
+| `--model_router` | Yes | `litellm` or `remote` |
+| `--remote_url` | For remote | Remote server URL |
+| `--gen-kwargs` | No | Generation params as `key=value,key=value` |
+| `--timeout` | No | Request timeout in seconds (default: 600) |
+| `--tasks` | No | Tasks to evaluate (all if omitted) |
+| `--async` | No | Enable async mode |
+| `--max-concurrent` | No | Max concurrent requests (default: 30) |
+| `--difficulty` | No | Filter by difficulty |
+| `--limit` | No | Max puzzles per task |
+| `--quiet` | No | Minimize output |
 
-1. **Sequential Execution** (`evaluate_all.sh`):
-   ```bash
-   # Evaluate 17 tasks one by one (stable, slower)
-   bash scripts/evaluate_all.sh
-   ```
-   - Executes tasks sequentially (one at a time)
-   - More stable and easier to debug
-   - Lower resource usage
-   - Clearer log output
+### Shell Scripts (Batch Evaluation)
 
-2. **Parallel Execution** (`evaluate_all_parallel.sh`) ⭐ **Recommended**:
-   ```bash
-   # Evaluate 17 tasks in parallel (5 at a time, faster)
-   bash scripts/evaluate_all_parallel.sh
-   ```
-   - Executes up to 5 tasks simultaneously
-   - Significantly faster (approximately 3-5x speedup)
-   - Higher resource usage
-   - Both scripts evaluate all 17 tasks (excluding sudoku and minesweeper)
-   - **Due to parallel processing, separate log files are created for each task**
-     - Log file location: `results/log/{task_name}.log`
-     - Records start/end time and status (SUCCESS/FAILED) for each task
-     - You can monitor progress in real-time by checking the logs
+| Script | Mode | Execution |
+|--------|------|-----------|
+| `eval_litellm.sh` | liteLLM | Sequential |
+| `eval_litellm_parallel.sh` | liteLLM | Parallel (5 concurrent) |
+| `eval_remote.sh` | Remote | Sequential |
+| `eval_remote_parallel.sh` | Remote | Parallel (5 concurrent) |
+
+```bash
+# liteLLM (Gemini, etc.)
+bash scripts/eval_litellm.sh
+bash scripts/eval_litellm_parallel.sh     # Recommended
+
+# Remote (Colab vLLM, etc.)
+bash scripts/eval_remote.sh
+bash scripts/eval_remote_parallel.sh      # Recommended
+```
+
+Parallel scripts create per-task log files at `results/{model_name}/log/{task}.log`.
 
 ### Monitoring Running Evaluations
 
 ```bash
-# Simple table view (default)
-bash scripts/monitor_eval.sh
-
-# Detailed view with full information
-bash scripts/monitor_eval.sh detailed
-
-# Show help
-bash scripts/monitor_eval.sh help
+bash scripts/monitor.sh              # Simple table view
+bash scripts/monitor.sh detailed     # Detailed view
+bash scripts/monitor.sh help         # Show help
 ```
-
-The monitoring script shows:
-- Running evaluation processes (PID, model, task)
-- Progress information from log files
-- Accuracy (when available)
-- Log file locations
 
 ### Result Visualization
 
 ```bash
-# Visualize results with Jupyter notebook
-jupyter notebook scripts/visualize_results.ipynb
+jupyter notebook scripts/viz_results.ipynb
 # or
-jupyter lab scripts/visualize_results.ipynb
+jupyter lab scripts/viz_results.ipynb
 ```
 
-The visualization notebook provides:
-- Overall accuracy by task
-- Accuracy by task and difficulty (grouped bar chart)
-- Accuracy heatmap by task and difficulty
-- Average latency by task
-- Accuracy vs latency scatter plot
-
-## API Key Priority
+## API Key Priority (liteLLM mode)
 
 The system searches for API keys in the following order:
 
@@ -173,6 +147,8 @@ The system searches for API keys in the following order:
 3. LiteLLM default settings
 
 **Recommended**: Store all API keys in the `.env` file.
+
+> **Note**: Remote mode does not require API keys in `.env`. The server URL is passed via `--remote_url`.
 
 ## Output Results
 
@@ -253,58 +229,21 @@ kinship_1,"Question content...",B,"Model raw response",C,0,medium
 }
 ```
 
-## Configuration File (config.yaml)
+## Generation Parameters (`--gen-kwargs`)
 
-You can manage default settings in `evaluation/config.yaml`:
+Pass generation parameters as comma-separated `key=value` pairs:
 
-```yaml
-llm:
-  model: gemini/gemini-3-flash-preview
-  temperature: 1.0
-  max_tokens: 65536  # Increased for tasks requiring long responses (e.g., yacht_dice)
-  top_p: 0.95
-  top_k: 64
-  # reasoning_effort: medium  # Optional, currently disabled
-  timeout: 600.0     # Timeout in seconds
+```bash
+# liteLLM (Gemini)
+--gen-kwargs "temperature=1.0,max_tokens=65536,top_p=0.95,top_k=64"
 
-data_dir: data/json
-output_dir: results
-
-evaluation:
-  use_async: true      # Async mode enabled by default
-  max_concurrent: 30    # Maximum concurrent executions
-
-tasks:
-  - kinship
-  - kinship_vision
-  - cipher_en
-  - cipher_ko
-  - hanoi_en
-  - ferryman_en
-  - ferryman_ko
-  - array_formula_en
-  - array_formula_ko
-  - causal_dag_en
-  - causal_dag_ko
-  - cryptarithmetic
-  - inequality
-  - logic_grid_en
-  - logic_grid_ko
-  - number_baseball
-  - sat_puzzles_en
-  - sat_puzzles_ko
-  - yacht_dice
-
-difficulties:
-  - easy
-  - medium
-  - hard
+# Remote (Qwen3 thinking mode)
+--gen-kwargs "temperature=0.6,max_tokens=16384,top_p=0.95,top_k=20,reasoning=on"
 ```
 
-**Configuration Priority:**
-1. Command-line arguments (highest priority)
-2. `config.yaml` settings
-3. Default values (lowest priority)
+Special keys:
+- `reasoning=on`: Enable thinking mode (adds `enable_thinking: true` for remote mode)
+- Numeric values are auto-converted to `int` or `float`
 
 ## Structure
 
@@ -312,8 +251,12 @@ difficulties:
 evaluation/
 ├── core/                     # Core components
 │   ├── base.py               # Base data structures
-│   ├── llm_client.py         # LiteLLM wrapper (auto-loads .env)
 │   └── result_handler.py     # Result saving
+├── model/                    # LLM client package
+│   ├── __init__.py           # create_client() factory
+│   ├── base.py               # BaseLLMClient (ABC)
+│   ├── litellm.py            # LiteLLMClient
+│   └── remote.py             # RemoteLLMClient (OpenAI-compatible)
 ├── evaluators/               # Task-specific evaluators
 │   ├── __init__.py           # Registry
 │   ├── kinship.py
@@ -336,13 +279,8 @@ evaluation/
 │   ├── kinship_vision/
 │   │   └── kinship.jpg
 │   └── minesweeper/
-│       ├── eval_metadata.jsonl
-│       ├── eval_puzzles.jsonl
-│       ├── eval_solutions.jsonl
-│       └── solution.md
-├── run.py                   # Main execution script (auto-loads .env)
-├── config.yaml              # Configuration file
-└── README.md                # This document
+│       └── ...
+└── run.py                   # Main execution script
 ```
 
 ## Adding New Tasks
@@ -373,19 +311,25 @@ class MyTaskEvaluator(BaseEvaluator):
 
 ## Supported Models
 
+### liteLLM Mode
+
 Various models are available through LiteLLM:
 
-**Google Gemini** (requires GEMINI_API_KEY, as of February 2026):
-- `gemini/gemini-3-flash-preview` ⭐ (default, latest, powerful)
+**Google Gemini** (requires GEMINI_API_KEY):
+- `gemini/gemini-3-flash-preview` (latest, powerful)
 - `gemini/gemini-2.5-flash` (stable, fast)
-
-> **Note**: LiteLLM automatically uses `GEMINI_API_KEY` from `.env`.
 
 **OpenAI** (requires OPENAI_API_KEY):
 - `gpt-4o`
 - `gpt-4o-mini`
-- `gpt-4-turbo`
 
 **Anthropic** (requires ANTHROPIC_API_KEY):
 - `claude-3-5-sonnet-20241022`
 - `claude-3-opus-20240229`
+
+### Remote Mode
+
+Any model served via an OpenAI-compatible API (e.g. vLLM):
+- `Qwen/Qwen3-0.6B`
+- `Qwen/Qwen3-1.7B`
+- Any HuggingFace model supported by vLLM

@@ -19,7 +19,7 @@ from typing import Dict, Any, List, Set, Tuple, Optional, TYPE_CHECKING
 from ..core.base import BaseEvaluator, EvaluationResult
 
 if TYPE_CHECKING:
-    from ..core.llm_client import UnifiedLLMClient
+    from ..model.base import BaseLLMClient
 
 logger = logging.getLogger(__name__)
 
@@ -366,7 +366,7 @@ Answer: [number]"""
     def _evaluate_single(
         self,
         puzzle: Dict[str, Any],
-        llm_client: "UnifiedLLMClient"
+        llm_client: "BaseLLMClient"
     ) -> EvaluationResult:
         """Evaluate a single puzzle with letter hiding and spotcheck."""
         puzzle, user_content = self._prepare_puzzle_for_eval(puzzle)
@@ -388,7 +388,7 @@ Answer: [number]"""
     async def _evaluate_async(
         self,
         puzzles: List[Dict[str, Any]],
-        llm_client: "UnifiedLLMClient",
+        llm_client: "BaseLLMClient",
         verbose: bool = True,
         max_concurrent: int = 10
     ) -> List[EvaluationResult]:

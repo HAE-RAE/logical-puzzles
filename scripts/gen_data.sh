@@ -94,4 +94,4 @@ echo ""; echo "[22/20] yacht_dice..."
 python generation/yacht_dice.py --num 100
 
 
-# bash scripts/generate_all.sh
+# bash scripts/gen_data.sh

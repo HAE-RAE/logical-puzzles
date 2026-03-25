@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Protocol, Tuple, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from .llm_client import UnifiedLLMClient
+    from ..model.base import BaseLLMClient
 
 logger = logging.getLogger(__name__)
 
@@ -47,7 +47,7 @@ class TaskEvaluator(Protocol):
     def evaluate(
         self,
         puzzles: List[Dict[str, Any]],
-        llm_client: "UnifiedLLMClient",
+        llm_client: "BaseLLMClient",
         verbose: bool = True,
         use_async: bool = False,
         max_concurrent: int = 10
@@ -70,7 +70,7 @@ class BaseEvaluator(ABC):
     def evaluate(
         self,
         puzzles: List[Dict[str, Any]],
-        llm_client: "UnifiedLLMClient",
+        llm_client: "BaseLLMClient",
         verbose: bool = True,
         use_async: bool = False,
         max_concurrent: int = 10,
@@ -163,7 +163,7 @@ class BaseEvaluator(ABC):
     def _evaluate_single(
         self,
         puzzle: Dict[str, Any],
-        llm_client: "UnifiedLLMClient"
+        llm_client: "BaseLLMClient"
     ) -> EvaluationResult:
         """
         Evaluate a single puzzle
@@ -192,7 +192,7 @@ class BaseEvaluator(ABC):
     async def _evaluate_async(
         self,
         puzzles: List[Dict[str, Any]],
-        llm_client: "UnifiedLLMClient",
+        llm_client: "BaseLLMClient",
         verbose: bool = True,
         max_concurrent: int = 10
     ) -> List[EvaluationResult]:
