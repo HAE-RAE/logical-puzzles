@@ -1,4 +1,4 @@
-litellm>=1.0.0
+litellm>=1.81.0,!=1.82.7,!=1.82.8  # CVE: supply chain attack on 1.82.7/1.82.8
 python-dotenv>=1.0.0
 PyYAML>=6.0
 pandas>=2.0.0

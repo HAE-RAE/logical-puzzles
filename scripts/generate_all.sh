@@ -7,11 +7,11 @@ echo ""
 
 # Array Formula (Easy, Medium, Hard)
 echo ""; echo "[1/20] array_formula..."
-python generation/array_formula.py --num 100
+python generation/array_formula.py --num 200
 
 # Array Formula Korean (Easy, Medium, Hard)
 echo ""; echo "[2/20] array_formula_korean..."
-python generation/array_formula_korean.py --num 100
+python generation/array_formula_korean.py --num 200
 
 # Causal DAG Korean (Easy, Medium, Hard)
 echo ""; echo "[3/20] causal_dag_korean..."
