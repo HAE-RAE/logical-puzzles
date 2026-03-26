@@ -17,7 +17,7 @@ cd "$PROJECT_ROOT"
 # MODEL="Qwen/Qwen3-0.6B"
 MODEL="Qwen/Qwen3-1.7B"
 REMOTE_URL="https://tremendously-bureaucratic-alda.ngrok-free.dev"
-GEN_KWARGS="temperature=0.6,max_tokens=8192,top_p=0.95,top_k=20,reasoning=on"
+GEN_KWARGS="temperature=0.6,max_tokens=16384,top_p=0.95,top_k=20,reasoning=on"
 # =================================================
 
 MODEL_DIR_NAME="${MODEL//\//_}"
@@ -47,7 +47,7 @@ TASKS=(
     # "hanoi_en"
     # "hanoi_ko"
     # "inequality"
-    # "kinship_vision"
+    "kinship_vision"
     "kinship"
     # "logic_grid_en"
     # "logic_grid_ko"
@@ -65,7 +65,7 @@ TOTAL_TASKS=${#TASKS[@]}
 CURRENT_TASK=0
 SUCCESS_COUNT=0
 FAIL_COUNT=0
-MAX_PARALLEL=5
+MAX_PARALLEL=2
 
 run_task() {
     local task=$1
@@ -90,7 +90,7 @@ run_task() {
         --gen-kwargs "$GEN_KWARGS" \
         --tasks "$task" \
         --async \
-        --max-concurrent 20 2>&1 | tee -a "$log_file"; then
+        --max-concurrent 10 2>&1 | tee -a "$log_file"; then
         echo -e "${GREEN}✓ $task Completed${NC}"
         echo "$task:SUCCESS" >> /tmp/eval_results_$$
         echo "" >> "$log_file"
