@@ -27,11 +27,12 @@ Decode multi-layer cipher algorithms. Evaluates LLM's pure algorithmic reasoning
 - **Multi-layer Algorithms**: Stack of Substitution, Vigenere, Reverse, Playfair, Transposition
 - **Meaningless Answers**: Use random strings to prevent linguistic guessing
 - **Variable Hints**: Adjust number of examples by difficulty (2-20 examples)
-- **Difficulty Levels**: EASY (Sub+Rev), MEDIUM (Vig), HARD (Vig+Rev), VERY_HARD (Playfair+Vig), EXTREME (Play+Trans+Vig)
+- **Difficulty Levels**: Easy, Medium, Hard (cipher stack depth and hint count increase with tier)
 
-### 4. Cryptarithmetic
+### 4. Cryptarithmetic (EN / KO)
 Find the digit corresponding to each letter in arithmetic expressions represented by letters.
 
+- **Scripts**: `generation/cryptarithmetic_en.py`, `generation/cryptarithmetic_ko.py`
 - **Constraints**: No leading zeros, each letter is a unique digit
 - **Backtracking Solver**: Verify unique solution
 - **Various Operations**: Support addition, subtraction, multiplication
@@ -40,6 +41,7 @@ Find the digit corresponding to each letter in arithmetic expressions represente
 ### 5. Ferryman (EN / KO)
 Calculate total time required for a ferryman to transport goods considering various navigation rules and constraints.
 
+- **Scripts**: `generation/ferryman_en.py`, `generation/ferryman_ko.py`
 - **Speed-limited Zones**: Speed changes in Zone A and Zone B
 - **Cargo Weight**: Speed reduction based on weight
 - **Mandatory Rest Time**: Compliance with navigation regulations
@@ -48,14 +50,16 @@ Calculate total time required for a ferryman to transport goods considering vari
 ### 6. Hanoi (EN / KO)
 Classic puzzle of moving disks from one peg to another. Calculate the minimum number of moves.
 
+- **Scripts**: `generation/hanoi_en.py`, `generation/hanoi_ko.py`
 - **Recursive Structure**: Requires divide-and-conquer thinking
 - **Constraints**: Only smaller disks can be placed on larger disks
 - **Minimum Moves**: 2^n - 1 moves (n is number of disks)
 - **Difficulty Levels**: Adjusted based on number of disks
 
-### 7. Inequality
+### 7. Inequality (EN / KO)
 Find number placements that satisfy given inequality constraints.
 
+- **Scripts**: `generation/inequality_en.py`, `generation/inequality_ko.py`
 - **Constraint Satisfaction Problem**: Satisfy multiple inequalities simultaneously
 - **Backtracking Solver**: Verify unique solution
 - **Logical Reasoning**: Narrow value ranges from constraints
@@ -88,17 +92,19 @@ Constraint-based logical reasoning problem famous as Einstein's Riddle. Infer re
 - **Difficulty Levels**: Easy (3×3), Medium (4×4), Hard (5×5)
 - **Backward Generation**: Generate valid solution first, then derive constraint conditions
 
-### 11. Minesweeper
+### 11. Minesweeper (EN / KO)
 Minesweeper puzzle designed as a Constraint Satisfaction Problem (CSP). Evaluates LLM's logical reasoning ability.
 
+- **Scripts**: `generation/minesweeper_en.py`, `generation/minesweeper_ko.py`
 - **Unique Solution Guaranteed**: Verify unique solution with backtracking solver
 - **Minimal Hints**: Minimize hints while maintaining unique solution
 - **Difficulty Levels**: Easy (6×6), Medium (8×8), Hard (10×10)
 - **Coordinate-based Evaluation**: Output mine locations in (r,c) format
 
-### 12. Number Baseball
+### 12. Number Baseball (EN / KO)
 Infer hidden N-digit numbers through hints (Strike/Ball).
 
+- **Scripts**: `generation/number_baseball_en.py`, `generation/number_baseball_ko.py`
 - **Constraint Reasoning**: Narrow possible number ranges with Strike/Ball hints
 - **Variable Digits**: Adjust difficulty with 3-digit, 4-digit, 5-digit numbers
 - **No Duplicate Digits**: Each position has a different digit
@@ -114,18 +120,20 @@ NP-complete problem of finding value combinations that satisfy given logical exp
 - **Difficulty Levels**: Easy (3-4 variables), Medium (5-7 variables), Hard (10-12 variables)
 - **Pure Logical Reasoning**: Focus on Boolean logic
 
-### 14. Sudoku
+### 14. Sudoku (EN / KO)
 9×9 Sudoku puzzle generation and difficulty-level evaluation dataset.
 
+- **Scripts**: `generation/sudoku_en.py`, `generation/sudoku_ko.py`
 - **Unique Solution Guaranteed**: All puzzles have exactly one solution
-- **Difficulty Evaluation**: Automatic classification into Easy, Medium, Hard, Expert, Extreme
+- **Difficulty Evaluation**: Automatic classification into Easy, Medium, Hard
 - **Spot-check Evaluation**: HMAC-based K-cell selection for LLM evaluation support
 - **Symmetry Support**: Improve aesthetic quality with rotation/reflection symmetry
 - **Reproducible**: Regenerate identical puzzles with fixed seeds
 
-### 15. Yacht Dice
+### 15. Yacht Dice (EN / KO)
 Combinatorial optimization problem of optimally assigning 12 dice results to 12 categories to maximize total score.
 
+- **Scripts**: `generation/yacht_dice.py`, `generation/yacht_dice_ko.py`
 - **Combinatorial Optimization**: 12! = 479,001,600 possible assignments
 - **Hungarian Algorithm**: Calculate optimal solution
 - **Bonus Score Calculation**: Bonus based on upper section total
@@ -231,7 +239,7 @@ All puzzles are stored in two formats:
 - `question`: Problem description
 - `answer`: Correct answer
 - `solution`: Step-by-step reasoning process
-- `difficulty`: Difficulty level (easy/medium/hard, etc.)
+- `difficulty`: Difficulty level (`easy` / `medium` / `hard`)
 - Additional puzzle-specific metadata (optional)
 
 ## Project Structure
@@ -272,10 +280,14 @@ logical-puzzles/
 │   ├── array_formula_en.py
 │   ├── array_formula_ko.py
 │   ├── causal_dag_en.py
-│   ├── cipher_en.py
-│   ├── cryptarithmetic.py
-│   ├── kinship.py
-│   └── ... (15 puzzle types, _en/_ko for bilingual)
+│   ├── causal_dag_ko.py
+│   ├── cryptarithmetic_en.py
+│   ├── cryptarithmetic_ko.py
+│   ├── ferryman_en.py
+│   ├── ferryman_ko.py
+│   ├── hanoi_en.py
+│   ├── hanoi_ko.py
+│   └── ...
 │
 ├── results/                    # Evaluation results (gitignored)
 │   └── {model_name}/

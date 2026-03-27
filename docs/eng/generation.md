@@ -1,6 +1,6 @@
 # Logical-Puzzles Dataset Generation Guide
 
-A collection of scripts for generating datasets for 20 logical puzzle tasks.
+A collection of scripts for generating datasets for 28 logical puzzle generators (including English/Korean variants).
 
 ## 📋 Supported Tasks
 
@@ -10,22 +10,30 @@ A collection of scripts for generating datasets for 20 logical puzzle tasks.
 | Array Formula (KO) | `array_formula_ko.py` | Easy, Medium, Hard | 100 |
 | Causal DAG (KO) | `causal_dag_ko.py` | Easy, Medium, Hard | 300 |
 | Causal DAG (EN) | `causal_dag_en.py` | Easy, Medium, Hard | 300 |
-| Cipher (KO) | `cipher_ko.py` | Easy, Medium, Hard, Very Hard, Extreme | 100 |
-| Cipher (EN) | `cipher_en.py` | Easy, Medium, Hard, Expert | 100 |
-| Cryptarithmetic | `cryptarithmetic.py` | Easy, Medium, Hard, Expert | 400 |
+| Cipher (KO) | `cipher_ko.py` | Easy, Medium, Hard | 100 |
+| Cipher (EN) | `cipher_en.py` | Easy, Medium, Hard | 100 |
+| Cryptarithmetic (EN) | `cryptarithmetic_en.py` | Easy, Medium, Hard | 400 |
+| Cryptarithmetic (KO) | `cryptarithmetic_ko.py` | Easy, Medium, Hard | 400 |
 | Ferryman (EN) | `ferryman_en.py` | Easy, Medium, Hard | 100 |
+| Ferryman (KO) | `ferryman_ko.py` | Easy, Medium, Hard | 100 |
 | Hanoi (EN) | `hanoi_en.py` | - | 100 |
-| Inequality | `inequality.py` | Easy, Medium, Hard, Expert | 400 |
+| Hanoi (KO) | `hanoi_ko.py` | - | 100 |
+| Inequality (EN) | `inequality_en.py` | Easy, Medium, Hard | 400 |
+| Inequality (KO) | `inequality_ko.py` | Easy, Medium, Hard | 400 |
 | Kinship | `kinship.py` | - | 100 |
 | Kinship Vision | `kinship_vision.py` | - | 100 |
 | Logic Grid (KO) | `logic_grid_ko.py` | Easy, Medium, Hard | 300 |
 | Logic Grid (EN) | `logic_grid_en.py` | Easy, Medium, Hard | 300 |
-| Minesweeper | `minesweeper.py` | Easy, Medium, Hard | - |
-| Number Baseball | `number_baseball.py` | Easy, Medium, Hard, Expert | 400 |
+| Minesweeper (EN) | `minesweeper_en.py` | Easy, Medium, Hard | - |
+| Minesweeper (KO) | `minesweeper_ko.py` | Easy, Medium, Hard | - |
+| Number Baseball (EN) | `number_baseball_en.py` | Easy, Medium, Hard | 400 |
+| Number Baseball (KO) | `number_baseball_ko.py` | Easy, Medium, Hard | 400 |
 | SAT Puzzle (KO) | `sat_puzzle_ko.py` | Easy, Medium, Hard | 300 |
 | SAT Puzzle (EN) | `sat_puzzle_en.py` | Easy, Medium, Hard | 300 |
-| Sudoku | `sudoku.py` | Medium, Hard, Expert, Extreme | - |
-| Yacht Dice | `yacht_dice.py` | - | 100 |
+| Sudoku (EN) | `sudoku_en.py` | Easy, Medium, Hard | - |
+| Sudoku (KO) | `sudoku_ko.py` | Easy, Medium, Hard | - |
+| Yacht Dice (EN) | `yacht_dice.py` | - | 100 |
+| Yacht Dice (KO) | `yacht_dice_ko.py` | - | 100 |
 
 ## 🚀 Usage
 
@@ -80,7 +88,7 @@ Generated data is saved in two formats:
 }
 ```
 
-**Note:** Difficulty levels are stored in lowercase (`easy`, `medium`, `hard`, `expert`, etc.) for consistency with the evaluation system.
+**Note:** Difficulty levels are stored in lowercase (`easy`, `medium`, `hard`) for consistency with the evaluation system.
 
 ## 🔧 Script-Specific Options
 

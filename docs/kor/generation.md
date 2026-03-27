@@ -1,6 +1,6 @@
 # Logical-Puzzles 데이터셋 생성 가이드
 
-20개 논리 퍼즐 작업을 위한 데이터셋 생성 스크립트 모음입니다.
+28개 논리 퍼즐 생성 스크립트(영·한 병행 작업 포함) 모음입니다.
 
 ## 📋 지원 작업
 
@@ -10,22 +10,30 @@
 | Array Formula (KO) | `array_formula_ko.py` | Easy, Medium, Hard | 100 |
 | Causal DAG (KO) | `causal_dag_ko.py` | Easy, Medium, Hard | 300 |
 | Causal DAG (EN) | `causal_dag_en.py` | Easy, Medium, Hard | 300 |
-| Cipher (KO) | `cipher_ko.py` | Easy, Medium, Hard, Very Hard, Extreme | 100 |
-| Cipher (EN) | `cipher_en.py` | Easy, Medium, Hard, Expert | 100 |
-| Cryptarithmetic | `cryptarithmetic.py` | Easy, Medium, Hard, Expert | 400 |
+| Cipher (KO) | `cipher_ko.py` | Easy, Medium, Hard | 100 |
+| Cipher (EN) | `cipher_en.py` | Easy, Medium, Hard | 100 |
+| Cryptarithmetic (EN) | `cryptarithmetic_en.py` | Easy, Medium, Hard | 400 |
+| Cryptarithmetic (KO) | `cryptarithmetic_ko.py` | Easy, Medium, Hard | 400 |
 | Ferryman (EN) | `ferryman_en.py` | Easy, Medium, Hard | 100 |
+| Ferryman (KO) | `ferryman_ko.py` | Easy, Medium, Hard | 100 |
 | Hanoi (EN) | `hanoi_en.py` | - | 100 |
-| Inequality | `inequality.py` | Easy, Medium, Hard, Expert | 400 |
+| Hanoi (KO) | `hanoi_ko.py` | - | 100 |
+| Inequality (EN) | `inequality_en.py` | Easy, Medium, Hard | 400 |
+| Inequality (KO) | `inequality_ko.py` | Easy, Medium, Hard | 400 |
 | Kinship | `kinship.py` | - | 100 |
 | Kinship Vision | `kinship_vision.py` | - | 100 |
 | Logic Grid (KO) | `logic_grid_ko.py` | Easy, Medium, Hard | 300 |
 | Logic Grid (EN) | `logic_grid_en.py` | Easy, Medium, Hard | 300 |
-| Minesweeper | `minesweeper.py` | Easy, Medium, Hard | - |
-| Number Baseball | `number_baseball.py` | Easy, Medium, Hard, Expert | 400 |
+| Minesweeper (EN) | `minesweeper_en.py` | Easy, Medium, Hard | - |
+| Minesweeper (KO) | `minesweeper_ko.py` | Easy, Medium, Hard | - |
+| Number Baseball (EN) | `number_baseball_en.py` | Easy, Medium, Hard | 400 |
+| Number Baseball (KO) | `number_baseball_ko.py` | Easy, Medium, Hard | 400 |
 | SAT Puzzle (KO) | `sat_puzzle_ko.py` | Easy, Medium, Hard | 300 |
 | SAT Puzzle (EN) | `sat_puzzle_en.py` | Easy, Medium, Hard | 300 |
-| Sudoku | `sudoku.py` | Medium, Hard, Expert, Extreme | - |
-| Yacht Dice | `yacht_dice.py` | - | 100 |
+| Sudoku (EN) | `sudoku_en.py` | Easy, Medium, Hard | - |
+| Sudoku (KO) | `sudoku_ko.py` | Easy, Medium, Hard | - |
+| Yacht Dice (EN) | `yacht_dice.py` | - | 100 |
+| Yacht Dice (KO) | `yacht_dice_ko.py` | - | 100 |
 
 ## 🚀 사용법
 
@@ -68,7 +76,7 @@ bash scripts/gen_data.sh
 - 각 줄은 JSON 객체
 - 추가 메타데이터 포함 (예: `choices`, `solution` 등)
 
-**참고:** 난이도 레벨은 평가 시스템과의 일관성을 위해 소문자(`easy`, `medium`, `hard`, `expert` 등)로 저장됩니다.
+**참고:** 난이도 레벨은 평가 시스템과의 일관성을 위해 소문자(`easy`, `medium`, `hard`)로 저장됩니다.
 
 ## 🔧 스크립트별 옵션
 

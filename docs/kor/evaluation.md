@@ -175,7 +175,7 @@ results/
   - 각 행은 하나의 퍼즐 평가를 나타냅니다
 - **JSON**: 난이도별 요약 (`{model}_{task}_{timestamp}__{accuracy}.json`)
   - `summary.overall`: 전체 정확도, 정답 수, 전체 수, 평균 지연 시간 (ms)
-  - `summary.by_difficulty`: 난이도별 통계 (키는 소문자: `easy`, `medium`, `hard`, `expert`)
+  - `summary.by_difficulty`: 난이도별 통계 (키는 소문자: `easy`, `medium`, `hard`)
 
 **장점:**
 - 모델별로 구성되어 비교가 쉬움
@@ -190,7 +190,7 @@ kinship_0,"Question content...",A,"Model raw response",A,1,easy
 kinship_1,"Question content...",B,"Model raw response",C,0,medium
 ```
 
-**참고:** 난이도 값은 일관성을 위해 소문자(`easy`, `medium`, `hard`, `expert`)로 저장됩니다.
+**참고:** 난이도 값은 일관성을 위해 소문자(`easy`, `medium`, `hard`)로 저장됩니다.
 
 ### JSON 파일 구조 (난이도별 요약)
 

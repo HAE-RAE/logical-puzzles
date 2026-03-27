@@ -174,7 +174,7 @@ results/
   - Each row represents one puzzle evaluation
 - **JSON**: Summary by difficulty (`{model}_{task}_{timestamp}__{accuracy}.json`)
   - `summary.overall`: Overall accuracy, correct count, total count, average latency (ms)
-  - `summary.by_difficulty`: Statistics by difficulty level (keys are lowercase: `easy`, `medium`, `hard`, `expert`)
+  - `summary.by_difficulty`: Statistics by difficulty level (keys are lowercase: `easy`, `medium`, `hard`)
 
 **Advantages:**
 - Organized by model for easy comparison
@@ -189,7 +189,7 @@ kinship_0,"Question content...",A,"Model raw response",A,1,easy
 kinship_1,"Question content...",B,"Model raw response",C,0,medium
 ```
 
-**Note:** Difficulty values are stored in lowercase (`easy`, `medium`, `hard`, `expert`) for consistency.
+**Note:** Difficulty values are stored in lowercase (`easy`, `medium`, `hard`) for consistency.
 
 ### JSON File Structure (Summary by Difficulty)
 
