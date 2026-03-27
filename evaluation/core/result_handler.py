@@ -170,11 +170,14 @@ class ResultHandler:
         correct = sum(1 for r in results if r.correct)
         avg_latency = sum(r.latency_ms for r in results) / total if total > 0 else 0
         
-        # Statistics by difficulty (normalized to lowercase)
+        # Statistics by difficulty (normalized to lowercase, ordered)
+        DIFFICULTY_ORDER = ["easy", "medium", "hard", "expert"]
         by_difficulty = {}
         difficulties = set(r.difficulty.lower() if r.difficulty else "unknown" for r in results)
+        ordered_diffs = [d for d in DIFFICULTY_ORDER if d in difficulties]
+        ordered_diffs += sorted(d for d in difficulties if d not in DIFFICULTY_ORDER)
         
-        for diff in difficulties:
+        for diff in ordered_diffs:
             # Match original difficulty (case-insensitive)
             diff_results = [r for r in results if (r.difficulty or "").lower() == diff]
             if diff_results:

@@ -1707,7 +1707,7 @@ def generate_puzzle(
     puzzle = generator(config, rng)
 
     puzzle_hash = hashlib.md5(json.dumps(puzzle, sort_keys=True, ensure_ascii=False).encode()).hexdigest()[:8]
-    puzzle["id"] = f"af_korean_{difficulty}_{problem_type}_{puzzle_hash}"
+    puzzle["id"] = f"af_ko_{difficulty}_{problem_type}_{puzzle_hash}"
     puzzle["seed"] = seed
 
     return puzzle
@@ -1734,7 +1734,7 @@ def generate_dataset(
                     problem_type=ptype,
                     seed=puzzle_seed
                 )
-                puzzle["id"] = f"array_formula_korean_{len(puzzles)}"
+                puzzle["id"] = f"array_formula_ko_{len(puzzles)}"
                 puzzles.append(puzzle)
                 puzzle_seed += 1
 
@@ -1790,8 +1790,8 @@ def save_dataset(
     csv_dir.mkdir(parents=True, exist_ok=True)
     json_dir.mkdir(parents=True, exist_ok=True)
 
-    csv_path = csv_dir / "array_formula_korean.csv"
-    jsonl_path = json_dir / "array_formula_korean.jsonl"
+    csv_path = csv_dir / "array_formula_ko.csv"
+    jsonl_path = json_dir / "array_formula_ko.jsonl"
 
     processed_puzzles = []
     for puzzle in puzzles:

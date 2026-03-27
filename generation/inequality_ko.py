@@ -1,8 +1,8 @@
-"""Inequality Puzzle Generator and Validator
+"""부등호 퍼즐 생성기 및 검증기
 
-Constructive generation: builds puzzles by progressively adding hints
-until solution count reaches 1, guaranteeing valid puzzle generation.
-Supports large puzzles (up to 15 numbers) via backtracking solver.
+구성적 생성: 힌트를 점진적으로 추가하여 해의 개수가 1이 될 때까지
+퍼즐을 구축하며, 유효한 퍼즐 생성을 보장합니다.
+백트래킹 솔버를 통해 큰 퍼즐(최대 15개의 숫자)을 지원합니다.
 """
 
 import random
@@ -14,23 +14,23 @@ from enum import Enum
 
 
 class Difficulty(Enum):
-    EASY = 1      # 5-7 numbers, few hints
-    MEDIUM = 2    # 9-11 numbers, minimal hints
-    HARD = 3      # 13-15 numbers, no hints
+    EASY = 1      # 5-7개 숫자, 힌트 적음
+    MEDIUM = 2    # 9-11개 숫자, 최소 힌트
+    HARD = 3      # 13-15개 숫자, 힌트 없음
 
 
 @dataclass
 class InequalityPuzzle:
-    """Represents an inequality puzzle with a single solution"""
+    """단일 해를 가진 부등호 퍼즐을 나타냅니다"""
     size: int
-    inequalities: List[str]  # List of inequalities between positions
-    given_numbers: Dict[int, int]  # position -> number mapping for hints
-    solution: List[int]  # Single valid solution
+    inequalities: List[str]  # 위치 간 부등호 목록
+    given_numbers: Dict[int, int]  # 위치 -> 숫자 매핑 (힌트)
+    solution: List[int]  # 유일한 정답
     difficulty: Difficulty
-    hidden_inequalities: set = field(default_factory=set)  # indices of hidden inequalities
+    hidden_inequalities: set = field(default_factory=set)  # 숨겨진 부등호의 인덱스
 
     def to_problem_string(self) -> str:
-        """Convert puzzle to a readable problem string"""
+        """퍼즐을 읽기 쉬운 문제 문자열로 변환합니다"""
         problem_parts = []
         for i in range(self.size):
             if i in self.given_numbers:
@@ -47,16 +47,16 @@ class InequalityPuzzle:
         return " ".join(problem_parts)
 
     def get_answer_string(self) -> str:
-        """Return answer as string of numbers.
-        For size <= 9: concatenated digits (e.g., '53241')
-        For size > 9: space-separated (e.g., '5 3 12 4 10 1')
+        """정답을 문자열로 반환합니다.
+        size <= 9: 연결된 숫자 (예: '53241')
+        size > 9: 공백으로 구분 (예: '5 3 12 4 10 1')
         """
         if self.size > 9:
             return " ".join(map(str, self.solution))
         return "".join(map(str, self.solution))
 
     def to_dict(self) -> Dict:
-        """Convert to dictionary for JSON serialization"""
+        """JSON 직렬화를 위해 딕셔너리로 변환합니다"""
         return {
             "problem": self.to_problem_string(),
             "answer": self.get_answer_string(),
@@ -69,13 +69,13 @@ class InequalityPuzzle:
 
 class InequalityPuzzleGenerator:
     """
-    Constructive puzzle generator.
+    구성적 퍼즐 생성기.
 
-    Strategy: Start with base solution, derive inequalities, then
-    progressively add hints until solution count is 1.
+    전략: 기본 해를 시작으로, 부등호를 도출한 다음,
+    해의 개수가 1이 될 때까지 점진적으로 힌트를 추가합니다.
     """
 
-    MAX_SOLUTIONS = 1  # Only allow exactly 1 solution
+    MAX_SOLUTIONS = 1  # 정확히 1개의 해만 허용
 
     def __init__(self):
         self.difficulty_config = {
@@ -101,15 +101,15 @@ class InequalityPuzzleGenerator:
 
     def _find_solutions(self, size: int, inequalities: List[str],
                         given_numbers: Dict[int, int], max_count: int = 0) -> List[List[int]]:
-        """Find solutions using backtracking with constraint propagation.
+        """백트래킹과 제약 전파를 사용하여 해를 찾습니다.
 
-        max_count=0 means unlimited.
+        max_count=0이면 무제한입니다.
         """
         solutions = []
         assignment = [0] * size
-        used = [False] * (size + 1)  # used[v] = True if value v is taken
+        used = [False] * (size + 1)  # used[v] = True이면 값 v가 사용된 것
 
-        # Pre-fix given numbers
+        # 주어진 숫자를 미리 고정
         for pos, val in given_numbers.items():
             assignment[pos] = val
             used[val] = True
@@ -130,7 +130,7 @@ class InequalityPuzzleGenerator:
                 if used[val]:
                     continue
 
-                # Check inequality with left neighbor (pos-1)
+                # 왼쪽 이웃(pos-1)과의 부등호 확인
                 if pos > 0 and assignment[pos - 1] != 0:
                     ineq = inequalities[pos - 1]
                     if ineq == "<" and assignment[pos - 1] >= val:
@@ -138,7 +138,7 @@ class InequalityPuzzleGenerator:
                     if ineq == ">" and assignment[pos - 1] <= val:
                         continue
 
-                # Check inequality with right neighbor (pos+1)
+                # 오른쪽 이웃(pos+1)과의 부등호 확인
                 if pos < size - 1 and assignment[pos + 1] != 0:
                     ineq = inequalities[pos]
                     if ineq == "<" and val >= assignment[pos + 1]:
@@ -160,7 +160,7 @@ class InequalityPuzzleGenerator:
 
     def _check_constraints(self, perm: Tuple[int, ...], inequalities: List[str],
                           given_numbers: Dict[int, int]) -> bool:
-        """Check if permutation satisfies all constraints"""
+        """순열이 모든 제약 조건을 만족하는지 확인합니다"""
         for pos, num in given_numbers.items():
             if perm[pos] != num:
                 return False
@@ -177,8 +177,8 @@ class InequalityPuzzleGenerator:
                         given_numbers: Dict[int, int], base_solution: List[int],
                         current_solutions: List[List[int]]) -> Optional[int]:
         """
-        Find the hint position that best reduces solution count toward 1.
-        Returns position that maximally reduces solutions while keeping >= 1.
+        해의 개수를 1로 가장 잘 줄이는 힌트 위치를 찾습니다.
+        해의 개수를 최대한 줄이면서 1 이상을 유지하는 위치를 반환합니다.
         """
         available = [i for i in range(size) if i not in given_numbers]
         if not available:
@@ -193,7 +193,7 @@ class InequalityPuzzleGenerator:
             new_solutions = self._find_solutions(size, inequalities, test_hints, max_count=2)
 
             if len(new_solutions) == 1:
-                return pos  # Found optimal position
+                return pos  # 최적의 위치를 찾음
 
             if len(new_solutions) >= 1 and len(new_solutions) < best_count:
                 best_count = len(new_solutions)
@@ -203,25 +203,25 @@ class InequalityPuzzleGenerator:
 
     def generate_puzzle(self, difficulty: Difficulty, max_retries: int = 100) -> InequalityPuzzle:
         """
-        Constructively generate a puzzle with exactly 1 solution.
+        정확히 1개의 해를 가진 퍼즐을 구성적으로 생성합니다.
 
-        Process:
-        1. Generate base solution (random permutation)
-        2. Derive inequalities from base solution
-        3. Start with minimum hints for difficulty
-        4. Progressively add hints until solution count is 1
-        5. Retry with fresh randomisation if needed
+        과정:
+        1. 기본 해 생성 (무작위 순열)
+        2. 기본 해로부터 부등호 도출
+        3. 난이도에 맞는 최소 힌트로 시작
+        4. 해의 개수가 1이 될 때까지 점진적으로 힌트 추가
+        5. 필요 시 새로운 무작위화로 재시도
         """
         config = self.difficulty_config[difficulty]
 
         for retry in range(max_retries):
             size = random.randint(*config["size_range"])
 
-            # Step 1: Generate random permutation as base solution
+            # 단계 1: 기본 해로 무작위 순열 생성
             base_solution = list(range(1, size + 1))
             random.shuffle(base_solution)
 
-            # Step 2: Generate inequalities from base solution
+            # 단계 2: 기본 해로부터 부등호 생성
             inequalities = []
             for i in range(size - 1):
                 if base_solution[i] < base_solution[i + 1]:
@@ -229,17 +229,17 @@ class InequalityPuzzleGenerator:
                 else:
                     inequalities.append(">")
 
-            # Step 3: Start with minimum hints based on difficulty
+            # 단계 3: 난이도에 따른 최소 힌트로 시작
             num_hints = max(
                 config["min_hints"],
                 int(size * config["hint_ratio"])
             )
             given_numbers = self._select_initial_hints(base_solution, num_hints)
 
-            # Step 4: Check solution count and adjust
+            # 단계 4: 해의 개수 확인 및 조정
             solutions = self._find_solutions(size, inequalities, given_numbers, self.MAX_SOLUTIONS + 1)
 
-            # Constructively add hints until solution count is 1
+            # 해의 개수가 1이 될 때까지 구성적으로 힌트 추가
             while len(solutions) > self.MAX_SOLUTIONS:
                 best_pos = self._find_best_hint(size, inequalities, given_numbers,
                                                 base_solution, solutions)
@@ -250,7 +250,7 @@ class InequalityPuzzleGenerator:
                 solutions = self._find_solutions(size, inequalities, given_numbers, self.MAX_SOLUTIONS + 1)
 
             if len(solutions) == 1:
-                # Hide some inequalities based on difficulty
+                # 난이도에 따라 일부 부등호 숨기기
                 ineq_reveal = config.get("ineq_reveal", 1.0)
                 total_ineqs = size - 1
                 num_to_hide = int(total_ineqs * (1.0 - ineq_reveal))
@@ -268,19 +268,19 @@ class InequalityPuzzleGenerator:
                 )
 
         raise RuntimeError(
-            f"Failed to generate {difficulty.name} puzzle with exactly 1 solution "
-            f"after {max_retries} retries"
+            f"{max_retries}번 재시도 후에도 정확히 1개의 해를 가진 "
+            f"{difficulty.name} 퍼즐 생성에 실패했습니다"
         )
 
     def _select_initial_hints(self, solution: List[int], num_hints: int) -> Dict[int, int]:
-        """Select initial hint positions strategically"""
+        """전략적으로 초기 힌트 위치를 선택합니다"""
         given_numbers = {}
         size = len(solution)
 
         if num_hints == 0:
             return given_numbers
 
-        # Prioritize extremes (min/max values) as they constrain more
+        # 극값(최솟값/최댓값)을 우선시하여 제약을 더 강하게 함
         extreme_positions = []
         for i, val in enumerate(solution):
             if val == 1 or val == size:
@@ -292,7 +292,7 @@ class InequalityPuzzleGenerator:
                 break
             given_numbers[pos] = solution[pos]
 
-        # Fill remaining with random positions
+        # 나머지를 무작위 위치로 채움
         remaining = [i for i in range(size) if i not in given_numbers]
         random.shuffle(remaining)
 
@@ -305,77 +305,77 @@ class InequalityPuzzleGenerator:
 
     def solve_puzzle(self, size: int, inequalities: List[str],
                     given_numbers: Dict[int, int]) -> List[List[int]]:
-        """Solve a puzzle and return all solutions (up to MAX_SOLUTIONS)"""
+        """퍼즐을 풀고 모든 해를 반환합니다 (MAX_SOLUTIONS까지)"""
         return self._find_solutions(size, inequalities, given_numbers, self.MAX_SOLUTIONS)
 
 
 # ============================================================
-# Question formatting
+# 질문 포맷팅
 # ============================================================
 
 def create_question(puzzle: InequalityPuzzle) -> str:
-    """Create question text in English."""
+    """한국어로 질문 텍스트를 생성합니다."""
     problem_str = puzzle.to_problem_string()
 
     has_hidden = len(puzzle.hidden_inequalities) > 0
 
     hidden_rule = ""
     if has_hidden:
-        hidden_rule = "\n- '?' means the inequality is unknown (could be < or >)"
+        hidden_rule = "\n- '?'는 부등호가 알려지지 않았음을 의미합니다 (< 또는 > 가능)"
 
     if puzzle.size > 9:
-        answer_format = f"Provide your answer as {puzzle.size} numbers separated by spaces."
+        answer_format = f"답을 {puzzle.size}개의 숫자로 공백으로 구분하여 제출하세요."
         example = " ".join(str(i) for i in range(1, puzzle.size + 1))
         answer_example = f"Answer: {example}"
     else:
-        answer_format = f"Provide your answer as a sequence of {puzzle.size} digits (no spaces)."
+        answer_format = f"답을 {puzzle.size}자리 숫자열로 제출하세요 (공백 없이)."
         example = "".join(str(i) for i in range(1, puzzle.size + 1))
         answer_example = f"Answer: {example}"
 
-    question = f"""Solve this inequality puzzle. Fill in the blanks with numbers from 1 to {puzzle.size}.
+    question = f"""다음 부등호 퍼즐을 풀어주세요. 빈칸을 채우세요. 1부터 {puzzle.size}까지의 숫자를 사용합니다.
 
-Each number from 1 to {puzzle.size} must be used exactly once.
-The inequality symbols (< or >) between positions must be satisfied.
+1부터 {puzzle.size}까지의 각 숫자는 정확히 한 번만 사용해야 합니다.
+위치 사이의 부등호 기호 (< 또는 >)를 만족해야 합니다.
 
-Puzzle: {problem_str}
+퍼즐: {problem_str}
 
-Rules:
-- '_' represents an empty position to fill
-- '<' means the left number is smaller than the right number
-- '>' means the left number is larger than the right number
-- Each number 1 to {puzzle.size} appears exactly once{hidden_rule}
+규칙:
+- '_'는 채워야 할 빈 위치를 나타냅니다
+- '<'는 왼쪽 숫자가 오른쪽 숫자보다 작음을 의미합니다
+- '>'는 왼쪽 숫자가 오른쪽 숫자보다 큼을 의미합니다
+- 1부터 {puzzle.size}까지의 각 숫자는 정확히 한 번만 사용됩니다{hidden_rule}
 
 {answer_format}
 
-Example format:
+답 형식 예시:
 {answer_example}"""
 
     return question
 
 
 # ============================================================
-# Dataset generation
+# 데이터셋 생성
 # ============================================================
 
 def generate_dataset(puzzles_per_difficulty: int = 3) -> List[InequalityPuzzle]:
-    """Generate complete dataset with all difficulty levels"""
+    """모든 난이도 수준의 전체 데이터셋을 생성합니다"""
     generator = InequalityPuzzleGenerator()
     dataset = []
 
     for difficulty in Difficulty:
-        print(f"Generating {difficulty.name} puzzles...")
+        print(f"{difficulty.name} 퍼즐 생성 중...")
         for i in range(puzzles_per_difficulty):
             puzzle = generator.generate_puzzle(difficulty)
             dataset.append(puzzle)
             answer = puzzle.get_answer_string()
-            print(f"  Generated puzzle {i+1}: {puzzle.to_problem_string()}")
-            print(f"    Answer: {answer}")
+            print(f"  퍼즐 {i+1} 생성 완료: {puzzle.to_problem_string()}")
+            print(f"    정답: {answer}")
 
     return dataset
 
 
-def save_dataset(dataset: List[InequalityPuzzle], filename: str = "inequality_dataset.json"):
-    """Save dataset to JSON file"""
+def save_dataset(dataset: List[InequalityPuzzle], filename: str = "inequality_ko_dataset.json"):
+    """데이터셋을 JSON 파일로 저장합니다"""
     data = {
         "problems": [puzzle.to_dict() for puzzle in dataset],
         "metadata": {
@@ -387,24 +387,24 @@ def save_dataset(dataset: List[InequalityPuzzle], filename: str = "inequality_da
     }
 
     with open(filename, 'w') as f:
-        json.dump(data, f, indent=2)
+        json.dump(data, f, indent=2, ensure_ascii=False)
 
-    print(f"\nDataset saved to {filename}")
+    print(f"\n데이터셋 저장 완료: {filename}")
 
 
 def create_dataset_files(num_questions: int):
     """
-    Create dataset files for inequality puzzles.
+    부등호 퍼즐 데이터셋 파일을 생성합니다.
 
     Args:
-        num_questions: Number of questions to generate
+        num_questions: 생성할 질문의 수
 
     Returns:
-        Tuple[pd.DataFrame, List[Dict]]: (dataframe, json list)
+        Tuple[pd.DataFrame, List[Dict]]: (데이터프레임, JSON 리스트)
     """
     import pandas as pd
 
-    print(f"Generating {num_questions} inequality puzzles...")
+    print(f"부등호 퍼즐 {num_questions}개 생성 중...")
 
     generator = InequalityPuzzleGenerator()
 
@@ -421,13 +421,13 @@ def create_dataset_files(num_questions: int):
         if count == 0:
             continue
 
-        print(f"\n=== Generating {diff_name} puzzles ({count} needed) ===")
+        print(f"\n=== {diff_name} 퍼즐 생성 중 ({count}개 필요) ===")
 
         for j in range(count):
             try:
                 puzzle = generator.generate_puzzle(difficulty)
                 puzzle_data = {
-                    "id": f"inequality_{len(all_puzzles)}",
+                    "id": f"inequality_ko_{len(all_puzzles)}",
                     "question": create_question(puzzle),
                     "answer": puzzle.get_answer_string(),
                     "solution": puzzle.to_problem_string(),
@@ -438,32 +438,32 @@ def create_dataset_files(num_questions: int):
                     "problem": puzzle.to_problem_string(),
                 }
                 all_puzzles.append(puzzle_data)
-                print(f"  [{j+1}/{count}] size={puzzle.size}, answer={puzzle.get_answer_string()}")
+                print(f"  [{j+1}/{count}] size={puzzle.size}, 정답={puzzle.get_answer_string()}")
             except RuntimeError as e:
-                print(f"  [{j+1}/{count}] Failed: {e}")
+                print(f"  [{j+1}/{count}] 실패: {e}")
 
-    print(f"\nGenerated {len(all_puzzles)} puzzles")
+    print(f"\n총 {len(all_puzzles)}개 퍼즐 생성 완료")
 
     df = pd.DataFrame(all_puzzles)
 
-    # Save files
+    # 파일 저장
     PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
     # CSV
     csv_dir = PROJECT_ROOT / "data" / "csv"
     csv_dir.mkdir(parents=True, exist_ok=True)
-    csv_path = csv_dir / "inequality.csv"
+    csv_path = csv_dir / "inequality_ko.csv"
     df.to_csv(csv_path, index=False, encoding="utf-8-sig")
-    print(f"CSV file created: {csv_path}")
+    print(f"CSV 파일 생성 완료: {csv_path}")
 
     # JSONL
     json_dir = PROJECT_ROOT / "data" / "json"
     json_dir.mkdir(parents=True, exist_ok=True)
-    jsonl_path = json_dir / "inequality.jsonl"
+    jsonl_path = json_dir / "inequality_ko.jsonl"
     with open(jsonl_path, 'w', encoding='utf-8') as f:
         for item in all_puzzles:
             f.write(json.dumps(item, ensure_ascii=False) + '\n')
-    print(f"JSONL file created: {jsonl_path}")
+    print(f"JSONL 파일 생성 완료: {jsonl_path}")
 
     return df, all_puzzles
 
@@ -471,13 +471,13 @@ def create_dataset_files(num_questions: int):
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description="Inequality Puzzle Generator")
-    parser.add_argument("--num", type=int, default=12, help="Number of questions to generate")
+    parser = argparse.ArgumentParser(description="부등호 퍼즐 생성기")
+    parser.add_argument("--num", type=int, default=12, help="생성할 질문의 수")
 
     args = parser.parse_args()
 
     print("=" * 50)
-    print("Inequality Puzzle Generator")
+    print("부등호 퍼즐 생성기")
     print("=" * 50)
 
     create_dataset_files(num_questions=args.num)

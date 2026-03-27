@@ -1,6 +1,6 @@
 # Array Formula Puzzle Generator
 
-Excel 배열 수식 기반 논리 퍼즐 생성기. 영어(`generation/array_formula.py`)와 한국어(`generation/array_formula_korean.py`) 두 버전을 지원합니다.
+Excel 배열 수식 기반 논리 퍼즐 생성기. 영어(`generation/array_formula_en.py`)와 한국어(`generation/array_formula_ko.py`) 두 버전을 지원합니다.
 
 ## 개요
 
@@ -70,10 +70,10 @@ with open('data/json/array_formula.jsonl', 'w') as f:
 
 # 한국어 300문항 생성
 python -c "
-from generation.array_formula_korean import generate_dataset, puzzle_to_prompt
+from generation.array_formula_ko import generate_dataset, puzzle_to_prompt
 import json
 puzzles = generate_dataset(num_per_difficulty=100, seed=42)
-with open('data/json/array_formula_korean.jsonl', 'w') as f:
+with open('data/json/array_formula_ko.jsonl', 'w') as f:
     for p in puzzles:
         record = {'id': p['id'], 'question': puzzle_to_prompt(p), 'answer': p['answer'],
                   'difficulty': p['difficulty'], 'solution': p.get('solution',''),
@@ -87,7 +87,7 @@ with open('data/json/array_formula_korean.jsonl', 'w') as f:
 
 ```bash
 # 영어 + 한국어 동시 평가
-python evaluation/run.py --tasks array_formula array_formula_korean --async --max-concurrent 30
+python evaluation/run.py --tasks array_formula_en array_formula_ko --async --max-concurrent 30
 
 # 특정 난이도만
 python evaluation/run.py --tasks array_formula --difficulty hard --async
@@ -186,8 +186,8 @@ python evaluation/run.py --tasks array_formula --difficulty hard --async
 
 ```
 generation/
-  array_formula.py          # 영어 생성기
-  array_formula_korean.py   # 한국어 생성기
+  array_formula_en.py       # 영어 생성기
+  array_formula_ko.py       # 한국어 생성기
 evaluation/
   evaluators/array_formula.py  # 평가기 (text+number 답 처리)
   run.py                       # 평가 실행기

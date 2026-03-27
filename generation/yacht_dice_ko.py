@@ -1,8 +1,8 @@
-"""Yacht Dice Problem Generator and Solver
+"""요트 다이스 문제 생성기 및 풀이기 (한국어 버전)
 
-Generates Yacht Dice optimization problems with difficulty-based dice patterns.
-Uses bonus-aware exhaustive search solver (C(12,6) x 720 x 2) instead of
-Hungarian algorithm, which cannot handle the upper section bonus correctly.
+난이도 기반 주사위 패턴으로 요트 다이스 최적화 문제를 생성합니다.
+헝가리안 알고리즘 대신 보너스 인지 완전 탐색 풀이기(C(12,6) x 720 x 2)를 사용합니다.
+헝가리안 알고리즘은 상단 섹션 보너스를 올바르게 처리할 수 없기 때문입니다.
 """
 
 import random
@@ -17,12 +17,12 @@ from datetime import datetime
 
 
 # ============================================================
-# Configuration
+# 설정
 # ============================================================
 
 @dataclass
 class YachtDiceConfig:
-    """Configuration for Yacht Dice scoring rules"""
+    """요트 다이스 점수 규칙 설정"""
 
     bonus_threshold: int = 63
     bonus_points: int = 35
@@ -35,43 +35,44 @@ class YachtDiceConfig:
     optimization_goal: Literal["maximize", "minimize"] = "maximize"
 
     def get_system_prompt(self) -> str:
-        """Get system prompt in English with Answer: format instruction"""
-        return f"""You are an expert at solving Yacht Dice optimization problems.
+        """한국어 시스템 프롬프트 생성 (Answer: 형식 지시 포함)"""
+        goal_word = "최대" if self.optimization_goal == "maximize" else "최소"
+        return f"""당신은 요트 다이스 최적화 문제를 푸는 전문가입니다.
 
-Yacht Dice is a dice game where you roll 5 dice for 12 rounds and assign each round to a scoring category.
+요트 다이스는 5개의 주사위를 12라운드 동안 굴려 각 라운드를 점수 카테고리에 배정하는 주사위 게임입니다.
 
-Scoring Categories:
-- Aces through Sixes: Sum of dice showing that number
-- Three-of-a-Kind: Sum of all dice if at least 3 match
-- Four-of-a-Kind: Sum of all dice if at least 4 match
-- Full House: {self.full_house_points} points for exactly 3 of one number and 2 of another
-- Small Straight: {self.small_straight_points} points for 4 consecutive numbers
-- Large Straight: {self.large_straight_points} points for 5 consecutive numbers
-- Yacht: {self.yacht_points} points for all 5 dice showing the same number
+점수 카테고리:
+- 에이스~식스: 해당 숫자가 나온 주사위의 합
+- 쓰리 오브 어 카인드: 3개 이상 같은 숫자면 모든 주사위의 합
+- 포 오브 어 카인드: 4개 이상 같은 숫자면 모든 주사위의 합
+- 풀 하우스: 한 숫자 3개와 다른 숫자 2개면 {self.full_house_points}점
+- 스몰 스트레이트: 연속 4개 숫자면 {self.small_straight_points}점
+- 라지 스트레이트: 연속 5개 숫자면 {self.large_straight_points}점
+- 요트: 5개 모두 같은 숫자면 {self.yacht_points}점
 
-Upper Section Bonus: If the sum of Aces through Sixes is {self.bonus_threshold} or more, add {self.bonus_points} bonus points.
+상단 섹션 보너스: 에이스~식스의 합이 {self.bonus_threshold} 이상이면 {self.bonus_points} 보너스 점수가 추가됩니다.
 
-Your task is to determine the {"maximum" if self.optimization_goal == "maximize" else "minimum"} possible total score by optimally assigning each round to a category.
-Each category can only be used once.
+각 라운드를 카테고리에 최적 배정하여 {goal_word} 총점을 구하세요.
+각 카테고리는 한 번만 사용할 수 있습니다.
 
-CRITICAL: Your very last line MUST be in this exact format:
-Answer: [number]
+중요: 반드시 마지막 줄에 다음과 같은 형식으로 답을 작성하세요:
+Answer: [숫자]
 
-Do NOT omit this line. Follow any specific instructions about what number to provide.
+이 줄을 절대 생략하지 마세요. 구체적인 지시사항에 따라 숫자를 제시하세요.
 """
 
     def get_user_prompt(self, dice_results: List[List[int]]) -> str:
-        """Generate user prompt in English"""
-        goal = "maximum" if self.optimization_goal == "maximize" else "minimum"
-        prompt = f"Given the following 12 rounds of dice results, find the {goal} possible total score:\n\n"
+        """한국어 사용자 프롬프트 생성"""
+        goal_word = "최대" if self.optimization_goal == "maximize" else "최소"
+        prompt = f"다음 12라운드의 주사위 결과가 주어졌을 때, {goal_word} 가능한 총점을 구하세요:\n\n"
         for i, dice in enumerate(dice_results):
-            prompt += f"Round {i+1}: {dice}\n"
-        prompt += f"\nCalculate the optimal assignment and provide the {goal} total score."
+            prompt += f"라운드 {i+1}: {dice}\n"
+        prompt += f"\n최적 배정을 계산하고 {goal_word} 총점을 제시하세요."
         return prompt
 
 
 # ============================================================
-# Solver (bonus-aware exhaustive search)
+# 풀이기 (보너스 인지 완전 탐색)
 # ============================================================
 
 def get_all_categories() -> List[str]:
@@ -82,8 +83,25 @@ def get_all_categories() -> List[str]:
     ]
 
 
+# 카테고리 한국어 표시명 매핑
+CATEGORY_DISPLAY_NAME = {
+    "Aces": "에이스",
+    "Twos": "투",
+    "Threes": "쓰리",
+    "Fours": "포",
+    "Fives": "파이브",
+    "Sixes": "식스",
+    "Three-Of-A-Kind": "쓰리 오브 어 카인드",
+    "Four-Of-A-Kind": "포 오브 어 카인드",
+    "Full House": "풀 하우스",
+    "Small Straight": "스몰 스트레이트",
+    "Large Straight": "라지 스트레이트",
+    "Yacht": "요트",
+}
+
+
 def calculate_score(dice: List[int], category: str) -> int:
-    """Calculate score for dice in a category (default config values)."""
+    """주사위와 카테고리에 대한 점수 계산 (기본 설정값 사용)."""
     counts = Counter(dice)
     sorted_dice = sorted(dice)
 
@@ -133,7 +151,7 @@ def calculate_score(dice: List[int], category: str) -> int:
 
 
 def calculate_score_with_config(dice: List[int], category: str, config: YachtDiceConfig) -> int:
-    """Calculate score with custom config values."""
+    """사용자 설정값을 적용한 점수 계산."""
     counts = Counter(dice)
     sorted_dice = sorted(dice)
 
@@ -184,7 +202,7 @@ def calculate_score_with_config(dice: List[int], category: str, config: YachtDic
 
 def calculate_total_score(assignment: Dict[int, str], dice_results: List[List[int]],
                          config: YachtDiceConfig) -> int:
-    """Calculate total score for an assignment (with bonus)."""
+    """배정에 대한 총점 계산 (보너스 포함)."""
     upper_section_score = 0
     total_score = 0
     upper_categories = ["Aces", "Twos", "Threes", "Fours", "Fives", "Sixes"]
@@ -204,21 +222,21 @@ def calculate_total_score(assignment: Dict[int, str], dice_results: List[List[in
 
 def solve_yacht_dice(dice_results: List[List[int]], config: YachtDiceConfig) -> Tuple[int, Dict[int, str]]:
     """
-    Find optimal solution using bonus-aware exhaustive search.
+    보너스 인지 완전 탐색을 사용한 최적 해 탐색.
 
-    Iterates over C(12,6) = 924 subsets for upper section,
-    then brute-forces 6! = 720 permutations for each section.
-    Total: 924 x 720 x 2 = ~1.3M operations.
+    상단 섹션에 대해 C(12,6) = 924개의 부분집합을 순회하고,
+    각 섹션에 대해 6! = 720개의 순열을 전수 조사합니다.
+    총 연산량: 924 x 720 x 2 = 약 130만 회.
 
-    This correctly handles the upper section bonus (35 points)
-    which Hungarian algorithm cannot account for.
+    이 방식은 헝가리안 알고리즘으로는 처리할 수 없는
+    상단 섹션 보너스(35점)를 올바르게 반영합니다.
     """
     categories = get_all_categories()
     upper_cats = categories[:6]
     lower_cats = categories[6:]
     n = len(dice_results)
 
-    # Pre-compute score matrices
+    # 점수 행렬 사전 계산
     upper_scores = []
     lower_scores = []
     for i in range(n):
@@ -239,7 +257,7 @@ def solve_yacht_dice(dice_results: List[List[int]], config: YachtDiceConfig) -> 
         lower_rounds = [i for i in range(n) if i not in upper_rounds]
         upper_list = list(upper_rounds)
 
-        # Best upper assignment (6! brute force)
+        # 최적 상단 배정 (6! 전수 조사)
         best_upper_score = -1 if is_maximize else float('inf')
         best_upper_perm = perms_6[0]
         for perm in perms_6:
@@ -248,7 +266,7 @@ def solve_yacht_dice(dice_results: List[List[int]], config: YachtDiceConfig) -> 
                 best_upper_score = s
                 best_upper_perm = perm
 
-        # Best lower assignment (6! brute force)
+        # 최적 하단 배정 (6! 전수 조사)
         best_lower_score = -1 if is_maximize else float('inf')
         best_lower_perm = perms_6[0]
         for perm in perms_6:
@@ -272,7 +290,7 @@ def solve_yacht_dice(dice_results: List[List[int]], config: YachtDiceConfig) -> 
 
 def format_solution(dice_results: List[List[int]], assignment: Dict[int, str],
                     config: YachtDiceConfig) -> str:
-    """Format solution in readable form."""
+    """풀이를 읽기 쉬운 형태로 포맷."""
     categories = get_all_categories()
     result = []
     upper_section_score = 0
@@ -289,7 +307,8 @@ def format_solution(dice_results: List[List[int]], assignment: Dict[int, str],
         if dice_idx is not None:
             dice = dice_results[dice_idx]
             score = calculate_score_with_config(dice, category, config)
-            result.append(f"{category}: {dice} => {score}")
+            display_name = CATEGORY_DISPLAY_NAME.get(category, category)
+            result.append(f"{display_name}: {dice} => {score}")
             total_score += score
             if category in upper_categories:
                 upper_section_score += score
@@ -300,19 +319,19 @@ def format_solution(dice_results: List[List[int]], assignment: Dict[int, str],
         total_score += bonus
 
     output = "\n".join(result)
-    output += f"\n\nUpper section total: {upper_section_score}"
-    output += f"\nBonus: {bonus} (threshold: {config.bonus_threshold})"
-    output += f"\nTotal: {total_score}"
+    output += f"\n\n상단 섹션 합계: {upper_section_score}"
+    output += f"\n상단 섹션 보너스: {bonus} (기준: {config.bonus_threshold})"
+    output += f"\n총점: {total_score}"
 
     return output
 
 
 # ============================================================
-# Dice generation
+# 주사위 생성
 # ============================================================
 
 def generate_random_dice(num_rounds: int = 12, dice_per_round: int = 5, seed: int = None) -> List[List[int]]:
-    """Generate random dice results."""
+    """무작위 주사위 결과 생성."""
     if seed is not None:
         random.seed(seed)
 
@@ -326,26 +345,26 @@ def generate_random_dice(num_rounds: int = 12, dice_per_round: int = 5, seed: in
 
 
 def format_user_prompt(dice_results: List[List[int]]) -> str:
-    """Format dice results as user prompt."""
-    prompt = "Here are 12 dice results. Assign each result to one of the scoring categories:\n\n"
+    """주사위 결과를 사용자 프롬프트로 포맷."""
+    prompt = "12라운드의 주사위 결과입니다. 각 결과를 점수 카테고리에 배정하세요:\n\n"
     for i, dice in enumerate(dice_results, 1):
         prompt += f"{i}. {dice}\n"
-    prompt += "\nAssign one result to each category and calculate the score to maximize the total."
+    prompt += "\n각 카테고리에 하나의 결과를 배정하고 총점을 최대화하도록 점수를 계산하세요."
     return prompt
 
 
 # ============================================================
-# Difficulty-based problem generator
+# 난이도별 문제 생성기
 # ============================================================
 
 class YachtDiceProblemGenerator:
-    """Generate Yacht Dice problems with different difficulty levels"""
+    """난이도별 요트 다이스 문제 생성"""
 
     def __init__(self):
         self.config = YachtDiceConfig()
 
     def generate_dice_by_difficulty(self, difficulty: str, seed: int = None) -> List[List[int]]:
-        """Generate dice results based on difficulty level."""
+        """난이도에 따른 주사위 결과 생성."""
         if seed:
             random.seed(seed)
 
@@ -423,7 +442,7 @@ class YachtDiceProblemGenerator:
         return dice_results
 
     def generate_problem(self, difficulty: str, problem_id: int = 1) -> Dict:
-        """Generate a single Yacht Dice problem with specified difficulty."""
+        """지정된 난이도의 요트 다이스 문제 하나를 생성."""
         seed = 1000 + problem_id + hash(difficulty)
         dice_results = self.generate_dice_by_difficulty(difficulty, seed)
 
@@ -441,51 +460,51 @@ class YachtDiceProblemGenerator:
         return problem
 
     def validate_problem(self, problem: Dict) -> Tuple[bool, str]:
-        """Validate that a problem is correctly formed and solvable."""
+        """문제가 올바르게 구성되어 있고 풀 수 있는지 검증."""
         try:
             required_fields = ['id', 'difficulty', 'dice_results', 'answer']
             for field in required_fields:
                 if field not in problem:
-                    return False, f"Missing required field: {field}"
+                    return False, f"필수 필드 누락: {field}"
 
             dice_results = problem['dice_results']
             if len(dice_results) != 12:
-                return False, f"Expected 12 rounds, got {len(dice_results)}"
+                return False, f"12라운드가 필요하지만 {len(dice_results)}라운드가 제공됨"
 
             for round_idx, dice in enumerate(dice_results):
                 if len(dice) != 5:
-                    return False, f"Round {round_idx+1}: Expected 5 dice, got {len(dice)}"
+                    return False, f"라운드 {round_idx+1}: 5개의 주사위가 필요하지만 {len(dice)}개가 제공됨"
                 for die in dice:
                     if not (1 <= die <= 6):
-                        return False, f"Round {round_idx+1}: Invalid die value {die}"
+                        return False, f"라운드 {round_idx+1}: 유효하지 않은 주사위 값 {die}"
 
             optimal_score, _ = solve_yacht_dice(dice_results, self.config)
             if optimal_score != problem['answer']:
-                return False, f"Answer mismatch: expected {optimal_score}, got {problem['answer']}"
+                return False, f"정답 불일치: 기대값 {optimal_score}, 실제값 {problem['answer']}"
 
-            return True, "Problem is valid"
+            return True, "문제가 유효합니다"
 
         except Exception as e:
-            return False, f"Validation error: {str(e)}"
+            return False, f"검증 오류: {str(e)}"
 
 
 # ============================================================
-# Dataset generation
+# 데이터셋 생성
 # ============================================================
 
 def create_dataset_files(num_questions: int):
     """
-    Create dataset files for Yacht Dice puzzles.
+    요트 다이스 퍼즐 데이터셋 파일을 생성합니다.
 
     Args:
-        num_questions: Number of questions to generate
+        num_questions: 생성할 문제 수
 
     Returns:
-        Tuple[pd.DataFrame, List[Dict]]: (dataframe, json list)
+        Tuple[pd.DataFrame, List[Dict]]: (데이터프레임, JSON 리스트)
     """
     import pandas as pd
 
-    print(f"Generating {num_questions} Yacht Dice puzzles...")
+    print(f"{num_questions}개의 요트 다이스 퍼즐을 생성합니다...")
 
     generator = YachtDiceProblemGenerator()
     config = YachtDiceConfig()
@@ -503,7 +522,7 @@ def create_dataset_files(num_questions: int):
         if count == 0:
             continue
 
-        print(f"\n=== Generating {difficulty} puzzles ({count} needed) ===")
+        print(f"\n=== {difficulty} 난이도 퍼즐 생성 중 ({count}개 필요) ===")
 
         for j in range(count):
             problem = generator.generate_problem(difficulty, problem_id)
@@ -518,7 +537,7 @@ def create_dataset_files(num_questions: int):
                 question = config.get_user_prompt(dice_results)
 
                 puzzle_data = {
-                    "id": f"yacht_dice_{len(all_puzzles)}",
+                    "id": f"yacht_dice_ko_{len(all_puzzles)}",
                     "question": question,
                     "answer": str(optimal_score),
                     "solution": solution_str,
@@ -527,13 +546,13 @@ def create_dataset_files(num_questions: int):
                     "seed": problem['seed']
                 }
                 all_puzzles.append(puzzle_data)
-                print(f"  [{j+1}/{count}] score={optimal_score}")
+                print(f"  [{j+1}/{count}] 점수={optimal_score}")
             else:
-                print(f"  [{j+1}/{count}] Invalid: {message}")
+                print(f"  [{j+1}/{count}] 유효하지 않음: {message}")
 
             problem_id += 1
 
-    print(f"\nGenerated {len(all_puzzles)} puzzles")
+    print(f"\n총 {len(all_puzzles)}개의 퍼즐이 생성되었습니다")
 
     df = pd.DataFrame(all_puzzles)
 
@@ -542,18 +561,18 @@ def create_dataset_files(num_questions: int):
     # CSV
     csv_dir = PROJECT_ROOT / "data" / "csv"
     csv_dir.mkdir(parents=True, exist_ok=True)
-    csv_path = csv_dir / "yacht_dice.csv"
+    csv_path = csv_dir / "yacht_dice_ko.csv"
     df.to_csv(csv_path, index=False, encoding="utf-8-sig")
-    print(f"CSV file created: {csv_path}")
+    print(f"CSV 파일 생성 완료: {csv_path}")
 
     # JSONL
     json_dir = PROJECT_ROOT / "data" / "json"
     json_dir.mkdir(parents=True, exist_ok=True)
-    jsonl_path = json_dir / "yacht_dice.jsonl"
+    jsonl_path = json_dir / "yacht_dice_ko.jsonl"
     with open(jsonl_path, 'w', encoding='utf-8') as f:
         for item in all_puzzles:
             f.write(json.dumps(item, ensure_ascii=False) + '\n')
-    print(f"JSONL file created: {jsonl_path}")
+    print(f"JSONL 파일 생성 완료: {jsonl_path}")
 
     return df, all_puzzles
 
@@ -561,13 +580,13 @@ def create_dataset_files(num_questions: int):
 if __name__ == '__main__':
     import argparse
 
-    parser = argparse.ArgumentParser(description="Yacht Dice Puzzle Generator")
-    parser.add_argument("--num", type=int, default=12, help="Number of questions to generate")
+    parser = argparse.ArgumentParser(description="요트 다이스 퍼즐 생성기 (한국어)")
+    parser.add_argument("--num", type=int, default=12, help="생성할 문제 수")
 
     args = parser.parse_args()
 
     print("=" * 60)
-    print("Yacht Dice Puzzle Generator")
+    print("요트 다이스 퍼즐 생성기 (한국어)")
     print("=" * 60)
 
     create_dataset_files(num_questions=args.num)

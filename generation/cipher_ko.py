@@ -17,32 +17,25 @@ import math
 
 DIFFICULTY_CONFIG = {
     "LEVEL_0": {
-        "name": "expert",
-        "cipher_stack": ["cho_shift", "jung_sub", "reverse", "cho_shift"],
-        "keyword_logic": "extraction",
-        "hint_count": 0,
-        "description": "Double Shift + Substitution + Reverse / 0 Hints"
-    },
-    "LEVEL_1": {
-        "name": "hard",
-        "cipher_stack": ["cho_shift", "jung_sub", "reverse"],
-        "keyword_logic": "positional",
-        "hint_count": 1,
-        "description": "Shift + Substitution + Reverse / 1 Hint"
-    },
-    "LEVEL_2": {
-        "name": "medium",
-        "cipher_stack": ["cho_shift", "jung_sub"],
-        "keyword_logic": "positional",
-        "hint_count": 2,
-        "description": "Shift + Substitution / 2 Hints"
-    },
-    "LEVEL_3": {
         "name": "easy",
         "cipher_stack": ["cho_shift"],
         "keyword_logic": "direct",
-        "hint_count": 2,
-        "description": "Initial Consonant Shift / 2 Hints"
+        "hint_count": 3,
+        "description": "Easy (Avg Accuracy ~75%): Cho_shift / Direct Logic / 3 Hints"
+    },
+    "LEVEL_1": {
+        "name": "medium",
+        "cipher_stack": ["cho_shift", "jung_sub"],
+        "keyword_logic": "positional",
+        "hint_count": 1,
+        "description": "Medium (Avg Accuracy ~50%): Cho_shift + Jung_sub / Positional Logic / 1 Hint"
+    },
+    "LEVEL_2": {
+        "name": "hard",
+        "cipher_stack": ["cho_shift", "jung_sub", "reverse", "cho_shift"],
+        "keyword_logic": "extraction",
+        "hint_count": 0,
+        "description": "Hard (Avg Accuracy ~25%): Double Shift + Jung_sub + Reverse / Extraction Logic / 0 Hints"
     }
 }
 
@@ -210,8 +203,8 @@ def create_hangul_dataset(num_per_level: int = 3):
     generator = HangulCipherGenerator()
     all_problems = []
 
-    # 쉬운 난이도부터 어려운 순서로 생성 (LEVEL_3: easy -> LEVEL_0: expert)
-    for level_key in reversed(sorted(DIFFICULTY_CONFIG.keys())):
+    # 쉬운 난이도부터 어려운 순서로 생성 (LEVEL_0: easy -> LEVEL_2: hard)
+    for level_key in sorted(DIFFICULTY_CONFIG.keys()):
         config = DIFFICULTY_CONFIG[level_key]
         difficulty = config["name"]
         
@@ -221,7 +214,7 @@ def create_hangul_dataset(num_per_level: int = 3):
             seed = 5000 + len(all_problems)
             problem = generator.generate_problem(config, seed)
             all_problems.append({
-                "id": f"cipher_korean_{len(all_problems)}",
+                "id": f"cipher_ko_{len(all_problems)}",
                 "question": problem["problem"],
                 "answer": problem["answer"],
                 "solution": problem["solution"],
@@ -231,7 +224,7 @@ def create_hangul_dataset(num_per_level: int = 3):
             # print(f"  {i+1}. {problem['answer'][:15]}... 생성 완료")
 
     # JSONL 저장
-    output_jsonl_path = Path(__file__).resolve().parent.parent / "data" / "json" / "cipher_korean.jsonl"
+    output_jsonl_path = Path(__file__).resolve().parent.parent / "data" / "json" / "cipher_ko.jsonl"
     output_jsonl_path.parent.mkdir(parents=True, exist_ok=True)
     with open(output_jsonl_path, "w", encoding="utf-8") as f:
         for p in all_problems:
@@ -239,7 +232,7 @@ def create_hangul_dataset(num_per_level: int = 3):
 
     # CSV 저장 추가
     import pandas as pd
-    output_csv_path = Path(__file__).resolve().parent.parent / "data" / "csv" / "cipher_korean.csv"
+    output_csv_path = Path(__file__).resolve().parent.parent / "data" / "csv" / "cipher_ko.csv"
     output_csv_path.parent.mkdir(parents=True, exist_ok=True)
     df = pd.DataFrame(all_problems)
     df.to_csv(output_csv_path, index=False, encoding="utf-8-sig")

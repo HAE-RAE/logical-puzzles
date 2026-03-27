@@ -1778,8 +1778,8 @@ def save_dataset(
     csv_dir.mkdir(parents=True, exist_ok=True)
     json_dir.mkdir(parents=True, exist_ok=True)
 
-    csv_path = csv_dir / "array_formula.csv"
-    jsonl_path = json_dir / "array_formula.jsonl"
+    csv_path = csv_dir / "array_formula_en.csv"
+    jsonl_path = json_dir / "array_formula_en.jsonl"
 
     # Add question prompt to each puzzle
     processed_puzzles = []

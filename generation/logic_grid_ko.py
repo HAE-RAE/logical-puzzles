@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Logic Grid Puzzle Generator - Korean Version
 [진행도] ☑ 완료
-[파일명] logic_grid_korean.py
+[파일명] logic_grid_ko.py
 [목적] 한국어 기반 논리 그리드 퍼즐 생성
 
 아인슈타인 스타일 논리 그리드 퍼즐을 한국어로 생성합니다.
@@ -458,17 +458,17 @@ def generate_dataset(
     
     # Re-assign ids to follow index-based naming convention
     for idx, puzzle in enumerate(puzzles):
-        puzzle.id = f'logic_grid_korean_{idx}'
+        puzzle.id = f'logic_grid_ko_{idx}'
     
     # JSONL로 저장
-    jsonl_path = json_dir / "logic_grid_korean.jsonl"
+    jsonl_path = json_dir / "logic_grid_ko.jsonl"
     with open(jsonl_path, 'w', encoding='utf-8') as f:
         for puzzle in puzzles:
             f.write(json.dumps(puzzle.to_dict(), ensure_ascii=False) + '\n')
     
     # CSV로 저장
     import csv as csv_module
-    csv_path = csv_dir / "logic_grid_korean.csv"
+    csv_path = csv_dir / "logic_grid_ko.csv"
     with open(csv_path, 'w', encoding='utf-8', newline='') as f:
         # Use same columns as JSONL
         fieldnames = ['id', 'question', 'answer', 'difficulty', 'people', 'attributes', 'constraints']
@@ -503,7 +503,7 @@ def main():
     parser = argparse.ArgumentParser(description="논리 그리드 퍼즐 생성기 (한국어)")
     parser.add_argument('--num-samples', type=int, default=150,
                        help='생성할 퍼즐 수')
-    parser.add_argument('--output-dir', type=str, default='data/logic_grid_korean',
+    parser.add_argument('--output-dir', type=str, default='data/logic_grid_ko',
                        help='데이터셋 출력 디렉터리')
     parser.add_argument('--seed', type=int, default=None,
                        help='재현성을 위한 랜덤 시드')

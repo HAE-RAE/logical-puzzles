@@ -6,24 +6,24 @@
 
 | 작업 | 스크립트 | 난이도 | 기본 개수 |
 |------|--------|------------|---------------|
-| Array Formula | `array_formula.py` | Easy, Medium, Hard | 100 |
-| Array Formula Korean | `array_formula_korean.py` | Easy, Medium, Hard | 100 |
-| Causal DAG Korean | `causal_dag_korean.py` | Easy, Medium, Hard | 300 |
-| Causal DAG | `causal_dag.py` | Easy, Medium, Hard | 300 |
-| Cipher Korean | `cipher_korean.py` | Easy, Medium, Hard, Very Hard, Extreme | 100 |
-| Cipher | `cipher.py` | Easy, Medium, Hard, Expert | 100 |
+| Array Formula (EN) | `array_formula_en.py` | Easy, Medium, Hard | 100 |
+| Array Formula (KO) | `array_formula_ko.py` | Easy, Medium, Hard | 100 |
+| Causal DAG (KO) | `causal_dag_ko.py` | Easy, Medium, Hard | 300 |
+| Causal DAG (EN) | `causal_dag_en.py` | Easy, Medium, Hard | 300 |
+| Cipher (KO) | `cipher_ko.py` | Easy, Medium, Hard, Very Hard, Extreme | 100 |
+| Cipher (EN) | `cipher_en.py` | Easy, Medium, Hard, Expert | 100 |
 | Cryptarithmetic | `cryptarithmetic.py` | Easy, Medium, Hard, Expert | 400 |
-| Ferryman | `ferryman.py` | Easy, Medium, Hard | 100 |
-| Hanoi | `hanoi.py` | - | 100 |
+| Ferryman (EN) | `ferryman_en.py` | Easy, Medium, Hard | 100 |
+| Hanoi (EN) | `hanoi_en.py` | - | 100 |
 | Inequality | `inequality.py` | Easy, Medium, Hard, Expert | 400 |
 | Kinship | `kinship.py` | - | 100 |
 | Kinship Vision | `kinship_vision.py` | - | 100 |
-| Logic Grid Korean | `logic_grid_korean.py` | Easy, Medium, Hard | 300 |
-| Logic Grid | `logic_grid.py` | Easy, Medium, Hard | 300 |
+| Logic Grid (KO) | `logic_grid_ko.py` | Easy, Medium, Hard | 300 |
+| Logic Grid (EN) | `logic_grid_en.py` | Easy, Medium, Hard | 300 |
 | Minesweeper | `minesweeper.py` | Easy, Medium, Hard | - |
 | Number Baseball | `number_baseball.py` | Easy, Medium, Hard, Expert | 400 |
-| SAT Puzzle Korean | `sat_puzzle_korean.py` | Easy, Medium, Hard | 300 |
-| SAT Puzzle | `sat_puzzle.py` | Easy, Medium, Hard | 300 |
+| SAT Puzzle (KO) | `sat_puzzle_ko.py` | Easy, Medium, Hard | 300 |
+| SAT Puzzle (EN) | `sat_puzzle_en.py` | Easy, Medium, Hard | 300 |
 | Sudoku | `sudoku.py` | Medium, Hard, Expert, Extreme | - |
 | Yacht Dice | `yacht_dice.py` | - | 100 |
 
@@ -42,18 +42,18 @@ python generation/kinship.py
 python generation/kinship.py --num 200
 
 # 다른 작업 예시
-python generation/cipher.py --num 100
-python generation/logic_grid.py --num-samples 300
+python generation/cipher_en.py --num 100
+python generation/logic_grid_en.py --num-samples 300
 ```
 
 ### 배치 생성
 
 ```bash
 # 모든 작업을 한 번에 생성
-bash scripts/generate_all.sh
+bash scripts/gen_data.sh
 ```
 
-**참고**: `generate_all.sh`의 일부 작업은 주석 처리되어 있을 수 있습니다. 필요에 따라 수정하세요.
+**참고**: `gen_data.sh`의 일부 작업은 주석 처리되어 있을 수 있습니다. 필요에 따라 수정하세요.
 
 ## 📁 출력 형식
 
@@ -85,7 +85,7 @@ bash scripts/generate_all.sh
 
 ```bash
 python generation/kinship.py --help
-python generation/cipher.py --help
+python generation/cipher_en.py --help
 ```
 
 ## 📊 생성 통계
@@ -116,7 +116,7 @@ JSONL file created! -> data/json/kinship.jsonl
 
 ### 생성 개수 조정
 
-`scripts/generate_all.sh` 파일에서 각 작업의 생성 개수를 조정할 수 있습니다:
+`scripts/gen_data.sh` 파일에서 각 작업의 생성 개수를 조정할 수 있습니다:
 
 ```bash
 # 예시: kinship 문제 개수 변경
@@ -149,6 +149,6 @@ head data/json/kinship.jsonl | python -m json.tool
 
 ## 🔗 관련 파일
 
-- 배치 생성 스크립트: `../scripts/generate_all.sh`
+- 배치 생성 스크립트: `../scripts/gen_data.sh`
 - 데이터 저장 위치: `../data/`
 - 평가 데이터: `../eval_data/`

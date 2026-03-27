@@ -1,12 +1,13 @@
 """
 Minesweeper Evaluator
 
-지뢰찾기 퍼즐 평가
+Evaluates minesweeper puzzle responses using weighted coordinate sum format.
+Answer format: single integer (sum of row*C+col for each mine)
 """
 
 import logging
 import re
-from typing import List, Dict, Any, Tuple, Optional
+from typing import List, Dict, Any, Tuple, Optional, Set
 
 from ..core.base import BaseEvaluator, EvaluationResult
 
@@ -15,77 +16,81 @@ logger = logging.getLogger(__name__)
 
 class MinesweeperEvaluator(BaseEvaluator):
     """
-    Minesweeper 퍼즐 평가자
-    
-    답변 형식: 좌표 리스트 (예: [(0,1), (0,3), (1,2)])
+    Minesweeper puzzle evaluator.
+
+    Uses weighted coordinate sum scoring: sum(row * C + col) for each mine.
     """
-    
-    SYSTEM_PROMPT = """You are solving a Minesweeper puzzle. Analyze the puzzle using logical reasoning and deduce the exact location of all mines."""
-    
-    def _parse_answer(self, response: str, puzzle: Dict) -> Optional[List[Tuple[int, int]]]:
-        """
-        LLM 응답에서 좌표 리스트 추출
-        
-        Args:
-            response: LLM 응답 텍스트
-            puzzle: 퍼즐 데이터
-        """
-        num_mines = puzzle.get("mines", 0)
-        
-        # "Final answer:" 이후 부분 추출
-        final_answer_pattern = r'(?:final answer|answer):\s*(.*)'
-        final_match = re.search(final_answer_pattern, response, re.IGNORECASE | re.DOTALL)
-        
-        if final_match:
-            search_text = final_match.group(1)
-        else:
-            # fallback: 마지막 200자
-            search_text = response[-200:] if len(response) > 200 else response
-        
-        # (r,c) 패턴 찾기
-        pattern = r'\((\d+),\s*(\d+)\)'
-        matches = re.findall(pattern, search_text)
-        
-        coords = [(int(r), int(c)) for r, c in matches]
-        
-        # 중복 제거 (순서 유지)
-        coords = list(dict.fromkeys(coords))
-        
-        return coords[:num_mines] if len(coords) >= num_mines else coords
-    
+
+    SYSTEM_PROMPT = """You are solving a Minesweeper puzzle. Analyze the grid using logical reasoning and deduce the exact location of all mines.
+
+Output the sum of linear indices (row * columns + col) for all mine positions as a single integer.
+
+Answer: [number]"""
+
+    @staticmethod
+    def _bitstring_to_coordinates(solution_str: str, R: int, C: int) -> Set[Tuple[int, int]]:
+        """Convert solution bitstring to coordinate set."""
+        coords = set()
+        for i, cell in enumerate(solution_str):
+            if cell == '1':
+                r, c = divmod(i, C)
+                coords.add((r, c))
+        return coords
+
+    @staticmethod
+    def _compute_total_sum(coords: Set[Tuple[int, int]], C: int) -> int:
+        """Compute weighted coordinate sum: sum(row * C + col)."""
+        if not coords:
+            return 0
+        return sum(r * C + c for r, c in coords)
+
+    def _parse_answer(self, response: str, puzzle: Dict) -> Optional[int]:
+        """Parse LLM output to extract total sum as single integer."""
+        # Remove code blocks
+        response = re.sub(r'```[a-z]*\n?', '', response)
+        response = re.sub(r'```', '', response)
+        response = response.strip()
+
+        # Priority 1: "Answer:" or "Output:" line with integer
+        answer_matches = re.findall(
+            r'(?:Answer|Output|Final\s*Answer)\s*[:\s]*(\d+)',
+            response, re.IGNORECASE
+        )
+        if answer_matches:
+            return int(answer_matches[-1])
+
+        # Priority 2: last 5 lines for multi-digit integer
+        lines = response.strip().split('\n')
+        for line in reversed(lines[-5:]):
+            match = re.search(r'\b(\d{2,})\b', line.strip())
+            if match:
+                return int(match.group(1))
+
+        # Priority 3: last multi-digit integer in entire text
+        matches = re.findall(r'\b(\d{2,})\b', response)
+        if matches:
+            return int(matches[-1])
+
+        # Priority 4: single digit
+        matches = re.findall(r'\b(\d+)\b', response)
+        if matches:
+            return int(matches[-1])
+
+        return None
+
     def _check_answer(
         self,
         expected: Any,
-        predicted: Optional[List[Tuple[int, int]]]
+        predicted: Optional[int]
     ) -> Tuple[bool, float]:
-        """
-        답변 확인
-        
-        expected는 solution 그리드일 수 있으므로 좌표 리스트로 변환 필요
-        
-        Returns:
-            (is_correct, partial_score) 튜플
-        """
-        if predicted is None or len(predicted) == 0:
+        if predicted is None:
             return False, 0.0
-        
-        # expected가 리스트인 경우 (좌표 리스트)
-        if isinstance(expected, list):
-            expected_set = set(expected)
-            predicted_set = set(predicted)
-            
-            if expected_set == predicted_set:
-                return True, 1.0
-            
-            # 부분 점수: 교집합 비율
-            intersection = len(expected_set & predicted_set)
-            union = len(expected_set | predicted_set)
-            partial_score = intersection / union if union > 0 else 0.0
-            return False, partial_score
-        
-        # expected가 그리드인 경우 (solution lines)
-        # 이 경우는 puzzle 데이터에서 solution을 가져와야 함
-        # 하지만 _check_answer는 expected만 받으므로, 
-        # 정확한 비교를 위해서는 puzzle을 받아야 함
-        # 일단 좌표 리스트로 가정
-        return False, 0.0
+
+        # expected might be a bitstring or a pre-computed sum
+        try:
+            expected_num = int(expected)
+        except (ValueError, TypeError):
+            return False, 0.0
+
+        correct = predicted == expected_num
+        return correct, 1.0 if correct else 0.0

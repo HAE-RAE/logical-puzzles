@@ -13,34 +13,50 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 cd "$PROJECT_ROOT"
 
-LOG_DIR="$PROJECT_ROOT/results/log"
+# ============ Qwen 설정 (Remote 서버) ============
+# MODEL="Qwen/Qwen3-0.6B"
+MODEL="Qwen/Qwen3-1.7B"
+REMOTE_URL="https://tremendously-bureaucratic-alda.ngrok-free.dev"
+GEN_KWARGS="temperature=0.6,max_tokens=16384,top_p=0.95,top_k=20,reasoning=on"
+# =================================================
+
+MODEL_DIR_NAME="${MODEL//\//_}"
+LOG_DIR="$PROJECT_ROOT/results/$MODEL_DIR_NAME/log"
 mkdir -p "$LOG_DIR"
 
 echo -e "${BLUE}========================================${NC}"
-echo -e "${BLUE}All Tasks Evaluation Started${NC}"
+echo -e "${BLUE}All Tasks Evaluation Started (Qwen)${NC}"
 echo -e "${BLUE}========================================${NC}"
+echo -e "Model: ${MODEL}"
+echo -e "Remote URL: ${REMOTE_URL}"
+echo -e "Gen kwargs: ${GEN_KWARGS}"
 echo -e "Log saved location: ${LOG_DIR}"
 echo ""
 
-# sudoku, minesweeper
+
 TASKS=(
-    "array_formula"
-    "causal_dag"
-    "causal_dag_korean"
-    "cipher_korean"
-    "cipher"
-    "cryptarithmetic"
-    "ferryman"
-    "hanoi"
-    "inequality"
+    # "array_formula_en"
+    # "array_formula_ko"
+    # "causal_dag_en"
+    # "causal_dag_ko"
+    # "cipher_en"
+    # "cipher_ko"
+    # "cryptarithmetic"
+    "ferryman_en"
+    "ferryman_ko"
+    # "hanoi_en"
+    # "hanoi_ko"
+    # "inequality"
     "kinship_vision"
     "kinship"
-    "logic_grid"
-    "logic_grid_korean"
-    "number_baseball"
-    "sat_puzzles"
-    "sat_puzzles_korean"
-    "yacht_dice"
+    # "logic_grid_en"
+    # "logic_grid_ko"
+    # "minesweeper"
+    # "number_baseball"
+    # "sat_puzzles_en"
+    # "sat_puzzles_ko"
+    # "sudoku"
+    # "yacht_dice"
 )
 
 START_TIME=$(date +%s)
@@ -49,7 +65,7 @@ TOTAL_TASKS=${#TASKS[@]}
 CURRENT_TASK=0
 SUCCESS_COUNT=0
 FAIL_COUNT=0
-MAX_PARALLEL=5
+MAX_PARALLEL=2
 
 run_task() {
     local task=$1
@@ -68,9 +84,13 @@ run_task() {
     
     set +e
     if python evaluation/run.py \
+        --model "$MODEL" \
+        --model_router remote \
+        --remote_url "$REMOTE_URL" \
+        --gen-kwargs "$GEN_KWARGS" \
         --tasks "$task" \
         --async \
-        --max-concurrent 30 2>&1 | tee -a "$log_file"; then
+        --max-concurrent 10 2>&1 | tee -a "$log_file"; then
         echo -e "${GREEN}✓ $task Completed${NC}"
         echo "$task:SUCCESS" >> /tmp/eval_results_$$
         echo "" >> "$log_file"
@@ -123,7 +143,7 @@ MINUTES=$(((ELAPSED_TIME % 3600) / 60))
 SECONDS=$((ELAPSED_TIME % 60))
 
 echo -e "${BLUE}========================================${NC}"
-echo -e "${BLUE}Evaluation Completed${NC}"
+echo -e "${BLUE}Evaluation Completed (Qwen)${NC}"
 echo -e "${BLUE}========================================${NC}"
 echo -e "Total Tasks: ${TOTAL_TASKS}개"
 echo -e "${GREEN}Success: ${SUCCESS_COUNT}개${NC}"
@@ -142,4 +162,4 @@ fi
 
 exit 0
 
-# bash scripts/evaluate_all_parallel.sh
+# bash scripts/eval_remote_parallel.sh

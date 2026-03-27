@@ -1,8 +1,8 @@
-"""Cryptarithmetic Puzzle Generator
+"""복면산(Cryptarithmetic) 퍼즐 생성기 - 한국어 버전
 
-Constructive generation: uses reverse arithmetic to guarantee valid puzzles,
-with multiple mapping strategies for solution count control.
-Supports both 2-operand (A + B = C) and 3-operand (A + B + C = D) puzzles.
+구성적 생성: 역산술을 사용하여 유효한 퍼즐을 보장하며,
+다양한 매핑 전략으로 해의 개수를 제어합니다.
+2항 연산(A + B = C) 및 3항 연산(A + B + C = D) 퍼즐을 모두 지원합니다.
 """
 
 import itertools
@@ -14,21 +14,21 @@ from typing import List, Dict, Tuple, Optional, Set
 from dataclasses import dataclass, field
 
 
-MAX_SOLUTIONS = 1  # All puzzles require exactly 1 unique solution
+MAX_SOLUTIONS = 1  # 모든 퍼즐은 정확히 1개의 고유한 해를 요구
 
 
 @dataclass
 class PuzzleCandidate:
-    """Represents a puzzle candidate with metadata."""
+    """퍼즐 후보와 메타데이터를 나타냅니다."""
     word1: str
     word2: str
     result: str
-    answer: str  # Primary answer (result value)
+    answer: str  # 주요 정답 (결과 값)
     unique_letters: int
-    strategy: str  # Mapping strategy used
-    word3: str = None  # Optional third operand
-    valid_answers: List[str] = None  # All valid result values (for multi-solution puzzles)
-    mapping: Dict[str, int] = None  # Letter-to-digit mapping from solution
+    strategy: str  # 사용된 매핑 전략
+    word3: str = None  # 선택적 세 번째 피연산자
+    valid_answers: List[str] = None  # 모든 유효한 결과 값 (다중 해 퍼즐용)
+    mapping: Dict[str, int] = None  # 해에서 얻은 글자-숫자 매핑
 
     @property
     def puzzle_str(self) -> str:
@@ -38,7 +38,7 @@ class PuzzleCandidate:
 
     @property
     def operands(self):
-        """Return list of operand words."""
+        """피연산자 단어 목록을 반환합니다."""
         ops = [self.word1, self.word2]
         if self.word3:
             ops.append(self.word3)
@@ -46,15 +46,15 @@ class PuzzleCandidate:
 
 
 # ============================================================
-# Solver: Column-by-column backtracking
+# 풀이기: 열 단위 역추적(backtracking)
 # ============================================================
 
 def find_solutions(puzzle: tuple, max_count: int = 4) -> List[Tuple[str, Dict[str, int]]]:
     """
-    Find all solutions up to max_count using column-by-column backtracking.
+    열 단위 역추적을 사용하여 max_count까지의 모든 해를 찾습니다.
 
-    puzzle: (word1, word2, result_word) or (word1, word2, word3, result_word)
-    Returns list of (result_value, mapping) tuples.
+    puzzle: (word1, word2, result_word) 또는 (word1, word2, word3, result_word)
+    (결과값, 매핑) 튜플의 리스트를 반환합니다.
     """
     *operand_words, result_word = puzzle
     all_letters = sorted(set(''.join(operand_words) + result_word))
@@ -62,20 +62,20 @@ def find_solutions(puzzle: tuple, max_count: int = 4) -> List[Tuple[str, Dict[st
     if len(all_letters) > 10:
         return []
 
-    # First letters that cannot be 0
+    # 0이 될 수 없는 첫 글자
     first_letters = set()
     for w in list(operand_words) + [result_word]:
         if len(w) > 1:
             first_letters.add(w[0])
 
-    # Build column constraints (right to left)
+    # 열 제약 조건 구축 (오른쪽에서 왼쪽으로)
     all_words = list(operand_words) + [result_word]
     max_len = max(len(w) for w in all_words)
     reversed_ops = [w[::-1] for w in operand_words]
     wr = result_word[::-1]
 
-    # Determine letter assignment order by columns (right to left)
-    # This allows early pruning via arithmetic constraints
+    # 열 순서에 따른 글자 할당 순서 결정 (오른쪽에서 왼쪽으로)
+    # 이를 통해 산술 제약 조건을 활용한 조기 가지치기가 가능합니다
     ordered_letters = []
     seen = set()
     for col in range(max_len):
@@ -83,7 +83,7 @@ def find_solutions(puzzle: tuple, max_count: int = 4) -> List[Tuple[str, Dict[st
             if col < len(w) and w[col] not in seen:
                 ordered_letters.append(w[col])
                 seen.add(w[col])
-    # Add any remaining letters
+    # 나머지 글자 추가
     for letter in all_letters:
         if letter not in seen:
             ordered_letters.append(letter)
@@ -94,7 +94,7 @@ def find_solutions(puzzle: tuple, max_count: int = 4) -> List[Tuple[str, Dict[st
     used_digits = set()
 
     def _check_columns(mapping):
-        """Check all fully-assigned columns for consistency."""
+        """완전히 할당된 모든 열의 일관성을 검사합니다."""
         carry = 0
         for col in range(max_len):
             op_letters = [rw[col] if col < len(rw) else None for rw in reversed_ops]
@@ -137,7 +137,7 @@ def find_solutions(puzzle: tuple, max_count: int = 4) -> List[Tuple[str, Dict[st
             mapping[letter] = digit
             used_digits.add(digit)
 
-            # Prune: check partial column constraints
+            # 가지치기: 부분 열 제약 조건 검사
             valid = True
             carry = 0
             for col in range(max_len):
@@ -170,40 +170,40 @@ def find_solutions(puzzle: tuple, max_count: int = 4) -> List[Tuple[str, Dict[st
 
 
 def count_solutions_fast(puzzle: tuple) -> int:
-    """Quick solution count check."""
+    """빠른 해 개수 검사."""
     return len(find_solutions(puzzle, max_count=MAX_SOLUTIONS + 1))
 
 
 def has_valid_solutions(puzzle: tuple) -> bool:
-    """Check if puzzle has exactly 1 solution."""
+    """퍼즐이 정확히 1개의 해를 가지는지 확인합니다."""
     return count_solutions_fast(puzzle) == 1
 
 
 def get_solution(puzzle: tuple) -> Optional[Tuple[str, Dict[str, int]]]:
-    """Get the single solution if exists."""
+    """유일한 해가 존재하면 반환합니다."""
     solutions = find_solutions(puzzle, max_count=1)
     return solutions[0] if solutions else None
 
 
 def get_all_result_values(puzzle: tuple, max_count: int = 20) -> List[str]:
-    """Get all distinct result values from valid solutions."""
+    """유효한 해에서 모든 고유한 결과 값을 가져옵니다."""
     solutions = find_solutions(puzzle, max_count=max_count)
     return list(set(s[0] for s in solutions))
 
 
 # ============================================================
-# Letter mapping strategies
+# 글자 매핑 전략
 # ============================================================
 
 def _create_letter_mapping(unique_digits: List[str], strategy: str = 'random') -> Dict[str, str]:
     """
-    Create digit-to-letter mapping with different strategies.
+    다양한 전략으로 숫자-글자 매핑을 생성합니다.
 
-    Strategies:
-    - 'random': Random letter assignment
-    - 'sequential': A, B, C, ... assignment
-    - 'reverse': Z, Y, X, ... assignment
-    - 'vowel_first': Vowels for common digits
+    전략:
+    - 'random': 무작위 글자 할당
+    - 'sequential': A, B, C, ... 순차 할당
+    - 'reverse': Z, Y, X, ... 역순 할당
+    - 'vowel_first': 자주 사용되는 숫자에 모음 우선 할당
     """
     available_letters = list(string.ascii_uppercase)
 
@@ -217,7 +217,7 @@ def _create_letter_mapping(unique_digits: List[str], strategy: str = 'random') -
         random.shuffle(vowels)
         random.shuffle(consonants)
         available_letters = vowels + consonants
-    # 'sequential' uses default order
+    # 'sequential'은 기본 순서 사용
 
     return {digit: available_letters[i] for i, digit in enumerate(unique_digits)}
 
@@ -232,19 +232,19 @@ strategy_stats = {
 
 
 def print_strategy_stats():
-    """Print strategy success statistics."""
-    print("\nMapping strategy statistics:")
+    """매핑 전략 성공 통계를 출력합니다."""
+    print("\n매핑 전략 통계:")
     for name, stats in strategy_stats.items():
         rate = stats['success'] / stats['tried'] * 100 if stats['tried'] > 0 else 0
         print(f"  {name}: {stats['success']}/{stats['tried']} ({rate:.1f}%)")
 
 
 # ============================================================
-# Puzzle generation
+# 퍼즐 생성
 # ============================================================
 
 def count_carries(*nums: int) -> int:
-    """Count carries in addition of multiple numbers."""
+    """여러 수의 덧셈에서 올림(carry) 횟수를 셉니다."""
     carries = 0
     carry = 0
     str_nums = [str(n)[::-1] for n in nums]
@@ -262,7 +262,7 @@ def count_carries(*nums: int) -> int:
 
 
 def has_overflow(*nums: int) -> bool:
-    """Check if result has more digits than the largest operand."""
+    """결과가 가장 큰 피연산자보다 더 많은 자릿수를 가지는지 확인합니다."""
     result = sum(nums)
     max_operand_digits = max(len(str(n)) for n in nums)
     result_digits = len(str(result))
@@ -276,9 +276,9 @@ def generate_from_arithmetic(
     num3: int = None
 ) -> Optional[PuzzleCandidate]:
     """
-    Constructively generate puzzle from valid arithmetic.
+    유효한 산술로부터 퍼즐을 구성적으로 생성합니다.
 
-    Requires exactly 1 unique solution for all puzzle types.
+    모든 퍼즐 유형에 대해 정확히 1개의 고유한 해를 요구합니다.
     """
     if used_patterns is None:
         used_patterns = set()
@@ -337,7 +337,7 @@ def generate_from_arithmetic(
                 mapping=solutions[0][1]
             )
 
-    # For 2-operand only: try a few more random mappings
+    # 2항 연산에 대해서만: 몇 번 더 무작위 매핑 시도
     if not is_3op:
         for _ in range(5):
             strategy_stats['random_fallback']['tried'] += 1
@@ -379,7 +379,7 @@ def generate_puzzle_by_difficulty(
     difficulty: str,
     used_patterns: Set[str] = None
 ) -> Optional[PuzzleCandidate]:
-    """Generate a puzzle for specified difficulty level."""
+    """지정된 난이도에 맞는 퍼즐을 생성합니다."""
     if used_patterns is None:
         used_patterns = set()
 
@@ -459,11 +459,11 @@ def generate_puzzle_by_difficulty(
 
 
 # ============================================================
-# Question formatting
+# 문제 텍스트 생성
 # ============================================================
 
 def create_question(candidate: PuzzleCandidate) -> str:
-    """Create question text in English."""
+    """한국어로 문제 텍스트를 생성합니다."""
     operand_words = candidate.operands
     max_word_len = max(len(w) for w in operand_words + [candidate.result])
     separator = '-' * (max_word_len + 2)
@@ -473,10 +473,10 @@ def create_question(candidate: PuzzleCandidate) -> str:
         operand_lines += f"+ {w}\n"
 
     question = (
-        f"Solve this cryptarithmetic puzzle where each letter represents a unique digit (0-9). "
-        f"Different letters must map to different digits. "
-        f"Leading letters cannot be zero. "
-        f"Find the numeric value that {candidate.result} represents.\n\n"
+        f"각 글자가 고유한 숫자(0-9)를 나타내는 복면산 퍼즐을 풀어주세요. "
+        f"서로 다른 글자는 서로 다른 숫자에 대응해야 합니다. "
+        f"첫 글자는 0이 될 수 없습니다. "
+        f"{candidate.result}이(가) 나타내는 숫자 값을 구하세요.\n\n"
         f"{operand_lines}"
         f"{separator}\n"
         f"= {candidate.result}"
@@ -485,7 +485,7 @@ def create_question(candidate: PuzzleCandidate) -> str:
 
 
 # ============================================================
-# Dataset generation
+# 데이터셋 생성
 # ============================================================
 
 def generate_dataset(
@@ -493,7 +493,7 @@ def generate_dataset(
     difficulties: List[str] = None,
     verbose: bool = True
 ) -> List[Dict]:
-    """Generate a complete dataset of puzzles."""
+    """퍼즐의 전체 데이터셋을 생성합니다."""
     if difficulties is None:
         difficulties = ["easy", "medium", "hard"]
 
@@ -502,7 +502,7 @@ def generate_dataset(
 
     for difficulty in difficulties:
         if verbose:
-            print(f"\n=== Generating {difficulty} puzzles ===")
+            print(f"\n=== {difficulty} 퍼즐 생성 중 ===")
 
         for i in range(puzzles_per_difficulty):
             candidate = generate_puzzle_by_difficulty(difficulty, used_patterns)
@@ -525,7 +525,7 @@ def generate_dataset(
                     print(f"  [{i+1}/{puzzles_per_difficulty}] {candidate.puzzle_str} -> {candidate.answer}")
             else:
                 if verbose:
-                    print(f"  [{i+1}/{puzzles_per_difficulty}] Failed to generate")
+                    print(f"  [{i+1}/{puzzles_per_difficulty}] 생성 실패")
 
     if verbose:
         print_strategy_stats()
@@ -540,7 +540,7 @@ def generate_and_validate(
     word3: str = None
 ) -> Optional[Dict]:
     """
-    Validate a manually specified puzzle and return formatted data if valid.
+    수동으로 지정된 퍼즐을 검증하고, 유효하면 형식화된 데이터를 반환합니다.
     """
     words = [word1.upper(), word2.upper()]
     if word3:
@@ -551,7 +551,7 @@ def generate_and_validate(
 
     if not has_valid_solutions(puzzle):
         sol_count = count_solutions_fast(puzzle)
-        print(f"Invalid: puzzle has {sol_count} solution(s)")
+        print(f"유효하지 않음: 퍼즐의 해가 {sol_count}개입니다")
         return None
 
     solutions = find_solutions(puzzle, max_count=1)
@@ -593,17 +593,17 @@ def generate_and_validate(
 
 def create_dataset_files(num_questions: int):
     """
-    Create dataset files for cryptarithmetic puzzles.
+    복면산 퍼즐 데이터셋 파일을 생성합니다.
 
     Args:
-        num_questions: Number of questions to generate
+        num_questions: 생성할 문제 수
 
     Returns:
-        Tuple[pd.DataFrame, List[Dict]]: (dataframe, json list)
+        Tuple[pd.DataFrame, List[Dict]]: (데이터프레임, JSON 리스트)
     """
     import pandas as pd
 
-    print(f"Generating {num_questions} cryptarithmetic puzzles...")
+    print(f"{num_questions}개의 복면산 퍼즐을 생성합니다...")
 
     difficulties = ["easy", "medium", "hard"]
     puzzles_per_diff = num_questions // len(difficulties)
@@ -618,7 +618,7 @@ def create_dataset_files(num_questions: int):
         if target_count == 0:
             continue
 
-        print(f"\n=== Generating {difficulty} puzzles ({target_count} needed) ===")
+        print(f"\n=== {difficulty} 퍼즐 생성 중 ({target_count}개 필요) ===")
         generated = 0
         attempts = 0
         max_total_attempts = 5000
@@ -632,7 +632,7 @@ def create_dataset_files(num_questions: int):
 
             if candidate:
                 puzzle_data = {
-                    "id": f"cryptarithmetic_{len(all_puzzles)}",
+                    "id": f"cryptarithmetic_ko_{len(all_puzzles)}",
                     "question": create_question(candidate),
                     "answer": candidate.answer,
                     "solution": candidate.puzzle_str,
@@ -646,31 +646,31 @@ def create_dataset_files(num_questions: int):
                 print(f"  [{generated}/{target_count}] {candidate.puzzle_str} -> {candidate.answer}")
 
         if generated < target_count:
-            print(f"  Warning: Only generated {generated}/{target_count} {difficulty} puzzles")
+            print(f"  경고: {difficulty} 퍼즐을 {target_count}개 중 {generated}개만 생성했습니다")
 
-    print(f"\nGenerated {len(all_puzzles)} puzzles total")
+    print(f"\n총 {len(all_puzzles)}개의 퍼즐을 생성했습니다")
     print_strategy_stats()
 
     df = pd.DataFrame(all_puzzles)
 
-    # Save files
+    # 파일 저장
     PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
     # CSV
     csv_dir = PROJECT_ROOT / "data" / "csv"
     csv_dir.mkdir(parents=True, exist_ok=True)
-    csv_path = csv_dir / "cryptarithmetic.csv"
+    csv_path = csv_dir / "cryptarithmetic_ko.csv"
     df.to_csv(csv_path, index=False, encoding="utf-8-sig")
-    print(f"CSV file created: {csv_path}")
+    print(f"CSV 파일 생성 완료: {csv_path}")
 
     # JSONL
     json_dir = PROJECT_ROOT / "data" / "json"
     json_dir.mkdir(parents=True, exist_ok=True)
-    jsonl_path = json_dir / "cryptarithmetic.jsonl"
+    jsonl_path = json_dir / "cryptarithmetic_ko.jsonl"
     with open(jsonl_path, 'w', encoding='utf-8') as f:
         for item in all_puzzles:
             f.write(json.dumps(item, ensure_ascii=False) + '\n')
-    print(f"JSONL file created: {jsonl_path}")
+    print(f"JSONL 파일 생성 완료: {jsonl_path}")
 
     return df, all_puzzles
 
@@ -678,8 +678,8 @@ def create_dataset_files(num_questions: int):
 if __name__ == '__main__':
     import argparse
 
-    parser = argparse.ArgumentParser(description="Cryptarithmetic Puzzle Generator")
-    parser.add_argument("--num", type=int, default=12, help="Number of questions to generate")
+    parser = argparse.ArgumentParser(description="복면산(Cryptarithmetic) 퍼즐 생성기 - 한국어")
+    parser.add_argument("--num", type=int, default=12, help="생성할 문제 수")
 
     args = parser.parse_args()
 

@@ -4,7 +4,7 @@ Comprehensive Logical Puzzle Dataset with LLM Evaluation Framework
 
 ## Puzzle Types
 
-### 1. Array Formula
+### 1. Array Formula (EN / KO)
 Apply formulas to 2D arrays to calculate final results. Sequentially apply row/column operations and aggregate functions to derive answers.
 
 - **Multi-step Operations**: Apply functions like SUM, MEAN, MAX, MIN sequentially
@@ -12,8 +12,8 @@ Apply formulas to 2D arrays to calculate final results. Sequentially apply row/c
 - **Complex Reasoning**: Track intermediate calculation results to derive final values
 - **Difficulty Levels**: Adjusted based on array size and number of operation steps
 
-### 2. Causal DAG Korean
-Infer event propagation time in causal relationship graphs with time delays. Events and causal relationships are described in Korean.
+### 2. Causal DAG (EN / KO)
+Infer event propagation time in causal relationship graphs with time delays.
 
 - **DAG-based Generation**: Represent causal relationships as directed acyclic graphs
 - **Shortest Path Algorithm**: Calculate answers using Dijkstra's algorithm
@@ -21,21 +21,15 @@ Infer event propagation time in causal relationship graphs with time delays. Eve
 - **Difficulty Levels**: Based on number of events (4-12) and connection density (Easy/Medium/Hard)
 - **Realistic Scenarios**: Real events from technology, business, environment, operations domains
 
-### 3. Causal DAG
-Same as Causal DAG Korean, but events and causal relationships are described in English.
-
-### 4. Cipher Korean
-Decode multi-layer cipher algorithms. Evaluates LLM's pure algorithmic reasoning ability. Encrypts Korean strings.
+### 3. Cipher (EN / KO)
+Decode multi-layer cipher algorithms. Evaluates LLM's pure algorithmic reasoning ability.
 
 - **Multi-layer Algorithms**: Stack of Substitution, Vigenere, Reverse, Playfair, Transposition
 - **Meaningless Answers**: Use random strings to prevent linguistic guessing
 - **Variable Hints**: Adjust number of examples by difficulty (2-20 examples)
 - **Difficulty Levels**: EASY (Sub+Rev), MEDIUM (Vig), HARD (Vig+Rev), VERY_HARD (Playfair+Vig), EXTREME (Play+Trans+Vig)
 
-### 5. Cipher
-Same as Cipher Korean, but encrypts English strings.
-
-### 6. Cryptarithmetic
+### 4. Cryptarithmetic
 Find the digit corresponding to each letter in arithmetic expressions represented by letters.
 
 - **Constraints**: No leading zeros, each letter is a unique digit
@@ -43,7 +37,7 @@ Find the digit corresponding to each letter in arithmetic expressions represente
 - **Various Operations**: Support addition, subtraction, multiplication
 - **Difficulty Levels**: Adjusted based on number of letters and digits
 
-### 7. Ferryman
+### 5. Ferryman (EN / KO)
 Calculate total time required for a ferryman to transport goods considering various navigation rules and constraints.
 
 - **Speed-limited Zones**: Speed changes in Zone A and Zone B
@@ -51,7 +45,7 @@ Calculate total time required for a ferryman to transport goods considering vari
 - **Mandatory Rest Time**: Compliance with navigation regulations
 - **Complex Condition Reasoning**: Consider multiple constraints simultaneously
 
-### 8. Hanoi
+### 6. Hanoi (EN / KO)
 Classic puzzle of moving disks from one peg to another. Calculate the minimum number of moves.
 
 - **Recursive Structure**: Requires divide-and-conquer thinking
@@ -59,7 +53,7 @@ Classic puzzle of moving disks from one peg to another. Calculate the minimum nu
 - **Minimum Moves**: 2^n - 1 moves (n is number of disks)
 - **Difficulty Levels**: Adjusted based on number of disks
 
-### 9. Inequality
+### 7. Inequality
 Find number placements that satisfy given inequality constraints.
 
 - **Constraint Satisfaction Problem**: Satisfy multiple inequalities simultaneously
@@ -67,7 +61,7 @@ Find number placements that satisfy given inequality constraints.
 - **Logical Reasoning**: Narrow value ranges from constraints
 - **Difficulty Levels**: Adjusted based on number of variables and constraints
 
-### 10. Kinship
+### 8. Kinship (KO)
 Infer family relationship clues presented through dialogue to derive final Korean kinship terms.
 
 - **Korean Kinship Terms**: Support various family relationships (paternal/maternal/in-laws)
@@ -76,7 +70,7 @@ Infer family relationship clues presented through dialogue to derive final Korea
 - **Relationship Chain Reasoning**: Derive final kinship term through stepwise relationship connections
 - **Language+Logic Fusion**: Simultaneously evaluate Korean honorific system understanding and logical reasoning
 
-### 11. Kinship Vision
+### 9. Kinship Vision (KO)
 Multimodal problem combining family photo images and dialogue clues to identify people by visual features and infer relationships.
 
 - **Vision+Language Fusion**: Simultaneously perform person identification in images and relationship reasoning
@@ -85,8 +79,8 @@ Multimodal problem combining family photo images and dialogue clues to identify 
 - **Multiple Choice Format**: 1 correct answer + 3 distractors (inducing visual confusion)
 - **Multimodal Reasoning**: Understand dialogue context → Search image → Connect relationship chain
 
-### 12. Logic Grid Korean
-Constraint-based logical reasoning problem famous as Einstein's Riddle. Infer relationships among multiple people and attributes from Korean constraint conditions.
+### 10. Logic Grid (EN / KO)
+Constraint-based logical reasoning problem famous as Einstein's Riddle. Infer relationships among multiple people and attributes from constraint conditions.
 
 - **CSP (Constraint Satisfaction Problem)**: Verify unique solution with backtracking
 - **Natural Language Constraints**: Simultaneously require linguistic understanding and logical reasoning
@@ -94,10 +88,7 @@ Constraint-based logical reasoning problem famous as Einstein's Riddle. Infer re
 - **Difficulty Levels**: Easy (3×3), Medium (4×4), Hard (5×5)
 - **Backward Generation**: Generate valid solution first, then derive constraint conditions
 
-### 13. Logic Grid
-Same as Logic Grid Korean, but names, attributes, and constraints are expressed in English.
-
-### 14. Minesweeper
+### 11. Minesweeper
 Minesweeper puzzle designed as a Constraint Satisfaction Problem (CSP). Evaluates LLM's logical reasoning ability.
 
 - **Unique Solution Guaranteed**: Verify unique solution with backtracking solver
@@ -105,7 +96,7 @@ Minesweeper puzzle designed as a Constraint Satisfaction Problem (CSP). Evaluate
 - **Difficulty Levels**: Easy (6×6), Medium (8×8), Hard (10×10)
 - **Coordinate-based Evaluation**: Output mine locations in (r,c) format
 
-### 15. Number Baseball
+### 12. Number Baseball
 Infer hidden N-digit numbers through hints (Strike/Ball).
 
 - **Constraint Reasoning**: Narrow possible number ranges with Strike/Ball hints
@@ -113,8 +104,8 @@ Infer hidden N-digit numbers through hints (Strike/Ball).
 - **No Duplicate Digits**: Each position has a different digit
 - **Stepwise Reasoning**: Derive answer by combining multiple hints
 
-### 16. SAT Puzzle Korean
-NP-complete problem of finding value combinations that satisfy given logical expressions (CNF) for Boolean variables. Problem scenarios and constraints are described in Korean.
+### 13. SAT Puzzle (EN / KO)
+NP-complete problem of finding value combinations that satisfy given logical expressions (CNF) for Boolean variables.
 
 - **NP-Complete Problem**: Theoretically difficult problem
 - **CNF (Conjunctive Normal Form)**: Express logical expressions in standard form
@@ -123,10 +114,7 @@ NP-complete problem of finding value combinations that satisfy given logical exp
 - **Difficulty Levels**: Easy (3-4 variables), Medium (5-7 variables), Hard (10-12 variables)
 - **Pure Logical Reasoning**: Focus on Boolean logic
 
-### 17. SAT Puzzle
-Same as SAT Puzzle Korean, but variable names and constraints are expressed in English.
-
-### 18. Sudoku
+### 14. Sudoku
 9×9 Sudoku puzzle generation and difficulty-level evaluation dataset.
 
 - **Unique Solution Guaranteed**: All puzzles have exactly one solution
@@ -135,7 +123,7 @@ Same as SAT Puzzle Korean, but variable names and constraints are expressed in E
 - **Symmetry Support**: Improve aesthetic quality with rotation/reflection symmetry
 - **Reproducible**: Regenerate identical puzzles with fixed seeds
 
-### 19. Yacht Dice
+### 15. Yacht Dice
 Combinatorial optimization problem of optimally assigning 12 dice results to 12 categories to maximize total score.
 
 - **Combinatorial Optimization**: 12! = 479,001,600 possible assignments
@@ -170,131 +158,64 @@ cp .env.example .env
 
 ```bash
 # Generate all puzzles
-bash scripts/generate_all.sh
+bash scripts/gen_data.sh
 
 # Generate specific puzzle type
 python generation/kinship.py --num 100
-python generation/cipher.py --num 100
+python generation/cipher_en.py --num 100
 ```
 
 See [docs/eng/generation.md](docs/eng/generation.md) for detailed usage.
 
 ### Evaluation
 
-#### Unified Evaluation System (Recommended)
+The evaluation system supports two model routers:
 
-**Basic Usage:**
+- **liteLLM**: Call cloud APIs (Gemini, OpenAI, Anthropic, etc.) via liteLLM library
+- **remote**: Call a self-hosted server (e.g. vLLM on Colab) via OpenAI-compatible API
 
-```bash
-# Evaluate all tasks (uses config.yaml settings)
-python evaluation/run.py
-
-# Evaluate specific tasks
-python evaluation/run.py --tasks kinship cipher hanoi
-
-# Use different models
-python evaluation/run.py --model gemini/gemini-3-flash-preview
-python evaluation/run.py --model gpt-4o
-python evaluation/run.py --model claude-3-5-sonnet-20241022
-
-# Filter by difficulty and limit
-python evaluation/run.py --difficulty easy --limit 10
-```
-
-**Async Mode:**
-
-The async mode is controlled by `evaluation/config.yaml` (default: `use_async: true`):
-
-```bash
-# Async mode evaluation (default from config.yaml)
-python evaluation/run.py
-
-# Explicitly enable async mode (same as default if config.yaml has use_async: true)
-python evaluation/run.py --async
-
-# To disable async mode, modify evaluation/config.yaml: use_async: false
-# Then run without --async flag for sync mode
-
-# Adjust concurrent execution count (default: 30 from config.yaml)
-python evaluation/run.py --max-concurrent 50
-```
-
-**Configuration File (`evaluation/config.yaml`):**
-
-The evaluation system uses `evaluation/config.yaml` for default settings:
-- **LLM Configuration**: model, temperature, max_tokens (65536), timeout (600s)
-- **Evaluation Settings**: use_async (true), max_concurrent (30)
-- **Task List**: 17 tasks (excluding sudoku and minesweeper)
-- **Difficulty Levels**: easy, medium, hard
-
-You can modify this file to change default behavior, or override with command-line arguments.
-
-**Note:** Currently, `--async` flag has no effect because `config.yaml` already sets `use_async: true` as default. The flag is useful when you want to override a `false` setting in config.yaml.
-
-**Advanced Options:**
+**liteLLM mode (cloud APIs):**
 
 ```bash
 python evaluation/run.py \
     --model gemini/gemini-3-flash-preview \
-    --tasks kinship cipher \
-    --difficulty medium \
-    --limit 20 \
-    --output-dir results/my_test \
-    --async \
-    --max-concurrent 50 \
-    --quiet
+    --model_router litellm \
+    --gen-kwargs "temperature=1.0,max_tokens=65536,top_p=0.95,top_k=64" \
+    --tasks kinship --async
 ```
 
-**Shell Scripts (Batch Evaluation of 17 Tasks):**
-
-Two scripts are available for batch evaluation:
-
-1. **Sequential Execution** (`evaluate_all.sh`):
-   ```bash
-   # Evaluate 17 tasks one by one (stable, slower)
-   bash scripts/evaluate_all.sh
-   ```
-   - Executes tasks sequentially (one at a time)
-   - More stable and easier to debug
-   - Lower resource usage
-   - Clearer log output
-
-2. **Parallel Execution** (`evaluate_all_parallel.sh`):
-   ```bash
-   # Evaluate 17 tasks in parallel (5 at a time, faster)
-   bash scripts/evaluate_all_parallel.sh
-   ```
-   - Executes up to 5 tasks simultaneously
-   - Significantly faster (approximately 3-5x speedup)
-   - Higher resource usage
-   - Both scripts evaluate all 17 tasks (excluding sudoku and minesweeper)
-
-**Monitoring Running Evaluations:**
+**Remote mode (self-hosted vLLM, etc.):**
 
 ```bash
-# Simple table view
-bash scripts/monitor_eval.sh
-
-# Detailed view with full information
-bash scripts/monitor_eval.sh detailed
-
-# Show help
-bash scripts/monitor_eval.sh help
+python evaluation/run.py \
+    --model Qwen/Qwen3-0.6B \
+    --model_router remote \
+    --remote_url "https://xxxx.ngrok-free.app" \
+    --gen-kwargs "temperature=0.6,max_tokens=16384,top_p=0.95,top_k=20,reasoning=on" \
+    --tasks kinship --async --max-concurrent 30
 ```
 
-The monitoring script shows:
-- Running evaluation processes (PID, model, task)
-- Progress information from log files
-- Accuracy (when available)
-- Log file locations
+**Shell Scripts (Batch Evaluation):**
 
-**Result Visualization:**
+| Script | Mode | Execution |
+|--------|------|-----------|
+| `eval_litellm.sh` | liteLLM | Sequential |
+| `eval_litellm_parallel.sh` | liteLLM | Parallel (5 concurrent) |
+| `eval_remote.sh` | Remote | Sequential |
+| `eval_remote_parallel.sh` | Remote | Parallel (5 concurrent) |
 
 ```bash
-# Visualize results with Jupyter notebook
-jupyter notebook scripts/visualize_results.ipynb
-# or
-jupyter lab scripts/visualize_results.ipynb
+bash scripts/eval_litellm_parallel.sh   # liteLLM (Gemini, etc.)
+bash scripts/eval_remote_parallel.sh    # Remote (Colab vLLM, etc.)
+```
+
+**Monitoring & Visualization:**
+
+```bash
+bash scripts/monitor.sh              # Monitor running evaluations
+bash scripts/monitor.sh detailed     # Detailed view
+
+jupyter notebook scripts/viz_results.ipynb   # Visualize results
 ```
 
 See [docs/eng/evaluation.md](docs/eng/evaluation.md) for detailed usage.
@@ -332,16 +253,12 @@ logical-puzzles/
 ├── evaluation/                 # Unified evaluation system
 │   ├── core/
 │   │   ├── base.py
-│   │   ├── llm_client.py
 │   │   └── result_handler.py
-│   ├── eval_data/              # Static evaluation data
-│   │   ├── kinship_vision/
-│   │   │   └── kinship.jpg
-│   │   └── minesweeper/
-│   │       ├── eval_metadata.jsonl
-│   │       ├── eval_puzzles.jsonl
-│   │       ├── eval_solutions.jsonl
-│   │       └── solution.md
+│   ├── model/                  # LLM client package
+│   │   ├── __init__.py         # create_client() factory
+│   │   ├── base.py             # BaseLLMClient (ABC)
+│   │   ├── litellm.py          # LiteLLMClient
+│   │   └── remote.py           # RemoteLLMClient (OpenAI-compatible)
 │   ├── evaluators/
 │   │   ├── cipher.py
 │   │   ├── ferryman.py
@@ -349,16 +266,16 @@ logical-puzzles/
 │   │   ├── kinship.py
 │   │   └── ... (more evaluators)
 │   ├── legacy/                 # Legacy evaluation scripts (deprecated)
-│   ├── __init__.py
-│   ├── config.yaml
 │   └── run.py
 │
 ├── generation/                 # Puzzle generation scripts
-│   ├── array_formula.py
-│   ├── causal_dag.py
-│   ├── cipher.py
+│   ├── array_formula_en.py
+│   ├── array_formula_ko.py
+│   ├── causal_dag_en.py
+│   ├── cipher_en.py
 │   ├── cryptarithmetic.py
-│   └── ... (19 puzzle types)
+│   ├── kinship.py
+│   └── ... (15 puzzle types, _en/_ko for bilingual)
 │
 ├── results/                    # Evaluation results (gitignored)
 │   └── {model_name}/
@@ -367,11 +284,15 @@ logical-puzzles/
 │           └── {model}_{task}_{timestamp}__{accuracy}.json
 │
 ├── scripts/
-│   ├── generate_all.sh         # Generate all puzzles
-│   ├── evaluate_all.sh          # Sequential evaluation of 17 tasks
-│   ├── evaluate_all_parallel.sh # Parallel evaluation of 17 tasks (5 concurrent)
-│   ├── monitor_eval.sh          # Monitor running evaluations
-│   └── visualize_results.ipynb  # Result visualization notebook
+│   ├── gen_data.sh              # Generate all puzzles
+│   ├── eval_litellm.sh          # liteLLM evaluation (sequential)
+│   ├── eval_litellm_parallel.sh # liteLLM evaluation (parallel)
+│   ├── eval_remote.sh           # Remote evaluation (sequential)
+│   ├── eval_remote_parallel.sh  # Remote evaluation (parallel)
+│   ├── calltest.py              # API connection smoke test
+│   ├── qwen_baseline.ipynb      # Colab vLLM server for Qwen baseline
+│   ├── monitor.sh               # Monitor running evaluations
+│   └── viz_results.ipynb        # Result visualization notebook
 │
 ├── validators/
 │   ├── verify_logic_grid.py

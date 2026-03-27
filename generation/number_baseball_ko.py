@@ -1,8 +1,8 @@
-"""Number Baseball (Bulls and Cows) Puzzle Generator and Validator
+"""숫자 야구 퍼즐 생성기 및 검증기
 
-Constructive generation: builds puzzles by selecting high-information
-hints that progressively narrow solutions to 1.
-Supports 3-6 digit puzzles via backtracking solver.
+구성적 생성 방식: 정보 가치가 높은 힌트를 선택하여
+해를 점진적으로 1개로 좁혀가는 퍼즐을 구축합니다.
+백트래킹 솔버를 통해 3~6자리 퍼즐을 지원합니다.
 """
 
 import random
@@ -16,7 +16,7 @@ from enum import Enum
 
 @dataclass
 class Hint:
-    """Represents a guess and its result in Bulls and Cows game"""
+    """숫자 야구 게임에서 추측과 그 결과를 나타내는 클래스"""
     guess: str
     strikes: int
     balls: int
@@ -33,18 +33,18 @@ class Hint:
 
 
 class Difficulty(Enum):
-    """Difficulty levels for problem generation"""
-    EASY = 1      # 3 digits, moderate hints
-    MEDIUM = 2    # 4 digits, fewer hints
-    HARD = 3      # 6 digits, minimal hints
+    """문제 생성 난이도"""
+    EASY = 1      # 3자리, 보통 수준의 힌트
+    MEDIUM = 2    # 4자리, 적은 힌트
+    HARD = 3      # 6자리, 최소한의 힌트
 
 
 class BullsAndCows:
-    """Core game logic for Bulls and Cows (Number Baseball)"""
+    """숫자 야구의 핵심 게임 로직"""
 
     def __init__(self, num_digits: int = 3):
         if num_digits not in [3, 4, 5, 6]:
-            raise ValueError("Number of digits must be 3, 4, 5, or 6")
+            raise ValueError("자릿수는 3, 4, 5, 6 중 하나여야 합니다")
         self.num_digits = num_digits
 
     def generate_number(self) -> str:
@@ -54,7 +54,7 @@ class BullsAndCows:
 
     def calculate_strikes_balls(self, secret: str, guess: str) -> Tuple[int, int]:
         if len(secret) != len(guess):
-            raise ValueError("Secret and guess must have the same length")
+            raise ValueError("비밀 숫자와 추측의 자릿수가 같아야 합니다")
 
         strikes = 0
         balls = 0
@@ -75,11 +75,11 @@ class BullsAndCows:
         return True
 
     def find_all_solutions(self, hints: List[Hint], max_count: int = 0) -> List[str]:
-        """Find all possible numbers that satisfy the given hints.
+        """주어진 힌트를 모두 만족하는 가능한 숫자를 모두 찾습니다.
 
         Args:
-            hints: List of hints to satisfy
-            max_count: Stop after finding this many solutions (0 = unlimited)
+            hints: 만족해야 하는 힌트 목록
+            max_count: 이 수만큼 해를 찾으면 중단 (0 = 무제한)
         """
         solutions = []
 
@@ -107,15 +107,15 @@ class BullsAndCows:
         return None
 
 
-MAX_SOLUTIONS = 1  # Only allow exactly 1 solution
+MAX_SOLUTIONS = 1  # 정확히 1개의 해만 허용
 
 
 class ProblemGenerator:
     """
-    Constructive puzzle generator for Bulls and Cows.
+    숫자 야구의 구성적 퍼즐 생성기.
 
-    Strategy: Generate hints based on information value, progressively
-    adding hints until solution count reaches 1.
+    전략: 정보 가치에 기반하여 힌트를 생성하고,
+    해의 수가 1이 될 때까지 점진적으로 힌트를 추가합니다.
     """
 
     def __init__(self):
@@ -127,8 +127,8 @@ class ProblemGenerator:
     def _calculate_hint_info_value(self, hint: Hint, game: BullsAndCows,
                                     current_solutions: List[str]) -> int:
         """
-        Calculate information value of a hint.
-        Higher value = hint eliminates more invalid solutions.
+        힌트의 정보 가치를 계산합니다.
+        값이 높을수록 = 더 많은 잘못된 후보를 제거하는 힌트입니다.
         """
         if not current_solutions:
             return 0
@@ -144,7 +144,7 @@ class ProblemGenerator:
     def _select_best_hint(self, game: BullsAndCows, secret: str,
                           existing_hints: List[Hint], current_solutions: List[str],
                           difficulty: Difficulty, candidates: List[Hint]) -> Optional[Hint]:
-        """Select the best hint that reduces solution count toward 1."""
+        """해의 수를 1로 줄이는 데 가장 효과적인 힌트를 선택합니다."""
         best_hint = None
         best_solution_count = float('inf')
 
@@ -168,7 +168,7 @@ class ProblemGenerator:
         return best_hint
 
     def _hint_matches_difficulty(self, hint: Hint, difficulty: Difficulty) -> bool:
-        """Check if hint matches difficulty constraints."""
+        """힌트가 난이도 제약 조건에 맞는지 확인합니다."""
         if difficulty == Difficulty.HARD:
             return True
         elif difficulty == Difficulty.MEDIUM:
@@ -179,14 +179,14 @@ class ProblemGenerator:
 
     def generate_problem(self, difficulty: Difficulty, max_retries: int = 100) -> Dict:
         """
-        Constructively generate a puzzle with exactly 1 solution.
+        정확히 1개의 해를 가진 퍼즐을 구성적으로 생성합니다.
 
-        Process:
-        1. Generate secret number
-        2. Generate candidate hints with varying information
-        3. Select hints that maximize information gain
-        4. Stop when solution count reaches 1
-        5. Retry with fresh randomisation if needed
+        과정:
+        1. 비밀 숫자 생성
+        2. 다양한 정보량을 가진 후보 힌트 생성
+        3. 정보 이득을 최대화하는 힌트 선택
+        4. 해의 수가 1이 되면 중단
+        5. 필요 시 새로운 무작위화로 재시도
         """
         if difficulty == Difficulty.EASY:
             game = self.game_3digit
@@ -212,14 +212,14 @@ class ProblemGenerator:
         for retry in range(max_retries):
             secret = game.generate_number()
 
-            # Generate pool of candidate hints
+            # 후보 힌트 풀 생성
             hint_pool = []
             for _ in range(50):
                 hint = game.generate_hint(secret)
                 if hint and hint not in hint_pool:
                     hint_pool.append(hint)
 
-            # Progressively select hints to narrow solutions
+            # 해를 좁히기 위해 점진적으로 힌트 선택
             hints = []
             all_solutions = game.find_all_solutions([], max_count=MAX_SOLUTIONS + 1)
 
@@ -243,7 +243,7 @@ class ProblemGenerator:
                     else:
                         break
 
-            # Final solution check
+            # 최종 해 확인
             solutions = game.find_all_solutions(hints, max_count=MAX_SOLUTIONS + 1) if hints else [secret]
 
             if len(solutions) == 1:
@@ -256,7 +256,7 @@ class ProblemGenerator:
                     "problem_text": self._create_problem_text(num_digits, hints)
                 }
 
-            # Hard difficulty: allow non-unique solutions (<=5) if we exhausted hints
+            # 고난도: 힌트를 모두 사용했을 때 해가 5개 이하면 허용
             if difficulty == Difficulty.HARD and len(solutions) <= 5 and len(hints) >= min_hints[difficulty]:
                 return {
                     "difficulty": difficulty.name.lower(),
@@ -268,8 +268,8 @@ class ProblemGenerator:
                 }
 
         raise RuntimeError(
-            f"Failed to generate {difficulty.name} puzzle with exactly 1 solution "
-            f"after {max_retries} retries"
+            f"{max_retries}번 재시도 후에도 정확히 1개의 해를 가진 "
+            f"{difficulty.name} 난이도 퍼즐을 생성하지 못했습니다"
         )
 
     def _is_duplicate_hint(self, hint: Hint, hints: List[Hint]) -> bool:
@@ -284,44 +284,44 @@ class ProblemGenerator:
     def _create_problem_text(self, num_digits: int, hints: List[Hint]) -> str:
         hint_strs = [f"[{hint.guess}: {hint.strikes}S {hint.balls}B]" for hint in hints]
         hints_text = ", ".join(hint_strs)
-        return f"Find the {num_digits}-digit number with distinct digits that satisfies all the following hints: {hints_text}"
+        return f"다음 모든 힌트를 만족하는, 각 자릿수가 서로 다른 {num_digits}자리 숫자를 찾으세요: {hints_text}"
 
 
 # ============================================================
-# Question formatting
+# 질문 포맷팅
 # ============================================================
 
 def create_question(problem: Dict) -> str:
-    """Create question text in English."""
+    """한국어로 질문 텍스트를 생성합니다."""
     num_digits = problem['num_digits']
     hints = problem['hints']
 
     hints_text = "\n".join([
-        f"  {i+1}. Guess: {h['guess']} → {h['strikes']} Strike(s), {h['balls']} Ball(s)"
+        f"  {i+1}. 추측: {h['guess']} → {h['strikes']} 스트라이크(S), {h['balls']} 볼(B)"
         for i, h in enumerate(hints)
     ])
 
-    question = f"""Solve this Number Baseball (Bulls and Cows) puzzle.
+    question = f"""다음 숫자 야구 퍼즐을 풀어보세요.
 
-Rules:
-- The secret number has {num_digits} digits, each digit is unique (0-9)
-- "Strike" means a digit is correct AND in the correct position
-- "Ball" means a digit is correct BUT in the wrong position
-- Your task: Find the secret number that satisfies ALL hints
+규칙:
+- 비밀 숫자는 {num_digits}자리이며, 각 자릿수는 서로 다릅니다 (0-9)
+- "스트라이크(S)"는 숫자가 맞고 위치도 맞음을 의미합니다
+- "볼(B)"은 숫자는 맞지만 위치가 틀림을 의미합니다
+- 모든 힌트를 만족하는 비밀 숫자를 찾으세요
 
-Hints:
+힌트:
 {hints_text}
 
-Think step by step and find the unique {num_digits}-digit secret number.
+단계별로 생각하며 유일한 {num_digits}자리 비밀 숫자를 찾으세요.
 
-Provide your answer in this format:
-Answer: [the {num_digits}-digit secret number]"""
+다음 형식으로 답을 제시하세요:
+Answer: [{num_digits}자리 비밀 숫자]"""
 
     return question
 
 
 def validate_problem(problem: Dict) -> Tuple[bool, str]:
-    """Validate a generated problem for correctness."""
+    """생성된 문제의 정확성을 검증합니다."""
     try:
         num_digits = problem['num_digits']
         game = BullsAndCows(num_digits)
@@ -330,45 +330,45 @@ def validate_problem(problem: Dict) -> Tuple[bool, str]:
 
         answer = problem['answer']
         if len(answer) != num_digits:
-            return False, f"Answer length {len(answer)} doesn't match num_digits {num_digits}"
+            return False, f"정답 길이 {len(answer)}가 자릿수 {num_digits}와 일치하지 않습니다"
 
         if len(set(answer)) != num_digits:
-            return False, f"Answer {answer} doesn't have unique digits"
+            return False, f"정답 {answer}에 중복된 숫자가 있습니다"
 
         if not game.check_number_against_hints(answer, hints):
-            return False, f"Answer {answer} doesn't satisfy all hints"
+            return False, f"정답 {answer}이 모든 힌트를 만족하지 않습니다"
 
         solutions = game.find_all_solutions(hints)
         if len(solutions) == 0:
-            return False, "No solution exists for the given hints"
+            return False, "주어진 힌트를 만족하는 해가 존재하지 않습니다"
         elif len(solutions) > 1:
-            return False, f"Multiple solutions exist: {solutions}"
+            return False, f"여러 개의 해가 존재합니다: {solutions}"
         elif solutions[0] != answer:
-            return False, f"Solution {solutions[0]} doesn't match answer {answer}"
+            return False, f"해 {solutions[0]}가 정답 {answer}과 일치하지 않습니다"
 
-        return True, "Problem is valid with unique solution"
+        return True, "유일한 해를 가진 유효한 문제입니다"
 
     except Exception as e:
-        return False, f"Validation error: {str(e)}"
+        return False, f"검증 오류: {str(e)}"
 
 
 # ============================================================
-# Dataset generation
+# 데이터셋 생성
 # ============================================================
 
 def create_dataset_files(num_questions: int):
     """
-    Create dataset files for number baseball puzzles.
+    숫자 야구 퍼즐 데이터셋 파일을 생성합니다.
 
     Args:
-        num_questions: Number of questions to generate
+        num_questions: 생성할 문제 수
 
     Returns:
-        Tuple[pd.DataFrame, List[Dict]]: (dataframe, json list)
+        Tuple[pd.DataFrame, List[Dict]]: (데이터프레임, JSON 리스트)
     """
     import pandas as pd
 
-    print(f"Generating {num_questions} number baseball puzzles...")
+    print(f"{num_questions}개의 숫자 야구 퍼즐을 생성합니다...")
 
     generator = ProblemGenerator()
 
@@ -385,7 +385,7 @@ def create_dataset_files(num_questions: int):
         if count == 0:
             continue
 
-        print(f"\n=== Generating {diff_name} puzzles ({count} needed) ===")
+        print(f"\n=== {diff_name} 난이도 퍼즐 생성 중 ({count}개 필요) ===")
 
         for j in range(count):
             try:
@@ -394,7 +394,7 @@ def create_dataset_files(num_questions: int):
 
                 if is_valid or (difficulty == Difficulty.HARD):
                     reordered = {
-                        'id': f'number_baseball_{len(all_puzzles)}',
+                        'id': f'number_baseball_ko_{len(all_puzzles)}',
                         'question': create_question(problem),
                         'answer': problem['answer'],
                         'difficulty': diff_name,
@@ -404,35 +404,35 @@ def create_dataset_files(num_questions: int):
                         'problem_text': problem['problem_text']
                     }
                     all_puzzles.append(reordered)
-                    print(f"  [{j+1}/{count}] digits={problem['num_digits']}, "
-                          f"hints={len(problem['hints'])}, answer={problem['answer']}")
+                    print(f"  [{j+1}/{count}] 자릿수={problem['num_digits']}, "
+                          f"힌트={len(problem['hints'])}개, 정답={problem['answer']}")
                 else:
-                    print(f"  [{j+1}/{count}] Validation failed: {msg}")
+                    print(f"  [{j+1}/{count}] 검증 실패: {msg}")
             except RuntimeError as e:
-                print(f"  [{j+1}/{count}] Failed: {e}")
+                print(f"  [{j+1}/{count}] 실패: {e}")
 
-    print(f"\nGenerated {len(all_puzzles)} puzzles")
+    print(f"\n총 {len(all_puzzles)}개의 퍼즐이 생성되었습니다")
 
     df = pd.DataFrame(all_puzzles)
 
-    # Save files
+    # 파일 저장
     PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
     # CSV
     csv_dir = PROJECT_ROOT / "data" / "csv"
     csv_dir.mkdir(parents=True, exist_ok=True)
-    csv_path = csv_dir / "number_baseball.csv"
+    csv_path = csv_dir / "number_baseball_ko.csv"
     df.to_csv(csv_path, index=False, encoding="utf-8-sig")
-    print(f"CSV file created: {csv_path}")
+    print(f"CSV 파일 생성 완료: {csv_path}")
 
     # JSONL
     json_dir = PROJECT_ROOT / "data" / "json"
     json_dir.mkdir(parents=True, exist_ok=True)
-    jsonl_path = json_dir / "number_baseball.jsonl"
+    jsonl_path = json_dir / "number_baseball_ko.jsonl"
     with open(jsonl_path, 'w', encoding='utf-8') as f:
         for item in all_puzzles:
             f.write(json.dumps(item, ensure_ascii=False) + '\n')
-    print(f"JSONL file created: {jsonl_path}")
+    print(f"JSONL 파일 생성 완료: {jsonl_path}")
 
     return df, all_puzzles
 
@@ -440,13 +440,13 @@ def create_dataset_files(num_questions: int):
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description="Number Baseball Puzzle Generator")
-    parser.add_argument("--num", type=int, default=12, help="Number of questions to generate")
+    parser = argparse.ArgumentParser(description="숫자 야구 퍼즐 생성기")
+    parser.add_argument("--num", type=int, default=12, help="생성할 문제 수")
 
     args = parser.parse_args()
 
     print("=" * 60)
-    print("Number Baseball (Bulls and Cows) Puzzle Generator")
+    print("숫자 야구 퍼즐 생성기")
     print("=" * 60)
 
     create_dataset_files(num_questions=args.num)

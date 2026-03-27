@@ -8,21 +8,22 @@
 
 - `kinship`: 한국어 친족 관계 (다중 선택 A-E)
 - `kinship_vision`: 이미지 기반 친족 관계 (동일한 평가자 사용)
-- `cipher`: 영어 암호 해독
-- `cipher_korean`: 한국어 암호 해독 (동일한 평가자 사용)
-- `hanoi`: 하노이 탑 (디스크, 출발지, 목적지)
-- `ferryman`: 뱃사공 항해 (X시간 Y분)
-- `array_formula`: 배열 공식 계산 (영어)
-- `array_formula_korean`: 배열 공식 계산 (한국어, 동일한 평가자 사용)
-- `causal_dag`: 인과 관계 DAG 추론 (영어)
-- `causal_dag_korean`: 인과 관계 DAG 추론 (한국어, 동일한 평가자 사용)
+- `cipher_en`: 영어 암호 해독
+- `cipher_ko`: 한국어 암호 해독 (동일한 평가자 사용)
+- `hanoi_en`: 하노이 탑 (디스크, 출발지, 목적지)
+- `ferryman_en`: 뱃사공 항해 (X hours Y minutes)
+- `ferryman_ko`: 뱃사공 항해 (X시간 Y분)
+- `array_formula_en`: 배열 공식 계산 (영어)
+- `array_formula_ko`: 배열 공식 계산 (한국어, 동일한 평가자 사용)
+- `causal_dag_en`: 인과 관계 DAG 추론 (영어)
+- `causal_dag_ko`: 인과 관계 DAG 추론 (한국어, 동일한 평가자 사용)
 - `cryptarithmetic`: 암호 산술 퍼즐
 - `inequality`: 부등식 제약 조건 만족
-- `logic_grid`: 로직 그리드 퍼즐 (영어)
-- `logic_grid_korean`: 로직 그리드 퍼즐 (한국어, 동일한 평가자 사용)
+- `logic_grid_en`: 로직 그리드 퍼즐 (영어)
+- `logic_grid_ko`: 로직 그리드 퍼즐 (한국어, 동일한 평가자 사용)
 - `number_baseball`: 숫자 야구 (스트라이크/볼)
-- `sat_puzzles`: SAT 퍼즐 풀이 (영어)
-- `sat_puzzles_korean`: SAT 퍼즐 풀이 (한국어, 동일한 평가자 사용)
+- `sat_puzzles_en`: SAT 퍼즐 풀이 (영어)
+- `sat_puzzles_ko`: SAT 퍼즐 풀이 (한국어, 동일한 평가자 사용)
 - `yacht_dice`: 야트 다이스 최적화
 
 ## 설치
@@ -47,124 +48,98 @@ ANTHROPIC_API_KEY=your_anthropic_api_key_here
 
 ## 사용법
 
-### 기본 사용법
+평가 시스템은 두 가지 모델 라우터를 지원합니다:
+
+- **liteLLM**: liteLLM 라이브러리를 통해 클라우드 API 호출 (Gemini, OpenAI, Anthropic 등)
+- **remote**: OpenAI 호환 API로 자체 호스팅 서버 호출 (예: Colab vLLM)
+
+모든 설정은 CLI 인수로 전달합니다 (설정 파일 불필요).
+
+### liteLLM 모드 (클라우드 API)
 
 ```bash
-# 프로젝트 루트에서 실행
-cd logical-puzzles
+# 기본 사용법
+python evaluation/run.py \
+    --model gemini/gemini-3-flash-preview \
+    --model_router litellm \
+    --gen-kwargs "temperature=1.0,max_tokens=65536,top_p=0.95,top_k=64" \
+    --tasks kinship --async
 
-# 모든 작업 평가 (config.yaml 설정 사용)
-python evaluation/run.py
-python -m evaluation.run
-
-# 특정 작업 평가
-python evaluation/run.py --tasks kinship cipher hanoi
-
-# 다른 모델 사용
-python evaluation/run.py --model gemini/gemini-3-flash-preview
-python evaluation/run.py --model gemini/gemini-2.5-flash
-python evaluation/run.py --model gpt-4o
-python evaluation/run.py --model claude-3-5-sonnet-20241022
-
-# 난이도 및 제한 필터링
-python evaluation/run.py --difficulty easy --limit 10
+# 난이도 필터 및 제한
+python evaluation/run.py \
+    --model gemini/gemini-3-flash-preview \
+    --model_router litellm \
+    --gen-kwargs "temperature=1.0,max_tokens=65536" \
+    --tasks kinship cipher hanoi \
+    --difficulty medium --limit 20 \
+    --async --max-concurrent 50
 ```
 
-### 비동기 모드
-
-비동기 모드는 `evaluation/config.yaml`에서 제어됩니다 (기본값: `use_async: true`):
-
-```bash
-# 비동기 모드 평가 (config.yaml에서 기본값)
-python evaluation/run.py
-
-# 명시적으로 비동기 모드 활성화 (config.yaml에 use_async: true가 있으면 기본값과 동일)
-python evaluation/run.py --async
-
-# 동시 실행 수 조정 (config.yaml에서 기본값: 30)
-python evaluation/run.py --max-concurrent 50
-```
-
-**참고:** 현재 `--async` 플래그는 `config.yaml`이 이미 `use_async: true`를 기본값으로 설정하고 있기 때문에 효과가 없습니다. 이 플래그는 config.yaml에서 `false` 설정을 재정의하려는 경우에 유용합니다.
-
-### 고급 옵션
+### Remote 모드 (자체 호스팅 vLLM 등)
 
 ```bash
 python evaluation/run.py \
-    --model gemini/gemini-3-flash-preview \
-    --tasks kinship cipher hanoi \
-    --difficulty medium \
-    --limit 20 \
-    --output-dir results/my_test \
-    --async \
-    --max-concurrent 50 \
-    --quiet
+    --model Qwen/Qwen3-0.6B \
+    --model_router remote \
+    --remote_url "https://xxxx.ngrok-free.app" \
+    --gen-kwargs "temperature=0.6,max_tokens=16384,top_p=0.95,top_k=20,reasoning=on" \
+    --tasks kinship --async --max-concurrent 30
 ```
 
-### 셸 스크립트 (17개 작업 배치 평가)
+### CLI 인수
 
-배치 평가를 위한 두 가지 스크립트가 제공됩니다:
+| 인수 | 필수 | 설명 |
+|------|------|------|
+| `--model` | O | 모델 이름 (예: `gemini/gemini-3-flash-preview`, `Qwen/Qwen3-0.6B`) |
+| `--model_router` | O | `litellm` 또는 `remote` |
+| `--remote_url` | remote일 때 | 원격 서버 URL |
+| `--gen-kwargs` | X | 생성 파라미터 (`key=value,key=value` 형식) |
+| `--timeout` | X | 요청 타임아웃 (초, 기본값: 600) |
+| `--tasks` | X | 평가할 작업 목록 (미지정 시 전체) |
+| `--async` | X | 비동기 모드 활성화 |
+| `--max-concurrent` | X | 최대 동시 요청 수 (기본값: 30) |
+| `--difficulty` | X | 난이도 필터 |
+| `--limit` | X | 작업당 최대 퍼즐 수 |
+| `--quiet` | X | 출력 최소화 |
 
-1. **순차 실행** (`evaluate_all.sh`):
-   ```bash
-   # 17개 작업을 하나씩 평가 (안정적, 느림)
-   bash scripts/evaluate_all.sh
-   ```
-   - 작업을 순차적으로 실행 (한 번에 하나씩)
-   - 더 안정적이고 디버깅이 쉬움
-   - 낮은 리소스 사용
-   - 더 명확한 로그 출력
+### 셸 스크립트 (배치 평가)
 
-2. **병렬 실행** (`evaluate_all_parallel.sh`) ⭐ **권장**:
-   ```bash
-   # 17개 작업을 병렬로 평가 (한 번에 5개, 빠름)
-   bash scripts/evaluate_all_parallel.sh
-   ```
-   - 최대 5개 작업을 동시에 실행
-   - 훨씬 빠름 (약 3-5배 속도 향상)
-   - 높은 리소스 사용
-   - 두 스크립트 모두 17개 작업을 평가합니다 (sudoku와 minesweeper 제외)
-   - **병렬 처리로 인해 각 작업별로 별도의 로그 파일이 생성됩니다**
-     - 로그 파일 위치: `results/log/{task_name}.log`
-     - 각 작업의 시작/종료 시간, 상태(SUCCESS/FAILED)가 기록됩니다
-     - 실시간으로 로그를 확인하면서 진행 상황을 모니터링할 수 있습니다
+| 스크립트 | 모드 | 실행 방식 |
+|---------|------|----------|
+| `eval_litellm.sh` | liteLLM | 순차 실행 |
+| `eval_litellm_parallel.sh` | liteLLM | 병렬 실행 (5개 동시) |
+| `eval_remote.sh` | Remote | 순차 실행 |
+| `eval_remote_parallel.sh` | Remote | 병렬 실행 (5개 동시) |
+
+```bash
+# liteLLM (Gemini 등)
+bash scripts/eval_litellm.sh
+bash scripts/eval_litellm_parallel.sh     # 권장
+
+# Remote (Colab vLLM 등)
+bash scripts/eval_remote.sh
+bash scripts/eval_remote_parallel.sh      # 권장
+```
+
+병렬 스크립트는 작업별 로그를 `results/{model_name}/log/{task}.log`에 저장합니다.
 
 ### 실행 중인 평가 모니터링
 
 ```bash
-# 간단한 테이블 보기 (기본값)
-bash scripts/monitor_eval.sh
-
-# 전체 정보가 포함된 상세 보기
-bash scripts/monitor_eval.sh detailed
-
-# 도움말 표시
-bash scripts/monitor_eval.sh help
+bash scripts/monitor.sh              # 간단한 테이블 보기
+bash scripts/monitor.sh detailed     # 상세 보기
+bash scripts/monitor.sh help         # 도움말
 ```
-
-모니터링 스크립트는 다음을 표시합니다:
-- 실행 중인 평가 프로세스 (PID, 모델, 작업)
-- 로그 파일의 진행 정보
-- 정확도 (사용 가능한 경우)
-- 로그 파일 위치
 
 ### 결과 시각화
 
 ```bash
-# Jupyter 노트북으로 결과 시각화
-jupyter notebook scripts/visualize_results.ipynb
+jupyter notebook scripts/viz_results.ipynb
 # 또는
-jupyter lab scripts/visualize_results.ipynb
+jupyter lab scripts/viz_results.ipynb
 ```
 
-시각화 노트북은 다음을 제공합니다:
-- 작업별 전체 정확도
-- 작업 및 난이도별 정확도 (그룹 막대 그래프)
-- 작업 및 난이도별 정확도 히트맵
-- 작업별 평균 지연 시간
-- 정확도 vs 지연 시간 산점도
-
-## API 키 우선순위
+## API 키 우선순위 (liteLLM 모드)
 
 시스템은 다음 순서로 API 키를 검색합니다:
 
@@ -173,6 +148,8 @@ jupyter lab scripts/visualize_results.ipynb
 3. LiteLLM 기본 설정
 
 **권장사항**: 모든 API 키를 `.env` 파일에 저장하세요.
+
+> **참고**: Remote 모드는 `.env`에 API 키가 필요 없습니다. 서버 URL은 `--remote_url`로 전달합니다.
 
 ## 출력 결과
 
@@ -253,57 +230,21 @@ kinship_1,"Question content...",B,"Model raw response",C,0,medium
 }
 ```
 
-## 설정 파일 (config.yaml)
+## 생성 파라미터 (`--gen-kwargs`)
 
-`evaluation/config.yaml`에서 기본 설정을 관리할 수 있습니다:
+쉼표로 구분된 `key=value` 쌍으로 전달합니다:
 
-```yaml
-llm:
-  model: gemini/gemini-3-flash-preview
-  temperature: 1.0
-  max_tokens: 65536  # 긴 응답이 필요한 작업을 위해 증가 (예: yacht_dice)
-  top_p: 0.95
-  top_k: 64
-  # reasoning_effort: medium  # 선택사항, 현재 비활성화됨
-  timeout: 600.0     # 타임아웃 (초)
+```bash
+# liteLLM (Gemini)
+--gen-kwargs "temperature=1.0,max_tokens=65536,top_p=0.95,top_k=64"
 
-data_dir: data/json
-output_dir: results
-
-evaluation:
-  use_async: true      # 비동기 모드 기본 활성화
-  max_concurrent: 30    # 최대 동시 실행 수
-
-tasks:
-  - kinship
-  - kinship_vision
-  - cipher
-  - cipher_korean
-  - hanoi
-  - ferryman
-  - array_formula
-  - array_formula_korean
-  - causal_dag
-  - causal_dag_korean
-  - cryptarithmetic
-  - inequality
-  - logic_grid
-  - logic_grid_korean
-  - number_baseball
-  - sat_puzzles
-  - sat_puzzles_korean
-  - yacht_dice
-
-difficulties:
-  - easy
-  - medium
-  - hard
+# Remote (Qwen3 사고 모드)
+--gen-kwargs "temperature=0.6,max_tokens=16384,top_p=0.95,top_k=20,reasoning=on"
 ```
 
-**설정 우선순위:**
-1. 명령줄 인수 (최우선)
-2. `config.yaml` 설정
-3. 기본값 (최하위)
+특수 키:
+- `reasoning=on`: 사고 모드 활성화 (remote 모드에서 `enable_thinking: true` 추가)
+- 숫자 값은 자동으로 `int` 또는 `float`으로 변환
 
 ## 구조
 
@@ -311,8 +252,12 @@ difficulties:
 evaluation/
 ├── core/                     # 핵심 구성 요소
 │   ├── base.py               # 기본 데이터 구조
-│   ├── llm_client.py         # LiteLLM 래퍼 (.env 자동 로드)
 │   └── result_handler.py     # 결과 저장
+├── model/                    # LLM 클라이언트 패키지
+│   ├── __init__.py           # create_client() 팩토리
+│   ├── base.py               # BaseLLMClient (ABC)
+│   ├── litellm.py            # LiteLLMClient
+│   └── remote.py             # RemoteLLMClient (OpenAI 호환)
 ├── evaluators/               # 작업별 평가자
 │   ├── __init__.py           # 레지스트리
 │   ├── kinship.py
@@ -335,13 +280,8 @@ evaluation/
 │   ├── kinship_vision/
 │   │   └── kinship.jpg
 │   └── minesweeper/
-│       ├── eval_metadata.jsonl
-│       ├── eval_puzzles.jsonl
-│       ├── eval_solutions.jsonl
-│       └── solution.md
-├── run.py                   # 메인 실행 스크립트 (.env 자동 로드)
-├── config.yaml              # 설정 파일
-└── README.md                # 이 문서
+│       └── ...
+└── run.py                   # 메인 실행 스크립트
 ```
 
 ## 새 작업 추가
@@ -372,19 +312,25 @@ class MyTaskEvaluator(BaseEvaluator):
 
 ## 지원 모델
 
+### liteLLM 모드
+
 LiteLLM을 통해 다양한 모델을 사용할 수 있습니다:
 
-**Google Gemini** (GEMINI_API_KEY 필요, 2026년 2월 기준):
-- `gemini/gemini-3-flash-preview` ⭐ (기본값, 최신, 강력함)
+**Google Gemini** (GEMINI_API_KEY 필요):
+- `gemini/gemini-3-flash-preview` (최신, 강력함)
 - `gemini/gemini-2.5-flash` (안정적, 빠름)
-
-> **참고**: LiteLLM은 자동으로 `.env`에서 `GEMINI_API_KEY`를 사용합니다.
 
 **OpenAI** (OPENAI_API_KEY 필요):
 - `gpt-4o`
 - `gpt-4o-mini`
-- `gpt-4-turbo`
 
 **Anthropic** (ANTHROPIC_API_KEY 필요):
 - `claude-3-5-sonnet-20241022`
 - `claude-3-opus-20240229`
+
+### Remote 모드
+
+OpenAI 호환 API로 서빙되는 모든 모델 (예: vLLM):
+- `Qwen/Qwen3-0.6B`
+- `Qwen/Qwen3-1.7B`
+- vLLM이 지원하는 모든 HuggingFace 모델

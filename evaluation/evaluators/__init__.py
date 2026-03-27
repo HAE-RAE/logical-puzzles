@@ -18,24 +18,26 @@ def _get_registry() -> Dict[str, Type]:
     from .yacht_dice import YachtDiceEvaluator
     
     return {
-        "array_formula": ArrayFormulaEvaluator,
-        "array_formula_korean": ArrayFormulaEvaluator,  # The Korean version also uses the same evaluator
-        "causal_dag": CausalDAGEvaluator,
-        "causal_dag_korean": CausalDAGEvaluator,  # The Korean version also uses the same evaluator
-        "cipher": CipherEvaluator,
-        "cipher_korean": CipherEvaluator,
+        "array_formula_en": ArrayFormulaEvaluator,
+        "array_formula_ko": ArrayFormulaEvaluator,
+        "causal_dag_en": CausalDAGEvaluator,
+        "causal_dag_ko": CausalDAGEvaluator,
+        "cipher_en": CipherEvaluator,
+        "cipher_ko": CipherEvaluator,
         "cryptarithmetic": CryptarithmeticEvaluator,
-        "ferryman": FerrymanEvaluator,
-        "hanoi": HanoiEvaluator,
+        "ferryman_en": FerrymanEvaluator,
+        "ferryman_ko": FerrymanEvaluator,
+        "hanoi_en": HanoiEvaluator,
+        "hanoi_ko": HanoiEvaluator,
         "inequality": InequalityEvaluator,
         "kinship": KinshipEvaluator,
         "kinship_vision": KinshipEvaluator,
-        "logic_grid": LogicGridEvaluator,
-        "logic_grid_korean": LogicGridEvaluator,  # The Korean version also uses the same evaluator
+        "logic_grid_en": LogicGridEvaluator,
+        "logic_grid_ko": LogicGridEvaluator,
         "minesweeper": MinesweeperEvaluator,
         "number_baseball": NumberBaseballEvaluator,
-        "sat_puzzles": SATPuzzleEvaluator,
-        "sat_puzzles_korean": SATPuzzleEvaluator,  # The Korean version also uses the same evaluator
+        "sat_puzzles_en": SATPuzzleEvaluator,
+        "sat_puzzles_ko": SATPuzzleEvaluator,
         "sudoku": SudokuEvaluator,
         "yacht_dice": YachtDiceEvaluator,
     }

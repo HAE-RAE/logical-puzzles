@@ -1,8 +1,8 @@
-"""Sudoku Puzzle Generator and Solver
+"""스도쿠 퍼즐 생성기 및 풀이기 (한국어 버전)
 
-Integrated module combining grid operations, solvers, difficulty rating,
-and puzzle generation from the sudoku_benchmark package.
-Supports 3-difficulty generation (easy/medium/hard) with spotcheck evaluation.
+격자 연산, 풀이기, 난이도 평가, 퍼즐 생성을 통합한 모듈.
+sudoku_benchmark 패키지 기반.
+3단계 난이도(easy/medium/hard) 생성 및 스팟체크 평가를 지원합니다.
 """
 
 import random
@@ -15,21 +15,21 @@ from dataclasses import dataclass
 
 
 # ============================================================================
-# Type definitions
+# 타입 정의
 # ============================================================================
 
-Grid = List[List[int]]  # 0 = empty cell
+Grid = List[List[int]]  # 0 = 빈 셀
 
 
 # ============================================================================
-# Grid basic functions
+# 격자 기본 함수
 # ============================================================================
 
 def from_string(s: str) -> Grid:
-    """Convert 81-char string to 9x9 grid."""
+    """81자 문자열을 9x9 격자로 변환합니다."""
     s = s.strip()
     if len(s) != 81:
-        raise ValueError(f"String length must be 81 (got: {len(s)})")
+        raise ValueError(f"문자열 길이는 81이어야 합니다 (입력: {len(s)})")
 
     grid: Grid = []
     for i in range(9):
@@ -41,13 +41,13 @@ def from_string(s: str) -> Grid:
             elif '1' <= ch <= '9':
                 row.append(int(ch))
             else:
-                raise ValueError(f"Invalid character '{ch}' at position {i*9+j}")
+                raise ValueError(f"잘못된 문자 '{ch}' (위치 {i*9+j})")
         grid.append(row)
     return grid
 
 
 def to_string(g: Grid, blanks: str = '.') -> str:
-    """Convert 9x9 grid to 81-char string."""
+    """9x9 격자를 81자 문자열로 변환합니다."""
     chars = []
     for row in g:
         for val in row:
@@ -60,7 +60,7 @@ def copy_grid(g: Grid) -> Grid:
 
 
 def get_cell_candidates(g: Grid, r: int, c: int) -> Set[int]:
-    """Get candidate numbers for cell (r, c)."""
+    """셀 (r, c)의 후보 숫자를 반환합니다."""
     if g[r][c] != 0:
         return set()
 
@@ -82,7 +82,7 @@ def get_cell_candidates(g: Grid, r: int, c: int) -> Set[int]:
 
 
 def is_solved(g: Grid) -> bool:
-    """Check if grid is a valid completed sudoku."""
+    """격자가 유효하게 완성된 스도쿠인지 확인합니다."""
     for row in g:
         if 0 in row:
             return False
@@ -105,7 +105,7 @@ def is_solved(g: Grid) -> bool:
 
 
 # ============================================================================
-# Grid transformations
+# 격자 변환
 # ============================================================================
 
 def rotate_90_cw(g: Grid) -> Grid:
@@ -178,7 +178,7 @@ SYMMETRY_OPS = {
 
 def apply_symmetry(g: Grid, symmetry: str) -> Grid:
     if symmetry not in SYMMETRY_OPS:
-        raise ValueError(f"Unknown symmetry: {symmetry}")
+        raise ValueError(f"알 수 없는 대칭 변환: {symmetry}")
     return SYMMETRY_OPS[symmetry](g)
 
 
@@ -260,7 +260,7 @@ def shuffle_stacks(g: Grid, rng: random.Random) -> Grid:
 
 
 def apply_random_transforms(g: Grid, rng: random.Random) -> Grid:
-    """Apply random combination of transformations."""
+    """무작위 변환 조합을 적용합니다."""
     result = copy_grid(g)
 
     perm = random_digit_permutation(rng)
@@ -283,14 +283,14 @@ def apply_random_transforms(g: Grid, rng: random.Random) -> Grid:
 
 
 # ============================================================================
-# Solution counter
+# 풀이 개수 세기
 # ============================================================================
 
 MAX_SOLUTIONS = 1
 
 
 def count_solutions(puzzle: Grid, limit: int = 2) -> int:
-    """Count solutions (early termination at limit)."""
+    """풀이 개수를 셉니다 (limit에 도달하면 조기 종료)."""
     grid = copy_grid(puzzle)
     count = [0]
 
@@ -328,7 +328,7 @@ def count_solutions(puzzle: Grid, limit: int = 2) -> int:
 
 
 def find_all_solutions(puzzle: Grid, limit: int = MAX_SOLUTIONS) -> List[Grid]:
-    """Find all solutions up to limit."""
+    """limit까지 모든 풀이를 찾습니다."""
     solutions = []
 
     def solve(g: Grid) -> bool:
@@ -366,7 +366,7 @@ def find_all_solutions(puzzle: Grid, limit: int = MAX_SOLUTIONS) -> List[Grid]:
 
 
 # ============================================================================
-# Backtrack solver with statistics
+# 통계 수집을 포함한 백트래킹 풀이기
 # ============================================================================
 
 @dataclass
@@ -377,7 +377,7 @@ class SearchStats:
 
 
 def solve_backtrack(puzzle: Grid) -> Tuple[Optional[Grid], SearchStats]:
-    """Solve puzzle with backtracking, collecting statistics."""
+    """백트래킹으로 퍼즐을 풀며 통계를 수집합니다."""
     grid = copy_grid(puzzle)
     stats = {'nodes': 0, 'max_depth': 0, 'total_candidates': 0, 'candidate_count': 0}
 
@@ -428,13 +428,13 @@ def solve_backtrack(puzzle: Grid) -> Tuple[Optional[Grid], SearchStats]:
 
 
 def search_stats(puzzle: Grid) -> SearchStats:
-    """Get search complexity statistics only."""
+    """탐색 복잡도 통계만 반환합니다."""
     _, stats = solve_backtrack(puzzle)
     return stats
 
 
 # ============================================================================
-# Logic solver (L1-L2)
+# 논리 풀이기 (L1-L2)
 # ============================================================================
 
 @dataclass
@@ -636,7 +636,7 @@ def solve_with_limit(puzzle: Grid, max_level: str) -> SolveSummary:
 
 
 # ============================================================================
-# Difficulty rating
+# 난이도 평가
 # ============================================================================
 
 @dataclass
@@ -649,7 +649,7 @@ class DifficultyMeta:
 
 
 def rate(puzzle: Grid) -> DifficultyMeta:
-    """Rate puzzle difficulty using logic solver + backtracking."""
+    """논리 풀이기 + 백트래킹을 사용하여 퍼즐 난이도를 평가합니다."""
     summary_l1 = solve_with_limit(puzzle, 'L1')
     if summary_l1.solved:
         return DifficultyMeta(
@@ -689,7 +689,7 @@ def rate(puzzle: Grid) -> DifficultyMeta:
 
 
 # ============================================================================
-# Complete grid generation
+# 완성 격자 생성
 # ============================================================================
 
 def _base_solution() -> Grid:
@@ -704,7 +704,7 @@ def _base_solution() -> Grid:
 
 
 def generate_complete(seed: int = None) -> Grid:
-    """Generate random valid complete sudoku grid."""
+    """무작위 유효 완성 스도쿠 격자를 생성합니다."""
     rng = random.Random(seed)
     base = _base_solution()
     result = apply_random_transforms(base, rng)
@@ -712,7 +712,7 @@ def generate_complete(seed: int = None) -> Grid:
 
 
 # ============================================================================
-# Puzzle creation by digging
+# 빈 칸 파기를 통한 퍼즐 생성
 # ============================================================================
 
 def count_givens(puzzle: Grid) -> int:
@@ -721,7 +721,7 @@ def count_givens(puzzle: Grid) -> int:
 
 def make_puzzle(solution: Grid, symmetry: str = 'rot180',
                 ensure_minimal: bool = False, rng: random.Random = None) -> Grid:
-    """Create puzzle by removing clues from complete grid."""
+    """완성 격자에서 단서를 제거하여 퍼즐을 생성합니다."""
     if rng is None:
         rng = random.Random()
 
@@ -792,7 +792,7 @@ def _make_minimal(puzzle: Grid, symmetry: str, rng: random.Random) -> Grid:
 
 
 # ============================================================================
-# Difficulty-based generation
+# 난이도 기반 생성
 # ============================================================================
 
 @dataclass
@@ -869,13 +869,13 @@ def generate_difficulty_puzzle(
     seed: Optional[int] = None
 ) -> Tuple[str, List[str], dict]:
     """
-    Generate a sudoku puzzle at specified difficulty.
+    지정된 난이도의 스도쿠 퍼즐을 생성합니다.
 
-    Returns:
-        Tuple of (puzzle_string, solution_strings, metadata)
+    반환값:
+        Tuple (퍼즐_문자열, 풀이_문자열_리스트, 메타데이터)
     """
     if difficulty not in DIFFICULTY_CONFIGS:
-        raise ValueError(f"Invalid difficulty: {difficulty}")
+        raise ValueError(f"잘못된 난이도: {difficulty}")
 
     config = DIFFICULTY_CONFIGS[difficulty]
     rng = random.Random(seed)
@@ -929,19 +929,19 @@ def generate_puzzles_by_difficulty(
     count_per_difficulty: int = 3,
     base_seed: int = 42
 ) -> List[dict]:
-    """Generate multiple puzzles for each difficulty level."""
+    """각 난이도별로 여러 퍼즐을 생성합니다."""
     puzzles = []
     puzzle_id = 0
 
     for difficulty in difficulties:
-        print(f"Generating {count_per_difficulty} puzzles for difficulty: {difficulty}")
+        print(f"난이도 '{difficulty}' 퍼즐 {count_per_difficulty}개 생성 중")
 
         for i in range(count_per_difficulty):
             seed = base_seed + puzzle_id * 1000
             puzzle_str, solution_strs, metadata = generate_difficulty_puzzle(difficulty, seed)
 
             record = {
-                'id': f"puzzle_{puzzle_id:04d}",
+                'id': f"sudoku_ko_{puzzle_id:04d}",
                 'difficulty': difficulty,
                 'puzzle': puzzle_str,
                 'answer': solution_strs[0],
@@ -951,18 +951,18 @@ def generate_puzzles_by_difficulty(
             puzzles.append(record)
             puzzle_id += 1
 
-            print(f"  Generated puzzle {i+1}: {metadata['givens_count']} givens, "
-                  f"{metadata['solution_count']} solutions")
+            print(f"  퍼즐 {i+1} 생성 완료: 주어진 숫자 {metadata['givens_count']}개, "
+                  f"풀이 {metadata['solution_count']}개")
 
     return puzzles
 
 
 # ============================================================================
-# Spotcheck generation
+# 스팟체크 생성
 # ============================================================================
 
 def select_spotcheck_positions(canonical_hash: str, secret_hex: str, k: int) -> List[str]:
-    """HMAC-based K-position selection (reproducible)."""
+    """HMAC 기반 K개 위치 선택 (재현 가능)."""
     secret = bytes.fromhex(secret_hex)
     message = canonical_hash.encode('utf-8')
     mac = hmac.new(secret, message, hashlib.sha256).digest()
@@ -978,7 +978,7 @@ def select_spotcheck_positions(canonical_hash: str, secret_hex: str, k: int) -> 
 
 
 def make_spotcheck_code(solution: Grid, positions: List[str]) -> int:
-    """Generate answer code as sum of K cell values."""
+    """K개 셀 값의 합계로 정답 코드를 생성합니다."""
     total = 0
     for pos in positions:
         parts = pos[1:].split('c')
@@ -989,22 +989,22 @@ def make_spotcheck_code(solution: Grid, positions: List[str]) -> int:
 
 
 # ============================================================================
-# Dataset generation
+# 데이터셋 생성
 # ============================================================================
 
 def create_dataset_files(num_questions: int):
     """
-    Create dataset files for sudoku puzzles.
+    스도쿠 퍼즐 데이터셋 파일을 생성합니다.
 
-    Args:
-        num_questions: Number of questions to generate
+    인자:
+        num_questions: 생성할 문제 수
 
-    Returns:
-        Tuple[pd.DataFrame, List[Dict]]: (dataframe, json list)
+    반환값:
+        Tuple[pd.DataFrame, List[Dict]]: (데이터프레임, JSON 리스트)
     """
     import pandas as pd
 
-    print(f"Generating {num_questions} sudoku puzzles...")
+    print(f"스도쿠 퍼즐 {num_questions}개 생성 중...")
 
     difficulties = ['easy', 'medium', 'hard']
     puzzles_per_diff = num_questions // len(difficulties)
@@ -1020,7 +1020,7 @@ def create_dataset_files(num_questions: int):
         if count == 0:
             continue
 
-        print(f"\n=== Generating {difficulty} puzzles ({count} needed) ===")
+        print(f"\n=== 난이도 '{difficulty}' 퍼즐 생성 중 ({count}개 필요) ===")
 
         for j in range(count):
             seed = 42 + puzzle_id * 1000
@@ -1035,9 +1035,29 @@ def create_dataset_files(num_questions: int):
                 positions = select_spotcheck_positions(canonical_hash, secret_hex, k)
                 code = make_spotcheck_code(solution_grid, positions)
 
+                # 스팟체크 안내 텍스트 (한국어)
+                positions_str = ", ".join(positions)
+                question_text = (
+                    f"당신은 스도쿠 풀이 전문가입니다. 다음 스도쿠 퍼즐을 완전히 풀어주세요.\n\n"
+                    f"스도쿠 규칙:\n"
+                    f"- 9×9 격자를 채우세요. 각 행, 열, 3×3 박스에 1-9 숫자가 들어갑니다\n"
+                    f"- 각 숫자는 각 행, 열, 박스에 정확히 한 번만 나타나야 합니다\n\n"
+                    f"퍼즐은 81자 문자열로 제공되며, 왼쪽에서 오른쪽으로, 위에서 아래로 읽습니다.\n"
+                    f"'.' 또는 '0'은 빈 셀을 나타냅니다.\n\n"
+                    f"퍼즐: {puzzle_str}\n\n"
+                    f"먼저 퍼즐을 단계별로 완전히 풀어주세요.\n"
+                    f"그런 다음, 다음 좌표의 값을 찾아 합계를 계산하세요:\n"
+                    f"{positions_str}\n\n"
+                    f"중요: 풀이 후 반드시 마지막 줄에 다음 형식으로 작성하세요:\n"
+                    f"Answer: [합계 숫자]\n\n"
+                    f"이 줄을 절대 생략하지 마세요. 이것이 응답에서 가장 중요한 부분입니다.\n\n"
+                    f"예시 (값이 5,3,4,6,7,8인 경우):\n"
+                    f"Answer: 33"
+                )
+
                 puzzle_data = {
-                    'id': f'sudoku_{len(all_puzzles)}',
-                    'question': puzzle_str,
+                    'id': f'sudoku_ko_{len(all_puzzles)}',
+                    'question': question_text,
                     'answer': str(code),
                     'solution': solution_strs[0],
                     'difficulty': difficulty,
@@ -1049,33 +1069,33 @@ def create_dataset_files(num_questions: int):
                     }
                 }
                 all_puzzles.append(puzzle_data)
-                print(f"  [{j+1}/{count}] givens={metadata['givens_count']}, code={code}")
+                print(f"  [{j+1}/{count}] 주어진 숫자={metadata['givens_count']}, 코드={code}")
             except Exception as e:
-                print(f"  [{j+1}/{count}] Failed: {e}")
+                print(f"  [{j+1}/{count}] 실패: {e}")
 
             puzzle_id += 1
 
-    print(f"\nGenerated {len(all_puzzles)} puzzles")
+    print(f"\n총 {len(all_puzzles)}개 퍼즐 생성 완료")
 
     df = pd.DataFrame(all_puzzles)
 
     PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
-    # CSV
+    # CSV 파일 저장
     csv_dir = PROJECT_ROOT / "data" / "csv"
     csv_dir.mkdir(parents=True, exist_ok=True)
-    csv_path = csv_dir / "sudoku.csv"
+    csv_path = csv_dir / "sudoku_ko.csv"
     df.to_csv(csv_path, index=False, encoding="utf-8-sig")
-    print(f"CSV file created: {csv_path}")
+    print(f"CSV 파일 생성 완료: {csv_path}")
 
-    # JSONL
+    # JSONL 파일 저장
     json_dir = PROJECT_ROOT / "data" / "json"
     json_dir.mkdir(parents=True, exist_ok=True)
-    jsonl_path = json_dir / "sudoku.jsonl"
+    jsonl_path = json_dir / "sudoku_ko.jsonl"
     with open(jsonl_path, 'w', encoding='utf-8') as f:
         for item in all_puzzles:
             f.write(json.dumps(item, ensure_ascii=False) + '\n')
-    print(f"JSONL file created: {jsonl_path}")
+    print(f"JSONL 파일 생성 완료: {jsonl_path}")
 
     return df, all_puzzles
 
@@ -1083,13 +1103,13 @@ def create_dataset_files(num_questions: int):
 if __name__ == '__main__':
     import argparse
 
-    parser = argparse.ArgumentParser(description="Sudoku Puzzle Generator")
-    parser.add_argument("--num", type=int, default=12, help="Number of questions to generate")
+    parser = argparse.ArgumentParser(description="스도쿠 퍼즐 생성기 (한국어)")
+    parser.add_argument("--num", type=int, default=12, help="생성할 문제 수")
 
     args = parser.parse_args()
 
     print("=" * 60)
-    print("Sudoku Puzzle Generator")
+    print("스도쿠 퍼즐 생성기 (한국어)")
     print("=" * 60)
 
     create_dataset_files(num_questions=args.num)
