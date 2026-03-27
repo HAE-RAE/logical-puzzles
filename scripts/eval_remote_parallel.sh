@@ -90,7 +90,7 @@ run_task() {
         --gen-kwargs "$GEN_KWARGS" \
         --tasks "$task" \
         --async \
-        --max-concurrent 10 2>&1 | tee -a "$log_file"; then
+        --max-concurrent 5 2>&1 | tee -a "$log_file"; then
         echo -e "${GREEN}✓ $task Completed${NC}"
         echo "$task:SUCCESS" >> /tmp/eval_results_$$
         echo "" >> "$log_file"

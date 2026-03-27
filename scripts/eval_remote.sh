@@ -20,12 +20,17 @@ REMOTE_URL="https://tremendously-bureaucratic-alda.ngrok-free.dev"
 GEN_KWARGS="temperature=0.6,max_tokens=16384,top_p=0.95,top_k=20,reasoning=on"
 # =================================================
 
+MODEL_DIR_NAME="${MODEL//\//_}"
+LOG_DIR="$PROJECT_ROOT/results/$MODEL_DIR_NAME/log"
+mkdir -p "$LOG_DIR"
+
 echo -e "${BLUE}========================================${NC}"
 echo -e "${BLUE}Evaluation Started (Qwen)${NC}"
 echo -e "${BLUE}========================================${NC}"
 echo -e "Model: ${MODEL}"
 echo -e "Remote URL: ${REMOTE_URL}"
 echo -e "Gen kwargs: ${GEN_KWARGS}"
+echo -e "Log saved location: ${LOG_DIR}"
 echo ""
 
 
@@ -63,10 +68,18 @@ FAIL_COUNT=0
 
 for task in "${TASKS[@]}"; do
     CURRENT_TASK=$((CURRENT_TASK + 1))
-    
+    log_file="$LOG_DIR/${task}.log"
+
+    echo "========================================" >> "$log_file"
+    echo "Task: $task" >> "$log_file"
+    echo "Started at: $(date '+%Y-%m-%d %H:%M:%S')" >> "$log_file"
+    echo "========================================" >> "$log_file"
+    echo "" >> "$log_file"
+
     echo -e "${YELLOW}[$CURRENT_TASK/$TOTAL_TASKS] Evaluating: $task${NC}"
+    echo -e "  Log: ${log_file}"
     echo "----------------------------------------"
-    
+
     set +e
     if python evaluation/run.py \
         --model "$MODEL" \
@@ -75,15 +88,25 @@ for task in "${TASKS[@]}"; do
         --gen-kwargs "$GEN_KWARGS" \
         --tasks "$task" \
         --async \
-        --max-concurrent 30; then
+        --max-concurrent 5 2>&1 | tee -a "$log_file"; then
         echo -e "${GREEN}✓ $task Completed${NC}"
         SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
+        echo "" >> "$log_file"
+        echo "========================================" >> "$log_file"
+        echo "Status: SUCCESS" >> "$log_file"
+        echo "Completed at: $(date '+%Y-%m-%d %H:%M:%S')" >> "$log_file"
+        echo "========================================" >> "$log_file"
     else
         echo -e "${RED}✗ $task Failed${NC}"
         FAIL_COUNT=$((FAIL_COUNT + 1))
+        echo "" >> "$log_file"
+        echo "========================================" >> "$log_file"
+        echo "Status: FAILED" >> "$log_file"
+        echo "Completed at: $(date '+%Y-%m-%d %H:%M:%S')" >> "$log_file"
+        echo "========================================" >> "$log_file"
     fi
     set -e
-    
+
     echo ""
 done
 
