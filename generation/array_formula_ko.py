@@ -1,5 +1,5 @@
 """
-Array Formula Puzzle Generator (v3 - Difficulty Rebalance, Korean)
+Array Formula Puzzle Generator (v5 - Quartile Calibration, Korean)
 Excel 배열 수식 기반 논리 퍼즐 생성기 - 한국어 버전
 
 Problem Types:
@@ -8,10 +8,10 @@ Problem Types:
 3. array_computation: SUMPRODUCT 스타일 배열 연산
 4. multi_condition: SUMIFS, MAXIFS 스타일 다중 조건 문제
 
-Difficulty Levels (v3 - 변별력 재조정):
-- easy: 3-5단계, 3테이블, 20-26상품, 24-36주문 → 목표 85-90%
-- medium: 5-8단계, 3테이블, 30-40상품, 42-65주문 → 목표 65-75%
-- hard: 8-12단계, 3테이블, 42-55상품, 65-95주문 → 목표 40-55%
+Difficulty Levels (v5 - Calibrated to gemini-3-flash-preview):
+- easy: easy templates, 20-28 products, 25-40 orders → target ~75%
+- medium: medium templates, 35-45 products, 50-70 orders → target ~50%
+- hard: hard templates, 48-58 products, 75-110 orders → target ≤25%
 """
 
 import json
@@ -52,15 +52,15 @@ class ArrayFormulaConfig:
 
     def __post_init__(self):
         if self.difficulty == "easy":
-            self.min_rows, self.max_rows = 28, 35
-            self.num_categories = 6
-            self.num_regions = 6
+            self.min_rows, self.max_rows = 20, 28
+            self.num_categories = 5
+            self.num_regions = 5
         elif self.difficulty == "medium":
-            self.min_rows, self.max_rows = 38, 50
-            self.num_categories = 8
+            self.min_rows, self.max_rows = 35, 45
+            self.num_categories = 7
             self.num_regions = 7
         elif self.difficulty == "hard":
-            self.min_rows, self.max_rows = 50, 65
+            self.min_rows, self.max_rows = 48, 58
             self.num_categories = 8
             self.num_regions = 8
 
@@ -278,8 +278,8 @@ def _make_tables_dict(product_table, sales_table, customer_table):
 # 공통 데이터 생성
 # ============================================================
 
-_ORDER_COUNTS = {"easy": (35, 50), "medium": (55, 80), "hard": (80, 120)}
-_CUSTOMER_COUNTS = {"easy": (10, 14), "medium": (14, 18), "hard": (16, 20)}
+_ORDER_COUNTS = {"easy": (25, 40), "medium": (50, 70), "hard": (75, 110)}
+_CUSTOMER_COUNTS = {"easy": (8, 12), "medium": (12, 16), "hard": (15, 19)}
 
 
 def _generate_all_tables(config, rng):
@@ -1858,7 +1858,7 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description="Array Formula Puzzle Generator (Korean)")
-    parser.add_argument("--num", type=int, default=100, help="Number of puzzles per difficulty level")
+    parser.add_argument("--num", type=int, default=200, help="Number of puzzles per difficulty level")
     parser.add_argument("--seed", type=int, default=2025, help="Random seed")
     parser.add_argument("--output", type=str, default="./data", help="Output base directory")
     parser.add_argument("--demo", action="store_true", help="Print demo puzzles")

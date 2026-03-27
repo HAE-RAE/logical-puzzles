@@ -1,5 +1,5 @@
 """
-Array Formula Puzzle Generator (v3 - Difficulty Rebalance)
+Array Formula Puzzle Generator (v5 - Quartile Calibration)
 Excel array formula-based logical puzzle generator
 
 Problem Types:
@@ -8,10 +8,10 @@ Problem Types:
 3. array_computation: SUMPRODUCT style array computation
 4. multi_condition: SUMIFS, MAXIFS style multi-condition problems
 
-Difficulty Levels (v4 - Iteration 2 Difficulty Increase):
-- easy: 3-5 step, 3 tables, 28-35 products, 35-50 orders → target 85-90%
-- medium: 5-8 step, 3 tables, 38-50 products, 55-80 orders → target 65-75%
-- hard: 8-14 step, 3 tables, 50-65 products, 80-120 orders → target 40-55%
+Difficulty Levels (v5 - Calibrated to gemini-3-flash-preview):
+- easy: easy templates, 20-28 products, 25-40 orders → target ~75%
+- medium: medium templates, 35-45 products, 50-70 orders → target ~50%
+- hard: hard templates, 48-58 products, 75-110 orders → target ≤25%
 """
 
 import json
@@ -52,15 +52,15 @@ class ArrayFormulaConfig:
 
     def __post_init__(self):
         if self.difficulty == "easy":
-            self.min_rows, self.max_rows = 28, 35
-            self.num_categories = 6
-            self.num_regions = 6
+            self.min_rows, self.max_rows = 20, 28
+            self.num_categories = 5
+            self.num_regions = 5
         elif self.difficulty == "medium":
-            self.min_rows, self.max_rows = 38, 50
-            self.num_categories = 8
+            self.min_rows, self.max_rows = 35, 45
+            self.num_categories = 7
             self.num_regions = 7
         elif self.difficulty == "hard":
-            self.min_rows, self.max_rows = 50, 65
+            self.min_rows, self.max_rows = 48, 58
             self.num_categories = 8
             self.num_regions = 8
 
@@ -281,8 +281,8 @@ def _make_tables_dict(product_table, sales_table, customer_table):
 # Data generation shared across generators
 # ============================================================
 
-_ORDER_COUNTS = {"easy": (35, 50), "medium": (55, 80), "hard": (80, 120)}
-_CUSTOMER_COUNTS = {"easy": (10, 14), "medium": (14, 18), "hard": (16, 20)}
+_ORDER_COUNTS = {"easy": (25, 40), "medium": (50, 70), "hard": (75, 110)}
+_CUSTOMER_COUNTS = {"easy": (8, 12), "medium": (12, 16), "hard": (15, 19)}
 
 
 def _generate_all_tables(config, rng):
@@ -1850,7 +1850,7 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description="Array Formula Puzzle Generator")
-    parser.add_argument("--num", type=int, default=100, help="Number of puzzles per difficulty level")
+    parser.add_argument("--num", type=int, default=200, help="Number of puzzles per difficulty level")
     parser.add_argument("--seed", type=int, default=2025, help="Random seed")
     parser.add_argument("--output", type=str, default="./data", help="Output base directory")
     parser.add_argument("--demo", action="store_true", help="Print demo puzzles")
