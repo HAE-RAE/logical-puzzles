@@ -518,7 +518,7 @@ def create_dataset_files(num_questions: int):
                 question = config.get_user_prompt(dice_results)
 
                 puzzle_data = {
-                    "id": f"yacht_dice_{len(all_puzzles)}",
+                    "id": f"yacht_dice_en_{len(all_puzzles)}",
                     "question": question,
                     "answer": str(optimal_score),
                     "solution": solution_str,
@@ -542,14 +542,14 @@ def create_dataset_files(num_questions: int):
     # CSV
     csv_dir = PROJECT_ROOT / "data" / "csv"
     csv_dir.mkdir(parents=True, exist_ok=True)
-    csv_path = csv_dir / "yacht_dice.csv"
+    csv_path = csv_dir / "yacht_dice_en.csv"
     df.to_csv(csv_path, index=False, encoding="utf-8-sig")
     print(f"CSV file created: {csv_path}")
 
     # JSONL
     json_dir = PROJECT_ROOT / "data" / "json"
     json_dir.mkdir(parents=True, exist_ok=True)
-    jsonl_path = json_dir / "yacht_dice.jsonl"
+    jsonl_path = json_dir / "yacht_dice_en.jsonl"
     with open(jsonl_path, 'w', encoding='utf-8') as f:
         for item in all_puzzles:
             f.write(json.dumps(item, ensure_ascii=False) + '\n')

@@ -427,7 +427,7 @@ def create_dataset_files(num_questions: int):
             try:
                 puzzle = generator.generate_puzzle(difficulty)
                 puzzle_data = {
-                    "id": f"inequality_{len(all_puzzles)}",
+                    "id": f"inequality_en_{len(all_puzzles)}",
                     "question": create_question(puzzle),
                     "answer": puzzle.get_answer_string(),
                     "solution": puzzle.to_problem_string(),
@@ -452,14 +452,14 @@ def create_dataset_files(num_questions: int):
     # CSV
     csv_dir = PROJECT_ROOT / "data" / "csv"
     csv_dir.mkdir(parents=True, exist_ok=True)
-    csv_path = csv_dir / "inequality.csv"
+    csv_path = csv_dir / "inequality_en.csv"
     df.to_csv(csv_path, index=False, encoding="utf-8-sig")
     print(f"CSV file created: {csv_path}")
 
     # JSONL
     json_dir = PROJECT_ROOT / "data" / "json"
     json_dir.mkdir(parents=True, exist_ok=True)
-    jsonl_path = json_dir / "inequality.jsonl"
+    jsonl_path = json_dir / "inequality_en.jsonl"
     with open(jsonl_path, 'w', encoding='utf-8') as f:
         for item in all_puzzles:
             f.write(json.dumps(item, ensure_ascii=False) + '\n')

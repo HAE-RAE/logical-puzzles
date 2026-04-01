@@ -1036,7 +1036,7 @@ def create_dataset_files(num_questions: int):
                 code = make_spotcheck_code(solution_grid, positions)
 
                 puzzle_data = {
-                    'id': f'sudoku_{len(all_puzzles)}',
+                    'id': f'sudoku_en_{len(all_puzzles)}',
                     'question': puzzle_str,
                     'answer': str(code),
                     'solution': solution_strs[0],
@@ -1064,14 +1064,14 @@ def create_dataset_files(num_questions: int):
     # CSV
     csv_dir = PROJECT_ROOT / "data" / "csv"
     csv_dir.mkdir(parents=True, exist_ok=True)
-    csv_path = csv_dir / "sudoku.csv"
+    csv_path = csv_dir / "sudoku_en.csv"
     df.to_csv(csv_path, index=False, encoding="utf-8-sig")
     print(f"CSV file created: {csv_path}")
 
     # JSONL
     json_dir = PROJECT_ROOT / "data" / "json"
     json_dir.mkdir(parents=True, exist_ok=True)
-    jsonl_path = json_dir / "sudoku.jsonl"
+    jsonl_path = json_dir / "sudoku_en.jsonl"
     with open(jsonl_path, 'w', encoding='utf-8') as f:
         for item in all_puzzles:
             f.write(json.dumps(item, ensure_ascii=False) + '\n')

@@ -24,8 +24,10 @@ class FerrymanEvaluator(BaseEvaluator):
 ### Rules
 1. Analyze all given navigation regulations step by step.
 2. Apply all speed limits, mandatory rest stops, and cargo regulations in your calculations.
-3. After solving the problem, write your final answer in the following format: $\\boxed{X hours Y minutes}$.
-4. Inside \\boxed{}, answer ONLY in "X hours Y minutes" format. Do not include other units or explanations.
+3. Explain your reasoning clearly, then present your final conclusion in the format below.
+
+### Final answer format
+End with $\\boxed{X hours Y minutes}$.
 """
 
     KOREAN_SYSTEM_PROMPT = """당신은 뱃사공 운항 문제를 정확히 해결하는 전문가입니다.
@@ -33,13 +35,23 @@ class FerrymanEvaluator(BaseEvaluator):
 ### 규칙
 1. 주어진 운항 규정을 모두 고려하여 단계별로 분석하세요.
 2. 속도 제한, 의무 휴식, 화물 규정을 모두 적용하여 계산하세요.
-3. 문제를 푼 후, 최종 답변을 다음과 같은 형식으로 작성하세요: $\\boxed{N시간 M분}$.
-4. \\boxed{} 안에는 "X시간 Y분" 형식으로만 답하세요. 다른 단위나 설명은 포함하지 마세요.
+3. 풀이 과정을 명확히 서술한 뒤, 최종 결론을 아래 형식으로 제시하세요.
+
+### 최종 답 형식
+마지막에 $\\boxed{N시간 M분}$ 형식으로 정답을 표시하세요.
 """
 
-    def _is_korean(self, puzzle: Dict) -> bool:
-        expected = puzzle.get("answer", "")
-        return bool(re.search(r'[가-힣]', expected))
+    def _is_korean(self, puzzle: Optional[Dict] = None) -> bool:
+        """Prefer task_name suffix (_ko / _en); else infer from expected answer."""
+        task = getattr(self, "_task_name", None) or ""
+        if task.endswith("_ko"):
+            return True
+        if task.endswith("_en"):
+            return False
+        if puzzle is not None:
+            expected = puzzle.get("answer", "")
+            return bool(re.search(r"[가-힣]", expected))
+        return False
 
     def _get_system_prompt(self, puzzle: Dict) -> str:
         if self._is_korean(puzzle):
@@ -58,7 +70,7 @@ class FerrymanEvaluator(BaseEvaluator):
     def _parse_answer(self, response: str, puzzle: Dict) -> Optional[str]:
         """
         Extract time answer from LLM response and normalize.
-        Routes to Korean or English parser based on puzzle answer format.
+        Routes to Korean or English parser based on task_name (_ko/_en) or answer format.
         """
         if self._is_korean(puzzle):
             return self._extract_korean(response)

@@ -133,7 +133,7 @@ NP-complete problem of finding value combinations that satisfy given logical exp
 ### 15. Yacht Dice (EN / KO)
 Combinatorial optimization problem of optimally assigning 12 dice results to 12 categories to maximize total score.
 
-- **Scripts**: `generation/yacht_dice.py`, `generation/yacht_dice_ko.py`
+- **Scripts**: `generation/yacht_dice_en.py`, `generation/yacht_dice_ko.py`
 - **Combinatorial Optimization**: 12! = 479,001,600 possible assignments
 - **Hungarian Algorithm**: Calculate optimal solution
 - **Bonus Score Calculation**: Bonus based on upper section total

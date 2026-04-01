@@ -110,8 +110,8 @@ echo ""; echo "[26/28] sudoku_ko..."
 python generation/sudoku_ko.py --num 300
 
 # Yacht Dice (EN)
-echo ""; echo "[27/28] yacht_dice..."
-python generation/yacht_dice.py --num 100
+echo ""; echo "[27/28] yacht_dice_en..."
+python generation/yacht_dice_en.py --num 100
 
 # Yacht Dice (KO)
 echo ""; echo "[28/28] yacht_dice_ko..."

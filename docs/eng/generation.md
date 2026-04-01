@@ -32,7 +32,7 @@ A collection of scripts for generating datasets for 28 logical puzzle generators
 | SAT Puzzle (EN) | `sat_puzzle_en.py` | Easy, Medium, Hard | 300 |
 | Sudoku (EN) | `sudoku_en.py` | Easy, Medium, Hard | - |
 | Sudoku (KO) | `sudoku_ko.py` | Easy, Medium, Hard | - |
-| Yacht Dice (EN) | `yacht_dice.py` | - | 100 |
+| Yacht Dice (EN) | `yacht_dice_en.py` | - | 100 |
 | Yacht Dice (KO) | `yacht_dice_ko.py` | - | 100 |
 
 ## 🚀 Usage

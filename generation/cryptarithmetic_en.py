@@ -632,7 +632,7 @@ def create_dataset_files(num_questions: int):
 
             if candidate:
                 puzzle_data = {
-                    "id": f"cryptarithmetic_{len(all_puzzles)}",
+                    "id": f"cryptarithmetic_en_{len(all_puzzles)}",
                     "question": create_question(candidate),
                     "answer": candidate.answer,
                     "solution": candidate.puzzle_str,
@@ -659,14 +659,14 @@ def create_dataset_files(num_questions: int):
     # CSV
     csv_dir = PROJECT_ROOT / "data" / "csv"
     csv_dir.mkdir(parents=True, exist_ok=True)
-    csv_path = csv_dir / "cryptarithmetic.csv"
+    csv_path = csv_dir / "cryptarithmetic_en.csv"
     df.to_csv(csv_path, index=False, encoding="utf-8-sig")
     print(f"CSV file created: {csv_path}")
 
     # JSONL
     json_dir = PROJECT_ROOT / "data" / "json"
     json_dir.mkdir(parents=True, exist_ok=True)
-    jsonl_path = json_dir / "cryptarithmetic.jsonl"
+    jsonl_path = json_dir / "cryptarithmetic_en.jsonl"
     with open(jsonl_path, 'w', encoding='utf-8') as f:
         for item in all_puzzles:
             f.write(json.dumps(item, ensure_ascii=False) + '\n')

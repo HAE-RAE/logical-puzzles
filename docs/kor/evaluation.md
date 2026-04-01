@@ -1,30 +1,31 @@
 # Logical-Puzzles 통합 평가 시스템
 
-18개 논리 퍼즐 작업을 위한 통합 평가 시스템입니다.
+28개 논리 퍼즐 작업(task)을 위한 통합 평가 시스템입니다.
 
 ## 지원 작업
 
-현재 18개 작업을 지원합니다 (배치 평가에서 sudoku와 minesweeper 제외):
+평가 레지스트리 기준 **총 28개** task입니다. 영어·한국어 데이터는 `*_en` / `*_ko` 키로 구분되며, 동일 평가기를 쓰는 쌍이 많습니다.
 
-- `kinship`: 한국어 친족 관계 (다중 선택 A-E)
-- `kinship_vision`: 이미지 기반 친족 관계 (동일한 평가자 사용)
-- `cipher_en`: 영어 암호 해독
-- `cipher_ko`: 한국어 암호 해독 (동일한 평가자 사용)
-- `hanoi_en`: 하노이 탑 (디스크, 출발지, 목적지)
-- `ferryman_en`: 뱃사공 항해 (X hours Y minutes)
-- `ferryman_ko`: 뱃사공 항해 (X시간 Y분)
-- `array_formula_en`: 배열 공식 계산 (영어)
-- `array_formula_ko`: 배열 공식 계산 (한국어, 동일한 평가자 사용)
-- `causal_dag_en`: 인과 관계 DAG 추론 (영어)
-- `causal_dag_ko`: 인과 관계 DAG 추론 (한국어, 동일한 평가자 사용)
-- `cryptarithmetic`: 암호 산술 퍼즐
-- `inequality`: 부등식 제약 조건 만족
-- `logic_grid_en`: 로직 그리드 퍼즐 (영어)
-- `logic_grid_ko`: 로직 그리드 퍼즐 (한국어, 동일한 평가자 사용)
-- `number_baseball`: 숫자 야구 (스트라이크/볼)
-- `sat_puzzles_en`: SAT 퍼즐 풀이 (영어)
-- `sat_puzzles_ko`: SAT 퍼즐 풀이 (한국어, 동일한 평가자 사용)
-- `yacht_dice`: 야트 다이스 최적화
+### 다국어 서브셋 (en/ko) — 13쌍 · 26개 task
+
+- **Array Formula** — `array_formula_en` / `array_formula_ko` — 엑셀 배열 수식 (테이블 조회·조건부 집계·다중 조건 연산)
+- **Causal DAG** — `causal_dag_en` / `causal_dag_ko` — 인과 그래프 (이벤트 간 시간 지연 전파 경로 추론)
+- **Cipher** — `cipher_en` / `cipher_ko` — 암호 해독 (다중 암호 스택 역추론)
+- **Cryptarithmetic** — `cryptarithmetic_en` / `cryptarithmetic_ko` — 복면산 (문자→숫자 대입 등식 완성)
+- **Ferryman** — `ferryman_en` / `ferryman_ko` — 여정 계산 (구간별 속도·휴식·혼잡 복합 조건)
+- **Hanoi** — `hanoi_en` / `hanoi_ko` — 하노이 탑 (디스크 이동 순서·상태 추적)
+- **Inequality** — `inequality_en` / `inequality_ko` — 부등호 퍼즐 (1~N 숫자 부등호 배열)
+- **Logic Grid** — `logic_grid_en` / `logic_grid_ko` — 아인슈타인 퍼즐 (다차원 속성 연역)
+- **Minesweeper** — `minesweeper_en` / `minesweeper_ko` — 지뢰찾기 (인접 숫자 힌트로 지뢰 위치 추론)
+- **Number Baseball** — `number_baseball_en` / `number_baseball_ko` — 숫자 야구 (스트라이크/볼 힌트로 비밀번호 추론)
+- **SAT Puzzle** — `sat_puzzles_en` / `sat_puzzles_ko` — 부울 충족 가능성 (CNF 논리식 참/거짓 판별)
+- **Sudoku** — `sudoku_en` / `sudoku_ko` — 스도쿠 (행·열·박스 제약 빈칸 채우기)
+- **Yacht Dice** — `yacht_dice_en` / `yacht_dice_ko` — 요트 다이스 (주사위 카테고리 배정 점수 최적화)
+
+### 한국어 전용 서브셋 — 2개
+
+- **Kinship** — `kinship` — 친족 호칭 추론 (텍스트 기반, 다중 선택)
+- **Kinship Vision** — `kinship_vision` — 친족 호칭 추론 (멀티모달, 이미지+대화)
 
 ## 설치
 
@@ -70,7 +71,7 @@ python evaluation/run.py \
     --model gemini/gemini-3-flash-preview \
     --model_router litellm \
     --gen-kwargs "temperature=1.0,max_tokens=65536" \
-    --tasks kinship cipher hanoi \
+    --tasks kinship cipher_en hanoi_en \
     --difficulty medium --limit 20 \
     --async --max-concurrent 50
 ```
@@ -260,19 +261,20 @@ evaluation/
 │   └── remote.py             # RemoteLLMClient (OpenAI 호환)
 ├── evaluators/               # 작업별 평가자
 │   ├── __init__.py           # 레지스트리
-│   ├── kinship.py
-│   ├── cipher.py
-│   ├── hanoi.py
-│   ├── ferryman.py
 │   ├── array_formula.py
 │   ├── causal_dag.py
+│   ├── cipher.py
 │   ├── cryptarithmetic.py
+│   ├── ferryman.py
+│   ├── hanoi.py
 │   ├── inequality.py
+│   ├── kinship.py
 │   ├── logic_grid.py
+│   ├── minesweeper.py
 │   ├── number_baseball.py
 │   ├── sat_puzzle.py
-│   ├── yacht_dice.py
-│   └── ... (더 많은 평가자)
+│   ├── sudoku.py
+│   └── yacht_dice.py
 ├── legacy/                 # 레거시 평가 스크립트 (참고용)
 │   ├── README.md
 │   └── eval_*.py

@@ -1,29 +1,31 @@
 # Logical-Puzzles Unified Evaluation System
 
-A unified evaluation system for 18 logical puzzle tasks.
+A unified evaluation system for **28** logical puzzle tasks.
 
 ## Supported Tasks
 
-Currently supports 18 tasks (excluding sudoku and minesweeper from batch evaluation):
+The evaluator registry defines **28** task keys. English and Korean datasets use `*_en` and `*_ko` suffixes; many pairs share the same evaluator class.
 
-- `kinship`: Korean kinship relationships (multiple choice A-E)
-- `kinship_vision`: Image-based kinship relationships (uses same evaluator)
-- `cipher_en`: English cipher decryption
-- `cipher_ko`: Korean cipher decryption (uses same evaluator)
-- `hanoi_en`: Tower of Hanoi (disk, from, to)
-- `ferryman_en`: Ferryman navigation (X hours Y minutes)
-- `array_formula_en`: Array formula calculations (English)
-- `array_formula_ko`: Array formula calculations (Korean, uses same evaluator)
-- `causal_dag_en`: Causal DAG inference (English)
-- `causal_dag_ko`: Causal DAG inference (Korean, uses same evaluator)
-- `cryptarithmetic`: Cryptarithmetic puzzles
-- `inequality`: Inequality constraint satisfaction
-- `logic_grid_en`: Logic grid puzzles (English)
-- `logic_grid_ko`: Logic grid puzzles (Korean, uses same evaluator)
-- `number_baseball`: Number baseball (Strike/Ball)
-- `sat_puzzles_en`: SAT puzzle solving (English)
-- `sat_puzzles_ko`: SAT puzzle solving (Korean, uses same evaluator)
-- `yacht_dice`: Yacht dice optimization
+### Multilingual subset (en/ko) — 13 pairs, 26 tasks
+
+- **Array Formula** — `array_formula_en` / `array_formula_ko` — Spreadsheet-style array formulas (lookup tables, conditional aggregation, multi-condition arithmetic)
+- **Causal DAG** — `causal_dag_en` / `causal_dag_ko` — Causal graphs (infer time-lagged propagation paths between events)
+- **Cipher** — `cipher_en` / `cipher_ko` — Cipher decryption (reverse a stack of layered ciphers)
+- **Cryptarithmetic** — `cryptarithmetic_en` / `cryptarithmetic_ko` — Cryptarithms (digit substitution to satisfy arithmetic equalities)
+- **Ferryman** — `ferryman_en` / `ferryman_ko` — Journey planning (speed limits, rest rules, congestion, and other leg constraints)
+- **Hanoi** — `hanoi_en` / `hanoi_ko` — Tower of Hanoi (disk move sequences and state tracking)
+- **Inequality** — `inequality_en` / `inequality_ko` — Inequality grids (place 1…N subject to inequality clues between cells)
+- **Logic Grid** — `logic_grid_en` / `logic_grid_ko` — Einstein / Zebra-style logic (multi-attribute deduction)
+- **Minesweeper** — `minesweeper_en` / `minesweeper_ko` — Minesweeper (infer mine locations from adjacent number hints)
+- **Number Baseball** — `number_baseball_en` / `number_baseball_ko` — Number baseball (infer a secret code from strike/ball feedback)
+- **SAT Puzzle** — `sat_puzzles_en` / `sat_puzzles_ko` — Boolean satisfiability (evaluate or satisfy CNF formulas)
+- **Sudoku** — `sudoku_en` / `sudoku_ko` — Sudoku (fill a grid under row, column, and box constraints)
+- **Yacht Dice** — `yacht_dice_en` / `yacht_dice_ko` — Yacht dice (assign twelve dice rolls to twelve categories for maximum score)
+
+### Korean-only subset — 2 tasks
+
+- **Kinship** — `kinship` — Korean kinship titles from text (multiple choice)
+- **Kinship Vision** — `kinship_vision` — Korean kinship titles with images (multimodal: photo + dialogue)
 
 ## Installation
 
@@ -69,7 +71,7 @@ python evaluation/run.py \
     --model gemini/gemini-3-flash-preview \
     --model_router litellm \
     --gen-kwargs "temperature=1.0,max_tokens=65536" \
-    --tasks kinship cipher hanoi \
+    --tasks kinship cipher_en hanoi_en \
     --difficulty medium --limit 20 \
     --async --max-concurrent 50
 ```
@@ -259,19 +261,20 @@ evaluation/
 │   └── remote.py             # RemoteLLMClient (OpenAI-compatible)
 ├── evaluators/               # Task-specific evaluators
 │   ├── __init__.py           # Registry
-│   ├── kinship.py
-│   ├── cipher.py
-│   ├── hanoi.py
-│   ├── ferryman.py
 │   ├── array_formula.py
 │   ├── causal_dag.py
+│   ├── cipher.py
 │   ├── cryptarithmetic.py
+│   ├── ferryman.py
+│   ├── hanoi.py
 │   ├── inequality.py
+│   ├── kinship.py
 │   ├── logic_grid.py
+│   ├── minesweeper.py
 │   ├── number_baseball.py
 │   ├── sat_puzzle.py
-│   ├── yacht_dice.py
-│   └── ... (more evaluators)
+│   ├── sudoku.py
+│   └── yacht_dice.py
 ├── legacy/                 # Legacy evaluation scripts (reference)
 │   ├── README.md
 │   └── eval_*.py
