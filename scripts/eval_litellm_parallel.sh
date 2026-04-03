@@ -13,9 +13,11 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 cd "$PROJECT_ROOT"
 
+# export LITELLM_DEBUG=true
+
 # ============ Gemini 설정 ============
 MODEL="gemini/gemini-3-flash-preview"
-GEN_KWARGS="temperature=1.0,max_tokens=65536,top_p=0.95,top_k=64"
+GEN_KWARGS="temperature=1.0,max_tokens=65536,top_p=0.95,top_k=64,reasoning_effort=high"
 # =====================================
 
 MODEL_DIR_NAME="${MODEL//\//_}"
@@ -31,8 +33,6 @@ echo -e "Gen kwargs: ${GEN_KWARGS}"
 echo -e "Log saved location: ${LOG_DIR}"
 echo ""
 
-python generation/kinship.py --num 100
-python generation/kinship_vision.py --num 20
 
 TASKS=(
     # "array_formula_en"

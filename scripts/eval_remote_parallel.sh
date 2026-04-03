@@ -14,8 +14,8 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 cd "$PROJECT_ROOT"
 
 # ============ Qwen 설정 (Remote 서버) ============
-# MODEL="Qwen/Qwen3-0.6B"
-MODEL="Qwen/Qwen3-1.7B"
+MODEL="Qwen/Qwen3-0.6B"
+# MODEL="Qwen/Qwen3-1.7B"
 REMOTE_URL="https://tremendously-bureaucratic-alda.ngrok-free.dev"
 GEN_KWARGS="temperature=0.6,max_tokens=16384,top_p=0.95,top_k=20,reasoning=on"
 # =================================================

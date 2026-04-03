@@ -48,7 +48,7 @@ class LiteLLMClient(BaseLLMClient):
         if "top_k" in self.gen_kwargs:
             params["top_k"] = self.gen_kwargs["top_k"]
         if "reasoning_effort" in self.gen_kwargs:
-            params.setdefault("extra_body", {})["reasoning_effort"] = self.gen_kwargs["reasoning_effort"]
+            params["reasoning_effort"] = self.gen_kwargs["reasoning_effort"]
         return params
 
     def _extract_response(self, response, latency_ms: float) -> Tuple[str, Dict]:
