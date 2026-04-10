@@ -19,25 +19,27 @@ class FerrymanEvaluator(BaseEvaluator):
     English answer format: X hours Y minutes
     """
     
-    SYSTEM_PROMPT = """You are an expert at solving boat navigation problems.
+    SYSTEM_PROMPT = """### Instructions
+You are an expert at solving boat navigation problems.
 
 ### Rules
 1. Analyze all given navigation regulations step by step.
 2. Apply all speed limits, mandatory rest stops, and cargo regulations in your calculations.
 3. Explain your reasoning clearly, then present your final conclusion in the format below.
 
-### Final answer format
+### Output format
 End with $\\boxed{X hours Y minutes}$.
 """
 
-    KOREAN_SYSTEM_PROMPT = """당신은 뱃사공 운항 문제를 정확히 해결하는 전문가입니다.
+    KOREAN_SYSTEM_PROMPT = """### 지시사항
+당신은 뱃사공 운항 문제를 정확히 해결하는 전문가입니다.
 
 ### 규칙
 1. 주어진 운항 규정을 모두 고려하여 단계별로 분석하세요.
 2. 속도 제한, 의무 휴식, 화물 규정을 모두 적용하여 계산하세요.
 3. 풀이 과정을 명확히 서술한 뒤, 최종 결론을 아래 형식으로 제시하세요.
 
-### 최종 답 형식
+### 출력 형식
 마지막에 $\\boxed{N시간 M분}$ 형식으로 정답을 표시하세요.
 """
 

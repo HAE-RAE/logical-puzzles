@@ -44,16 +44,48 @@ class CryptarithmeticEvaluator(BaseEvaluator):
     - Fallback validation: extracts full mapping from response and verifies arithmetic
     """
 
-    SYSTEM_PROMPT = """You are an expert puzzle solver specializing in cryptarithmetic problems.
+    SYSTEM_PROMPT = """### Instructions
+You are an expert puzzle solver specializing in cryptarithmetic problems.
+Solve the puzzle and provide your answer in the format below.
 
-Rules:
+### Rules
 - Each letter represents a unique digit (0-9)
 - Different letters must map to different digits
 - Leading letters cannot be zero
 - '*' represents an unknown letter that could be any letter
 
-Solve the puzzle and provide your answer in this exact format:
+### Output format
 Answer: [number]"""
+
+    KOREAN_SYSTEM_PROMPT = """### 지시사항
+당신은 암호산술(숫자 맞추기) 퍼즐 전문가입니다.
+퍼즐을 풀고 아래 형식으로만 답하세요.
+
+### 규칙
+- 각 글자는 서로 다른 숫자(0-9)를 나타냅니다
+- 서로 다른 글자는 서로 다른 숫자여야 합니다
+- 맨 앞 글자는 0이 될 수 없습니다
+- '*'는 알 수 없는 글자로, 어떤 글자든 될 수 있습니다
+
+### 출력 형식
+Answer: [숫자]"""
+
+    def _is_korean(self, puzzle: Optional[Dict] = None) -> bool:
+        """Prefer task_name suffix (_ko / _en); else infer from expected answer."""
+        task = getattr(self, "_task_name", None) or ""
+        if task.endswith("_ko"):
+            return True
+        if task.endswith("_en"):
+            return False
+        if puzzle is not None:
+            expected = puzzle.get("answer", "")
+            return bool(re.search(r"[가-힣]", str(expected)))
+        return False
+
+    def _get_system_prompt(self, puzzle: Dict) -> str:
+        if self._is_korean(puzzle):
+            return self.KOREAN_SYSTEM_PROMPT
+        return self.SYSTEM_PROMPT
 
     # ========================================================================
     # Answer parsing and checking (base interface)
@@ -372,7 +404,7 @@ Answer: [number]"""
         puzzle, user_content = self._prepare_puzzle_for_eval(puzzle)
 
         messages = [
-            {"role": "system", "content": self.SYSTEM_PROMPT},
+            {"role": "system", "content": self._get_system_prompt(puzzle)},
             {"role": "user", "content": user_content}
         ]
 
@@ -400,7 +432,7 @@ Answer: [number]"""
             enriched, user_content = self._prepare_puzzle_for_eval(puzzle)
             enriched_puzzles.append(enriched)
             messages_list.append([
-                {"role": "system", "content": self.SYSTEM_PROMPT},
+                {"role": "system", "content": self._get_system_prompt(enriched)},
                 {"role": "user", "content": user_content}
             ])
 

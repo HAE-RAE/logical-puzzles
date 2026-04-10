@@ -24,34 +24,48 @@ class ArrayFormulaEvaluator(BaseEvaluator):
     숫자 또는 텍스트 답변, 한국어/영어 프롬프트 분기
     """
 
-    SYSTEM_PROMPT = """You are a spreadsheet/Excel expert.
+    SYSTEM_PROMPT = """### Instructions
+You are a spreadsheet/Excel expert.
 Analyze the given table data and answer the question accurately.
 
-Rules:
+### Rules
 1. For numeric results, answer with only the number (no units, commas, or currency symbols)
 2. For decimals, truncate unless otherwise specified
 3. For text answers, provide the exact value only
 4. Briefly explain your reasoning, then end with "Final answer: [answer]"
+
+### Output format
+End your response with a line: Final answer: [answer]
 """
 
-    KOREAN_SYSTEM_PROMPT = """당신은 스프레드시트/Excel 전문가입니다.
+    KOREAN_SYSTEM_PROMPT = """### 지시사항
+당신은 스프레드시트/Excel 전문가입니다.
 주어진 표 데이터를 분석하고 질문에 정확하게 답하세요.
 
-규칙:
+### 규칙
 1. 숫자 결과는 숫자만 답하세요 (단위, 쉼표, 통화 기호 없이)
 2. 소수점은 별도 지시가 없으면 버림 처리하세요
 3. 텍스트 답변은 정확한 값만 작성하세요
 4. 풀이 과정을 간략히 설명한 후, "최종 답: [답]"으로 마무리하세요
+
+### 출력 형식
+마지막에 "최종 답: [답]" 형식으로 끝내세요.
 """
 
+    def _is_korean(self, puzzle: Optional[Dict] = None) -> bool:
+        """Prefer task_name suffix (_ko / _en); else infer from expected answer."""
+        task = getattr(self, "_task_name", None) or ""
+        if task.endswith("_ko"):
+            return True
+        if task.endswith("_en"):
+            return False
+        if puzzle is not None:
+            expected = puzzle.get("answer", "")
+            return bool(re.search(r"[가-힣]", str(expected)))
+        return False
+
     def _get_system_prompt(self, puzzle: Dict) -> str:
-        """퍼즐 ID 및 질문 내용을 기반으로 한국어/영어 프롬프트 분기"""
-        puzzle_id = puzzle.get("id", "")
-        if "korean" in puzzle_id:
-            return self.KOREAN_SYSTEM_PROMPT
-        # question 내용으로도 판단 (한글 포함 여부)
-        question = puzzle.get("question", "")
-        if any('\uac00' <= c <= '\ud7a3' for c in question):
+        if self._is_korean(puzzle):
             return self.KOREAN_SYSTEM_PROMPT
         return self.SYSTEM_PROMPT
 
