@@ -11,48 +11,48 @@ logger = logging.getLogger(__name__)
 
 
 class CipherEvaluator(BaseEvaluator):
-    # 영문 암호용 SYSTEM_PROMPT
-    SYSTEM_PROMPT = """너는 암호 해독 전문가입니다. 주어진 미션 로그와 암호화 가이드를 분석하여 암호문을 복호화해야 합니다.
+    SYSTEM_PROMPT = """### Instructions
+You are a cryptography expert. Analyze the mission log and encryption guide to decrypt the ciphertext.
 
-중요:
-- 로그 지문과 가이드를 분석하여 암호 키워드를 먼저 도출하세요.
-- 가이드에 명시된 알고리즘(Vigenere, Transposition, Substitution, Reverse 등)을 정확한 역순으로 적용하여 복호화하세요.
-- Columnar Transposition(전치 암호)의 경우, 키워드의 알파벳 순서에 따라 열을 재배치하는 방식임을 유의하세요.
-- 최종 답변은 반드시 '원문: [답]' 형식으로 제시하세요.
+### Rules
+- Derive the cipher keyword from the log and guide.
+- Apply the inverse of the algorithm named in the guide (Vigenere, Transposition, Substitution, Reverse, etc.).
+- For Columnar Transposition, columns are reordered by the alphabetical order of the keyword.
 
-출력 형식:
-원문: [복호화된 텍스트]"""
-    
-    # 한글 암호용 SYSTEM_PROMPT
-    KOREAN_SYSTEM_PROMPT = """너는 한글 암호 해독 전문가입니다. 주어진 미션 로그와 암호화 가이드를 분석하여 한글 암호문을 복호화해야 합니다.
+### Output format
+Plaintext in uppercase when applicable.
 
-중요:
+Plaintext: [decrypted text]"""
+
+    KOREAN_SYSTEM_PROMPT = """### 지시사항
+너는 한글 암호 해독 전문가입니다. 주어진 미션 로그와 암호화 가이드를 분석하여 한글 암호문을 복호화해야 합니다.
+
+### 규칙
 - 로그 지문을 분석하여 암호 키워드를 먼저 찾아내세요.
 - 한글의 초성(ㄱ, ㄴ...), 중성(ㅏ, ㅑ...) 구조를 활용한 알고리즘을 정확한 역순으로 적용하세요.
-- 최종 답변은 반드시 '원문: [한글정답]' 형식으로 제시하세요.
 
-출력 형식:
+### 출력 형식
+최종 답변은 반드시 '원문: [한글정답]' 형식으로 제시하세요.
+
 원문: [복호화된 한글 텍스트]"""
-    
+
+    def _is_korean(self, puzzle: Optional[Dict] = None) -> bool:
+        """Prefer task_name suffix (_ko / _en); else infer from expected answer."""
+        task = getattr(self, "_task_name", None) or ""
+        if task.endswith("_ko"):
+            return True
+        if task.endswith("_en"):
+            return False
+        if puzzle is not None:
+            expected = puzzle.get("answer", "")
+            return bool(re.search(r"[가-힣]", str(expected)))
+        return False
+
     def _get_system_prompt(self, puzzle: Dict) -> str:
-        """
-        퍼즐에 따라 적절한 SYSTEM_PROMPT 반환
-        
-        Args:
-            puzzle: 퍼즐 데이터
-            
-        Returns:
-            적절한 SYSTEM_PROMPT
-        """
-        expected_answer = puzzle.get("answer", "")
-        # 한글인지 영문인지 판단 (expected_answer 기준)
-        is_korean = bool(re.search(r'[가-힣]', expected_answer))
-        
-        if is_korean:
+        if self._is_korean(puzzle):
             return self.KOREAN_SYSTEM_PROMPT
-        else:
-            return self.SYSTEM_PROMPT
-    
+        return self.SYSTEM_PROMPT
+
     def _parse_answer(self, response: str, puzzle: Dict) -> Optional[str]:
         """
         LLM 응답에서 원문 추출
@@ -63,14 +63,9 @@ class CipherEvaluator(BaseEvaluator):
             response: LLM 응답 텍스트
             puzzle: 퍼즐 데이터
         """
-        expected_answer = puzzle.get("answer", "")
-        # 한글인지 영문인지 판단 (expected_answer 기준)
-        is_korean = bool(re.search(r'[가-힣]', expected_answer))
-        
-        if is_korean:
+        if self._is_korean(puzzle):
             return self._parse_korean_answer(response)
-        else:
-            return self._parse_english_answer(response)
+        return self._parse_english_answer(response)
     
     def _parse_english_answer(self, response: str) -> Optional[str]:
         """영문 답변 파싱"""
