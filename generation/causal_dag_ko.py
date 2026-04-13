@@ -469,8 +469,12 @@ class CausalPuzzleGenerator:
         return reach_times[puzzle.target_event] < float('inf')
 
 
-def create_question(puzzle: CausalPuzzle) -> str:
-    """퍼즐에 대한 한국어 질문 텍스트 생성"""
+def create_question(puzzle: CausalPuzzle, shuffle_edges: bool = False) -> str:
+    """퍼즐에 대한 한국어 질문 텍스트 생성.
+
+    shuffle_edges=True이면 인과 엣지를 to_event 정렬이 아니라 무작위 순서로 제시해
+    난이도를 올린다(영어 캘리브레이션과 동일 그래프 파라미터를 쓸 때 유용).
+    """
     
     # 사건 형식화
     event_lines = []
@@ -483,7 +487,11 @@ def create_question(puzzle: CausalPuzzle) -> str:
     
     # 인과 관계 형식화
     causal_lines = []
-    sorted_edges = sorted(puzzle.edges, key=lambda e: e.to_event)
+    if shuffle_edges:
+        sorted_edges = list(puzzle.edges)
+        random.shuffle(sorted_edges)
+    else:
+        sorted_edges = sorted(puzzle.edges, key=lambda e: e.to_event)
     
     for edge in sorted_edges:
         from_events = edge.from_events if edge.from_events else [edge.from_event]

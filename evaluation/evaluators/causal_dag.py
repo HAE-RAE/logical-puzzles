@@ -43,13 +43,16 @@ Give the numeric answer required by the user message (e.g. minutes)."""
 사용자 메시지에서 요구하는 수치 답(예: 분)을 제시하세요."""
 
     def _is_korean(self, puzzle: Optional[Dict] = None) -> bool:
-        """Prefer task_name suffix (_ko / _en); else infer from expected answer."""
+        """task_name에 causal_dag_ko_easy 등 포함 시 한국어; question/answer에서도 추론."""
         task = getattr(self, "_task_name", None) or ""
-        if task.endswith("_ko"):
+        if re.search(r"_ko(?:_|$)", task):
             return True
-        if task.endswith("_en"):
+        if re.search(r"_en(?:_|$)", task):
             return False
         if puzzle is not None:
+            q = str(puzzle.get("question", ""))
+            if re.search(r"[가-힣]", q):
+                return True
             expected = puzzle.get("answer", "")
             return bool(re.search(r"[가-힣]", str(expected)))
         return False
