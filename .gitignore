@@ -34,3 +34,14 @@ json/
 results*/
 evaluation_results/
 data/
+
+# 학습된 모델 체크포인트
+models/
+
+# 실행 로그
+logs/
+
+# run/ — 메인 pipeline 스크립트만 추적, 보조 스크립트는 ignore
+run/*
+!run/1.*
+!run/2.*

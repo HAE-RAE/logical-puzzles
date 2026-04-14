@@ -97,14 +97,15 @@ class ResultHandler:
                 "question": puzzle.get("question", ""),
                 "answer": str(result.expected),
                 "resps": result.raw_response,
+                "thinking_content": result.thinking_content,  # vLLM reasoning parser가 분리한 <think> 내부
                 "filtered_resps": str(result.predicted) if result.predicted is not None else "",  # Regex-extracted result
                 "exact_match": 1 if result.correct else 0,
                 "difficulty": result.difficulty
             }
             rows.append(row)
-        
+
         if rows:
-            fieldnames = ["id", "question", "answer", "resps", "filtered_resps", "exact_match", "difficulty"]
+            fieldnames = ["id", "question", "answer", "resps", "thinking_content", "filtered_resps", "exact_match", "difficulty"]
             with open(filepath, "w", encoding="utf-8", newline="") as f:
                 writer = csv.DictWriter(f, fieldnames=fieldnames)
                 writer.writeheader()
