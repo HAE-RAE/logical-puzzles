@@ -2,8 +2,8 @@
 # Pipeline 2: 학습 전 baseline 평가 (reasoning=on)
 #
 # 사용법:
-#   bash run/2.pipeline_baseline_eval_with_reasoning.sh
-#   GPU_ID=0 PORT=8001 MODEL=Qwen/Qwen3-4B bash run/2.pipeline_baseline_eval_with_reasoning.sh
+#   bash run/pipeline/2.pipeline_baseline_eval_with_reasoning.sh
+#   GPU_ID=0 PORT=8001 MODEL=Qwen/Qwen3-4B bash run/pipeline/2.pipeline_baseline_eval_with_reasoning.sh
 #
 # 환경변수 (모두 옵션, 기본값 있음):
 #   GPU_ID    : 사용할 CUDA device (default: 0)
@@ -14,7 +14,7 @@
 set -o pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 cd "$PROJECT_ROOT"
 source .venv/bin/activate
 
