@@ -93,16 +93,19 @@ class LogicGridGenerator:
     # Available names
     NAMES = [
         "Alice", "Bob", "Carol", "David", "Emma",
-        "Frank", "Grace", "Henry", "Iris", "Jack"
+        "Frank", "Grace", "Henry", "Iris", "Jack",
+        "Kevin", "Laura", "Mike"
     ]
     
-    # Attribute categories and values
+    # Attribute categories and values (8 values each to support up to 8x8 grids)
     ATTRIBUTES = {
-        'HouseColor': ['Red', 'Blue', 'Green', 'Yellow', 'White'],
-        'Pet': ['Dog', 'Cat', 'Bird', 'Fish', 'Rabbit'],
-        'Drink': ['Coffee', 'Tea', 'Milk', 'Juice', 'Water'],
-        'Job': ['Doctor', 'Teacher', 'Engineer', 'Artist', 'Chef'],
-        'Hobby': ['Reading', 'Gaming', 'Cooking', 'Sports', 'Music']
+        'HouseColor': ['Red', 'Blue', 'Green', 'Yellow', 'White', 'Purple', 'Orange', 'Black'],
+        'Pet': ['Dog', 'Cat', 'Bird', 'Fish', 'Rabbit', 'Hamster', 'Turtle', 'Parrot'],
+        'Drink': ['Coffee', 'Tea', 'Milk', 'Juice', 'Water', 'Soda', 'Smoothie', 'Lemonade'],
+        'Job': ['Doctor', 'Teacher', 'Engineer', 'Artist', 'Chef', 'Lawyer', 'Nurse', 'Pilot'],
+        'Hobby': ['Reading', 'Gaming', 'Cooking', 'Sports', 'Music', 'Dancing', 'Painting', 'Hiking'],
+        'Food': ['Pizza', 'Pasta', 'Sushi', 'Burger', 'Salad', 'Steak', 'Tacos', 'Ramen'],
+        'Transport': ['Car', 'Bus', 'Bike', 'Train', 'Walk', 'Taxi', 'Subway', 'Scooter'],
     }
     
     def __init__(self, seed: Optional[int] = None):
@@ -272,6 +275,16 @@ class LogicGridGenerator:
                     f"{person} is a {value}",
                     f"{person} works as a {value}",
                 ]
+            elif category == 'Food':
+                templates = [
+                    f"{person} likes {value}",
+                    f"{person}'s favorite food is {value}",
+                ]
+            elif category == 'Transport':
+                templates = [
+                    f"{person} goes by {value}",
+                    f"{person} commutes by {value}",
+                ]
             
             constraint = random.choice(templates)
             constraints.append(constraint)
@@ -319,9 +332,23 @@ class LogicGridGenerator:
                     f"The person in the {val1} house has a {val2}",
                     f"The {val1} house owner has {val2} {cat2.lower()}",
                 ]
+            elif cat1 == 'Food':
+                templates = [
+                    f"The person who likes {val1} has {val2} {cat2.lower()}",
+                    f"The {val1} lover has {val2} {cat2.lower()}",
+                ]
+            elif cat1 == 'Transport':
+                templates = [
+                    f"The person who goes by {val1} has {val2} {cat2.lower()}",
+                    f"The {val1} commuter has {val2} {cat2.lower()}",
+                ]
             
             if cat2 == 'Drink':
                 templates.append(f"The person with {val1} {cat1.lower()} drinks {val2}")
+            elif cat2 == 'Food':
+                templates.append(f"The person with {val1} {cat1.lower()} likes {val2}")
+            elif cat2 == 'Transport':
+                templates.append(f"The person with {val1} {cat1.lower()} goes by {val2}")
             
             constraint = random.choice(templates)
             constraints.append(constraint)

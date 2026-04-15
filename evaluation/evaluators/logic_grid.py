@@ -44,13 +44,16 @@ Follow the answer format specified in the user message."""
 사용자 메시지에서 요구하는 JSON 형식을 따르세요."""
 
     def _is_korean(self, puzzle: Optional[Dict] = None) -> bool:
-        """Prefer task_name suffix (_ko / _en); else infer from expected answer."""
+        """task_name에 logic_grid_ko_easy 등 포함 시 한국어; question/answer에서도 추론."""
         task = getattr(self, "_task_name", None) or ""
-        if task.endswith("_ko"):
+        if re.search(r"_ko(?:_|$)", task):
             return True
-        if task.endswith("_en"):
+        if re.search(r"_en(?:_|$)", task):
             return False
         if puzzle is not None:
+            q = str(puzzle.get("question", ""))
+            if re.search(r"[가-힣]", q):
+                return True
             expected = puzzle.get("answer", "")
             return bool(re.search(r"[가-힣]", str(expected)))
         return False
