@@ -22,7 +22,8 @@ class EvaluationResult:
     raw_response: str
     latency_ms: float
     error: Optional[str] = None
-    
+    thinking_content: str = ""
+
     def to_dict(self) -> Dict[str, Any]:
         return {
             "puzzle_id": self.puzzle_id,
@@ -32,6 +33,7 @@ class EvaluationResult:
             "expected": str(self.expected),
             "predicted": str(self.predicted) if self.predicted is not None else None,
             "raw_response": self.raw_response,
+            "thinking_content": self.thinking_content,
             "latency_ms": self.latency_ms,
             "error": self.error,
         }
@@ -313,7 +315,8 @@ class BaseEvaluator(ABC):
                 expected=puzzle["answer"],
                 predicted=predicted,
                 raw_response=response,
-                latency_ms=latency_ms
+                latency_ms=latency_ms,
+                thinking_content=usage.get("thinking_content", "") if isinstance(usage, dict) else "",
             )
         except Exception as e:
             # Error during response parsing/processing

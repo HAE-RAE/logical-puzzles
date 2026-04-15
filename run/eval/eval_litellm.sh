@@ -9,28 +9,23 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 cd "$PROJECT_ROOT"
 
-# ============ Qwen 설정 (Remote 서버) ============
-MODEL="Qwen/Qwen3-0.6B"
-# MODEL="Qwen/Qwen3-1.7B"
-REMOTE_URL="https://tremendously-bureaucratic-alda.ngrok-free.dev"
-GEN_KWARGS="temperature=0.6,max_tokens=16384,top_p=0.95,top_k=20,reasoning=on"
-# =================================================
+# export LITELLM_DEBUG=true
 
-MODEL_DIR_NAME="${MODEL//\//_}"
-LOG_DIR="$PROJECT_ROOT/results/$MODEL_DIR_NAME/log"
-mkdir -p "$LOG_DIR"
+# ============ Gemini 설정 ============
+MODEL="gemini/gemini-3-flash-preview"
+GEN_KWARGS="temperature=1.0,max_tokens=65536,top_p=0.95,top_k=64,reasoning_effort=high"
+# =====================================
 
 echo -e "${BLUE}========================================${NC}"
-echo -e "${BLUE}Evaluation Started (Qwen)${NC}"
+echo -e "${BLUE}Evaluation Started (Gemini)${NC}"
 echo -e "${BLUE}========================================${NC}"
 echo -e "Model: ${MODEL}"
-echo -e "Remote URL: ${REMOTE_URL}"
+echo -e "Mode: liteLLM"
 echo -e "Gen kwargs: ${GEN_KWARGS}"
-echo -e "Log saved location: ${LOG_DIR}"
 echo ""
 
 
@@ -74,45 +69,26 @@ FAIL_COUNT=0
 
 for task in "${TASKS[@]}"; do
     CURRENT_TASK=$((CURRENT_TASK + 1))
-    log_file="$LOG_DIR/${task}.log"
-
-    echo "========================================" >> "$log_file"
-    echo "Task: $task" >> "$log_file"
-    echo "Started at: $(date '+%Y-%m-%d %H:%M:%S')" >> "$log_file"
-    echo "========================================" >> "$log_file"
-    echo "" >> "$log_file"
-
+    
     echo -e "${YELLOW}[$CURRENT_TASK/$TOTAL_TASKS] Evaluating: $task${NC}"
-    echo -e "  Log: ${log_file}"
     echo "----------------------------------------"
-
+    
     set +e
     if python evaluation/run.py \
         --model "$MODEL" \
-        --model_router remote \
-        --remote_url "$REMOTE_URL" \
+        --model_router litellm \
         --gen-kwargs "$GEN_KWARGS" \
         --tasks "$task" \
         --async \
-        --max-concurrent 5 2>&1 | tee -a "$log_file"; then
+        --max-concurrent 30; then
         echo -e "${GREEN}✓ $task Completed${NC}"
         SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
-        echo "" >> "$log_file"
-        echo "========================================" >> "$log_file"
-        echo "Status: SUCCESS" >> "$log_file"
-        echo "Completed at: $(date '+%Y-%m-%d %H:%M:%S')" >> "$log_file"
-        echo "========================================" >> "$log_file"
     else
         echo -e "${RED}✗ $task Failed${NC}"
         FAIL_COUNT=$((FAIL_COUNT + 1))
-        echo "" >> "$log_file"
-        echo "========================================" >> "$log_file"
-        echo "Status: FAILED" >> "$log_file"
-        echo "Completed at: $(date '+%Y-%m-%d %H:%M:%S')" >> "$log_file"
-        echo "========================================" >> "$log_file"
     fi
     set -e
-
+    
     echo ""
 done
 
@@ -123,7 +99,7 @@ MINUTES=$(((ELAPSED_TIME % 3600) / 60))
 SECONDS=$((ELAPSED_TIME % 60))
 
 echo -e "${BLUE}========================================${NC}"
-echo -e "${BLUE}Evaluation Completed (Qwen)${NC}"
+echo -e "${BLUE}Evaluation Completed (Gemini)${NC}"
 echo -e "${BLUE}========================================${NC}"
 echo -e "Total Tasks: ${TOTAL_TASKS}개"
 echo -e "${GREEN}Success: ${SUCCESS_COUNT}개${NC}"
@@ -142,4 +118,4 @@ fi
 
 exit 0
 
-# bash scripts/eval_remote.sh
+# bash scripts/eval_litellm.sh

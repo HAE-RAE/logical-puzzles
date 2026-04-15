@@ -47,7 +47,13 @@ class RemoteLLMClient(BaseLLMClient):
     def _parse_response(data: Dict, latency_ms: float) -> Tuple[str, Dict]:
         choice = data["choices"][0]["message"]
         content = choice.get("content", "") or ""
-        thinking = choice.get("reasoning_content", "") or ""
+        # vLLM reasoning parser는 버전에 따라 `reasoning_content` 또는 `reasoning` 필드로 반환.
+        # 둘 다 체크하여 누락 방지.
+        thinking = (
+            choice.get("reasoning_content")
+            or choice.get("reasoning")
+            or ""
+        )
 
         if not thinking and "<think>" in content:
             m = re.search(r"<think>(.*?)</think>", content, re.DOTALL)
