@@ -1,8 +1,13 @@
-"""요트 다이스 문제 생성기 및 풀이기 (한국어 버전)
+"""요트 다이스 문제 생성기 (한국어 버전)
 
 난이도 기반 주사위 패턴으로 요트 다이스 최적화 문제를 생성합니다.
-헝가리안 알고리즘 대신 보너스 인지 완전 탐색 풀이기(C(12,6) x 720 x 2)를 사용합니다.
-헝가리안 알고리즘은 상단 섹션 보너스를 올바르게 처리할 수 없기 때문입니다.
+보너스 인지 완전 탐색 풀이기(C(12,6) x 720 x 2)를 사용합니다.
+
+logical-puzzles-me/yacht_dice/generator.py 에서 이식:
+- greedy_gap 지표용 그리디 참조 풀이기
+- 라운드별 top1/top2 margin 및 decision_complexity 지표
+- 코프라임 시드 재시도를 통한 델타 밴드 난이도 필터링
+- step_metrics를 퍼즐 JSONL 에 포함
 """
 
 import random
@@ -13,7 +18,6 @@ from typing import List, Dict, Tuple
 from collections import Counter
 from dataclasses import dataclass
 from typing import Literal
-from datetime import datetime
 
 
 # ============================================================
@@ -72,7 +76,7 @@ Answer: [숫자]
 
 
 # ============================================================
-# 풀이기 (보너스 인지 완전 탐색)
+# 점수 기본 함수
 # ============================================================
 
 def get_all_categories() -> List[str]:
@@ -81,6 +85,9 @@ def get_all_categories() -> List[str]:
         "Three-Of-A-Kind", "Four-Of-A-Kind", "Full House",
         "Small Straight", "Large Straight", "Yacht"
     ]
+
+
+UPPER_CATEGORIES = ["Aces", "Twos", "Threes", "Fours", "Fives", "Sixes"]
 
 
 # 카테고리 한국어 표시명 매핑
@@ -98,56 +105,6 @@ CATEGORY_DISPLAY_NAME = {
     "Large Straight": "라지 스트레이트",
     "Yacht": "요트",
 }
-
-
-def calculate_score(dice: List[int], category: str) -> int:
-    """주사위와 카테고리에 대한 점수 계산 (기본 설정값 사용)."""
-    counts = Counter(dice)
-    sorted_dice = sorted(dice)
-
-    if category == "Aces":
-        return dice.count(1) * 1
-    elif category == "Twos":
-        return dice.count(2) * 2
-    elif category == "Threes":
-        return dice.count(3) * 3
-    elif category == "Fours":
-        return dice.count(4) * 4
-    elif category == "Fives":
-        return dice.count(5) * 5
-    elif category == "Sixes":
-        return dice.count(6) * 6
-    elif category == "Three-Of-A-Kind":
-        for num, count in counts.items():
-            if count >= 3:
-                return sum(dice)
-        return 0
-    elif category == "Four-Of-A-Kind":
-        for num, count in counts.items():
-            if count >= 4:
-                return sum(dice)
-        return 0
-    elif category == "Full House":
-        counts_values = sorted(counts.values())
-        if counts_values == [2, 3]:
-            return 25
-        return 0
-    elif category == "Small Straight":
-        unique = set(sorted_dice)
-        for straight in [{1, 2, 3, 4}, {2, 3, 4, 5}, {3, 4, 5, 6}]:
-            if straight.issubset(unique):
-                return 30
-        return 0
-    elif category == "Large Straight":
-        unique = set(sorted_dice)
-        if unique == {1, 2, 3, 4, 5} or unique == {2, 3, 4, 5, 6}:
-            return 40
-        return 0
-    elif category == "Yacht":
-        if len(counts) == 1:
-            return 50
-        return 0
-    return 0
 
 
 def calculate_score_with_config(dice: List[int], category: str, config: YachtDiceConfig) -> int:
@@ -168,12 +125,12 @@ def calculate_score_with_config(dice: List[int], category: str, config: YachtDic
     elif category == "Sixes":
         return dice.count(6) * 6
     elif category == "Three-Of-A-Kind":
-        for num, count in counts.items():
+        for _, count in counts.items():
             if count >= 3:
                 return sum(dice)
         return 0
     elif category == "Four-Of-A-Kind":
-        for num, count in counts.items():
+        for _, count in counts.items():
             if count >= 4:
                 return sum(dice)
         return 0
@@ -200,18 +157,22 @@ def calculate_score_with_config(dice: List[int], category: str, config: YachtDic
     return 0
 
 
+def calculate_score(dice: List[int], category: str) -> int:
+    """기본 설정값으로 점수 계산."""
+    return calculate_score_with_config(dice, category, YachtDiceConfig())
+
+
 def calculate_total_score(assignment: Dict[int, str], dice_results: List[List[int]],
-                         config: YachtDiceConfig) -> int:
+                          config: YachtDiceConfig) -> int:
     """배정에 대한 총점 계산 (보너스 포함)."""
     upper_section_score = 0
     total_score = 0
-    upper_categories = ["Aces", "Twos", "Threes", "Fours", "Fives", "Sixes"]
 
     for dice_idx, category in assignment.items():
         dice = dice_results[dice_idx]
         score = calculate_score_with_config(dice, category, config)
         total_score += score
-        if category in upper_categories:
+        if category in UPPER_CATEGORIES:
             upper_section_score += score
 
     if upper_section_score >= config.bonus_threshold:
@@ -220,23 +181,23 @@ def calculate_total_score(assignment: Dict[int, str], dice_results: List[List[in
     return total_score
 
 
+# ============================================================
+# 풀이기
+# ============================================================
+
 def solve_yacht_dice(dice_results: List[List[int]], config: YachtDiceConfig) -> Tuple[int, Dict[int, str]]:
     """
-    보너스 인지 완전 탐색을 사용한 최적 해 탐색.
+    보너스 인지 완전 탐색 최적 풀이기.
 
-    상단 섹션에 대해 C(12,6) = 924개의 부분집합을 순회하고,
-    각 섹션에 대해 6! = 720개의 순열을 전수 조사합니다.
-    총 연산량: 924 x 720 x 2 = 약 130만 회.
-
-    이 방식은 헝가리안 알고리즘으로는 처리할 수 없는
-    상단 섹션 보너스(35점)를 올바르게 반영합니다.
+    C(12,6) = 924 개 상단/하단 라운드 분할을 순회하고,
+    각 섹션마다 6! = 720 개의 순열을 전수 조사한 뒤
+    상단 보너스를 반영한 최적 총점을 유지합니다.
     """
     categories = get_all_categories()
     upper_cats = categories[:6]
     lower_cats = categories[6:]
     n = len(dice_results)
 
-    # 점수 행렬 사전 계산
     upper_scores = []
     lower_scores = []
     for i in range(n):
@@ -251,13 +212,12 @@ def solve_yacht_dice(dice_results: List[List[int]], config: YachtDiceConfig) -> 
 
     is_maximize = config.optimization_goal == "maximize"
     best_total = -1 if is_maximize else float('inf')
-    best_assignment = {}
+    best_assignment: Dict[int, str] = {}
 
     for upper_rounds in itertools.combinations(range(n), 6):
         lower_rounds = [i for i in range(n) if i not in upper_rounds]
         upper_list = list(upper_rounds)
 
-        # 최적 상단 배정 (6! 전수 조사)
         best_upper_score = -1 if is_maximize else float('inf')
         best_upper_perm = perms_6[0]
         for perm in perms_6:
@@ -266,7 +226,6 @@ def solve_yacht_dice(dice_results: List[List[int]], config: YachtDiceConfig) -> 
                 best_upper_score = s
                 best_upper_perm = perm
 
-        # 최적 하단 배정 (6! 전수 조사)
         best_lower_score = -1 if is_maximize else float('inf')
         best_lower_perm = perms_6[0]
         for perm in perms_6:
@@ -288,6 +247,36 @@ def solve_yacht_dice(dice_results: List[List[int]], config: YachtDiceConfig) -> 
     return best_total, best_assignment
 
 
+def solve_yacht_dice_greedy(
+    dice_results: List[List[int]], config: YachtDiceConfig
+) -> Tuple[int, Dict[int, str]]:
+    """greedy_gap 지표용 근시안 그리디 기준 풀이기.
+
+    각 라운드를 순서대로 순회하며 남은 카테고리 중 즉시 점수가 최대인
+    카테고리를 선택합니다. 미래 탐색이나 보너스 플래닝은 하지 않습니다.
+    """
+    categories = get_all_categories()
+    available = set(categories)
+    assignment: Dict[int, str] = {}
+    is_maximize = config.optimization_goal == "maximize"
+
+    for idx, dice in enumerate(dice_results):
+        best_cat = None
+        best_score = -1 if is_maximize else float('inf')
+        for cat in available:
+            s = calculate_score_with_config(dice, cat, config)
+            if (is_maximize and s > best_score) or (not is_maximize and s < best_score):
+                best_score = s
+                best_cat = cat
+        if best_cat is None:
+            best_cat = next(iter(available))
+        assignment[idx] = best_cat
+        available.discard(best_cat)
+
+    total = calculate_total_score(assignment, dice_results, config)
+    return total, assignment
+
+
 def format_solution(dice_results: List[List[int]], assignment: Dict[int, str],
                     config: YachtDiceConfig) -> str:
     """풀이를 읽기 쉬운 형태로 포맷."""
@@ -295,7 +284,6 @@ def format_solution(dice_results: List[List[int]], assignment: Dict[int, str],
     result = []
     upper_section_score = 0
     total_score = 0
-    upper_categories = ["Aces", "Twos", "Threes", "Fours", "Fives", "Sixes"]
 
     for category in categories:
         dice_idx = None
@@ -310,7 +298,7 @@ def format_solution(dice_results: List[List[int]], assignment: Dict[int, str],
             display_name = CATEGORY_DISPLAY_NAME.get(category, category)
             result.append(f"{display_name}: {dice} => {score}")
             total_score += score
-            if category in upper_categories:
+            if category in UPPER_CATEGORIES:
                 upper_section_score += score
 
     bonus = 0
@@ -322,145 +310,212 @@ def format_solution(dice_results: List[List[int]], assignment: Dict[int, str],
     output += f"\n\n상단 섹션 합계: {upper_section_score}"
     output += f"\n상단 섹션 보너스: {bonus} (기준: {config.bonus_threshold})"
     output += f"\n총점: {total_score}"
-
     return output
 
 
 # ============================================================
-# 주사위 생성
+# 난이도별 주사위 생성기
 # ============================================================
 
-def generate_random_dice(num_rounds: int = 12, dice_per_round: int = 5, seed: int = None) -> List[List[int]]:
-    """무작위 주사위 결과 생성."""
-    if seed is not None:
-        random.seed(seed)
-
-    dice_results = []
-    for _ in range(num_rounds):
-        round_result = [random.randint(1, 6) for _ in range(dice_per_round)]
-        round_result.sort()
-        dice_results.append(round_result)
-
-    return dice_results
-
-
-def format_user_prompt(dice_results: List[List[int]]) -> str:
-    """주사위 결과를 사용자 프롬프트로 포맷."""
-    prompt = "12라운드의 주사위 결과입니다. 각 결과를 점수 카테고리에 배정하세요:\n\n"
-    for i, dice in enumerate(dice_results, 1):
-        prompt += f"{i}. {dice}\n"
-    prompt += "\n각 카테고리에 하나의 결과를 배정하고 총점을 최대화하도록 점수를 계산하세요."
-    return prompt
+DIFFICULTY_CONFIGS: Dict[str, Dict] = {
+    "easy": {
+        "roll_types": ['three_kind', 'pair', 'high_sum', 'random'],
+        "weights":    [34, 46, 15, 5],
+    },
+    "medium": {
+        "roll_types": ['partial_straight', 'pair', 'three_kind', 'normal'],
+        "weights":    [28, 12, 10, 50],
+    },
+    "hard": {
+        "roll_types": ['full_house', 'three_kind', 'pair', 'normal'],
+        "weights":    [8, 12, 8, 72],
+    },
+}
 
 
-# ============================================================
-# 난이도별 문제 생성기
-# ============================================================
+_DIFFICULTY_BANDS = {
+    'easy': {
+        'greedy_gap': {'min': 10, 'max': 20},
+        'decision_complexity': {'min': 2.8, 'max': 3.8},
+    },
+    'medium': {
+        'greedy_gap': {'min': 18, 'max': 28},
+        'decision_complexity': {'min': 4.0, 'max': 5.0},
+    },
+    'hard': {
+        'greedy_gap': {'min': 24, 'max': None},
+        'decision_complexity': {'min': 5.0, 'max': None},
+    },
+}
+
 
 class YachtDiceProblemGenerator:
-    """난이도별 요트 다이스 문제 생성"""
+    """난이도에 맞춘 요트 다이스 문제 생성기."""
 
     def __init__(self):
         self.config = YachtDiceConfig()
 
     def generate_dice_by_difficulty(self, difficulty: str, seed: int = None) -> List[List[int]]:
-        """난이도에 따른 주사위 결과 생성."""
-        if seed:
-            random.seed(seed)
-
-        dice_results = []
+        """난이도에 따른 12라운드 주사위 결과 생성."""
+        rng = random.Random(seed)
+        dice_results: List[List[int]] = []
 
         if difficulty == "easy":
+            cfg = DIFFICULTY_CONFIGS["easy"]
             for _ in range(12):
-                roll_type = random.choices(
-                    ['three_kind', 'pair', 'high_sum', 'random'],
-                    weights=[25, 35, 20, 20],
-                    k=1
-                )[0]
+                roll_type = rng.choices(cfg["roll_types"], weights=cfg["weights"], k=1)[0]
                 if roll_type == 'three_kind':
-                    num = random.randint(1, 6)
-                    dice = [num] * 3
-                    dice.extend([random.randint(1, 6) for _ in range(2)])
-                    random.shuffle(dice)
+                    num = rng.randint(1, 6)
+                    dice = [num] * 3 + [rng.randint(1, 6) for _ in range(2)]
+                    rng.shuffle(dice)
                     dice_results.append(dice)
                 elif roll_type == 'pair':
-                    num = random.randint(1, 6)
-                    dice = [num] * 2
-                    dice.extend([random.randint(1, 6) for _ in range(3)])
-                    random.shuffle(dice)
+                    num = rng.randint(1, 6)
+                    dice = [num] * 2 + [rng.randint(1, 6) for _ in range(3)]
+                    rng.shuffle(dice)
                     dice_results.append(dice)
                 elif roll_type == 'high_sum':
-                    dice = [random.choice([4, 5, 6]) for _ in range(5)]
-                    dice_results.append(dice)
+                    dice_results.append([rng.choice([4, 5, 6]) for _ in range(5)])
                 else:
-                    dice_results.append([random.randint(1, 6) for _ in range(5)])
+                    dice_results.append([rng.randint(1, 6) for _ in range(5)])
 
         elif difficulty == "medium":
+            cfg = DIFFICULTY_CONFIGS["medium"]
             for _ in range(12):
-                roll_type = random.choice(['partial_straight', 'pair', 'normal', 'normal', 'normal'])
+                roll_type = rng.choices(cfg["roll_types"], weights=cfg["weights"], k=1)[0]
                 if roll_type == 'partial_straight':
-                    base = random.sample(range(1, 7), 3)
-                    base.extend([random.randint(1, 6) for _ in range(2)])
-                    random.shuffle(base)
+                    base = rng.sample(range(1, 7), 3)
+                    base.extend([rng.randint(1, 6) for _ in range(2)])
+                    rng.shuffle(base)
                     dice_results.append(base)
                 elif roll_type == 'pair':
-                    num = random.randint(1, 6)
-                    dice = [num] * 2
-                    dice.extend([random.randint(1, 6) for _ in range(3)])
-                    random.shuffle(dice)
-                    dice_results.append(dice)
-                else:
-                    dice_results.append([random.randint(1, 6) for _ in range(5)])
-
-        else:  # hard
-            for _ in range(12):
-                roll_type = random.choice(['full_house', 'straight', 'three_kind', 'normal'])
-                if roll_type == 'full_house':
-                    nums = random.sample(range(1, 7), 2)
-                    dice = [nums[0]] * 3 + [nums[1]] * 2
-                    random.shuffle(dice)
-                    dice_results.append(dice)
-                elif roll_type == 'straight':
-                    if random.random() < 0.5:
-                        dice = list(range(1, 6))
-                    else:
-                        dice = list(range(2, 7))
-                    random.shuffle(dice)
+                    num = rng.randint(1, 6)
+                    dice = [num] * 2 + [rng.randint(1, 6) for _ in range(3)]
+                    rng.shuffle(dice)
                     dice_results.append(dice)
                 elif roll_type == 'three_kind':
-                    num = random.randint(1, 6)
-                    dice = [num] * 3
-                    dice.extend([random.randint(1, 6) for _ in range(2)])
-                    random.shuffle(dice)
+                    num = rng.randint(1, 6)
+                    dice = [num] * 3 + [rng.randint(1, 6) for _ in range(2)]
+                    rng.shuffle(dice)
                     dice_results.append(dice)
                 else:
-                    base = [random.randint(1, 6) for _ in range(5)]
-                    if random.random() < 0.4:
-                        base[1] = base[0]
-                    dice_results.append(base)
+                    dice_results.append([rng.randint(1, 6) for _ in range(5)])
+
+        else:  # hard
+            cfg = DIFFICULTY_CONFIGS["hard"]
+            for _ in range(12):
+                roll_type = rng.choices(cfg["roll_types"], weights=cfg["weights"], k=1)[0]
+                if roll_type == 'full_house':
+                    nums = rng.sample(range(1, 7), 2)
+                    dice = [nums[0]] * 3 + [nums[1]] * 2
+                    rng.shuffle(dice)
+                    dice_results.append(dice)
+                elif roll_type == 'three_kind':
+                    num = rng.randint(1, 6)
+                    dice = [num] * 3 + [rng.randint(1, 6) for _ in range(2)]
+                    rng.shuffle(dice)
+                    dice_results.append(dice)
+                elif roll_type == 'pair':
+                    num = rng.randint(1, 6)
+                    dice = [num] * 2 + [rng.randint(1, 6) for _ in range(3)]
+                    rng.shuffle(dice)
+                    dice_results.append(dice)
+                else:
+                    dice_results.append([rng.randint(1, 6) for _ in range(5)])
 
         return dice_results
 
-    def generate_problem(self, difficulty: str, problem_id: int = 1) -> Dict:
-        """지정된 난이도의 요트 다이스 문제 하나를 생성."""
-        seed = 1000 + problem_id + hash(difficulty)
-        dice_results = self.generate_dice_by_difficulty(difficulty, seed)
+    def generate_problem(self, difficulty: str, problem_id: int = 1, seed: int = None) -> Dict:
+        """단일 문제 생성; 지표가 난이도 밴드에 들 때까지 시드 재시도."""
+        if seed is None:
+            difficulty_offset = {"easy": 10000, "medium": 20000, "hard": 30000}
+            seed = 1000 + problem_id + difficulty_offset.get(difficulty, 0)
 
-        optimal_score, optimal_assignment = solve_yacht_dice(dice_results, self.config)
+        band = _DIFFICULTY_BANDS.get(difficulty, {})
+        max_retries = 200
+        categories = get_all_categories()
+        selected = None
+        in_band = False
+        trial_seed = seed
+
+        for retry in range(max_retries):
+            trial_seed = seed + retry * 997
+            dice_results = self.generate_dice_by_difficulty(difficulty, trial_seed)
+            optimal_score, optimal_assignment = solve_yacht_dice(dice_results, self.config)
+            greedy_score, _ = solve_yacht_dice_greedy(dice_results, self.config)
+            greedy_gap = optimal_score - greedy_score
+
+            per_round_margin: List[int] = []
+            per_round_top1: List[int] = []
+            for dice in dice_results:
+                scores = sorted(
+                    (calculate_score_with_config(dice, c, self.config) for c in categories),
+                    reverse=True,
+                )
+                top1, top2 = scores[0], scores[1]
+                per_round_top1.append(top1)
+                per_round_margin.append(top1 - top2)
+            total_decision_complexity = sum(1.0 / max(m, 1) for m in per_round_margin)
+            zero_margin_rounds = sum(1 for m in per_round_margin if m == 0)
+
+            upper_sum = sum(
+                calculate_score_with_config(dice_results[idx], cat, self.config)
+                for idx, cat in optimal_assignment.items() if cat in UPPER_CATEGORIES
+            )
+            bonus_applied = upper_sum >= self.config.bonus_threshold
+
+            selected = {
+                'dice_results': dice_results,
+                'optimal_score': optimal_score,
+                'optimal_assignment': optimal_assignment,
+                'greedy_score': greedy_score,
+                'greedy_gap': greedy_gap,
+                'per_round_margin': per_round_margin,
+                'per_round_top1': per_round_top1,
+                'total_decision_complexity': total_decision_complexity,
+                'zero_margin_rounds': zero_margin_rounds,
+                'bonus_applied': bonus_applied,
+            }
+
+            gap_band = band.get('greedy_gap', {})
+            complexity_band = band.get('decision_complexity', {})
+            ok = True
+            if gap_band.get('min') is not None and greedy_gap < gap_band['min']:
+                ok = False
+            if gap_band.get('max') is not None and greedy_gap > gap_band['max']:
+                ok = False
+            if complexity_band.get('min') is not None and total_decision_complexity < complexity_band['min']:
+                ok = False
+            if complexity_band.get('max') is not None and total_decision_complexity > complexity_band['max']:
+                ok = False
+
+            if ok:
+                in_band = True
+                break
+
+        band_violation = not in_band
 
         problem = {
             "id": problem_id,
             "difficulty": difficulty,
-            "dice_results": dice_results,
-            "answer": optimal_score,
-            "optimal_assignment": {int(k): v for k, v in optimal_assignment.items()},
-            "seed": seed
+            "dice_results": selected['dice_results'],
+            "answer": selected['optimal_score'],
+            "optimal_assignment": {int(k): v for k, v in selected['optimal_assignment'].items()},
+            "seed": trial_seed,
+            "step_metrics": {
+                "per_round_margin": selected['per_round_margin'],
+                "per_round_top1": selected['per_round_top1'],
+                "total_decision_complexity": selected['total_decision_complexity'],
+                "zero_margin_rounds": selected['zero_margin_rounds'],
+                "greedy_gap": selected['greedy_gap'],
+                "bonus_applied": selected['bonus_applied'],
+                "band_violation": band_violation,
+            },
         }
-
         return problem
 
     def validate_problem(self, problem: Dict) -> Tuple[bool, str]:
-        """문제가 올바르게 구성되어 있고 풀 수 있는지 검증."""
+        """문제 유효성 검증."""
         try:
             required_fields = ['id', 'difficulty', 'dice_results', 'answer']
             for field in required_fields:
@@ -493,15 +548,7 @@ class YachtDiceProblemGenerator:
 # ============================================================
 
 def create_dataset_files(num_questions: int):
-    """
-    요트 다이스 퍼즐 데이터셋 파일을 생성합니다.
-
-    Args:
-        num_questions: 생성할 문제 수
-
-    Returns:
-        Tuple[pd.DataFrame, List[Dict]]: (데이터프레임, JSON 리스트)
-    """
+    """요트 다이스 퍼즐 CSV + JSONL 데이터셋 생성."""
     import pandas as pd
 
     print(f"{num_questions}개의 요트 다이스 퍼즐을 생성합니다...")
@@ -513,12 +560,11 @@ def create_dataset_files(num_questions: int):
     puzzles_per_diff = num_questions // len(difficulties)
     remainder = num_questions % len(difficulties)
 
-    all_puzzles = []
+    all_puzzles: List[Dict] = []
     problem_id = 1
 
     for i, difficulty in enumerate(difficulties):
         count = puzzles_per_diff + (1 if i < remainder else 0)
-
         if count == 0:
             continue
 
@@ -543,10 +589,17 @@ def create_dataset_files(num_questions: int):
                     "solution": solution_str,
                     "difficulty": difficulty,
                     "dice_results": dice_results,
-                    "seed": problem['seed']
+                    "optimal_assignment": problem['optimal_assignment'],
+                    "seed": problem['seed'],
+                    "step_metrics": problem['step_metrics'],
                 }
                 all_puzzles.append(puzzle_data)
-                print(f"  [{j+1}/{count}] 점수={optimal_score}")
+                sm = problem['step_metrics']
+                print(
+                    f"  [{j+1}/{count}] 점수={optimal_score} "
+                    f"gap={sm['greedy_gap']} complexity={sm['total_decision_complexity']:.2f} "
+                    f"band_violation={sm['band_violation']}"
+                )
             else:
                 print(f"  [{j+1}/{count}] 유효하지 않음: {message}")
 
@@ -558,14 +611,12 @@ def create_dataset_files(num_questions: int):
 
     PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
-    # CSV
     csv_dir = PROJECT_ROOT / "data" / "csv"
     csv_dir.mkdir(parents=True, exist_ok=True)
     csv_path = csv_dir / "yacht_dice_ko.csv"
     df.to_csv(csv_path, index=False, encoding="utf-8-sig")
     print(f"CSV 파일 생성 완료: {csv_path}")
 
-    # JSONL
     json_dir = PROJECT_ROOT / "data" / "json"
     json_dir.mkdir(parents=True, exist_ok=True)
     jsonl_path = json_dir / "yacht_dice_ko.jsonl"
@@ -582,11 +633,9 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description="요트 다이스 퍼즐 생성기 (한국어)")
     parser.add_argument("--num", type=int, default=12, help="생성할 문제 수")
-
     args = parser.parse_args()
 
     print("=" * 60)
     print("요트 다이스 퍼즐 생성기 (한국어)")
     print("=" * 60)
-
     create_dataset_files(num_questions=args.num)
