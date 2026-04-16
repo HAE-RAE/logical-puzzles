@@ -17,11 +17,12 @@ cd "$PROJECT_ROOT"
 MODEL="Qwen/Qwen3-0.6B"
 # MODEL="Qwen/Qwen3-1.7B"
 REMOTE_URL="https://tremendously-bureaucratic-alda.ngrok-free.dev"
-GEN_KWARGS="temperature=0.6,max_tokens=16384,top_p=0.95,top_k=20,reasoning=on"
+GEN_KWARGS="temperature=0.6,max_tokens=16384,top_p=0.95,top_k=20,reasoning=on,stream=on"
 # =================================================
 
 MODEL_DIR_NAME="${MODEL//\//_}"
 LOG_DIR="$PROJECT_ROOT/results/$MODEL_DIR_NAME/log"
+DATA_JSONL_DIR="$PROJECT_ROOT/data/jsonl"
 mkdir -p "$LOG_DIR"
 
 echo -e "${BLUE}========================================${NC}"
@@ -35,34 +36,51 @@ echo ""
 
 
 TASKS=(
-    # "array_formula_en"
-    # "array_formula_ko"
-    # "causal_dag_en"
-    # "causal_dag_ko"
-    # "cipher_en"
-    # "cipher_ko"
-    # "cryptarithmetic_en"
-    # "cryptarithmetic_ko"
-    # "ferryman_en"
-    # "ferryman_ko"
-    # "hanoi_en"
-    # "hanoi_ko"
-    # "inequality_en"
-    # "inequality_ko"
-    # "kinship"
-    # "kinship_vision"
-    # "logic_grid_en"
-    # "logic_grid_ko"
-    # "minesweeper_en"
-    # "minesweeper_ko"
-    # "number_baseball_en"
-    # "number_baseball_ko"
-    # "sat_puzzles_en"
-    # "sat_puzzles_ko"
-    # "sudoku_en"
-    # "sudoku_ko"
-    # "yacht_dice_en"
-    # "yacht_dice_ko"
+    # "array_formula_en_easy"
+    # "array_formula_en_hard"
+    # "array_formula_en_medium"
+    # "array_formula_ko_easy"
+    # "array_formula_ko_hard"
+    # "array_formula_ko_medium"
+    # "causal_dag_en_easy"
+    # "causal_dag_en_hard"
+    # "causal_dag_en_medium"
+    # "causal_dag_ko_easy"
+    # "causal_dag_ko_hard"
+    # "causal_dag_ko_medium"
+    # "cipher_en_easy"
+    # "cipher_en_hard"
+    # "cipher_en_medium"
+    # "cipher_ko_easy"
+    # "cipher_ko_hard"
+    # "cipher_ko_medium"
+    # "ferryman_en_easy"
+    # "ferryman_en_hard"
+    # "ferryman_en_medium"
+    # "ferryman_ko_easy"
+    # "ferryman_ko_hard"
+    # "ferryman_ko_medium"
+    # "inequality_en_easy"
+    # "inequality_en_hard"
+    # "inequality_en_medium"
+    # "logic_grid_en_easy"
+    # "logic_grid_en_hard"
+    # "logic_grid_en_medium"
+    # "logic_grid_ko_easy"
+    # "logic_grid_ko_hard"
+    # "logic_grid_ko_medium"
+    # "minesweeper_en_easy"
+    # "minesweeper_en_hard"
+    # "minesweeper_en_medium"
+    # "sat_puzzles_en_easy"
+    # "sat_puzzles_en_hard"
+    # "sat_puzzles_en_medium"
+    # "sat_puzzles_ko_easy"
+    # "sat_puzzles_ko_hard"
+    # "sat_puzzles_ko_medium"
+    # "sudoku_en_easy"
+    # "sudoku_en_hard"
+    # "sudoku_en_medium"
 )
 
 START_TIME=$(date +%s)
@@ -92,6 +110,7 @@ for task in "${TASKS[@]}"; do
         --model_router remote \
         --remote_url "$REMOTE_URL" \
         --gen-kwargs "$GEN_KWARGS" \
+        --data-dir "$DATA_JSONL_DIR" \
         --tasks "$task" \
         --async \
         --max-concurrent 5 2>&1 | tee -a "$log_file"; then
@@ -142,4 +161,4 @@ fi
 
 exit 0
 
-# bash scripts/eval_remote.sh
+# bash run/eval/eval_remote.sh

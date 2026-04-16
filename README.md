@@ -232,7 +232,7 @@ See [docs/eng/evaluation.md](docs/eng/evaluation.md) for detailed usage.
 All puzzles are stored in two formats:
 
 - **CSV**: `data/csv/{puzzle_name}.csv` - Easy to view in spreadsheets
-- **JSONL**: `data/json/{puzzle_name}.jsonl` - Easy to process programmatically
+- **JSONL**: `data/jsonl/{puzzle_name}.jsonl` - Easy to process programmatically
 
 **Common Fields:**
 - `id`: Unique identifier
@@ -248,7 +248,7 @@ All puzzles are stored in two formats:
 logical-puzzles/
 ├── data/                       # Generated datasets (gitignored)
 │   ├── csv/
-│   └── json/
+│   └── jsonl/
 │
 ├── docs/                       # Documentation
 │   ├── README.md
@@ -349,7 +349,7 @@ evaluation/evaluators/{puzzle_name}.py # Evaluator (for unified system)
 
 - The `data/` and `results/` directories are gitignored and stored locally only
 - Do not commit API keys or sensitive information (use `.env` file)
-- Generated data is automatically saved to `data/csv/` and `data/json/`
+- Generated data is automatically saved to `data/csv/` and `data/jsonl/`
 - Evaluation results are saved in `results/{model}/{task}/` directory
 
 ## License

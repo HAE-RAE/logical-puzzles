@@ -418,7 +418,7 @@ def generate_dataset(
     # Setup directories
     PROJECT_ROOT = Path(__file__).resolve().parent.parent
     csv_dir = PROJECT_ROOT / "data" / "csv"
-    json_dir = PROJECT_ROOT / "data" / "json"
+    json_dir = PROJECT_ROOT / "data" / "jsonl"
     csv_dir.mkdir(parents=True, exist_ok=True)
     json_dir.mkdir(parents=True, exist_ok=True)
     

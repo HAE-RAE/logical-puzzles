@@ -30,10 +30,8 @@ $RECYCLE.BIN/
 # data
 hrmcr/
 csv/
-json/
 results*/
 evaluation_results/
-data/
 
 # 학습된 모델 체크포인트
 models/

@@ -18,6 +18,7 @@ import time
 from typing import Dict, Any, List, Optional, Tuple, TYPE_CHECKING
 
 from ..core.base import BaseEvaluator, EvaluationResult
+from ..task_names import locale_from_task_name
 
 if TYPE_CHECKING:
     from ..model.base import BaseLLMClient
@@ -75,11 +76,11 @@ Answer: d1 d2 d3 ...
     # ========================================================================
 
     def _is_korean(self, puzzle: Optional[Dict] = None) -> bool:
+        """Prefer task_name (e.g. …_ko_easy); else infer from expected answer."""
         task = getattr(self, "_task_name", None) or ""
-        if task.endswith("_ko"):
-            return True
-        if task.endswith("_en"):
-            return False
+        hint = locale_from_task_name(task)
+        if hint is not None:
+            return hint
         if puzzle is not None:
             question = puzzle.get("question", "")
             if re.search(r"[가-힣]", str(question)):

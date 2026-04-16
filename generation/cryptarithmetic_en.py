@@ -534,7 +534,8 @@ def create_dataset_files(num_questions: int):
     df.to_csv(csv_path, index=False, encoding="utf-8-sig")
     print(f"CSV file created: {csv_path}")
 
-    json_dir = PROJECT_ROOT / "data" / "json"
+    # JSONL
+    json_dir = PROJECT_ROOT / "data" / "jsonl"
     json_dir.mkdir(parents=True, exist_ok=True)
     jsonl_path = json_dir / "cryptarithmetic_en.jsonl"
     with open(jsonl_path, 'w', encoding='utf-8') as f:

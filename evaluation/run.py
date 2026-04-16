@@ -31,6 +31,7 @@ def parse_gen_kwargs(raw: str) -> dict:
     """'key=val,key=val,...' 문자열을 dict로 파싱한다.
 
     - reasoning=on/off → enable_thinking=True/False 매핑
+    - stream=on/off → stream=True/False (remote vLLM+ngrok 시 idle 타임아웃 완화에 사용)
     - 숫자는 int/float로 자동 변환
     - True/False 문자열은 bool로 변환
     """
@@ -46,6 +47,10 @@ def parse_gen_kwargs(raw: str) -> dict:
 
         if k == "reasoning":
             result["enable_thinking"] = v.lower() in ("on", "true", "1")
+            continue
+
+        if k == "stream":
+            result["stream"] = v.lower() in ("on", "true", "1", "yes")
             continue
 
         if v.lower() == "true":
@@ -142,7 +147,7 @@ Available tasks: {', '.join(available_tasks)}
     parser.add_argument("--gen-kwargs", default=None, help="Generation params as key=value pairs (e.g. temperature=0.6,max_tokens=32768,reasoning=on)")
     parser.add_argument("--timeout", type=float, default=None, help="Request timeout in seconds (default: 120 for remote, 600 for litellm)")
     parser.add_argument("--tasks", nargs="+", help="List of tasks to evaluate (all if not specified)")
-    parser.add_argument("--data-dir", default="data/json", help="Data directory path")
+    parser.add_argument("--data-dir", default="data/jsonl", help="Data directory path")
     parser.add_argument("--output-dir", default="results", help="Output directory for results")
     parser.add_argument("--difficulty", help="Difficulty filter (easy/medium/hard)")
     parser.add_argument("--limit", type=int, help="Maximum number of puzzles to evaluate")

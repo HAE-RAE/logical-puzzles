@@ -1769,11 +1769,11 @@ def save_dataset(
 
     Output paths:
     - data/csv/array_formula.csv
-    - data/json/array_formula.jsonl
+    - data/jsonl/array_formula.jsonl
     """
     base_path = Path(base_dir)
     csv_dir = base_path / "csv"
-    json_dir = base_path / "json"
+    json_dir = base_path / "jsonl"
 
     csv_dir.mkdir(parents=True, exist_ok=True)
     json_dir.mkdir(parents=True, exist_ok=True)

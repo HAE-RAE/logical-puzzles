@@ -336,7 +336,7 @@ def create_advanced_dataset(num_per_level: int = 2):
     df.to_csv(csv_path, index=False, encoding="utf-8-sig")
 
     # JSONL 저장
-    json_dir = PROJECT_ROOT / "data" / "json"
+    json_dir = PROJECT_ROOT / "data" / "jsonl"
     json_dir.mkdir(parents=True, exist_ok=True)
     jsonl_path = json_dir / f"cipher_en.jsonl"
 

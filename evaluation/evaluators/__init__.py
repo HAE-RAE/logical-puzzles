@@ -1,5 +1,8 @@
 from typing import Dict, Type
 
+from ..task_names import resolve_registry_task_key
+
+
 def _get_registry() -> Dict[str, Type]:
     """Dynamically create the evaluator registry."""
     from .kinship import KinshipEvaluator
@@ -52,12 +55,13 @@ def _get_registry() -> Dict[str, Type]:
 def get_evaluator(task_name: str):
     """Return an evaluator instance for the given task name."""
     registry = _get_registry()
-    
-    if task_name not in registry:
+    key = resolve_registry_task_key(task_name, set(registry.keys()))
+
+    if key not in registry:
         available = ", ".join(registry.keys())
         raise ValueError(f"Unknown task: {task_name}. Available: {available}")
-    
-    return registry[task_name]()
+
+    return registry[key]()
 
 
 def list_tasks() -> list:

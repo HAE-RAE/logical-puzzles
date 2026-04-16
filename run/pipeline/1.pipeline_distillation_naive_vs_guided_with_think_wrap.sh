@@ -205,16 +205,16 @@ echo ""
 
 # ============ Phase 0: 퍼즐 데이터 생성 ============
 echo -e "${YELLOW}[Phase 0] Generating puzzle data...${NC}"
-[ ! -f "data/json/ferryman_en.jsonl" ] && python generation/ferryman_en.py --num 34 || echo "  ferryman_en: exists"
-[ ! -f "data/json/hanoi_en.jsonl" ] && python generation/hanoi_en.py --num 34 --output ./data || echo "  hanoi_en: exists"
-[ ! -f "data/json/array_formula_en.jsonl" ] && python generation/array_formula_en.py --num 34 --output ./data || echo "  array_formula_en: exists"
+[ ! -f "data/jsonl/ferryman_en.jsonl" ] && python generation/ferryman_en.py --num 34 || echo "  ferryman_en: exists"
+[ ! -f "data/jsonl/hanoi_en.jsonl" ] && python generation/hanoi_en.py --num 34 --output ./data || echo "  hanoi_en: exists"
+[ ! -f "data/jsonl/array_formula_en.jsonl" ] && python generation/array_formula_en.py --num 34 --output ./data || echo "  array_formula_en: exists"
 echo -e "${GREEN}[Phase 0] Done${NC}\n"
 
 # ============ Phase 1: Train/Test 분할 ============
 echo -e "${YELLOW}[Phase 1] Splitting data (80/20)...${NC}"
 if [ ! -f "data/distill/split/manifest.json" ]; then
     python scripts/split_puzzle_data.py \
-        --data-dir data/json \
+        --data-dir data/jsonl \
         --output-dir data/distill/split \
         --train-ratio 0.8 --seed 42
 else

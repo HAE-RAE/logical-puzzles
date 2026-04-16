@@ -71,7 +71,7 @@ bash scripts/gen_data.sh
 - 평가를 위한 간단한 형식
 - 열: `id`, `question`, `answer`, `difficulty`, `type` 등
 
-### 2. JSONL 형식 (`data/json/`)
+### 2. JSONL 형식 (`data/jsonl/`)
 - 평가 시스템에서 사용
 - 각 줄은 JSON 객체
 - 추가 메타데이터 포함 (예: `choices`, `solution` 등)
@@ -113,7 +113,7 @@ medium    33
 hard      33
 
 CSV file created! -> data/csv/kinship.csv
-JSONL file created! -> data/json/kinship.jsonl
+JSONL file created! -> data/jsonl/kinship.jsonl
 ```
 
 ## ⚙️ 설정 및 사용자 정의
@@ -140,7 +140,7 @@ python generation/kinship.py --num 200  # 100 → 200
 head data/csv/kinship.csv
 
 # JSONL 파일 확인
-head data/json/kinship.jsonl | python -m json.tool
+head data/jsonl/kinship.jsonl | python -m json.tool
 ```
 
 ## 📝 참고사항

@@ -59,7 +59,7 @@ python -c "
 from generation.array_formula import generate_dataset, puzzle_to_prompt
 import json
 puzzles = generate_dataset(num_per_difficulty=100, seed=42)
-with open('data/json/array_formula.jsonl', 'w') as f:
+with open('data/jsonl/array_formula.jsonl', 'w') as f:
     for p in puzzles:
         record = {'id': p['id'], 'question': puzzle_to_prompt(p), 'answer': p['answer'],
                   'difficulty': p['difficulty'], 'solution': p.get('solution',''),
@@ -73,7 +73,7 @@ python -c "
 from generation.array_formula_ko import generate_dataset, puzzle_to_prompt
 import json
 puzzles = generate_dataset(num_per_difficulty=100, seed=42)
-with open('data/json/array_formula_ko.jsonl', 'w') as f:
+with open('data/jsonl/array_formula_ko.jsonl', 'w') as f:
     for p in puzzles:
         record = {'id': p['id'], 'question': puzzle_to_prompt(p), 'answer': p['answer'],
                   'difficulty': p['difficulty'], 'solution': p.get('solution',''),
@@ -191,7 +191,7 @@ generation/
 evaluation/
   evaluators/array_formula.py  # 평가기 (text+number 답 처리)
   run.py                       # 평가 실행기
-data/json/
+data/jsonl/
   array_formula.jsonl          # 영어 데이터셋 (600문항)
   array_formula_korean.jsonl   # 한국어 데이터셋
 results/                       # 평가 결과 저장

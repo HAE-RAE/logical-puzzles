@@ -53,4 +53,4 @@ echo ""
 echo "============================================"
 echo "Generation Complete!"
 echo "============================================"
-ls -la data/json/
+ls -la data/jsonl/

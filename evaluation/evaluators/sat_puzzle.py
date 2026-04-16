@@ -11,6 +11,7 @@ import time
 from typing import List, Dict, Any, Tuple, Optional, TYPE_CHECKING
 
 from ..core.base import BaseEvaluator, EvaluationResult
+from ..task_names import locale_from_task_name
 
 if TYPE_CHECKING:
     from ..model.base import BaseLLMClient
@@ -46,10 +47,9 @@ Follow the answer format specified in the user message."""
     def _is_korean(self, puzzle: Optional[Dict] = None) -> bool:
         """task_name에 sat_puzzles_ko_easy 등 포함 시 한국어; question에서도 추론."""
         task = getattr(self, "_task_name", None) or ""
-        if re.search(r"_ko(?:_|$)", task):
-            return True
-        if re.search(r"_en(?:_|$)", task):
-            return False
+        hint = locale_from_task_name(task)
+        if hint is not None:
+            return hint
         if puzzle is not None:
             q = str(puzzle.get("question", ""))
             if re.search(r"[가-힣]", q):

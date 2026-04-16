@@ -71,7 +71,7 @@ Generated data is saved in two formats:
 - Simple format for evaluation
 - Columns: `id`, `question`, `answer`, `difficulty`, `type`, etc.
 
-### 2. JSONL Format (`data/json/`)
+### 2. JSONL Format (`data/jsonl/`)
 - Used by the evaluation system
 - Each line is a JSON object
 - Includes additional metadata (e.g., `choices`, `solution`, etc.)
@@ -125,7 +125,7 @@ medium    33
 hard      33
 
 CSV file created! -> data/csv/kinship.csv
-JSONL file created! -> data/json/kinship.jsonl
+JSONL file created! -> data/jsonl/kinship.jsonl
 ```
 
 ## ⚙️ Configuration and Customization
@@ -152,7 +152,7 @@ Generated data can be checked at the following locations:
 head data/csv/kinship.csv
 
 # Check JSONL file
-head data/json/kinship.jsonl | python -m json.tool
+head data/jsonl/kinship.jsonl | python -m json.tool
 ```
 
 ## 📝 Notes

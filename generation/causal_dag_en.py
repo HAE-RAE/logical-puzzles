@@ -636,7 +636,7 @@ def create_dataset_files(num_questions: int):
     print(f"CSV file created: {csv_path}")
     
     # JSONL
-    json_dir = PROJECT_ROOT / "data" / "json"
+    json_dir = PROJECT_ROOT / "data" / "jsonl"
     json_dir.mkdir(parents=True, exist_ok=True)
     jsonl_path = json_dir / "causal_dag_en.jsonl"
     with open(jsonl_path, 'w', encoding='utf-8') as f:

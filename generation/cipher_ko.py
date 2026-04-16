@@ -224,7 +224,7 @@ def create_hangul_dataset(num_per_level: int = 3):
             # print(f"  {i+1}. {problem['answer'][:15]}... 생성 완료")
 
     # JSONL 저장
-    output_jsonl_path = Path(__file__).resolve().parent.parent / "data" / "json" / "cipher_ko.jsonl"
+    output_jsonl_path = Path(__file__).resolve().parent.parent / "data" / "jsonl" / "cipher_ko.jsonl"
     output_jsonl_path.parent.mkdir(parents=True, exist_ok=True)
     with open(output_jsonl_path, "w", encoding="utf-8") as f:
         for p in all_problems:
