@@ -1,14 +1,13 @@
-"""Minesweeper Puzzle Generator with Difficulty Levels
+"""Minesweeper Puzzle Generator (EN).
 
-Constructive generation: progressively reveals cells while monitoring
-solution count, guaranteeing valid puzzle generation.
-Includes scoring via weighted coordinate sum format.
+Ported from logical-puzzles-me/minesweeper/generator.py:
+- solve_puzzle with _stats['nodes'] backtrack instrumentation
+- DIFFICULTY_CONFIGS with min_solver_nodes, max_effective_reveal_ratio, reveal_order
+- Neighbor-aware cell info ranking
+- Answer format: coordinate-list "(r1,c1), (r2,c2), ..." (Repo A compatible)
 """
 
-MAX_SOLUTIONS = 1  # Only allow exactly 1 solution
-
 import random
-import re
 import json
 from itertools import product
 from collections import defaultdict
@@ -16,12 +15,10 @@ from pathlib import Path
 from typing import List, Tuple, Optional, Dict, Set
 
 
-# ============================================================
-# Core utility functions
-# ============================================================
+MAX_SOLUTIONS = 1
+
 
 def neighbors(r: int, c: int, R: int, C: int) -> List[Tuple[int, int]]:
-    """Get 8-directional neighbors of cell (r, c) within R x C grid."""
     result = []
     for dr in (-1, 0, 1):
         for dc in (-1, 0, 1):
@@ -34,11 +31,6 @@ def neighbors(r: int, c: int, R: int, C: int) -> List[Tuple[int, int]]:
 
 
 def compute_numbers(mask: List[List[int]]) -> List[List[Optional[int]]]:
-    """
-    Compute number hints for each cell.
-    mask: 1=mine, 0=safe
-    Returns: grid where mines are None, safe cells have neighbor mine count (0-8)
-    """
     R, C = len(mask), len(mask[0])
     nums = [[0] * C for _ in range(R)]
     for r in range(R):
@@ -56,20 +48,9 @@ def solve_puzzle(
     R: int,
     C: int,
     max_solutions: int = 2,
-    total_mines: Optional[int] = None
+    total_mines: Optional[int] = None,
+    _stats: Optional[Dict] = None,
 ) -> List[List[List[int]]]:
-    """
-    Solve minesweeper puzzle using backtracking with constraint propagation.
-
-    Args:
-        puzzle_nums: Grid where revealed cells have numbers 0-8, hidden cells are None
-        R, C: Grid dimensions
-        max_solutions: Stop after finding this many solutions
-        total_mines: Optional global constraint on total mine count
-
-    Returns:
-        List of solutions (mine masks), up to max_solutions
-    """
     nbs = [[neighbors(r, c, R, C) for c in range(C)] for r in range(R)]
 
     constraints = []
@@ -95,7 +76,7 @@ def solve_puzzle(
     unknown_cells.sort(key=lambda rc: -len(constraints_per_cell[rc]))
 
     def check_constraints() -> bool:
-        for (rr, cc, v, nlist) in constraints:
+        for (_, _, v, nlist) in constraints:
             assigned_mines = 0
             unknown_count = 0
             for (nr, nc) in nlist:
@@ -113,10 +94,10 @@ def solve_puzzle(
         if total_mines is None:
             return True
         assigned_mines = sum(assignment[r][c] == 1
-                           for r in range(R) for c in range(C)
-                           if assignment[r][c] is not None)
+                             for r in range(R) for c in range(C)
+                             if assignment[r][c] is not None)
         unknown_count = sum(assignment[r][c] is None
-                          for r in range(R) for c in range(C))
+                            for r in range(R) for c in range(C))
         if assigned_mines > total_mines:
             return False
         if assigned_mines + unknown_count < total_mines:
@@ -126,6 +107,8 @@ def solve_puzzle(
     solutions = []
 
     def backtrack(i: int):
+        if _stats is not None:
+            _stats['nodes'] = _stats.get('nodes', 0) + 1
         if len(solutions) >= max_solutions:
             return
 
@@ -154,172 +137,52 @@ def solve_puzzle(
     return solutions
 
 
-def random_mask(R: int, C: int, M: int, rng: random.Random) -> List[List[int]]:
-    """Generate random mine placement."""
-    cells = list(product(range(R), range(C)))
-    mines = set(rng.sample(cells, M))
-    return [[1 if (r, c) in mines else 0 for c in range(C)] for r in range(R)]
-
-
-def mask_to_solution_string(mask: List[List[int]]) -> str:
-    """Convert mine mask to a single bitstring format."""
+def mask_to_bitstring(mask: List[List[int]]) -> str:
     return "".join("".join(str(cell) for cell in row) for row in mask)
 
 
-def puzzle_to_string(puzzle: List[List[Optional[int]]]) -> List[str]:
-    """Convert puzzle to string format with # for hidden cells."""
-    return [''.join(str(cell) if cell is not None else '#' for cell in row)
-            for row in puzzle]
-
-
-# ============================================================
-# Scorer functions (weighted coordinate sum)
-# ============================================================
-
-def bitstring_to_coordinates(solution_str: str, R: int, C: int) -> Set[Tuple[int, int]]:
-    """Convert solution bitstring to coordinate set."""
-    coords = set()
-    for i, cell in enumerate(solution_str):
-        if cell == '1':
-            r, c = divmod(i, C)
-            coords.add((r, c))
+def mask_to_coord_list(mask: List[List[int]]) -> List[Tuple[int, int]]:
+    coords = []
+    for r, row in enumerate(mask):
+        for c, cell in enumerate(row):
+            if cell == 1:
+                coords.append((r, c))
     return coords
 
 
-def compute_total_sum(coords: Set[Tuple[int, int]], C: int) -> int:
-    """Compute weighted coordinate sum: sum(row * C + col) for each mine."""
-    if not coords:
-        return 0
-    return sum(r * C + c for r, c in coords)
+def coords_to_answer_string(coords: List[Tuple[int, int]]) -> str:
+    return ", ".join(f"({r},{c})" for r, c in sorted(coords))
 
-
-def parse_total_sum(output: str) -> Optional[int]:
-    """Parse LLM output to extract total sum as single integer."""
-    output = re.sub(r'```[a-z]*\n?', '', output)
-    output = re.sub(r'```', '', output)
-    output = output.strip()
-
-    answer_matches = re.findall(
-        r'(?:Answer|Output|Final\s*Answer)\s*[:\s]*(\d+)',
-        output, re.IGNORECASE
-    )
-    if answer_matches:
-        return int(answer_matches[-1])
-
-    lines = output.strip().split('\n')
-    last_lines = lines[-5:]
-    for line in reversed(last_lines):
-        match = re.search(r'\b(\d{2,})\b', line.strip())
-        if match:
-            return int(match.group(1))
-
-    matches = re.findall(r'\b(\d{2,})\b', output)
-    if matches:
-        return int(matches[-1])
-
-    return None
-
-
-def score_from_solution(solution_str: str, R: int, C: int, pred_output: str) -> Dict:
-    """Score LLM prediction against solution using weighted sum."""
-    truth_coords = bitstring_to_coordinates(solution_str, R, C)
-    truth_sum = compute_total_sum(truth_coords, C)
-    pred_sum = parse_total_sum(pred_output)
-
-    if pred_sum is None:
-        return {'score': 0.0, 'truth_sum': truth_sum, 'pred_sum': None, 'error': 'Failed to parse'}
-
-    score = 1.0 if truth_sum == pred_sum else 0.0
-    return {'score': score, 'truth_sum': truth_sum, 'pred_sum': pred_sum, 'error': None}
-
-
-# ============================================================
-# Prompt template functions
-# ============================================================
-
-def format_puzzle_grid(puzzle_rows: List[str]) -> str:
-    """Format puzzle grid as multi-line string."""
-    return '\n'.join(puzzle_rows)
-
-
-def create_prompt(puzzle_data: Dict) -> str:
-    """Create prompt for minesweeper puzzle evaluation."""
-    puzzle_grid = format_puzzle_grid(puzzle_data['puzzle'])
-    rows = puzzle_data['rows']
-    cols = puzzle_data['cols']
-    mines = puzzle_data.get('total_mines', puzzle_data.get('mines', 0))
-    difficulty = puzzle_data.get('difficulty', 'medium')
-
-    if difficulty == 'easy':
-        mine_info = f"2. Total mines: {mines} hidden in the grid"
-        task_info = f"Determine the exact location of ALL {mines} mines."
-    else:
-        mine_info = "2. Some cells contain hidden mines"
-        task_info = "Determine the exact location of ALL mines."
-
-    if difficulty == 'easy':
-        uniqueness_info = "\n6. This puzzle has exactly one unique solution"
-    else:
-        uniqueness_info = ""
-
-    prompt = f"""You are solving a minesweeper puzzle with the following rules:
-
-GAME RULES:
-1. Grid size: {rows} rows x {cols} columns (0-indexed)
-{mine_info}
-3. Each revealed number (0-8) indicates how many of its 8 neighbors contain mines
-4. '#' represents a hidden cell that could be either a mine or safe
-5. Adjacent cells include all 8 directions: horizontal, vertical, and diagonal{uniqueness_info}
-
-PUZZLE:
-{puzzle_grid}
-
-YOUR TASK:
-{task_info}
-
-OUTPUT FORMAT (STRICT):
-- Find ALL mine coordinates using 0-based indexing (row 0 to {rows-1}, col 0 to {cols-1})
-- For each mine at (row, col), compute its linear index: row * {cols} + col
-- Sum all linear indices to get a single number
-- Output ONLY this single integer
-
-Example (with {cols} columns per row):
-If mines are at (1,2) and (3,0):
-- Linear indices: (1*{cols}+2) = {1*cols+2}, (3*{cols}+0) = {3*cols}
-- Sum = {1*cols+2} + {3*cols} = {1*cols+2 + 3*cols}
-- Output: {1*cols+2 + 3*cols}
-
-Answer:"""
-
-    return prompt
-
-
-# ============================================================
-# Difficulty-based puzzle generator
-# ============================================================
 
 class DifficultyPuzzleGenerator:
-    """Generate puzzles with varying difficulty levels using progressive revelation."""
-
     DIFFICULTY_CONFIGS = {
         'easy': {
-            'grid_size': (5, 5),
-            'mine_ratio': 0.22,
-            'reveal_ratio': 0.45,
-            'description': 'Small grid, balanced reveals'
+            'grid_size': (6, 6),
+            'mine_ratio': 0.15,
+            'reveal_ratio': 0.28,
+            'max_effective_reveal_ratio': 0.55,
+            'min_solver_nodes': 20,
+            'reveal_order': 'balanced',
+            'description': '6x6 grid, moderate ambiguity',
         },
         'medium': {
-            'grid_size': (6, 6),
-            'mine_ratio': 0.33,
-            'reveal_ratio': 0.25,
-            'description': 'Medium grid, more mines, no mine count hint'
+            'grid_size': (7, 7),
+            'mine_ratio': 0.16,
+            'reveal_ratio': 0.22,
+            'max_effective_reveal_ratio': 0.48,
+            'min_solver_nodes': 50,
+            'reveal_order': 'low_info',
+            'description': '7x7 grid, low-information reveals',
         },
         'hard': {
-            'grid_size': (7, 7),
-            'mine_ratio': 0.28,
-            'reveal_ratio': 0.25,
-            'description': 'Larger grid, no mine count hint'
-        }
+            'grid_size': (8, 8),
+            'mine_ratio': 0.17,
+            'reveal_ratio': 0.18,
+            'max_effective_reveal_ratio': 0.42,
+            'min_solver_nodes': 100,
+            'reveal_order': 'low_info',
+            'description': '8x8 grid, sparse low-information reveals',
+        },
     }
 
     def __init__(self, seed: int = 42):
@@ -328,30 +191,47 @@ class DifficultyPuzzleGenerator:
 
     def _rank_cells_by_information(self, nums: List[List[Optional[int]]],
                                      mask: List[List[int]], R: int, C: int) -> List[Tuple[int, int]]:
-        """Rank safe cells by information value for progressive revelation."""
         safe_cells = [(r, c) for r in range(R) for c in range(C) if mask[r][c] == 0]
 
         def cell_info_score(pos):
             r, c = pos
             num = nums[r][c]
-            adjacency_bonus = 1 if num > 0 else 0
-            return num * 2 + adjacency_bonus
+            neighbor_count = len(neighbors(r, c, R, C))
+            if num == 0:
+                return neighbor_count * 2
+            if num == neighbor_count:
+                return neighbor_count * 2
+            return abs(num - neighbor_count / 2) * 2 + 1
 
         safe_cells.sort(key=cell_info_score, reverse=True)
         return safe_cells
 
-    def _count_solutions_fast(self, puzzle: List[List[Optional[int]]],
-                              R: int, C: int, total_mines: int) -> int:
-        solutions = solve_puzzle(puzzle, R, C, max_solutions=MAX_SOLUTIONS + 1, total_mines=total_mines)
-        return len(solutions)
+    def _order_ranked_cells(self, ranked_cells: List[Tuple[int, int]], difficulty: str) -> List[Tuple[int, int]]:
+        order = self.DIFFICULTY_CONFIGS[difficulty].get('reveal_order', 'high_info')
+        if order == 'high_info':
+            return list(ranked_cells)
+        if order == 'low_info':
+            return list(reversed(ranked_cells))
+        if order == 'balanced':
+            cells = list(ranked_cells)
+            out = []
+            lo, hi = 0, len(cells) - 1
+            take_high = True
+            while lo <= hi:
+                if take_high:
+                    out.append(cells[lo]); lo += 1
+                else:
+                    out.append(cells[hi]); hi -= 1
+                take_high = not take_high
+            return out
+        return list(ranked_cells)
 
-    def generate_puzzle_with_difficulty(
-        self,
-        difficulty: str,
-        puzzle_id: str,
-        max_attempts: int = 100
-    ) -> Optional[Dict]:
-        """Generate a puzzle with exactly 1 solution."""
+    def _count_solutions_fast(self, puzzle, R, C, total_mines) -> int:
+        sols = solve_puzzle(puzzle, R, C, max_solutions=MAX_SOLUTIONS + 1, total_mines=total_mines)
+        return len(sols)
+
+    def generate_puzzle_with_difficulty(self, difficulty: str, puzzle_id: str,
+                                        max_attempts: int = 300) -> Optional[Dict]:
         if difficulty not in self.DIFFICULTY_CONFIGS:
             raise ValueError(f"Unknown difficulty: {difficulty}")
 
@@ -359,16 +239,20 @@ class DifficultyPuzzleGenerator:
         R, C = config['grid_size']
         total_cells = R * C
         num_mines = max(1, int(total_cells * config['mine_ratio']))
-        target_reveals = max(2, int((total_cells - num_mines) * config['reveal_ratio']))
-        max_reveals = int(target_reveals * 1.5)
+        safe_cells_count = total_cells - num_mines
+        target_reveals = max(2, int(safe_cells_count * config['reveal_ratio']))
+        max_reveals = safe_cells_count
 
-        for attempt in range(max_attempts):
+        for _ in range(max_attempts):
             cells = [(r, c) for r in range(R) for c in range(C)]
             mine_positions = set(self.rng.sample(cells, num_mines))
             mask = [[1 if (r, c) in mine_positions else 0 for c in range(C)] for r in range(R)]
-
             nums = compute_numbers(mask)
-            ranked_cells = self._rank_cells_by_information(nums, mask, R, C)
+
+            ranked_cells = self._order_ranked_cells(
+                self._rank_cells_by_information(nums, mask, R, C),
+                difficulty,
+            )
 
             puzzle = [[None] * C for _ in range(R)]
             revealed: Set[Tuple[int, int]] = set()
@@ -393,18 +277,30 @@ class DifficultyPuzzleGenerator:
                     break
 
             if solution_count == 1:
-                solutions = solve_puzzle(puzzle, R, C, max_solutions=1, total_mines=num_mines)
+                step_stats = {'nodes': 0}
+                solutions_with_stats = solve_puzzle(
+                    puzzle, R, C, max_solutions=2, total_mines=num_mines,
+                    _stats=step_stats,
+                )
+                solutions = solutions_with_stats[:1]
+
+                effective_reveal_ratio = len(revealed) / safe_cells_count
+                if effective_reveal_ratio > config.get('max_effective_reveal_ratio', 1.0):
+                    continue
+                if step_stats['nodes'] < config.get('min_solver_nodes', 0):
+                    continue
 
                 puzzle_display = []
                 for row in puzzle:
-                    row_str = ''.join(str(cell) if cell is not None else '#' for cell in row)
+                    row_str = ''.join(
+                        str(cell) if cell is not None else '#'
+                        for cell in row
+                    )
                     puzzle_display.append(row_str)
 
-                answer_bitstring = mask_to_solution_string(solutions[0])
-
-                # Compute weighted coordinate sum as the answer
-                coords = bitstring_to_coordinates(answer_bitstring, R, C)
-                answer_sum = compute_total_sum(coords, C)
+                bitstring = mask_to_bitstring(solutions[0])
+                coord_list = mask_to_coord_list(solutions[0])
+                answer_str = coords_to_answer_string(coord_list)
 
                 return {
                     'id': puzzle_id,
@@ -413,48 +309,83 @@ class DifficultyPuzzleGenerator:
                     'cols': C,
                     'total_mines': num_mines,
                     'puzzle': puzzle_display,
-                    'answer': str(answer_sum),
-                    'solution': answer_bitstring,
-                    'answer_type': 'weighted_sum',
+                    'answer': answer_str,
+                    'solution': bitstring,
+                    'answer_type': 'coord_list',
                     'description': f"{R}x{C} grid with {num_mines} mines",
-                    'cells_revealed': len(revealed)
+                    'cells_revealed': len(revealed),
+                    'step_metrics': {
+                        'solver_backtrack_nodes': step_stats['nodes'],
+                        'unrevealed_cells': total_cells - len(revealed),
+                        'grid_size': total_cells,
+                        'effective_reveal_ratio': effective_reveal_ratio,
+                        'configured_reveal_ratio': config['reveal_ratio'],
+                        'max_effective_reveal_ratio': config.get('max_effective_reveal_ratio', 1.0),
+                    },
                 }
 
         return None
 
-    def verify_solutions(self, problem: Dict) -> bool:
-        """Verify that the puzzle has exactly 1 solution."""
-        R, C = problem['rows'], problem['cols']
-        total_mines = problem['total_mines']
 
-        puzzle = []
-        for row_str in problem['puzzle']:
-            row = []
-            for char in row_str:
-                if char == '#':
-                    row.append(None)
-                else:
-                    row.append(int(char))
-            puzzle.append(row)
-
-        solutions = solve_puzzle(puzzle, R, C, max_solutions=2, total_mines=total_mines)
-        return len(solutions) == 1
+def format_puzzle_grid_labeled(puzzle_rows: List[str]) -> str:
+    """Render grid with r/c labels and spaced cells per Repo A prompt style."""
+    if not puzzle_rows:
+        return ""
+    C = len(puzzle_rows[0])
+    header = "  " + " ".join(f"c{c}" for c in range(C))
+    lines = [header]
+    for r, row in enumerate(puzzle_rows):
+        cells = " ".join(row[c] for c in range(C))
+        lines.append(f"r{r} {cells}")
+    return "\n".join(lines)
 
 
-# ============================================================
-# Dataset generation
-# ============================================================
+def create_prompt(puzzle_data: Dict) -> str:
+    grid = format_puzzle_grid_labeled(puzzle_data['puzzle'])
+    rows = puzzle_data['rows']
+    cols = puzzle_data['cols']
+    mines = puzzle_data['total_mines']
+
+    mine_info = f"2. Total mines: {mines} hidden in the grid"
+    task_info = f"Determine the exact location of ALL {mines} mines."
+    uniqueness_info = "\n6. This puzzle has exactly one unique solution"
+
+    return f"""You are solving a minesweeper puzzle with the following rules:
+
+GAME RULES:
+1. Grid size: {rows} rows × {cols} columns (0-indexed)
+{mine_info}
+3. Each revealed number (0-8) indicates how many of its 8 neighbors contain mines
+4. '#' represents a hidden cell that could be either a mine or safe
+5. Adjacent cells include all 8 directions: horizontal, vertical, and diagonal{uniqueness_info}
+
+IMPORTANT RELIABILITY NOTE:
+- The puzzle below is machine-verified and internally consistent.
+- The row/column labels and spaced cells below are authoritative.
+- Every displayed row already has the correct length.
+- Do not reject the puzzle as malformed; if a local contradiction appears, revisit your deduction instead.
+
+PUZZLE:
+The grid below includes explicit row/column labels.
+Each puzzle row starts with rN and each cell is separated by spaces.
+{grid}
+
+YOUR TASK:
+{task_info}
+
+WORK THROUGH THIS STEP BY STEP:
+1. Analyze each numbered cell to deduce which neighbors must be mines
+2. Propagate constraints between cells
+3. Identify the full set of mine coordinates
+
+OUTPUT FORMAT:
+- Show your reasoning about which cells are mines
+- List all mine coordinates as (row, col) pairs sorted by row then column
+- End your response with a line of the form: "Answer: (r1,c1), (r2,c2), ..."
+"""
+
 
 def create_dataset_files(num_questions: int):
-    """
-    Create dataset files for minesweeper puzzles.
-
-    Args:
-        num_questions: Number of questions to generate
-
-    Returns:
-        Tuple[pd.DataFrame, List[Dict]]: (dataframe, json list)
-    """
     import pandas as pd
 
     print(f"Generating {num_questions} minesweeper puzzles...")
@@ -469,7 +400,6 @@ def create_dataset_files(num_questions: int):
 
     for i, difficulty in enumerate(difficulties):
         count = puzzles_per_diff + (1 if i < remainder else 0)
-
         if count == 0:
             continue
 
@@ -478,21 +408,21 @@ def create_dataset_files(num_questions: int):
         for j in range(count):
             puzzle_id = f"minesweeper_en_{len(all_puzzles)}"
 
-            # Try with different seeds
             puzzle_generated = False
             for seed_offset in range(10):
-                generator.rng = random.Random(generator.seed + seed_offset + j * 100 + i * 1000)
+                generator.rng = random.Random(
+                    generator.seed + seed_offset + j * 100 + i * 10_000_000
+                )
 
                 result = generator.generate_puzzle_with_difficulty(
                     difficulty=difficulty,
-                    puzzle_id=puzzle_id
+                    puzzle_id=puzzle_id,
                 )
 
                 if result:
-                    # Add question (prompt)
                     result['question'] = create_prompt(result)
                     all_puzzles.append(result)
-                    print(f"  [{j+1}/{count}] {result['description']}, answer_sum={result['answer']}")
+                    print(f"  [{j+1}/{count}] {result['description']}, answer={result['answer']}")
                     puzzle_generated = True
                     break
 
@@ -503,17 +433,14 @@ def create_dataset_files(num_questions: int):
 
     df = pd.DataFrame(all_puzzles)
 
-    # Save files
     PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
-    # CSV
     csv_dir = PROJECT_ROOT / "data" / "csv"
     csv_dir.mkdir(parents=True, exist_ok=True)
     csv_path = csv_dir / "minesweeper_en.csv"
     df.to_csv(csv_path, index=False, encoding="utf-8-sig")
     print(f"CSV file created: {csv_path}")
 
-    # JSONL
     json_dir = PROJECT_ROOT / "data" / "json"
     json_dir.mkdir(parents=True, exist_ok=True)
     jsonl_path = json_dir / "minesweeper_en.jsonl"
@@ -528,7 +455,7 @@ def create_dataset_files(num_questions: int):
 if __name__ == '__main__':
     import argparse
 
-    parser = argparse.ArgumentParser(description="Minesweeper Puzzle Generator")
+    parser = argparse.ArgumentParser(description="Minesweeper Puzzle Generator (EN)")
     parser.add_argument("--num", type=int, default=12, help="Number of questions to generate")
 
     args = parser.parse_args()

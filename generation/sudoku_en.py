@@ -1,36 +1,40 @@
-"""Sudoku Puzzle Generator and Solver
+"""Sudoku Puzzle Generator (EN).
 
-Integrated module combining grid operations, solvers, difficulty rating,
-and puzzle generation from the sudoku_benchmark package.
-Supports 3-difficulty generation (easy/medium/hard) with spotcheck evaluation.
+Monolithic port of logical-puzzles-me/sudoku/*:
+- DIFFICULTY_CONFIGS with search-node gating + spotcheck_k (easy=3, medium=5, hard=6)
+- generate_complete (canonical-form base + random transforms)
+- _create_removal_groups (rot180-symmetric cell-pair removal)
+- count_solutions / has_valid_solutions / find_all_solutions (MRV DFS, MAX_SOLUTIONS=1)
+- solve_backtrack returning SearchStats (nodes, max_depth, avg_candidates)
+- LogicSolver with L1 (naked_single, hidden_single) + L2 (locked_candidates, naked_pair)
+- rate() returning DifficultyMeta (label, tech_profile, max_tech_level, search_nodes)
+- Spotcheck: select_spotcheck_positions + make_spotcheck_code + make_code (HMAC-SHA256)
+  Answer format: K space-separated digits at spotcheck positions.
 """
 
-import random
-import json
-import hmac
+import argparse
 import hashlib
+import hmac
+import json
+import random
+from dataclasses import dataclass, field
 from pathlib import Path
-from typing import List, Tuple, Set, Optional
-from dataclasses import dataclass
+from typing import Dict, List, Optional, Set, Tuple
+
+
+Grid = List[List[int]]
+
+MAX_SOLUTIONS = 1
 
 
 # ============================================================================
-# Type definitions
-# ============================================================================
-
-Grid = List[List[int]]  # 0 = empty cell
-
-
-# ============================================================================
-# Grid basic functions
+# Grid utilities
 # ============================================================================
 
 def from_string(s: str) -> Grid:
-    """Convert 81-char string to 9x9 grid."""
     s = s.strip()
     if len(s) != 81:
         raise ValueError(f"String length must be 81 (got: {len(s)})")
-
     grid: Grid = []
     for i in range(9):
         row = []
@@ -47,7 +51,6 @@ def from_string(s: str) -> Grid:
 
 
 def to_string(g: Grid, blanks: str = '.') -> str:
-    """Convert 9x9 grid to 81-char string."""
     chars = []
     for row in g:
         for val in row:
@@ -60,10 +63,8 @@ def copy_grid(g: Grid) -> Grid:
 
 
 def get_cell_candidates(g: Grid, r: int, c: int) -> Set[int]:
-    """Get candidate numbers for cell (r, c)."""
     if g[r][c] != 0:
         return set()
-
     used = set()
     for val in g[r]:
         if val != 0:
@@ -71,18 +72,15 @@ def get_cell_candidates(g: Grid, r: int, c: int) -> Set[int]:
     for row in g:
         if row[c] != 0:
             used.add(row[c])
-
     box_r, box_c = (r // 3) * 3, (c // 3) * 3
     for br in range(box_r, box_r + 3):
         for bc in range(box_c, box_c + 3):
             if g[br][bc] != 0:
                 used.add(g[br][bc])
-
     return set(range(1, 10)) - used
 
 
 def is_solved(g: Grid) -> bool:
-    """Check if grid is a valid completed sudoku."""
     for row in g:
         if 0 in row:
             return False
@@ -102,6 +100,10 @@ def is_solved(g: Grid) -> bool:
         if set(vals) != set(range(1, 10)):
             return False
     return True
+
+
+def count_givens(puzzle: Grid) -> int:
+    return sum(1 for r in range(9) for c in range(9) if puzzle[r][c] != 0)
 
 
 # ============================================================================
@@ -182,26 +184,6 @@ def apply_symmetry(g: Grid, symmetry: str) -> Grid:
     return SYMMETRY_OPS[symmetry](g)
 
 
-def get_symmetric_pair(r: int, c: int, symmetry: str) -> Tuple[int, int]:
-    if symmetry == 'none':
-        return (r, c)
-    elif symmetry == 'rot90':
-        return (c, 8 - r)
-    elif symmetry == 'rot180':
-        return (8 - r, 8 - c)
-    elif symmetry == 'rot270':
-        return (8 - c, r)
-    elif symmetry == 'mirror_h':
-        return (r, 8 - c)
-    elif symmetry == 'mirror_v':
-        return (8 - r, c)
-    elif symmetry == 'transpose':
-        return (c, r)
-    elif symmetry == 'anti_transpose':
-        return (8 - c, 8 - r)
-    return (r, c)
-
-
 def relabel_digits(g: Grid, perm: dict) -> Grid:
     result = [[0] * 9 for _ in range(9)]
     for r in range(9):
@@ -260,44 +242,56 @@ def shuffle_stacks(g: Grid, rng: random.Random) -> Grid:
 
 
 def apply_random_transforms(g: Grid, rng: random.Random) -> Grid:
-    """Apply random combination of transformations."""
     result = copy_grid(g)
-
     perm = random_digit_permutation(rng)
     result = relabel_digits(result, perm)
-
     result = shuffle_bands(result, rng)
     result = shuffle_stacks(result, rng)
-
     for band in range(3):
         result = shuffle_rows_in_band(result, band, rng)
     for stack in range(3):
         result = shuffle_cols_in_stack(result, stack, rng)
-
     if rng.random() < 0.5:
         sym = rng.choice(['rot90', 'rot180', 'rot270', 'mirror_h',
                           'mirror_v', 'transpose', 'anti_transpose'])
         result = apply_symmetry(result, sym)
-
     return result
 
 
 # ============================================================================
-# Solution counter
+# Complete grid generation
 # ============================================================================
 
-MAX_SOLUTIONS = 1
+def _base_solution() -> Grid:
+    grid: Grid = []
+    for r in range(9):
+        row = []
+        for c in range(9):
+            val = (r * 3 + r // 3 + c) % 9 + 1
+            row.append(val)
+        grid.append(row)
+    return grid
 
+
+def generate_complete(seed: Optional[int] = None) -> Grid:
+    rng = random.Random(seed)
+    base = _base_solution()
+    result = apply_random_transforms(base, rng)
+    assert is_solved(result), "Generated grid is not valid"
+    return result
+
+
+# ============================================================================
+# Solution counter (MRV DFS)
+# ============================================================================
 
 def count_solutions(puzzle: Grid, limit: int = 2) -> int:
-    """Count solutions (early termination at limit)."""
     grid = copy_grid(puzzle)
     count = [0]
 
     def solve(g: Grid) -> bool:
         if count[0] >= limit:
             return True
-
         min_candidates = 10
         best_cell = None
         for r in range(9):
@@ -309,32 +303,35 @@ def count_solutions(puzzle: Grid, limit: int = 2) -> int:
                     if len(cands) < min_candidates:
                         min_candidates = len(cands)
                         best_cell = (r, c, cands)
-
         if best_cell is None:
             count[0] += 1
             return count[0] >= limit
-
         r, c, cands = best_cell
         for num in cands:
             g[r][c] = num
             if solve(g):
                 return True
             g[r][c] = 0
-
         return False
 
     solve(grid)
     return count[0]
 
 
-def find_all_solutions(puzzle: Grid, limit: int = MAX_SOLUTIONS) -> List[Grid]:
-    """Find all solutions up to limit."""
-    solutions = []
+def has_valid_solutions(puzzle: Grid) -> bool:
+    return count_solutions(puzzle, limit=MAX_SOLUTIONS + 1) == 1
+
+
+def has_unique_solution(puzzle: Grid) -> bool:
+    return count_solutions(puzzle, limit=2) == 1
+
+
+def find_all_solutions(puzzle: Grid, limit: int = 2) -> List[Grid]:
+    solutions: List[Grid] = []
 
     def solve(g: Grid) -> bool:
         if len(solutions) >= limit:
             return True
-
         min_candidates = 10
         best_cell = None
         for r in range(9):
@@ -346,18 +343,15 @@ def find_all_solutions(puzzle: Grid, limit: int = MAX_SOLUTIONS) -> List[Grid]:
                     if len(cands) < min_candidates:
                         min_candidates = len(cands)
                         best_cell = (r, c, cands)
-
         if best_cell is None:
             solutions.append(copy_grid(g))
             return len(solutions) >= limit
-
         r, c, cands = best_cell
         for num in cands:
             g[r][c] = num
             if solve(g):
                 return True
             g[r][c] = 0
-
         return False
 
     grid = copy_grid(puzzle)
@@ -377,14 +371,12 @@ class SearchStats:
 
 
 def solve_backtrack(puzzle: Grid) -> Tuple[Optional[Grid], SearchStats]:
-    """Solve puzzle with backtracking, collecting statistics."""
     grid = copy_grid(puzzle)
     stats = {'nodes': 0, 'max_depth': 0, 'total_candidates': 0, 'candidate_count': 0}
 
     def backtrack(depth: int) -> bool:
         stats['nodes'] += 1
         stats['max_depth'] = max(stats['max_depth'], depth)
-
         min_cands = 10
         best_cell = None
         for r in range(9):
@@ -396,45 +388,38 @@ def solve_backtrack(puzzle: Grid) -> Tuple[Optional[Grid], SearchStats]:
                     if len(cands) < min_cands:
                         min_cands = len(cands)
                         best_cell = (r, c, cands)
-
         if best_cell is None:
             return is_solved(grid)
-
         r, c, cands = best_cell
         stats['total_candidates'] += len(cands)
         stats['candidate_count'] += 1
-
         for num in cands:
             grid[r][c] = num
             if backtrack(depth + 1):
                 return True
             grid[r][c] = 0
-
         return False
 
     success = backtrack(0)
-
     avg_cands = (stats['total_candidates'] / stats['candidate_count']
                  if stats['candidate_count'] > 0 else 0.0)
-
     return (
         grid if success else None,
         SearchStats(
             nodes=stats['nodes'],
             max_depth=stats['max_depth'],
-            avg_candidates=avg_cands
-        )
+            avg_candidates=avg_cands,
+        ),
     )
 
 
 def search_stats(puzzle: Grid) -> SearchStats:
-    """Get search complexity statistics only."""
     _, stats = solve_backtrack(puzzle)
     return stats
 
 
 # ============================================================================
-# Logic solver (L1-L2)
+# Logic solver (L1 + L2)
 # ============================================================================
 
 @dataclass
@@ -479,11 +464,9 @@ class LogicSolver:
     def _set_value(self, r: int, c: int, val: int):
         self.grid[r][c] = val
         self.candidates[r][c] = set()
-
         for i in range(9):
             self.candidates[r][i].discard(val)
             self.candidates[i][c].discard(val)
-
         box_r, box_c = (r // 3) * 3, (c // 3) * 3
         for br in range(box_r, box_r + 3):
             for bc in range(box_c, box_c + 3):
@@ -494,45 +477,52 @@ class LogicSolver:
         for r in range(9):
             for c in range(9):
                 if self.grid[r][c] == 0 and len(self.candidates[r][c]) == 1:
-                    val = list(self.candidates[r][c])[0]
+                    val = next(iter(self.candidates[r][c]))
                     self._set_value(r, c, val)
                     self._record_technique('naked_single', 'L1')
                     found = True
         return found
 
     def hidden_single(self) -> bool:
-        found = False
-        for r in range(9):
+        to_set: List[Tuple[int, int, int]] = []
+        seen: Set[Tuple[int, int]] = set()
+        for row in range(9):
             for num in range(1, 10):
-                positions = [(r, c) for c in range(9) if num in self.candidates[r][c]]
+                positions = [(row, c) for c in range(9)
+                             if num in self.candidates[row][c]]
                 if len(positions) == 1:
-                    _, c = positions[0]
-                    self._set_value(r, c, num)
-                    self._record_technique('hidden_single', 'L1')
-                    found = True
-        for c in range(9):
+                    pos = positions[0]
+                    if pos not in seen:
+                        to_set.append((pos[0], pos[1], num))
+                        seen.add(pos)
+        for col in range(9):
             for num in range(1, 10):
-                positions = [(r, c) for r in range(9) if num in self.candidates[r][c]]
+                positions = [(r, col) for r in range(9)
+                             if num in self.candidates[r][col]]
                 if len(positions) == 1:
-                    r, _ = positions[0]
-                    self._set_value(r, c, num)
-                    self._record_technique('hidden_single', 'L1')
-                    found = True
+                    pos = positions[0]
+                    if pos not in seen:
+                        to_set.append((pos[0], pos[1], num))
+                        seen.add(pos)
         for box_idx in range(9):
             box_r = (box_idx // 3) * 3
             box_c = (box_idx % 3) * 3
             for num in range(1, 10):
                 positions = []
-                for r in range(box_r, box_r + 3):
-                    for c in range(box_c, box_c + 3):
-                        if num in self.candidates[r][c]:
-                            positions.append((r, c))
+                for br in range(box_r, box_r + 3):
+                    for bc in range(box_c, box_c + 3):
+                        if num in self.candidates[br][bc]:
+                            positions.append((br, bc))
                 if len(positions) == 1:
-                    r, c = positions[0]
-                    self._set_value(r, c, num)
-                    self._record_technique('hidden_single', 'L1')
-                    found = True
-        return found
+                    pos = positions[0]
+                    if pos not in seen:
+                        to_set.append((pos[0], pos[1], num))
+                        seen.add(pos)
+        for r, c, val in to_set:
+            if self.grid[r][c] == 0 and val in self.candidates[r][c]:
+                self._set_value(r, c, val)
+                self._record_technique('hidden_single', 'L1')
+        return len(to_set) > 0
 
     def locked_candidates(self) -> bool:
         found = False
@@ -593,6 +583,23 @@ class LogicSolver:
                                 self.candidates[r][c] -= cands1
                                 if len(self.candidates[r][c]) < before:
                                     found = True
+        for box_idx in range(9):
+            box_r = (box_idx // 3) * 3
+            box_c = (box_idx % 3) * 3
+            box_cells = [(r, c) for r in range(box_r, box_r + 3)
+                         for c in range(box_c, box_c + 3)]
+            for i, (r1, c1) in enumerate(box_cells):
+                cands1 = self.candidates[r1][c1]
+                if len(cands1) != 2:
+                    continue
+                for r2, c2 in box_cells[i + 1:]:
+                    if self.candidates[r2][c2] == cands1:
+                        for r, c in box_cells:
+                            if (r, c) != (r1, c1) and (r, c) != (r2, c2):
+                                before = len(self.candidates[r][c])
+                                self.candidates[r][c] -= cands1
+                                if len(self.candidates[r][c]) < before:
+                                    found = True
         if found:
             self._record_technique('naked_pair', 'L2')
         return found
@@ -620,13 +627,12 @@ class LogicSolver:
             solved = self.solve_l1()
         else:
             solved = self.solve_l2()
-
         return SolveSummary(
             solved=solved,
             steps=self.steps,
             max_tech_level=self.max_tech_level,
             counts=self.counts.copy(),
-            guess_used=False
+            guess_used=False,
         )
 
 
@@ -649,7 +655,6 @@ class DifficultyMeta:
 
 
 def rate(puzzle: Grid) -> DifficultyMeta:
-    """Rate puzzle difficulty using logic solver + backtracking."""
     summary_l1 = solve_with_limit(puzzle, 'L1')
     if summary_l1.solved:
         return DifficultyMeta(
@@ -657,9 +662,8 @@ def rate(puzzle: Grid) -> DifficultyMeta:
             tech_profile=summary_l1.counts,
             max_tech_level=summary_l1.max_tech_level,
             search_nodes=0,
-            steps=summary_l1.steps
+            steps=summary_l1.steps,
         )
-
     summary_l2 = solve_with_limit(puzzle, 'L2')
     if summary_l2.solved:
         stats = search_stats(puzzle)
@@ -674,9 +678,8 @@ def rate(puzzle: Grid) -> DifficultyMeta:
             tech_profile=summary_l2.counts,
             max_tech_level=summary_l2.max_tech_level,
             search_nodes=stats.nodes,
-            steps=summary_l2.steps
+            steps=summary_l2.steps,
         )
-
     stats = search_stats(puzzle)
     tech_level = 'L3' if stats.nodes <= 3000 else 'L4'
     return DifficultyMeta(
@@ -684,111 +687,8 @@ def rate(puzzle: Grid) -> DifficultyMeta:
         tech_profile={},
         max_tech_level=tech_level,
         search_nodes=stats.nodes,
-        steps=0
+        steps=0,
     )
-
-
-# ============================================================================
-# Complete grid generation
-# ============================================================================
-
-def _base_solution() -> Grid:
-    grid: Grid = []
-    for r in range(9):
-        row = []
-        for c in range(9):
-            val = (r * 3 + r // 3 + c) % 9 + 1
-            row.append(val)
-        grid.append(row)
-    return grid
-
-
-def generate_complete(seed: int = None) -> Grid:
-    """Generate random valid complete sudoku grid."""
-    rng = random.Random(seed)
-    base = _base_solution()
-    result = apply_random_transforms(base, rng)
-    return result
-
-
-# ============================================================================
-# Puzzle creation by digging
-# ============================================================================
-
-def count_givens(puzzle: Grid) -> int:
-    return sum(1 for r in range(9) for c in range(9) if puzzle[r][c] != 0)
-
-
-def make_puzzle(solution: Grid, symmetry: str = 'rot180',
-                ensure_minimal: bool = False, rng: random.Random = None) -> Grid:
-    """Create puzzle by removing clues from complete grid."""
-    if rng is None:
-        rng = random.Random()
-
-    puzzle = copy_grid(solution)
-    cells = [(r, c) for r in range(9) for c in range(9)]
-    rng.shuffle(cells)
-
-    attempted = set()
-
-    for r, c in cells:
-        if (r, c) in attempted:
-            continue
-
-        r2, c2 = get_symmetric_pair(r, c, symmetry)
-        attempted.add((r, c))
-        attempted.add((r2, c2))
-
-        if puzzle[r][c] == 0:
-            continue
-        if r != r2 or c != c2:
-            if puzzle[r2][c2] == 0:
-                continue
-
-        val1 = puzzle[r][c]
-        val2 = puzzle[r2][c2] if (r, c) != (r2, c2) else val1
-
-        puzzle[r][c] = 0
-        if (r, c) != (r2, c2):
-            puzzle[r2][c2] = 0
-
-        if count_solutions(puzzle, limit=2) != 1:
-            puzzle[r][c] = val1
-            if (r, c) != (r2, c2):
-                puzzle[r2][c2] = val2
-
-    if ensure_minimal:
-        puzzle = _make_minimal(puzzle, symmetry, rng)
-
-    return puzzle
-
-
-def _make_minimal(puzzle: Grid, symmetry: str, rng: random.Random) -> Grid:
-    result = copy_grid(puzzle)
-    filled = [(r, c) for r in range(9) for c in range(9) if result[r][c] != 0]
-    rng.shuffle(filled)
-
-    for r, c in filled:
-        if result[r][c] == 0:
-            continue
-
-        r2, c2 = get_symmetric_pair(r, c, symmetry)
-        if (r, c) != (r2, c2) and result[r2][c2] == 0:
-            continue
-
-        val1 = result[r][c]
-        val2 = result[r2][c2] if (r, c) != (r2, c2) else val1
-
-        result[r][c] = 0
-        if (r, c) != (r2, c2):
-            result[r2][c2] = 0
-
-        if count_solutions(result, limit=2) != 1:
-            result[r][c] = val1
-            if (r, c) != (r2, c2):
-                result[r2][c2] = val2
-
-    return result
 
 
 # ============================================================================
@@ -800,29 +700,47 @@ class DifficultyConfig:
     min_givens: int
     max_givens: int
     target_givens: int
-    symmetry: str
-    minimal: bool
+    forbid_advanced: bool = False
+    forbid_trivial: bool = False
+    min_search_nodes: int = 0
+    max_search_nodes: Optional[int] = None
+    spotcheck_k: int = 6
+    symmetry: str = 'rot180'
+    minimal: bool = False
+    forbidden_rate_labels: Set[str] = field(default_factory=set)
 
 
 DIFFICULTY_CONFIGS = {
     'easy': DifficultyConfig(
-        min_givens=40, max_givens=45, target_givens=42,
-        symmetry='rot180', minimal=False
+        min_givens=35,
+        max_givens=37,
+        target_givens=36,
+        forbid_trivial=False,
+        max_search_nodes=30,
+        spotcheck_k=3,
     ),
     'medium': DifficultyConfig(
-        min_givens=33, max_givens=38, target_givens=35,
-        symmetry='rot180', minimal=False
+        min_givens=32,
+        max_givens=34,
+        target_givens=33,
+        forbid_trivial=True,
+        min_search_nodes=25,
+        max_search_nodes=120,
+        spotcheck_k=5,
     ),
     'hard': DifficultyConfig(
-        min_givens=28, max_givens=32, target_givens=30,
-        symmetry='rot180', minimal=True
-    )
+        min_givens=29,
+        max_givens=31,
+        target_givens=30,
+        forbid_trivial=True,
+        min_search_nodes=90,
+        spotcheck_k=6,
+    ),
 }
 
 
 def _create_removal_groups(rng: random.Random, symmetry: str) -> List[List[Tuple[int, int]]]:
     positions = [(i, j) for i in range(9) for j in range(9)]
-
     if symmetry == 'rot180':
         pairs = []
         used = set()
@@ -839,41 +757,15 @@ def _create_removal_groups(rng: random.Random, symmetry: str) -> List[List[Tuple
         removal_groups = pairs
     else:
         removal_groups = [[(i, j)] for i, j in positions]
-
     rng.shuffle(removal_groups)
     return removal_groups
 
 
-def _prioritize_removal_groups(groups: List[List[Tuple[int, int]]],
-                                puzzle: Grid) -> List[List[Tuple[int, int]]]:
-    value_freq = {}
-    for i in range(9):
-        for j in range(9):
-            val = puzzle[i][j]
-            if val != 0:
-                value_freq[val] = value_freq.get(val, 0) + 1
-
-    def group_score(group):
-        score = 0
-        for i, j in group:
-            val = puzzle[i][j]
-            if val != 0:
-                score += 10 - value_freq.get(val, 9)
-        return score
-
-    return sorted(groups, key=group_score, reverse=True)
-
-
 def generate_difficulty_puzzle(
     difficulty: str,
-    seed: Optional[int] = None
+    seed: Optional[int] = None,
 ) -> Tuple[str, List[str], dict]:
-    """
-    Generate a sudoku puzzle at specified difficulty.
-
-    Returns:
-        Tuple of (puzzle_string, solution_strings, metadata)
-    """
+    """Constructively generate a Sudoku puzzle with exactly 1 solution."""
     if difficulty not in DIFFICULTY_CONFIGS:
         raise ValueError(f"Invalid difficulty: {difficulty}")
 
@@ -885,30 +777,65 @@ def generate_difficulty_puzzle(
     puzzle = [row[:] for row in solution]
 
     removal_groups = _create_removal_groups(rng, config.symmetry)
-    removal_groups = _prioritize_removal_groups(removal_groups, puzzle)
 
     for group in removal_groups:
         temp_puzzle = [row[:] for row in puzzle]
         for i, j in group:
             temp_puzzle[i][j] = 0
-
+        if count_givens(temp_puzzle) < config.min_givens:
+            continue
         solution_count = count_solutions(temp_puzzle, limit=MAX_SOLUTIONS + 1)
-
         if solution_count == 1:
             puzzle = temp_puzzle
-
         current_givens = count_givens(puzzle)
-
-        if current_givens <= config.min_givens:
-            break
-
         if current_givens <= config.target_givens:
             if not config.minimal:
                 break
 
-    solutions = find_all_solutions(puzzle, MAX_SOLUTIONS)
+    final_givens = count_givens(puzzle)
+    if final_givens > config.max_givens:
+        raise RuntimeError(
+            f"Puzzle has {final_givens} givens > max_givens={config.max_givens} "
+            f"(seed={seed}, difficulty={difficulty})"
+        )
+
+    final_count = count_solutions(puzzle, limit=2)
+    if final_count != 1:
+        raise RuntimeError(
+            f"Final puzzle has {final_count} solutions (expected 1). "
+            f"seed={seed}, difficulty={difficulty}"
+        )
+
+    solutions = find_all_solutions(puzzle, limit=2)
     if not solutions:
-        solutions = [solution]
+        raise RuntimeError(
+            f"find_all_solutions empty despite count=1. seed={seed}"
+        )
+
+    rating = rate(puzzle)
+    is_advanced = rating.max_tech_level in {'L3', 'L4', 'L5'}
+    is_trivial = (rating.max_tech_level == 'L1' and rating.search_nodes == 0)
+
+    if config.forbid_advanced and is_advanced:
+        raise RuntimeError(
+            f"forbid_advanced but max_tech={rating.max_tech_level}. seed={seed}"
+        )
+    if config.forbid_trivial and is_trivial:
+        raise RuntimeError(
+            f"forbid_trivial but puzzle L1-trivial (nodes=0). seed={seed}"
+        )
+    if config.forbidden_rate_labels and rating.label in config.forbidden_rate_labels:
+        raise RuntimeError(
+            f"rate().label={rating.label} forbidden. seed={seed}"
+        )
+    if rating.search_nodes < config.min_search_nodes:
+        raise RuntimeError(
+            f"search_nodes={rating.search_nodes} < min={config.min_search_nodes}. seed={seed}"
+        )
+    if config.max_search_nodes is not None and rating.search_nodes > config.max_search_nodes:
+        raise RuntimeError(
+            f"search_nodes={rating.search_nodes} > max={config.max_search_nodes}. seed={seed}"
+        )
 
     puzzle_str = to_string(puzzle)
     solution_strs = [to_string(sol) for sol in solutions]
@@ -916,76 +843,102 @@ def generate_difficulty_puzzle(
     metadata = {
         'difficulty': difficulty,
         'givens_count': count_givens(puzzle),
-        'solution_count': len(solutions),
+        'solution_count': final_count,
         'symmetry': config.symmetry,
-        'seed': seed
+        'seed': seed,
+        'step_metrics': {
+            'solver_steps': rating.steps,
+            'search_nodes': rating.search_nodes,
+            'max_tech_level': rating.max_tech_level,
+            'tech_profile': rating.tech_profile,
+            'rate_label': rating.label,
+        },
     }
-
     return puzzle_str, solution_strs, metadata
 
 
-def generate_puzzles_by_difficulty(
-    difficulties: List[str],
-    count_per_difficulty: int = 3,
-    base_seed: int = 42
-) -> List[dict]:
-    """Generate multiple puzzles for each difficulty level."""
-    puzzles = []
-    puzzle_id = 0
-
-    for difficulty in difficulties:
-        print(f"Generating {count_per_difficulty} puzzles for difficulty: {difficulty}")
-
-        for i in range(count_per_difficulty):
-            seed = base_seed + puzzle_id * 1000
-            puzzle_str, solution_strs, metadata = generate_difficulty_puzzle(difficulty, seed)
-
-            record = {
-                'id': f"puzzle_{puzzle_id:04d}",
-                'difficulty': difficulty,
-                'puzzle': puzzle_str,
-                'answer': solution_strs[0],
-                'metadata': metadata
-            }
-
-            puzzles.append(record)
-            puzzle_id += 1
-
-            print(f"  Generated puzzle {i+1}: {metadata['givens_count']} givens, "
-                  f"{metadata['solution_count']} solutions")
-
-    return puzzles
-
-
 # ============================================================================
-# Spotcheck generation
+# Spotcheck (HMAC-SHA256 deterministic K-cell selection)
 # ============================================================================
 
 def select_spotcheck_positions(canonical_hash: str, secret_hex: str, k: int) -> List[str]:
-    """HMAC-based K-position selection (reproducible)."""
+    """HMAC-based deterministic K-position selection. Returns 'r{R}c{C}' (1-based)."""
     secret = bytes.fromhex(secret_hex)
     message = canonical_hash.encode('utf-8')
     mac = hmac.new(secret, message, hashlib.sha256).digest()
-
     seed = int.from_bytes(mac[:8], 'big')
     rng = random.Random(seed)
-
     all_positions = [(r, c) for r in range(9) for c in range(9)]
     rng.shuffle(all_positions)
     selected = all_positions[:k]
-
     return [f"r{r+1}c{c+1}" for r, c in selected]
 
 
+def _parse_position(pos: str) -> Tuple[int, int]:
+    parts = pos[1:].split('c')
+    return int(parts[0]) - 1, int(parts[1]) - 1
+
+
 def make_spotcheck_code(solution: Grid, positions: List[str]) -> int:
-    """Generate answer code as sum of K cell values."""
+    """Legacy spotcheck code: sum of values at K positions (kept for debugging)."""
     total = 0
     for pos in positions:
-        parts = pos[1:].split('c')
-        r = int(parts[0]) - 1
-        c = int(parts[1]) - 1
+        r, c = _parse_position(pos)
         total += solution[r][c]
     return total
+
+
+def make_code(solution: Grid, positions: List[str]) -> int:
+    """Alias of make_spotcheck_code (Repo A naming)."""
+    return make_spotcheck_code(solution, positions)
+
+
+def make_spotcheck_answer(solution: Grid, positions: List[str]) -> str:
+    """Repo A answer format: K space-separated digits at spotcheck positions."""
+    digits = []
+    for pos in positions:
+        r, c = _parse_position(pos)
+        digits.append(str(solution[r][c]))
+    return ' '.join(digits)
+
+
+# ============================================================================
+# Question construction
+# ============================================================================
+
+def _format_grid(puzzle_str: str) -> str:
+    cleaned = puzzle_str.replace('0', '.')
+    rows = [cleaned[i:i + 9] for i in range(0, 81, 9)]
+    return "\n".join(" ".join(row) for row in rows)
+
+
+def _positions_as_rc_pairs(positions: List[str]) -> str:
+    pairs = []
+    for pos in positions:
+        r, c = _parse_position(pos)
+        pairs.append(f"({r+1}, {c+1})")
+    return ", ".join(pairs)
+
+
+def create_question(puzzle_str: str, positions: List[str]) -> str:
+    grid = _format_grid(puzzle_str)
+    rc_str = _positions_as_rc_pairs(positions)
+    return (
+        "You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.\n\n"
+        "Sudoku rules:\n"
+        "- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9\n"
+        "- Each digit must appear exactly once in each row, column, and box\n\n"
+        "The puzzle is given below as a 9-line grid.\n"
+        "'.' represents an empty cell.\n\n"
+        f"Puzzle grid:\n{grid}\n\n"
+        "First, solve the entire puzzle step by step.\n"
+        "Then, report the values at these (row, col) coordinates (1-based) in the same order:\n"
+        f"{rc_str}\n\n"
+        "CRITICAL: After solving, your very last line MUST be exactly:\n"
+        "Answer: [digits at those coordinates, separated by spaces]\n\n"
+        "Example (if the values are 5, 3, 4, 6, 7, 8):\n"
+        "Answer: 5 3 4 6 7 8"
+    )
 
 
 # ============================================================================
@@ -993,15 +946,7 @@ def make_spotcheck_code(solution: Grid, positions: List[str]) -> int:
 # ============================================================================
 
 def create_dataset_files(num_questions: int):
-    """
-    Create dataset files for sudoku puzzles.
-
-    Args:
-        num_questions: Number of questions to generate
-
-    Returns:
-        Tuple[pd.DataFrame, List[Dict]]: (dataframe, json list)
-    """
+    """Create sudoku dataset files (CSV + JSONL)."""
     import pandas as pd
 
     print(f"Generating {num_questions} sudoku puzzles...")
@@ -1010,65 +955,92 @@ def create_dataset_files(num_questions: int):
     puzzles_per_diff = num_questions // len(difficulties)
     remainder = num_questions % len(difficulties)
 
-    spotcheck_k = {'easy': 3, 'medium': 5, 'hard': 6}
-    all_puzzles = []
+    all_puzzles: List[Dict] = []
     puzzle_id = 0
+    secret_hex = '0' * 64
+    max_retries = 140
 
     for i, difficulty in enumerate(difficulties):
         count = puzzles_per_diff + (1 if i < remainder else 0)
-
         if count == 0:
             continue
 
         print(f"\n=== Generating {difficulty} puzzles ({count} needed) ===")
+        generated = 0
 
         for j in range(count):
-            seed = 42 + puzzle_id * 1000
-            try:
-                puzzle_str, solution_strs, metadata = generate_difficulty_puzzle(difficulty, seed)
+            puzzle_str = None
+            solution_strs = None
+            metadata = None
+            last_err = None
+            for retry in range(max_retries):
+                seed = 42 + puzzle_id * 1000 + retry
+                try:
+                    puzzle_str, solution_strs, metadata = generate_difficulty_puzzle(
+                        difficulty, seed
+                    )
+                    break
+                except RuntimeError as e:
+                    last_err = e
+                    continue
 
+            if puzzle_str is None:
+                print(f"  [{j+1}/{count}] Failed after {max_retries} retries: {last_err}")
+                puzzle_id += 1
+                continue
+
+            try:
                 solution_grid = from_string(solution_strs[0])
-                k = spotcheck_k.get(difficulty, 6)
+                k = DIFFICULTY_CONFIGS[difficulty].spotcheck_k
 
                 canonical_hash = f"sha256:{hashlib.sha256(puzzle_str.encode()).hexdigest()}"
-                secret_hex = '0' * 64
                 positions = select_spotcheck_positions(canonical_hash, secret_hex, k)
-                code = make_spotcheck_code(solution_grid, positions)
+                answer_str = make_spotcheck_answer(solution_grid, positions)
+                legacy_code = make_spotcheck_code(solution_grid, positions)
+
+                question = create_question(puzzle_str, positions)
 
                 puzzle_data = {
                     'id': f'sudoku_en_{len(all_puzzles)}',
-                    'question': puzzle_str,
-                    'answer': str(code),
+                    'question': question,
+                    'answer': answer_str,
                     'solution': solution_strs[0],
                     'difficulty': difficulty,
                     'givens_count': metadata['givens_count'],
+                    'puzzle': puzzle_str,
                     'spotcheck': {
                         'k': k,
                         'positions': positions,
-                        'code': code
-                    }
+                        'code': legacy_code,
+                    },
+                    'step_metrics': metadata.get('step_metrics', {}),
                 }
                 all_puzzles.append(puzzle_data)
-                print(f"  [{j+1}/{count}] givens={metadata['givens_count']}, code={code}")
+                generated += 1
+                print(
+                    f"  [{j+1}/{count}] givens={metadata['givens_count']}, "
+                    f"answer='{answer_str}' (k={k})"
+                )
             except Exception as e:
-                print(f"  [{j+1}/{count}] Failed: {e}")
+                print(f"  [{j+1}/{count}] Post-process failed: {e}")
 
             puzzle_id += 1
 
-    print(f"\nGenerated {len(all_puzzles)} puzzles")
+        if generated < count:
+            print(f"  Warning: only generated {generated}/{count} {difficulty} puzzles")
+
+    print(f"\nGenerated {len(all_puzzles)} puzzles total")
 
     df = pd.DataFrame(all_puzzles)
 
     PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
-    # CSV
     csv_dir = PROJECT_ROOT / "data" / "csv"
     csv_dir.mkdir(parents=True, exist_ok=True)
     csv_path = csv_dir / "sudoku_en.csv"
     df.to_csv(csv_path, index=False, encoding="utf-8-sig")
     print(f"CSV file created: {csv_path}")
 
-    # JSONL
     json_dir = PROJECT_ROOT / "data" / "json"
     json_dir.mkdir(parents=True, exist_ok=True)
     jsonl_path = json_dir / "sudoku_en.jsonl"
@@ -1081,15 +1053,12 @@ def create_dataset_files(num_questions: int):
 
 
 if __name__ == '__main__':
-    import argparse
-
-    parser = argparse.ArgumentParser(description="Sudoku Puzzle Generator")
+    parser = argparse.ArgumentParser(description="Sudoku Puzzle Generator (EN)")
     parser.add_argument("--num", type=int, default=12, help="Number of questions to generate")
-
     args = parser.parse_args()
 
     print("=" * 60)
-    print("Sudoku Puzzle Generator")
+    print("Sudoku Puzzle Generator (EN)")
     print("=" * 60)
 
     create_dataset_files(num_questions=args.num)

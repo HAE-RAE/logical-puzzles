@@ -1,14 +1,13 @@
-"""지뢰찾기 퍼즐 생성기 (난이도별)
+"""지뢰찾기(Minesweeper) 퍼즐 생성기 - 한국어 버전
 
-구성적 생성: 해의 수를 모니터링하면서 점진적으로 셀을 공개하여
-유효한 퍼즐 생성을 보장합니다.
-가중 좌표 합 형식의 채점 기능을 포함합니다.
+logical-puzzles-me/minesweeper/generator.py 기반 이식:
+- solve_puzzle 내부 _stats['nodes'] 역추적 노드 계측
+- DIFFICULTY_CONFIGS: min_solver_nodes, max_effective_reveal_ratio, reveal_order
+- 이웃 제약 가중 기반 셀 정보 점수
+- 정답 포맷: 좌표 목록 "(r1,c1), (r2,c2), ..." (Repo A 호환)
 """
 
-MAX_SOLUTIONS = 1  # 정확히 1개의 해만 허용
-
 import random
-import re
 import json
 from itertools import product
 from collections import defaultdict
@@ -16,12 +15,10 @@ from pathlib import Path
 from typing import List, Tuple, Optional, Dict, Set
 
 
-# ============================================================
-# 핵심 유틸리티 함수
-# ============================================================
+MAX_SOLUTIONS = 1
+
 
 def neighbors(r: int, c: int, R: int, C: int) -> List[Tuple[int, int]]:
-    """R x C 격자 내에서 셀 (r, c)의 8방향 이웃을 반환합니다."""
     result = []
     for dr in (-1, 0, 1):
         for dc in (-1, 0, 1):
@@ -34,11 +31,6 @@ def neighbors(r: int, c: int, R: int, C: int) -> List[Tuple[int, int]]:
 
 
 def compute_numbers(mask: List[List[int]]) -> List[List[Optional[int]]]:
-    """
-    각 셀의 숫자 힌트를 계산합니다.
-    mask: 1=지뢰, 0=안전
-    반환값: 지뢰 셀은 None, 안전 셀은 인접 지뢰 수(0-8)를 가진 격자
-    """
     R, C = len(mask), len(mask[0])
     nums = [[0] * C for _ in range(R)]
     for r in range(R):
@@ -56,20 +48,9 @@ def solve_puzzle(
     R: int,
     C: int,
     max_solutions: int = 2,
-    total_mines: Optional[int] = None
+    total_mines: Optional[int] = None,
+    _stats: Optional[Dict] = None,
 ) -> List[List[List[int]]]:
-    """
-    백트래킹과 제약 전파를 사용하여 지뢰찾기 퍼즐을 풉니다.
-
-    인자:
-        puzzle_nums: 공개된 셀은 숫자 0-8, 숨겨진 셀은 None인 격자
-        R, C: 격자 크기
-        max_solutions: 이 수만큼의 해를 찾으면 중단
-        total_mines: 전체 지뢰 수에 대한 선택적 전역 제약
-
-    반환값:
-        해(지뢰 마스크) 리스트, 최대 max_solutions개
-    """
     nbs = [[neighbors(r, c, R, C) for c in range(C)] for r in range(R)]
 
     constraints = []
@@ -95,7 +76,7 @@ def solve_puzzle(
     unknown_cells.sort(key=lambda rc: -len(constraints_per_cell[rc]))
 
     def check_constraints() -> bool:
-        for (rr, cc, v, nlist) in constraints:
+        for (_, _, v, nlist) in constraints:
             assigned_mines = 0
             unknown_count = 0
             for (nr, nc) in nlist:
@@ -113,10 +94,10 @@ def solve_puzzle(
         if total_mines is None:
             return True
         assigned_mines = sum(assignment[r][c] == 1
-                           for r in range(R) for c in range(C)
-                           if assignment[r][c] is not None)
+                             for r in range(R) for c in range(C)
+                             if assignment[r][c] is not None)
         unknown_count = sum(assignment[r][c] is None
-                          for r in range(R) for c in range(C))
+                            for r in range(R) for c in range(C))
         if assigned_mines > total_mines:
             return False
         if assigned_mines + unknown_count < total_mines:
@@ -126,6 +107,8 @@ def solve_puzzle(
     solutions = []
 
     def backtrack(i: int):
+        if _stats is not None:
+            _stats['nodes'] = _stats.get('nodes', 0) + 1
         if len(solutions) >= max_solutions:
             return
 
@@ -154,221 +137,120 @@ def solve_puzzle(
     return solutions
 
 
-def random_mask(R: int, C: int, M: int, rng: random.Random) -> List[List[int]]:
-    """무작위 지뢰 배치를 생성합니다."""
-    cells = list(product(range(R), range(C)))
-    mines = set(rng.sample(cells, M))
-    return [[1 if (r, c) in mines else 0 for c in range(C)] for r in range(R)]
-
-
-def mask_to_solution_string(mask: List[List[int]]) -> str:
-    """지뢰 마스크를 단일 비트 문자열 형식으로 변환합니다."""
+def mask_to_bitstring(mask: List[List[int]]) -> str:
     return "".join("".join(str(cell) for cell in row) for row in mask)
 
 
-def puzzle_to_string(puzzle: List[List[Optional[int]]]) -> List[str]:
-    """퍼즐을 숨겨진 셀에 #을 사용하는 문자열 형식으로 변환합니다."""
-    return [''.join(str(cell) if cell is not None else '#' for cell in row)
-            for row in puzzle]
-
-
-# ============================================================
-# 채점 함수 (가중 좌표 합)
-# ============================================================
-
-def bitstring_to_coordinates(solution_str: str, R: int, C: int) -> Set[Tuple[int, int]]:
-    """해 비트 문자열을 좌표 집합으로 변환합니다."""
-    coords = set()
-    for i, cell in enumerate(solution_str):
-        if cell == '1':
-            r, c = divmod(i, C)
-            coords.add((r, c))
+def mask_to_coord_list(mask: List[List[int]]) -> List[Tuple[int, int]]:
+    coords = []
+    for r, row in enumerate(mask):
+        for c, cell in enumerate(row):
+            if cell == 1:
+                coords.append((r, c))
     return coords
 
 
-def compute_total_sum(coords: Set[Tuple[int, int]], C: int) -> int:
-    """가중 좌표 합을 계산합니다: 각 지뢰에 대해 sum(행 * C + 열)."""
-    if not coords:
-        return 0
-    return sum(r * C + c for r, c in coords)
+def coords_to_answer_string(coords: List[Tuple[int, int]]) -> str:
+    return ", ".join(f"({r},{c})" for r, c in sorted(coords))
 
-
-def parse_total_sum(output: str) -> Optional[int]:
-    """LLM 출력에서 합계를 단일 정수로 파싱합니다."""
-    output = re.sub(r'```[a-z]*\n?', '', output)
-    output = re.sub(r'```', '', output)
-    output = output.strip()
-
-    answer_matches = re.findall(
-        r'(?:Answer|Output|Final\s*Answer)\s*[:\s]*(\d+)',
-        output, re.IGNORECASE
-    )
-    if answer_matches:
-        return int(answer_matches[-1])
-
-    lines = output.strip().split('\n')
-    last_lines = lines[-5:]
-    for line in reversed(last_lines):
-        match = re.search(r'\b(\d{2,})\b', line.strip())
-        if match:
-            return int(match.group(1))
-
-    matches = re.findall(r'\b(\d{2,})\b', output)
-    if matches:
-        return int(matches[-1])
-
-    return None
-
-
-def score_from_solution(solution_str: str, R: int, C: int, pred_output: str) -> Dict:
-    """가중 합을 사용하여 LLM 예측을 해답과 비교 채점합니다."""
-    truth_coords = bitstring_to_coordinates(solution_str, R, C)
-    truth_sum = compute_total_sum(truth_coords, C)
-    pred_sum = parse_total_sum(pred_output)
-
-    if pred_sum is None:
-        return {'score': 0.0, 'truth_sum': truth_sum, 'pred_sum': None, 'error': '파싱 실패'}
-
-    score = 1.0 if truth_sum == pred_sum else 0.0
-    return {'score': score, 'truth_sum': truth_sum, 'pred_sum': pred_sum, 'error': None}
-
-
-# ============================================================
-# 프롬프트 템플릿 함수
-# ============================================================
-
-def format_puzzle_grid(puzzle_rows: List[str]) -> str:
-    """퍼즐 격자를 여러 줄 문자열로 포맷합니다."""
-    return '\n'.join(puzzle_rows)
-
-
-def create_prompt(puzzle_data: Dict) -> str:
-    """지뢰찾기 퍼즐 평가용 프롬프트를 생성합니다."""
-    puzzle_grid = format_puzzle_grid(puzzle_data['puzzle'])
-    rows = puzzle_data['rows']
-    cols = puzzle_data['cols']
-    mines = puzzle_data.get('total_mines', puzzle_data.get('mines', 0))
-    difficulty = puzzle_data.get('difficulty', 'medium')
-
-    if difficulty == 'easy':
-        mine_info = f"2. 전체 지뢰 수: {mines}개가 격자에 숨겨져 있습니다"
-        task_info = f"모든 {mines}개 지뢰의 정확한 위치를 찾으세요."
-    else:
-        mine_info = "2. 일부 셀에 지뢰가 숨겨져 있습니다"
-        task_info = "모든 지뢰의 정확한 위치를 찾으세요."
-
-    if difficulty == 'easy':
-        uniqueness_info = "\n6. 이 퍼즐은 정확히 하나의 고유한 해를 가집니다"
-    else:
-        uniqueness_info = ""
-
-    prompt = f"""다음 규칙에 따라 지뢰찾기 퍼즐을 풀어주세요:
-
-게임 규칙:
-1. 격자 크기: {rows}행 x {cols}열 (0-인덱스)
-{mine_info}
-3. 각 공개된 숫자(0-8)는 인접한 8개 셀 중 지뢰가 있는 셀의 수를 나타냅니다
-4. '#'은 지뢰이거나 안전한 셀일 수 있는 숨겨진 셀입니다
-5. 인접 셀은 가로, 세로, 대각선 8방향을 모두 포함합니다{uniqueness_info}
-
-퍼즐:
-{puzzle_grid}
-
-과제:
-{task_info}
-
-출력 형식 (엄격히 준수):
-- 0-기반 인덱스로 모든 지뢰 좌표를 찾으세요 (행 0 ~ {rows-1}, 열 0 ~ {cols-1})
-- 각 지뢰의 (행, 열)에 대해 선형 인덱스를 계산하세요: 행 * {cols} + 열
-- 모든 선형 인덱스의 합을 구하세요
-- 이 합계 정수만 출력하세요
-
-예시 ({cols}열 기준):
-지뢰가 (1,2)와 (3,0)에 있다면:
-- 선형 인덱스: (1*{cols}+2) = {1*cols+2}, (3*{cols}+0) = {3*cols}
-- 합 = {1*cols+2} + {3*cols} = {1*cols+2 + 3*cols}
-- 출력: {1*cols+2 + 3*cols}
-
-Answer:"""
-
-    return prompt
-
-
-# ============================================================
-# 난이도별 퍼즐 생성기
-# ============================================================
 
 class DifficultyPuzzleGenerator:
-    """점진적 공개 방식을 사용하여 다양한 난이도의 퍼즐을 생성합니다."""
-
     DIFFICULTY_CONFIGS = {
         'easy': {
-            'grid_size': (5, 5),
-            'mine_ratio': 0.22,
-            'reveal_ratio': 0.45,
-            'description': '작은 격자, 균형 잡힌 공개'
+            'grid_size': (6, 6),
+            'mine_ratio': 0.15,
+            'reveal_ratio': 0.28,
+            'max_effective_reveal_ratio': 0.55,
+            'min_solver_nodes': 20,
+            'reveal_order': 'balanced',
+            'description': '6x6 격자, 중간 수준 모호성',
         },
         'medium': {
-            'grid_size': (6, 6),
-            'mine_ratio': 0.33,
-            'reveal_ratio': 0.25,
-            'description': '중간 격자, 더 많은 지뢰, 지뢰 수 힌트 없음'
+            'grid_size': (7, 7),
+            'mine_ratio': 0.16,
+            'reveal_ratio': 0.22,
+            'max_effective_reveal_ratio': 0.48,
+            'min_solver_nodes': 50,
+            'reveal_order': 'low_info',
+            'description': '7x7 격자, 낮은 정보량 공개',
         },
         'hard': {
-            'grid_size': (7, 7),
-            'mine_ratio': 0.28,
-            'reveal_ratio': 0.25,
-            'description': '큰 격자, 지뢰 수 힌트 없음'
-        }
+            'grid_size': (8, 8),
+            'mine_ratio': 0.17,
+            'reveal_ratio': 0.18,
+            'max_effective_reveal_ratio': 0.42,
+            'min_solver_nodes': 100,
+            'reveal_order': 'low_info',
+            'description': '8x8 격자, 희소한 낮은 정보량 공개',
+        },
     }
 
     def __init__(self, seed: int = 42):
         self.rng = random.Random(seed)
         self.seed = seed
 
-    def _rank_cells_by_information(self, nums: List[List[Optional[int]]],
-                                     mask: List[List[int]], R: int, C: int) -> List[Tuple[int, int]]:
-        """점진적 공개를 위해 안전 셀을 정보 가치 순으로 정렬합니다."""
+    def _rank_cells_by_information(self, nums, mask, R, C):
         safe_cells = [(r, c) for r in range(R) for c in range(C) if mask[r][c] == 0]
 
         def cell_info_score(pos):
             r, c = pos
             num = nums[r][c]
-            adjacency_bonus = 1 if num > 0 else 0
-            return num * 2 + adjacency_bonus
+            neighbor_count = len(neighbors(r, c, R, C))
+            if num == 0:
+                return neighbor_count * 2
+            if num == neighbor_count:
+                return neighbor_count * 2
+            return abs(num - neighbor_count / 2) * 2 + 1
 
         safe_cells.sort(key=cell_info_score, reverse=True)
         return safe_cells
 
-    def _count_solutions_fast(self, puzzle: List[List[Optional[int]]],
-                              R: int, C: int, total_mines: int) -> int:
-        solutions = solve_puzzle(puzzle, R, C, max_solutions=MAX_SOLUTIONS + 1, total_mines=total_mines)
-        return len(solutions)
+    def _order_ranked_cells(self, ranked_cells, difficulty):
+        order = self.DIFFICULTY_CONFIGS[difficulty].get('reveal_order', 'high_info')
+        if order == 'high_info':
+            return list(ranked_cells)
+        if order == 'low_info':
+            return list(reversed(ranked_cells))
+        if order == 'balanced':
+            cells = list(ranked_cells)
+            out = []
+            lo, hi = 0, len(cells) - 1
+            take_high = True
+            while lo <= hi:
+                if take_high:
+                    out.append(cells[lo]); lo += 1
+                else:
+                    out.append(cells[hi]); hi -= 1
+                take_high = not take_high
+            return out
+        return list(ranked_cells)
 
-    def generate_puzzle_with_difficulty(
-        self,
-        difficulty: str,
-        puzzle_id: str,
-        max_attempts: int = 100
-    ) -> Optional[Dict]:
-        """정확히 1개의 해를 가진 퍼즐을 생성합니다."""
+    def _count_solutions_fast(self, puzzle, R, C, total_mines):
+        sols = solve_puzzle(puzzle, R, C, max_solutions=MAX_SOLUTIONS + 1, total_mines=total_mines)
+        return len(sols)
+
+    def generate_puzzle_with_difficulty(self, difficulty, puzzle_id, max_attempts=300):
         if difficulty not in self.DIFFICULTY_CONFIGS:
-            raise ValueError(f"알 수 없는 난이도: {difficulty}")
+            raise ValueError(f"Unknown difficulty: {difficulty}")
 
         config = self.DIFFICULTY_CONFIGS[difficulty]
         R, C = config['grid_size']
         total_cells = R * C
         num_mines = max(1, int(total_cells * config['mine_ratio']))
-        target_reveals = max(2, int((total_cells - num_mines) * config['reveal_ratio']))
-        max_reveals = int(target_reveals * 1.5)
+        safe_cells_count = total_cells - num_mines
+        target_reveals = max(2, int(safe_cells_count * config['reveal_ratio']))
+        max_reveals = safe_cells_count
 
-        for attempt in range(max_attempts):
+        for _ in range(max_attempts):
             cells = [(r, c) for r in range(R) for c in range(C)]
             mine_positions = set(self.rng.sample(cells, num_mines))
             mask = [[1 if (r, c) in mine_positions else 0 for c in range(C)] for r in range(R)]
-
             nums = compute_numbers(mask)
-            ranked_cells = self._rank_cells_by_information(nums, mask, R, C)
+
+            ranked_cells = self._order_ranked_cells(
+                self._rank_cells_by_information(nums, mask, R, C),
+                difficulty,
+            )
 
             puzzle = [[None] * C for _ in range(R)]
             revealed: Set[Tuple[int, int]] = set()
@@ -393,18 +275,30 @@ class DifficultyPuzzleGenerator:
                     break
 
             if solution_count == 1:
-                solutions = solve_puzzle(puzzle, R, C, max_solutions=1, total_mines=num_mines)
+                step_stats = {'nodes': 0}
+                solutions_with_stats = solve_puzzle(
+                    puzzle, R, C, max_solutions=2, total_mines=num_mines,
+                    _stats=step_stats,
+                )
+                solutions = solutions_with_stats[:1]
+
+                effective_reveal_ratio = len(revealed) / safe_cells_count
+                if effective_reveal_ratio > config.get('max_effective_reveal_ratio', 1.0):
+                    continue
+                if step_stats['nodes'] < config.get('min_solver_nodes', 0):
+                    continue
 
                 puzzle_display = []
                 for row in puzzle:
-                    row_str = ''.join(str(cell) if cell is not None else '#' for cell in row)
+                    row_str = ''.join(
+                        str(cell) if cell is not None else '#'
+                        for cell in row
+                    )
                     puzzle_display.append(row_str)
 
-                answer_bitstring = mask_to_solution_string(solutions[0])
-
-                # 가중 좌표 합을 정답으로 계산
-                coords = bitstring_to_coordinates(answer_bitstring, R, C)
-                answer_sum = compute_total_sum(coords, C)
+                bitstring = mask_to_bitstring(solutions[0])
+                coord_list = mask_to_coord_list(solutions[0])
+                answer_str = coords_to_answer_string(coord_list)
 
                 return {
                     'id': puzzle_id,
@@ -413,48 +307,82 @@ class DifficultyPuzzleGenerator:
                     'cols': C,
                     'total_mines': num_mines,
                     'puzzle': puzzle_display,
-                    'answer': str(answer_sum),
-                    'solution': answer_bitstring,
-                    'answer_type': 'weighted_sum',
+                    'answer': answer_str,
+                    'solution': bitstring,
+                    'answer_type': 'coord_list',
                     'description': f"{R}x{C} 격자, 지뢰 {num_mines}개",
-                    'cells_revealed': len(revealed)
+                    'cells_revealed': len(revealed),
+                    'step_metrics': {
+                        'solver_backtrack_nodes': step_stats['nodes'],
+                        'unrevealed_cells': total_cells - len(revealed),
+                        'grid_size': total_cells,
+                        'effective_reveal_ratio': effective_reveal_ratio,
+                        'configured_reveal_ratio': config['reveal_ratio'],
+                        'max_effective_reveal_ratio': config.get('max_effective_reveal_ratio', 1.0),
+                    },
                 }
 
         return None
 
-    def verify_solutions(self, problem: Dict) -> bool:
-        """퍼즐이 정확히 1개의 해를 가지는지 검증합니다."""
-        R, C = problem['rows'], problem['cols']
-        total_mines = problem['total_mines']
 
-        puzzle = []
-        for row_str in problem['puzzle']:
-            row = []
-            for char in row_str:
-                if char == '#':
-                    row.append(None)
-                else:
-                    row.append(int(char))
-            puzzle.append(row)
-
-        solutions = solve_puzzle(puzzle, R, C, max_solutions=2, total_mines=total_mines)
-        return len(solutions) == 1
+def format_puzzle_grid_labeled(puzzle_rows: List[str]) -> str:
+    if not puzzle_rows:
+        return ""
+    C = len(puzzle_rows[0])
+    header = "  " + " ".join(f"c{c}" for c in range(C))
+    lines = [header]
+    for r, row in enumerate(puzzle_rows):
+        cells = " ".join(row[c] for c in range(C))
+        lines.append(f"r{r} {cells}")
+    return "\n".join(lines)
 
 
-# ============================================================
-# 데이터셋 생성
-# ============================================================
+def create_prompt(puzzle_data: Dict) -> str:
+    grid = format_puzzle_grid_labeled(puzzle_data['puzzle'])
+    rows = puzzle_data['rows']
+    cols = puzzle_data['cols']
+    mines = puzzle_data['total_mines']
+
+    mine_info = f"2. 전체 지뢰 수: {mines}개가 격자에 숨겨져 있습니다"
+    task_info = f"모든 {mines}개 지뢰의 정확한 위치를 찾으세요."
+    uniqueness_info = "\n6. 이 퍼즐은 정확히 하나의 고유한 해를 가집니다"
+
+    return f"""다음 규칙에 따라 지뢰찾기 퍼즐을 풀어주세요:
+
+게임 규칙:
+1. 격자 크기: {rows}행 × {cols}열 (0-인덱스)
+{mine_info}
+3. 각 공개된 숫자(0-8)는 인접한 8개 셀 중 지뢰가 있는 셀의 수를 나타냅니다
+4. '#'은 지뢰이거나 안전한 셀일 수 있는 숨겨진 셀입니다
+5. 인접 셀은 가로, 세로, 대각선 8방향을 모두 포함합니다{uniqueness_info}
+
+중요한 신뢰성 안내:
+- 아래 퍼즐은 machine-verified 되었고 내부적으로 일관됩니다.
+- 아래의 행/열 라벨과 공백으로 구분된 셀 표기가 authoritative 합니다.
+- 모든 행은 이미 올바른 길이를 가집니다.
+- 국소적인 모순이 보이면 퍼즐을 잘못되었다고 판단하지 말고 추론을 다시 점검하세요.
+
+퍼즐:
+아래 격자는 행/열 라벨을 포함합니다.
+각 퍼즐 행은 rN으로 시작하며 각 셀은 공백으로 구분됩니다.
+{grid}
+
+과제:
+{task_info}
+
+단계별로 풀어주세요:
+1. 각 숫자 셀을 분석하여 인접한 어떤 셀이 지뢰여야 하는지 추론합니다
+2. 셀 간 제약을 전파합니다
+3. 모든 지뢰 좌표를 확정합니다
+
+출력 형식:
+- 어떤 셀이 지뢰인지 추론 과정을 서술하세요
+- 모든 지뢰 좌표를 (행, 열) 쌍으로 행 순서대로 정렬하여 나열하세요
+- 마지막 줄은 "Answer: (r1,c1), (r2,c2), ..." 형식으로 작성하세요
+"""
+
 
 def create_dataset_files(num_questions: int):
-    """
-    지뢰찾기 퍼즐 데이터셋 파일을 생성합니다.
-
-    인자:
-        num_questions: 생성할 문제 수
-
-    반환값:
-        Tuple[pd.DataFrame, List[Dict]]: (데이터프레임, JSON 리스트)
-    """
     import pandas as pd
 
     print(f"{num_questions}개의 지뢰찾기 퍼즐을 생성합니다...")
@@ -469,7 +397,6 @@ def create_dataset_files(num_questions: int):
 
     for i, difficulty in enumerate(difficulties):
         count = puzzles_per_diff + (1 if i < remainder else 0)
-
         if count == 0:
             continue
 
@@ -478,49 +405,46 @@ def create_dataset_files(num_questions: int):
         for j in range(count):
             puzzle_id = f"minesweeper_ko_{len(all_puzzles)}"
 
-            # 다른 시드로 시도
             puzzle_generated = False
             for seed_offset in range(10):
-                generator.rng = random.Random(generator.seed + seed_offset + j * 100 + i * 1000)
+                generator.rng = random.Random(
+                    generator.seed + seed_offset + j * 100 + i * 10_000_000
+                )
 
                 result = generator.generate_puzzle_with_difficulty(
                     difficulty=difficulty,
-                    puzzle_id=puzzle_id
+                    puzzle_id=puzzle_id,
                 )
 
                 if result:
-                    # 질문(프롬프트) 추가
                     result['question'] = create_prompt(result)
                     all_puzzles.append(result)
-                    print(f"  [{j+1}/{count}] {result['description']}, answer_sum={result['answer']}")
+                    print(f"  [{j+1}/{count}] {result['description']}, answer={result['answer']}")
                     puzzle_generated = True
                     break
 
             if not puzzle_generated:
                 print(f"  [{j+1}/{count}] 생성 실패")
 
-    print(f"\n총 {len(all_puzzles)}개의 퍼즐이 생성되었습니다")
+    print(f"\n총 {len(all_puzzles)}개의 퍼즐을 생성했습니다")
 
     df = pd.DataFrame(all_puzzles)
 
-    # 파일 저장
     PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
-    # CSV
     csv_dir = PROJECT_ROOT / "data" / "csv"
     csv_dir.mkdir(parents=True, exist_ok=True)
     csv_path = csv_dir / "minesweeper_ko.csv"
     df.to_csv(csv_path, index=False, encoding="utf-8-sig")
-    print(f"CSV 파일 생성됨: {csv_path}")
+    print(f"CSV 파일 생성 완료: {csv_path}")
 
-    # JSONL
     json_dir = PROJECT_ROOT / "data" / "json"
     json_dir.mkdir(parents=True, exist_ok=True)
     jsonl_path = json_dir / "minesweeper_ko.jsonl"
     with open(jsonl_path, 'w', encoding='utf-8') as f:
         for item in all_puzzles:
             f.write(json.dumps(item, ensure_ascii=False) + '\n')
-    print(f"JSONL 파일 생성됨: {jsonl_path}")
+    print(f"JSONL 파일 생성 완료: {jsonl_path}")
 
     return df, all_puzzles
 
@@ -528,7 +452,7 @@ def create_dataset_files(num_questions: int):
 if __name__ == '__main__':
     import argparse
 
-    parser = argparse.ArgumentParser(description="지뢰찾기 퍼즐 생성기")
+    parser = argparse.ArgumentParser(description="지뢰찾기(Minesweeper) 퍼즐 생성기 - 한국어")
     parser.add_argument("--num", type=int, default=12, help="생성할 문제 수")
 
     args = parser.parse_args()

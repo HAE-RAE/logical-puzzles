@@ -2,7 +2,7 @@
 Inequality Evaluator
 
 Evaluates inequality puzzle responses with constraint-based fallback validation.
-Answer format: digit sequence (e.g., "3142" or "5 3 12 4 10 1" for size>9)
+Answer format: digit sequence (e.g., "3142" or "5 3 12 4 10 1" for size>9).
 """
 
 import logging
@@ -23,29 +23,64 @@ class InequalityEvaluator(BaseEvaluator):
     Inequality puzzle evaluator.
 
     Supports both concatenated (size<=9) and space-separated (size>9) formats.
-    Falls back to constraint-based validation when answer doesn't match pre-computed value.
+    Falls back to constraint-based validation when the answer doesn't match
+    the pre-computed value but still satisfies all inequality constraints.
     """
 
     SYSTEM_PROMPT = """### Instructions
 You are an expert puzzle solver specializing in logical constraint puzzles.
+You will be given an inequality puzzle where you must fill in the blanks with
+numbers from 1 to N (where N is the total number of positions in the puzzle).
 
 ### Rules
-Solve the inequality puzzle by filling blanks with numbers.
-Each number must be used exactly once.
-Inequality symbols (< or >) between positions must be satisfied.
+1. Each number from 1 to N must be used exactly one time (it is a permutation of 1..N).
+2. Adjacent positions are joined by an inequality symbol that must be satisfied:
+   - `<` means the left number is strictly smaller than the right number.
+   - `>` means the left number is strictly larger than the right number.
+   - `?` means the inequality is hidden/unknown (it may be either `<` or `>`);
+     you must still produce a valid assignment consistent with some choice.
+3. Some positions may be pre-filled with a number (a hint). These numbers are
+   fixed and must appear at that position in your answer.
+4. A blank position is shown as an underscore (`_`) in the compact puzzle grid.
+5. The compact grid alternates `value symbol value symbol value ...`, for
+   example: `_ < 2 > _ < _`.
 
-### Output format
-Answer: [numbers separated by spaces]"""
+### Output format (CRITICAL)
+Solve the puzzle step by step, then end your response with exactly one line:
+Answer: <numbers from left to right>
+
+- For puzzles of size <= 9, concatenate the digits (e.g., `Answer: 53241`).
+- For puzzles of size > 9, separate numbers with single spaces
+  (e.g., `Answer: 5 3 12 4 10 1`).
+
+Do NOT omit the `Answer:` line. This line is how your solution is graded."""
 
     KOREAN_SYSTEM_PROMPT = """### 지시사항
 당신은 부등식 제약 논리 퍼즐 전문가입니다.
+부등호 퍼즐이 주어지며, 1부터 N까지의 숫자로 빈칸을 모두 채워야 합니다
+(N은 퍼즐의 전체 위치 수입니다).
 
 ### 규칙
-빈칸을 숫자로 채워 퍼즐을 완성하세요. 각 숫자는 정확히 한 번씩만 사용합니다.
-칸 사이의 부등호(< 또는 >)를 모두 만족해야 합니다.
+1. 1부터 N까지의 각 숫자는 정확히 한 번씩만 사용되어야 합니다 (1..N의 순열).
+2. 인접한 위치 사이의 부등호를 반드시 만족해야 합니다:
+   - `<`: 왼쪽 숫자가 오른쪽 숫자보다 작음
+   - `>`: 왼쪽 숫자가 오른쪽 숫자보다 큼
+   - `?`: 부등호가 숨겨져 있음 (`<` 또는 `>` 중 어느 쪽이든 가능).
+     이 경우에도 어떤 선택과 일관된 유효한 배치를 제시해야 합니다.
+3. 일부 위치에는 숫자가 힌트로 미리 주어질 수 있습니다. 힌트 위치의 숫자는
+   고정이며 답안에서도 그 위치에 그대로 나타나야 합니다.
+4. 빈 위치는 퍼즐 그리드에서 밑줄(`_`)로 표시됩니다.
+5. 퍼즐 그리드는 `값 기호 값 기호 값 ...` 순서로 번갈아 나타납니다.
+   예: `_ < 2 > _ < _`.
 
-### 출력 형식
-Answer: [공백으로 구분된 숫자들]"""
+### 출력 형식 (매우 중요)
+단계별로 풀이한 뒤, 응답의 마지막 줄은 반드시 다음 형식이어야 합니다:
+Answer: <왼쪽에서 오른쪽 순서의 숫자들>
+
+- size <= 9: 숫자를 공백 없이 이어붙임 (예: `Answer: 53241`).
+- size > 9: 숫자를 공백 한 칸으로 구분 (예: `Answer: 5 3 12 4 10 1`).
+
+`Answer:` 줄을 절대 생략하지 마세요. 이 줄이 채점의 기준이 됩니다."""
 
     def _is_korean(self, puzzle: Optional[Dict] = None) -> bool:
         """Prefer task_name suffix (_ko / _en); else infer from expected answer."""
@@ -161,11 +196,9 @@ Answer: [공백으로 구분된 숫자들]"""
         expected_answer = puzzle.get("answer", "")
         size = puzzle.get("size", 0)
         if not size and expected_answer:
-            # Infer size from answer
             nums = re.findall(r'\d+', expected_answer)
             size = len(nums) if len(nums) > 1 else len(expected_answer)
 
-        # Priority 1: "Answer:" pattern
         patterns = [
             r'Answer:\s*([\d\s]+)',
             r'answer:\s*([\d\s]+)',
@@ -184,7 +217,6 @@ Answer: [공백으로 구분된 숫자들]"""
                         return ' '.join(nums)
                     return ''.join(nums)
 
-        # Priority 2: last numeric sequence in last 200 chars
         last_part = response[-200:] if len(response) > 200 else response
         all_nums = re.findall(r'\d+', last_part)
         if len(all_nums) >= size:
@@ -200,47 +232,61 @@ Answer: [공백으로 구분된 숫자들]"""
         if not s:
             return []
         nums = re.findall(r'\d+', s)
-        # Concatenated single digits (e.g. "641532" for size 6)
         if len(nums) == 1 and len(nums[0]) == size and size <= 9:
             return [int(d) for d in nums[0]]
         return [int(n) for n in nums]
 
     def _validate_inequality_solution(self, answer_str: str, puzzle: Dict) -> bool:
-        """Validate if answer satisfies inequality constraints directly."""
+        """Validate an answer against inequality constraints.
+
+        Prefers the schema fields `inequalities` (full list) + `hidden_inequalities`
+        (indices that are hidden in display) when present; falls back to parsing
+        the compact `problem` string.
+        """
         size = puzzle.get("size", 0)
 
-        # Parse answer to int list
         parsed = self._to_int_list(answer_str, size)
         if len(parsed) != size:
             return False
 
-        # Check permutation of 1..N
         if sorted(parsed) != list(range(1, size + 1)):
             return False
 
-        # Check given numbers
         given_positions = puzzle.get("given_positions", [])
         given_values = puzzle.get("given_values", [])
         for pos, val in zip(given_positions, given_values):
             if pos < len(parsed) and parsed[pos] != val:
                 return False
 
-        # Parse inequalities from problem string
+        inequalities = puzzle.get("inequalities")
+        hidden = set(puzzle.get("hidden_inequalities", []) or [])
+
+        if inequalities:
+            for i, ineq in enumerate(inequalities):
+                if i + 1 >= len(parsed):
+                    break
+                if i in hidden or ineq == "?":
+                    continue
+                if ineq == "<" and parsed[i] >= parsed[i + 1]:
+                    return False
+                if ineq == ">" and parsed[i] <= parsed[i + 1]:
+                    return False
+            return True
+
         problem_str = puzzle.get("problem", puzzle.get("solution", ""))
         if not problem_str:
             return False
 
         parts = problem_str.split()
-        inequalities = parts[1::2]
-
-        for i, ineq in enumerate(inequalities):
+        fallback_ineqs = parts[1::2]
+        for i, ineq in enumerate(fallback_ineqs):
             if i + 1 >= len(parsed):
                 break
             if ineq == "?":
                 continue
             if ineq == "<" and parsed[i] >= parsed[i + 1]:
                 return False
-            elif ineq == ">" and parsed[i] <= parsed[i + 1]:
+            if ineq == ">" and parsed[i] <= parsed[i + 1]:
                 return False
 
         return True
@@ -248,12 +294,12 @@ Answer: [공백으로 구분된 숫자들]"""
     def _check_answer(
         self,
         expected: str,
-        predicted: Optional[str]
+        predicted: Optional[str],
+        puzzle: Optional[Dict] = None,
     ) -> Tuple[bool, float]:
         if predicted is None:
             return False, 0.0
 
-        # Normalize both to int lists for comparison
         size = len(re.findall(r'\d+', str(expected)))
         if size <= 1:
             size = len(str(expected))
@@ -262,4 +308,53 @@ Answer: [공백으로 구분된 숫자들]"""
         predicted_list = self._to_int_list(str(predicted), size)
 
         correct = expected_list == predicted_list
-        return correct, 1.0 if correct else 0.0
+        if correct:
+            return True, 1.0
+
+        # Fallback: accept if answer satisfies visible inequality constraints
+        # (handles puzzles with hidden `?` inequalities where multiple visible
+        # permutations could be consistent, though by construction visible
+        # uniqueness should hold — this keeps the grader robust).
+        if puzzle is not None and self._validate_inequality_solution(str(predicted), puzzle):
+            return True, 1.0
+
+        return False, 0.0
+
+    def _process_response(
+        self,
+        puzzle: Dict[str, Any],
+        response: str,
+        latency_ms: float,
+        usage: Optional[Dict[str, Any]] = None,
+    ) -> EvaluationResult:
+        """Override base _process_response so _check_answer can see the puzzle
+        (needed for constraint-based fallback validation).
+        """
+        usage = usage or {}
+
+        if "error" in usage:
+            return self._create_error_result(
+                puzzle,
+                response if response else "",
+                latency_ms,
+                usage["error"],
+            )
+
+        try:
+            predicted = self._parse_answer(response, puzzle)
+            correct, partial_score = self._check_answer(
+                puzzle["answer"], predicted, puzzle
+            )
+            return EvaluationResult(
+                puzzle_id=puzzle["id"],
+                difficulty=puzzle.get("difficulty", "Unknown"),
+                correct=correct,
+                partial_score=partial_score,
+                expected=puzzle["answer"],
+                predicted=predicted,
+                raw_response=response,
+                latency_ms=latency_ms,
+                thinking_content=usage.get("thinking_content", "") if isinstance(usage, dict) else "",
+            )
+        except Exception as e:
+            return self._create_error_result(puzzle, response, latency_ms, str(e))

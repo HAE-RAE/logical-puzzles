@@ -24,30 +24,49 @@ class NumberBaseballEvaluator(BaseEvaluator):
     Number Baseball puzzle evaluator.
 
     Falls back to constraint-based validation (checking all hints)
-    when answer doesn't match pre-computed value.
+    when predicted answer doesn't match expected answer exactly.
     """
 
-    SYSTEM_PROMPT = """### Instructions
-You are an expert puzzle solver specializing in logical deduction games like Bulls and Cows (Number Baseball).
+    SYSTEM_PROMPT = (
+        "You are an expert logical reasoning assistant specialized in solving "
+        "Bulls and Cows (Number Baseball) puzzles.\n"
+        "\n"
+        "Rules of Bulls and Cows:\n"
+        "- The secret is a sequence of unique digits (0-9). Leading zeros are "
+        "allowed (e.g., '012' is a valid 3-digit secret)\n"
+        "- A \"Strike\" (S) means a correct digit in the correct position\n"
+        "- A \"Ball\" (B) means a correct digit in the wrong position\n"
+        "- You need to find the unique number that satisfies ALL given hints\n"
+        "\n"
+        "Approach:\n"
+        "1. Analyze each hint to understand what digits are in the secret number\n"
+        "2. Use the strike and ball counts to determine positions\n"
+        "3. Apply logical deduction to eliminate impossible combinations\n"
+        "4. Verify your answer against all hints before responding\n"
+        "\n"
+        "IMPORTANT: Provide your final answer after \"Answer:\" as a single "
+        "number with no additional text or formatting."
+    )
 
-### Rules
-- "Strike" means a digit is correct AND in the correct position
-- "Ball" means a digit is correct BUT in the wrong position
-- Find the secret number that satisfies ALL hints
-
-### Output format
-Answer: [the secret number]"""
-
-    KOREAN_SYSTEM_PROMPT = """### 지시사항
-당신은 숫자 야구(불스 앤 카우즈) 논리 추론 전문가입니다.
-
-### 규칙
-- 스트라이크: 숫자와 위치가 모두 맞음
-- 볼: 숫자는 맞지만 위치가 틀림
-- 모든 힌트를 만족하는 비밀 숫자를 찾으세요
-
-### 출력 형식
-Answer: [비밀 숫자]"""
+    KOREAN_SYSTEM_PROMPT = (
+        "당신은 숫자 야구(Bulls and Cows) 퍼즐을 푸는 논리적 추론 전문가입니다.\n"
+        "\n"
+        "숫자 야구 규칙:\n"
+        "- 비밀 숫자는 서로 다른 자릿수(0-9)로 이루어진 수열입니다. 앞자리 0이 "
+        "허용됩니다 (예: '012'는 유효한 3자리 비밀 숫자)\n"
+        "- \"스트라이크\"(S)는 올바른 숫자가 올바른 위치에 있음을 의미합니다\n"
+        "- \"볼\"(B)은 올바른 숫자가 잘못된 위치에 있음을 의미합니다\n"
+        "- 주어진 모든 힌트를 만족하는 유일한 숫자를 찾아야 합니다\n"
+        "\n"
+        "풀이 접근법:\n"
+        "1. 각 힌트를 분석하여 비밀 숫자에 포함된 숫자를 파악합니다\n"
+        "2. 스트라이크와 볼 개수를 이용하여 위치를 결정합니다\n"
+        "3. 논리적 추론으로 불가능한 조합을 제거합니다\n"
+        "4. 답을 제출하기 전에 모든 힌트에 대해 검증합니다\n"
+        "\n"
+        "중요: \"Answer:\" 뒤에 추가 텍스트나 서식 없이 숫자만 최종 답으로 "
+        "제시하세요."
+    )
 
     def _is_korean(self, puzzle: Optional[Dict] = None) -> bool:
         """Prefer task_name suffix (_ko / _en); else infer from expected answer."""
@@ -209,7 +228,7 @@ Answer: [비밀 숫자]"""
         return strikes, balls
 
     def _validate_solution(self, answer: str, puzzle: Dict) -> bool:
-        """Validate if answer satisfies all hints."""
+        """Validate if answer satisfies all hints (constraint-based fallback)."""
         num_digits = puzzle.get("num_digits", 0)
         if not answer or len(answer) != num_digits:
             return False
