@@ -206,24 +206,31 @@ Answer: <왼쪽에서 오른쪽 순서의 숫자들>
             r'sequence[:\s]+([\d\s]+)',
         ]
 
+        def _normalize(nums):
+            if len(nums) == 1 and size <= 9 and len(nums[0]) == size:
+                return ''.join(nums[0])
+            if len(nums) >= size:
+                nums = nums[:size]
+                return ' '.join(nums) if size > 9 else ''.join(nums)
+            return None
+
         for pattern in patterns:
             match = re.search(pattern, response, re.IGNORECASE)
             if match:
                 raw = match.group(1).strip()
                 nums = re.findall(r'\d+', raw)
-                if len(nums) >= size:
-                    nums = nums[:size]
-                    if size > 9:
-                        return ' '.join(nums)
-                    return ''.join(nums)
+                out = _normalize(nums)
+                if out is not None:
+                    return out
 
         last_part = response[-200:] if len(response) > 200 else response
         all_nums = re.findall(r'\d+', last_part)
+        if size <= 9:
+            for cand in reversed(all_nums):
+                if len(cand) == size:
+                    return cand
         if len(all_nums) >= size:
-            nums = all_nums[-size:]
-            if size > 9:
-                return ' '.join(nums)
-            return ''.join(nums)
+            return ' '.join(all_nums[-size:]) if size > 9 else ''.join(all_nums[-size:])
 
         return None
 
@@ -259,14 +266,11 @@ Answer: <왼쪽에서 오른쪽 순서의 숫자들>
                 return False
 
         inequalities = puzzle.get("inequalities")
-        hidden = set(puzzle.get("hidden_inequalities", []) or [])
 
         if inequalities:
             for i, ineq in enumerate(inequalities):
                 if i + 1 >= len(parsed):
                     break
-                if i in hidden or ineq == "?":
-                    continue
                 if ineq == "<" and parsed[i] >= parsed[i + 1]:
                     return False
                 if ineq == ">" and parsed[i] <= parsed[i + 1]:

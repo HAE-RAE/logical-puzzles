@@ -402,7 +402,7 @@ class ProblemGenerator:
 
         return None
 
-    def generate_problem(self, difficulty: Difficulty, max_retries: int = 100) -> Dict:
+    def generate_problem(self, difficulty: Difficulty, max_retries: int = 4000) -> Dict:
         """Constructively generate a puzzle with exactly 1 solution."""
         cfg = DIFFICULTY_CONFIGS[difficulty.name.lower()]
         num_digits = cfg["num_digits"]

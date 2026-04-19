@@ -402,7 +402,7 @@ class ProblemGenerator:
 
         return None
 
-    def generate_problem(self, difficulty: Difficulty, max_retries: int = 100) -> Dict:
+    def generate_problem(self, difficulty: Difficulty, max_retries: int = 4000) -> Dict:
         """정확히 1개의 해를 가진 퍼즐을 구성적으로 생성합니다."""
         cfg = DIFFICULTY_CONFIGS[difficulty.name.lower()]
         num_digits = cfg["num_digits"]

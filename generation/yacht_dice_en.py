@@ -168,13 +168,12 @@ def calculate_total_score(assignment: Dict[int, str], dice_results: List[List[in
 # Solvers
 # ============================================================
 
-def solve_yacht_dice(dice_results: List[List[int]], config: YachtDiceConfig) -> Tuple[int, Dict[int, str]]:
+def solve_yacht_dice(dice_results: List[List[int]], config: YachtDiceConfig) -> Tuple[int, Dict[int, str], bool]:
     """
-    Bonus-aware exhaustive optimal solver.
+    Bonus-aware exhaustive optimal solver with optimal-assignment uniqueness check.
 
-    Iterates over C(12,6) = 924 upper/lower round partitions,
-    brute-forces 6! = 720 permutations in each section,
-    applies upper-bonus if threshold met, keeps the best total.
+    Returns (best_total, best_assignment, is_unique). Collects tied assignments
+    during 6! enumeration of upper + lower sections to detect multiple optima.
     """
     categories = get_all_categories()
     upper_cats = categories[:6]
@@ -195,39 +194,59 @@ def solve_yacht_dice(dice_results: List[List[int]], config: YachtDiceConfig) -> 
 
     is_maximize = config.optimization_goal == "maximize"
     best_total = -1 if is_maximize else float('inf')
-    best_assignment: Dict[int, str] = {}
+    optimal_assignments: set = set()
 
     for upper_rounds in itertools.combinations(range(n), 6):
         lower_rounds = [i for i in range(n) if i not in upper_rounds]
         upper_list = list(upper_rounds)
 
         best_upper_score = -1 if is_maximize else float('inf')
-        best_upper_perm = perms_6[0]
+        best_upper_perms: List[Tuple[int, ...]] = []
         for perm in perms_6:
             s = sum(upper_scores[upper_list[j]][perm[j]] for j in range(6))
             if (is_maximize and s > best_upper_score) or (not is_maximize and s < best_upper_score):
                 best_upper_score = s
-                best_upper_perm = perm
+                best_upper_perms = [perm]
+            elif s == best_upper_score:
+                best_upper_perms.append(perm)
 
         best_lower_score = -1 if is_maximize else float('inf')
-        best_lower_perm = perms_6[0]
+        best_lower_perms: List[Tuple[int, ...]] = []
         for perm in perms_6:
             s = sum(lower_scores[lower_rounds[j]][perm[j]] for j in range(6))
             if (is_maximize and s > best_lower_score) or (not is_maximize and s < best_lower_score):
                 best_lower_score = s
-                best_lower_perm = perm
+                best_lower_perms = [perm]
+            elif s == best_lower_score:
+                best_lower_perms.append(perm)
 
         bonus = config.bonus_points if best_upper_score >= config.bonus_threshold else 0
         total = best_upper_score + best_lower_score + bonus
 
         if (is_maximize and total > best_total) or (not is_maximize and total < best_total):
             best_total = total
-            best_assignment = {}
-            for j in range(6):
-                best_assignment[upper_list[j]] = upper_cats[best_upper_perm[j]]
-                best_assignment[lower_rounds[j]] = lower_cats[best_lower_perm[j]]
+            optimal_assignments.clear()
 
-    return best_total, best_assignment
+        if total == best_total:
+            for up in best_upper_perms:
+                for lp in best_lower_perms:
+                    key = tuple(
+                        (upper_list[j], upper_cats[up[j]]) for j in range(6)
+                    ) + tuple(
+                        (lower_rounds[j], lower_cats[lp[j]]) for j in range(6)
+                    )
+                    optimal_assignments.add(key)
+                    if len(optimal_assignments) > 1:
+                        break
+                if len(optimal_assignments) > 1:
+                    break
+
+    is_unique = len(optimal_assignments) == 1
+    best_assignment: Dict[int, str] = {}
+    if optimal_assignments:
+        first = next(iter(optimal_assignments))
+        best_assignment = {k: v for k, v in first}
+    return best_total, best_assignment, is_unique
 
 
 def solve_yacht_dice_greedy(
@@ -424,7 +443,7 @@ class YachtDiceProblemGenerator:
         for retry in range(max_retries):
             trial_seed = seed + retry * 997
             dice_results = self.generate_dice_by_difficulty(difficulty, trial_seed)
-            optimal_score, optimal_assignment = solve_yacht_dice(dice_results, self.config)
+            optimal_score, optimal_assignment, is_unique = solve_yacht_dice(dice_results, self.config)
             greedy_score, _ = solve_yacht_dice_greedy(dice_results, self.config)
             greedy_gap = optimal_score - greedy_score
 
@@ -451,6 +470,7 @@ class YachtDiceProblemGenerator:
                 'dice_results': dice_results,
                 'optimal_score': optimal_score,
                 'optimal_assignment': optimal_assignment,
+                'is_unique_assignment': is_unique,
                 'greedy_score': greedy_score,
                 'greedy_gap': greedy_gap,
                 'per_round_margin': per_round_margin,
@@ -492,6 +512,7 @@ class YachtDiceProblemGenerator:
                 "zero_margin_rounds": selected['zero_margin_rounds'],
                 "greedy_gap": selected['greedy_gap'],
                 "bonus_applied": selected['bonus_applied'],
+                "is_unique_assignment": selected['is_unique_assignment'],
                 "band_violation": band_violation,
             },
         }
@@ -516,7 +537,7 @@ class YachtDiceProblemGenerator:
                     if not (1 <= die <= 6):
                         return False, f"Round {round_idx+1}: Invalid die value {die}"
 
-            optimal_score, _ = solve_yacht_dice(dice_results, self.config)
+            optimal_score, _, _ = solve_yacht_dice(dice_results, self.config)
             if optimal_score != problem['answer']:
                 return False, f"Answer mismatch: expected {optimal_score}, got {problem['answer']}"
 
