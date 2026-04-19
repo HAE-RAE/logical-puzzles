@@ -329,7 +329,7 @@ def format_puzzle_grid_labeled(puzzle_rows: List[str]) -> str:
     if not puzzle_rows:
         return ""
     C = len(puzzle_rows[0])
-    header = "  " + " ".join(f"c{c}" for c in range(C))
+    header = "   " + " ".join(f"c{c}" for c in range(C))
     lines = [header]
     for r, row in enumerate(puzzle_rows):
         cells = " ".join(row[c] for c in range(C))
