@@ -713,29 +713,37 @@ class DifficultyConfig:
 
 
 DIFFICULTY_CONFIGS = {
+    # v2 recalibration: previous 35-37 givens was still LLM-hard (all models ~0%).
+    # 60 givens means 21 blanks — L1 naked-single scan alone should solve, enabling
+    # frontier models to hit target 75%. medium / hard progressively reduce givens.
     'easy': DifficultyConfig(
-        min_givens=35,
-        max_givens=37,
-        target_givens=36,
+        min_givens=58,
+        max_givens=62,
+        target_givens=60,
         forbid_trivial=False,
-        max_search_nodes=30,
+        max_search_nodes=5,
         spotcheck_k=3,
     ),
+    # v2 recalibration: 38-42 givens, ~40 blanks. forbid_trivial removed
+    # (38-42 givens are mostly L1-solvable from rot180 random removal; the
+    # 38 cell-deduction chain itself is non-trivial for LLMs).
     'medium': DifficultyConfig(
-        min_givens=32,
-        max_givens=34,
-        target_givens=33,
-        forbid_trivial=True,
-        min_search_nodes=25,
+        min_givens=38,
+        max_givens=42,
+        target_givens=40,
+        forbid_trivial=False,
         max_search_nodes=120,
         spotcheck_k=5,
     ),
+    # v2 recalibration: 28-32 givens (49-53 blanks). Slightly fewer givens than
+    # the previous baseline (29-31) to push more backtracking. min_search_nodes
+    # removed since rot180 random-removal often produces puzzles solvable by L1
+    # propagation alone — let the difficulty come from blank-count alone.
     'hard': DifficultyConfig(
-        min_givens=29,
-        max_givens=31,
+        min_givens=28,
+        max_givens=32,
         target_givens=30,
-        forbid_trivial=True,
-        min_search_nodes=90,
+        forbid_trivial=False,
         spotcheck_k=6,
     ),
 }

@@ -202,7 +202,13 @@ Answer: [숫자]"""
         k = SPOTCHECK_K.get(difficulty, 0)
         if k <= 0:
             return False
-        return bool(puzzle.get("optimal_assignment")) and bool(puzzle.get("dice_results"))
+        if not (puzzle.get("optimal_assignment") and puzzle.get("dice_results")):
+            return False
+        # Gate on optimal-assignment uniqueness: if multiple optimal assignments
+        # exist, the stored one is arbitrary and spotcheck would mark legitimate
+        # alternate-optimum answers as wrong. Fall back to total-score compare.
+        sm = puzzle.get("step_metrics") or {}
+        return bool(sm.get("is_unique_assignment"))
 
     def _deterministic_round_pick(self, puzzle: Dict, k: int) -> List[int]:
         """Pick K 1-indexed round numbers deterministically from puzzle id."""

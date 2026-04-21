@@ -47,31 +47,37 @@ class Difficulty(Enum):
 
 DIFFICULTY_CONFIGS: Dict[str, Dict] = {
     "easy": {
-        "num_digits": 4,
-        "min_hints": 3,
-        "max_hints": 4,
-        "preferred_strikes": (0, 2),
-        "preferred_balls": (1, 3),
-        "target_residual": (1, 12),
-        "min_ball_heavy_ratio": 0.20,
-    },
-    "medium": {
-        "num_digits": 5,
-        "min_hints": 3,
-        "max_hints": 4,
-        "preferred_strikes": (0, 1),
-        "preferred_balls": (1, 4),
-        "target_residual": (2, 24),
-        "min_ball_heavy_ratio": 0.40,
-    },
-    "hard": {
-        "num_digits": 6,
+        # v2 recalibration: 3-digit candidate space is small (720), so 4-5 hints
+        # typically narrow to 1 in 1-2 deductions.
+        "num_digits": 3,
         "min_hints": 4,
         "max_hints": 5,
+        "preferred_strikes": (0, 2),
+        "preferred_balls": (2, 3),
+        "target_residual": (1, 12),
+        "min_ball_heavy_ratio": 0.10,
+    },
+    "medium": {
+        # v3 recalibration: fewer hints (2-3) + stronger ball-heavy to break gemini's
+        # 100% saturation at v2 (3-4 hints). 4-digit candidate space = 5040, so
+        # 2-3 hints requires careful cross-hint deduction.
+        "num_digits": 4,
+        "min_hints": 2,
+        "max_hints": 3,
         "preferred_strikes": (0, 1),
         "preferred_balls": (2, 4),
-        "target_residual": (4, 45),
+        "target_residual": (2, 24),
         "min_ball_heavy_ratio": 0.55,
+    },
+    "hard": {
+        # v2 recalibration: fewer hints + heavier ball-bias forces cross-hint intersection.
+        "num_digits": 6,
+        "min_hints": 3,
+        "max_hints": 4,
+        "preferred_strikes": (0, 1),
+        "preferred_balls": (2, 5),
+        "target_residual": (4, 45),
+        "min_ball_heavy_ratio": 0.70,
     },
 }
 
@@ -402,7 +408,7 @@ class ProblemGenerator:
 
         return None
 
-    def generate_problem(self, difficulty: Difficulty, max_retries: int = 100) -> Dict:
+    def generate_problem(self, difficulty: Difficulty, max_retries: int = 4000) -> Dict:
         """정확히 1개의 해를 가진 퍼즐을 구성적으로 생성합니다."""
         cfg = DIFFICULTY_CONFIGS[difficulty.name.lower()]
         num_digits = cfg["num_digits"]

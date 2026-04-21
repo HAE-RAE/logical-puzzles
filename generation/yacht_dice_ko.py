@@ -185,13 +185,11 @@ def calculate_total_score(assignment: Dict[int, str], dice_results: List[List[in
 # 풀이기
 # ============================================================
 
-def solve_yacht_dice(dice_results: List[List[int]], config: YachtDiceConfig) -> Tuple[int, Dict[int, str]]:
-    """
-    보너스 인지 완전 탐색 최적 풀이기.
+def solve_yacht_dice(dice_results: List[List[int]], config: YachtDiceConfig) -> Tuple[int, Dict[int, str], bool]:
+    """보너스 인지 완전 탐색 최적 풀이기 + 다중최적 유일성 판별.
 
-    C(12,6) = 924 개 상단/하단 라운드 분할을 순회하고,
-    각 섹션마다 6! = 720 개의 순열을 전수 조사한 뒤
-    상단 보너스를 반영한 최적 총점을 유지합니다.
+    (best_total, best_assignment, is_unique) 3-튜플 반환. 6! 순열 열거 중 동점
+    순열을 수집하여 최적 배정이 유일한지 판별.
     """
     categories = get_all_categories()
     upper_cats = categories[:6]
@@ -212,39 +210,59 @@ def solve_yacht_dice(dice_results: List[List[int]], config: YachtDiceConfig) -> 
 
     is_maximize = config.optimization_goal == "maximize"
     best_total = -1 if is_maximize else float('inf')
-    best_assignment: Dict[int, str] = {}
+    optimal_assignments: set = set()
 
     for upper_rounds in itertools.combinations(range(n), 6):
         lower_rounds = [i for i in range(n) if i not in upper_rounds]
         upper_list = list(upper_rounds)
 
         best_upper_score = -1 if is_maximize else float('inf')
-        best_upper_perm = perms_6[0]
+        best_upper_perms: List[Tuple[int, ...]] = []
         for perm in perms_6:
             s = sum(upper_scores[upper_list[j]][perm[j]] for j in range(6))
             if (is_maximize and s > best_upper_score) or (not is_maximize and s < best_upper_score):
                 best_upper_score = s
-                best_upper_perm = perm
+                best_upper_perms = [perm]
+            elif s == best_upper_score:
+                best_upper_perms.append(perm)
 
         best_lower_score = -1 if is_maximize else float('inf')
-        best_lower_perm = perms_6[0]
+        best_lower_perms: List[Tuple[int, ...]] = []
         for perm in perms_6:
             s = sum(lower_scores[lower_rounds[j]][perm[j]] for j in range(6))
             if (is_maximize and s > best_lower_score) or (not is_maximize and s < best_lower_score):
                 best_lower_score = s
-                best_lower_perm = perm
+                best_lower_perms = [perm]
+            elif s == best_lower_score:
+                best_lower_perms.append(perm)
 
         bonus = config.bonus_points if best_upper_score >= config.bonus_threshold else 0
         total = best_upper_score + best_lower_score + bonus
 
         if (is_maximize and total > best_total) or (not is_maximize and total < best_total):
             best_total = total
-            best_assignment = {}
-            for j in range(6):
-                best_assignment[upper_list[j]] = upper_cats[best_upper_perm[j]]
-                best_assignment[lower_rounds[j]] = lower_cats[best_lower_perm[j]]
+            optimal_assignments.clear()
 
-    return best_total, best_assignment
+        if total == best_total:
+            for up in best_upper_perms:
+                for lp in best_lower_perms:
+                    key = tuple(
+                        (upper_list[j], upper_cats[up[j]]) for j in range(6)
+                    ) + tuple(
+                        (lower_rounds[j], lower_cats[lp[j]]) for j in range(6)
+                    )
+                    optimal_assignments.add(key)
+                    if len(optimal_assignments) > 1:
+                        break
+                if len(optimal_assignments) > 1:
+                    break
+
+    is_unique = len(optimal_assignments) == 1
+    best_assignment: Dict[int, str] = {}
+    if optimal_assignments:
+        first = next(iter(optimal_assignments))
+        best_assignment = {k: v for k, v in first}
+    return best_total, best_assignment, is_unique
 
 
 def solve_yacht_dice_greedy(
@@ -317,26 +335,35 @@ def format_solution(dice_results: List[List[int]], assignment: Dict[int, str],
 # 난이도별 주사위 생성기
 # ============================================================
 
+# v2 recalibration: num_rounds is fixed at 12 (solver core requires it).
+# Differentiation comes from roll_types/weights extremes.
 DIFFICULTY_CONFIGS: Dict[str, Dict] = {
     "easy": {
+        # v3 recalibration: three_kind 85% to push structured-pattern easy further.
+        # Combined with relaxed _DIFFICULTY_BANDS.easy (greedy_gap 0-15) to let
+        # greedy-optimal puzzles through — breaks the 0% floor observed in v2.
         "roll_types": ['three_kind', 'pair', 'high_sum', 'random'],
-        "weights":    [34, 46, 15, 5],
+        "weights":    [85, 15, 0, 0],
     },
     "medium": {
         "roll_types": ['partial_straight', 'pair', 'three_kind', 'normal'],
         "weights":    [28, 12, 10, 50],
     },
     "hard": {
+        # v2 recalibration: near-pure random; full DP optimization required.
         "roll_types": ['full_house', 'three_kind', 'pair', 'normal'],
-        "weights":    [8, 12, 8, 72],
+        "weights":    [0, 10, 10, 80],
     },
 }
 
 
 _DIFFICULTY_BANDS = {
+    # v3 recalibration: Easy band loosened — accept greedy-optimal puzzles
+    # so LLM pattern-matching on structured rolls can succeed. v2's [10,20]
+    # gap required LLM to find non-greedy improvements that models don't reach.
     'easy': {
-        'greedy_gap': {'min': 10, 'max': 20},
-        'decision_complexity': {'min': 2.8, 'max': 3.8},
+        'greedy_gap': {'min': 0, 'max': 15},
+        'decision_complexity': {'min': 0.0, 'max': 3.0},
     },
     'medium': {
         'greedy_gap': {'min': 18, 'max': 28},
@@ -362,7 +389,7 @@ class YachtDiceProblemGenerator:
 
         if difficulty == "easy":
             cfg = DIFFICULTY_CONFIGS["easy"]
-            for _ in range(12):
+            for _ in range(cfg.get("num_rounds", 12)):
                 roll_type = rng.choices(cfg["roll_types"], weights=cfg["weights"], k=1)[0]
                 if roll_type == 'three_kind':
                     num = rng.randint(1, 6)
@@ -381,7 +408,7 @@ class YachtDiceProblemGenerator:
 
         elif difficulty == "medium":
             cfg = DIFFICULTY_CONFIGS["medium"]
-            for _ in range(12):
+            for _ in range(cfg.get("num_rounds", 12)):
                 roll_type = rng.choices(cfg["roll_types"], weights=cfg["weights"], k=1)[0]
                 if roll_type == 'partial_straight':
                     base = rng.sample(range(1, 7), 3)
@@ -403,7 +430,7 @@ class YachtDiceProblemGenerator:
 
         else:  # hard
             cfg = DIFFICULTY_CONFIGS["hard"]
-            for _ in range(12):
+            for _ in range(cfg.get("num_rounds", 12)):
                 roll_type = rng.choices(cfg["roll_types"], weights=cfg["weights"], k=1)[0]
                 if roll_type == 'full_house':
                     nums = rng.sample(range(1, 7), 2)
@@ -441,7 +468,7 @@ class YachtDiceProblemGenerator:
         for retry in range(max_retries):
             trial_seed = seed + retry * 997
             dice_results = self.generate_dice_by_difficulty(difficulty, trial_seed)
-            optimal_score, optimal_assignment = solve_yacht_dice(dice_results, self.config)
+            optimal_score, optimal_assignment, is_unique = solve_yacht_dice(dice_results, self.config)
             greedy_score, _ = solve_yacht_dice_greedy(dice_results, self.config)
             greedy_gap = optimal_score - greedy_score
 
@@ -468,6 +495,7 @@ class YachtDiceProblemGenerator:
                 'dice_results': dice_results,
                 'optimal_score': optimal_score,
                 'optimal_assignment': optimal_assignment,
+                'is_unique_assignment': is_unique,
                 'greedy_score': greedy_score,
                 'greedy_gap': greedy_gap,
                 'per_round_margin': per_round_margin,
@@ -509,6 +537,7 @@ class YachtDiceProblemGenerator:
                 "zero_margin_rounds": selected['zero_margin_rounds'],
                 "greedy_gap": selected['greedy_gap'],
                 "bonus_applied": selected['bonus_applied'],
+                "is_unique_assignment": selected['is_unique_assignment'],
                 "band_violation": band_violation,
             },
         }
@@ -533,7 +562,7 @@ class YachtDiceProblemGenerator:
                     if not (1 <= die <= 6):
                         return False, f"라운드 {round_idx+1}: 유효하지 않은 주사위 값 {die}"
 
-            optimal_score, _ = solve_yacht_dice(dice_results, self.config)
+            optimal_score, _, _ = solve_yacht_dice(dice_results, self.config)
             if optimal_score != problem['answer']:
                 return False, f"정답 불일치: 기대값 {optimal_score}, 실제값 {problem['answer']}"
 

@@ -157,31 +157,37 @@ def coords_to_answer_string(coords: List[Tuple[int, int]]) -> str:
 class DifficultyPuzzleGenerator:
     DIFFICULTY_CONFIGS = {
         'easy': {
-            'grid_size': (6, 6),
-            'mine_ratio': 0.15,
-            'reveal_ratio': 0.28,
-            'max_effective_reveal_ratio': 0.55,
-            'min_solver_nodes': 20,
+            # v3 recalibration: reveal 0.55 (from 0.45), nodes 0 (from 5) for very
+            # LLM-friendly easy. gemini v2 dropped to 47% — making clearly easier.
+            'grid_size': (5, 5),
+            'mine_ratio': 0.12,
+            'reveal_ratio': 0.55,
+            'max_effective_reveal_ratio': 0.75,
+            'min_solver_nodes': 0,
             'reveal_order': 'balanced',
-            'description': '6x6 grid, moderate ambiguity',
+            'description': '5x5 grid, mostly-revealed cells',
         },
         'medium': {
-            'grid_size': (7, 7),
-            'mine_ratio': 0.16,
-            'reveal_ratio': 0.22,
-            'max_effective_reveal_ratio': 0.48,
-            'min_solver_nodes': 50,
+            # v3 recalibration: 7x7 → 6x6 + mine 0.14 + reveal 0.30 + nodes 25 so
+            # gpt-5.4-mini (v2: 3%) can reach ~30-50% range and easy≥medium holds.
+            'grid_size': (6, 6),
+            'mine_ratio': 0.14,
+            'reveal_ratio': 0.30,
+            'max_effective_reveal_ratio': 0.55,
+            'min_solver_nodes': 25,
             'reveal_order': 'low_info',
-            'description': '7x7 grid, low-information reveals',
+            'description': '6x6 grid, moderate reveals',
         },
         'hard': {
+            # v2 recalibration: slightly higher mine density + lower reveal + higher node bar.
+            # Stayed at 8x8 (not 9x9) because 9x9 + mine 0.20 exhausted generation time in pre-test.
             'grid_size': (8, 8),
-            'mine_ratio': 0.17,
-            'reveal_ratio': 0.18,
-            'max_effective_reveal_ratio': 0.42,
-            'min_solver_nodes': 100,
+            'mine_ratio': 0.18,
+            'reveal_ratio': 0.16,
+            'max_effective_reveal_ratio': 0.38,
+            'min_solver_nodes': 120,
             'reveal_order': 'low_info',
-            'description': '8x8 grid, sparse low-information reveals',
+            'description': '8x8 grid, denser mines and sparser reveals',
         },
     }
 
@@ -332,7 +338,7 @@ def format_puzzle_grid_labeled(puzzle_rows: List[str]) -> str:
     if not puzzle_rows:
         return ""
     C = len(puzzle_rows[0])
-    header = "  " + " ".join(f"c{c}" for c in range(C))
+    header = "   " + " ".join(f"c{c}" for c in range(C))
     lines = [header]
     for r, row in enumerate(puzzle_rows):
         cells = " ".join(row[c] for c in range(C))
