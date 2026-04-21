@@ -333,14 +333,15 @@ def generate_from_arithmetic(
 
 DIFFICULTY_CONFIGS: Dict[str, Dict] = {
     "easy": {
+        # v2 recalibration: 3-digit + 2-digit, carries 0-1, few letters — LLM-solvable in single pass.
         "num_operands": 2,
-        "num1_range": (1000, 9999),
-        "num2_range": (100, 999),
-        "min_carries": 1,
-        "max_carries": 2,
+        "num1_range": (100, 999),
+        "num2_range": (10, 99),
+        "min_carries": 0,
+        "max_carries": 1,
         "require_overflow": None,
-        "target_letters": (6, 8),
-        "min_solver_steps": 120,
+        "target_letters": (4, 6),
+        "min_solver_steps": 40,
         "max_attempts": 4000,
     },
     "medium": {
@@ -355,14 +356,15 @@ DIFFICULTY_CONFIGS: Dict[str, Dict] = {
         "max_attempts": 5000,
     },
     "hard": {
+        # v2 recalibration: frontier-grade stress with longer carry chains and more letters.
         "num_operands": 2,
         "num1_range": (10000, 99999),
         "num2_range": (10000, 99999),
-        "min_carries": 3,
+        "min_carries": 4,
         "max_carries": None,
         "require_overflow": None,
-        "target_letters": (8, 9),
-        "min_solver_steps": 1800,
+        "target_letters": (9, 10),
+        "min_solver_steps": 2500,
         "max_attempts": 6000,
     },
 }

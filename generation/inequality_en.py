@@ -58,28 +58,34 @@ class InequalityPuzzle:
 
 DIFFICULTY_CONFIGS: Dict[str, Dict] = {
     "easy": {
-        "size_range": (8, 9),
+        # v2 recalibration: very small permutations + mostly-visible inequalities.
+        "size_range": (5, 6),
         "hint_ratio": 0.0,
         "min_hints": 1,
-        "ineq_reveal": 0.52,
-        "min_visible_solver_steps": 10,
+        "ineq_reveal": 0.70,
+        "min_visible_solver_steps": 4,
         "max_retries": 800,
     },
     "medium": {
-        "size_range": (11, 13),
+        # v3 recalibration: size bumped to (12,14) to harden for frontier models.
+        # reveal 0.35 retained (0.30 exhausted retries in pretest).
+        "size_range": (12, 14),
         "hint_ratio": 0.0,
         "min_hints": 1,
-        "ineq_reveal": 0.30,
-        "min_visible_solver_steps": 28,
+        "ineq_reveal": 0.35,
+        "min_visible_solver_steps": 30,
         "max_retries": 1000,
     },
     "hard": {
+        # v3 recalibration: reveal 0.30 caused 4000-retry exhaustion in
+        # production (tail-risk seed regions). Reverted to 0.34; stiffened
+        # only via min_visible_solver_steps (55 → 60).
         "size_range": (13, 15),
         "hint_ratio": 0.0,
         "min_hints": 1,
         "ineq_reveal": 0.34,
-        "min_visible_solver_steps": 42,
-        "max_retries": 1600,
+        "min_visible_solver_steps": 60,
+        "max_retries": 4000,
     },
 }
 

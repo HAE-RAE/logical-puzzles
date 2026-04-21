@@ -335,26 +335,35 @@ def format_solution(dice_results: List[List[int]], assignment: Dict[int, str],
 # 난이도별 주사위 생성기
 # ============================================================
 
+# v2 recalibration: num_rounds is fixed at 12 (solver core requires it).
+# Differentiation comes from roll_types/weights extremes.
 DIFFICULTY_CONFIGS: Dict[str, Dict] = {
     "easy": {
+        # v3 recalibration: three_kind 85% to push structured-pattern easy further.
+        # Combined with relaxed _DIFFICULTY_BANDS.easy (greedy_gap 0-15) to let
+        # greedy-optimal puzzles through — breaks the 0% floor observed in v2.
         "roll_types": ['three_kind', 'pair', 'high_sum', 'random'],
-        "weights":    [34, 46, 15, 5],
+        "weights":    [85, 15, 0, 0],
     },
     "medium": {
         "roll_types": ['partial_straight', 'pair', 'three_kind', 'normal'],
         "weights":    [28, 12, 10, 50],
     },
     "hard": {
+        # v2 recalibration: near-pure random; full DP optimization required.
         "roll_types": ['full_house', 'three_kind', 'pair', 'normal'],
-        "weights":    [8, 12, 8, 72],
+        "weights":    [0, 10, 10, 80],
     },
 }
 
 
 _DIFFICULTY_BANDS = {
+    # v3 recalibration: Easy band loosened — accept greedy-optimal puzzles
+    # so LLM pattern-matching on structured rolls can succeed. v2's [10,20]
+    # gap required LLM to find non-greedy improvements that models don't reach.
     'easy': {
-        'greedy_gap': {'min': 10, 'max': 20},
-        'decision_complexity': {'min': 2.8, 'max': 3.8},
+        'greedy_gap': {'min': 0, 'max': 15},
+        'decision_complexity': {'min': 0.0, 'max': 3.0},
     },
     'medium': {
         'greedy_gap': {'min': 18, 'max': 28},
@@ -380,7 +389,7 @@ class YachtDiceProblemGenerator:
 
         if difficulty == "easy":
             cfg = DIFFICULTY_CONFIGS["easy"]
-            for _ in range(12):
+            for _ in range(cfg.get("num_rounds", 12)):
                 roll_type = rng.choices(cfg["roll_types"], weights=cfg["weights"], k=1)[0]
                 if roll_type == 'three_kind':
                     num = rng.randint(1, 6)
@@ -399,7 +408,7 @@ class YachtDiceProblemGenerator:
 
         elif difficulty == "medium":
             cfg = DIFFICULTY_CONFIGS["medium"]
-            for _ in range(12):
+            for _ in range(cfg.get("num_rounds", 12)):
                 roll_type = rng.choices(cfg["roll_types"], weights=cfg["weights"], k=1)[0]
                 if roll_type == 'partial_straight':
                     base = rng.sample(range(1, 7), 3)
@@ -421,7 +430,7 @@ class YachtDiceProblemGenerator:
 
         else:  # hard
             cfg = DIFFICULTY_CONFIGS["hard"]
-            for _ in range(12):
+            for _ in range(cfg.get("num_rounds", 12)):
                 roll_type = rng.choices(cfg["roll_types"], weights=cfg["weights"], k=1)[0]
                 if roll_type == 'full_house':
                     nums = rng.sample(range(1, 7), 2)
