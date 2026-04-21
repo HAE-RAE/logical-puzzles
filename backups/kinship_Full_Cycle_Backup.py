@@ -19,13 +19,13 @@ def get_relation_chain_to_title():
         ("나", "아버지", "형", "자녀"): ["종형제", "사촌"],
         ("나", "아버지", "남동생"): ["작은아버지", "숙부", "삼촌"],
         ("나", "아버지", "남동생", "아내"): ["작은어머니", "숙모"],
-        # ("나", "아버지", "남동생", "자녀"): ["종형제", "사촌"],  # 형, 자녀와 동일
+        ("나", "아버지", "남동생", "자녀"): ["종형제", "사촌"],
         ("나", "아버지", "누나"): "고모",
         ("나", "아버지", "누나", "남편"): "고모부",
         ("나", "아버지", "누나", "자녀"): ["내종형제", "고종사촌"],
-        # ("나", "아버지", "여동생"): "고모",                        # 누나와 동일
-        # ("나", "아버지", "여동생", "남편"): "고모부",              # 누나, 남편과 동일
-        # ("나", "아버지", "여동생", "자녀"): ["내종형제", "고종사촌"],  # 누나, 자녀와 동일
+        ("나", "아버지", "여동생"): "고모",
+        ("나", "아버지", "여동생", "남편"): "고모부",
+        ("나", "아버지", "여동생", "자녀"): ["내종형제", "고종사촌"],
 
         # === 증조/방계 ===
         ("나", "아버지", "아버지", "아버지"): "증조할아버지",
@@ -36,16 +36,16 @@ def get_relation_chain_to_title():
         ("나", "아버지", "아버지", "남동생", "아내"): ["작은할머니", "숙조모"],
         ("나", "아버지", "아버지", "누나"): ["고모할머니", "대고모"],
         ("나", "아버지", "아버지", "누나", "남편"): ["고모할아버지", "대고모부"],
-        # ("나", "아버지", "아버지", "여동생"): ["고모할머니", "대고모"],          # 누나와 동일
-        # ("나", "아버지", "아버지", "여동생", "남편"): ["고모할아버지", "대고모부"],  # 누나, 남편과 동일
+        ("나", "아버지", "아버지", "여동생"): ["고모할머니", "대고모"],
+        ("나", "아버지", "아버지", "여동생", "남편"): ["고모할아버지", "대고모부"],
 
         # === 진외가 ===
         ("나", "아버지", "어머니", "오빠"): ["진외종조부", "진외할아버지"],
-        # ("나", "아버지", "어머니", "남동생"): ["진외종조부", "진외할아버지"],      # 오빠와 동일
+        ("나", "아버지", "어머니", "남동생"): ["진외종조부", "진외할아버지"],
         ("나", "아버지", "어머니", "언니"): ["진외이모할머니", "대이모"],
         ("나", "아버지", "어머니", "언니", "남편"): ["진외이모할아버지", "대이모부"],
-        # ("나", "아버지", "어머니", "여동생"): ["진외이모할머니", "대이모"],        # 언니와 동일
-        # ("나", "아버지", "어머니", "여동생", "남편"): ["진외이모할아버지", "대이모부"],  # 언니, 남편과 동일
+        ("나", "아버지", "어머니", "여동생"): ["진외이모할머니", "대이모"],
+        ("나", "아버지", "어머니", "여동생", "남편"): ["진외이모할아버지", "대이모부"],
 
         # === 외가 (어머니 쪽) ===
         ("나", "어머니", "아버지"): ["외할아버지", "외조부"],
@@ -55,13 +55,13 @@ def get_relation_chain_to_title():
         ("나", "어머니", "오빠", "자녀"): ["외사촌", "외종형제"],
         ("나", "어머니", "남동생"): ["작은외삼촌", "외숙부", "외삼촌"],
         ("나", "어머니", "남동생", "아내"): ["작은외숙모", "외숙모"],
-        # ("나", "어머니", "남동생", "자녀"): ["외사촌", "외종형제"],  # 오빠, 자녀와 동일
+        ("나", "어머니", "남동생", "자녀"): ["외사촌", "외종형제"],
         ("나", "어머니", "언니"): ["큰이모", "이모"],
         ("나", "어머니", "언니", "남편"): ["큰이모부", "이모부"],
         ("나", "어머니", "언니", "자녀"): ["이종사촌", "이종형제"],
         ("나", "어머니", "여동생"): ["작은이모", "이모"],
         ("나", "어머니", "여동생", "남편"): ["작은이모부", "이모부"],
-        # ("나", "어머니", "여동생", "자녀"): ["이종사촌", "이종형제"],  # 언니, 자녀와 동일
+        ("나", "어머니", "여동생", "자녀"): ["이종사촌", "이종형제"],
 
         # === 외증조/외방계 ===
         ("나", "어머니", "아버지", "아버지"): ["증조외할아버지", "외증조부"],
@@ -72,16 +72,16 @@ def get_relation_chain_to_title():
         ("나", "어머니", "아버지", "남동생", "아내"): ["작은외할머니", "외종조모"],
         ("나", "어머니", "아버지", "누나"): ["고모외할머니", "외대고모"],
         ("나", "어머니", "아버지", "누나", "남편"): ["고모외할아버지", "외대고모부"],
-        # ("나", "어머니", "아버지", "여동생"): ["고모외할머니", "외대고모"],          # 누나와 동일
-        # ("나", "어머니", "아버지", "여동생", "남편"): ["고모외할아버지", "외대고모부"],  # 누나, 남편과 동일
+        ("나", "어머니", "아버지", "여동생"): ["고모외할머니", "외대고모"],
+        ("나", "어머니", "아버지", "여동생", "남편"): ["고모외할아버지", "외대고모부"],
 
         # === 외외가 ===
-        ("나", "어머니", "어머니", "오빠"): ["외삼촌할아버지", "외종조부"],
-        # ("나", "어머니", "어머니", "남동생"): ["외삼촌할아버지", "외종조부"],          # 오빠와 동일
+        ("나", "어머니", "어머니", "오빠"): ["외삼촌할아버지", "외종조부"], 
+        ("나", "어머니", "어머니", "남동생"): ["외삼촌할아버지", "외종조부"],
         ("나", "어머니", "어머니", "언니"): ["큰이모할머니", "이모할머니", "대이모"],
         ("나", "어머니", "어머니", "언니", "남편"): ["이모할아버지", "대이모부"],
-        # ("나", "어머니", "어머니", "여동생"): ["작은이모할머니", "이모할머니", "대이모"],  # 언니와 동일
-        # ("나", "어머니", "어머니", "여동생", "남편"): ["이모할아버지", "대이모부"],        # 언니, 남편과 동일
+        ("나", "어머니", "어머니", "여동생"): ["작은이모할머니", "이모할머니", "대이모"],
+        ("나", "어머니", "어머니", "여동생", "남편"): ["이모할아버지", "대이모부"],
 
         # === 배우자 관계 ===
         ("나", "남편", "아버지"): ["시아버지", "아버님"],
@@ -115,16 +115,16 @@ def get_relation_chain_to_title():
         ("나", "남편", "아버지", "남동생", "아내"): "시숙모",
         ("나", "남편", "아버지", "누나"): "시고모",
         ("나", "남편", "아버지", "누나", "남편"): "시고모부",
-        # ("나", "남편", "아버지", "여동생"): "시고모",           # 누나와 동일
-        # ("나", "남편", "아버지", "여동생", "남편"): "시고모부",  # 누나, 남편과 동일
+        ("나", "남편", "아버지", "여동생"): "시고모",
+        ("나", "남편", "아버지", "여동생", "남편"): "시고모부",
 
         # 시댁 외가 (남편 어머니 쪽)
         ("나", "남편", "어머니", "아버지"): ["시외조부", "시외할아버지"],
         ("나", "남편", "어머니", "어머니"): ["시외조모", "시외할머니"],
         ("나", "남편", "어머니", "오빠"): "시외삼촌",
-        # ("나", "남편", "어머니", "남동생"): "시외삼촌",  # 오빠와 동일
+        ("나", "남편", "어머니", "남동생"): "시외삼촌",
         ("나", "남편", "어머니", "언니"): "시이모",
-        # ("나", "남편", "어머니", "여동생"): "시이모",    # 언니와 동일
+        ("나", "남편", "어머니", "여동생"): "시이모",
 
         # 시댁 조부모 형제 (6단계)
         ("나", "남편", "아버지", "아버지", "형"): ["시백조부", "시큰할아버지"],
@@ -133,8 +133,8 @@ def get_relation_chain_to_title():
         ("나", "남편", "아버지", "아버지", "남동생", "아내"): ["시숙조모", "시작은할머니"],
         ("나", "남편", "아버지", "아버지", "누나"): "시대고모",
         ("나", "남편", "아버지", "아버지", "누나", "남편"): "시대고모부",
-        # ("나", "남편", "아버지", "아버지", "여동생"): "시대고모",           # 누나와 동일
-        # ("나", "남편", "아버지", "아버지", "여동생", "남편"): "시대고모부",  # 누나, 남편과 동일
+        ("나", "남편", "아버지", "아버지", "여동생"): "시대고모",
+        ("나", "남편", "아버지", "아버지", "여동생", "남편"): "시대고모부",
 
         # === 처가 확장 (아내 부모의 부모/형제) ===
         ("나", "아내", "아버지", "아버지"): ["처조부", "처할아버지"],
@@ -145,16 +145,16 @@ def get_relation_chain_to_title():
         ("나", "아내", "아버지", "남동생", "아내"): "처숙모",
         ("나", "아내", "아버지", "누나"): "처고모",
         ("나", "아내", "아버지", "누나", "남편"): "처고모부",
-        # ("나", "아내", "아버지", "여동생"): "처고모",           # 누나와 동일
-        # ("나", "아내", "아버지", "여동생", "남편"): "처고모부",  # 누나, 남편과 동일
+        ("나", "아내", "아버지", "여동생"): "처고모",
+        ("나", "아내", "아버지", "여동생", "남편"): "처고모부",
 
         # 처가 외가 (아내 어머니 쪽)
         ("나", "아내", "어머니", "아버지"): ["처외조부", "처외할아버지"],
         ("나", "아내", "어머니", "어머니"): ["처외조모", "처외할머니"],
         ("나", "아내", "어머니", "오빠"): "처외삼촌",
-        # ("나", "아내", "어머니", "남동생"): "처외삼촌",  # 오빠와 동일
+        ("나", "아내", "어머니", "남동생"): "처외삼촌",
         ("나", "아내", "어머니", "언니"): "처이모",
-        # ("나", "아내", "어머니", "여동생"): "처이모",    # 언니와 동일
+        ("나", "아내", "어머니", "여동생"): "처이모",
 
         # 처가 조부모 형제 (6단계)
         ("나", "아내", "아버지", "아버지", "형"): ["처백조부", "처큰할아버지"],
@@ -163,8 +163,8 @@ def get_relation_chain_to_title():
         ("나", "아내", "아버지", "아버지", "남동생", "아내"): ["처숙조모", "처작은할머니"],
         ("나", "아내", "아버지", "아버지", "누나"): "처대고모",
         ("나", "아내", "아버지", "아버지", "누나", "남편"): "처대고모부",
-        # ("나", "아내", "아버지", "아버지", "여동생"): "처대고모",           # 누나와 동일
-        # ("나", "아내", "아버지", "아버지", "여동생", "남편"): "처대고모부",  # 누나, 남편과 동일
+        ("나", "아내", "아버지", "아버지", "여동생"): "처대고모",
+        ("나", "아내", "아버지", "아버지", "여동생", "남편"): "처대고모부",
 
     }
 
@@ -748,13 +748,8 @@ def get_prefix_near_miss_titles(target_chain, title_map, exclude_titles, n):
 
 def generate_noise_dialogues(relation_chain, person_map, used_descriptors,
                              dialogue_map, relative_names, used_speakers,
-                             descriptors, num_noise, reuse_chain_persons=True):
-    """Generate noise (red herring) dialogue blocks unrelated to the answer chain.
-    
-    When reuse_chain_persons=True, noise dialogues reference persons already in
-    the real chain (with a different relation), making it harder for the model
-    to distinguish signal from noise.
-    """
+                             descriptors, num_noise):
+    """Generate noise (red herring) dialogue blocks unrelated to the answer chain."""
     if num_noise <= 0:
         return []
 
@@ -769,8 +764,6 @@ def generate_noise_dialogues(relation_chain, person_map, used_descriptors,
             if key[0] == source_rel and key not in chain_steps:
                 possible_branches.append((idx, key))
 
-    chain_person_indices = [i for i in person_map if i != len(relation_chain) - 1]
-
     noise_blocks = []
     for _ in range(num_noise):
         if not possible_branches:
@@ -779,27 +772,12 @@ def generate_noise_dialogues(relation_chain, person_map, used_descriptors,
         branch_idx, clue_key = random.choice(possible_branches)
         source_placeholder = person_map[branch_idx]
 
-        adjacent = {branch_idx - 1, branch_idx, branch_idx + 1}
-        if reuse_chain_persons and chain_person_indices:
-            reuse_candidates = [
-                i for i in chain_person_indices if i not in adjacent
-            ]
-            if reuse_candidates:
-                noise_descriptor = person_map[random.choice(reuse_candidates)]
-            else:
-                available_descs = [d for d in descriptors if d not in used_descriptors]
-                if not available_descs:
-                    used_descriptors.clear()
-                    available_descs = list(descriptors)
-                noise_descriptor = random.choice(available_descs)
-                used_descriptors.add(noise_descriptor)
-        else:
-            available_descs = [d for d in descriptors if d not in used_descriptors]
-            if not available_descs:
-                used_descriptors.clear()
-                available_descs = list(descriptors)
-            noise_descriptor = random.choice(available_descs)
-            used_descriptors.add(noise_descriptor)
+        available_descs = [d for d in descriptors if d not in used_descriptors]
+        if not available_descs:
+            used_descriptors.clear()
+            available_descs = list(descriptors)
+        noise_descriptor = random.choice(available_descs)
+        used_descriptors.add(noise_descriptor)
 
         available_spk = [n for n in relative_names if n not in used_speakers]
         if not available_spk:
@@ -823,7 +801,7 @@ def generate_noise_dialogues(relation_chain, person_map, used_descriptors,
 
     return noise_blocks
 
-def generate_question(difficulty="Medium", forced_chain=None):
+def generate_question(difficulty="Medium"):
     title_map = get_relation_chain_to_title()
     relative_names = get_friend_names()
     descriptors = get_person_descriptors()
@@ -832,53 +810,81 @@ def generate_question(difficulty="Medium", forced_chain=None):
     difficulty_lower = difficulty.lower() if isinstance(difficulty, str) else difficulty
     difficulty_config = {
         "easy": {
-            "num_choices": 8,
-            "num_noise_dialogues": 1,
+            "num_choices": 6,
+            "chain_distribution": {
+                3: 0.60,
+                4: 0.40,
+            },
+            "num_noise_dialogues": 0,
             "near_miss_distractor_ratio": 0.0,
             "similar_distractor_ratio": 0.20,
-            "confusable_distractor_ratio": 0.20,
-            "shuffle_mode": "partial",
+            "confusable_distractor_ratio": 0.0,
+            "shuffle_mode": "none",
             "ask_intermediate_prob": 0.0,
-            "reverse_prob": 0.20,
+            "reverse_prob": 0.0,
             "force_reverse_min_steps": 0,
             "correction_prob": 0.0,
         },
         "medium": {
             "num_choices": 12,
-            "num_noise_dialogues": 4,
+            "chain_distribution": {
+                3: 0.10,
+                4: 0.40,
+                5: 0.40,
+                6: 0.10,
+            },
+            "num_noise_dialogues": 2,
             "near_miss_distractor_ratio": 0.20,
             "similar_distractor_ratio": 0.60,
             "confusable_distractor_ratio": 0.30,
-            "shuffle_mode": "full",
-            "ask_intermediate_prob": 0.30,
-            "reverse_prob": 0.70,
-            "force_reverse_min_steps": 2,
+            "shuffle_mode": "partial",
+            "ask_intermediate_prob": 0.0,
+            "reverse_prob": 0.40,
+            "force_reverse_min_steps": 1,
             "correction_prob": 0.0,
         },
         "hard": {
-            "num_choices": 20,
-            "num_noise_dialogues": 8,
+            "num_choices": 16,
+            "chain_distribution": {
+                4: 0.30,
+                5: 0.50,
+                6: 0.20,
+            },
+            "num_noise_dialogues": 5,
             "near_miss_distractor_ratio": 0.55,
             "similar_distractor_ratio": 1.0,
             "confusable_distractor_ratio": 1.0,
             "shuffle_mode": "full",
-            "ask_intermediate_prob": 0.0,
-            "reverse_prob": 1.0,
-            "force_reverse_min_steps": 99,
+            "ask_intermediate_prob": 0.40,
+            "reverse_prob": 0.85,
+            "force_reverse_min_steps": 3,
             "correction_prob": 0.0,
         }
     }
     
     config = difficulty_config.get(difficulty_lower, difficulty_config["medium"])
     num_choices = config["num_choices"]
-
+    chain_distribution = config["chain_distribution"]
+    
     all_chains = list(title_map.keys())
-
-    if forced_chain is not None:
-        relation_chain = forced_chain
-    else:
-        relation_chain = random.choice(all_chains)
-
+    chains_by_length = {
+        3: [chain for chain in all_chains if len(chain) == 3],
+        4: [chain for chain in all_chains if len(chain) == 4],
+        5: [chain for chain in all_chains if len(chain) == 5],
+        6: [chain for chain in all_chains if len(chain) >= 6],
+    }
+    
+    chain_lengths = list(chain_distribution.keys())
+    weights = list(chain_distribution.values())
+    selected_length = random.choices(chain_lengths, weights=weights, k=1)[0]
+    
+    available_chains = chains_by_length.get(selected_length, [])
+    
+    if not available_chains:
+        logging.warning(f"No chains found for length {selected_length}. Using all chains.")
+        available_chains = all_chains
+    
+    relation_chain = random.choice(available_chains)
     raw_answer = title_map[relation_chain]
     
     if isinstance(raw_answer, list):
@@ -1005,7 +1011,7 @@ def generate_question(difficulty="Medium", forced_chain=None):
     ask_intermediate_prob = config.get("ask_intermediate_prob", 0.0)
     ask_person_index = len(relation_chain) - 1
 
-    if ask_intermediate_prob > 0 and random.random() < ask_intermediate_prob and len(relation_chain) >= 5:
+    if ask_intermediate_prob > 0 and random.random() < ask_intermediate_prob and len(relation_chain) > 3:
         intermediate_idx = len(relation_chain) - 2
         partial_chain = relation_chain[:intermediate_idx + 1]
         if partial_chain in title_map:
@@ -1113,53 +1119,22 @@ def generate_question(difficulty="Medium", forced_chain=None):
 
     return question, correct_letter, explanation, choices, difficulty.lower()
 
-def _round_robin_chains(all_chains, n):
-    """
-    모든 체인을 균등하게 순환해 n개를 반환한다.
-    한 라운드 = 전체 체인을 셔플한 뒤 한 번씩 사용.
-    n이 len(all_chains)의 배수가 아니면 마지막 라운드는 일부만 사용된다.
-    """
-    result = []
-    remaining = n
-    while remaining > 0:
-        shuffled = all_chains.copy()
-        random.shuffle(shuffled)
-        take = min(remaining, len(shuffled))
-        result.extend(shuffled[:take])
-        remaining -= take
-    return result
-
-
-def create_dataset_files(num_questions_per_difficulty=128):
+def create_dataset_files(num_questions_per_difficulty=100):
     import pandas as pd
     import json
-
+    
     difficulties = ["Easy", "Medium", "Hard"]
-    title_map = get_relation_chain_to_title()
-    all_chains = list(title_map.keys())
-
+    
     print(f"Generating kinship problems by difficulty...")
-    print(f"Total unique chains: {len(all_chains)}")
-    if num_questions_per_difficulty < len(all_chains):
-        logging.warning(
-            f"num_questions_per_difficulty({num_questions_per_difficulty}) < "
-            f"총 체인 수({len(all_chains)}). "
-            f"일부 체인이 출제되지 않을 수 있습니다."
-        )
     output = []
     all_generated_data = []
-
+    
     for difficulty in difficulties:
         print(f"\n=== Generating {difficulty} problems ({num_questions_per_difficulty} questions) ===")
-
-        chain_queue = _round_robin_chains(all_chains, num_questions_per_difficulty)
-
-        for i, chain in enumerate(chain_queue):
+        for i in range(num_questions_per_difficulty):
             try:
-                q, answer, expl, choices, diff = generate_question(
-                    difficulty=difficulty, forced_chain=chain
-                )
-
+                q, answer, expl, choices, diff = generate_question(difficulty=difficulty)
+                
                 output.append({
                     'id': f'kinship_{len(output)}',
                     'question': q,
@@ -1168,7 +1143,7 @@ def create_dataset_files(num_questions_per_difficulty=128):
                     'difficulty': diff,
                     'choices': json.dumps(choices, ensure_ascii=False)
                 })
-
+                
                 all_generated_data.append({
                     'id': f'kinship_{len(all_generated_data)}',
                     'question': q,
@@ -1177,12 +1152,12 @@ def create_dataset_files(num_questions_per_difficulty=128):
                     'difficulty': diff,
                     'choices': choices
                 })
-
+                
                 if (i + 1) % 20 == 0:
                     print(f"  Progress: {i + 1}/{num_questions_per_difficulty}")
-
+                    
             except Exception as e:
-                logging.error(f"Error generating {difficulty} question (chain={chain}): {e}")
+                logging.error(f"Error generating {difficulty} question: {e}")
                 continue
     
     kinship_df = pd.DataFrame(output)
@@ -1221,8 +1196,8 @@ if __name__ == '__main__':
     import argparse
     
     parser = argparse.ArgumentParser(description="Kinship Puzzle Generator")
-    parser.add_argument("--num", type=int, default=128,
-                       help="Number of questions to generate per difficulty level (128 = all chains once)")
+    parser.add_argument("--num", type=int, default=100, 
+                       help="Number of questions to generate per difficulty level")
     
     args = parser.parse_args()
     
