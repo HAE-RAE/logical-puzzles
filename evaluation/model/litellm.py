@@ -1,9 +1,10 @@
 import asyncio
 import logging
 import os
+import re
 import time
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 from dotenv import load_dotenv
 
@@ -53,12 +54,51 @@ class LiteLLMClient(BaseLLMClient):
             params["allowed_openai_params"] = ["reasoning_effort"]
         return params
 
+    @staticmethod
+    def _finalize_thinking_from_content(content: str, thinking: str) -> Tuple[str, str]:
+        """Align with RemoteLLMClient: API reasoning fields first, else <redacted_thinking> in body."""
+        if not thinking and content and "<redacted_thinking>" in content:
+            m = re.search(r"<redacted_thinking>(.*?)</think>", content, re.DOTALL)
+            if m:
+                thinking = m.group(1).strip()
+                content = re.sub(
+                    r"<redacted_thinking>.*?</redacted_thinking>",
+                    "",
+                    content,
+                    flags=re.DOTALL,
+                ).strip()
+        return content, thinking
+
+    @staticmethod
+    def _message_content_and_thinking(message: Any) -> Tuple[str, str]:
+        """LiteLLM / OpenAI-style message: reasoning_content or reasoning, optional tags in content."""
+        content = getattr(message, "content", None)
+        if content is None:
+            content = ""
+        elif not isinstance(content, str):
+            content = str(content)
+
+        thinking = (
+            getattr(message, "reasoning_content", None)
+            or getattr(message, "reasoning", None)
+            or ""
+        )
+        if thinking and not isinstance(thinking, str):
+            thinking = str(thinking)
+
+        return LiteLLMClient._finalize_thinking_from_content(content, thinking)
+
     def _extract_response(self, response, latency_ms: float) -> Tuple[str, Dict]:
+        message = response.choices[0].message
+        content, thinking = self._message_content_and_thinking(message)
+        usage = getattr(response, "usage", None)
+        tokens = getattr(usage, "total_tokens", 0) if usage is not None else 0
         return (
-            response.choices[0].message.content,
+            content,
             {
                 "latency_ms": latency_ms,
-                "tokens": getattr(response.usage, "total_tokens", 0),
+                "tokens": tokens or 0,
+                "thinking_content": thinking,
             },
         )
 
