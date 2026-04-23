@@ -584,7 +584,7 @@ def create_dataset_files(num_questions: int):
                 carries = count_carries(*operand_digits)
 
                 puzzle_data = {
-                    "id": f"cryptarithmetic_ko_{len(all_puzzles)}",
+                    "id": f"cryptarithmetic_ko_{difficulty}_{generated:04d}",
                     "question": create_question(candidate),
                     "answer": candidate.answer,
                     "solution": _build_cryptarithmetic_solution_ko(

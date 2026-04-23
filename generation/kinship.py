@@ -1176,6 +1176,7 @@ def create_dataset_files(num_questions_per_difficulty=128):
         print(f"\n=== Generating {difficulty} problems ({num_questions_per_difficulty} questions) ===")
 
         chain_queue = _round_robin_chains(all_chains, num_questions_per_difficulty)
+        diff_idx = 0
 
         for i, chain in enumerate(chain_queue):
             try:
@@ -1183,8 +1184,11 @@ def create_dataset_files(num_questions_per_difficulty=128):
                     difficulty=difficulty, forced_chain=chain
                 )
 
+                diff_lower = diff.lower() if isinstance(diff, str) else str(diff).lower()
+                qid = f'kinship_ko_{diff_lower}_{diff_idx:04d}'
+
                 output.append({
-                    'id': f'kinship_{len(output)}',
+                    'id': qid,
                     'question': q,
                     'answer': answer,
                     'solution': "\n".join(expl),
@@ -1193,13 +1197,15 @@ def create_dataset_files(num_questions_per_difficulty=128):
                 })
 
                 all_generated_data.append({
-                    'id': f'kinship_{len(all_generated_data)}',
+                    'id': qid,
                     'question': q,
                     'answer': answer,
                     'solution': "\n".join(expl),
                     'difficulty': diff,
                     'choices': choices
                 })
+
+                diff_idx += 1
 
                 if (i + 1) % 20 == 0:
                     print(f"  Progress: {i + 1}/{num_questions_per_difficulty}")

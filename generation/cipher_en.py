@@ -436,7 +436,7 @@ def create_advanced_dataset(num_per_level: int = 2):
             problem = generator.generate_problem(config, seed)
 
             all_problems.append({
-                "id": f"cipher_{len(all_problems)}",
+                "id": f"cipher_en_{difficulty}_{i:04d}",
                 "question": problem["problem"],
                 "answer": problem["answer"],
                 "solution": problem["solution"],

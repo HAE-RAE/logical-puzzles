@@ -521,7 +521,7 @@ def create_dataset_files(num_questions: int):
             try:
                 puzzle = generator.generate_puzzle(difficulty)
                 puzzle_data = {
-                    "id": f"inequality_en_{len(all_puzzles)}",
+                    "id": f"inequality_en_{diff_name}_{j:04d}",
                     "question": create_question(puzzle),
                     "answer": puzzle.get_answer_string(),
                     "solution": _build_inequality_solution_en(puzzle),

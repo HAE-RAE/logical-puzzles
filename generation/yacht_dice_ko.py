@@ -670,6 +670,7 @@ def create_dataset_files(num_questions: int):
 
         print(f"\n=== {difficulty} 난이도 퍼즐 생성 중 ({count}개 필요) ===")
 
+        diff_success = 0
         for j in range(count):
             problem = generator.generate_problem(difficulty, problem_id)
             is_valid, message = generator.validate_problem(problem)
@@ -690,7 +691,7 @@ def create_dataset_files(num_questions: int):
                 question = config.get_user_prompt(dice_results)
 
                 puzzle_data = {
-                    "id": f"yacht_dice_ko_{len(all_puzzles)}",
+                    "id": f"yacht_dice_ko_{difficulty}_{diff_success:04d}",
                     "question": question,
                     "answer": str(optimal_score),
                     "solution": solution_str,
@@ -701,6 +702,7 @@ def create_dataset_files(num_questions: int):
                     "step_metrics": problem['step_metrics'],
                 }
                 all_puzzles.append(puzzle_data)
+                diff_success += 1
                 sm = problem['step_metrics']
                 print(
                     f"  [{j+1}/{count}] 점수={optimal_score} "

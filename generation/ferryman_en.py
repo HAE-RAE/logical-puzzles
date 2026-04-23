@@ -940,11 +940,14 @@ def create_dataset_files(num_questions, difficulty=None):
     csv_dir.mkdir(parents=True, exist_ok=True)
     csv_path = csv_dir / "ferryman_en.csv"
     ferryman_json = []
+    diff_counters = {}
     with open(csv_path, "w", encoding="utf-8-sig", newline="") as f:
         writer = csv.writer(f)
         writer.writerow(["id", "question", "answer", "solution", "difficulty"])
         for i, (question, answer, solution, diff) in enumerate(output):
-            qid = f"ferryman_en_{i}"
+            diff_idx = diff_counters.get(diff, 0)
+            diff_counters[diff] = diff_idx + 1
+            qid = f"ferryman_en_{diff}_{diff_idx:04d}"
             row = {
                 "id": qid,
                 "question": question,

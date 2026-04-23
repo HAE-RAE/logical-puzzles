@@ -1068,7 +1068,7 @@ def create_dataset_files(num_questions: int):
                 question = create_question(puzzle_str, positions)
 
                 puzzle_data = {
-                    'id': f'sudoku_ko_{len(all_puzzles)}',
+                    'id': f'sudoku_ko_{difficulty}_{generated:04d}',
                     'question': question,
                     'answer': answer_str,
                     'solution': _build_sudoku_solution_ko(

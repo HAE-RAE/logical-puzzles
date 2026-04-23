@@ -698,6 +698,7 @@ def create_dataset_files(num_questions: int):
 
         print(f"\n=== Generating {diff_name} puzzles ({count} needed) ===")
 
+        diff_success = 0
         for j in range(count):
             try:
                 problem = generator.generate_problem(difficulty)
@@ -705,7 +706,7 @@ def create_dataset_files(num_questions: int):
 
                 if is_valid:
                     puzzle_data = {
-                        'id': f'number_baseball_en_{len(all_puzzles)}',
+                        'id': f'number_baseball_en_{diff_name}_{diff_success:04d}',
                         'question': create_question(problem),
                         'answer': problem['answer'],
                         'solution': _build_baseball_solution_en(problem),
@@ -717,6 +718,7 @@ def create_dataset_files(num_questions: int):
                         'step_metrics': problem.get('step_metrics', {}),
                     }
                     all_puzzles.append(puzzle_data)
+                    diff_success += 1
                     print(f"  [{j+1}/{count}] digits={problem['num_digits']}, "
                           f"hints={len(problem['hints'])}, answer={problem['answer']}")
                 else:

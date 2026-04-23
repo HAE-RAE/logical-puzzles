@@ -533,9 +533,14 @@ def generate_dataset(
         if i % 10 == 0:
             print(f"{i}/{num_samples} 퍼즐 생성 완료...")
     
-    # Re-assign ids to follow index-based naming convention
-    for idx, puzzle in enumerate(puzzles):
-        puzzle.id = f'logic_grid_ko_{idx}'
+    # Re-assign ids to follow per-difficulty naming convention
+    diff_counters = {}
+    for puzzle in puzzles:
+        diff_name = getattr(puzzle.difficulty, "value", puzzle.difficulty)
+        diff_name = str(diff_name).lower()
+        diff_idx = diff_counters.get(diff_name, 0)
+        diff_counters[diff_name] = diff_idx + 1
+        puzzle.id = f'logic_grid_ko_{diff_name}_{diff_idx:04d}'
     
     def _row(p: LogicGridPuzzle) -> dict:
         sol = _build_logic_grid_solution_ko(p)

@@ -520,7 +520,7 @@ def generate_puzzle(difficulty: str = "medium", seed: Optional[int] = None) -> D
         "aux": aux,
         "dst": dst,
         "seed": seed,
-        "id": f"hanoi_{difficulty}_{qtype}_{puzzle_hash}",
+        "id": f"hanoi_en_{difficulty}_{qtype}_{puzzle_hash}",
     }
 
 
@@ -530,9 +530,9 @@ def generate_dataset(num_per_difficulty: int = 100, seed: int = 2025) -> List[Di
 
     puzzle_seed = seed
     for difficulty in difficulties:
-        for _ in range(num_per_difficulty):
+        for diff_idx in range(num_per_difficulty):
             puzzle = generate_puzzle(difficulty=difficulty, seed=puzzle_seed)
-            puzzle["id"] = f"hanoi_{len(puzzles)}"
+            puzzle["id"] = f"hanoi_en_{difficulty}_{diff_idx:04d}"
             puzzles.append(puzzle)
             puzzle_seed += 1
 

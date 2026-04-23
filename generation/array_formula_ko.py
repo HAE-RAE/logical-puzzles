@@ -1727,6 +1727,7 @@ def generate_dataset(
     for difficulty in difficulties:
         per_ptype = num_per_difficulty // len(problem_types)
         remainder = num_per_difficulty % len(problem_types)
+        diff_idx = 0
         for j, ptype in enumerate(problem_types):
             count = per_ptype + (1 if j < remainder else 0)
             for _ in range(count):
@@ -1735,9 +1736,10 @@ def generate_dataset(
                     problem_type=ptype,
                     seed=puzzle_seed
                 )
-                puzzle["id"] = f"array_formula_ko_{len(puzzles)}"
+                puzzle["id"] = f"array_formula_ko_{difficulty}_{diff_idx:04d}"
                 puzzles.append(puzzle)
                 puzzle_seed += 1
+                diff_idx += 1
 
     return puzzles
 

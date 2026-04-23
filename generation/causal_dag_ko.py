@@ -757,7 +757,7 @@ def create_dataset_files(num_questions: int):
         for j in range(count):
             puzzle = generator.generate_puzzle(difficulty, seed=i*1000+j)
             puzzle_data = {
-                'id': f'causal_dag_ko_{len(all_puzzles)}',
+                'id': f'causal_dag_ko_{difficulty}_{j:04d}',
                 'question': create_question(puzzle),
                 'answer': str(puzzle.answer),
                 'solution': _build_causal_dag_solution_ko(puzzle),

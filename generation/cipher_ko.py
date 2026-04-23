@@ -309,7 +309,7 @@ def create_hangul_dataset(num_per_level: int = 3):
             seed = 5000 + len(all_problems)
             problem = generator.generate_problem(config, seed)
             all_problems.append({
-                "id": f"cipher_ko_{len(all_problems)}",
+                "id": f"cipher_ko_{difficulty}_{i:04d}",
                 "question": problem["problem"],
                 "answer": problem["answer"],
                 "solution": problem["solution"],

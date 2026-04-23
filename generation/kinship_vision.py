@@ -1021,12 +1021,16 @@ def create_dataset_files(num_questions_per_difficulty=100):
     
     for difficulty in difficulties:
         print(f"\n=== Generating {difficulty} problems ({num_questions_per_difficulty} questions) ===")
+        diff_idx = 0
         for i in range(num_questions_per_difficulty):
             try:
                 q, a, e, choices, diff = generate_question(difficulty=difficulty)
-                
+
+                diff_lower = diff.lower() if isinstance(diff, str) else str(diff).lower()
+                qid = f'kinship_vision_ko_{diff_lower}_{diff_idx:04d}'
+
                 output.append({
-                    'id': f'kinship_vision_{len(output)}',
+                    'id': qid,
                     'question': q,
                     'answer': a,
                     'solution': "\n".join(e),
@@ -1035,14 +1039,16 @@ def create_dataset_files(num_questions_per_difficulty=100):
                 })
                 
                 all_generated_data.append({
-                    'id': f'kinship_vision_{len(all_generated_data)}',
+                    'id': qid,
                     'question': q,
                     'answer': a,
                     'solution': "\n".join(e),
                     'difficulty': diff,
                     'choices': choices
                 })
-                
+
+                diff_idx += 1
+
                 if (i + 1) % 20 == 0:
                     print(f"  Progress: {i + 1}/{num_questions_per_difficulty}")
                     

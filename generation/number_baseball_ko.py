@@ -697,6 +697,7 @@ def create_dataset_files(num_questions: int):
 
         print(f"\n=== {diff_name} 난이도 퍼즐 생성 중 ({count}개 필요) ===")
 
+        diff_success = 0
         for j in range(count):
             try:
                 problem = generator.generate_problem(difficulty)
@@ -704,7 +705,7 @@ def create_dataset_files(num_questions: int):
 
                 if is_valid:
                     puzzle_data = {
-                        'id': f'number_baseball_ko_{len(all_puzzles)}',
+                        'id': f'number_baseball_ko_{diff_name}_{diff_success:04d}',
                         'question': create_question(problem),
                         'answer': problem['answer'],
                         'solution': _build_baseball_solution_ko(problem),
@@ -716,6 +717,7 @@ def create_dataset_files(num_questions: int):
                         'step_metrics': problem.get('step_metrics', {}),
                     }
                     all_puzzles.append(puzzle_data)
+                    diff_success += 1
                     print(f"  [{j+1}/{count}] 자릿수={problem['num_digits']}, "
                           f"힌트={len(problem['hints'])}개, 정답={problem['answer']}")
                 else:

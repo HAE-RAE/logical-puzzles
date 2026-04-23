@@ -492,8 +492,9 @@ def create_dataset_files(num_questions: int):
 
         print(f"\n=== {difficulty} 퍼즐 생성 중 ({count}개 필요) ===")
 
+        diff_success = 0
         for j in range(count):
-            puzzle_id = f"minesweeper_ko_{len(all_puzzles)}"
+            puzzle_id = f"minesweeper_ko_{difficulty}_{diff_success:04d}"
 
             puzzle_generated = False
             for seed_offset in range(10):
@@ -511,6 +512,7 @@ def create_dataset_files(num_questions: int):
                     all_puzzles.append(result)
                     print(f"  [{j+1}/{count}] {result['description']}, answer={result['answer']}")
                     puzzle_generated = True
+                    diff_success += 1
                     break
 
             if not puzzle_generated:
