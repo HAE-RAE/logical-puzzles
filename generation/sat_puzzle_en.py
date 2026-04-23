@@ -15,6 +15,12 @@ from enum import Enum
 from itertools import combinations
 
 
+SFT_SOLUTION_RUBRIC_EN = (
+    "STEP0=meta · STEP1=given · STEP2=worked solution · "
+    "STEP3=answer and verification"
+)
+
+
 class Difficulty(str, Enum):
     EASY = "easy"
     MEDIUM = "medium"
@@ -105,6 +111,65 @@ class SATPuzzle:
         prompt += "}\n```\n"
         
         return prompt
+
+
+def _clause_satisfying_literal_en(clause, assignment) -> str:
+    """Pick one literal in the clause that is True under the answer assignment."""
+    try:
+        literals = getattr(clause, "literals", None)
+        if literals is not None:
+            for var, is_positive in literals:
+                val = assignment.get(var)
+                if val is None:
+                    continue
+                lit_val = val if is_positive else (not val)
+                if lit_val:
+                    return var if is_positive else f"NOT {var}"
+    except Exception:
+        pass
+    return "?"
+
+
+def _build_sat_solution_en(puzzle: SATPuzzle) -> str:
+    """SFT teacher trace: CNF + satisfying assignment."""
+    n_clauses = len(puzzle.clauses)
+    n_vars = len(puzzle.variables)
+    n_cons = len(puzzle.natural_constraints)
+    n_true = sum(1 for v in puzzle.answer.values() if v)
+    lines = [
+        SFT_SOLUTION_RUBRIC_EN,
+        "[STEP 0] Problem meta",
+        f"  - Difficulty: {puzzle.difficulty}",
+        f"  - Domain: {puzzle.domain}",
+        f"  - Variables: {', '.join(puzzle.variables)}",
+        f"  - Clauses: {n_clauses} (CNF: conjunction of disjunctions)",
+        f"  - Question: {puzzle.question}",
+        "  - Final answer is confirmed in [STEP 3]",
+        "[STEP 1] Given",
+    ]
+    for i, c in enumerate(puzzle.natural_constraints, 1):
+        lines.append(f"  {i}. {c}")
+    lines.append("[STEP 2] Worked solution")
+    lines.append(
+        f"  · Summary: {n_vars} vars · {n_cons} NL constraints -> {n_clauses} CNF clauses · "
+        f"AND(clauses)/OR(literals) structure, find the unique satisfying assignment · "
+        f"{n_clauses} SEGs"
+    )
+    for i, cl in enumerate(puzzle.clauses, 1):
+        sat_lit = _clause_satisfying_literal_en(cl, puzzle.answer)
+        lines.append(
+            f"    [SEG {i}] clause {cl} -> literal '{sat_lit}' is True, so the clause holds."
+        )
+    lines.append("[STEP 3] Answer and verification")
+    lines.append(f"  - Final answer (unique model, True={n_true}/{n_vars}):")
+    for v, t in sorted(puzzle.answer.items()):
+        lines.append(f"    · {v}: {t}")
+    lines.append(
+        "  - For each clause, at least one literal should evaluate to True under this assignment."
+    )
+    for i, cl in enumerate(puzzle.clauses, 1):
+        lines.append(f"  - CNF {i}: {cl}")
+    return "\n".join(lines)
 
 
 class SATPuzzleGenerator:
@@ -469,32 +534,41 @@ def generate_dataset(
         if i % 10 == 0:
             print(f"Generated {i}/{num_samples} puzzles...")
     
-    # Re-assign ids to follow index-based naming convention
-    for idx, puzzle in enumerate(puzzles):
-        puzzle.id = f'sat_puzzle_{idx}'
+    # Re-assign ids to follow per-difficulty naming convention
+    diff_counters = {}
+    for puzzle in puzzles:
+        diff_name = getattr(puzzle.difficulty, "value", puzzle.difficulty)
+        diff_name = str(diff_name).lower()
+        diff_idx = diff_counters.get(diff_name, 0)
+        diff_counters[diff_name] = diff_idx + 1
+        puzzle.id = f'sat_puzzle_en_{diff_name}_{diff_idx:04d}'
     
-    # Save as JSONL
+    def _row(p: SATPuzzle) -> dict:
+        return {
+            "id": p.id,
+            "question": p.question,
+            "answer": p.answer,
+            "solution": _build_sat_solution_en(p),
+            "difficulty": p.difficulty,
+        }
+
+    # JSONL (5 fields)
     jsonl_path = json_dir / "sat_puzzles_en.jsonl"
-    with open(jsonl_path, 'w') as f:
+    with open(jsonl_path, 'w', encoding="utf-8") as f:
         for puzzle in puzzles:
-            f.write(json.dumps(puzzle.to_dict()) + '\n')
+            f.write(json.dumps(_row(puzzle), ensure_ascii=False) + '\n')
     
-    # Save as CSV
+    # CSV
     import csv as csv_module
     csv_path = csv_dir / "sat_puzzles_en.csv"
     with open(csv_path, 'w', encoding='utf-8', newline='') as f:
-        # Use same columns as JSONL
-        fieldnames = ['id', 'question', 'answer', 'difficulty', 'domain', 'variables', 'clauses', 'constraints']
+        fieldnames = ['id', 'question', 'answer', 'solution', 'difficulty']
         writer = csv_module.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         for puzzle in puzzles:
-            row = puzzle.to_dict()
-            # Convert lists/dicts to JSON strings for CSV
-            row['variables'] = json.dumps(row['variables'])
-            row['clauses'] = json.dumps(row['clauses'])
-            row['constraints'] = json.dumps(row['constraints'])
-            row['answer'] = json.dumps(row['answer'])
-            writer.writerow(row)
+            r = _row(puzzle)
+            r["answer"] = json.dumps(r["answer"], ensure_ascii=False)
+            writer.writerow(r)
     
     print(f"   - JSONL: {jsonl_path}")
     print(f"   - CSV: {csv_path}")

@@ -930,6 +930,63 @@ def _positions_as_rc_pairs(positions: List[str]) -> str:
     return ", ".join(pairs)
 
 
+SFT_SOLUTION_RUBRIC_KO = (
+    "STEP0=문제 메타 · STEP1=주어진 조건 · STEP2=풀이 전개 · STEP3=답·검산"
+)
+
+
+def _build_sudoku_solution_ko(
+    puzzle_str: str,
+    solution_str: str,
+    positions: List[str],
+    answer_str: str,
+    difficulty: str,
+    givens_count: int,
+) -> str:
+    """SFT teacher trace: 스도쿠 · 완전한 해와 스팟체크 SEG."""
+    puzzle_grid = _format_grid(puzzle_str)
+    solution_grid_text = _format_grid(solution_str)
+    solution_grid = from_string(solution_str)
+
+    lines: List[str] = [
+        SFT_SOLUTION_RUBRIC_KO,
+        "[STEP 0] 문제 메타",
+        f"  - 난이도: {difficulty}",
+        f"  - 주어진 힌트 셀 수: {givens_count}",
+        f"  - 스팟체크 좌표 수: {len(positions)}",
+        "  - 최종 답은 [STEP 3]에서 확정",
+        "[STEP 1] 주어진 조건",
+        "  - 규칙: 각 행·열·3×3 박스에 1–9가 정확히 한 번.",
+        "  - 퍼즐 격자:",
+    ]
+    for row in puzzle_grid.splitlines():
+        lines.append(f"    {row}")
+
+    lines.append("[STEP 2] 풀이 전개")
+    lines.append(
+        f"  · 요약: 행/열/박스 제약으로 단일 후보 확정 반복 → 유일 해 · "
+        f"스팟체크 SEG {len(positions)}개"
+    )
+    lines.append("  · 완성 격자:")
+    for row in solution_grid_text.splitlines():
+        lines.append(f"    {row}")
+    for i, pos in enumerate(positions, 1):
+        r, c = _parse_position(pos)
+        val = solution_grid[r][c]
+        lines.append(
+            f"    [SEG {i}] 위치 (r{r + 1}, c{c + 1}) = {val} "
+            f"(행/열/박스 제약 모두 만족)"
+        )
+
+    lines.extend([
+        "[STEP 3] 답·검산",
+        f"  - 최종 답(스팟체크 {len(positions)}자리): {answer_str}",
+        "  - 완성 격자의 모든 행·열·3×3 박스가 1–9의 순열인지 확인.",
+        "  - 각 힌트 셀 값이 완성 격자와 일치하는지 확인.",
+    ])
+    return "\n".join(lines)
+
+
 def create_question(puzzle_str: str, positions: List[str]) -> str:
     grid = _format_grid(puzzle_str)
     rc_str = _positions_as_rc_pairs(positions)
@@ -1011,10 +1068,18 @@ def create_dataset_files(num_questions: int):
                 question = create_question(puzzle_str, positions)
 
                 puzzle_data = {
-                    'id': f'sudoku_ko_{len(all_puzzles)}',
+                    'id': f'sudoku_ko_{difficulty}_{generated:04d}',
                     'question': question,
                     'answer': answer_str,
-                    'solution': solution_strs[0],
+                    'solution': _build_sudoku_solution_ko(
+                        puzzle_str=puzzle_str,
+                        solution_str=solution_strs[0],
+                        positions=positions,
+                        answer_str=answer_str,
+                        difficulty=difficulty,
+                        givens_count=metadata['givens_count'],
+                    ),
+                    'solution_grid': solution_strs[0],
                     'difficulty': difficulty,
                     'givens_count': metadata['givens_count'],
                     'puzzle': puzzle_str,

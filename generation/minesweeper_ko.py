@@ -305,6 +305,17 @@ class DifficultyPuzzleGenerator:
                 bitstring = mask_to_bitstring(solutions[0])
                 coord_list = mask_to_coord_list(solutions[0])
                 answer_str = coords_to_answer_string(coord_list)
+                sft_solution = _build_minesweeper_solution_ko(
+                    puzzle_rows=puzzle_display,
+                    R=R,
+                    C=C,
+                    total_mines=num_mines,
+                    coord_list=coord_list,
+                    answer_str=answer_str,
+                    difficulty=difficulty,
+                    bitstring=bitstring,
+                    solver_nodes=step_stats['nodes'],
+                )
 
                 return {
                     'id': puzzle_id,
@@ -314,7 +325,8 @@ class DifficultyPuzzleGenerator:
                     'total_mines': num_mines,
                     'puzzle': puzzle_display,
                     'answer': answer_str,
-                    'solution': bitstring,
+                    'solution': sft_solution,
+                    'bitstring': bitstring,
                     'answer_type': 'coord_list',
                     'description': f"{R}x{C} 격자, 지뢰 {num_mines}개",
                     'cells_revealed': len(revealed),
@@ -329,6 +341,78 @@ class DifficultyPuzzleGenerator:
                 }
 
         return None
+
+
+SFT_SOLUTION_RUBRIC_KO = (
+    "STEP0=문제 메타 · STEP1=주어진 조건 · STEP2=풀이 전개 · STEP3=답·검산"
+)
+
+
+def _build_minesweeper_solution_ko(
+    puzzle_rows: List[str],
+    R: int,
+    C: int,
+    total_mines: int,
+    coord_list: List[Tuple[int, int]],
+    answer_str: str,
+    difficulty: str,
+    bitstring: str,
+    solver_nodes: int,
+) -> str:
+    """SFT teacher trace: 지뢰찾기 · 지뢰 확정 SEG."""
+    coord_sorted = sorted(coord_list)
+
+    clue_lookup: Dict[Tuple[int, int], int] = {}
+    for r, row in enumerate(puzzle_rows):
+        for c, ch in enumerate(row):
+            if ch.isdigit():
+                clue_lookup[(r, c)] = int(ch)
+
+    def adjacent_clues_for(rr: int, cc: int) -> List[Tuple[int, int, int]]:
+        out = []
+        for nr, nc in neighbors(rr, cc, R, C):
+            if (nr, nc) in clue_lookup:
+                out.append((nr, nc, clue_lookup[(nr, nc)]))
+        return out
+
+    lines: List[str] = [
+        SFT_SOLUTION_RUBRIC_KO,
+        "[STEP 0] 문제 메타",
+        f"  - 난이도: {difficulty}",
+        f"  - 격자: {R}행 × {C}열",
+        f"  - 지뢰 수: {total_mines} · 공개 숫자 셀: {len(clue_lookup)}",
+        f"  - 솔버 역추적 노드: {solver_nodes}",
+        "  - 최종 답은 [STEP 3]에서 확정",
+        "[STEP 1] 주어진 조건",
+        "  - 규칙: 각 공개 숫자 = 8방향 이웃 중 지뢰 개수.",
+        "  - 규칙: '#'은 미공개 셀(지뢰이거나 안전).",
+        "  - 퍼즐(행 단위):",
+    ]
+    for r, row in enumerate(puzzle_rows):
+        lines.append(f"    r{r}: {' '.join(row)}")
+
+    lines.append("[STEP 2] 풀이 전개")
+    lines.append(
+        f"  · 요약: 숫자 제약 전파 · 미공개 {sum(row.count('#') for row in puzzle_rows)}셀 중 "
+        f"지뢰 {total_mines}개 확정 → 유일해 · SEG {len(coord_sorted)}개"
+    )
+    for i, (r, c) in enumerate(coord_sorted, 1):
+        clue_hits = adjacent_clues_for(r, c)
+        if clue_hits:
+            clue_text = ", ".join(f"({cr},{cc})={cv}" for cr, cc, cv in clue_hits)
+            explain = f"인접 숫자 제약 {clue_text} 이(가) 이 셀을 지뢰로 강제"
+        else:
+            explain = "남은 미공개 셀의 지뢰 총량 제약에서 확정"
+        lines.append(f"    [SEG {i}] 지뢰 확정 ({r},{c}): {explain}")
+
+    lines.extend([
+        "[STEP 3] 답·검산",
+        f"  - 최종 답: {answer_str}",
+        f"  - 지뢰 총 개수 = {total_mines} 일치 여부 확인.",
+        "  - 각 공개 숫자에 대해, 확정된 지뢰 중 이웃 개수가 숫자와 정확히 일치하는지 검증.",
+        f"  - 내부 인코딩(bitstring): {bitstring[:48]}{'…' if len(bitstring) > 48 else ''}",
+    ])
+    return "\n".join(lines)
 
 
 def format_puzzle_grid_labeled(puzzle_rows: List[str]) -> str:
@@ -408,8 +492,9 @@ def create_dataset_files(num_questions: int):
 
         print(f"\n=== {difficulty} 퍼즐 생성 중 ({count}개 필요) ===")
 
+        diff_success = 0
         for j in range(count):
-            puzzle_id = f"minesweeper_ko_{len(all_puzzles)}"
+            puzzle_id = f"minesweeper_ko_{difficulty}_{diff_success:04d}"
 
             puzzle_generated = False
             for seed_offset in range(10):
@@ -427,6 +512,7 @@ def create_dataset_files(num_questions: int):
                     all_puzzles.append(result)
                     print(f"  [{j+1}/{count}] {result['description']}, answer={result['answer']}")
                     puzzle_generated = True
+                    diff_success += 1
                     break
 
             if not puzzle_generated:

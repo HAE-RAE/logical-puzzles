@@ -33,7 +33,11 @@ You are an expert at solving logic puzzles.
 Carefully analyze all constraints and provide accurate answers.
 
 ### Output format
-Follow the answer format specified in the user message."""
+Your final line MUST be exactly one-line JSON:
+Answer: {"K team": false, "L team": true}
+
+Use lowercase boolean literals (`true` / `false`) in the final JSON line.
+Do not use markdown code blocks in the final answer."""
 
     KOREAN_SYSTEM_PROMPT = """### 지시사항
 당신은 논리 퍼즐 전문가입니다.
@@ -42,7 +46,11 @@ Follow the answer format specified in the user message."""
 주어진 모든 제약을 꼼꼼히 분석하고 변수별 참/거짓을 정확한 답(JSON)으로 제시하세요.
 
 ### 출력 형식
-사용자 메시지에서 요구하는 JSON 형식을 따르세요."""
+마지막 줄은 반드시 한 줄 JSON으로 작성하세요:
+Answer: {"K팀": false, "L팀": true}
+
+최종 JSON의 불리언은 소문자(`true` / `false`)를 사용하세요.
+최종 답에 markdown 코드블록은 사용하지 마세요."""
 
     def _is_korean(self, puzzle: Optional[Dict] = None) -> bool:
         """task_name에 sat_puzzles_ko_easy 등 포함 시 한국어; question에서도 추론."""
@@ -164,47 +172,75 @@ Follow the answer format specified in the user message."""
             puzzle: 퍼즐 데이터
         """
         variables = puzzle.get("variables", [])
+        answer_text = self._extract_final_answer_text(response, allow_boxed_fallback=False)
+
+        def _validate(answer_obj: Any) -> Optional[Dict[str, bool]]:
+            if not isinstance(answer_obj, dict):
+                return None
+            for var in variables:
+                if var not in answer_obj or not isinstance(answer_obj[var], bool):
+                    return None
+            return answer_obj
+
+        def _parse_json_like(text: str) -> Optional[Dict[str, bool]]:
+            if not text:
+                return None
+            candidate = text.strip()
+            candidate = re.sub(r'//.*', '', candidate)
+            # Accept Python-style bools too: True/False -> true/false
+            candidate = re.sub(r'\bTrue\b', 'true', candidate)
+            candidate = re.sub(r'\bFalse\b', 'false', candidate)
+            try:
+                parsed = json.loads(candidate)
+            except json.JSONDecodeError:
+                return None
+            return _validate(parsed)
         
         try:
+            if answer_text and answer_text.strip().startswith("{"):
+                parsed = _parse_json_like(answer_text)
+                if parsed is not None:
+                    return parsed
+
+            # Handle multiline style:
+            # Answer:
+            # ```json
+            # { ... }
+            # ```
+            answer_block = re.search(
+                r'(?is)answer\s*[:：]\s*```(?:json)?\s*(\{.*?\})\s*```',
+                response,
+            )
+            if answer_block:
+                parsed = _parse_json_like(answer_block.group(1))
+                if parsed is not None:
+                    return parsed
+
+            # Handle multiline style without fences:
+            # Answer:
+            # { ... }
+            answer_multiline = re.search(
+                r'(?is)answer\s*[:：]\s*(\{.*?\})',
+                response,
+            )
+            if answer_multiline:
+                parsed = _parse_json_like(answer_multiline.group(1))
+                if parsed is not None:
+                    return parsed
+
             # Try to find JSON in the response
             json_match = re.search(r'```json\s*(\{.*?\})\s*```', response, re.DOTALL)
             if json_match:
-                answer_json = json_match.group(1)
-                # Remove comments
-                answer_json = re.sub(r'//.*', '', answer_json)
-                answer = json.loads(answer_json)
-                
-                # Validate structure
-                if not isinstance(answer, dict):
-                    return None
-                
-                # Check all variables are present
-                for var in variables:
-                    if var not in answer:
-                        return None
-                    if not isinstance(answer[var], bool):
-                        return None
-                
-                return answer
+                parsed = _parse_json_like(json_match.group(1))
+                if parsed is not None:
+                    return parsed
             
             # Try to find JSON without markdown
-            json_match = re.search(r'\{[^{}]*"[^"]+"\s*:\s*(true|false)[^{}]*\}', response, re.DOTALL)
+            json_match = re.search(r'\{[^{}]*"[^"]+"\s*:\s*(?:true|false|True|False)[^{}]*\}', response, re.DOTALL)
             if json_match:
-                answer_text = json_match.group(0)
-                # Remove comments
-                answer_text = re.sub(r'//.*', '', answer_text)
-                answer = json.loads(answer_text)
-                
-                # Validate
-                if isinstance(answer, dict):
-                    valid = True
-                    for var in variables:
-                        if var not in answer or not isinstance(answer[var], bool):
-                            valid = False
-                            break
-                    
-                    if valid:
-                        return answer
+                parsed = _parse_json_like(json_match.group(0))
+                if parsed is not None:
+                    return parsed
             
             # Try to parse line-by-line format
             # "Alice: True" or "Alice: False"

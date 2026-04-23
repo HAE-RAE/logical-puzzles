@@ -193,6 +193,7 @@ class NumberBaseballEvaluator(BaseEvaluator):
         """Extract digit sequence from LLM response, filtering out hint numbers."""
         num_digits = puzzle.get("num_digits", 3)
         hint_numbers = self._extract_hint_numbers(puzzle)
+        answer_text = self._extract_final_answer_text(response, allow_boxed_fallback=False) or response
 
         # Priority 1: "Answer:" pattern
         patterns = [
@@ -203,13 +204,13 @@ class NumberBaseballEvaluator(BaseEvaluator):
         ]
 
         for pattern in patterns:
-            matches = re.findall(pattern, response, re.IGNORECASE)
+            matches = re.findall(pattern, answer_text, re.IGNORECASE)
             for m in reversed(matches):
                 if len(m) == num_digits and m not in hint_numbers:
                     return m
 
         # Priority 2: last N-digit number not in hints
-        last_part = response[-500:] if len(response) > 500 else response
+        last_part = answer_text[-500:] if len(answer_text) > 500 else answer_text
         numbers = re.findall(rf'\b(\d{{{num_digits}}})\b', last_part)
         for n in reversed(numbers):
             if n not in hint_numbers:

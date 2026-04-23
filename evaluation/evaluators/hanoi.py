@@ -26,22 +26,24 @@ class HanoiEvaluator(BaseEvaluator):
     """
     
     SYSTEM_PROMPT = """### Instructions
-You must answer ONLY in the format (disk, from, to).
+You must end with exactly one final line in this format:
+Answer: (disk, from, to)
 
 ### Rules
 Follow the Hanoi puzzle given in the user message.
 
 ### Output format
-(disk, from, to) — e.g. (1, 0, 2)"""
+Answer: (disk, from, to) — e.g. Answer: (1, 0, 2)"""
 
     KOREAN_SYSTEM_PROMPT = """### 지시사항
-반드시 (원반 번호, 출발 기둥, 도착 기둥) 형식으로만 답하세요.
+반드시 마지막 줄을 아래 형식으로 작성하세요:
+Answer: (원반 번호, 출발 기둥, 도착 기둥)
 
 ### 규칙
 사용자 메시지에 주어진 하노이 퍼즐을 따르세요.
 
 ### 출력 형식
-예: (1, 0, 2)"""
+예: Answer: (1, 0, 2)"""
 
     def _is_korean(self, puzzle: Optional[Dict] = None) -> bool:
         """Prefer task_name (e.g. …_ko_easy); else infer from expected answer."""
@@ -161,13 +163,15 @@ Follow the Hanoi puzzle given in the user message.
             response: LLM 응답 텍스트
             puzzle: 퍼즐 데이터 (사용하지 않음)
         """
+        answer_text = self._extract_final_answer_text(response) or response
+
         # 패턴 1: (숫자, 숫자, 숫자) 형식
-        match = re.search(r'\((\d+),\s*(\d+),\s*(\d+)\)', response)
+        match = re.search(r'\((\d+),\s*(\d+),\s*(\d+)\)', answer_text)
         if match:
             return (int(match.group(1)), int(match.group(2)), int(match.group(3)))
         
         # 패턴 2: 숫자 3개 추출
-        nums = re.findall(r'\d+', response)
+        nums = re.findall(r'\d+', answer_text)
         if len(nums) >= 3:
             return (int(nums[0]), int(nums[1]), int(nums[2]))
         

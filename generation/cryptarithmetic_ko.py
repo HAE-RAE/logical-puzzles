@@ -437,6 +437,94 @@ def generate_puzzle_by_difficulty(
     return None
 
 
+SFT_SOLUTION_RUBRIC_KO = (
+    "STEP0=문제 메타 · STEP1=주어진 조건 · STEP2=풀이 전개 · STEP3=답·검산"
+)
+
+
+def _build_cryptarithmetic_solution_ko(
+    candidate: PuzzleCandidate,
+    difficulty: str,
+    carries: int,
+) -> str:
+    """SFT teacher trace: 복면산 역산 + 열별 SEG."""
+    operand_words = candidate.operands
+    result_word = candidate.result
+    mapping = candidate.mapping or {}
+    answer = candidate.answer
+
+    mapping_items = sorted(mapping.items(), key=lambda kv: kv[0])
+    mapping_text = ", ".join(f"{k}={v}" for k, v in mapping_items)
+
+    def digits_of(word: str) -> str:
+        return "".join(str(mapping.get(c, "?")) for c in word)
+
+    operand_digit_strs = [digits_of(w) for w in operand_words]
+    result_digit_str = digits_of(result_word)
+
+    op_lines_words = " + ".join(operand_words) + f" = {result_word}"
+    op_lines_digits = " + ".join(operand_digit_strs) + f" = {result_digit_str}"
+
+    lines: List[str] = [
+        SFT_SOLUTION_RUBRIC_KO,
+        "[STEP 0] 문제 메타",
+        f"  - 난이도: {difficulty}",
+        f"  - 퍼즐: {op_lines_words}",
+        f"  - 고유 글자 수: {candidate.unique_letters}",
+        f"  - 받아올림(carry) 수: {carries}",
+        "  - 최종 답은 [STEP 3]에서 확정",
+        "[STEP 1] 주어진 조건",
+        "  - 규칙: 서로 다른 글자 = 서로 다른 숫자(0–9).",
+        "  - 규칙: 각 단어의 **첫 글자는 0이 될 수 없음**.",
+        f"  - 구하려는 값: {result_word}의 숫자값.",
+    ]
+
+    max_len = max(len(w) for w in operand_words + [result_word])
+    padded_operands = [w.rjust(max_len) for w in operand_words]
+    padded_result = result_word.rjust(max_len)
+
+    carry = 0
+    seg_lines: List[str] = []
+    for pos in range(max_len):
+        col_idx = max_len - 1 - pos
+        col_digit_letters = [w[col_idx] for w in padded_operands if w[col_idx] != ' ']
+        col_digits = [mapping[c] for c in col_digit_letters if c in mapping]
+        s = sum(col_digits) + carry
+        new_carry = s // 10
+        unit = s % 10
+        res_letter = padded_result[col_idx] if padded_result[col_idx] != ' ' else ''
+        res_digit = mapping.get(res_letter, None) if res_letter else None
+        terms = " + ".join(f"{c}={mapping[c]}" for c in col_digit_letters if c in mapping)
+        if carry:
+            terms += f" + carry {carry}"
+        verdict = ""
+        if res_digit is not None:
+            verdict = f" → 결과 자리 {res_letter}={res_digit} (받아올림 {new_carry})"
+        else:
+            verdict = f" → 받아올림 {new_carry}"
+        seg_lines.append(
+            f"    [SEG {pos + 1}] 자리 {pos + 1}(우→좌): {terms} = {s}{verdict}"
+        )
+        carry = new_carry
+
+    lines.append("[STEP 2] 풀이 전개")
+    lines.append(
+        f"  · 요약: 우→좌 자리별 합 · 글자→숫자 매핑({mapping_text}) · "
+        f"받아올림 총 {carries}회 · SEG {len(seg_lines)}개"
+    )
+    lines.append(f"  · 매핑 검증: {op_lines_digits}")
+    lines.extend(seg_lines)
+
+    lines.extend([
+        "[STEP 3] 답·검산",
+        f"  - 최종 답: {result_word} = {answer}",
+        f"  - 매핑: {mapping_text}",
+        "  - 각 자리 합과 받아올림이 일치하는지 [SEG] 전개로 재확인.",
+        "  - 모든 단어의 첫 글자 숫자가 0이 아닌지 확인.",
+    ])
+    return "\n".join(lines)
+
+
 def create_question(candidate: PuzzleCandidate) -> str:
     operand_words = candidate.operands
     max_word_len = max(len(w) for w in operand_words + [candidate.result])
@@ -496,10 +584,12 @@ def create_dataset_files(num_questions: int):
                 carries = count_carries(*operand_digits)
 
                 puzzle_data = {
-                    "id": f"cryptarithmetic_ko_{len(all_puzzles)}",
+                    "id": f"cryptarithmetic_ko_{difficulty}_{generated:04d}",
                     "question": create_question(candidate),
                     "answer": candidate.answer,
-                    "solution": candidate.puzzle_str,
+                    "solution": _build_cryptarithmetic_solution_ko(
+                        candidate, difficulty, carries
+                    ),
                     "difficulty": difficulty,
                     "puzzle": candidate.puzzle_str,
                     "valid_answers": candidate.valid_answers or [candidate.answer],

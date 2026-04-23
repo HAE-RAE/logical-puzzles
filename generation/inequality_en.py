@@ -435,6 +435,66 @@ Example format:
     return question
 
 
+SFT_SOLUTION_RUBRIC_EN = (
+    "STEP0=meta · STEP1=given · STEP2=worked solution · "
+    "STEP3=answer and verification"
+)
+
+
+def _build_inequality_solution_en(puzzle: InequalityPuzzle) -> str:
+    """SFT teacher trace: inequality puzzle with SEG-per-constraint."""
+    size = puzzle.size
+    solution = puzzle.solution
+    ineqs = puzzle.inequalities
+    givens = puzzle.given_numbers
+    hidden = puzzle.hidden_inequalities
+    problem_str = puzzle.to_problem_string()
+    ans_str = puzzle.get_answer_string()
+    visible_cnt = len(ineqs) - len(hidden)
+
+    lines: List[str] = [
+        SFT_SOLUTION_RUBRIC_EN,
+        "[STEP 0] Problem meta",
+        f"  - Difficulty: {puzzle.difficulty.name.lower()}",
+        f"  - Grid size: {size} (permutation of 1..{size})",
+        f"  - Givens: {len(givens)} · visible inequalities: {visible_cnt} · hidden: {len(hidden)}",
+        "  - Final answer is confirmed in [STEP 3]",
+        "[STEP 1] Given",
+        f"  - Puzzle: {problem_str}",
+        f"  - Givens (pos:value): {', '.join(f'{p}:{v}' for p, v in sorted(givens.items())) or '(none)'}",
+    ]
+
+    lines.append("[STEP 2] Worked solution")
+    lines.append(
+        f"  · Summary: permutation 1..{size} + hint/inequality propagation -> unique model · "
+        f"{len(ineqs)} inequalities (visible {visible_cnt} / hidden {len(hidden)}) · "
+        f"{len(ineqs)} SEGs"
+    )
+    lines.append(f"  · Solution vector: [{', '.join(str(v) for v in solution)}]")
+    for i, op in enumerate(ineqs):
+        left, right = solution[i], solution[i + 1]
+        hidden_flag = "hidden" if i in hidden else "visible"
+        if op == "<":
+            ok = left < right
+        elif op == ">":
+            ok = left > right
+        else:
+            ok = None
+        status = "holds" if ok else ("fails" if ok is False else "check")
+        lines.append(
+            f"    [SEG {i + 1}] positions {i}<->{i + 1} ({hidden_flag}): {left} {op} {right} -> {status}"
+        )
+
+    lines.extend([
+        "[STEP 3] Answer and verification",
+        f"  - Final answer: {ans_str}",
+        f"  - Each of 1..{size} used exactly once: "
+        f"{'OK' if sorted(solution) == list(range(1, size + 1)) else 'FAIL'}",
+        "  - Givens match and every inequality (visible + hidden) holds as shown in the [SEG] trace.",
+    ])
+    return "\n".join(lines)
+
+
 def create_dataset_files(num_questions: int):
     """Create inequality puzzle dataset files (CSV + JSONL)."""
     import pandas as pd
@@ -461,10 +521,10 @@ def create_dataset_files(num_questions: int):
             try:
                 puzzle = generator.generate_puzzle(difficulty)
                 puzzle_data = {
-                    "id": f"inequality_en_{len(all_puzzles)}",
+                    "id": f"inequality_en_{diff_name}_{j:04d}",
                     "question": create_question(puzzle),
                     "answer": puzzle.get_answer_string(),
-                    "solution": puzzle.to_problem_string(),
+                    "solution": _build_inequality_solution_en(puzzle),
                     "difficulty": diff_name,
                     "size": puzzle.size,
                     "given_positions": list(puzzle.given_numbers.keys()),

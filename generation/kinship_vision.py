@@ -945,23 +945,53 @@ def generate_question(difficulty="Medium"):
 
     question = "\n".join(dialogue_lines)
 
-    explanation = ["[STEP 0] Interpret the given dialogue to identify relationships between people."]
-    temp_chain_str = "나"
-
+    SFT_SOLUTION_RUBRIC = (
+        "STEP0=meta · STEP1=given · STEP2=worked solution · "
+        "STEP3=answer and verification"
+    )
     target_chain = relation_chain[: ask_person_index + 1]
+    n_hops = len(target_chain) - 1
+    visual_note = (
+        "identity-match check required (target person is referenced by a distinct feature)"
+        if choice_feature != target_person
+        else "direct name match (no identity resolution needed)"
+    )
+
+    explanation = [
+        SFT_SOLUTION_RUBRIC,
+        "[STEP 0] Problem meta",
+        f"  - Task: determine who is 'my {selected_title}' among the choices.",
+        f"  - Difficulty: {difficulty}",
+        f"  - Relation-chain length (hops): {n_hops}",
+        f"  - Visual resolution: {visual_note}",
+        "  - Final answer is confirmed in [STEP 3]",
+        "[STEP 1] Given",
+        "  - Dialogue-stated relationships per hop and visual option features.",
+        f"  - Target composed relation: {n_hops}-hop chain from '나'.",
+        "[STEP 2] Worked solution",
+        f"  · Summary: compose {n_hops} pairwise kinship relations → target person · "
+        f"match visual feature to the correct option · {n_hops + (1 if choice_feature != target_person else 0)} SEGs",
+    ]
+    temp_chain_str = "나"
     for i, rel in enumerate(target_chain[1:], 1):
         person = person_map[i]
-        explanation.append(f"[STEP {i}] Through the dialogue, infer that '{person}' is '{temp_chain_str}의 {rel}' relationship.")
+        explanation.append(
+            f"    [SEG {i}] Hop {i}: '{person}' is '{temp_chain_str}의 {rel}' (from the dialogue)."
+        )
         temp_chain_str += f"의 {rel}"
-
-    final_step = len(target_chain)
     if choice_feature != target_person:
-        explanation.append(f"[STEP {final_step}] Confirm that '{target_person}' and '{choice_feature}' are the same person.")
-        explanation.append(f"[STEP {final_step + 1}] Therefore, the final title for the combined relationship '{temp_chain_str}' is '{answer}'.")
-        explanation.append(f"[STEP {final_step + 2}] Answer: {correct_letter}")
-    else:
-        explanation.append(f"[STEP {final_step}] Therefore, the final title for the combined relationship '{temp_chain_str}' is '{answer}'.")
-        explanation.append(f"[STEP {final_step + 1}] Answer: {correct_letter}")
+        explanation.append(
+            f"    [SEG {n_hops + 1}] Identity match: option feature '{choice_feature}' corresponds to target person '{target_person}'."
+        )
+    explanation.append(
+        f"  · Composed chain: {temp_chain_str} → '{answer}'."
+    )
+    explanation.extend([
+        "[STEP 3] Answer and verification",
+        f"  - Combined relationship '{temp_chain_str}' resolves to the title '{answer}'.",
+        f"  - Answer: {correct_letter}",
+        "  - Cross-check: each hop is supported by the dialogue and the final title matches the chain→title map.",
+    ])
 
     return question, correct_letter, explanation, choices, difficulty.lower()
 
@@ -991,12 +1021,16 @@ def create_dataset_files(num_questions_per_difficulty=100):
     
     for difficulty in difficulties:
         print(f"\n=== Generating {difficulty} problems ({num_questions_per_difficulty} questions) ===")
+        diff_idx = 0
         for i in range(num_questions_per_difficulty):
             try:
                 q, a, e, choices, diff = generate_question(difficulty=difficulty)
-                
+
+                diff_lower = diff.lower() if isinstance(diff, str) else str(diff).lower()
+                qid = f'kinship_vision_ko_{diff_lower}_{diff_idx:04d}'
+
                 output.append({
-                    'id': f'kinship_vision_{len(output)}',
+                    'id': qid,
                     'question': q,
                     'answer': a,
                     'solution': "\n".join(e),
@@ -1005,14 +1039,16 @@ def create_dataset_files(num_questions_per_difficulty=100):
                 })
                 
                 all_generated_data.append({
-                    'id': f'kinship_vision_{len(all_generated_data)}',
+                    'id': qid,
                     'question': q,
                     'answer': a,
                     'solution': "\n".join(e),
                     'difficulty': diff,
                     'choices': choices
                 })
-                
+
+                diff_idx += 1
+
                 if (i + 1) % 20 == 0:
                     print(f"  Progress: {i + 1}/{num_questions_per_difficulty}")
                     

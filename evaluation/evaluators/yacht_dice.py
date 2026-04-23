@@ -441,14 +441,13 @@ Answer: [숫자]"""
 
     def _parse_answer(self, response: str, puzzle: Dict) -> Optional[int]:
         """Extract integer answer from LLM response (multi-step fallback)."""
-        response = re.sub(r'```[a-z]*\n?', '', response)
-        response = re.sub(r'```', '', response)
-        response = response.strip()
+        response = self._strip_code_fences(response).strip()
+        answer_text = self._extract_final_answer_text(response, allow_boxed_fallback=False) or response
 
         # Priority 1: "Answer:" pattern
         answer_matches = re.findall(
             r'(?:Answer|Output|Final\s*Answer)\s*[:\s]*(\d+)',
-            response, re.IGNORECASE
+            answer_text, re.IGNORECASE
         )
         if answer_matches:
             return int(answer_matches[-1])
@@ -459,19 +458,19 @@ Answer: [숫자]"""
             r'[Ss]um[:\s]*[=\s]*(\d+)',
         ]
         for pattern in total_patterns:
-            matches = re.findall(pattern, response)
+            matches = re.findall(pattern, answer_text)
             if matches:
                 return int(matches[-1])
 
         # Priority 3: last number in last 5 lines (largest on line)
-        lines = response.strip().split('\n')
+        lines = answer_text.strip().split('\n')
         for line in reversed(lines[-5:]):
             nums = re.findall(r'\b(\d+)\b', line.strip())
             if nums:
                 return int(max(nums, key=int))
 
         # Priority 4: last number anywhere
-        all_nums = re.findall(r'\b(\d+)\b', response)
+        all_nums = re.findall(r'\b(\d+)\b', answer_text)
         if all_nums:
             return int(all_nums[-1])
 

@@ -107,6 +107,80 @@ def _format_peg_state(pegs: Dict[int, List[int]]) -> str:
     return ", ".join(parts)
 
 
+SFT_SOLUTION_RUBRIC_KO = (
+    "STEP0=문제 메타 · STEP1=주어진 조건 · STEP2=풀이 전개 · STEP3=답·검산"
+)
+
+
+_HANOI_QTYPE_HINT_KO = {
+    "min_moves": "최소 이동 횟수(2^n-1) 공식 적용",
+    "kth_disk": "최적 순서 생성 후 k번째 이동의 디스크 식별",
+    "kth_from_to": "최적 순서 생성 후 k번째 이동의 출발·도착 기둥 식별",
+    "largest_disk_move": "가장 큰 디스크가 이동하는 고유 시점 계산",
+    "disk_move_count": "특정 디스크의 이동 횟수(2^(n-d)) 공식 적용",
+}
+
+
+def _hanoi_worked_body_lines_ko(solution: str) -> Tuple[List[str], str]:
+    """하노이 원본 solution 문자열을 [SEG n] 라인과 최종 답 텍스트로 분리."""
+    seg_lines: List[str] = []
+    final_answer = ""
+    seg_idx = 1
+    for raw in solution.rstrip().splitlines():
+        line = raw.strip()
+        if not line:
+            continue
+        if line.startswith("최종 답"):
+            after = line.split(":", 1)
+            final_answer = after[1].strip() if len(after) == 2 else line
+            continue
+        if "단계:" in line:
+            body = line.split("단계:", 1)[1].strip()
+        else:
+            body = line
+        seg_lines.append(f"    [SEG {seg_idx}] {body}")
+        seg_idx += 1
+    return seg_lines, final_answer
+
+
+def _wrap_sft_hanoi_solution_ko(
+    solution: str,
+    *,
+    n: Optional[int] = None,
+    total_moves: Optional[int] = None,
+    qtype: Optional[str] = None,
+    answer: Optional[str] = None,
+) -> str:
+    seg_lines, final_answer = _hanoi_worked_body_lines_ko(solution)
+    if answer is None:
+        answer = final_answer or "(본문 참조)"
+    hint = _HANOI_QTYPE_HINT_KO.get(qtype or "", "최적 풀이 추적")
+    meta_bits = []
+    if n is not None:
+        meta_bits.append(f"n={n}")
+    if total_moves is not None:
+        meta_bits.append(f"총이동={total_moves}")
+    if qtype:
+        meta_bits.append(f"유형={qtype}")
+    meta_line = " · ".join(meta_bits) if meta_bits else "표준 규칙"
+    summary = (
+        f"  · 요약: {hint} · {meta_line} · SEG {len(seg_lines)}개"
+    )
+    step2 = "\n".join([summary, *seg_lines]) if seg_lines else summary
+    return (
+        f"{SFT_SOLUTION_RUBRIC_KO}\n"
+        f"[STEP 0] 문제 메타\n"
+        f"  - 하노이 탑 최적 풀이(2^n-1) 및 표준 규칙 전제\n"
+        f"  - 최종 답은 [STEP 3]에서 확정\n"
+        f"[STEP 1] 주어진 조건\n"
+        f"  - 문제 본문의 디스크 수, 기둥 번호, k번째 이동 등\n"
+        f"[STEP 2] 풀이 전개\n{step2}\n"
+        f"[STEP 3] 답·검산\n"
+        f"  - 최종 답: {answer}\n"
+        f"  - 2^·이동·시뮬 결과와 [SEG] 전개가 일치하는지 확인"
+    )
+
+
 def _build_templates_easy(ctx: Context, rng) -> list:
     n = ctx["n"]
     src, aux, dst = ctx["src"], ctx["aux"], ctx["dst"]
@@ -434,7 +508,9 @@ def generate_puzzle(difficulty: str = "medium", seed: Optional[int] = None) -> D
     return {
         "question": question,
         "answer": answer,
-        "solution": solution,
+        "solution": _wrap_sft_hanoi_solution_ko(
+            solution, n=n, total_moves=total_moves, qtype=qtype, answer=answer
+        ),
         "difficulty": difficulty,
         "type": qtype,
         "n": n,
@@ -442,7 +518,7 @@ def generate_puzzle(difficulty: str = "medium", seed: Optional[int] = None) -> D
         "aux": aux,
         "dst": dst,
         "seed": seed,
-        "id": f"hanoi_kr_{difficulty}_{qtype}_{puzzle_hash}",
+        "id": f"hanoi_ko_{difficulty}_{qtype}_{puzzle_hash}",
     }
 
 
@@ -452,9 +528,9 @@ def generate_dataset(num_per_difficulty: int = 100, seed: int = 2025) -> List[Di
 
     puzzle_seed = seed
     for difficulty in difficulties:
-        for _ in range(num_per_difficulty):
+        for diff_idx in range(num_per_difficulty):
             puzzle = generate_puzzle(difficulty=difficulty, seed=puzzle_seed)
-            puzzle["id"] = f"hanoi_ko_{len(puzzles)}"
+            puzzle["id"] = f"hanoi_ko_{difficulty}_{diff_idx:04d}"
             puzzles.append(puzzle)
             puzzle_seed += 1
 

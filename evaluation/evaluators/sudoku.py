@@ -164,19 +164,20 @@ Answer: d1 d2 d3 ...
         if not response:
             return None
 
-        cleaned = re.sub(r'```[a-z]*\n?', '', response)
-        cleaned = re.sub(r'```', '', cleaned)
+        cleaned = self._strip_code_fences(response)
+        answer_text = self._extract_final_answer_text(cleaned, allow_boxed_fallback=False)
 
         k = self._expected_k(puzzle)
 
         lines = cleaned.split('\n')
 
         # Priority 1: "Answer:" line near the end.
-        answer_line = None
-        for line in lines:
-            stripped = line.strip()
-            if re.match(r'(?i)^\s*answer\s*[:\-]', stripped):
-                answer_line = stripped
+        answer_line = answer_text
+        if answer_line is None:
+            for line in lines:
+                stripped = line.strip()
+                if re.match(r'(?i)^\s*answer\s*[:\-]', stripped):
+                    answer_line = stripped
 
         if answer_line:
             nums = re.findall(r'[1-9]', answer_line)

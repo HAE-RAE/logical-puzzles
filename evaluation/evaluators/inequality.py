@@ -195,6 +195,7 @@ Answer: <왼쪽에서 오른쪽 순서의 숫자들>
         """Extract number sequence from LLM response."""
         expected_answer = puzzle.get("answer", "")
         size = puzzle.get("size", 0)
+        answer_text = self._extract_final_answer_text(response, allow_boxed_fallback=False) or response
         if not size and expected_answer:
             nums = re.findall(r'\d+', expected_answer)
             size = len(nums) if len(nums) > 1 else len(expected_answer)
@@ -215,7 +216,7 @@ Answer: <왼쪽에서 오른쪽 순서의 숫자들>
             return None
 
         for pattern in patterns:
-            match = re.search(pattern, response, re.IGNORECASE)
+            match = re.search(pattern, answer_text, re.IGNORECASE)
             if match:
                 raw = match.group(1).strip()
                 nums = re.findall(r'\d+', raw)
@@ -223,7 +224,7 @@ Answer: <왼쪽에서 오른쪽 순서의 숫자들>
                 if out is not None:
                     return out
 
-        last_part = response[-200:] if len(response) > 200 else response
+        last_part = answer_text[-200:] if len(answer_text) > 200 else answer_text
         all_nums = re.findall(r'\d+', last_part)
         if size <= 9:
             for cand in reversed(all_nums):

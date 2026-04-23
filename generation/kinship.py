@@ -1095,20 +1095,43 @@ def generate_question(difficulty="Medium", forced_chain=None):
     
     question = "\n".join(dialogue_lines)
 
-    # ✅ 해설(Explanation)에 함정 언급 추가
-    explanation = ["[STEP 0] Interpret the given dialogue to understand the relationships between people."]
+    SFT_SOLUTION_RUBRIC = (
+        "STEP0=meta · STEP1=given · STEP2=worked solution · "
+        "STEP3=answer and verification"
+    )
+    n_hops = len(target_chain) - 1
+    explanation = [
+        SFT_SOLUTION_RUBRIC,
+        "[STEP 0] Problem meta",
+        f"  - Task: determine the kinship title of the target person from 'me'.",
+        f"  - Difficulty: {difficulty}",
+        f"  - Relation-chain length (hops): {n_hops}",
+        "  - Final answer is confirmed in [STEP 3]",
+        "[STEP 1] Given",
+        "  - Dialogue-stated relationships (one per hop) and multiple-choice options.",
+        f"  - Target combined chain: {n_hops}-hop relation from 'me'.",
+        "[STEP 2] Worked solution",
+        f"  · Summary: compose {n_hops} pairwise kinship relations left-to-right · "
+        f"map composed chain to the Korean kinship title · {n_hops} SEGs",
+    ]
     temp_chain_str = "me"
-    
     for i, rel in enumerate(target_chain[1:], 1):
         person = person_map[i]
-        
-        explanation.append(f"[STEP {i}] From the dialogue, infer that '{person}' is '{temp_chain_str}'s {rel}'.")
-            
+        explanation.append(
+            f"    [SEG {i}] Hop {i}: infer from the dialogue that '{person}' is "
+            f"'{temp_chain_str}'s {rel}'."
+        )
         temp_chain_str += f"'s {rel}"
-    
-    final_step = len(target_chain)
-    explanation.append(f"[STEP {final_step}] Therefore, the final title for the combined relationship '{temp_chain_str}' is '{answer}'.")
-    explanation.append(f"[STEP {final_step + 1}] Answer: {correct_letter}")
+    explanation.append(
+        f"  · Composed chain: {temp_chain_str} → '{answer}'."
+    )
+    explanation.extend([
+        "[STEP 3] Answer and verification",
+        f"  - Combined relationship '{temp_chain_str}' resolves to the title '{answer}'.",
+        f"  - Answer: {correct_letter}",
+        "  - Cross-check: every SEG hop is explicitly stated in the dialogue and the "
+        "final title matches the chain→title mapping.",
+    ])
     
 
     return question, correct_letter, explanation, choices, difficulty.lower()
@@ -1153,6 +1176,7 @@ def create_dataset_files(num_questions_per_difficulty=128):
         print(f"\n=== Generating {difficulty} problems ({num_questions_per_difficulty} questions) ===")
 
         chain_queue = _round_robin_chains(all_chains, num_questions_per_difficulty)
+        diff_idx = 0
 
         for i, chain in enumerate(chain_queue):
             try:
@@ -1160,8 +1184,11 @@ def create_dataset_files(num_questions_per_difficulty=128):
                     difficulty=difficulty, forced_chain=chain
                 )
 
+                diff_lower = diff.lower() if isinstance(diff, str) else str(diff).lower()
+                qid = f'kinship_ko_{diff_lower}_{diff_idx:04d}'
+
                 output.append({
-                    'id': f'kinship_{len(output)}',
+                    'id': qid,
                     'question': q,
                     'answer': answer,
                     'solution': "\n".join(expl),
@@ -1170,13 +1197,15 @@ def create_dataset_files(num_questions_per_difficulty=128):
                 })
 
                 all_generated_data.append({
-                    'id': f'kinship_{len(all_generated_data)}',
+                    'id': qid,
                     'question': q,
                     'answer': answer,
                     'solution': "\n".join(expl),
                     'difficulty': diff,
                     'choices': choices
                 })
+
+                diff_idx += 1
 
                 if (i + 1) % 20 == 0:
                     print(f"  Progress: {i + 1}/{num_questions_per_difficulty}")

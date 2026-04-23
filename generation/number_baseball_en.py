@@ -548,6 +548,67 @@ class ProblemGenerator:
         )
 
 
+SFT_SOLUTION_RUBRIC_EN = (
+    "STEP0=meta · STEP1=given · STEP2=worked solution · "
+    "STEP3=answer and verification"
+)
+
+
+def _build_baseball_solution_en(problem: Dict) -> str:
+    """SFT teacher trace: number baseball with per-hint SEG shrinkage."""
+    num_digits = problem['num_digits']
+    hints = problem['hints']
+    answer = problem['answer']
+    metrics = problem.get('step_metrics', {})
+    initial = metrics.get('initial_candidates', 0)
+    residuals = metrics.get('residuals', [])
+    per_bits = metrics.get('per_hint_bits', [])
+
+    lines: List[str] = [
+        SFT_SOLUTION_RUBRIC_EN,
+        "[STEP 0] Problem meta",
+        f"  - Difficulty: {problem.get('difficulty', '')}",
+        f"  - Digits: {num_digits} (all distinct)",
+        f"  - Hints: {len(hints)} · initial candidates: {initial}",
+        "  - Final answer is confirmed in [STEP 3]",
+        "[STEP 1] Given",
+        "  - Rule: each digit of the secret is distinct (0-9).",
+        "  - S(trike) = right digit + right position; B(all) = right digit only.",
+    ]
+    for i, h in enumerate(hints, 1):
+        lines.append(
+            f"  {i}. guess {h['guess']} -> {h['strikes']}S {h['balls']}B"
+        )
+
+    lines.append("[STEP 2] Worked solution")
+    lines.append(
+        f"  · Summary: shrink the candidate set by each S/B hint · "
+        f"{initial} -> 1 · {len(hints)} SEGs"
+    )
+    prev = initial
+    for i, h in enumerate(hints, 1):
+        resid = residuals[i - 1] if i - 1 < len(residuals) else None
+        bits = per_bits[i - 1] if i - 1 < len(per_bits) else None
+        info_parts = []
+        if resid is not None:
+            info_parts.append(f"candidates {prev}->{resid}")
+            prev = resid
+        if bits is not None:
+            info_parts.append(f"info {bits:.2f} bits")
+        info_text = " · ".join(info_parts) if info_parts else ""
+        lines.append(
+            f"    [SEG {i}] apply hint {i}: {h['guess']} -> {h['strikes']}S {h['balls']}B · "
+            f"{info_text}"
+        )
+
+    lines.extend([
+        "[STEP 3] Answer and verification",
+        f"  - Final answer: {answer}",
+        "  - Recompute S/B of each hint against the answer; all must match exactly.",
+    ])
+    return "\n".join(lines)
+
+
 # ============================================================
 # Question formatting
 # ============================================================
@@ -637,6 +698,7 @@ def create_dataset_files(num_questions: int):
 
         print(f"\n=== Generating {diff_name} puzzles ({count} needed) ===")
 
+        diff_success = 0
         for j in range(count):
             try:
                 problem = generator.generate_problem(difficulty)
@@ -644,10 +706,10 @@ def create_dataset_files(num_questions: int):
 
                 if is_valid:
                     puzzle_data = {
-                        'id': f'number_baseball_en_{len(all_puzzles)}',
+                        'id': f'number_baseball_en_{diff_name}_{diff_success:04d}',
                         'question': create_question(problem),
                         'answer': problem['answer'],
-                        'solution': problem['problem_text'],
+                        'solution': _build_baseball_solution_en(problem),
                         'difficulty': diff_name,
                         'num_digits': problem['num_digits'],
                         'hints': problem['hints'],
@@ -656,6 +718,7 @@ def create_dataset_files(num_questions: int):
                         'step_metrics': problem.get('step_metrics', {}),
                     }
                     all_puzzles.append(puzzle_data)
+                    diff_success += 1
                     print(f"  [{j+1}/{count}] digits={problem['num_digits']}, "
                           f"hints={len(problem['hints'])}, answer={problem['answer']}")
                 else:

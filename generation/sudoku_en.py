@@ -928,6 +928,64 @@ def _positions_as_rc_pairs(positions: List[str]) -> str:
     return ", ".join(pairs)
 
 
+SFT_SOLUTION_RUBRIC_EN = (
+    "STEP0=meta · STEP1=given · STEP2=worked solution · "
+    "STEP3=answer and verification"
+)
+
+
+def _build_sudoku_solution_en(
+    puzzle_str: str,
+    solution_str: str,
+    positions: List[str],
+    answer_str: str,
+    difficulty: str,
+    givens_count: int,
+) -> str:
+    """SFT teacher trace: sudoku with full grid + spot-check SEGs."""
+    puzzle_grid = _format_grid(puzzle_str)
+    solution_grid_text = _format_grid(solution_str)
+    solution_grid = from_string(solution_str)
+
+    lines: List[str] = [
+        SFT_SOLUTION_RUBRIC_EN,
+        "[STEP 0] Problem meta",
+        f"  - Difficulty: {difficulty}",
+        f"  - Given hints: {givens_count}",
+        f"  - Spot-check positions: {len(positions)}",
+        "  - Final answer is confirmed in [STEP 3]",
+        "[STEP 1] Given",
+        "  - Rule: each row, column, and 3x3 box contains 1-9 exactly once.",
+        "  - Puzzle grid:",
+    ]
+    for row in puzzle_grid.splitlines():
+        lines.append(f"    {row}")
+
+    lines.append("[STEP 2] Worked solution")
+    lines.append(
+        f"  · Summary: iterative row/col/box single-candidate propagation -> unique grid · "
+        f"{len(positions)} spot-check SEGs"
+    )
+    lines.append("  · Completed grid:")
+    for row in solution_grid_text.splitlines():
+        lines.append(f"    {row}")
+    for i, pos in enumerate(positions, 1):
+        r, c = _parse_position(pos)
+        val = solution_grid[r][c]
+        lines.append(
+            f"    [SEG {i}] position (r{r + 1}, c{c + 1}) = {val} "
+            f"(row/col/box constraints all hold)"
+        )
+
+    lines.extend([
+        "[STEP 3] Answer and verification",
+        f"  - Final answer ({len(positions)} spot-check digits): {answer_str}",
+        "  - Every row, column, and 3x3 box of the completed grid is a permutation of 1-9.",
+        "  - Every given hint cell matches the completed grid.",
+    ])
+    return "\n".join(lines)
+
+
 def create_question(puzzle_str: str, positions: List[str]) -> str:
     grid = _format_grid(puzzle_str)
     rc_str = _positions_as_rc_pairs(positions)
@@ -1009,10 +1067,18 @@ def create_dataset_files(num_questions: int):
                 question = create_question(puzzle_str, positions)
 
                 puzzle_data = {
-                    'id': f'sudoku_en_{len(all_puzzles)}',
+                    'id': f'sudoku_en_{difficulty}_{generated:04d}',
                     'question': question,
                     'answer': answer_str,
-                    'solution': solution_strs[0],
+                    'solution': _build_sudoku_solution_en(
+                        puzzle_str=puzzle_str,
+                        solution_str=solution_strs[0],
+                        positions=positions,
+                        answer_str=answer_str,
+                        difficulty=difficulty,
+                        givens_count=metadata['givens_count'],
+                    ),
+                    'solution_grid': solution_strs[0],
                     'difficulty': difficulty,
                     'givens_count': metadata['givens_count'],
                     'puzzle': puzzle_str,

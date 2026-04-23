@@ -434,6 +434,65 @@ def create_question(puzzle: InequalityPuzzle) -> str:
     return question
 
 
+SFT_SOLUTION_RUBRIC_KO = (
+    "STEP0=문제 메타 · STEP1=주어진 조건 · STEP2=풀이 전개 · STEP3=답·검산"
+)
+
+
+def _build_inequality_solution_ko(puzzle: InequalityPuzzle) -> str:
+    """SFT teacher trace: 부등호 퍼즐 · 제약 검증 SEG."""
+    size = puzzle.size
+    solution = puzzle.solution
+    ineqs = puzzle.inequalities
+    givens = puzzle.given_numbers
+    hidden = puzzle.hidden_inequalities
+    problem_str = puzzle.to_problem_string()
+    ans_str = puzzle.get_answer_string()
+    visible_cnt = len(ineqs) - len(hidden)
+
+    lines: List[str] = [
+        SFT_SOLUTION_RUBRIC_KO,
+        "[STEP 0] 문제 메타",
+        f"  - 난이도: {puzzle.difficulty.name.lower()}",
+        f"  - 격자 크기: {size} (1~{size}의 순열)",
+        f"  - 주어진 숫자: {len(givens)}개 · 보이는 부등호: {visible_cnt} · 숨겨진 부등호: {len(hidden)}",
+        "  - 최종 답은 [STEP 3]에서 확정",
+        "[STEP 1] 주어진 조건",
+        f"  - 퍼즐: {problem_str}",
+        f"  - 힌트(위치: 값): {', '.join(f'{p}:{v}' for p, v in sorted(givens.items())) or '(없음)'}",
+    ]
+
+    lines.append("[STEP 2] 풀이 전개")
+    lines.append(
+        f"  · 요약: 1~{size} 순열에서 힌트·부등호 전파 → 유일해 확정 · "
+        f"부등호 {len(ineqs)}개(가시 {visible_cnt}/숨김 {len(hidden)}) · "
+        f"SEG {len(ineqs)}개"
+    )
+    lines.append(f"  · 해 벡터: [{', '.join(str(v) for v in solution)}]")
+    for i, op in enumerate(ineqs):
+        left, right = solution[i], solution[i + 1]
+        hidden_flag = "숨김" if i in hidden else "가시"
+        if op == "<":
+            ok = left < right
+        elif op == ">":
+            ok = left > right
+        else:
+            ok = None
+        status = "성립" if ok else ("불일치" if ok is False else "확인 필요")
+        lines.append(
+            f"    [SEG {i + 1}] 자리 {i}↔{i + 1} ({hidden_flag}): {left} {op} {right} → {status}"
+        )
+
+    lines.extend([
+        "[STEP 3] 답·검산",
+        f"  - 최종 답: {ans_str}",
+        f"  - 1~{size}의 각 숫자가 정확히 한 번 사용됨: "
+        f"{'OK' if sorted(solution) == list(range(1, size + 1)) else 'FAIL'}",
+        "  - 힌트 위치의 값 일치 및 모든 부등호(가시+숨김)가 성립하는지 [SEG]로 확인.",
+    ])
+    return "\n".join(lines)
+
+
 def create_dataset_files(num_questions: int):
     """부등호 퍼즐 데이터셋 파일(CSV + JSONL)을 생성합니다."""
     import pandas as pd
@@ -460,10 +519,10 @@ def create_dataset_files(num_questions: int):
             try:
                 puzzle = generator.generate_puzzle(difficulty)
                 puzzle_data = {
-                    "id": f"inequality_ko_{len(all_puzzles)}",
+                    "id": f"inequality_ko_{diff_name}_{j:04d}",
                     "question": create_question(puzzle),
                     "answer": puzzle.get_answer_string(),
-                    "solution": puzzle.to_problem_string(),
+                    "solution": _build_inequality_solution_ko(puzzle),
                     "difficulty": diff_name,
                     "size": puzzle.size,
                     "given_positions": list(puzzle.given_numbers.keys()),

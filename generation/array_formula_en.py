@@ -18,6 +18,7 @@ import json
 import random
 import hashlib
 import csv
+import re
 from dataclasses import dataclass
 from typing import List, Dict, Optional, Any
 from enum import Enum
@@ -1708,6 +1709,7 @@ def generate_dataset(
     for difficulty in difficulties:
         per_ptype = num_per_difficulty // len(problem_types)
         remainder = num_per_difficulty % len(problem_types)
+        diff_idx = 0
         for j, ptype in enumerate(problem_types):
             count = per_ptype + (1 if j < remainder else 0)
             for _ in range(count):
@@ -1716,9 +1718,10 @@ def generate_dataset(
                     problem_type=ptype,
                     seed=puzzle_seed
                 )
-                puzzle["id"] = f"array_formula_{len(puzzles)}"
+                puzzle["id"] = f"array_formula_en_{difficulty}_{diff_idx:04d}"
                 puzzles.append(puzzle)
                 puzzle_seed += 1
+                diff_idx += 1
 
     return puzzles
 
@@ -1760,6 +1763,146 @@ def puzzle_to_prompt(puzzle: Dict[str, Any]) -> str:
     return "\n".join(prompt_parts)
 
 
+_SOLUTION_TYPE_LABELS_EN = {
+    ProblemType.LOOKUP_QUERY.value: "Lookup (INDEX/MATCH, VLOOKUP-style)",
+    ProblemType.CONDITIONAL_AGGREGATION.value: "Conditional aggregation (SUMIF, COUNTIF-style)",
+    ProblemType.ARRAY_COMPUTATION.value: "Array computation (SUMPRODUCT-style)",
+    ProblemType.MULTI_CONDITION.value: "Multi-criteria (SUMIFS, MAXIFS-style)",
+}
+
+_SFT_TYPE_REASONING_NUDGE_EN = {
+    ProblemType.LOOKUP_QUERY.value: (
+        "Decide which tables to join (products/orders/customers) and on which keys, "
+        "then see where **ranking / top-k / exclusions** (1st, 2nd, exclude) attach after filters."
+    ),
+    ProblemType.CONDITIONAL_AGGREGATION.value: (
+        "Select rows that match the question’s **condition columns** (region, quarter, tier, …), "
+        "then COUNT/SUM/avg; apply **truncation/rounding** only as stated, usually at the end."
+    ),
+    ProblemType.ARRAY_COMPUTATION.value: (
+        "Align rows (orders↔products), build **per-element** quantities like qty×price, and note if "
+        "the question is max/min/sum on a product row or a joint slice."
+    ),
+    ProblemType.MULTI_CONDITION.value: (
+        "With AND/OR conditions, **narrow the row set stepwise**; when sets overlap, be clear whether "
+        "you aggregate over all orders or only those matching every clause."
+    ),
+}
+
+SFT_SOLUTION_RUBRIC_EN = (
+    "STEP0=meta · STEP1=given · STEP2=worked solution · "
+    "STEP3=answer and verification"
+)
+
+_SFT_PIPELINE_HINT_EN = {
+    ProblemType.LOOKUP_QUERY.value: "filter match -> pick the target column",
+    ProblemType.CONDITIONAL_AGGREGATION.value: (
+        "WHERE(condition) -> single-column aggregate (SUM/COUNT/AVG)"),
+    ProblemType.ARRAY_COMPUTATION.value: (
+        "join (products<->orders) -> elementwise multiply then sum "
+        "(SUMPRODUCT)"),
+    ProblemType.MULTI_CONDITION.value: (
+        "multi-condition WHERE -> aggregate/sort/rank"),
+}
+
+
+def _truncate_for_solution_prompt_en(text: str, max_len: int = 400) -> str:
+    t = (text or "").strip().replace("\n", " ")
+    if len(t) <= max_len:
+        return t
+    return t[: max_len - 1] + "…"
+
+
+_STEP_PREFIX_EN = re.compile(r"^\s*(?:Step\s*\d+\s*[:：-]|\d+\s*단계\s*[:：-])\s*", re.IGNORECASE)
+_FINAL_PREFIX_EN = re.compile(r"^\s*(?:Final\s*answer|최종\s*답)\s*[:：-]\s*", re.IGNORECASE)
+
+
+def _worked_body_lines_en(solution: str) -> list:
+    """Re-number the generator's 'Step N: …' lines as [SEG n]; drop 'Final answer:' line."""
+    s = (solution or "").strip()
+    if not s:
+        return [
+            "    [SEG 1] (Generator would place **Step 1, Step 2, …** intermediate work here. "
+            "If empty, write your own: join keys, filters, then aggregates.)"
+        ]
+    out, seg = [], 1
+    for raw in s.splitlines():
+        line = raw.strip()
+        if not line:
+            continue
+        if _FINAL_PREFIX_EN.match(line):
+            continue
+        body = _STEP_PREFIX_EN.sub("", line)
+        out.append(f"    [SEG {seg}] {body}")
+        seg += 1
+    if not out:
+        out.append(
+            "    [SEG 1] (No labelled steps in the raw solution; walk question→filters→aggregates yourself.)"
+        )
+    return out
+
+
+def _solution_for_guided_distillation(
+    solution: str,
+    answer: Any,
+    problem_type: str,
+    difficulty: str,
+    answer_type: str,
+    question: str = "",
+) -> str:
+    """SFT: emphasize reasoning trace, not a dry answer key."""
+    type_label = _SOLUTION_TYPE_LABELS_EN.get(problem_type, problem_type)
+    fmt = (
+        "numeric only (no units)"
+        if answer_type == "number"
+        else "text (match the problem wording exactly)"
+    )
+    nudge = _SFT_TYPE_REASONING_NUDGE_EN.get(
+        problem_type,
+        "First pick the **grain** (customer vs order vs region vs product), then join, filter, aggregate; "
+        "the numbers in each line differ by instance.",
+    )
+    q_line = _truncate_for_solution_prompt_en(question) if question else (
+        "(The exact question is under ‘Question:’ in the prompt above.)"
+    )
+    lines = [
+        SFT_SOLUTION_RUBRIC_EN,
+        "[STEP 0] Problem meta",
+        f"  - Problem type: {type_label}",
+        f"  - Difficulty: {difficulty}",
+        f"  - How to state the final answer: {fmt}",
+        "  - (How to read the task) " + nudge,
+        "  - The numeric/text answer is only fixed in [STEP3] (verification). "
+        "Follow the **step log** in [STEP2] first.",
+        "[STEP 1] Given",
+        f"  - **This question (verbatim, shortened if long)**: {q_line}",
+        "  - Schema (same columns as the tables in the prompt):",
+        "      Products: id, product, category, price, stock, discount",
+        "      Orders: order_id, product, region, quantity, quarter, customer_id",
+        "      Customers: customer_id, name, membership, join_year, region",
+        "[STEP 2] Worked solution (per-instance **intermediate work**; varies by problem)",
+    ]
+    worked = _worked_body_lines_en(solution)
+    pipeline = _SFT_PIPELINE_HINT_EN.get(
+        problem_type,
+        "join -> filter -> aggregate/rank",
+    )
+    lines.append(
+        f"  · Summary: {type_label} · pipeline: {pipeline} · "
+        f"{len(worked)} SEGs")
+    lines.append(
+        "  · Mentally: (1) join keys (2) filters (3) aggregations or ranks "
+        "— the lines below implement that")
+    lines.extend(worked)
+    lines.extend([
+        "[STEP 3] Answer and verification",
+        f"  - Final answer: {answer}",
+        "  - Checks: truncation/rounding; where discount applies (price, stock, or revenue); "
+        "and join keys (product name, customer_id, etc.) line up with the prompt tables.",
+    ])
+    return "\n".join(lines)
+
+
 def save_dataset(
     puzzles: List[Dict],
     base_dir: str = "./data"
@@ -1790,12 +1933,15 @@ def save_dataset(
             "id": puzzle["id"],
             "question": question,
             "answer": puzzle["answer"],
+            "solution": _solution_for_guided_distillation(
+                puzzle.get("solution", ""),
+                puzzle["answer"],
+                puzzle["type"],
+                puzzle["difficulty"],
+                puzzle.get("answer_type", "number"),
+                puzzle.get("question", ""),
+            ),
             "difficulty": puzzle["difficulty"],
-            "solution": puzzle.get("solution", ""),
-            "type": puzzle["type"],
-            "answer_type": puzzle.get("answer_type", "number"),
-            "tables": puzzle["tables"],
-            "seed": puzzle.get("seed"),
         }
         processed_puzzles.append(processed)
 
@@ -1807,31 +1953,20 @@ def save_dataset(
     print(f"Saved {len(processed_puzzles)} puzzles to {jsonl_path}")
 
     # Save CSV
-    csv_columns = ["id", "question", "answer", "difficulty", "solution", "type", "answer_type", "tables", "seed"]
+    csv_columns = ["id", "question", "answer", "solution", "difficulty"]
 
     with open(csv_path, "w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=csv_columns)
         writer.writeheader()
 
         for puzzle in processed_puzzles:
-            row = {
-                "id": puzzle["id"],
-                "question": puzzle["question"],
-                "answer": puzzle["answer"],
-                "difficulty": puzzle["difficulty"],
-                "solution": puzzle.get("solution", ""),
-                "type": puzzle["type"],
-                "answer_type": puzzle["answer_type"],
-                "tables": json.dumps(puzzle["tables"], ensure_ascii=False),
-                "seed": puzzle["seed"],
-            }
-            writer.writerow(row)
+            writer.writerow(puzzle)
 
     print(f"Saved {len(processed_puzzles)} puzzles to {csv_path}")
 
     # Print statistics
     stats = {}
-    for puzzle in processed_puzzles:
+    for puzzle in puzzles:
         key = f"{puzzle['difficulty']}_{puzzle['type']}"
         stats[key] = stats.get(key, 0) + 1
 

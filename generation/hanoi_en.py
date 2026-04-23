@@ -106,6 +106,83 @@ def _format_peg_state(pegs: Dict[int, List[int]]) -> str:
     return ", ".join(parts)
 
 
+SFT_SOLUTION_RUBRIC_EN = (
+    "STEP0=meta · STEP1=given · STEP2=worked solution · "
+    "STEP3=answer and verification"
+)
+
+
+_HANOI_QTYPE_HINT_EN = {
+    "min_moves": "apply 2^n-1 minimum-move formula",
+    "kth_disk": "build optimal sequence, identify disk at move k",
+    "kth_from_to": "build optimal sequence, identify source/target pegs at move k",
+    "largest_disk_move": "pinpoint the unique move of the largest disk",
+    "disk_move_count": "apply 2^(n-d) move-count formula",
+}
+
+
+def _hanoi_worked_body_lines_en(solution: str) -> Tuple[List[str], str]:
+    """Split original hanoi solution text into [SEG n] lines and final-answer text."""
+    seg_lines: List[str] = []
+    final_answer = ""
+    seg_idx = 1
+    for raw in solution.rstrip().splitlines():
+        line = raw.strip()
+        if not line:
+            continue
+        low = line.lower()
+        if low.startswith("final answer") or low.startswith("final:"):
+            after = line.split(":", 1)
+            final_answer = after[1].strip() if len(after) == 2 else line
+            continue
+        body = line
+        if low.startswith("step "):
+            parts = line.split(":", 1)
+            if len(parts) == 2:
+                body = parts[1].strip()
+        seg_lines.append(f"    [SEG {seg_idx}] {body}")
+        seg_idx += 1
+    return seg_lines, final_answer
+
+
+def _wrap_sft_hanoi_solution_en(
+    solution: str,
+    *,
+    n: Optional[int] = None,
+    total_moves: Optional[int] = None,
+    qtype: Optional[str] = None,
+    answer: Optional[str] = None,
+) -> str:
+    seg_lines, final_answer = _hanoi_worked_body_lines_en(solution)
+    if answer is None:
+        answer = final_answer or "(see prompt)"
+    hint = _HANOI_QTYPE_HINT_EN.get(qtype or "", "trace the optimal solution")
+    meta_bits = []
+    if n is not None:
+        meta_bits.append(f"n={n}")
+    if total_moves is not None:
+        meta_bits.append(f"total moves={total_moves}")
+    if qtype:
+        meta_bits.append(f"qtype={qtype}")
+    meta_line = " · ".join(meta_bits) if meta_bits else "standard rules"
+    summary = (
+        f"  · Summary: {hint} · {meta_line} · {len(seg_lines)} SEGs"
+    )
+    step2 = "\n".join([summary, *seg_lines]) if seg_lines else summary
+    return (
+        f"{SFT_SOLUTION_RUBRIC_EN}\n"
+        f"[STEP 0] Problem meta\n"
+        f"  - Optimal Tower of Hanoi (2^n-1 moves) and standard rules\n"
+        f"  - Final answer is confirmed in [STEP 3]\n"
+        f"[STEP 1] Given\n"
+        f"  - n, peg labels, and k (as in the problem statement)\n"
+        f"[STEP 2] Worked solution\n{step2}\n"
+        f"[STEP 3] Answer and verification\n"
+        f"  - Final answer: {answer}\n"
+        f"  - Cross-check 2^ formulas / simulation against the [SEG] trace."
+    )
+
+
 def _build_templates_easy(ctx: Context, rng) -> list:
     n = ctx["n"]
     src, aux, dst = ctx["src"], ctx["aux"], ctx["dst"]
@@ -433,7 +510,9 @@ def generate_puzzle(difficulty: str = "medium", seed: Optional[int] = None) -> D
     return {
         "question": question,
         "answer": answer,
-        "solution": solution,
+        "solution": _wrap_sft_hanoi_solution_en(
+            solution, n=n, total_moves=total_moves, qtype=qtype, answer=answer
+        ),
         "difficulty": difficulty,
         "type": qtype,
         "n": n,
@@ -441,7 +520,7 @@ def generate_puzzle(difficulty: str = "medium", seed: Optional[int] = None) -> D
         "aux": aux,
         "dst": dst,
         "seed": seed,
-        "id": f"hanoi_{difficulty}_{qtype}_{puzzle_hash}",
+        "id": f"hanoi_en_{difficulty}_{qtype}_{puzzle_hash}",
     }
 
 
@@ -451,9 +530,9 @@ def generate_dataset(num_per_difficulty: int = 100, seed: int = 2025) -> List[Di
 
     puzzle_seed = seed
     for difficulty in difficulties:
-        for _ in range(num_per_difficulty):
+        for diff_idx in range(num_per_difficulty):
             puzzle = generate_puzzle(difficulty=difficulty, seed=puzzle_seed)
-            puzzle["id"] = f"hanoi_{len(puzzles)}"
+            puzzle["id"] = f"hanoi_en_{difficulty}_{diff_idx:04d}"
             puzzles.append(puzzle)
             puzzle_seed += 1
 
