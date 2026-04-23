@@ -1,12 +1,23 @@
 import random
 from pathlib import Path
 
+SFT_SOLUTION_RUBRIC_EN = (
+    "STEP0=meta · STEP1=given · STEP2=worked solution · "
+    "STEP3=answer and verification"
+)
+
+
 class JourneyState:
     def __init__(self):
         self.total_moving_time_hours = 0.0
         self.total_rest_time_hours = 0.0
         self.continuous_moving_time_hours = 0.0
         self.current_position_km = 0.0
+
+    @property
+    def continuous_drive_time_min(self):
+        """Continuous driving time in minutes; resets with continuous_moving_time_hours after rest."""
+        return self.continuous_moving_time_hours * 60.0
 
     @property
     def total_journey_time_hours(self):
@@ -20,6 +31,17 @@ def _fmt_hour(h):
         return "12:00 PM"
     else:
         return f"{h - 12}:00 PM"
+
+
+def _fmt_hhmm_from_decimal_hour(dec_h):
+    """Format simulation absolute time (decimal hours) as HH:MM within a 24h cycle."""
+    minutes = int(round((float(dec_h) % 24.0) * 60.0)) % (24 * 60)
+    return f"{minutes // 60:02d}:{minutes % 60:02d}"
+
+
+def _fmt_minutes_from_hours(hours):
+    """Decimal minutes as a string from duration in hours."""
+    return f"{hours * 60.0:.2f}"
 
 
 REST_COUNT_RANGES = {
@@ -215,34 +237,45 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
 
             # --- 2. Simulation ---
             journey = JourneyState()
-            solution = ["[STEP 0] Initial conditions"]
+            solution = [
+                SFT_SOLUTION_RUBRIC_EN,
+                "[STEP 0] Problem meta",
+                "  - River-trip simulation with cargo, congestion, and rests; "
+                "final numeric answer lives only in [STEP 3].",
+                "[STEP 1] Given (initial conditions & rules)",
+            ]
             solution.append(
-                f"  Total distance={total_distance}km, "
+                f"  - Total distance={total_distance}km, "
                 f"boat still-water speed={base_boat_speed_kph}km/h, "
                 f"departure={_fmt_hour(departure_hour)}")
             solution.append(
-                f"  Current: {current_speed_kph}km/h "
+                f"  - Current: {current_speed_kph}km/h "
                 f"(downstream in Zone {current_favorable_zone})")
             solution.append(
-                f"  Cargo: {item1_weight}kg {item1_spec['name']}x{item1_qty}"
+                f"  - Cargo: {item1_weight}kg {item1_spec['name']}x{item1_qty}"
                 f" + {item2_weight}kg {item2_spec['name']}x{item2_qty}")
             solution.append(
-                f"  Congestion: {_fmt_hour(congestion_start_hour)}~"
+                f"  - Congestion: {_fmt_hour(congestion_start_hour)}~"
                 f"{_fmt_hour(congestion_end_hour)}, "
                 f"{'all zones' if congestion_affected_zone == 'all' else 'Zone ' + congestion_affected_zone}"
                 f" -{congestion_reduction_pct}%")
             if delivery_km:
                 solution.append(
-                    f"  Mid-journey delivery: {delivery_km}km, "
+                    f"  - Mid-journey delivery: {delivery_km}km, "
                     f"{delivery_spec['name']} x{delivery_qty}")
             if rest_increment > 0:
                 solution.append(
-                    f"  Cumulative fatigue: +{rest_increment}min per rest")
-            solution.append(f"  Regulations: {regulations}")
+                    f"  - Cumulative fatigue: +{rest_increment}min per rest")
+            solution.append(f"  - Regulations: {regulations}")
+            solution.append("[STEP 2] Worked solution (per-segment simulation log)")
+            step2_header_idx = len(solution)
+            summary_rests: list[tuple[float, int]] = []
+            summary_unload: tuple[float, str, int] | None = None
+            summary_congest_cnt = 0
             step_cnt = 1
 
             solution.append(
-                f"[STEP {step_cnt}] Cargo weight: "
+                f"[SEG {step_cnt}] Cargo weight: "
                 f"({item1_weight}x{item1_qty})+({item2_weight}x{item2_qty})"
                 f"={cargo_weight_kg}kg")
             step_cnt += 1
@@ -264,9 +297,9 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                 ra = regulations["cargo_effect"]["zone_A_reduction_percent"]
                 rb = regulations["cargo_effect"]["zone_B_reduction_percent"]
                 solution.append(
-                    f"[STEP {step_cnt}] Cargo regulation: {cargo_weight_kg}kg > "
+                    f"[SEG {step_cnt}] Cargo regulation: {cargo_weight_kg}kg > "
                     f"{regulations['cargo_effect']['heavy_load_kg']}kg -> "
-                    f"Zone A -{ra}%({adj_A:.2f}), Zone B -{rb}%({adj_B:.2f})")
+                    f"Zone A -{ra}%({adj_A:.1f}), Zone B -{rb}%({adj_B:.1f})")
                 step_cnt += 1
 
             distance_to_go = total_distance
@@ -400,8 +433,10 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                     in_congestion
                     and (congestion_affected_zone == "all"
                          or in_zone == congestion_affected_zone))
+                limit_zone_kph = speed_limit
                 if cong_applies:
                     speed_limit *= (1 - congestion_reduction_pct / 100)
+                limit_after_congest_kph = speed_limit
 
                 if in_zone == current_favorable_zone:
                     eff_speed = base_boat_speed_kph + current_speed_kph
@@ -413,16 +448,6 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                 actual_speed = min(eff_speed, speed_limit)
                 if actual_speed <= 0:
                     raise ValueError("Invalid speed")
-
-                cong_tag = " [CONGESTED]" if cong_applies else ""
-                solution.append(
-                    f"[STEP {step_cnt}] Zone {in_zone} "
-                    f"({current_pos:.1f}km, {abs_time:.2f}h){cong_tag}: "
-                    f"{base_boat_speed_kph}"
-                    f"{'+' if cur_label == 'downstream' else '-'}"
-                    f"{current_speed_kph}={eff_speed:.1f}, "
-                    f"limit {speed_limit:.2f} -> {actual_speed:.2f}km/h")
-                step_cnt += 1
 
                 dist_to_stop = _next_rest_stop_dist(current_pos)
                 if dist_to_stop < 1e-6:
@@ -452,14 +477,58 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                 seg_dist = min(boundaries)
                 seg_time = seg_dist / actual_speed
 
+                seg_start_km = current_pos
+                drive_cont_before_min = journey.continuous_drive_time_min
+                hits_delivery = (
+                    not delivered
+                    and delivery_km is not None
+                    and abs((current_pos + seg_dist) - delivery_km) < 1e-6)
+
                 journey.current_position_km += seg_dist
                 journey.total_moving_time_hours += seg_time
                 journey.continuous_moving_time_hours += seg_time
                 distance_to_go -= seg_dist
 
-                solution.append(
-                    f"  -> {seg_dist:.2f}km / {actual_speed:.2f}km/h "
-                    f"= {seg_time:.4f}h")
+                seg_end_km = journey.current_position_km
+                drive_cont_after_min = journey.continuous_drive_time_min
+                seg_minutes = seg_time * 60.0
+                thr_min = regulations["mandatory_rest"]["trigger_minutes"]
+
+                seg_lines: list[str] = []
+                seg_has_event = False
+
+                tags = []
+                if cong_applies:
+                    tags.append("[CONGESTED TIME]")
+                    summary_congest_cnt += 1
+                    seg_has_event = True
+                if hits_delivery:
+                    tags.append("[UNLOAD]")
+                    seg_has_event = True
+                tag_str = (" ".join(tags) + " ") if tags else ""
+
+                seg_lines.append(
+                    f"[SEG {step_cnt}] {tag_str}Zone {in_zone} "
+                    f"({seg_start_km:.1f}km ~ {seg_end_km:.1f}km)")
+                seg_lines.append(
+                    f"  - Current time: {_fmt_hhmm_from_decimal_hour(abs_time)} "
+                    f"({abs_time:.2f}h)")
+                cong_note = (
+                    f", congestion limit {limit_after_congest_kph:.1f}km/h"
+                    if cong_applies else "")
+                seg_lines.append(
+                    f"  - Speed check: {cur_label} effective "
+                    f"{base_boat_speed_kph}{'+' if cur_label == 'downstream' else '-'}"
+                    f"{current_speed_kph}={eff_speed:.1f}km/h, "
+                    f"zone cap {limit_zone_kph:.1f}km/h{cong_note} "
+                    f"-> applied {actual_speed:.1f}km/h")
+                seg_lines.append(
+                    f"  - Travel: {seg_dist:.1f}km / {actual_speed:.1f}km/h = "
+                    f"{seg_time:.3f}h ({_fmt_minutes_from_hours(seg_time)} min)")
+                seg_lines.append(
+                    f"  - Continuous drive accrued: "
+                    f"{drive_cont_before_min:.1f} min + {seg_minutes:.1f} min = "
+                    f"{drive_cont_after_min:.1f} min")
 
                 if (not delivered
                         and abs(journey.current_position_km - delivery_km)
@@ -470,25 +539,31 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                     old_heavy = is_heavy
                     adj_A, adj_B, is_heavy = _apply_cargo_effect(
                         cargo_weight_kg)
-                    solution.append(
-                        f"  * Unload: {delivery_spec['name']} x{delivery_qty}"
-                        f"({unloaded_kg}kg) -> remaining {cargo_weight_kg}kg")
+                    summary_unload = (
+                        float(delivery_km),
+                        delivery_spec['name'],
+                        int(delivery_qty))
+                    seg_has_event = True
+                    seg_lines.append(
+                        f"  - Unload: {delivery_spec['name']} x{delivery_qty} "
+                        f"({unloaded_kg}kg) -> remaining cargo {cargo_weight_kg}kg")
                     if old_heavy and not is_heavy:
-                        solution.append(
+                        seg_lines.append(
                             f"    -> Cargo regulation lifted! "
-                            f"A:{adj_A:.2f}, B:{adj_B:.2f}")
+                            f"A:{adj_A:.1f}, B:{adj_B:.1f}")
                     elif is_heavy:
-                        solution.append(
+                        seg_lines.append(
                             "    -> Still overweight, regulation maintained")
 
                 if ((not rest_due)
                         and journey.continuous_moving_time_hours
                         >= trigger_hours - 1e-9):
                     rest_due = True
-                    solution.append(
-                        f"  >> Continuous "
-                        f"{regulations['mandatory_rest']['trigger_minutes']}"
-                        f"min reached")
+                    seg_has_event = True
+                    seg_lines.append(
+                        f"  - Continuous drive limit: "
+                        f"{drive_cont_after_min:.1f} min >= threshold "
+                        f"{thr_min} min (rest_due=True)")
 
                 at_stop = abs(
                     (journey.current_position_km / rest_stop_interval_km)
@@ -498,8 +573,14 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                 at_destination = distance_to_go <= 0.001
 
                 need_rest = False
+                rest_check_lines = []
                 if rest_due and at_stop and not at_destination:
                     need_rest = True
+                    rest_check_lines.append(
+                        f"  - Rest check: mandatory rest pending (rest_due) "
+                        f"at rest stop. Continuous drive "
+                        f"{drive_cont_after_min:.1f} min "
+                        f"(threshold {thr_min} min).")
                 elif (at_stop and distance_to_go > 0.001
                       and journey.continuous_moving_time_hours > 1e-6):
                     cur_pos = journey.current_position_km
@@ -519,11 +600,18 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                     if (journey.continuous_moving_time_hours + optimistic_time
                             >= trigger_hours - 1e-9):
                         need_rest = True
-                        solution.append(
-                            f"  >> Next segment expected to exceed "
-                            f"{regulations['mandatory_rest']['trigger_minutes']}"
-                            f"min continuous")
+                        opt_min = optimistic_time * 60.0
+                        sum_pred = drive_cont_after_min + opt_min
+                        rest_check_lines.append(
+                            f"  - Rest check: current continuous drive "
+                            f"{drive_cont_after_min:.1f} min + "
+                            f"to next rest ({target_km:.1f}km) "
+                            f"{distance_to_target:.1f} km, "
+                            f"optimistic min (v={max_possible_speed:.1f}km/h) "
+                            f"{opt_min:.1f} min -> total {sum_pred:.1f} min "
+                            f"> threshold {thr_min} min")
                     else:
+                        used_delivery_split = False
                         if (not delivered
                                 and delivery_km is not None
                                 and cur_pos < delivery_km < target_km):
@@ -538,6 +626,7 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                                 _adj_A=post_A, _adj_B=post_B,
                                 _t_offset=t1)
                             time_to_target = t1 + t2
+                            used_delivery_split = True
                         else:
                             time_to_target = _compute_time_to(
                                 cur_pos, target_km)
@@ -545,10 +634,30 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                                 + time_to_target
                                 >= trigger_hours - 1e-9):
                             need_rest = True
-                            solution.append(
-                                f"  >> Next segment expected to exceed "
-                                f"{regulations['mandatory_rest']['trigger_minutes']}"
-                                f"min continuous")
+                            t_tgt_min = time_to_target * 60.0
+                            sum_pred = drive_cont_after_min + t_tgt_min
+                            if used_delivery_split:
+                                rest_check_lines.append(
+                                    f"  - Rest check: current continuous drive "
+                                    f"{drive_cont_after_min:.1f} min + "
+                                    f"to next rest (with mid-route unload) "
+                                    f"{t1 * 60:.1f}+{t2 * 60:.1f} = "
+                                    f"{t_tgt_min:.1f} min -> total "
+                                    f"{sum_pred:.1f} min > threshold "
+                                    f"{thr_min} min")
+                            else:
+                                rest_check_lines.append(
+                                    f"  - Rest check: current continuous drive "
+                                    f"{drive_cont_after_min:.1f} min + "
+                                    f"to next rest ({target_km:.1f}km) "
+                                    f"{distance_to_target:.1f} km expected "
+                                    f"{t_tgt_min:.1f} min -> total "
+                                    f"{sum_pred:.1f} min > threshold "
+                                    f"{thr_min} min")
+
+                if rest_check_lines:
+                    seg_has_event = True
+                    seg_lines.extend(rest_check_lines)
 
                 if need_rest:
                     base_rest = (
@@ -559,16 +668,33 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                     journey.continuous_moving_time_hours = 0
                     rest_due = False
                     rest_count += 1
+                    seg_has_event = True
+                    summary_rests.append(
+                        (float(journey.current_position_km), int(this_rest)))
                     if extra > 0:
-                        solution.append(
-                            f"  # Rest#{rest_count}: "
-                            f"at {journey.current_position_km:.0f}km, "
-                            f"{base_rest}+{extra}={this_rest}min")
+                        seg_lines.append(
+                            f"  - Action [REST #{rest_count}]: "
+                            f"rest at {journey.current_position_km:.1f}km for "
+                            f"{this_rest} min ({base_rest}+{extra}). "
+                            f"Continuous drive time reset")
                     else:
-                        solution.append(
-                            f"  # Rest#{rest_count}: "
-                            f"at {journey.current_position_km:.0f}km, "
-                            f"{this_rest}min")
+                        seg_lines.append(
+                            f"  - Action [REST #{rest_count}]: "
+                            f"rest at {journey.current_position_km:.1f}km for "
+                            f"{this_rest} min. "
+                            f"Continuous drive time reset")
+
+                if seg_has_event:
+                    solution.extend(seg_lines)
+                else:
+                    solution.append(
+                        f"[SEG {step_cnt}] Zone {in_zone} "
+                        f"{seg_start_km:.1f}->{seg_end_km:.1f}km | "
+                        f"{cur_label} {actual_speed:.1f}km/h | "
+                        f"{seg_dist:.1f}km/{seg_minutes:.1f}min | "
+                        f"accrued {drive_cont_after_min:.1f}min")
+
+                step_cnt += 1
 
             if rest_due:
                 raise ValueError(
@@ -577,6 +703,23 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
             max_segments = params.get("max_segments", 20)
             if step_cnt > max_segments:
                 raise ValueError(f"Segment count({step_cnt}) exceeded")
+
+            summary_bits: list[str] = []
+            if summary_rests:
+                pts = ", ".join(
+                    f"{km:.0f}km({m}min)" for km, m in summary_rests)
+                summary_bits.append(
+                    f"Rests {len(summary_rests)}x @ {pts}")
+            if summary_unload is not None:
+                uk, un, uq = summary_unload
+                summary_bits.append(f"Unload 1x @ {uk:.0f}km({un} x{uq})")
+            if summary_congest_cnt:
+                summary_bits.append(
+                    f"Congestion {summary_congest_cnt} segs")
+            if summary_bits:
+                solution.insert(
+                    step2_header_idx,
+                    "  . Summary: " + " | ".join(summary_bits))
 
             rc_range = params.get("rest_count_range")
             if rc_range:
@@ -693,8 +836,11 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
 
             answer = f"{hours} hours {minutes} minutes"
             solution.append(
-                f"[STEP {step_cnt}] Total {total_hours:.4f}h "
-                f"= {total_minutes}min = {answer}")
+                "[STEP 3] Answer and verification\n"
+                f"  - Total time: {total_hours:.4f}h = {total_minutes}min = {answer}\n"
+                "  - The '[SEG n]' lines above are the STEP2 worked solution; "
+                "double-check min→h+min conversion and that heavy-cargo "
+                "speed caps / mandatory rests are applied.")
 
             return question, answer, solution
 

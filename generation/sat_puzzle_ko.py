@@ -17,6 +17,11 @@ from enum import Enum
 from itertools import combinations
 
 
+SFT_SOLUTION_RUBRIC_KO = (
+    "STEP0=문제 메타 · STEP1=주어진 조건 · STEP2=풀이 전개 · STEP3=답·검산"
+)
+
+
 class Difficulty(str, Enum):
     EASY = "easy"
     MEDIUM = "medium"
@@ -107,6 +112,64 @@ class SATPuzzle:
         prompt += "}\n```\n"
         
         return prompt
+
+
+def _clause_satisfying_literal_ko(clause, assignment) -> str:
+    """절에서 정답을 참으로 만드는 리터럴 하나를 골라 반환."""
+    try:
+        literals = getattr(clause, "literals", None)
+        if literals is not None:
+            for var, is_positive in literals:
+                val = assignment.get(var)
+                if val is None:
+                    continue
+                lit_val = val if is_positive else (not val)
+                if lit_val:
+                    return var if is_positive else f"NOT {var}"
+    except Exception:
+        pass
+    return "?"
+
+
+def _build_sat_solution_ko(puzzle: SATPuzzle) -> str:
+    """SFT teacher trace: CNF + satisfying assignment."""
+    n_clauses = len(puzzle.clauses)
+    n_vars = len(puzzle.variables)
+    n_cons = len(puzzle.natural_constraints)
+    n_true = sum(1 for v in puzzle.answer.values() if v)
+    lines = [
+        SFT_SOLUTION_RUBRIC_KO,
+        "[STEP 0] 문제 메타",
+        f"  - 난이도: {puzzle.difficulty}",
+        f"  - 도메인(시나리오): {puzzle.domain}",
+        f"  - 변수: {', '.join(puzzle.variables)}",
+        f"  - 절(clause) 개수: {n_clauses} (CNF: 모든 절이 동시에 참이어야 함)",
+        f"  - 질문: {puzzle.question}",
+        "  - 최종 답은 [STEP 3]에서 확정",
+        "[STEP 1] 주어진 조건",
+    ]
+    for i, c in enumerate(puzzle.natural_constraints, 1):
+        lines.append(f"  {i}. {c}")
+    lines.append("[STEP 2] 풀이 전개")
+    lines.append(
+        f"  · 요약: 변수 {n_vars} · 자연어 제약 {n_cons} → CNF 절 {n_clauses} · "
+        f"AND(절) / OR(리터럴) 구조에서 유일 할당 찾기 · SEG {n_clauses}개"
+    )
+    for i, cl in enumerate(puzzle.clauses, 1):
+        sat_lit = _clause_satisfying_literal_ko(cl, puzzle.answer)
+        lines.append(
+            f"    [SEG {i}] 절 {cl} → 리터럴 '{sat_lit}'가 참이므로 절 성립."
+        )
+    lines.append("[STEP 3] 답·검산")
+    lines.append(f"  - 최종 답(유일 모델, True={n_true}/{n_vars}):")
+    for v, t in sorted(puzzle.answer.items()):
+        lines.append(f"    · {v}: {t} ({'참' if t else '거짓'})")
+    lines.append(
+        "  - 각 절에 정답을 대입: 절에 속한 리터럴 중 최소 하나는 참이어야 한다."
+    )
+    for i, cl in enumerate(puzzle.clauses, 1):
+        lines.append(f"  - CNF {i}: {cl}")
+    return "\n".join(lines)
 
 
 class SATPuzzleGenerator:
@@ -475,28 +538,32 @@ def generate_dataset(
     for idx, puzzle in enumerate(puzzles):
         puzzle.id = f'sat_puzzle_ko_{idx}'
     
-    # JSONL로 저장
+    def _row(p: SATPuzzle) -> dict:
+        return {
+            "id": p.id,
+            "question": p.question,
+            "answer": p.answer,
+            "solution": _build_sat_solution_ko(p),
+            "difficulty": p.difficulty,
+        }
+
+    # JSONL로 저장 (5개 필드만)
     jsonl_path = json_dir / "sat_puzzles_ko.jsonl"
     with open(jsonl_path, 'w', encoding='utf-8') as f:
         for puzzle in puzzles:
-            f.write(json.dumps(puzzle.to_dict(), ensure_ascii=False) + '\n')
+            f.write(json.dumps(_row(puzzle), ensure_ascii=False) + '\n')
     
     # CSV로 저장
     import csv as csv_module
     csv_path = csv_dir / "sat_puzzles_ko.csv"
     with open(csv_path, 'w', encoding='utf-8', newline='') as f:
-        # Use same columns as JSONL
-        fieldnames = ['id', 'question', 'answer', 'difficulty', 'domain', 'variables', 'clauses', 'constraints']
+        fieldnames = ['id', 'question', 'answer', 'solution', 'difficulty']
         writer = csv_module.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         for puzzle in puzzles:
-            row = puzzle.to_dict()
-            # Convert lists/dicts to JSON strings for CSV
-            row['variables'] = json.dumps(row['variables'], ensure_ascii=False)
-            row['clauses'] = json.dumps(row['clauses'], ensure_ascii=False)
-            row['constraints'] = json.dumps(row['constraints'], ensure_ascii=False)
-            row['answer'] = json.dumps(row['answer'], ensure_ascii=False)
-            writer.writerow(row)
+            r = _row(puzzle)
+            r["answer"] = json.dumps(r["answer"], ensure_ascii=False)
+            writer.writerow(r)
     
     print(f"   - JSONL: {jsonl_path}")
     print(f"   - CSV: {csv_path}")

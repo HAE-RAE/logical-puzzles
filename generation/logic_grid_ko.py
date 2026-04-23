@@ -17,6 +17,11 @@ from enum import Enum
 from itertools import permutations, combinations
 
 
+SFT_SOLUTION_RUBRIC_KO = (
+    "STEP0=문제 메타 · STEP1=주어진 조건 · STEP2=풀이 전개 · STEP3=답·검산"
+)
+
+
 class Difficulty(str, Enum):
     EASY = "easy"
     MEDIUM = "medium"
@@ -87,6 +92,51 @@ class LogicGridPuzzle:
         prompt += "}\n```\n"
         
         return prompt
+
+
+def _build_logic_grid_solution_ko(puzzle: LogicGridPuzzle) -> str:
+    """SFT teacher trace: CSP + 정답 표."""
+    import json as _json
+    people = ", ".join(puzzle.people)
+    cats = ", ".join(puzzle.attributes.keys())
+    n_people = len(puzzle.people)
+    n_cats = len(puzzle.attributes)
+    n_cons = len(puzzle.constraints)
+    lines = [
+        SFT_SOLUTION_RUBRIC_KO,
+        "[STEP 0] 문제 메타",
+        f"  - 난이도: {puzzle.difficulty}",
+        f"  - 사람: {people}",
+        f"  - 속성 범주: {cats}",
+        f"  - 제약 개수: {n_cons}",
+        "  - 최종 답은 [STEP 3]에서 확정",
+        "[STEP 1] 주어진 조건",
+        f"  - 질문: {puzzle.question}",
+    ]
+    for cat, vals in puzzle.attributes.items():
+        lines.append(f"  - {cat}: {', '.join(vals)}")
+    for i, c in enumerate(puzzle.constraints, 1):
+        lines.append(f"  {i}. {c}")
+    lines.append("[STEP 2] 풀이 전개")
+    lines.append(
+        f"  · 요약: 사람 {n_people} · 범주 {n_cats} · 제약 {n_cons} · "
+        f"완전 일대일 할당 → 제약 {n_cons}개 전파·소거 → 유일해 · SEG {n_cons}개"
+    )
+    for i, c in enumerate(puzzle.constraints, 1):
+        lines.append(
+            f"    [SEG {i}] 제약 {i} 반영: {c} → 후보 축소·해와 일관성 유지."
+        )
+    lines.append("[STEP 3] 답·검산")
+    lines.append("  - 최종 답:")
+    for person, av in puzzle.answer.items():
+        lines.append(
+            f"    · {person}: {_json.dumps(av, ensure_ascii=False)}"
+        )
+    lines.extend([
+        "  - 각 제약 문장에 위 표를 대입해 모순이 없는지 확인.",
+        "  - 같은 범주에서 값이 사람끼리 겹치지 않는지 확인.",
+    ])
+    return "\n".join(lines)
 
 
 class LogicGridGenerator:
@@ -487,28 +537,33 @@ def generate_dataset(
     for idx, puzzle in enumerate(puzzles):
         puzzle.id = f'logic_grid_ko_{idx}'
     
-    # JSONL로 저장
+    def _row(p: LogicGridPuzzle) -> dict:
+        sol = _build_logic_grid_solution_ko(p)
+        return {
+            "id": p.id,
+            "question": p.question,
+            "answer": p.answer,
+            "solution": sol,
+            "difficulty": p.difficulty,
+        }
+
+    # JSONL로 저장 (id, question, answer, solution, difficulty만)
     jsonl_path = json_dir / "logic_grid_ko.jsonl"
     with open(jsonl_path, 'w', encoding='utf-8') as f:
         for puzzle in puzzles:
-            f.write(json.dumps(puzzle.to_dict(), ensure_ascii=False) + '\n')
+            f.write(json.dumps(_row(puzzle), ensure_ascii=False) + '\n')
     
     # CSV로 저장
     import csv as csv_module
     csv_path = csv_dir / "logic_grid_ko.csv"
     with open(csv_path, 'w', encoding='utf-8', newline='') as f:
-        # Use same columns as JSONL
-        fieldnames = ['id', 'question', 'answer', 'difficulty', 'people', 'attributes', 'constraints']
+        fieldnames = ['id', 'question', 'answer', 'solution', 'difficulty']
         writer = csv_module.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         for puzzle in puzzles:
-            row = puzzle.to_dict()
-            # Convert lists/dicts to JSON strings for CSV
-            row['people'] = json.dumps(row['people'], ensure_ascii=False)
-            row['attributes'] = json.dumps(row['attributes'], ensure_ascii=False)
-            row['constraints'] = json.dumps(row['constraints'], ensure_ascii=False)
-            row['answer'] = json.dumps(row['answer'], ensure_ascii=False)
-            writer.writerow(row)
+            r = _row(puzzle)
+            r["answer"] = json.dumps(r["answer"], ensure_ascii=False)
+            writer.writerow(r)
     
     print(f"   - JSONL: {jsonl_path}")
     print(f"   - CSV: {csv_path}")

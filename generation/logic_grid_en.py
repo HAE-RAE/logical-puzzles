@@ -15,6 +15,12 @@ from enum import Enum
 from itertools import permutations, combinations
 
 
+SFT_SOLUTION_RUBRIC_EN = (
+    "STEP0=meta · STEP1=given · STEP2=worked solution · "
+    "STEP3=answer and verification"
+)
+
+
 class Difficulty(str, Enum):
     EASY = "easy"
     MEDIUM = "medium"
@@ -85,6 +91,52 @@ class LogicGridPuzzle:
         prompt += "}\n```\n"
         
         return prompt
+
+
+def _build_logic_grid_solution_en(puzzle: LogicGridPuzzle) -> str:
+    """SFT teacher trace: CSP + answer grid."""
+    import json as _json
+    people = ", ".join(puzzle.people)
+    cats = ", ".join(puzzle.attributes.keys())
+    n_people = len(puzzle.people)
+    n_cats = len(puzzle.attributes)
+    n_cons = len(puzzle.constraints)
+    lines = [
+        SFT_SOLUTION_RUBRIC_EN,
+        "[STEP 0] Problem meta",
+        f"  - Difficulty: {puzzle.difficulty}",
+        f"  - People: {people}",
+        f"  - Attribute categories: {cats}",
+        f"  - Number of constraints: {n_cons}",
+        "  - Final answer is confirmed in [STEP 3]",
+        "[STEP 1] Given",
+        f"  - Question: {puzzle.question}",
+    ]
+    for cat, vals in puzzle.attributes.items():
+        lines.append(f"  - {cat}: {', '.join(vals)}")
+    for i, c in enumerate(puzzle.constraints, 1):
+        lines.append(f"  {i}. {c}")
+    lines.append("[STEP 2] Worked solution")
+    lines.append(
+        f"  · Summary: {n_people} people · {n_cats} categories · {n_cons} constraints · "
+        f"complete one-to-one assignment with propagation/elimination -> unique model · "
+        f"{n_cons} SEGs"
+    )
+    for i, c in enumerate(puzzle.constraints, 1):
+        lines.append(
+            f"    [SEG {i}] Apply constraint {i}: {c} -> prune candidates, keep consistency."
+        )
+    lines.append("[STEP 3] Answer and verification")
+    lines.append("  - Final answer:")
+    for person, av in puzzle.answer.items():
+        lines.append(
+            f"    · {person}: {_json.dumps(av, ensure_ascii=False)}"
+        )
+    lines.extend([
+        "  - Plug the table into every constraint; each should hold.",
+        "  - No duplicate values within the same category across people.",
+    ])
+    return "\n".join(lines)
 
 
 class LogicGridGenerator:
@@ -446,29 +498,33 @@ def generate_dataset(
     # Re-assign ids to follow index-based naming convention
     for idx, puzzle in enumerate(puzzles):
         puzzle.id = f'logic_grid_{idx}'
+
+    def _row(p: LogicGridPuzzle) -> dict:
+        return {
+            "id": p.id,
+            "question": p.question,
+            "answer": p.answer,
+            "solution": _build_logic_grid_solution_en(p),
+            "difficulty": p.difficulty,
+        }
     
-    # Save as JSONL
+    # Save as JSONL (id, question, answer, solution, difficulty only)
     jsonl_path = json_dir / "logic_grid_en.jsonl"
-    with open(jsonl_path, 'w') as f:
+    with open(jsonl_path, 'w', encoding="utf-8") as f:
         for puzzle in puzzles:
-            f.write(json.dumps(puzzle.to_dict()) + '\n')
+            f.write(json.dumps(_row(puzzle), ensure_ascii=False) + '\n')
     
     # Save as CSV
     import csv as csv_module
     csv_path = csv_dir / "logic_grid_en.csv"
     with open(csv_path, 'w', encoding='utf-8', newline='') as f:
-        # Use same columns as JSONL
-        fieldnames = ['id', 'question', 'answer', 'difficulty', 'people', 'attributes', 'constraints']
+        fieldnames = ['id', 'question', 'answer', 'solution', 'difficulty']
         writer = csv_module.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         for puzzle in puzzles:
-            row = puzzle.to_dict()
-            # Convert lists/dicts to JSON strings for CSV
-            row['people'] = json.dumps(row['people'])
-            row['attributes'] = json.dumps(row['attributes'])
-            row['constraints'] = json.dumps(row['constraints'])
-            row['answer'] = json.dumps(row['answer'])
-            writer.writerow(row)
+            r = _row(puzzle)
+            r["answer"] = json.dumps(r["answer"], ensure_ascii=False)
+            writer.writerow(r)
     
     print(f"   - JSONL: {jsonl_path}")
     print(f"   - CSV: {csv_path}")

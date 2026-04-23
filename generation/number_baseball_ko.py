@@ -548,6 +548,66 @@ class ProblemGenerator:
         )
 
 
+SFT_SOLUTION_RUBRIC_KO = (
+    "STEP0=문제 메타 · STEP1=주어진 조건 · STEP2=풀이 전개 · STEP3=답·검산"
+)
+
+
+def _build_baseball_solution_ko(problem: Dict) -> str:
+    """SFT teacher trace: 숫자 야구 · 힌트별 후보 축소 SEG."""
+    num_digits = problem['num_digits']
+    hints = problem['hints']
+    answer = problem['answer']
+    metrics = problem.get('step_metrics', {})
+    initial = metrics.get('initial_candidates', 0)
+    residuals = metrics.get('residuals', [])
+    per_bits = metrics.get('per_hint_bits', [])
+
+    lines: List[str] = [
+        SFT_SOLUTION_RUBRIC_KO,
+        "[STEP 0] 문제 메타",
+        f"  - 난이도: {problem.get('difficulty', '')}",
+        f"  - 자릿수: {num_digits} (서로 다른 숫자)",
+        f"  - 힌트 수: {len(hints)} · 초기 후보: {initial}",
+        "  - 최종 답은 [STEP 3]에서 확정",
+        "[STEP 1] 주어진 조건",
+        "  - 규칙: 각 자리 숫자는 서로 다름(0–9).",
+        "  - S(스트라이크) = 숫자·위치 모두 일치, B(볼) = 숫자만 일치.",
+    ]
+    for i, h in enumerate(hints, 1):
+        lines.append(
+            f"  {i}. 추측 {h['guess']} → {h['strikes']}S {h['balls']}B"
+        )
+
+    lines.append("[STEP 2] 풀이 전개")
+    lines.append(
+        f"  · 요약: 각 힌트(S/B)로 후보 공간 축소 · 초기 {initial} → "
+        f"최종 1 · SEG {len(hints)}개"
+    )
+    prev = initial
+    for i, h in enumerate(hints, 1):
+        resid = residuals[i - 1] if i - 1 < len(residuals) else None
+        bits = per_bits[i - 1] if i - 1 < len(per_bits) else None
+        info_parts = []
+        if resid is not None:
+            info_parts.append(f"후보 {prev}→{resid}")
+            prev = resid
+        if bits is not None:
+            info_parts.append(f"정보량 {bits:.2f} bits")
+        info_text = " · ".join(info_parts) if info_parts else ""
+        lines.append(
+            f"    [SEG {i}] 힌트 {i} 반영: {h['guess']} → {h['strikes']}S {h['balls']}B · "
+            f"{info_text}"
+        )
+
+    lines.extend([
+        "[STEP 3] 답·검산",
+        f"  - 최종 답: {answer}",
+        "  - 각 힌트에 대해 정답과 S/B를 재계산하여 모두 일치하는지 확인.",
+    ])
+    return "\n".join(lines)
+
+
 # ============================================================
 # 질문 포맷팅
 # ============================================================
@@ -647,7 +707,7 @@ def create_dataset_files(num_questions: int):
                         'id': f'number_baseball_ko_{len(all_puzzles)}',
                         'question': create_question(problem),
                         'answer': problem['answer'],
-                        'solution': problem['problem_text'],
+                        'solution': _build_baseball_solution_ko(problem),
                         'difficulty': diff_name,
                         'num_digits': problem['num_digits'],
                         'hints': problem['hints'],

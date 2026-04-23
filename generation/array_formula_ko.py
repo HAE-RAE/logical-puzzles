@@ -18,6 +18,7 @@ import json
 import random
 import hashlib
 import csv
+import re
 from dataclasses import dataclass
 from typing import List, Dict, Optional, Any
 from enum import Enum
@@ -1778,6 +1779,137 @@ def puzzle_to_prompt(puzzle: Dict[str, Any]) -> str:
     return "\n".join(prompt_parts)
 
 
+_SOLUTION_TYPE_LABELS_KO = {
+    ProblemType.LOOKUP_QUERY.value: "조회형(INDEX/MATCH·VLOOKUP류)",
+    ProblemType.CONDITIONAL_AGGREGATION.value: "조건부 집계(SUMIF/COUNTIF류)",
+    ProblemType.ARRAY_COMPUTATION.value: "배열 연산(SUMPRODUCT류)",
+    ProblemType.MULTI_CONDITION.value: "다중 조건(SUMIFS/MAXIFS류)",
+}
+
+# 유형별: 모델이 '무엇을 먼저 읽을지' 잡는 한두 문장 (질문마다 수치는 다름)
+_SFT_TYPE_REASONING_NUDGE_KO = {
+    ProblemType.LOOKUP_QUERY.value: (
+        "어떤 표(상품/주문/고객)을 어떤 키(상품명, 고객번호)로 잇는지 먼저 잡고, "
+        "집계·필터 후 ‘1위/2위/제외/구간’ 같은 **순위·슬라이스**가 어디에 붙는지 읽는다."
+    ),
+    ProblemType.CONDITIONAL_AGGREGATION.value: (
+        "질문이 요구한 **조건열**(지역, 분기, 등급, 할인율 …)에 맞는 주문(또는 상품) 행만 골라 "
+        "COUNT/SUM/평균을 만든 뒤, **버림·반올림**이 문장에 있으면 마지막에만 적용한다."
+    ),
+    ProblemType.ARRAY_COMPUTATION.value: (
+        "행·열이 맞닿는 곳(주문↔상품)에서 ‘수량×가격’ 같은 **원소곱/합**을 쌓고, "
+        "최댓값·최솟값·한 행(상품)만 같은 **축 정렬**이 나오는지 먼저 짚는다."
+    ),
+    ProblemType.MULTI_CONDITION.value: (
+        "AND/OR로 엮인 조건(지역+등급+기간+카테고리 …)을 **하나씩** 줄이며 부분집합을 잡고, "
+        "필터가 겹칠 때는 “모든 주문/해당 주문만”이 어디에 해당하는지 구분해 집계한다."
+    ),
+}
+
+SFT_SOLUTION_RUBRIC_KO = (
+    "STEP0=문제 메타 · STEP1=주어진 조건 · STEP2=풀이 전개 · STEP3=답·검산"
+)
+
+_SFT_PIPELINE_HINT_KO = {
+    ProblemType.LOOKUP_QUERY.value: "필터 매칭 → 해당 행에서 원하는 열 추출",
+    ProblemType.CONDITIONAL_AGGREGATION.value: "WHERE(조건) → 단일 열 집계(SUM/COUNT/AVG)",
+    ProblemType.ARRAY_COMPUTATION.value: "조인(상품↔주문) → 원소곱/합(SUMPRODUCT)",
+    ProblemType.MULTI_CONDITION.value: "다중 WHERE → 집계·정렬·랭크",
+}
+
+
+def _truncate_for_solution_prompt(text: str, max_len: int = 400) -> str:
+    t = (text or "").strip().replace("\n", " ")
+    if len(t) <= max_len:
+        return t
+    return t[: max_len - 1] + "…"
+
+
+_STEP_PREFIX_KO = re.compile(r"^\s*(?:\d+\s*단계\s*[:：-]|Step\s*\d+\s*[:：-])\s*")
+_FINAL_PREFIX_KO = re.compile(r"^\s*(?:최종\s*답|Final\s*answer)\s*[:：-]\s*", re.IGNORECASE)
+
+
+def _worked_body_lines(solution: str) -> list:
+    """원본 'N단계: …' 문자열을 [SEG n] 형태로 재번호 + 최종답 줄은 드롭."""
+    s = (solution or "").strip()
+    if not s:
+        return [
+            "    [SEG 1] (이 자리엔 ‘1단계: …, 2단계: …’ 식 **중간 집계**가 온다. "
+            "빈 경우엔 질문·유형에 맞춰 표에서 먼저 뽑을 행과 조인 키를 쓰면 된다.)"
+        ]
+    out, seg = [], 1
+    for raw in s.splitlines():
+        line = raw.strip()
+        if not line:
+            continue
+        if _FINAL_PREFIX_KO.match(line):
+            continue
+        body = _STEP_PREFIX_KO.sub("", line)
+        out.append(f"    [SEG {seg}] {body}")
+        seg += 1
+    if not out:
+        out.append(
+            "    [SEG 1] (원본 풀이에 단계 라벨이 없어, 질문→필터→집계 순서로 1~N 단계로 풀어 써라.)"
+        )
+    return out
+
+
+def _solution_for_guided_distillation(
+    solution: str,
+    answer: Any,
+    problem_type: str,
+    difficulty: str,
+    answer_type: str,
+    question: str = "",
+) -> str:
+    """SFT Guided Distillation: 해설이 아니라 '추론·계산 궤적'이 드러나게 만든다."""
+    type_label = _SOLUTION_TYPE_LABELS_KO.get(problem_type, problem_type)
+    fmt = "숫자만(단위 없음)" if answer_type == "number" else "텍스트(문제와 동일 표기)"
+    nudge = _SFT_TYPE_REASONING_NUDGE_KO.get(
+        problem_type,
+        "질문에서 **집계 단위(고객/주문/지역/상품)**를 먼저 정한 뒤, "
+        "조인·필터·집계 순서로 풀어 쓴다(문제마다 중간 수는 다름).",
+    )
+    q_line = _truncate_for_solution_prompt(question) if question else (
+        "(원문 질문은 상단 퍼즐 ‘질문:’에 있다.)"
+    )
+    lines = [
+        SFT_SOLUTION_RUBRIC_KO,
+        "[STEP 0] 문제 메타",
+        f"  - 문제 유형: {type_label}",
+        f"  - 난이도: {difficulty}",
+        f"  - 정답 출력 형식: {fmt}",
+        "  - (읽는 순서) " + nudge,
+        "  - 최종 수치/문자는 [STEP3]에만 ‘검산용’으로 둔다. "
+        "먼저 [STEP2]의 **단계 로그(중간값)** 를 따라갈 것.",
+        "[STEP 1] 주어진 조건",
+        f"  - **이번 질문(원문)**: {q_line}",
+        "  - 데이터 스키마(질문·표에 나온 열과 같다):",
+        "      상품: id, 상품명, 카테고리, 가격, 재고, 할인율",
+        "      주문: 주문번호, 상품명, 지역, 수량, 분기, 고객번호",
+        "      고객: 고객번호, 이름, 등급, 가입연도, 지역",
+        "[STEP 2] 풀이 전개 (생성기가 쓴 **단계별 계산·중간 집계**; 문제마다 내용이 달라짐)",
+    ]
+    worked = _worked_body_lines(solution)
+    pipeline = _SFT_PIPELINE_HINT_KO.get(
+        problem_type,
+        "조인 → 필터 → 집계/랭크",
+    )
+    lines.append(
+        f"  · 요약: {type_label} · 파이프라인: {pipeline} · SEG {len(worked)}개")
+    lines.append(
+        "  · 머릿속으로: (1) 어떤 키로 조인 (2) 어떤 WHERE "
+        "(3) 어떤 AGG/랭크 인지 — 그 다음이 아래 로그")
+    lines.extend(worked)
+    lines.extend([
+        "[STEP 3] 답·검산",
+        f"  - 최종 답: {answer}",
+        "  - 점검: 문장에 적힌 버림·반올림·할인가(할인이 가격/재고/매출 중 어디에 쓰였는지)를 "
+        "일관되게 썼는지, 상품명·고객번호 등 **조인 키**가 질문 표와 맞는지 끝에서 다시 맞춘다.",
+    ])
+    return "\n".join(lines)
+
+
 def save_dataset(
     puzzles: List[Dict],
     base_dir: str = "./data"
@@ -1801,12 +1933,15 @@ def save_dataset(
             "id": puzzle["id"],
             "question": question,
             "answer": puzzle["answer"],
+            "solution": _solution_for_guided_distillation(
+                puzzle.get("solution", ""),
+                puzzle["answer"],
+                puzzle["type"],
+                puzzle["difficulty"],
+                puzzle.get("answer_type", "number"),
+                puzzle.get("question", ""),
+            ),
             "difficulty": puzzle["difficulty"],
-            "solution": puzzle.get("solution", ""),
-            "type": puzzle["type"],
-            "answer_type": puzzle.get("answer_type", "number"),
-            "tables": puzzle["tables"],
-            "seed": puzzle.get("seed"),
         }
         processed_puzzles.append(processed)
 
@@ -1816,30 +1951,19 @@ def save_dataset(
 
     print(f"Saved {len(processed_puzzles)} puzzles to {jsonl_path}")
 
-    csv_columns = ["id", "question", "answer", "difficulty", "solution", "type", "answer_type", "tables", "seed"]
+    csv_columns = ["id", "question", "answer", "solution", "difficulty"]
 
     with open(csv_path, "w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=csv_columns)
         writer.writeheader()
 
         for puzzle in processed_puzzles:
-            row = {
-                "id": puzzle["id"],
-                "question": puzzle["question"],
-                "answer": puzzle["answer"],
-                "difficulty": puzzle["difficulty"],
-                "solution": puzzle.get("solution", ""),
-                "type": puzzle["type"],
-                "answer_type": puzzle["answer_type"],
-                "tables": json.dumps(puzzle["tables"], ensure_ascii=False),
-                "seed": puzzle["seed"],
-            }
-            writer.writerow(row)
+            writer.writerow(puzzle)
 
     print(f"Saved {len(processed_puzzles)} puzzles to {csv_path}")
 
     stats = {}
-    for puzzle in processed_puzzles:
+    for puzzle in puzzles:
         key = f"{puzzle['difficulty']}_{puzzle['type']}"
         stats[key] = stats.get(key, 0) + 1
 

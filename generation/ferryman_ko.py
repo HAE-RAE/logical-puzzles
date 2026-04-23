@@ -1,12 +1,22 @@
 import random
 from pathlib import Path
 
+SFT_SOLUTION_RUBRIC_KO = (
+    "STEP0=문제 메타 · STEP1=주어진 조건 · STEP2=풀이 전개 · STEP3=답·검산"
+)
+
+
 class JourneyState:
     def __init__(self):
         self.total_moving_time_hours = 0.0
         self.total_rest_time_hours = 0.0
         self.continuous_moving_time_hours = 0.0
         self.current_position_km = 0.0
+
+    @property
+    def continuous_drive_time_min(self):
+        """휴식 없이 누적된 연속 운항 시간(분). 휴식 시 continuous_moving_time_hours와 함께 0으로 리셋."""
+        return self.continuous_moving_time_hours * 60.0
 
     @property
     def total_journey_time_hours(self):
@@ -20,6 +30,17 @@ def _fmt_hour(h):
         return "낮 12시"
     else:
         return f"오후 {h - 12}시"
+
+
+def _fmt_hhmm_from_decimal_hour(dec_h):
+    """시뮬레이션 절대시각(소수 시간)을 하루 주기의 HH:MM으로 표시."""
+    minutes = int(round((float(dec_h) % 24.0) * 60.0)) % (24 * 60)
+    return f"{minutes // 60:02d}:{minutes % 60:02d}"
+
+
+def _fmt_minutes_from_hours(hours):
+    """시간(h)을 분 단위 실수 문자열로."""
+    return f"{hours * 60.0:.2f}"
 
 
 REST_COUNT_RANGES = {
@@ -214,32 +235,42 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
 
             # --- 2. 시뮬레이션 ---
             journey = JourneyState()
-            solution = ["[STEP 0] 초기 조건"]
+            solution = [
+                SFT_SOLUTION_RUBRIC_KO,
+                "[STEP 0] 문제 메타",
+                "  - 운항·휴식·화물·혼잡 시뮬레이션; 정답은 [STEP 3] '총 소요'에만.",
+                "[STEP 1] 주어진 조건 (초기·규정)",
+            ]
             solution.append(
-                f"  총 거리={total_distance}km, 배 정수속력="
+                f"  - 총 거리={total_distance}km, 배 정수속력="
                 f"{base_boat_speed_kph}km/h, 출발={_fmt_hour(departure_hour)}")
             solution.append(
-                f"  유속: {current_speed_kph}km/h "
+                f"  - 유속: {current_speed_kph}km/h "
                 f"({current_favorable_zone}구역 순류)")
             solution.append(
-                f"  화물: {item1_weight}kg {item1_spec['name']}×{item1_qty}"
+                f"  - 화물: {item1_weight}kg {item1_spec['name']}×{item1_qty}"
                 f" + {item2_weight}kg {item2_spec['name']}×{item2_qty}")
             solution.append(
-                f"  혼잡: {_fmt_hour(congestion_start_hour)}~"
+                f"  - 혼잡: {_fmt_hour(congestion_start_hour)}~"
                 f"{_fmt_hour(congestion_end_hour)}, "
                 f"{'전 구역' if congestion_affected_zone == 'all' else congestion_affected_zone + '구역'}"
                 f" -{congestion_reduction_pct}%")
             if delivery_km:
                 solution.append(
-                    f"  중간 하역: {delivery_km}km에서 "
+                    f"  - 중간 하역: {delivery_km}km에서 "
                     f"{delivery_spec['name']} {delivery_qty}개")
             if rest_increment > 0:
-                solution.append(f"  누적 휴식: 매 휴식마다 +{rest_increment}분")
-            solution.append(f"  규정: {regulations}")
+                solution.append(f"  - 누적 휴식: 매 휴식마다 +{rest_increment}분")
+            solution.append(f"  - 규정: {regulations}")
+            solution.append("[STEP 2] 풀이 전개 (구간별 시뮬 로그)")
+            step2_header_idx = len(solution)
+            summary_rests: list[tuple[float, int]] = []
+            summary_unload: tuple[float, str, int] | None = None
+            summary_congest_cnt = 0
             step_cnt = 1
 
             solution.append(
-                f"[STEP {step_cnt}] 화물 무게: "
+                f"[SEG {step_cnt}] 화물 무게: "
                 f"({item1_weight}×{item1_qty})+({item2_weight}×{item2_qty})"
                 f"={cargo_weight_kg}kg")
             step_cnt += 1
@@ -261,9 +292,9 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                 ra = regulations["cargo_effect"]["zone_A_reduction_percent"]
                 rb = regulations["cargo_effect"]["zone_B_reduction_percent"]
                 solution.append(
-                    f"[STEP {step_cnt}] 화물규정: {cargo_weight_kg}kg > "
+                    f"[SEG {step_cnt}] 화물규정: {cargo_weight_kg}kg > "
                     f"{regulations['cargo_effect']['heavy_load_kg']}kg → "
-                    f"A구역 -{ra}%({adj_A:.2f}), B구역 -{rb}%({adj_B:.2f})")
+                    f"A구역 -{ra}%({adj_A:.1f}), B구역 -{rb}%({adj_B:.1f})")
                 step_cnt += 1
 
             distance_to_go = total_distance
@@ -402,8 +433,10 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                     in_congestion
                     and (congestion_affected_zone == "all"
                          or in_zone == congestion_affected_zone))
+                limit_zone_kph = speed_limit
                 if cong_applies:
                     speed_limit *= (1 - congestion_reduction_pct / 100)
+                limit_after_congest_kph = speed_limit
 
                 if in_zone == current_favorable_zone:
                     eff_speed = base_boat_speed_kph + current_speed_kph
@@ -415,16 +448,6 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                 actual_speed = min(eff_speed, speed_limit)
                 if actual_speed <= 0:
                     raise ValueError("유효하지 않은 속도")
-
-                cong_tag = " [혼잡]" if cong_applies else ""
-                solution.append(
-                    f"[STEP {step_cnt}] {in_zone}구역 "
-                    f"({current_pos:.1f}km, {abs_time:.2f}h){cong_tag}: "
-                    f"{base_boat_speed_kph}"
-                    f"{'+' if cur_label == '순류' else '-'}"
-                    f"{current_speed_kph}={eff_speed:.1f}, "
-                    f"제한 {speed_limit:.2f} → {actual_speed:.2f}km/h")
-                step_cnt += 1
 
                 dist_to_stop = _next_rest_stop_dist(current_pos)
                 if dist_to_stop < 1e-6:
@@ -455,14 +478,58 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                 seg_dist = min(boundaries)
                 seg_time = seg_dist / actual_speed
 
+                seg_start_km = current_pos
+                drive_cont_before_min = journey.continuous_drive_time_min
+                hits_delivery = (
+                    not delivered
+                    and delivery_km is not None
+                    and abs((current_pos + seg_dist) - delivery_km) < 1e-6)
+
                 journey.current_position_km += seg_dist
                 journey.total_moving_time_hours += seg_time
                 journey.continuous_moving_time_hours += seg_time
                 distance_to_go -= seg_dist
 
-                solution.append(
-                    f"  → {seg_dist:.2f}km / {actual_speed:.2f}km/h "
-                    f"= {seg_time:.4f}h")
+                seg_end_km = journey.current_position_km
+                drive_cont_after_min = journey.continuous_drive_time_min
+                seg_minutes = seg_time * 60.0
+                thr_min = regulations["mandatory_rest"]["trigger_minutes"]
+
+                seg_lines: list[str] = []
+                seg_has_event = False
+
+                tags = []
+                if cong_applies:
+                    tags.append("[CONGESTED TIME]")
+                    summary_congest_cnt += 1
+                    seg_has_event = True
+                if hits_delivery:
+                    tags.append("[UNLOAD]")
+                    seg_has_event = True
+                tag_str = (" ".join(tags) + " ") if tags else ""
+
+                seg_lines.append(
+                    f"[SEG {step_cnt}] {tag_str}{in_zone}구역 "
+                    f"({seg_start_km:.1f}km ~ {seg_end_km:.1f}km)")
+                seg_lines.append(
+                    f"  - 현재 시각: {_fmt_hhmm_from_decimal_hour(abs_time)} "
+                    f"({abs_time:.2f}h)")
+                cong_note = (
+                    f", 혼잡으로 제한 {limit_after_congest_kph:.1f}km/h"
+                    if cong_applies else "")
+                seg_lines.append(
+                    f"  - 속도 검산: {cur_label} 실효 "
+                    f"{base_boat_speed_kph}{'+' if cur_label == '순류' else '-'}"
+                    f"{current_speed_kph}={eff_speed:.1f}km/h, "
+                    f"구역 제한 {limit_zone_kph:.1f}km/h{cong_note} "
+                    f"→ 적용 속력 {actual_speed:.1f}km/h")
+                seg_lines.append(
+                    f"  - 이동: {seg_dist:.1f}km / {actual_speed:.1f}km/h = "
+                    f"{seg_time:.3f}h ({_fmt_minutes_from_hours(seg_time)}분)")
+                seg_lines.append(
+                    f"  - 연속 운행 누적: "
+                    f"{drive_cont_before_min:.1f}분 + {seg_minutes:.1f}분 = "
+                    f"{drive_cont_after_min:.1f}분")
 
                 # 중간 하역
                 if (not delivered
@@ -474,25 +541,32 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                     old_heavy = is_heavy
                     adj_A, adj_B, is_heavy = _apply_cargo_effect(
                         cargo_weight_kg)
-                    solution.append(
-                        f"  ★ 하역: {delivery_spec['name']} {delivery_qty}개"
-                        f"({unloaded_kg}kg) → 잔여 {cargo_weight_kg}kg")
+                    summary_unload = (
+                        float(delivery_km),
+                        delivery_spec['name'],
+                        int(delivery_qty))
+                    seg_has_event = True
+                    seg_lines.append(
+                        f"  - 하역: {delivery_spec['name']} "
+                        f"{delivery_qty}개({unloaded_kg}kg) → "
+                        f"잔여 화물 {cargo_weight_kg}kg")
                     if old_heavy and not is_heavy:
-                        solution.append(
+                        seg_lines.append(
                             f"    → 화물규정 해제! "
-                            f"A:{adj_A:.2f}, B:{adj_B:.2f}")
+                            f"A:{adj_A:.1f}, B:{adj_B:.1f}")
                     elif is_heavy:
-                        solution.append("    → 여전히 초과, 규정 유지")
+                        seg_lines.append("    → 여전히 초과, 규정 유지")
 
                 # 연속 운항 트리거 (fallback)
                 if ((not rest_due)
                         and journey.continuous_moving_time_hours
                         >= trigger_hours - 1e-9):
                     rest_due = True
-                    solution.append(
-                        f"  ▶ 연속 "
-                        f"{regulations['mandatory_rest']['trigger_minutes']}"
-                        f"분 도달")
+                    seg_has_event = True
+                    seg_lines.append(
+                        f"  - 연속 운항 한계: "
+                        f"{drive_cont_after_min:.1f}분 ≥ 임계 {thr_min}분 "
+                        f"(rest_due=True)")
 
                 # 휴게 지점 도착 → 휴식 판단
                 at_stop = abs(
@@ -503,8 +577,13 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                 at_destination = distance_to_go <= 0.001
 
                 need_rest = False
+                rest_check_lines = []
                 if rest_due and at_stop and not at_destination:
                     need_rest = True
+                    rest_check_lines.append(
+                        f"  - 휴식 검사: 휴게소 도착 시점에 의무 휴식 대기(rest_due). "
+                        f"연속 운행 {drive_cont_after_min:.1f}분 "
+                        f"(임계 {thr_min}분).")
                 elif (at_stop and distance_to_go > 0.001
                       and journey.continuous_moving_time_hours > 1e-6):
                     cur_pos = journey.current_position_km
@@ -524,11 +603,18 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                     if (journey.continuous_moving_time_hours + optimistic_time
                             >= trigger_hours - 1e-9):
                         need_rest = True
-                        solution.append(
-                            f"  ▶ 다음 구간 연속 "
-                            f"{regulations['mandatory_rest']['trigger_minutes']}"
-                            f"분 초과 예상")
+                        opt_min = optimistic_time * 60.0
+                        sum_pred = drive_cont_after_min + opt_min
+                        rest_check_lines.append(
+                            f"  - 휴식 검사: 현재 연속 운행 "
+                            f"{drive_cont_after_min:.1f}분 + "
+                            f"다음 휴게소({target_km:.1f}km)까지 "
+                            f"{distance_to_target:.1f}km, "
+                            f"낙관 최단(v={max_possible_speed:.1f}km/h) "
+                            f"{opt_min:.1f}분 → 합계 {sum_pred:.1f}분 "
+                            f"> 임계 {thr_min}분")
                     else:
+                        used_delivery_split = False
                         if (not delivered
                                 and delivery_km is not None
                                 and cur_pos < delivery_km < target_km):
@@ -543,16 +629,35 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                                 _adj_A=post_A, _adj_B=post_B,
                                 _t_offset=t1)
                             time_to_target = t1 + t2
+                            used_delivery_split = True
                         else:
                             time_to_target = _compute_time_to(
                                 cur_pos, target_km)
                         if (journey.continuous_moving_time_hours + time_to_target
                                 >= trigger_hours - 1e-9):
                             need_rest = True
-                            solution.append(
-                                f"  ▶ 다음 구간 연속 "
-                                f"{regulations['mandatory_rest']['trigger_minutes']}"
-                                f"분 초과 예상")
+                            t_tgt_min = time_to_target * 60.0
+                            sum_pred = drive_cont_after_min + t_tgt_min
+                            if used_delivery_split:
+                                rest_check_lines.append(
+                                    f"  - 휴식 검사: 현재 연속 운행 "
+                                    f"{drive_cont_after_min:.1f}분 + "
+                                    f"다음 휴게소까지(중간 하역 포함) "
+                                    f"{t1 * 60:.1f}+{t2 * 60:.1f} = "
+                                    f"{t_tgt_min:.1f}분 → 합계 {sum_pred:.1f}분 "
+                                    f"> 임계 {thr_min}분")
+                            else:
+                                rest_check_lines.append(
+                                    f"  - 휴식 검사: 현재 연속 운행 "
+                                    f"{drive_cont_after_min:.1f}분 + "
+                                    f"다음 휴게소({target_km:.1f}km)까지 "
+                                    f"{distance_to_target:.1f}km 예상 "
+                                    f"{t_tgt_min:.1f}분 → 합계 {sum_pred:.1f}분 "
+                                    f"> 임계 {thr_min}분")
+
+                if rest_check_lines:
+                    seg_has_event = True
+                    seg_lines.extend(rest_check_lines)
 
                 if need_rest:
                     base_rest = (
@@ -563,16 +668,34 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                     journey.continuous_moving_time_hours = 0
                     rest_due = False
                     rest_count += 1
+                    seg_has_event = True
+                    summary_rests.append(
+                        (float(journey.current_position_km), int(this_rest)))
                     if extra > 0:
-                        solution.append(
-                            f"  ■ 휴식#{rest_count}: "
-                            f"{journey.current_position_km:.0f}km에서 "
-                            f"{base_rest}+{extra}={this_rest}분")
+                        seg_lines.append(
+                            f"  - 조치 [휴식 #{rest_count}]: "
+                            f"{journey.current_position_km:.1f}km에서 "
+                            f"{this_rest}분 휴식 "
+                            f"({base_rest}+{extra}). "
+                            f"연속 운행 시간 초기화")
                     else:
-                        solution.append(
-                            f"  ■ 휴식#{rest_count}: "
-                            f"{journey.current_position_km:.0f}km에서 "
-                            f"{this_rest}분")
+                        seg_lines.append(
+                            f"  - 조치 [휴식 #{rest_count}]: "
+                            f"{journey.current_position_km:.1f}km에서 "
+                            f"{this_rest}분 휴식. "
+                            f"연속 운행 시간 초기화")
+
+                if seg_has_event:
+                    solution.extend(seg_lines)
+                else:
+                    solution.append(
+                        f"[SEG {step_cnt}] {in_zone}구역 "
+                        f"{seg_start_km:.1f}→{seg_end_km:.1f}km · "
+                        f"{cur_label} {actual_speed:.1f}km/h · "
+                        f"{seg_dist:.1f}km/{seg_minutes:.1f}분 · "
+                        f"누적 {drive_cont_after_min:.1f}분")
+
+                step_cnt += 1
 
             if rest_due:
                 raise ValueError("마지막 구간 연속 운항 한계 초과 (휴게소 없음)")
@@ -580,6 +703,23 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
             max_segments = params.get("max_segments", 20)
             if step_cnt > max_segments:
                 raise ValueError(f"구간 수({step_cnt}) 초과")
+
+            summary_bits: list[str] = []
+            if summary_rests:
+                pts = ", ".join(
+                    f"{km:.0f}km({m}분)" for km, m in summary_rests)
+                summary_bits.append(
+                    f"휴식 {len(summary_rests)}회 @ {pts}")
+            if summary_unload is not None:
+                uk, un, uq = summary_unload
+                summary_bits.append(f"하역 1회 @ {uk:.0f}km({un} {uq}개)")
+            if summary_congest_cnt:
+                summary_bits.append(
+                    f"혼잡 영향 {summary_congest_cnt}구간")
+            if summary_bits:
+                solution.insert(
+                    step2_header_idx,
+                    "  · 요약: " + " · ".join(summary_bits))
 
             rc_range = params.get("rest_count_range")
             if rc_range:
@@ -689,8 +829,11 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
 
             answer = f"{hours}시간 {minutes}분"
             solution.append(
-                f"[STEP {step_cnt}] 총 {total_hours:.4f}시간"
-                f" = {total_minutes}분 = {answer}")
+                "[STEP 3] 답·검산\n"
+                f"  - 총 소요: {total_hours:.4f}시간 = {total_minutes}분 = {answer}\n"
+                "  - 위 '[SEG n]' 로그는 STEP2(풀이 전개)에 해당하며, "
+                "합계/단위 변환(분→시·분)과 규정(무거운 화물 감속·의무 휴식)이 "
+                "빠짐 없이 반영됐는지 끝에서 한번 더 확인한다.")
 
             return question, answer, solution
 

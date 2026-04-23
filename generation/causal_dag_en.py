@@ -578,6 +578,149 @@ def generate_dataset(puzzles_per_difficulty: int = 3, verbose: bool = True) -> L
     return dataset
 
 
+SFT_SOLUTION_RUBRIC_EN = (
+    "STEP0=meta · STEP1=given · STEP2=worked solution · "
+    "STEP3=answer and verification"
+)
+
+
+def _reach_time_trace_en(puzzle: CausalPuzzle) -> tuple:
+    """Replay the reach-time computation and emit SEG trace lines + meta."""
+    events = puzzle.events
+    edges = puzzle.edges
+    trigger = puzzle.trigger
+    trigger_time = puzzle.trigger_time
+    target = puzzle.target_event
+
+    earliest = {eid: float('inf') for eid in events}
+    earliest[trigger] = trigger_time
+    prereq_arrival: Dict[str, Dict[str, int]] = {eid: {} for eid in events}
+    resolver: Dict[str, CausalEdge] = {}
+
+    pq = [(trigger_time, trigger)]
+    processed = set()
+    while pq:
+        ct, ce = heapq.heappop(pq)
+        if ce in processed:
+            continue
+        processed.add(ce)
+        for edge in edges:
+            fes = edge.from_events if edge.from_events else [edge.from_event]
+            if ce not in fes:
+                continue
+            at = ct + edge.delay
+            pa = prereq_arrival[edge.to_event]
+            if ce not in pa or at < pa[ce]:
+                pa[ce] = at
+            if all(p in pa for p in fes):
+                if edge.condition == 'AND':
+                    tt = max(pa[p] for p in fes)
+                else:
+                    tt = min(pa[p] for p in fes)
+                if tt < earliest[edge.to_event]:
+                    earliest[edge.to_event] = tt
+                    resolver[edge.to_event] = edge
+                    heapq.heappush(pq, (tt, edge.to_event))
+
+    def nm(eid: str) -> str:
+        return events[eid].name if eid in events else eid
+
+    reached = [eid for eid in events if earliest[eid] < float('inf')]
+    reached.sort(key=lambda e: (earliest[e], e))
+
+    lines: List[str] = []
+    and_count = or_count = 0
+    for seg, eid in enumerate(reached, start=1):
+        star = " *" if eid == target else ""
+        if eid == trigger:
+            lines.append(
+                f"    [SEG {seg}] (trigger) {nm(eid)} t={earliest[eid]} min{star}")
+            continue
+        edge = resolver[eid]
+        fes = edge.from_events if edge.from_events else [edge.from_event]
+        if len(fes) > 1 and edge.condition == 'AND':
+            and_count += 1
+            parts = " | ".join(
+                f"{nm(p)}(t={earliest[p]})" for p in fes)
+            peak = max(earliest[p] for p in fes)
+            lines.append(
+                f"    [SEG {seg}] {nm(eid)}: AND[{parts}] "
+                f"-> max={peak} + delay {edge.delay} = t={earliest[eid]} min{star}")
+        elif len(fes) > 1 and edge.condition == 'OR':
+            or_count += 1
+            parts = " | ".join(
+                f"{nm(p)}(t={earliest[p]})" for p in fes)
+            low = min(earliest[p] for p in fes)
+            lines.append(
+                f"    [SEG {seg}] {nm(eid)}: OR[{parts}] "
+                f"-> min={low} + delay {edge.delay} = t={earliest[eid]} min{star}")
+        else:
+            p = fes[0]
+            lines.append(
+                f"    [SEG {seg}] {nm(eid)}: {nm(p)}(t={earliest[p]}) "
+                f"+ delay {edge.delay} = t={earliest[eid]} min{star}")
+
+    path_len = 0
+    cur = target
+    guard = 0
+    while cur != trigger and cur in resolver and guard < len(events) + 2:
+        edge = resolver[cur]
+        fes = edge.from_events if edge.from_events else [edge.from_event]
+        if edge.condition == 'AND':
+            cur = max(fes, key=lambda p: earliest[p])
+        else:
+            cur = min(fes, key=lambda p: earliest[p])
+        path_len += 1
+        guard += 1
+
+    summary = {
+        'reached': len(reached),
+        'and_count': and_count,
+        'or_count': or_count,
+        'path_len': path_len,
+    }
+    return lines, summary
+
+
+def _build_causal_dag_solution_en(puzzle: CausalPuzzle) -> str:
+    """SFT teacher trace: propagation rules and target minute."""
+    n_ev = len(puzzle.events)
+    n_ed = len(puzzle.edges)
+    trace_lines, smry = _reach_time_trace_en(puzzle)
+    head = [
+        SFT_SOLUTION_RUBRIC_EN,
+        "[STEP 0] Problem meta",
+        f"  - Difficulty: {puzzle.difficulty}",
+        f"  - Trigger event: {puzzle.trigger} (at t = {puzzle.trigger_time} min)",
+        f"  - Target event: {puzzle.target_event}",
+        f"  - Graph size: {n_ev} events, {n_ed} edges",
+        "  - The final integer minute is only stated in [STEP 3] (verification); "
+        "follow the SEG log in [STEP 2] first.",
+        "[STEP 1] Given (time propagation and graph rules, as in the prompt)",
+        "  - Each edge has a delay; a downstream event can fire after its "
+        "prerequisites have occurred.",
+        "  - OR: use the **earliest** time among prerequisite arrivals that "
+        "satisfy the rule (as stated: triggered by the FIRST prerequisite).",
+        "  - AND: wait until **all** prerequisites have occurred, then use the "
+        "**latest** prerequisite completion time, then add the edge delay.",
+        "[STEP 2] Worked solution (reach time)",
+        (f"  · Summary: {puzzle.trigger}(t={puzzle.trigger_time})"
+         f" -> {puzzle.target_event} · reached "
+         f"{smry['reached']}/{n_ev} events · AND {smry['and_count']} / "
+         f"OR {smry['or_count']} · critical path {smry['path_len']} hops"),
+        "  · Mentally: process events in ascending earliest reach time; "
+        "AND uses max+delay, OR uses min+delay.",
+    ]
+    tail = [
+        "[STEP 3] Answer and verification",
+        f"  - Final answer (minutes): {puzzle.answer}",
+        "  - Re-run the priority-queue propagation from "
+        f"{puzzle.trigger} at {puzzle.trigger_time}; "
+        "check max(prereqs)+delay at AND nodes and min(prereqs)+delay at OR nodes.",
+    ]
+    return "\n".join(head + trace_lines + tail)
+
+
 def create_dataset_files(num_questions: int):
     """
     Create dataset files for causal DAG puzzles
@@ -611,17 +754,15 @@ def create_dataset_files(num_questions: int):
                 'id': f'causal_dag_{len(all_puzzles)}',
                 'question': create_question(puzzle),
                 'answer': str(puzzle.answer),
+                'solution': _build_causal_dag_solution_en(puzzle),
                 'difficulty': difficulty,
-                'trigger': puzzle.trigger,
-                'target': puzzle.target_event,
-                'num_events': len(puzzle.events),
-                'num_edges': len(puzzle.edges)
             }
             all_puzzles.append(puzzle_data)
     
     print(f"\nGenerated {len(all_puzzles)} puzzles")
     
-    df = pd.DataFrame(all_puzzles)
+    export_cols = ['id', 'question', 'answer', 'solution', 'difficulty']
+    df = pd.DataFrame([{k: p[k] for k in export_cols} for p in all_puzzles])
     
     # Save files
     PROJECT_ROOT = Path(__file__).resolve().parent.parent

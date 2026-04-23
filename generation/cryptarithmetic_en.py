@@ -442,6 +442,93 @@ def generate_puzzle_by_difficulty(
     return None
 
 
+SFT_SOLUTION_RUBRIC_EN = (
+    "STEP0=meta · STEP1=given · STEP2=worked solution · "
+    "STEP3=answer and verification"
+)
+
+
+def _build_cryptarithmetic_solution_en(
+    candidate: PuzzleCandidate,
+    difficulty: str,
+    carries: int,
+) -> str:
+    """SFT teacher trace: cryptarithmetic column-by-column with SEGs."""
+    operand_words = candidate.operands
+    result_word = candidate.result
+    mapping = candidate.mapping or {}
+    answer = candidate.answer
+
+    mapping_items = sorted(mapping.items(), key=lambda kv: kv[0])
+    mapping_text = ", ".join(f"{k}={v}" for k, v in mapping_items)
+
+    def digits_of(word: str) -> str:
+        return "".join(str(mapping.get(c, "?")) for c in word)
+
+    operand_digit_strs = [digits_of(w) for w in operand_words]
+    result_digit_str = digits_of(result_word)
+
+    op_lines_words = " + ".join(operand_words) + f" = {result_word}"
+    op_lines_digits = " + ".join(operand_digit_strs) + f" = {result_digit_str}"
+
+    lines: List[str] = [
+        SFT_SOLUTION_RUBRIC_EN,
+        "[STEP 0] Problem meta",
+        f"  - Difficulty: {difficulty}",
+        f"  - Puzzle: {op_lines_words}",
+        f"  - Unique letters: {candidate.unique_letters}",
+        f"  - Carry count: {carries}",
+        "  - Final answer is confirmed in [STEP 3]",
+        "[STEP 1] Given",
+        "  - Rule: different letters -> different digits (0-9).",
+        "  - Rule: no **leading letter** may represent 0.",
+        f"  - Target: the numeric value of {result_word}.",
+    ]
+
+    max_len = max(len(w) for w in operand_words + [result_word])
+    padded_operands = [w.rjust(max_len) for w in operand_words]
+    padded_result = result_word.rjust(max_len)
+
+    carry = 0
+    seg_lines: List[str] = []
+    for pos in range(max_len):
+        col_idx = max_len - 1 - pos
+        col_digit_letters = [w[col_idx] for w in padded_operands if w[col_idx] != ' ']
+        col_digits = [mapping[c] for c in col_digit_letters if c in mapping]
+        s = sum(col_digits) + carry
+        new_carry = s // 10
+        res_letter = padded_result[col_idx] if padded_result[col_idx] != ' ' else ''
+        res_digit = mapping.get(res_letter, None) if res_letter else None
+        terms = " + ".join(f"{c}={mapping[c]}" for c in col_digit_letters if c in mapping)
+        if carry:
+            terms += f" + carry {carry}"
+        if res_digit is not None:
+            verdict = f" -> digit {res_letter}={res_digit} (carry out {new_carry})"
+        else:
+            verdict = f" -> carry out {new_carry}"
+        seg_lines.append(
+            f"    [SEG {pos + 1}] column {pos + 1} (right->left): {terms} = {s}{verdict}"
+        )
+        carry = new_carry
+
+    lines.append("[STEP 2] Worked solution")
+    lines.append(
+        f"  · Summary: right-to-left column sum · letter->digit mapping ({mapping_text}) · "
+        f"{carries} total carries · {len(seg_lines)} SEGs"
+    )
+    lines.append(f"  · Mapping check: {op_lines_digits}")
+    lines.extend(seg_lines)
+
+    lines.extend([
+        "[STEP 3] Answer and verification",
+        f"  - Final answer: {result_word} = {answer}",
+        f"  - Mapping: {mapping_text}",
+        "  - Re-confirm each column sum and carry against the [SEG] trace.",
+        "  - Ensure no leading letter maps to 0.",
+    ])
+    return "\n".join(lines)
+
+
 def create_question(candidate: PuzzleCandidate) -> str:
     operand_words = candidate.operands
     max_word_len = max(len(w) for w in operand_words + [candidate.result])
@@ -504,7 +591,9 @@ def create_dataset_files(num_questions: int):
                     "id": f"cryptarithmetic_en_{len(all_puzzles)}",
                     "question": create_question(candidate),
                     "answer": candidate.answer,
-                    "solution": candidate.puzzle_str,
+                    "solution": _build_cryptarithmetic_solution_en(
+                        candidate, difficulty, carries
+                    ),
                     "difficulty": difficulty,
                     "puzzle": candidate.puzzle_str,
                     "valid_answers": candidate.valid_answers or [candidate.answer],

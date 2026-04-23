@@ -560,6 +560,76 @@ class YachtDiceProblemGenerator:
 # Dataset generation
 # ============================================================
 
+SFT_SOLUTION_RUBRIC_EN = (
+    "STEP0=meta · STEP1=given · STEP2=worked solution · "
+    "STEP3=answer and verification"
+)
+
+
+def _build_yacht_solution_en(
+    dice_results: List[List[int]],
+    optimal_assignment: Dict[int, str],
+    optimal_score: int,
+    config: "YachtDiceConfig",
+    difficulty: str,
+    step_metrics: Dict,
+) -> str:
+    """SFT teacher trace: yacht dice with per-round SEG assignments."""
+    num_rounds = len(dice_results)
+    upper_sum = 0
+    bonus = 0
+    total = 0
+
+    round_to_cat: Dict[int, str] = dict(optimal_assignment)
+
+    lines: List[str] = [
+        SFT_SOLUTION_RUBRIC_EN,
+        "[STEP 0] Problem meta",
+        f"  - Difficulty: {difficulty}",
+        f"  - Rounds: {num_rounds} · 5 dice per round",
+        f"  - Upper-section bonus: {config.bonus_points} pts (threshold {config.bonus_threshold})",
+        f"  - Greedy-vs-optimal gap: {step_metrics.get('greedy_gap', 0)}",
+        "  - Final answer is confirmed in [STEP 3]",
+        "[STEP 1] Given",
+        "  - Rule: each round's 5 dice must be assigned to one of 12 categories, exactly once.",
+        "  - Rule: if the upper section (Aces..Sixes) sum >= threshold, award bonus.",
+        "  - Dice per round:",
+    ]
+    for idx, dice in enumerate(dice_results):
+        lines.append(f"    R{idx + 1}: {dice}")
+
+    lines.append("[STEP 2] Worked solution")
+    lines.append(
+        f"  · Summary: DP over (round, remaining categories) to maximize total score · "
+        f"{num_rounds} SEGs"
+    )
+
+    for idx in sorted(round_to_cat.keys()):
+        dice = dice_results[idx]
+        cat = round_to_cat[idx]
+        score = calculate_score_with_config(dice, cat, config)
+        tag = " (upper)" if cat in UPPER_CATEGORIES else ""
+        lines.append(
+            f"    [SEG {idx + 1}] R{idx + 1} dice {dice} -> {cat}{tag}: {score} pts"
+        )
+        if cat in UPPER_CATEGORIES:
+            upper_sum += score
+        total += score
+
+    if upper_sum >= config.bonus_threshold:
+        bonus = config.bonus_points
+        total += bonus
+
+    lines.extend([
+        "[STEP 3] Answer and verification",
+        f"  - Final answer (optimal total): {optimal_score}",
+        f"  - Upper section sum: {upper_sum} / threshold {config.bonus_threshold} -> bonus {bonus}",
+        f"  - Recomputed total: {total} (must match the final answer)",
+        "  - Check that each category is used at most once and the bonus trigger matches the SEG trace.",
+    ])
+    return "\n".join(lines)
+
+
 def create_dataset_files(num_questions: int):
     """Create CSV + JSONL dataset files for Yacht Dice puzzles."""
     import pandas as pd
@@ -591,7 +661,14 @@ def create_dataset_files(num_questions: int):
                 dice_results = problem['dice_results']
                 optimal_score = problem['answer']
                 optimal_assignment = problem.get('optimal_assignment', {})
-                solution_str = format_solution(dice_results, optimal_assignment, config)
+                solution_str = _build_yacht_solution_en(
+                    dice_results=dice_results,
+                    optimal_assignment=optimal_assignment,
+                    optimal_score=optimal_score,
+                    config=config,
+                    difficulty=difficulty,
+                    step_metrics=problem.get('step_metrics', {}),
+                )
 
                 question = config.get_user_prompt(dice_results)
 

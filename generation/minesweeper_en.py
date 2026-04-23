@@ -307,6 +307,17 @@ class DifficultyPuzzleGenerator:
                 bitstring = mask_to_bitstring(solutions[0])
                 coord_list = mask_to_coord_list(solutions[0])
                 answer_str = coords_to_answer_string(coord_list)
+                sft_solution = _build_minesweeper_solution_en(
+                    puzzle_rows=puzzle_display,
+                    R=R,
+                    C=C,
+                    total_mines=num_mines,
+                    coord_list=coord_list,
+                    answer_str=answer_str,
+                    difficulty=difficulty,
+                    bitstring=bitstring,
+                    solver_nodes=step_stats['nodes'],
+                )
 
                 return {
                     'id': puzzle_id,
@@ -316,7 +327,8 @@ class DifficultyPuzzleGenerator:
                     'total_mines': num_mines,
                     'puzzle': puzzle_display,
                     'answer': answer_str,
-                    'solution': bitstring,
+                    'solution': sft_solution,
+                    'bitstring': bitstring,
                     'answer_type': 'coord_list',
                     'description': f"{R}x{C} grid with {num_mines} mines",
                     'cells_revealed': len(revealed),
@@ -331,6 +343,80 @@ class DifficultyPuzzleGenerator:
                 }
 
         return None
+
+
+SFT_SOLUTION_RUBRIC_EN = (
+    "STEP0=meta · STEP1=given · STEP2=worked solution · "
+    "STEP3=answer and verification"
+)
+
+
+def _build_minesweeper_solution_en(
+    puzzle_rows: List[str],
+    R: int,
+    C: int,
+    total_mines: int,
+    coord_list: List[Tuple[int, int]],
+    answer_str: str,
+    difficulty: str,
+    bitstring: str,
+    solver_nodes: int,
+) -> str:
+    """SFT teacher trace: minesweeper mine-confirmation SEGs."""
+    coord_sorted = sorted(coord_list)
+
+    clue_lookup: Dict[Tuple[int, int], int] = {}
+    for r, row in enumerate(puzzle_rows):
+        for c, ch in enumerate(row):
+            if ch.isdigit():
+                clue_lookup[(r, c)] = int(ch)
+
+    def adjacent_clues_for(rr: int, cc: int) -> List[Tuple[int, int, int]]:
+        out = []
+        for nr, nc in neighbors(rr, cc, R, C):
+            if (nr, nc) in clue_lookup:
+                out.append((nr, nc, clue_lookup[(nr, nc)]))
+        return out
+
+    lines: List[str] = [
+        SFT_SOLUTION_RUBRIC_EN,
+        "[STEP 0] Problem meta",
+        f"  - Difficulty: {difficulty}",
+        f"  - Grid: {R} rows x {C} cols",
+        f"  - Mines: {total_mines} · revealed number cells: {len(clue_lookup)}",
+        f"  - Solver backtrack nodes: {solver_nodes}",
+        "  - Final answer is confirmed in [STEP 3]",
+        "[STEP 1] Given",
+        "  - Rule: each revealed number = count of mines in its 8 neighbors.",
+        "  - Rule: '#' is a hidden cell (mine or safe).",
+        "  - Puzzle rows:",
+    ]
+    for r, row in enumerate(puzzle_rows):
+        lines.append(f"    r{r}: {' '.join(row)}")
+
+    lines.append("[STEP 2] Worked solution")
+    lines.append(
+        f"  · Summary: propagate number constraints · "
+        f"{sum(row.count('#') for row in puzzle_rows)} hidden cells / "
+        f"{total_mines} mines -> unique model · {len(coord_sorted)} SEGs"
+    )
+    for i, (r, c) in enumerate(coord_sorted, 1):
+        clue_hits = adjacent_clues_for(r, c)
+        if clue_hits:
+            clue_text = ", ".join(f"({cr},{cc})={cv}" for cr, cc, cv in clue_hits)
+            explain = f"adjacent clues {clue_text} force this cell to be a mine"
+        else:
+            explain = "forced by the global remaining-mines count constraint"
+        lines.append(f"    [SEG {i}] mine at ({r},{c}): {explain}")
+
+    lines.extend([
+        "[STEP 3] Answer and verification",
+        f"  - Final answer: {answer_str}",
+        f"  - Total mines = {total_mines} must match the count of confirmed cells.",
+        "  - For every revealed number, its neighborhood must contain exactly that many of the listed mines.",
+        f"  - Internal bitstring: {bitstring[:48]}{'…' if len(bitstring) > 48 else ''}",
+    ])
+    return "\n".join(lines)
 
 
 def format_puzzle_grid_labeled(puzzle_rows: List[str]) -> str:

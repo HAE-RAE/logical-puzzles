@@ -164,6 +164,110 @@ class AdvancedCipher:
         return result
 
 # ============================================================================
+# Guided-distillation style solution (teacher trace)
+# ============================================================================
+
+SFT_SOLUTION_RUBRIC_EN = (
+    "STEP0=meta · STEP1=given · STEP2=worked solution · "
+    "STEP3=answer and verification"
+)
+
+
+def _build_cipher_en_solution(
+    config: Dict,
+    process_log: List[str],
+    answer: str,
+    keyword: str,
+    encrypted: str,
+    kw_logic: str,
+    kw_instruction: str,
+    pos_for_solution: int = None,
+    log_id: int = 0,
+) -> str:
+    """Structured English solution for SFT guided distillation."""
+    stack = config["cipher_stack"]
+    lines = [
+        SFT_SOLUTION_RUBRIC_EN,
+        "[STEP 0] Problem meta",
+        f"  - Difficulty: {config['name']}",
+        f"  - Ciphertext: '{encrypted}' (length {len(encrypted)})",
+        f"  - Plaintext (answer): {answer}",
+        f"  - Encryption pipeline (plaintext → ciphertext): "
+        f"{' → '.join(process_log)}",
+        "  - Decryption: apply the **inverse** of each layer in **reverse order** "
+        "(undo the last encryption step first).",
+        "[STEP 1] Given (keyword + log rules)",
+        f"  - Rule from prompt: {kw_instruction}",
+    ]
+    if kw_logic == "positional" and pos_for_solution is not None:
+        lines.append(
+            f"  - Procedure: strip punctuation (., :, ,) → split on whitespace → "
+            f"take the {pos_for_solution}-th token = '{keyword}'.")
+    elif kw_logic == "extraction":
+        lines.append(
+            "  - Procedure: the token immediately after a label such as "
+            "'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.")
+    else:
+        lines.append(f"  - Keyword is stated explicitly: '{keyword}'.")
+
+    if "playfair" in stack:
+        pf_key = keyword if log_id % 2 == 0 else keyword[::-1]
+        lines.append(
+            f"  - Playfair key rule: mission log numeric ID is {log_id} "
+            f"({'even' if log_id % 2 == 0 else 'odd'}); use keyword "
+            f"{'forward' if log_id % 2 == 0 else 'reversed'} → effective key "
+            f"'{pf_key}'.")
+
+    rev = list(reversed(stack))
+    _cipher_op_name_en = {
+        "vigenere": "Vigenère⁻¹",
+        "playfair": "Playfair⁻¹",
+        "transposition": "columnar transposition⁻¹",
+        "reverse": "reverse⁻¹",
+        "substitution": "keyed substitution⁻¹",
+    }
+    decrypt_pipeline = " -> ".join(_cipher_op_name_en.get(s, s) for s in rev)
+    lines.append("[STEP 2] Worked solution (decrypt, ciphertext → plaintext)")
+    lines.append(
+        f"  · Summary: stack depth {len(stack)} · keyword '{keyword}' · "
+        f"decrypt pipeline: {decrypt_pipeline} · {len(rev)} SEGs"
+    )
+    for i, st in enumerate(rev, 1):
+        if st == "vigenere":
+            lines.append(
+                f"    [SEG {i}] Vigenère **decrypt**: repeat '{keyword}'; subtract each key "
+                "letter from ciphertext (mod 26, A=0).")
+        elif st == "playfair":
+            lines.append(
+                f"    [SEG {i}] Playfair **decrypt**: build the 5×5 square from the effective "
+                "key (I/J merged), undo digraph rules (same row → shift left, same column "
+                "→ shift up, rectangle → swap columns back).")
+        elif st == "transposition":
+            lines.append(
+                f"    [SEG {i}] Columnar transposition **decrypt**: split ciphertext into columns "
+                f"ordered by sorting the keyword '{keyword}'; fill the grid and read "
+                "rows left-to-right, then strip padding 'X' as needed.")
+        elif st == "reverse":
+            lines.append(f"    [SEG {i}] Reverse the string end-to-end.")
+        elif st == "substitution":
+            lines.append(
+                f"    [SEG {i}] Substitution **decrypt**: build the keyed alphabet from "
+                f"'{keyword}' then map ciphertext letters back to plaintext using the "
+                "inverse mapping.")
+        else:
+            lines.append(f"    [SEG {i}] apply inverse of {st}.")
+
+    lines.extend([
+        "[STEP 3] Answer and verification",
+        f"  - Final answer: '{answer}' (uppercase A–Z, no spaces).",
+        f"  - Plaintext must match '{answer}'.",
+        "  - Re-encrypt the sample pairs from the prompt with the same keyword and "
+        "stack to verify the rules match the ciphertext.",
+    ])
+    return "\n".join(lines)
+
+
+# ============================================================================
 # Generator
 # ============================================================================
 
@@ -234,6 +338,7 @@ class SelfContainedCipherGenerator:
 
         # 4. 지문 구성
         kw_logic = config["keyword_logic"]
+        pos_for_solution = None
         if kw_logic == "direct":
             kw_instruction = f"암호화 키워드는 '{keyword}'입니다."
         elif kw_logic == "positional":
@@ -241,12 +346,16 @@ class SelfContainedCipherGenerator:
             clean_log = log_text.replace(".", "").replace(":", "").replace(",", "")
             words = clean_log.split()
             try:
-                pos = words.index(keyword) + 1
-                kw_instruction = f"암호화 키워드는 아래 로그 지문의 {pos}번째 단어입니다. (문장 부호 제외)"
+                pos_for_solution = words.index(keyword) + 1
+                kw_instruction = (
+                    f"암호화 키워드는 아래 로그 지문의 {pos_for_solution}번째 단어입니다. "
+                    f"(문장 부호 제외)")
             except ValueError:
                 kw_instruction = f"암호화 키워드는 '{keyword}'입니다."
-        else: # extraction (Extreme)
-            kw_instruction = "암호화 키워드는 로그 지문 내에 숨겨져 있습니다. 'PRIMARY KEY', 'AUTH CODE', 'SEED', 'VECTOR' 등의 라벨 다음에 오는 단어가 키워드입니다."
+        else:  # extraction (Extreme)
+            kw_instruction = (
+                "암호화 키워드는 로그 지문 내에 숨겨져 있습니다. 'PRIMARY KEY', "
+                "'AUTH CODE', 'SEED', 'VECTOR' 등의 라벨 다음에 오는 단어가 키워드입니다.")
 
         stack_desc = " -> ".join([s.upper() for s in config["cipher_stack"]])
         
@@ -278,11 +387,24 @@ class SelfContainedCipherGenerator:
         
         problem_text += "\n복호화된 원문을 입력하세요 (대문자, 공백 없음)."
 
+        answer_clean = answer.replace(" ", "")
+        solution = _build_cipher_en_solution(
+            config=config,
+            process_log=process_log,
+            answer=answer_clean,
+            keyword=keyword,
+            encrypted=encrypted,
+            kw_logic=kw_logic,
+            kw_instruction=kw_instruction,
+            pos_for_solution=pos_for_solution,
+            log_id=log_id,
+        )
+
         return {
             "difficulty": config["name"],
             "problem": problem_text,
-            "answer": answer.replace(" ", ""),
-            "solution": f"Steps: {' -> '.join(process_log)} | Answer: {answer}"
+            "answer": answer_clean,
+            "solution": solution,
         }
 
 # ============================================================================
@@ -319,13 +441,12 @@ def create_advanced_dataset(num_per_level: int = 2):
                 "answer": problem["answer"],
                 "solution": problem["solution"],
                 "difficulty": difficulty,
-                "description": config["description"]
             })
 
             print(f"  {i+1}. {problem['answer'][:15]}... 생성 완료")
 
-    # DataFrame 생성
-    df = pd.DataFrame(all_problems)
+    cols = ["id", "question", "answer", "solution", "difficulty"]
+    df = pd.DataFrame([{k: p[k] for k in cols} for p in all_problems])
 
     PROJECT_ROOT = Path(__file__).resolve().parent.parent
 

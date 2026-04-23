@@ -588,6 +588,145 @@ def generate_dataset(puzzles_per_difficulty: int = 3, verbose: bool = True) -> L
     return dataset
 
 
+SFT_SOLUTION_RUBRIC_KO = (
+    "STEP0=문제 메타 · STEP1=주어진 조건 · STEP2=풀이 전개 · STEP3=답·검산"
+)
+
+
+def _reach_time_trace_ko(puzzle: CausalPuzzle) -> tuple:
+    """재계산한 최단 도달시각과 SEG 라인·요약 메타를 반환."""
+    events = puzzle.events
+    edges = puzzle.edges
+    trigger = puzzle.trigger
+    trigger_time = puzzle.trigger_time
+    target = puzzle.target_event
+
+    earliest = {eid: float('inf') for eid in events}
+    earliest[trigger] = trigger_time
+    prereq_arrival: Dict[str, Dict[str, int]] = {eid: {} for eid in events}
+    resolver: Dict[str, CausalEdge] = {}
+
+    pq = [(trigger_time, trigger)]
+    processed = set()
+    while pq:
+        ct, ce = heapq.heappop(pq)
+        if ce in processed:
+            continue
+        processed.add(ce)
+        for edge in edges:
+            fes = edge.from_events if edge.from_events else [edge.from_event]
+            if ce not in fes:
+                continue
+            at = ct + edge.delay
+            pa = prereq_arrival[edge.to_event]
+            if ce not in pa or at < pa[ce]:
+                pa[ce] = at
+            if all(p in pa for p in fes):
+                if edge.condition == 'AND':
+                    tt = max(pa[p] for p in fes)
+                else:
+                    tt = min(pa[p] for p in fes)
+                if tt < earliest[edge.to_event]:
+                    earliest[edge.to_event] = tt
+                    resolver[edge.to_event] = edge
+                    heapq.heappush(pq, (tt, edge.to_event))
+
+    def nm(eid: str) -> str:
+        return events[eid].name if eid in events else eid
+
+    reached = [eid for eid in events if earliest[eid] < float('inf')]
+    reached.sort(key=lambda e: (earliest[e], e))
+
+    lines: List[str] = []
+    and_count = or_count = 0
+    for seg, eid in enumerate(reached, start=1):
+        star = " ★" if eid == target else ""
+        if eid == trigger:
+            lines.append(
+                f"    [SEG {seg}] (트리거) {nm(eid)} t={earliest[eid]}분{star}")
+            continue
+        edge = resolver[eid]
+        fes = edge.from_events if edge.from_events else [edge.from_event]
+        if len(fes) > 1 and edge.condition == 'AND':
+            and_count += 1
+            parts = " · ".join(
+                f"{nm(p)}(t={earliest[p]})" for p in fes)
+            peak = max(earliest[p] for p in fes)
+            lines.append(
+                f"    [SEG {seg}] {nm(eid)}: AND[{parts}] "
+                f"→ max={peak} + 지연 {edge.delay} = t={earliest[eid]}분{star}")
+        elif len(fes) > 1 and edge.condition == 'OR':
+            or_count += 1
+            parts = " · ".join(
+                f"{nm(p)}(t={earliest[p]})" for p in fes)
+            low = min(earliest[p] for p in fes)
+            lines.append(
+                f"    [SEG {seg}] {nm(eid)}: OR[{parts}] "
+                f"→ min={low} + 지연 {edge.delay} = t={earliest[eid]}분{star}")
+        else:
+            p = fes[0]
+            lines.append(
+                f"    [SEG {seg}] {nm(eid)}: {nm(p)}(t={earliest[p]}) "
+                f"+ 지연 {edge.delay} = t={earliest[eid]}분{star}")
+
+    path_len = 0
+    cur = target
+    guard = 0
+    while cur != trigger and cur in resolver and guard < len(events) + 2:
+        edge = resolver[cur]
+        fes = edge.from_events if edge.from_events else [edge.from_event]
+        if edge.condition == 'AND':
+            cur = max(fes, key=lambda p: earliest[p])
+        else:
+            cur = min(fes, key=lambda p: earliest[p])
+        path_len += 1
+        guard += 1
+
+    summary = {
+        'reached': len(reached),
+        'and_count': and_count,
+        'or_count': or_count,
+        'path_len': path_len,
+    }
+    return lines, summary
+
+
+def _build_causal_dag_solution_ko(puzzle: CausalPuzzle) -> str:
+    """SFT teacher trace: time propagation + target minute."""
+    n_ev = len(puzzle.events)
+    n_ed = len(puzzle.edges)
+    trace_lines, smry = _reach_time_trace_ko(puzzle)
+    head = [
+        SFT_SOLUTION_RUBRIC_KO,
+        "[STEP 0] 문제 메타",
+        f"  - 난이도: {puzzle.difficulty}",
+        f"  - 트리거 사건: {puzzle.trigger} (t = {puzzle.trigger_time}분)",
+        f"  - 질문 대상 사건: {puzzle.target_event}",
+        f"  - 그래프: 사건 {n_ev}개, 엣지 {n_ed}개",
+        "  - 최종 분(정수)은 [STEP 3]에만 ‘검산용’으로 둔다. "
+        "먼저 [STEP 2]의 SEG 로그를 따라갈 것.",
+        "[STEP 1] 주어진 조건 (시간 전파·그래프 규칙, 문제 본문과 동일)",
+        "  - 엣지마다 지연이 있으며, 전제 사건이(들이) 발생한 뒤 결과로 전파.",
+        "  - OR: 전제 중 **가장 이른** 트리거(문제에 “FIRST”로 표기) — 구현은 각 "
+        "전제 도착시각+지연의 최소에 해당.",
+        "  - AND: 전제 **전부** 도달 후, 그 시각들 중 **최댓값**에 delay를 더함.",
+        "[STEP 2] 풀이 전개 (도달 시각 산출)",
+        (f"  · 요약: {puzzle.trigger}(t={puzzle.trigger_time})"
+         f" → {puzzle.target_event} · 도달 사건 "
+         f"{smry['reached']}/{n_ev} · AND {smry['and_count']} / "
+         f"OR {smry['or_count']} · 임계 경로 {smry['path_len']}홉"),
+        "  · 머릿속으로: 각 사건을 **최단 도달시각 오름차순**으로 처리, "
+        "AND는 max+delay / OR는 min+delay.",
+    ]
+    tail = [
+        "[STEP 3] 답·검산",
+        f"  - 최종 답(분): {puzzle.answer}",
+        "  - 우선순위 큐 전파를 다시 돌려 같은 정수가 나오는지, 각 AND 마디에서 "
+        "max(prereqs)+delay, 각 OR 마디에서 min(prereqs)+delay 가 맞는지 확인.",
+    ]
+    return "\n".join(head + trace_lines + tail)
+
+
 def create_dataset_files(num_questions: int):
     """
     인과 DAG 퍼즐 데이터셋 파일 생성
@@ -621,17 +760,15 @@ def create_dataset_files(num_questions: int):
                 'id': f'causal_dag_ko_{len(all_puzzles)}',
                 'question': create_question(puzzle),
                 'answer': str(puzzle.answer),
+                'solution': _build_causal_dag_solution_ko(puzzle),
                 'difficulty': difficulty,
-                'trigger': puzzle.trigger,
-                'target': puzzle.target_event,
-                'num_events': len(puzzle.events),
-                'num_edges': len(puzzle.edges)
             }
             all_puzzles.append(puzzle_data)
     
     print(f"\n{len(all_puzzles)}개의 퍼즐 생성 완료")
     
-    df = pd.DataFrame(all_puzzles)
+    export_cols = ['id', 'question', 'answer', 'solution', 'difficulty']
+    df = pd.DataFrame([{k: p[k] for k in export_cols} for p in all_puzzles])
     
     # 파일 저장
     PROJECT_ROOT = Path(__file__).resolve().parent.parent
