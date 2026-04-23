@@ -93,14 +93,14 @@ Answer: [숫자]"""
 
     def _parse_answer(self, response: str, puzzle: Dict) -> Optional[str]:
         """Extract numeric answer from LLM response."""
-        # Remove code blocks
-        response = re.sub(r'```[a-z]*\n?', '', response)
-        response = re.sub(r'```', '', response)
+        # Remove code blocks and prioritize unified answer label extraction.
+        response = self._strip_code_fences(response)
+        answer_text = self._extract_final_answer_text(response) or response
 
         # Priority 1: "Answer:" pattern
         answer_matches = re.findall(
             r'(?:Answer|Output|Final\s*Answer)\s*[:\s]*(\d+)',
-            response, re.IGNORECASE
+            answer_text, re.IGNORECASE
         )
         if answer_matches:
             return answer_matches[-1]
@@ -112,19 +112,19 @@ Answer: [숫자]"""
             r'= (\d+)$',
         ]
         for pattern in patterns:
-            match = re.search(pattern, response, re.IGNORECASE | re.MULTILINE)
+            match = re.search(pattern, answer_text, re.IGNORECASE | re.MULTILINE)
             if match:
                 return match.group(1)
 
         # Priority 3: last multi-digit number in last 5 lines
-        lines = response.strip().split('\n')
+        lines = answer_text.strip().split('\n')
         for line in reversed(lines[-5:]):
             match = re.search(r'\b(\d{2,})\b', line.strip())
             if match:
                 return match.group(1)
 
         # Priority 4: last multi-digit number anywhere
-        numbers = re.findall(r'\b(\d{2,})\b', response)
+        numbers = re.findall(r'\b(\d{2,})\b', answer_text)
         if numbers:
             return numbers[-1]
 

@@ -1,6 +1,7 @@
 import logging
 import time
 import asyncio
+import re
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Protocol, Tuple, TYPE_CHECKING
@@ -68,6 +69,54 @@ class BaseEvaluator(ABC):
     """
     
     SYSTEM_PROMPT: str
+
+    @staticmethod
+    def _strip_code_fences(text: str) -> str:
+        """Remove markdown code fences from model response."""
+        cleaned = re.sub(r"```[a-zA-Z0-9_-]*\n?", "", text)
+        cleaned = re.sub(r"```", "", cleaned)
+        return cleaned
+
+    @staticmethod
+    def _extract_last_boxed(text: str) -> Optional[str]:
+        """Extract the payload of the last LaTeX \\boxed{...} occurrence."""
+        pattern = re.compile(r"\\boxed\{((?:[^{}]|\{[^{}]*\})*)\}")
+        matches = pattern.findall(text)
+        if not matches:
+            return None
+        return matches[-1].strip()
+
+    def _extract_final_answer_text(
+        self,
+        response: str,
+        allow_boxed_fallback: bool = True,
+    ) -> Optional[str]:
+        """
+        Extract final answer payload from response using unified label-first policy.
+
+        Priority:
+        1) Last labeled answer line (Answer/Final answer/최종 답/정답/원문/Plaintext)
+        2) Last \\boxed{...} payload (optional fallback)
+        """
+        cleaned = self._strip_code_fences(response or "").strip()
+        if not cleaned:
+            return None
+
+        label_pattern = re.compile(
+            r"(?:^|\n)\s*"
+            r"(?:final\s*answer|answer|최종\s*답|정답|원문|plaintext)\s*[:：]\s*(.+)",
+            re.IGNORECASE,
+        )
+        labels = label_pattern.findall(cleaned)
+        if labels:
+            return labels[-1].strip()
+
+        if allow_boxed_fallback:
+            boxed = self._extract_last_boxed(cleaned)
+            if boxed:
+                return boxed
+
+        return None
     
     def evaluate(
         self,

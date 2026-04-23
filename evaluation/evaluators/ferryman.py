@@ -29,7 +29,8 @@ You are an expert at solving boat navigation problems.
 3. Explain your reasoning clearly, then present your final conclusion in the format below.
 
 ### Output format
-End with $\\boxed{X hours Y minutes}$.
+Your final line must be:
+Answer: X hours Y minutes
 """
 
     KOREAN_SYSTEM_PROMPT = """### 지시사항
@@ -41,7 +42,8 @@ End with $\\boxed{X hours Y minutes}$.
 3. 풀이 과정을 명확히 서술한 뒤, 최종 결론을 아래 형식으로 제시하세요.
 
 ### 출력 형식
-마지막에 $\\boxed{N시간 M분}$ 형식으로 정답을 표시하세요.
+마지막 줄은 반드시 아래 형식으로 작성하세요:
+Answer: N시간 M분
 """
 
     def _is_korean(self, puzzle: Optional[Dict] = None) -> bool:
@@ -74,9 +76,10 @@ End with $\\boxed{X hours Y minutes}$.
         Extract time answer from LLM response and normalize.
         Routes to Korean or English parser based on task_name (_ko/_en) or answer format.
         """
+        answer_text = self._extract_final_answer_text(response) or response
         if self._is_korean(puzzle):
-            return self._extract_korean(response)
-        return self._extract_english(response)
+            return self._extract_korean(answer_text)
+        return self._extract_english(answer_text)
 
     def _extract_korean(self, response: str) -> Optional[str]:
         # 1) \boxed{X시간 Y분} (with optional \text{})

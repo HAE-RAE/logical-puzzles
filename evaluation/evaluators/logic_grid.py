@@ -33,7 +33,9 @@ You are an expert at solving logic puzzles.
 Carefully analyze all constraints and provide accurate answers.
 
 ### Output format
-Follow the answer format specified in the user message."""
+Your final line should be:
+Answer: {JSON object}
+Follow the JSON schema required in the user message."""
 
     KOREAN_SYSTEM_PROMPT = """### 지시사항
 당신은 논리 퍼즐 전문가입니다.
@@ -42,7 +44,9 @@ Follow the answer format specified in the user message."""
 주어진 모든 단서를 꼼꼼히 분석하고 정확한 답(JSON)을 제시하세요.
 
 ### 출력 형식
-사용자 메시지에서 요구하는 JSON 형식을 따르세요."""
+마지막 줄은 다음 형식을 권장합니다:
+Answer: {JSON 객체}
+사용자 메시지에서 요구하는 JSON 스키마를 정확히 따르세요."""
 
     def _is_korean(self, puzzle: Optional[Dict] = None) -> bool:
         """task_name에 logic_grid_ko_easy 등 포함 시 한국어; question/answer에서도 추론."""
@@ -165,8 +169,24 @@ Follow the answer format specified in the user message."""
         """
         people = puzzle.get("people", [])
         categories = list(puzzle.get("attributes", {}).keys())
+        answer_text = self._extract_final_answer_text(response, allow_boxed_fallback=False)
         
         try:
+            if answer_text and answer_text.strip().startswith("{"):
+                answer = json.loads(answer_text.strip())
+                if isinstance(answer, dict):
+                    valid = True
+                    for person in people:
+                        if person not in answer or not isinstance(answer[person], dict):
+                            valid = False
+                            break
+                        for cat in categories:
+                            if cat not in answer[person]:
+                                valid = False
+                                break
+                    if valid:
+                        return answer
+
             # Try to find JSON in the response
             json_match = re.search(r'```json\s*(\{.*?\})\s*```', response, re.DOTALL)
             if json_match:

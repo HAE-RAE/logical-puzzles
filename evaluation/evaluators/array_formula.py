@@ -33,10 +33,10 @@ Analyze the given table data and answer the question accurately.
 1. For numeric results, answer with only the number (no units, commas, or currency symbols)
 2. For decimals, truncate unless otherwise specified
 3. For text answers, provide the exact value only
-4. Briefly explain your reasoning, then end with "Final answer: [answer]"
+4. Briefly explain your reasoning, then end with "Answer: [answer]"
 
 ### Output format
-End your response with a line: Final answer: [answer]
+End your response with a line: Answer: [answer]
 """
 
     KOREAN_SYSTEM_PROMPT = """### 지시사항
@@ -47,10 +47,10 @@ End your response with a line: Final answer: [answer]
 1. 숫자 결과는 숫자만 답하세요 (단위, 쉼표, 통화 기호 없이)
 2. 소수점은 별도 지시가 없으면 버림 처리하세요
 3. 텍스트 답변은 정확한 값만 작성하세요
-4. 풀이 과정을 간략히 설명한 후, "최종 답: [답]"으로 마무리하세요
+4. 풀이 과정을 간략히 설명한 후, "Answer: [답]"으로 마무리하세요
 
 ### 출력 형식
-마지막에 "최종 답: [답]" 형식으로 끝내세요.
+마지막에 "Answer: [답]" 형식으로 끝내세요.
 """
 
     def _is_korean(self, puzzle: Optional[Dict] = None) -> bool:
@@ -85,18 +85,20 @@ End your response with a line: Final answer: [answer]
         """
         answer_type = puzzle.get("answer_type", "number")
 
+        answer_text = self._extract_final_answer_text(response, allow_boxed_fallback=False)
+
         patterns = [
             r"[Ff]inal\s*[Aa]nswer\s*[:：]\s*(.+?)(?:\n|$)",
             r"[Aa]nswer\s*[:：]\s*(.+?)(?:\n|$)",
             r"최종\s*답\s*[:：]\s*(.+?)(?:\n|$)",
         ]
 
-        answer_text = None
-        for pattern in patterns:
-            match = re.search(pattern, response, re.IGNORECASE)
-            if match:
-                answer_text = match.group(1).strip()
-                break
+        if answer_text is None:
+            for pattern in patterns:
+                match = re.search(pattern, response, re.IGNORECASE)
+                if match:
+                    answer_text = match.group(1).strip()
+                    break
 
         # Fallback: extract from last line
         if answer_text is None:

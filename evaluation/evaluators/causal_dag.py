@@ -32,7 +32,8 @@ You are a logical reasoning expert.
 Analyze the problem carefully and provide precise numerical answers.
 
 ### Output format
-Give the numeric answer required by the user message (e.g. minutes)."""
+Your last line must be: Answer: [number]
+Example: Answer: 45"""
 
     KOREAN_SYSTEM_PROMPT = """### 지시사항
 당신은 논리 추론 전문가입니다.
@@ -41,7 +42,9 @@ Give the numeric answer required by the user message (e.g. minutes)."""
 문제를 꼼꼼히 분석하고 분 단위 등 요구되는 정확한 수치 답을 제시하세요.
 
 ### 출력 형식
-사용자 메시지에서 요구하는 수치 답(예: 분)을 제시하세요."""
+마지막 줄은 반드시 다음 형식으로 작성하세요:
+Answer: [숫자]
+예: Answer: 45"""
 
     def _is_korean(self, puzzle: Optional[Dict] = None) -> bool:
         """task_name에 causal_dag_ko_easy 등 포함 시 한국어; question/answer에서도 추론."""
@@ -163,43 +166,44 @@ Give the numeric answer required by the user message (e.g. minutes)."""
             puzzle: 퍼즐 데이터 (사용하지 않음)
         """
         response = response.strip()
+        answer_text = self._extract_final_answer_text(response) or response
         
         # Pattern 1: Just a number
-        if response.isdigit():
-            return int(response)
+        if answer_text.isdigit():
+            return int(answer_text)
         
         # Pattern 2: LaTeX boxed format: \boxed{45} or \\boxed{45}
-        match = re.search(r'\\+boxed\{(\d+)\}', response)
+        match = re.search(r'\\+boxed\{(\d+)\}', answer_text)
         if match:
             return int(match.group(1))
         
         # Pattern 3: "Answer: 45" or "answer: 45"
-        match = re.search(r'[Aa]nswer\s*[:：]\s*(\d+)', response)
+        match = re.search(r'[Aa]nswer\s*[:：]\s*(\d+)', answer_text)
         if match:
             return int(match.group(1))
         
         # Pattern 4: "event X first occurs at minute 45" or "occurs at minute 45"
-        matches = list(re.finditer(r'(?:first\s+)?occurs?\s+at\s+minute\s+(\d+)', response, re.IGNORECASE))
+        matches = list(re.finditer(r'(?:first\s+)?occurs?\s+at\s+minute\s+(\d+)', answer_text, re.IGNORECASE))
         if matches:
             return int(matches[-1].group(1))
         
         # Pattern 5: "at minute 45" (last occurrence)
-        matches = list(re.finditer(r'at\s+minute\s+(\d+)', response, re.IGNORECASE))
+        matches = list(re.finditer(r'at\s+minute\s+(\d+)', answer_text, re.IGNORECASE))
         if matches:
             return int(matches[-1].group(1))
         
         # Pattern 6: "minute 45" (last occurrence)
-        matches = list(re.finditer(r'[Mm]inute\s+(\d+)', response))
+        matches = list(re.finditer(r'[Mm]inute\s+(\d+)', answer_text))
         if matches:
             return int(matches[-1].group(1))
         
         # Pattern 7: "45 minutes"
-        match = re.search(r'(\d+)\s+[Mm]inutes?', response)
+        match = re.search(r'(\d+)\s+[Mm]inutes?', answer_text)
         if match:
             return int(match.group(1))
         
         # Pattern 8: Last number in response
-        numbers = re.findall(r'\b(\d+)\b', response)
+        numbers = re.findall(r'\b(\d+)\b', answer_text)
         if numbers:
             return int(numbers[-1])
         

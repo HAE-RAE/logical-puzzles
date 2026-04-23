@@ -179,6 +179,11 @@ Answer: (r1,c1), (r2,c2), ..."""
         return None
 
     def _parse_answer(self, response: str, puzzle: Dict) -> Optional[Set[Tuple[int, int]]]:
+        answer_text = self._extract_final_answer_text(response, allow_boxed_fallback=False)
+        if answer_text:
+            parsed = self._parse_coord_set(answer_text)
+            if parsed is not None:
+                return parsed
         return self._parse_coord_set(response)
 
     def _check_answer(

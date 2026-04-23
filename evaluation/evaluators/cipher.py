@@ -21,9 +21,10 @@ You are a cryptography expert. Analyze the mission log and encryption guide to d
 - For Columnar Transposition, columns are reordered by the alphabetical order of the keyword.
 
 ### Output format
-Plaintext in uppercase when applicable.
+Your final line must be:
+Answer: [decrypted text]
 
-Plaintext: [decrypted text]"""
+Use uppercase for English plaintext when applicable."""
 
     KOREAN_SYSTEM_PROMPT = """### 지시사항
 너는 한글 암호 해독 전문가입니다. 주어진 미션 로그와 암호화 가이드를 분석하여 한글 암호문을 복호화해야 합니다.
@@ -33,9 +34,8 @@ Plaintext: [decrypted text]"""
 - 한글의 초성(ㄱ, ㄴ...), 중성(ㅏ, ㅑ...) 구조를 활용한 알고리즘을 정확한 역순으로 적용하세요.
 
 ### 출력 형식
-최종 답변은 반드시 '원문: [한글정답]' 형식으로 제시하세요.
-
-원문: [복호화된 한글 텍스트]"""
+최종 답변의 마지막 줄은 반드시 아래 형식으로 제시하세요.
+Answer: [복호화된 한글 텍스트]"""
 
     def _is_korean(self, puzzle: Optional[Dict] = None) -> bool:
         """Prefer task_name (e.g. …_ko_easy); else infer from expected answer."""
@@ -69,21 +69,22 @@ Plaintext: [decrypted text]"""
     
     def _parse_english_answer(self, response: str) -> Optional[str]:
         """영문 답변 파싱"""
+        answer_text = self._extract_final_answer_text(response) or response
         patterns = [
+            r'answer[:\s]*([A-Z]+)',
+            r'plaintext[:\s]*([A-Z]+)',
             r'원문[:\s]*([A-Z]+)',
             r'답[:\s]*([A-Z]+)',
             r'정답[:\s]*([A-Z]+)',
-            r'answer[:\s]*([A-Z]+)',
-            r'plaintext[:\s]*([A-Z]+)',
         ]
         
         for pattern in patterns:
-            matches = re.findall(pattern, response, re.IGNORECASE)
+            matches = re.findall(pattern, answer_text, re.IGNORECASE)
             if matches:
                 return matches[-1].strip().upper()
         
         # 마지막 대문자 단어 추출 (최소 3글자)
-        words = re.findall(r'\b[A-Z]{3,}\b', response)
+        words = re.findall(r'\b[A-Z]{3,}\b', answer_text)
         if words:
             return words[-1]
         
@@ -91,20 +92,22 @@ Plaintext: [decrypted text]"""
     
     def _parse_korean_answer(self, response: str) -> Optional[str]:
         """한글 답변 파싱"""
+        answer_text = self._extract_final_answer_text(response) or response
         patterns = [
+            r'answer[:\s]*([가-힣\s]+)',
             r'원문[:\s]*([가-힣\s]+)',
             r'정답[:\s]*([가-힣\s]+)',
             r'답[:\s]*([가-힣\s]+)',
         ]
         
         for pattern in patterns:
-            matches = re.findall(pattern, response)
+            matches = re.findall(pattern, answer_text, re.IGNORECASE)
             if matches:
                 # 공백 제거하고 반환
                 return matches[-1].strip().replace(" ", "")
         
         # 마지막 한글 단어 추출 (최소 2글자)
-        words = re.findall(r'[가-힣]{2,}', response)
+        words = re.findall(r'[가-힣]{2,}', answer_text)
         if words:
             return words[-1]
         

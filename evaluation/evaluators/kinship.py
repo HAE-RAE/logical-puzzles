@@ -30,7 +30,8 @@ class KinshipEvaluator(BaseEvaluator):
 3. 최종 결론을 아래 형식으로 제시하세요.
 
 ### 출력 형식
-마지막에 $\\boxed{A}$ 형식으로 정답을 표시하세요. (A~Z 중 하나)
+마지막 줄은 반드시 다음 형식으로 작성하세요:
+Answer: A (A~Z 중 하나)
 """
 
     VISION_SYSTEM_PROMPT = """### 지시사항
@@ -42,7 +43,8 @@ class KinshipEvaluator(BaseEvaluator):
 3. 최종 결론을 아래 형식으로 제시하세요.
 
 ### 출력 형식
-마지막에 $\\boxed{A}$ 형식으로 정답을 표시하세요. (A~Z 중 하나)
+마지막 줄은 반드시 다음 형식으로 작성하세요:
+Answer: A (A~Z 중 하나)
 """
     
     def __init__(self):
@@ -128,13 +130,21 @@ class KinshipEvaluator(BaseEvaluator):
         def _valid(letter: str) -> bool:
             return valid_choices is None or letter in valid_choices
 
+        answer_text = self._extract_final_answer_text(response) or response
+
+        answer_match = re.search(r'(?i)\banswer\s*[:：]\s*([A-Z])\b', answer_text)
+        if answer_match:
+            letter = answer_match.group(1).upper()
+            if len(letter) == 1 and letter.isalpha() and letter <= max_letter and _valid(letter):
+                return letter
+
         boxed = re.search(r'\\boxed\{([^}]+)\}', response)
         if boxed:
             letter = boxed.group(1).strip().upper()
             if len(letter) == 1 and letter.isalpha() and letter <= max_letter and _valid(letter):
                 return letter
 
-        upper = response.upper().strip()
+        upper = answer_text.upper().strip()
 
         match = re.search(r'(?:^|[^A-Z])([A-' + max_letter + r'])(?:[^A-Z]|$)', upper)
         if match and _valid(match.group(1)):
