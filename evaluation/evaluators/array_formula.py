@@ -69,6 +69,23 @@ End your response with a line: Answer: [answer]
             return self.KOREAN_SYSTEM_PROMPT
         return self.SYSTEM_PROMPT
 
+    @staticmethod
+    def _infer_answer_type(puzzle: Dict) -> str:
+        """
+        Infer answer type when dataset row does not include `answer_type`.
+        Priority:
+        1) explicit `answer_type` in row
+        2) regex-based inference from gold `answer`
+        """
+        answer_type = puzzle.get("answer_type")
+        if answer_type in {"number", "text"}:
+            return answer_type
+
+        expected = str(puzzle.get("answer", "")).strip()
+        if re.fullmatch(r"-?\d+(?:\.\d+)?", expected):
+            return "number"
+        return "text"
+
     def _parse_answer(self, response: str, puzzle: Dict) -> Optional[Any]:
         """
         LLM 응답에서 답변 추출
@@ -83,7 +100,7 @@ End your response with a line: Answer: [answer]
         Returns:
             int/float (number 타입) 또는 str (text 타입), 추출 실패 시 None
         """
-        answer_type = puzzle.get("answer_type", "number")
+        answer_type = self._infer_answer_type(puzzle)
 
         answer_text = self._extract_final_answer_text(response, allow_boxed_fallback=False)
 

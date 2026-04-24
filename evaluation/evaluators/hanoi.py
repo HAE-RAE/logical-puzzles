@@ -31,6 +31,12 @@ Answer: (disk, from, to)
 
 ### Rules
 Follow the Hanoi puzzle given in the user message.
+Do not write multiple `Answer:` lines.
+Do not include any additional text after the final `Answer:` line.
+Use tuple format for all question types:
+- Move query -> (disk, from, to)
+- How many disks -> (n, n, n)
+- How many times Disk k moves -> (k, t, t)
 
 ### Output format
 Answer: (disk, from, to) — e.g. Answer: (1, 0, 2)"""
@@ -41,6 +47,12 @@ Answer: (원반 번호, 출발 기둥, 도착 기둥)
 
 ### 규칙
 사용자 메시지에 주어진 하노이 퍼즐을 따르세요.
+`Answer:` 라벨은 한 번만 작성하세요.
+마지막 `Answer:` 줄 뒤에는 어떤 텍스트도 추가하지 마세요.
+모든 문제 유형에서 튜플 형식을 사용하세요:
+- 이동 문제 -> (원반, 출발, 도착)
+- 전체 원반 수 문제 -> (n, n, n)
+- 원반 k의 총 이동 횟수 문제 -> (k, t, t)
 
 ### 출력 형식
 예: Answer: (1, 0, 2)"""
@@ -174,6 +186,28 @@ Answer: (원반 번호, 출발 기둥, 도착 기둥)
         nums = re.findall(r'\d+', answer_text)
         if len(nums) >= 3:
             return (int(nums[0]), int(nums[1]), int(nums[2]))
+
+        # 단일 숫자 답변 보정: 역문제/총 이동 횟수 문제
+        question_raw = str(puzzle.get("question", ""))
+        question = question_raw.lower()
+        if len(nums) == 1:
+            v = int(nums[0])
+
+            # How many disks? -> (n, n, n)
+            if "how many disks" in question or "원반 수" in question:
+                return (v, v, v)
+
+            # How many times does Disk k move? -> (k, t, t)
+            m = re.search(r"disk\s*(\d+)", question, re.IGNORECASE)
+            if "how many times" in question and m:
+                k = int(m.group(1))
+                return (k, v, v)
+
+            # Korean variant: "원반 k" + "몇 번"
+            m_ko = re.search(r"원반\s*(\d+)", question_raw)
+            if "몇 번" in question_raw and m_ko:
+                k = int(m_ko.group(1))
+                return (k, v, v)
         
         return None
     
