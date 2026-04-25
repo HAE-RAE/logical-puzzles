@@ -597,24 +597,24 @@ def save_dataset(puzzles: List[Dict], base_dir: str = "./data"):
     json_dir.mkdir(parents=True, exist_ok=True)
 
     csv_path = csv_dir / "hanoi_en.csv"
-    jsonl_path = json_dir / "hanoi_en.jsonl"
+    jsonl_paths = {}
+    for diff in ["easy", "medium", "hard"]:
+        p = json_dir / f"hanoi_en_{diff}.jsonl"
+        subset = [pz for pz in puzzles if pz["difficulty"] == diff]
+        with open(p, "w", encoding="utf-8") as f:
+            for puzzle in subset:
+                row = {
+                    "id": puzzle["id"],
+                    "question": puzzle["question"],
+                    "answer": puzzle["answer"],
+                    "solution": puzzle["solution"],
+                    "difficulty": puzzle["difficulty"],
+                }
+                f.write(json.dumps(row, ensure_ascii=False) + "\n")
+        print(f"Saved {len(subset)} puzzles to {p}")
+        jsonl_paths[diff] = p
 
     csv_columns = ["id", "question", "answer", "solution", "difficulty", "type", "n"]
-
-    with open(jsonl_path, "w", encoding="utf-8") as f:
-        for puzzle in puzzles:
-            row = {
-                "id": puzzle["id"],
-                "question": puzzle["question"],
-                "answer": puzzle["answer"],
-                "solution": puzzle["solution"],
-                "difficulty": puzzle["difficulty"],
-                "type": puzzle["type"],
-                "n": puzzle["n"],
-            }
-            f.write(json.dumps(row, ensure_ascii=False) + "\n")
-
-    print(f"Saved {len(puzzles)} puzzles to {jsonl_path}")
 
     with open(csv_path, "w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=csv_columns)
@@ -649,7 +649,7 @@ def save_dataset(puzzles: List[Dict], base_dir: str = "./data"):
     for key, count in sorted(n_stats.items()):
         print(f"  {key}: {count}")
 
-    return csv_path, jsonl_path
+    return csv_path, jsonl_paths
 
 
 if __name__ == "__main__":
