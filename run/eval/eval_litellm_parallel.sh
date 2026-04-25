@@ -17,8 +17,9 @@ cd "$PROJECT_ROOT"
 
 # ============ Gemini 설정 ============
 MODEL="gemini/gemini-3-flash-preview"
-GEN_KWARGS="temperature=1.0,max_tokens=65536,top_p=0.95,top_k=64,reasoning_effort=high"
+GEN_KWARGS="temperature=1.0,max_tokens=65536,top_p=0.95,top_k=64"
 # =====================================
+# ,reasoning_effort=high
 
 MODEL_DIR_NAME="${MODEL//\//_}"
 LOG_DIR="$PROJECT_ROOT/results/$MODEL_DIR_NAME/log"
@@ -35,34 +36,97 @@ echo ""
 
 
 TASKS=(
-    # "array_formula_en"
-    # "array_formula_ko"
-    # "causal_dag_en"
-    # "causal_dag_ko"
-    # "cipher_en"
-    # "cipher_ko"
-    # "cryptarithmetic_en"
-    # "cryptarithmetic_ko"
-    # "ferryman_en"
-    # "ferryman_ko"
-    # "hanoi_en"
-    # "hanoi_ko"
-    # "inequality_en"
-    # "inequality_ko"
-    # "kinship"
-    # "kinship_vision"
-    # "logic_grid_en"
-    # "logic_grid_ko"
-    # "minesweeper_en"
-    # "minesweeper_ko"
-    # "number_baseball_en"
-    # "number_baseball_ko"
-    # "sat_puzzles_en"
-    # "sat_puzzles_ko"
-    # "sudoku_en"
-    # "sudoku_ko"
-    # "yacht_dice_en"
-    # "yacht_dice_ko"
+    "array_formula_en_easy"
+    "array_formula_en_hard"
+    "array_formula_en_medium"
+    "array_formula_ko_easy"
+    "array_formula_ko_hard"
+    "array_formula_ko_medium"
+
+    "cipher_en_easy"
+    "cipher_en_hard"
+    "cipher_en_medium"
+    "cipher_ko_easy"
+    "cipher_ko_hard"
+    "cipher_ko_medium"
+
+    "ferryman_en_easy"
+    "ferryman_en_hard"
+    "ferryman_en_medium"
+    "ferryman_ko_easy"
+    "ferryman_ko_hard"
+    "ferryman_ko_medium"
+
+    "hanoi_en_easy"
+    "hanoi_en_hard"
+    "hanoi_en_medium"
+    "hanoi_ko_easy"
+    "hanoi_ko_hard"
+    "hanoi_ko_medium"
+
+    "logic_grid_en_easy"
+    "logic_grid_en_hard"
+    "logic_grid_en_medium"
+    "logic_grid_ko_easy"
+    "logic_grid_ko_hard"
+    "logic_grid_ko_medium"
+
+    "sat_puzzles_en_easy"
+    "sat_puzzles_en_hard"
+    "sat_puzzles_en_medium"
+    "sat_puzzles_ko_easy"
+    "sat_puzzles_ko_hard"
+    "sat_puzzles_ko_medium"
+
+    "causal_dag_en_easy"
+    "causal_dag_en_hard"
+    "causal_dag_en_medium"
+    "causal_dag_ko_easy"
+    "causal_dag_ko_hard"
+    "causal_dag_ko_medium"
+
+    "sudoku_en_easy"
+    "sudoku_en_hard"
+    "sudoku_en_medium"
+    "sudoku_ko_easy"
+    "sudoku_ko_hard"
+    "sudoku_ko_medium"
+
+    "yacht_dice_en_easy"
+    "yacht_dice_en_hard"
+    "yacht_dice_en_medium"
+    "yacht_dice_ko_easy"
+    "yacht_dice_ko_hard"
+    "yacht_dice_ko_medium"
+
+    "cryptarithmetic_en_easy"
+    "cryptarithmetic_en_hard"
+    "cryptarithmetic_en_medium"
+    "cryptarithmetic_ko_easy"
+    "cryptarithmetic_ko_hard"
+    "cryptarithmetic_ko_medium"
+
+    "inequality_en_easy"
+    "inequality_en_hard"
+    "inequality_en_medium"
+    "inequality_ko_easy"
+    "inequality_ko_hard"
+    "inequality_ko_medium"
+
+    "minesweeper_en_easy"
+    "minesweeper_en_hard"
+    "minesweeper_en_medium"
+    "minesweeper_ko_easy"
+    "minesweeper_ko_hard"
+    "minesweeper_ko_medium"
+
+    "number_baseball_en_easy"
+    "number_baseball_en_hard"
+    "number_baseball_en_medium"
+    "number_baseball_ko_easy"
+    "number_baseball_ko_hard"
+    "number_baseball_ko_medium"
+
 )
 
 START_TIME=$(date +%s)
@@ -167,4 +231,4 @@ fi
 
 exit 0
 
-# bash scripts/eval_litellm_parallel.sh
+# bash run/eval/eval_litellm_parallel.sh

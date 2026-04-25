@@ -16,8 +16,8 @@ cd "$PROJECT_ROOT"
 # export LITELLM_DEBUG=true
 
 # ============ Gemini 설정 ============
-MODEL="gemini/gemini-3-flash-preview"
-GEN_KWARGS="temperature=1.0,max_tokens=65536,top_p=0.95,top_k=64"
+MODEL="vertex_ai/gemini-2.5-pro"
+GEN_KWARGS="temperature=1.0,max_tokens=65536,top_p=0.95,top_k=64,reasoning_effort=high"
 # =====================================
 
 echo -e "${BLUE}========================================${NC}"
@@ -28,6 +28,7 @@ echo -e "Mode: liteLLM"
 echo -e "Gen kwargs: ${GEN_KWARGS}"
 echo ""
 
+# python generation/ferryman_ko.py --num 50
 
 TASKS=(
     "array_formula_en_easy"
@@ -121,7 +122,6 @@ TASKS=(
     "number_baseball_ko_hard"
     "number_baseball_ko_medium"
 
-)
 
 START_TIME=$(date +%s)
 
@@ -143,7 +143,7 @@ for task in "${TASKS[@]}"; do
         --gen-kwargs "$GEN_KWARGS" \
         --tasks "$task" \
         --async \
-        --max-concurrent 30; then
+        --max-concurrent 10; then
         echo -e "${GREEN}✓ $task Completed${NC}"
         SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
     else
@@ -181,4 +181,4 @@ fi
 
 exit 0
 
-# bash run/eval/eval_litellm.sh
+# bash run/eval/eval_litellm_vertex.sh

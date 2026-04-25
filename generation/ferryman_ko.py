@@ -820,7 +820,7 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                 "시간과 분으로 변환하여 답하시오. "
                 "(예: 총 1450분 → 24시간 10분)")
 
-            question = "\n\n".join(q_parts)
+            question = "\n".join(q_parts)
 
             total_hours = journey.total_journey_time_hours
             total_minutes = round(total_hours * 60)

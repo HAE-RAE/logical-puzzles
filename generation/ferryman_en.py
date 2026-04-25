@@ -827,7 +827,7 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                 "as an integer number of minutes, then convert to hours "
                 "and minutes. (e.g., 1450 minutes total → 24 hours 10 minutes)")
 
-            question = "\n\n".join(q_parts)
+            question = "\n".join(q_parts)
 
             total_hours = journey.total_journey_time_hours
             total_minutes = round(total_hours * 60)
