@@ -45,8 +45,12 @@ class NumberBaseballEvaluator(BaseEvaluator):
         "3. Apply logical deduction to eliminate impossible combinations\n"
         "4. Verify your answer against all hints before responding\n"
         "\n"
-        "IMPORTANT: Provide your final answer after \"Answer:\" as a single "
-        "number with no additional text or formatting."
+        "IMPORTANT OUTPUT RULES:\n"
+        "- End with exactly one final line in this format: Answer: <digits>\n"
+        "- <digits> must have the same length as the puzzle's secret number\n"
+        "  (infer from hints/question)\n"
+        "- Output digits only (no spaces, commas, parentheses, or extra text)\n"
+        "- Do not write anything after the final Answer line."
     )
 
     KOREAN_SYSTEM_PROMPT = (
@@ -65,8 +69,12 @@ class NumberBaseballEvaluator(BaseEvaluator):
         "3. 논리적 추론으로 불가능한 조합을 제거합니다\n"
         "4. 답을 제출하기 전에 모든 힌트에 대해 검증합니다\n"
         "\n"
-        "중요: \"Answer:\" 뒤에 추가 텍스트나 서식 없이 숫자만 최종 답으로 "
-        "제시하세요."
+        "중요한 출력 규칙:\n"
+        "- 마지막 줄은 반드시 한 번만 다음 형식으로 작성하세요: Answer: <숫자열>\n"
+        "- <숫자열> 길이는 문제의 비밀 숫자 자릿수와 같아야 합니다\n"
+        "  (힌트/문제 문구에서 자릿수 판단)\n"
+        "- 숫자만 출력하세요 (공백, 쉼표, 괄호, 추가 텍스트 금지)\n"
+        "- 마지막 Answer 줄 뒤에는 아무 내용도 쓰지 마세요."
     )
 
     def _is_korean(self, puzzle: Optional[Dict] = None) -> bool:
@@ -189,9 +197,37 @@ class NumberBaseballEvaluator(BaseEvaluator):
                 hint_nums.update(nums)
         return hint_nums
 
+    def _infer_num_digits(self, puzzle: Dict) -> int:
+        """Infer expected digit length from puzzle metadata/question when missing."""
+        num_digits = puzzle.get("num_digits")
+        if isinstance(num_digits, int) and num_digits > 0:
+            return num_digits
+
+        expected = str(puzzle.get("answer", "")).strip()
+        if re.fullmatch(r"\d+", expected):
+            return len(expected)
+
+        question = str(puzzle.get("question", ""))
+        m = re.search(r"(\d+)\s*-\s*digit|(\d+)\s*digit", question, re.IGNORECASE)
+        if m:
+            groups = [g for g in m.groups() if g]
+            if groups:
+                return int(groups[0])
+
+        m_ko = re.search(r"(\d+)\s*자리", question)
+        if m_ko:
+            return int(m_ko.group(1))
+
+        # Fallback: infer from hint guess token length in question text
+        hint_guess = re.search(r"\[(\d+)\s*:\s*\d+\s*[sS]\s*\d+\s*[bB]\]", question)
+        if hint_guess:
+            return len(hint_guess.group(1))
+
+        return 3
+
     def _parse_answer(self, response: str, puzzle: Dict) -> Optional[str]:
         """Extract digit sequence from LLM response, filtering out hint numbers."""
-        num_digits = puzzle.get("num_digits", 3)
+        num_digits = self._infer_num_digits(puzzle)
         hint_numbers = self._extract_hint_numbers(puzzle)
         answer_text = self._extract_final_answer_text(response, allow_boxed_fallback=False) or response
 

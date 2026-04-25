@@ -23,6 +23,10 @@ _NEGATION_RE = re.compile(
     r"\b(?:not|no|never|except|exclude|excluding|without|isn't|aren't|don't|cannot|wrong)\b",
     re.IGNORECASE,
 )
+_COORD_PAIR_RE = re.compile(
+    r"\(\s*(?:r|row)?\s*(\d+)\s*,\s*(?:c|col)?\s*(\d+)\s*\)",
+    re.IGNORECASE,
+)
 
 
 class MinesweeperEvaluator(BaseEvaluator):
@@ -42,7 +46,8 @@ You are an expert at solving Minesweeper puzzles.
 List all mine coordinates as (row, col) pairs with 0-based indexing,
 sorted by row then column.
 End with a line exactly in the form:
-Answer: (r1,c1), (r2,c2), ..."""
+Answer: (0,1), (0,3), (2,4), ...
+Use numeric coordinates only (no r/c prefixes, no extra text after Answer)."""
 
     KOREAN_SYSTEM_PROMPT = """### 지시사항
 당신은 지뢰찾기(Minesweeper) 퍼즐 전문가입니다.
@@ -56,7 +61,8 @@ Answer: (r1,c1), (r2,c2), ..."""
 ### 출력 형식
 모든 지뢰 좌표를 (행, 열) 쌍으로 0-인덱스 기준, 행-열 순 정렬로 나열하세요.
 마지막 줄은 다음 형식이어야 합니다:
-Answer: (r1,c1), (r2,c2), ..."""
+Answer: (0,1), (0,3), (2,4), ...
+좌표는 숫자만 사용하세요(r/c 접두어 금지, Answer 뒤 추가 텍스트 금지)."""
 
     def _is_korean(self, puzzle: Optional[Dict] = None) -> bool:
         """Prefer task_name (e.g. …_ko_easy); else infer from expected answer."""
@@ -160,7 +166,7 @@ Answer: (r1,c1), (r2,c2), ..."""
         if answer_matches:
             coords_str = answer_matches[-1].group(1)
             if not _NEGATION_RE.search(coords_str):
-                pairs = re.findall(r"\(\s*(\d+)\s*,\s*(\d+)\s*\)", coords_str)
+                pairs = _COORD_PAIR_RE.findall(coords_str)
                 if pairs:
                     return {(int(r), int(c)) for r, c in pairs}
 
@@ -169,9 +175,9 @@ Answer: (r1,c1), (r2,c2), ..."""
             stripped = line.strip()
             if _NEGATION_RE.search(stripped):
                 continue
-            pairs = re.findall(r"\(\s*(\d+)\s*,\s*(\d+)\s*\)", stripped)
+            pairs = _COORD_PAIR_RE.findall(stripped)
             if pairs:
-                cleaned = re.sub(r"\(\s*\d+\s*,\s*\d+\s*\)", "", stripped)
+                cleaned = _COORD_PAIR_RE.sub("", stripped)
                 cleaned = re.sub(r"[,\s\[\]\-:.]", "", cleaned)
                 if len(cleaned) <= 6:
                     return {(int(r), int(c)) for r, c in pairs}

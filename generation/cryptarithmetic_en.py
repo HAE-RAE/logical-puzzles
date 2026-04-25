@@ -595,15 +595,6 @@ def create_dataset_files(num_questions: int):
                         candidate, difficulty, carries
                     ),
                     "difficulty": difficulty,
-                    "puzzle": candidate.puzzle_str,
-                    "valid_answers": candidate.valid_answers or [candidate.answer],
-                    "mapping": {k: v for k, v in candidate.mapping.items()} if candidate.mapping else {},
-                    "step_metrics": {
-                        "solver_steps": candidate.solver_steps,
-                        "unique_letters": candidate.unique_letters,
-                        "num_operands": len(candidate.operands),
-                        "carries": carries,
-                    },
                 }
                 all_puzzles.append(puzzle_data)
                 generated += 1

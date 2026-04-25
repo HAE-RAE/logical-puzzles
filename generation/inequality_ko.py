@@ -524,13 +524,6 @@ def create_dataset_files(num_questions: int):
                     "answer": puzzle.get_answer_string(),
                     "solution": _build_inequality_solution_ko(puzzle),
                     "difficulty": diff_name,
-                    "size": puzzle.size,
-                    "given_positions": list(puzzle.given_numbers.keys()),
-                    "given_values": list(puzzle.given_numbers.values()),
-                    "problem": puzzle.to_problem_string(),
-                    "inequalities": list(puzzle.inequalities),
-                    "hidden_inequalities": sorted(puzzle.hidden_inequalities),
-                    "step_metrics": dict(puzzle.step_metrics),
                 }
                 all_puzzles.append(puzzle_data)
                 print(f"  [{j+1}/{count}] size={puzzle.size}, 정답={puzzle.get_answer_string()}, "

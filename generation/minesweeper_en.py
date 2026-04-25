@@ -514,7 +514,14 @@ def create_dataset_files(num_questions: int):
 
                 if result:
                     result['question'] = create_prompt(result)
-                    all_puzzles.append(result)
+                    puzzle_data = {
+                        "id": result["id"],
+                        "question": result["question"],
+                        "answer": result["answer"],
+                        "solution": result["solution"],
+                        "difficulty": result["difficulty"],
+                    }
+                    all_puzzles.append(puzzle_data)
                     print(f"  [{j+1}/{count}] {result['description']}, answer={result['answer']}")
                     puzzle_generated = True
                     diff_success += 1

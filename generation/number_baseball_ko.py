@@ -710,11 +710,6 @@ def create_dataset_files(num_questions: int):
                         'answer': problem['answer'],
                         'solution': _build_baseball_solution_ko(problem),
                         'difficulty': diff_name,
-                        'num_digits': problem['num_digits'],
-                        'hints': problem['hints'],
-                        'hint_text': problem['hint_text'],
-                        'problem_text': problem['problem_text'],
-                        'step_metrics': problem.get('step_metrics', {}),
                     }
                     all_puzzles.append(puzzle_data)
                     diff_success += 1

@@ -1079,16 +1079,7 @@ def create_dataset_files(num_questions: int):
                         difficulty=difficulty,
                         givens_count=metadata['givens_count'],
                     ),
-                    'solution_grid': solution_strs[0],
                     'difficulty': difficulty,
-                    'givens_count': metadata['givens_count'],
-                    'puzzle': puzzle_str,
-                    'spotcheck': {
-                        'k': k,
-                        'positions': positions,
-                        'code': legacy_code,
-                    },
-                    'step_metrics': metadata.get('step_metrics', {}),
                 }
                 all_puzzles.append(puzzle_data)
                 generated += 1

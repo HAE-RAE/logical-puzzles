@@ -679,10 +679,6 @@ def create_dataset_files(num_questions: int):
                     "answer": str(optimal_score),
                     "solution": solution_str,
                     "difficulty": difficulty,
-                    "dice_results": dice_results,
-                    "optimal_assignment": problem['optimal_assignment'],
-                    "seed": problem['seed'],
-                    "step_metrics": problem['step_metrics'],
                 }
                 all_puzzles.append(puzzle_data)
                 diff_success += 1
