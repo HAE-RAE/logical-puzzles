@@ -1,24 +1,20 @@
 """
-Tower of Hanoi Rule-Based Problem Generator (v2 - Difficulty Rebalance, Korean)
-하노이 탑 규칙 기반 문제 생성기 - 한국어 버전
+Tower of Hanoi Rule-Based Problem Generator (v3 - Recalibrated)
 
-Problem Types:
-1. min_moves: 최소 이동 횟수
-2. kth_disk: k번째 이동에서 움직이는 디스크
-3. kth_from_to: k번째 이동의 출발/도착 기둥
-4. kth_full_triplet: k번째 이동의 전체 정보 (디스크, 출발, 도착)
-5. largest_disk_move: 가장 큰 디스크의 이동 시점
-6. disk_move_count: 특정 디스크의 총 이동 횟수
-7. disks_on_peg_after_k: k번 이동 후 특정 기둥의 상태
-8. where_is_disk_after_k: k번 이동 후 특정 디스크의 위치
-9. inverse_find_n: 이동 정보로부터 디스크 수 역추론
-10. disk_k_total_moves: k번째에 움직인 디스크의 총 이동 횟수
+Difficulty Levels (calibrated for gemini-3-flash-preview, reasoning OFF):
+- easy:   n=3-4 disks, formula + light tracing   → target 75% (65-85%)
+- medium: n=5-7 disks, tracing + simulation heavy → target 50% (40-60%)
+- hard:   n=8-10 disks, pure simulation / inverse → target 25% (15-35%)
 
-Difficulty Levels (gemini-3-flash-preview 기준):
-- easy: 2-3개 디스크, 직접 조회 템플릿 → 목표 85-90%
-- medium: 4-5개 디스크, 다단계 추론 템플릿 → 목표 65-75%
-- hard: 6-8개 디스크, 상태 시뮬레이션/역추론 템플릿 → 목표 40-55%
+Design rationale:
+- Reasoning-off Gemini Flash can reliably apply formulas (min_moves, disk_move_count)
+  but struggles with sequential tracing (kth_disk) and fails at state simulation
+  (disks_on_peg_after_k, where_is_disk_after_k) as n grows.
+- Easy mixes ~40% formula questions (~95% acc) with ~60% tracing (~60% acc) → ~75%
+- Medium mixes ~15% formula (~85%) with ~85% tracing+simulation (~44%) → ~50%
+- Hard is ~100% simulation/inverse at high n (~25% acc) → ~25%
 """
+
 
 import random
 import json
@@ -40,16 +36,16 @@ class Difficulty(Enum):
 class HanoiConfig:
     difficulty: str = "medium"
     seed: Optional[int] = None
-    min_disks: int = 4
-    max_disks: int = 5
+    min_disks: int = 5
+    max_disks: int = 7
 
     def __post_init__(self):
         if self.difficulty == "easy":
-            self.min_disks, self.max_disks = 2, 3
+            self.min_disks, self.max_disks = 3, 4
         elif self.difficulty == "medium":
-            self.min_disks, self.max_disks = 4, 5
+            self.min_disks, self.max_disks = 5, 7
         elif self.difficulty == "hard":
-            self.min_disks, self.max_disks = 6, 8
+            self.min_disks, self.max_disks = 8, 10
 
 
 Move = Tuple[int, int, int]
@@ -79,7 +75,7 @@ def simulate_pegs(n: int, src: int, aux: int, dst: int, moves: List[Move], steps
     for idx in range(min(steps, len(moves))):
         disk, from_peg, to_peg = moves[idx]
         popped = pegs[from_peg].pop()
-        assert popped == disk, f"Internal error: expected disk {disk}, got {popped}"
+        assert popped == disk
         pegs[to_peg].append(disk)
     return pegs
 
@@ -108,21 +104,26 @@ def _format_peg_state(pegs: Dict[int, List[int]]) -> str:
 
 
 SFT_SOLUTION_RUBRIC_KO = (
-    "STEP0=문제 메타 · STEP1=주어진 조건 · STEP2=풀이 전개 · STEP3=답·검산"
+    "STEP0=메타 · STEP1=주어진 조건 · STEP2=풀이 과정 · "
+    "STEP3=정답 및 검증"
 )
 
-
 _HANOI_QTYPE_HINT_KO = {
-    "min_moves": "최소 이동 횟수(2^n-1) 공식 적용",
-    "kth_disk": "최적 순서 생성 후 k번째 이동의 디스크 식별",
-    "kth_from_to": "최적 순서 생성 후 k번째 이동의 출발·도착 기둥 식별",
-    "largest_disk_move": "가장 큰 디스크가 이동하는 고유 시점 계산",
-    "disk_move_count": "특정 디스크의 이동 횟수(2^(n-d)) 공식 적용",
+    "min_moves": "2^n-1 최소 이동 공식 적용",
+    "kth_disk": "최적 수열을 생성하여 k번째 이동의 원판 식별",
+    "kth_from_to": "최적 수열을 생성하여 k번째 이동의 출발/도착 기둥 식별",
+    "kth_full_triplet": "최적 수열을 생성하여 k번째 이동의 (원판, 출발, 도착) 식별",
+    "largest_disk_move": "가장 큰 원판의 유일한 이동 시점 파악",
+    "disk_move_count": "2^(n-d) 이동 횟수 공식 적용",
+    "disks_on_peg_after_k": "k번 이동 후 기둥 상태 시뮬레이션",
+    "where_is_disk_after_k": "k번 이동 후 특정 원판 위치 시뮬레이션",
+    "inverse_find_n": "알려진 이동 정보로부터 n 역추론",
+    "disk_k_total_moves": "k번째 이동의 원판을 식별한 뒤 총 이동 횟수 계산",
+    "first_last_move": "특정 원판의 첫 번째와 마지막 이동 추적",
 }
 
 
 def _hanoi_worked_body_lines_ko(solution: str) -> Tuple[List[str], str]:
-    """하노이 원본 solution 문자열을 [SEG n] 라인과 최종 답 텍스트로 분리."""
     seg_lines: List[str] = []
     final_answer = ""
     seg_idx = 1
@@ -130,14 +131,16 @@ def _hanoi_worked_body_lines_ko(solution: str) -> Tuple[List[str], str]:
         line = raw.strip()
         if not line:
             continue
-        if line.startswith("최종 답"):
+        low = line.lower()
+        if low.startswith("최종 답") or low.startswith("정답:"):
             after = line.split(":", 1)
             final_answer = after[1].strip() if len(after) == 2 else line
             continue
-        if "단계:" in line:
-            body = line.split("단계:", 1)[1].strip()
-        else:
-            body = line
+        body = line
+        if low.startswith("단계 "):
+            parts = line.split(":", 1)
+            if len(parts) == 2:
+                body = parts[1].strip()
         seg_lines.append(f"    [SEG {seg_idx}] {body}")
         seg_idx += 1
     return seg_lines, final_answer
@@ -153,31 +156,31 @@ def _wrap_sft_hanoi_solution_ko(
 ) -> str:
     seg_lines, final_answer = _hanoi_worked_body_lines_ko(solution)
     if answer is None:
-        answer = final_answer or "(본문 참조)"
-    hint = _HANOI_QTYPE_HINT_KO.get(qtype or "", "최적 풀이 추적")
+        answer = final_answer or "(문제 참조)"
+    hint = _HANOI_QTYPE_HINT_KO.get(qtype or "", "최적 해법을 추적")
     meta_bits = []
     if n is not None:
         meta_bits.append(f"n={n}")
     if total_moves is not None:
-        meta_bits.append(f"총이동={total_moves}")
+        meta_bits.append(f"총 이동={total_moves}")
     if qtype:
         meta_bits.append(f"유형={qtype}")
     meta_line = " · ".join(meta_bits) if meta_bits else "표준 규칙"
     summary = (
-        f"  · 요약: {hint} · {meta_line} · SEG {len(seg_lines)}개"
+        f"  · 요약: {hint} · {meta_line} · {len(seg_lines)} SEGs"
     )
     step2 = "\n".join([summary, *seg_lines]) if seg_lines else summary
     return (
         f"{SFT_SOLUTION_RUBRIC_KO}\n"
         f"[STEP 0] 문제 메타\n"
-        f"  - 하노이 탑 최적 풀이(2^n-1) 및 표준 규칙 전제\n"
-        f"  - 최종 답은 [STEP 3]에서 확정\n"
+        f"  - 최적 하노이의 탑 (2^n-1 이동) 및 표준 규칙\n"
+        f"  - 최종 답은 [STEP 3]에서 확인\n"
         f"[STEP 1] 주어진 조건\n"
-        f"  - 문제 본문의 디스크 수, 기둥 번호, k번째 이동 등\n"
-        f"[STEP 2] 풀이 전개\n{step2}\n"
-        f"[STEP 3] 답·검산\n"
+        f"  - n, 기둥 번호, k (문제에 명시된 대로)\n"
+        f"[STEP 2] 풀이 과정\n{step2}\n"
+        f"[STEP 3] 정답 및 검증\n"
         f"  - 최종 답: {answer}\n"
-        f"  - 2^·이동·시뮬 결과와 [SEG] 전개가 일치하는지 확인"
+        f"  - 2^공식 / 시뮬레이션과 [SEG] 추적 결과 교차 검증."
     )
 
 
@@ -188,6 +191,7 @@ def _build_templates_easy(ctx: Context, rng) -> list:
     k = ctx["k"]
     disk_k, from_k, to_k = ctx["disk_k"], ctx["from_k"], ctx["to_k"]
     moves = ctx["moves"]
+    pegs_after_k = ctx["pegs_after_k"]
 
     largest = n
     largest_idx = next(idx for idx, (d, _, _) in enumerate(moves) if d == largest)
@@ -196,61 +200,82 @@ def _build_templates_easy(ctx: Context, rng) -> list:
     disk_target = rng.randint(1, n)
     disk_count = sum(1 for d, _, _ in moves if d == disk_target)
 
+    disk_query = rng.randint(1, n)
+    peg_of_disk = None
+    for peg, stack in pegs_after_k.items():
+        if disk_query in stack:
+            peg_of_disk = peg
+            break
+
     return [
         (
-            f"하노이 탑 퍼즐에 디스크가 {n}개 있습니다. 모든 디스크는 기둥 {src}에서 시작합니다.\n"
-            f"목표는 기둥 {aux}를 보조 기둥으로 사용하여 모든 디스크를 기둥 {dst}로 옮기는 것입니다.\n"
-            f"일반적인 규칙을 따릅니다 (한 번에 하나의 디스크만 이동, 큰 디스크를 작은 디스크 위에 놓을 수 없음).\n"
-            f"퍼즐을 완성하는 데 필요한 최소 이동 횟수는 몇 번입니까?",
+            f"{n}개의 원판이 있는 하노이의 탑 퍼즐에서, 모든 원판은 기둥 {src}에 놓여 있습니다.\n"
+            f"목표는 기둥 {aux}을(를) 보조 기둥으로 사용하여 모든 원판을 기둥 {dst}(으)로 옮기는 것입니다.\n"
+            f"일반적인 규칙(한 번에 하나의 원판만 이동, 큰 원판을 작은 원판 위에 놓을 수 없음)을 따릅니다.\n"
+            f"퍼즐을 완성하는 데 필요한 최소 이동 횟수는 얼마입니까?",
             f"({total}, {total}, {total})",
-            3,
+            2,
             "min_moves",
-            f"1단계: n개 디스크의 최소 이동 횟수 = 2^n - 1\n"
-            f"2단계: n = {n}이므로 2^{n} - 1 = {total}\n"
-            f"최종 답: {total}"
+            f"단계 1: n개 원판의 최소 이동 횟수 = 2^n - 1\n"
+            f"단계 2: n = {n}이므로 2^{n} - 1 = {total}\n"
+            f"정답: {total}"
         ),
         (
-            f"디스크 {n}개의 하노이 탑 퍼즐의 최적 풀이를 생각해보세요.\n"
-            f"모든 디스크는 기둥 {src}에서 시작하여 기둥 {dst}로 옮겨야 합니다 (기둥 {aux}는 보조 기둥).\n"
-            f"이 최적 순서에서 {k}번째 이동에서 어떤 디스크가 움직입니까?",
-            f"({disk_k}, {from_k}, {to_k})",
-            3,
-            "kth_disk",
-            f"1단계: {n}개 디스크의 최적 이동 순서 생성: 기둥 {src} → 기둥 {dst}\n"
-            f"2단계: 총 이동 횟수 = {total}\n"
-            f"3단계: {k}번째 이동은 디스크 {disk_k} (기둥 {from_k} → 기둥 {to_k})\n"
-            f"최종 답: 디스크 {disk_k}"
-        ),
-        (
-            f"기둥 {src}에서 기둥 {dst}로의 최적 {n}-디스크 하노이 탑 풀이에서\n"
-            f"(기둥 {aux}가 보조 기둥), {k}번째 이동에서 디스크는 어느 기둥에서 어느 기둥으로 움직입니까?",
-            f"({disk_k}, {from_k}, {to_k})",
-            2,
-            "kth_from_to",
-            f"1단계: {n}개 디스크의 최적 이동 순서 생성\n"
-            f"2단계: {k}번째 이동: 디스크 {disk_k}, 기둥 {from_k} → 기둥 {to_k}\n"
-            f"최종 답: 기둥 {from_k} → 기둥 {to_k}"
-        ),
-        (
-            f"디스크 {n}개의 하노이 탑 퍼즐의 최적 풀이에서\n"
-            f"가장 큰 디스크(디스크 {n})는 몇 번째 이동에서 움직입니까?",
-            f"({l_disk}, {l_from}, {l_to})",
-            2,
-            "largest_disk_move",
-            f"1단계: 가장 큰 디스크(디스크 {n})는 최적 풀이에서 정확히 한 번 이동합니다\n"
-            f"2단계: {largest_idx + 1}번째 단계에서 이동: 기둥 {l_from} → 기둥 {l_to}\n"
-            f"최종 답: {largest_idx + 1}번째 이동"
-        ),
-        (
-            f"디스크 {n}개의 하노이 탑 퍼즐의 최적 풀이에서\n"
-            f"디스크 {disk_target}은(는) 총 몇 번 이동합니까?",
+            f"{n}개의 원판이 있는 하노이의 탑 퍼즐의 최적 해법에서,\n"
+            f"원판 {disk_target}은(는) 총 몇 번 이동합니까?",
             f"({disk_target}, {disk_count}, {disk_count})",
             2,
             "disk_move_count",
-            f"1단계: 최적 하노이에서 디스크 d는 2^(n-d)번 이동\n"
-            f"2단계: 디스크 {disk_target}, n={n}: 이동 횟수 = 2^({n}-{disk_target}) = {2**(n - disk_target)}\n"
-            f"3단계: 카운팅으로 검증: {disk_count}\n"
-            f"최종 답: {disk_count}"
+            f"단계 1: 최적 해법에서 원판 d는 2^(n-d)번 이동\n"
+            f"단계 2: 원판 {disk_target}, n={n}: 이동 횟수 = 2^({n}-{disk_target}) = {2**(n - disk_target)}\n"
+            f"단계 3: 카운팅으로 검증: {disk_count}\n"
+            f"정답: {disk_count}"
+        ),
+        (
+            f"{n}개의 원판이 있는 하노이의 탑 퍼즐의 최적 해법에서,\n"
+            f"모든 원판은 기둥 {src}에서 시작하여 기둥 {dst}(으)로 이동해야 합니다 (기둥 {aux}은(는) 보조).\n"
+            f"가장 큰 원판(원판 {n})은 몇 번째 이동에서 움직입니까?",
+            f"({l_disk}, {l_from}, {l_to})",
+            1,
+            "largest_disk_move",
+            f"단계 1: 가장 큰 원판(원판 {n})은 최적 해법에서 정확히 1번 이동\n"
+            f"단계 2: {largest_idx + 1}번째 이동에서 움직임: 기둥 {l_from} → 기둥 {l_to}\n"
+            f"정답: {largest_idx + 1}번째 이동"
+        ),
+        (
+            f"{n}개의 원판이 있는 하노이의 탑 퍼즐의 최적 해법을 생각해 봅시다.\n"
+            f"모든 원판은 기둥 {src}에서 시작하여 기둥 {dst}(으)로 이동해야 합니다 (기둥 {aux}은(는) 보조).\n"
+            f"이 최적 수열에서 {k}번째 이동에서 어떤 원판이 움직입니까?",
+            f"({disk_k}, {from_k}, {to_k})",
+            3,
+            "kth_disk",
+            f"단계 1: {n}개 원판의 최적 이동 수열 생성: 기둥 {src} → 기둥 {dst}\n"
+            f"단계 2: 총 이동 횟수 = {total}\n"
+            f"단계 3: {k}번째 이동은 원판 {disk_k}이(가) 기둥 {from_k}에서 기둥 {to_k}(으)로 이동\n"
+            f"정답: 원판 {disk_k}"
+        ),
+        (
+            f"기둥 {src}에서 기둥 {dst}(으)로의 {n}개 원판 하노이의 탑 최적 해법에서\n"
+            f"(기둥 {aux}은(는) 보조), {k}번째 이동에서 원판은 어느 기둥에서 어느 기둥으로 이동합니까?",
+            f"({disk_k}, {from_k}, {to_k})",
+            3,
+            "kth_from_to",
+            f"단계 1: {n}개 원판의 최적 이동 수열 생성\n"
+            f"단계 2: {k}번째 이동: 원판 {disk_k}, 기둥 {from_k} → 기둥 {to_k}\n"
+            f"정답: 기둥 {from_k} → 기둥 {to_k}"
+        ),
+        (
+            f"{n}개의 원판이 있는 하노이의 탑 최적 해법에서, 모든 원판은 기둥 {src}에서 시작하여\n"
+            f"기둥 {dst}(으)로 이동해야 합니다 (기둥 {aux}은(는) 보조).\n"
+            f"정확히 {k}번의 이동 후, 원판 {disk_query}은(는) 어느 기둥에 위치합니까?",
+            f"({disk_query}, {peg_of_disk}, {peg_of_disk})",
+            1,
+            "where_is_disk_after_k",
+            f"단계 1: {n}개 원판의 최적 수열 생성\n"
+            f"단계 2: 초기 상태에서 {k}번 이동 시뮬레이션\n"
+            f"단계 3: {k}번 이동 후 상태: {_format_peg_state(pegs_after_k)}\n"
+            f"단계 4: 원판 {disk_query}은(는) 기둥 {peg_of_disk}에 위치\n"
+            f"정답: 기둥 {peg_of_disk}"
         ),
     ]
 
@@ -276,66 +301,84 @@ def _build_templates_medium(ctx: Context, rng) -> list:
 
     disk_count_k = sum(1 for d, _, _ in moves if d == disk_k)
 
+    disk_target = rng.randint(1, n)
+    disk_count_target = sum(1 for d, _, _ in moves if d == disk_target)
+
+    largest = n
+    largest_idx = next(idx for idx, (d, _, _) in enumerate(moves) if d == largest)
+    l_disk, l_from, l_to = moves[largest_idx]
+
     return [
         (
-            f"디스크 {n}개의 최적 하노이 탑 퍼즐에서, 모든 디스크는 기둥 {src}에서 시작하여\n"
-            f"기둥 {aux}를 보조 기둥으로 사용해 기둥 {dst}로 옮겨야 합니다.\n"
-            f"{k}번째 이동을 (디스크, 출발_기둥, 도착_기둥) 형태로 설명하세요.",
+            f"{n}개의 원판이 있는 하노이의 탑 퍼즐의 최적 해법에서,\n"
+            f"원판 {disk_target}은(는) 총 몇 번 이동합니까?",
+            f"({disk_target}, {disk_count_target}, {disk_count_target})",
+            3,
+            "disk_move_count",
+            f"단계 1: 최적 하노이에서 n={n}일 때, 원판 d는 2^(n-d)번 이동\n"
+            f"단계 2: 원판 {disk_target}: 2^({n}-{disk_target}) = {2**(n - disk_target)}\n"
+            f"정답: {2**(n - disk_target)}"
+        ),
+        (
+            f"{n}개의 원판이 있는 하노이의 탑 퍼즐의 최적 해법에서,\n"
+            f"모든 원판은 기둥 {src}에서 시작하여 기둥 {dst}(으)로 이동해야 합니다 (기둥 {aux}은(는) 보조).\n"
+            f"가장 큰 원판(원판 {n})은 몇 번째 이동에서 움직입니까?",
+            f"({l_disk}, {l_from}, {l_to})",
+            1,
+            "largest_disk_move",
+            f"단계 1: 가장 큰 원판(원판 {n})은 정확히 1번 이동\n"
+            f"단계 2: {largest_idx + 1}번째 이동에서 움직임: 기둥 {l_from} → 기둥 {l_to}\n"
+            f"정답: {largest_idx + 1}번째 이동"
+        ),
+        (
+            f"{n}개의 원판이 있는 하노이의 탑 최적 해법에서, 모든 원판은 기둥 {src}에서 시작하여\n"
+            f"기둥 {dst}(으)로 이동해야 합니다 (기둥 {aux}은(는) 보조).\n"
+            f"{k}번째 이동을 (원판, 출발기둥, 도착기둥)의 형태로 답하시오.",
             f"({disk_k}, {from_k}, {to_k})",
-            3,
+            2,
             "kth_full_triplet",
-            f"1단계: {n}개 디스크의 최적 순서 생성: 기둥 {src} → 기둥 {dst}, 보조 기둥 {aux}\n"
-            f"2단계: 총 이동 횟수 = 2^{n} - 1 = {total}\n"
-            f"3단계: {k}번째 이동은 (디스크 {disk_k}, 기둥 {from_k}, 기둥 {to_k})\n"
-            f"최종 답: ({disk_k}, {from_k}, {to_k})"
+            f"단계 1: {n}개 원판의 최적 수열 생성: 기둥 {src} → 기둥 {dst}, 보조 기둥 {aux}\n"
+            f"단계 2: 총 이동 횟수 = 2^{n} - 1 = {total}\n"
+            f"단계 3: {k}번째 이동은 (원판 {disk_k}, 기둥 {from_k}, 기둥 {to_k})\n"
+            f"정답: ({disk_k}, {from_k}, {to_k})"
         ),
         (
-            f"디스크 {n}개의 최적 하노이 탑 풀이에서, 모든 디스크는 기둥 {src}에서 시작하여\n"
-            f"기둥 {aux}를 보조 기둥으로 사용해 기둥 {dst}로 옮겨야 합니다.\n"
-            f"정확히 {k}번 이동한 후, 디스크 {disk_query}은(는) 어느 기둥에 있습니까?",
+            f"{n}개의 원판이 있는 하노이의 탑 최적 해법에서, 모든 원판은 기둥 {src}에서 시작하여\n"
+            f"기둥 {dst}(으)로 이동해야 합니다 (기둥 {aux}은(는) 보조).\n"
+            f"정확히 {k}번의 이동 후, 원판 {disk_query}은(는) 어느 기둥에 위치합니까?",
             f"({disk_query}, {peg_of_disk}, {peg_of_disk})",
-            3,
+            2,
             "where_is_disk_after_k",
-            f"1단계: {n}개 디스크의 최적 순서 생성\n"
-            f"2단계: 초기 상태에서 {k}번 이동 시뮬레이션\n"
-            f"3단계: {k}번 이동 후 상태: {_format_peg_state(pegs_after_k)}\n"
-            f"4단계: 디스크 {disk_query}은(는) 기둥 {peg_of_disk}에 위치\n"
-            f"최종 답: 기둥 {peg_of_disk}"
+            f"단계 1: {n}개 원판의 최적 수열 생성\n"
+            f"단계 2: 초기 상태에서 {k}번 이동 시뮬레이션\n"
+            f"단계 3: {k}번 이동 후 상태: {_format_peg_state(pegs_after_k)}\n"
+            f"단계 4: 원판 {disk_query}은(는) 기둥 {peg_of_disk}에 위치\n"
+            f"정답: 기둥 {peg_of_disk}"
         ),
         (
-            f"디스크 {n}개의 하노이 탑 퍼즐 (기둥 {src} → 기둥 {dst}, 기둥 {aux} 보조)에서\n"
-            f"최적 이동 순서를 따를 때, 정확히 {k}번 이동 후\n"
-            f"기둥 {peg_target}에 어떤 디스크들이 있습니까?",
-            f"({', '.join(str(d) for d in disks_on_peg) if disks_on_peg else 'none'}, {peg_target}, {peg_target})",
+            f"{n}개의 원판이 있는 하노이의 탑 퍼즐(기둥 {src} → 기둥 {dst}, 기둥 {aux} 보조)의\n"
+            f"최적 이동 수열에서, 정확히 {k}번의 이동이 수행된 후\n"
+            f"기둥 {peg_target}에 있는 원판들은 무엇입니까? 오름차순으로 나열하시오.",
+            f"({', '.join(str(d) for d in disks_on_peg) if disks_on_peg else '없음'}, {peg_target}, {peg_target})",
             2,
             "disks_on_peg_after_k",
-            f"1단계: {n}개 디스크의 최적 순서 생성\n"
-            f"2단계: {k}번 이동 시뮬레이션\n"
-            f"3단계: {k}번 이동 후 상태: {_format_peg_state(pegs_after_k)}\n"
-            f"4단계: 기둥 {peg_target}: {disks_on_peg if disks_on_peg else '디스크 없음'}\n"
-            f"최종 답: {disks_on_peg if disks_on_peg else '없음'}"
+            f"단계 1: {n}개 원판의 최적 수열 생성\n"
+            f"단계 2: {k}번 이동 시뮬레이션\n"
+            f"단계 3: {k}번 이동 후 상태: {_format_peg_state(pegs_after_k)}\n"
+            f"단계 4: 기둥 {peg_target}에 있는 원판: {disks_on_peg if disks_on_peg else '없음'}\n"
+            f"정답: {disks_on_peg if disks_on_peg else '없음'}"
         ),
         (
-            f"최적 하노이 탑 풀이에서 {k}번째 이동을 보세요.\n"
-            f"이 단계에서 이동한 디스크를 디스크 X라 합시다 (여기서 X = 디스크 {disk_k}).\n"
-            f"전체 풀이에서 이 디스크 X는 총 몇 번 이동합니까?",
+            f"{n}개의 원판이 있는 하노이의 탑 최적 해법(기둥 {src} → 기둥 {dst}, 기둥 {aux} 보조)에서,\n"
+            f"수열의 {k}번째 이동을 살펴보십시오.\n"
+            f"{k}번째에서 이동한 원판은 전체 최적 해법에서 총 몇 번 이동합니까?",
             f"({disk_k}, {disk_count_k}, {disk_count_k})",
             2,
             "disk_k_total_moves",
-            f"1단계: {k}번째 이동은 디스크 {disk_k}를 움직임\n"
-            f"2단계: 전체 순서에서 디스크 {disk_k}의 출현 횟수 카운팅\n"
-            f"3단계: 디스크 {disk_k}은(는) 총 {disk_count_k}번 이동\n"
-            f"최종 답: {disk_count_k}"
-        ),
-        (
-            f"디스크 {n}개의 하노이 탑 퍼즐의 최적 풀이에서\n"
-            f"디스크 {disk_query}은(는) 총 몇 번 이동합니까?",
-            f"({disk_query}, {sum(1 for d, _, _ in moves if d == disk_query)}, {sum(1 for d, _, _ in moves if d == disk_query)})",
-            2,
-            "disk_move_count",
-            f"1단계: 최적 하노이에서 디스크 d는 2^(n-d)번 이동\n"
-            f"2단계: 디스크 {disk_query}: 2^({n}-{disk_query}) = {2**(n - disk_query)}\n"
-            f"최종 답: {2**(n - disk_query)}"
+            f"단계 1: {k}번째 이동은 원판 {disk_k}과(와) 관련\n"
+            f"단계 2: 전체 수열에서 원판 {disk_k}의 모든 출현 횟수 카운팅\n"
+            f"단계 3: 원판 {disk_k}은(는) 총 {disk_count_k}번 이동\n"
+            f"정답: {disk_count_k}"
         ),
     ]
 
@@ -349,31 +392,24 @@ def _build_templates_hard(ctx: Context, rng) -> list:
     moves = ctx["moves"]
     pegs_after_k = ctx["pegs_after_k"]
 
+    k2 = rng.randint(1, total)
+    disk_k2, from_k2, to_k2 = moves[k2 - 1]
+    pegs_after_k2 = simulate_pegs(n, src, aux, dst, moves, k2)
+
     peg_target = rng.choice([src, aux, dst])
-    disks_on_peg = sorted(pegs_after_k[peg_target])
+    disks_on_peg = sorted(pegs_after_k2[peg_target])
 
     disk_query = rng.randint(1, n)
     peg_of_disk = None
-    for peg, stack in pegs_after_k.items():
+    for peg, stack in pegs_after_k2.items():
         if disk_query in stack:
             peg_of_disk = peg
             break
 
     disk_count_k = sum(1 for d, _, _ in moves if d == disk_k)
 
-    k2 = rng.randint(1, total)
-    disk_k2, from_k2, to_k2 = moves[k2 - 1]
-    pegs_after_k2 = simulate_pegs(n, src, aux, dst, moves, k2)
-
-    peg_target2 = rng.choice([src, aux, dst])
-    disks_on_peg2 = sorted(pegs_after_k2[peg_target2])
-
-    disk_query2 = rng.randint(1, n)
-    peg_of_disk2 = None
-    for peg, stack in pegs_after_k2.items():
-        if disk_query2 in stack:
-            peg_of_disk2 = peg
-            break
+    disk_target = rng.randint(1, n)
+    disk_count_target = sum(1 for d, _, _ in moves if d == disk_target)
 
     first_move_of_disk = {}
     last_move_of_disk = {}
@@ -386,78 +422,92 @@ def _build_templates_hard(ctx: Context, rng) -> list:
     first_info = first_move_of_disk[target_disk_fl]
     last_info = last_move_of_disk[target_disk_fl]
 
+    peg_count_target = rng.choice([src, aux, dst])
+    count_on_peg = len(pegs_after_k2[peg_count_target])
+
     return [
         (
-            f"어떤 최적 하노이 탑 퍼즐에서, 모든 디스크는 기둥 {src}에서 시작하여\n"
-            f"기둥 {aux}를 보조 기둥으로 사용해 기둥 {dst}로 옮기는 것이 목표입니다.\n"
-            f"{k}번째 이동에서 디스크 {disk_k}이(가) 기둥 {from_k}에서 기둥 {to_k}로 이동한다고 알려져 있습니다.\n"
-            f"이 하노이 탑 퍼즐에는 디스크가 몇 개 있습니까?",
+            f"{n}개의 원판이 있는 하노이의 탑 퍼즐의 최적 해법에서,\n"
+            f"원판 {disk_target}은(는) 총 몇 번 이동합니까?",
+            f"({disk_target}, {disk_count_target}, {disk_count_target})",
+            3,
+            "disk_move_count",
+            f"단계 1: 최적 하노이에서 n={n}일 때, 원판 d는 2^(n-d)번 이동\n"
+            f"단계 2: 원판 {disk_target}: 2^({n}-{disk_target}) = {2**(n - disk_target)}\n"
+            f"정답: {2**(n - disk_target)}"
+        ),
+        (
+            f"어떤 최적 하노이의 탑 퍼즐에서, 모든 원판은 기둥 {src}에서 시작하여\n"
+            f"기둥 {dst}(으)로 이동해야 하며, 기둥 {aux}을(를) 보조로 사용합니다.\n"
+            f"{k}번째 이동에서 원판 {disk_k}이(가) 기둥 {from_k}에서 기둥 {to_k}(으)로 이동한다고 알려져 있습니다.\n"
+            f"이 하노이의 탑 퍼즐에는 원판이 몇 개 있습니까?",
             f"({n}, {n}, {n})",
-            3,
+            2,
             "inverse_find_n",
-            f"1단계: {k}번째 이동이 디스크 {disk_k}: 기둥 {from_k} → 기둥 {to_k}임을 알고 있음\n"
-            f"2단계: 확인된 가장 큰 디스크 번호는 {disk_k}이므로 n >= {disk_k}\n"
-            f"3단계: 총 이동 횟수 = 2^n - 1 >= {k}이므로 n을 추론\n"
-            f"4단계: 퍼즐에는 {n}개의 디스크가 있음 (검증: {k}번째 이동이 일치)\n"
-            f"최종 답: {n}"
+            f"단계 1: {k}번째 이동이 원판 {disk_k}: 기둥 {from_k} → 기둥 {to_k}임을 알고 있음\n"
+            f"단계 2: 확인된 가장 큰 원판 번호는 {disk_k}이므로 n >= {disk_k}\n"
+            f"단계 3: 총 이동 횟수 = 2^n - 1 >= {k}이므로 n >= ceil(log2({k}+1))\n"
+            f"단계 4: 퍼즐은 {n}개의 원판을 가짐 (검증: {k}번째 이동 일치)\n"
+            f"정답: {n}"
         ),
         (
-            f"디스크 {n}개의 최적 하노이 탑 풀이 (기둥 {src} → 기둥 {dst}, 기둥 {aux} 보조)에서\n"
-            f"정확히 {k2}번 이동 후, 기둥 {peg_target2}에 어떤 디스크들이 있습니까?\n"
-            f"모든 디스크 번호를 오름차순으로 나열하세요.",
-            f"({', '.join(str(d) for d in disks_on_peg2) if disks_on_peg2 else 'none'}, {peg_target2}, {peg_target2})",
-            3,
+            f"{n}개의 원판이 있는 하노이의 탑 최적 해법(기둥 {src} → 기둥 {dst}, 기둥 {aux} 보조)에서,\n"
+            f"정확히 {k2}번의 이동 후, 기둥 {peg_target}에 있는 원판들은 무엇입니까?\n"
+            f"모든 원판 번호를 오름차순으로 나열하시오.",
+            f"({', '.join(str(d) for d in disks_on_peg) if disks_on_peg else '없음'}, {peg_target}, {peg_target})",
+            2,
             "disks_on_peg_after_k",
-            f"1단계: {n}개 디스크의 최적 순서 생성: 기둥 {src} → 기둥 {dst}\n"
-            f"2단계: {k2}번 이동을 단계별로 시뮬레이션\n"
-            f"3단계: {k2}번 이동 후 상태: {_format_peg_state(pegs_after_k2)}\n"
-            f"4단계: 기둥 {peg_target2}: {disks_on_peg2 if disks_on_peg2 else '비어있음'}\n"
-            f"최종 답: {disks_on_peg2 if disks_on_peg2 else '없음'}"
+            f"단계 1: {n}개 원판의 최적 수열 생성: 기둥 {src} → 기둥 {dst}\n"
+            f"단계 2: {k2}번 이동을 단계별로 시뮬레이션\n"
+            f"단계 3: {k2}번 이동 후 상태: {_format_peg_state(pegs_after_k2)}\n"
+            f"단계 4: 기둥 {peg_target}: {disks_on_peg if disks_on_peg else '비어 있음'}\n"
+            f"정답: {disks_on_peg if disks_on_peg else '없음'}"
         ),
         (
-            f"디스크 {n}개의 최적 하노이 탑 풀이 (기둥 {src} → 기둥 {dst}, 기둥 {aux} 보조)에서\n"
-            f"정확히 {k2}번 이동 후, 디스크 {disk_query2}은(는) 어느 기둥에 있습니까?",
-            f"({disk_query2}, {peg_of_disk2}, {peg_of_disk2})",
+            f"{n}개의 원판이 있는 하노이의 탑 최적 해법(기둥 {src} → 기둥 {dst}, 기둥 {aux} 보조)에서,\n"
+            f"정확히 {k2}번의 이동 후, 원판 {disk_query}은(는) 어느 기둥에 위치합니까?",
+            f"({disk_query}, {peg_of_disk}, {peg_of_disk})",
             3,
             "where_is_disk_after_k",
-            f"1단계: {n}개 디스크의 최적 순서 생성\n"
-            f"2단계: 초기 상태에서 {k2}번 이동 시뮬레이션\n"
-            f"3단계: {k2}번 이동 후 상태: {_format_peg_state(pegs_after_k2)}\n"
-            f"4단계: 디스크 {disk_query2}은(는) 기둥 {peg_of_disk2}에 위치\n"
-            f"최종 답: 기둥 {peg_of_disk2}"
+            f"단계 1: {n}개 원판의 최적 수열 생성\n"
+            f"단계 2: 초기 상태에서 {k2}번 이동 시뮬레이션\n"
+            f"단계 3: {k2}번 이동 후 상태: {_format_peg_state(pegs_after_k2)}\n"
+            f"단계 4: 원판 {disk_query}은(는) 기둥 {peg_of_disk}에 위치\n"
+            f"정답: 기둥 {peg_of_disk}"
         ),
         (
-            f"디스크 {n}개의 최적 하노이 탑 퍼즐 (기둥 {src} → 기둥 {dst}, 기둥 {aux} 보조)에서\n"
-            f"{k2}번째 이동을 (디스크, 출발_기둥, 도착_기둥) 형태로 설명하세요.",
+            f"{n}개의 원판이 있는 하노이의 탑 최적 해법(기둥 {src} → 기둥 {dst}, 기둥 {aux} 보조)에서,\n"
+            f"{k2}번째 이동을 (원판, 출발기둥, 도착기둥)의 형태로 답하시오.",
             f"({disk_k2}, {from_k2}, {to_k2})",
             2,
             "kth_full_triplet",
-            f"1단계: {n}개 디스크의 최적 순서 생성: 기둥 {src} → 기둥 {dst}\n"
-            f"2단계: 총 이동 횟수 = 2^{n} - 1 = {total}\n"
-            f"3단계: {k2}번째 이동은 (디스크 {disk_k2}, 기둥 {from_k2}, 기둥 {to_k2})\n"
-            f"최종 답: ({disk_k2}, {from_k2}, {to_k2})"
+            f"단계 1: {n}개 원판의 최적 수열 생성: 기둥 {src} → 기둥 {dst}\n"
+            f"단계 2: 총 이동 횟수 = 2^{n} - 1 = {total}\n"
+            f"단계 3: {k2}번째 이동은 (원판 {disk_k2}, 기둥 {from_k2}, 기둥 {to_k2})\n"
+            f"정답: ({disk_k2}, {from_k2}, {to_k2})"
         ),
         (
-            f"디스크 {n}개의 최적 하노이 탑 풀이 (기둥 {src} → 기둥 {dst}, 기둥 {aux} 보조)에서\n"
-            f"디스크 {target_disk_fl}이(가) 처음 이동하는 것은 몇 번째이고, 마지막으로 이동하는 것은 몇 번째입니까?",
+            f"{n}개의 원판이 있는 하노이의 탑 최적 해법(기둥 {src} → 기둥 {dst}, 기둥 {aux} 보조)에서,\n"
+            f"원판 {target_disk_fl}이(가) 처음 이동하는 것은 몇 번째이고, 마지막으로 이동하는 것은 몇 번째입니까?",
             f"({first_info[0]}, {last_info[0]}, {target_disk_fl})",
             2,
             "first_last_move",
-            f"1단계: 전체 순서에서 디스크 {target_disk_fl}을(를) 추적\n"
-            f"2단계: 디스크 {target_disk_fl}의 첫 이동: {first_info[0]}번째 (기둥 {first_info[1]} → 기둥 {first_info[2]})\n"
-            f"3단계: 디스크 {target_disk_fl}의 마지막 이동: {last_info[0]}번째 (기둥 {last_info[1]} → 기둥 {last_info[2]})\n"
-            f"최종 답: 첫 이동 = {first_info[0]}, 마지막 이동 = {last_info[0]}"
+            f"단계 1: 전체 수열에서 원판 {target_disk_fl} 추적\n"
+            f"단계 2: 원판 {target_disk_fl}의 첫 이동: {first_info[0]}번째 (기둥 {first_info[1]} → 기둥 {first_info[2]})\n"
+            f"단계 3: 원판 {target_disk_fl}의 마지막 이동: {last_info[0]}번째 (기둥 {last_info[1]} → 기둥 {last_info[2]})\n"
+            f"정답: 첫 번째 = {first_info[0]}, 마지막 = {last_info[0]}"
         ),
         (
-            f"최적 하노이 탑 풀이에서 {k}번째 이동은 디스크 {disk_k}을(를) 움직입니다.\n"
-            f"디스크 {n}개의 전체 최적 풀이에서 디스크 {disk_k}은(는) 총 몇 번 이동합니까?",
+            f"{n}개의 원판이 있는 하노이의 탑 최적 해법(기둥 {src} → 기둥 {dst}, 기둥 {aux} 보조)에서,\n"
+            f"{k}번째 이동에서 움직이는 원판이 있습니다.\n"
+            f"그 원판은 전체 최적 해법에서 총 몇 번 이동합니까?",
             f"({disk_k}, {disk_count_k}, {disk_count_k})",
             2,
             "disk_k_total_moves",
-            f"1단계: {k}번째 이동은 디스크 {disk_k}을(를) 움직임\n"
-            f"2단계: 최적 {n}-디스크 하노이에서 디스크 {disk_k}은(는) 2^({n}-{disk_k}) = {2**(n-disk_k)}번 이동\n"
-            f"3단계: 카운팅으로 검증: {disk_count_k}\n"
-            f"최종 답: {disk_count_k}"
+            f"단계 1: {k}번째 이동은 원판 {disk_k}과(와) 관련\n"
+            f"단계 2: 최적 {n}개 원판 하노이에서 원판 {disk_k}은(는) 2^({n}-{disk_k}) = {2**(n-disk_k)}번 이동\n"
+            f"단계 3: 카운팅으로 검증: {disk_count_k}\n"
+            f"정답: {disk_count_k}"
         ),
     ]
 
@@ -546,22 +596,25 @@ def save_dataset(puzzles: List[Dict], base_dir: str = "./data"):
     json_dir.mkdir(parents=True, exist_ok=True)
 
     csv_path = csv_dir / "hanoi_ko.csv"
-    jsonl_path = json_dir / "hanoi_ko.jsonl"
+    jsonl_paths = {}
+    for diff in ["easy", "medium", "hard"]:
+        p = json_dir / f"hanoi_ko_{diff}.jsonl"
+        subset = [pz for pz in puzzles if pz["difficulty"] == diff]
+        with open(p, "w", encoding="utf-8") as f:
+            for puzzle in subset:
+                row = {
+                    "id": puzzle["id"],
+                    "question": puzzle["question"],
+                    "answer": puzzle["answer"],
+                    "solution": puzzle["solution"],
+                    "difficulty": puzzle["difficulty"],
+                }
+                f.write(json.dumps(row, ensure_ascii=False) + "\n")
+        print(f"Saved {len(subset)} puzzles to {p}")
+        jsonl_paths[diff] = p
 
-    csv_columns = ["id", "question", "answer", "solution", "difficulty"]
+    csv_columns = ["id", "question", "answer", "solution", "difficulty", "type", "n"]
 
-    with open(jsonl_path, "w", encoding="utf-8") as f:
-        for puzzle in puzzles:
-            row = {
-                "id": puzzle["id"],
-                "question": puzzle["question"],
-                "answer": puzzle["answer"],
-                "solution": puzzle["solution"],
-                "difficulty": puzzle["difficulty"],
-            }
-            f.write(json.dumps(row, ensure_ascii=False) + "\n")
-
-    print(f"Saved {len(puzzles)} puzzles to {jsonl_path}")
 
     with open(csv_path, "w", encoding="utf-8", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=csv_columns)
@@ -573,45 +626,50 @@ def save_dataset(puzzles: List[Dict], base_dir: str = "./data"):
                 "answer": puzzle["answer"],
                 "solution": puzzle["solution"],
                 "difficulty": puzzle["difficulty"],
+                "type": puzzle["type"],
+                "n": puzzle["n"],
             })
 
     print(f"Saved {len(puzzles)} puzzles to {csv_path}")
 
     stats = {}
+    n_stats = {}
     for puzzle in puzzles:
         key = f"{puzzle['difficulty']}_{puzzle['type']}"
         stats[key] = stats.get(key, 0) + 1
+        nkey = f"{puzzle['difficulty']}_n={puzzle['n']}"
+        n_stats[nkey] = n_stats.get(nkey, 0) + 1
 
-    print("\nDataset Statistics:")
+    print("\n=== 데이터셋 통계 ===")
+    print("\n난이도 + 문제 유형별:")
     for key, count in sorted(stats.items()):
         print(f"  {key}: {count}")
 
-    return csv_path, jsonl_path
+    print("\n난이도 + 원판 수별:")
+    for key, count in sorted(n_stats.items()):
+        print(f"  {key}: {count}")
+
+    return csv_path, jsonl_paths
 
 
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description="Hanoi Puzzle Generator (Korean)")
-    parser.add_argument("--num", type=int, default=100, help="Number of puzzles per difficulty level")
-    parser.add_argument("--seed", type=int, default=2025, help="Random seed")
-    parser.add_argument("--output", type=str, default="./data", help="Output base directory")
-    parser.add_argument("--demo", action="store_true", help="Print demo puzzles")
+    parser = argparse.ArgumentParser(description="하노이의 탑 퍼즐 생성기 v3")
+    parser.add_argument("--num", type=int, default=100)
+    parser.add_argument("--seed", type=int, default=2025)
+    parser.add_argument("--output", type=str, default="./data")
+    parser.add_argument("--demo", action="store_true")
 
     args = parser.parse_args()
 
     if args.demo:
-        print("=" * 60)
-        print("하노이 탑 퍼즐 데모 (한국어)")
-        print("=" * 60)
         for difficulty in ["easy", "medium", "hard"]:
             puzzle = generate_puzzle(difficulty=difficulty, seed=42)
-            print(f"\n[{difficulty} - {puzzle['type']}]")
-            print("-" * 40)
+            print(f"\n[{difficulty} | n={puzzle['n']} | type={puzzle['type']}]")
             print(puzzle["question"])
-            print(f"\n답: {puzzle['answer']}")
-            print(f"풀이: {puzzle['solution']}")
-            print("=" * 60)
+            print(f"정답: {puzzle['answer']}")
+            print()
     else:
         puzzles = generate_dataset(num_per_difficulty=args.num, seed=args.seed)
         save_dataset(puzzles, args.output)
