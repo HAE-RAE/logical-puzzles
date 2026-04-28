@@ -13,9 +13,10 @@ import json
 import sys
 from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(PROJECT_ROOT))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _lib import PROJECT_ROOT
 
+sys.path.insert(0, str(PROJECT_ROOT))
 from generation.array_formula_en import (
     PROBLEM_GENERATORS,
     generate_puzzle,
