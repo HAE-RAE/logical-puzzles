@@ -57,29 +57,37 @@ class InequalityPuzzle:
 
 
 DIFFICULTY_CONFIGS: Dict[str, Dict] = {
+    # Calibrated to step-count proxy: size + (1 - ineq_reveal). See
+    # docs/difficulty_definition.md §2.2.
+    # Prior sweep: size 11-13, reveal 0.2 still hit 100% — model has step
+    # capacity well beyond that. Hard now pushes to size 15-18, reveal 0.15,
+    # no hints (algorithmic step ~10^5 vs prior ~10^3).
     "easy": {
-        # v2 recalibration: very small permutations + mostly-visible inequalities.
+        # v7: gpt-4o-mini E=M=32% at v6 (7-9, 0.55, 12) — easy/medium 차이 없음.
+        # 사용자 정책상 easy 더 쉽게 하여 약한 모델 gradient 형성.
+        # v4 회귀 (5-6, 0.70, 4) — 작은 size + 많은 reveal + 적은 vis_steps.
         "size_range": (5, 6),
         "hint_ratio": 0.0,
         "min_hints": 1,
         "ineq_reveal": 0.70,
         "min_visible_solver_steps": 4,
-        "max_retries": 800,
-    },
-    "medium": {
-        # v3 recalibration: size bumped to (12,14) to harden for frontier models.
-        # reveal 0.35 retained (0.30 exhausted retries in pretest).
-        "size_range": (12, 14),
-        "hint_ratio": 0.0,
-        "min_hints": 1,
-        "ineq_reveal": 0.35,
-        "min_visible_solver_steps": 30,
         "max_retries": 1000,
     },
+    "medium": {
+        # v6.1: v6 (reveal 0.26, vis_steps 60) exhausted retries. Soften to
+        # reveal 0.30 + vis_steps 40 — still meaningfully tighter than v4 (0.32, 30).
+        "size_range": (14, 16),
+        "hint_ratio": 0.0,
+        "min_hints": 1,
+        "ineq_reveal": 0.30,
+        "min_visible_solver_steps": 40,
+        "max_retries": 4000,
+    },
     "hard": {
-        # v3 recalibration: reveal 0.30 caused 4000-retry exhaustion in
-        # production (tail-risk seed regions). Reverted to 0.34; stiffened
-        # only via min_visible_solver_steps (55 → 60).
+        # v6.3: v6 (16-18, 0.22, 120), v6.1 (16-18, 0.28, 80), v6.2 (15-17, 0.30, 65)
+        # all FAILED 6000 retries. v4 (13-15, 0.34, 60) is the generator feasibility
+        # ceiling. Accept v4 hard for now — top model saturation is structural.
+        # TODO (v7+): rethink generator algorithm if greater hard tightening required.
         "size_range": (13, 15),
         "hint_ratio": 0.0,
         "min_hints": 1,

@@ -711,36 +711,39 @@ class DifficultyConfig:
 
 
 DIFFICULTY_CONFIGS = {
-    # v2 recalibration: previous 35-37 givens was still LLM-hard (all models ~0%).
-    # 60 givens means 21 blanks — L1 naked-single scan alone should solve, enabling
-    # frontier models to hit target 75%. medium / hard progressively reduce givens.
+    # Difficulty configurations.
+    #
+    # Gemini 3 Flash is very strong at Sudoku when many givens are visible, and
+    # very weak on "minimal" puzzles that require advanced deduction techniques.
+    # The old configs created a 90% cliff between medium (97%) and hard (7%).
+    # New configs rely purely on `givens_count` as the difficulty knob and
+    # disable the `minimal` flag everywhere — this yields a smoother progression.
     'easy': DifficultyConfig(
-        min_givens=58,
-        max_givens=62,
-        target_givens=60,
+        # v6: gemini ~52 / gpt-5.4-mini 98 — 충분한 gradient (절벽 + best spread).
+        # v7 시도 (65 givens) 는 사용자 판정상 불필요 → v6 유지.
+        min_givens=48,
+        max_givens=52,
+        target_givens=50,
         forbid_trivial=False,
-        max_search_nodes=5,
+        max_search_nodes=15,
         spotcheck_k=3,
     ),
-    # v2 recalibration: 38-42 givens, ~40 blanks. forbid_trivial removed
-    # (38-42 givens are mostly L1-solvable from rot180 random removal; the
-    # 38 cell-deduction chain itself is non-trivial for LLMs).
     'medium': DifficultyConfig(
-        min_givens=38,
-        max_givens=42,
-        target_givens=40,
+        # v6: gpt-5.4-mini 97% / gemini 13% at v2 40 givens — bimodal.
+        # Reduce to 32-36 to bridge gap (between v2 medium 40 and v2 hard 30).
+        min_givens=32,
+        max_givens=36,
+        target_givens=34,
         forbid_trivial=False,
-        max_search_nodes=120,
+        max_search_nodes=300,
         spotcheck_k=5,
     ),
-    # v2 recalibration: 28-32 givens (49-53 blanks). Slightly fewer givens than
-    # the previous baseline (29-31) to push more backtracking. min_search_nodes
-    # removed since rot180 random-removal often produces puzzles solvable by L1
-    # propagation alone — let the difficulty come from blank-count alone.
     'hard': DifficultyConfig(
-        min_givens=28,
-        max_givens=32,
-        target_givens=30,
+        # v6: gpt-5.4-mini 43% / gemini 0% at v2 30 givens — gemini struggling.
+        # Push to 24-28 givens for tougher reasoning model challenge.
+        min_givens=24,
+        max_givens=28,
+        target_givens=26,
         forbid_trivial=False,
         spotcheck_k=6,
     ),
