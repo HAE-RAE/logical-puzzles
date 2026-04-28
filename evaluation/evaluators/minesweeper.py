@@ -159,7 +159,9 @@ Answer: (r1,c1), (r2,c2), ..."""
         if answer_matches:
             coords_str = answer_matches[-1].group(1)
             if not _NEGATION_RE.search(coords_str):
-                pairs = re.findall(r"\(\s*(\d+)\s*,\s*(\d+)\s*\)", coords_str)
+                # Optional r/c prefix accommodates models that take the
+                # prompt's `(r1,c1)` placeholder literally and emit `(r3,c2)`.
+                pairs = re.findall(r"\(\s*r?(\d+)\s*,\s*c?(\d+)\s*\)", coords_str)
                 if pairs:
                     return {(int(r), int(c)) for r, c in pairs}
 

@@ -34,3 +34,8 @@ json/
 results*/
 evaluation_results/
 data/
+
+backups/
+logs/
+docs/
+models/
