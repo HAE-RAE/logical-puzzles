@@ -27,7 +27,7 @@ from peft import LoraConfig
 from transformers import AutoTokenizer
 from trl import GRPOConfig, GRPOTrainer
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from _lib import PROJECT_ROOT, setup_logger
 
 logger = setup_logger(__name__)

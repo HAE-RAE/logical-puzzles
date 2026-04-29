@@ -213,7 +213,7 @@ echo -e "${GREEN}[Phase 0] Done${NC}\n"
 # ============ Phase 1: Train/Test 분할 ============
 echo -e "${YELLOW}[Phase 1] Splitting data (80/20)...${NC}"
 if [ ! -f "data/distill/split/manifest.json" ]; then
-    python scripts/split_puzzle_data.py \
+    python scripts/gen/split_puzzle_data.py \
         --data-dir data/jsonl \
         --output-dir data/distill/split \
         --train-ratio 0.8 --seed 42
@@ -228,7 +228,7 @@ echo -e "${YELLOW}[Phase 2] Distillation via ${DISTILL_MODEL} Batch API...${NC}"
 # 미완료 batch 복구 (RECOVER_BATCH_IDS 환경변수로 전달)
 if [ -n "$RECOVER_BATCH_IDS" ]; then
     echo -e "  Recovering batches: $RECOVER_BATCH_IDS"
-    python scripts/generate_distillation.py \
+    python scripts/distill/generate_distillation.py \
         --tasks ${TASKS[*]} \
         --data-dir data/distill/split/train \
         --output-dir data/distill \
@@ -255,7 +255,7 @@ for method in naive guided; do
 done
 
 if [ ${#METHODS_TO_RUN[@]} -gt 0 ]; then
-    python scripts/generate_distillation.py \
+    python scripts/distill/generate_distillation.py \
         --tasks ${TASKS[*]} \
         --data-dir data/distill/split/train \
         --output-dir data/distill \
@@ -306,7 +306,7 @@ for task in "${TASKS[@]}"; do
     # SFT 데이터 준비
     if [ ! -f "${NAIVE_SFT_DIR}/train.jsonl" ] && [ -f "$NAIVE_TEACHER" ]; then
         echo -e "    Preparing SFT data..."
-        python scripts/prepare_sft_data.py \
+        python scripts/distill/prepare_sft_data.py \
             --input "$NAIVE_TEACHER" \
             --output-dir "$NAIVE_SFT_DIR" \
             --train-ratio 1.0 --seed 42 \
@@ -316,7 +316,7 @@ for task in "${TASKS[@]}"; do
     # 학습
     if [ ! -d "$NAIVE_MODEL_DIR" ] && [ -f "${NAIVE_SFT_DIR}/train.jsonl" ]; then
         echo -e "    Training on CUDA:${GPU_ID}..."
-        if python scripts/train_sft.py \
+        if python scripts/train/train_sft.py \
             --model "$MODEL" \
             --train-data "${NAIVE_SFT_DIR}/train.jsonl" \
             --output-dir "$NAIVE_MODEL_DIR" \
@@ -353,7 +353,7 @@ for task in "${TASKS[@]}"; do
     # SFT 데이터 준비
     if [ ! -f "${GUIDED_SFT_DIR}/train.jsonl" ] && [ -f "$GUIDED_TEACHER" ]; then
         echo -e "    Preparing SFT data..."
-        python scripts/prepare_sft_data.py \
+        python scripts/distill/prepare_sft_data.py \
             --input "$GUIDED_TEACHER" \
             --output-dir "$GUIDED_SFT_DIR" \
             --train-ratio 1.0 --seed 42 \
@@ -363,7 +363,7 @@ for task in "${TASKS[@]}"; do
     # 학습
     if [ ! -d "$GUIDED_MODEL_DIR" ] && [ -f "${GUIDED_SFT_DIR}/train.jsonl" ]; then
         echo -e "    Training on CUDA:${GPU_ID}..."
-        if python scripts/train_sft.py \
+        if python scripts/train/train_sft.py \
             --model "$MODEL" \
             --train-data "${GUIDED_SFT_DIR}/train.jsonl" \
             --output-dir "$GUIDED_MODEL_DIR" \

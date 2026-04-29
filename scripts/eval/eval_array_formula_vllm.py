@@ -18,7 +18,7 @@ import time
 from collections import defaultdict
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from _lib import PROJECT_ROOT, load_jsonl, save_jsonl as write_jsonl
 
 sys.path.insert(0, str(PROJECT_ROOT))

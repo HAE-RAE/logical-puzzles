@@ -30,7 +30,7 @@ run_eval() {
         echo "[skip] ${tag} (already evaluated: ${out}/summary.json)"; return
     fi
     echo "[eval] ${tag}  lora=${lora_arg}"
-    CUDA_VISIBLE_DEVICES=${GPU_ID} python scripts/eval_array_formula_vllm.py \
+    CUDA_VISIBLE_DEVICES=${GPU_ID} python scripts/eval/eval_array_formula_vllm.py \
         --model "${BASE_MODEL}" \
         ${lora_arg} \
         --eval-file "${EVAL_FILE}" \

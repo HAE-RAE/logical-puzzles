@@ -21,7 +21,7 @@ import sys, os, json, csv, random, importlib
 from pathlib import Path
 from typing import Optional
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from _lib import PROJECT_ROOT, ensure_dotenv, setup_logger
 
 logger = setup_logger(__name__)
