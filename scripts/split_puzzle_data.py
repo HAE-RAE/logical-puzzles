@@ -8,10 +8,12 @@ naive/guided 양쪽 모두 동일한 test set을 사용한다.
 import argparse
 import json
 import random
+import sys
 from collections import defaultdict
 from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _lib import PROJECT_ROOT
 
 # 파일명 → task_name 매핑 (evaluator registry와 일치시킴)
 FILENAME_TO_TASK = {
