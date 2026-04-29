@@ -117,7 +117,7 @@ echo ""
 
 # ============ Step 1: 데이터 전처리 ============
 echo -e "${YELLOW}[Step 1] Preparing SFT data (train/test split)...${NC}"
-python scripts/prepare_sft_data.py \
+python scripts/distill/prepare_sft_data.py \
     --input "$TEACHER_DATA" \
     --train-ratio 0.8 \
     --seed 42
@@ -155,7 +155,7 @@ for MODEL in "${MODELS[@]}"; do
     echo -e "${BLUE}Training: ${MODEL}${NC}"
     echo -e "${BLUE}========================================${NC}"
 
-    python scripts/train_sft.py \
+    python scripts/train/train_sft.py \
         --model "$MODEL" \
         --train-data "data/sft/train.jsonl" \
         --output-dir "models/${MODEL_SHORT}_sft" \

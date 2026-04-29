@@ -10,7 +10,7 @@ import statistics
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from _lib import PROJECT_ROOT, ensure_dotenv, get_openai_client, THINK_FORMAT_INSTRUCTION
 
 sys.path.insert(0, str(PROJECT_ROOT))
