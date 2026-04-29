@@ -11,25 +11,19 @@
 """
 
 import json
-import logging
 import random
 import sys
 from pathlib import Path
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
-logger = logging.getLogger(__name__)
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from _lib import PROJECT_ROOT, ensure_dotenv, load_jsonl, setup_logger
+
+logger = setup_logger(__name__)
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = SCRIPT_DIR.parent
+
 sys.path.insert(0, str(PROJECT_ROOT))
-
-from dotenv import load_dotenv
-
-env_path = PROJECT_ROOT / ".env"
-if env_path.exists():
-    load_dotenv(env_path)
-else:
-    load_dotenv()
+ensure_dotenv(PROJECT_ROOT / ".env" if (PROJECT_ROOT / ".env").exists() else None)
 
 from evaluation.evaluators.causal_dag import CausalDAGEvaluator
 from evaluation.evaluators.logic_grid import LogicGridEvaluator
@@ -169,8 +163,7 @@ def maybe_keep_or_search(
     path: Path,
 ) -> None:
     if path.exists():
-        with open(path, encoding="utf-8") as f:
-            puzzles = [json.loads(line) for line in f if line.strip()]
+        puzzles = load_jsonl(path)
         if len(puzzles) >= PUZZLES_PER_DIFFICULTY:
             acc = eval_acc(
                 evaluator,

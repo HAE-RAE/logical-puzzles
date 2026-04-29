@@ -17,7 +17,6 @@ Qwen3-4B-Thinking GRPO 학습 (TRL 1.x, vLLM rollout)
 
 import argparse
 import json
-import logging
 import re
 import sys
 from pathlib import Path
@@ -28,12 +27,12 @@ from peft import LoraConfig
 from transformers import AutoTokenizer
 from trl import GRPOConfig, GRPOTrainer
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
-logger = logging.getLogger(__name__)
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from _lib import PROJECT_ROOT, setup_logger
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
+logger = setup_logger(__name__)
+
 sys.path.insert(0, str(PROJECT_ROOT))
-
 from evaluation.evaluators.array_formula import ArrayFormulaEvaluator
 from generation.array_formula_en import puzzle_to_prompt
 

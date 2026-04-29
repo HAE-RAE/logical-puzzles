@@ -11,10 +11,8 @@ import sys
 import time
 from pathlib import Path
 
-from dotenv import load_dotenv
-from openai import OpenAI
-
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from _lib import PROJECT_ROOT, ensure_dotenv, get_openai_client
 
 
 def main():
@@ -24,8 +22,8 @@ def main():
     parser.add_argument("--description", default="distill batch")
     args = parser.parse_args()
 
-    load_dotenv()
-    client = OpenAI()
+    ensure_dotenv()
+    client = get_openai_client()
 
     in_path = PROJECT_ROOT / args.input_file
     meta_path = PROJECT_ROOT / args.meta_file

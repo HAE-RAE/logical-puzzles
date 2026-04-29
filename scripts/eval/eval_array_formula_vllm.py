@@ -18,22 +18,12 @@ import time
 from collections import defaultdict
 from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(PROJECT_ROOT))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from _lib import PROJECT_ROOT, load_jsonl, save_jsonl as write_jsonl
 
+sys.path.insert(0, str(PROJECT_ROOT))
 from evaluation.evaluators.array_formula import ArrayFormulaEvaluator
 from generation.array_formula_en import puzzle_to_prompt
-
-
-def load_jsonl(path: Path):
-    return [json.loads(l) for l in path.read_text(encoding="utf-8").splitlines() if l.strip()]
-
-
-def write_jsonl(path: Path, rows):
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8") as f:
-        for r in rows:
-            f.write(json.dumps(r, ensure_ascii=False) + "\n")
 
 
 def build_prompts(puzzles, tokenizer, evaluator):

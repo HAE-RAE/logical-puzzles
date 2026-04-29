@@ -327,19 +327,26 @@ def generate_from_arithmetic(
 
 
 DIFFICULTY_CONFIGS: Dict[str, Dict] = {
+    # Calibrated to step-count proxy: letters × num_operands × (1 + carries).
+    # See docs/difficulty_definition.md §2.4. Prior sweep data invalid (infra
+    # bug); these values are set from algorithmic argument and will be
+    # fine-tuned after the next diagnostic.
     "easy": {
-        # v2 recalibration: 3-digit + 2-digit, carries 0-1, few letters — LLM-solvable in single pass.
+        # v6: gemini 90 / gpt-5.4-mini 100 — 충분한 gradient. v7 시도 (3-4 letters)
+        # 는 사용자 판정상 불필요 → v6 유지.
         "num_operands": 2,
         "num1_range": (100, 999),
-        "num2_range": (10, 99),
-        "min_carries": 0,
-        "max_carries": 1,
+        "num2_range": (100, 999),
+        "min_carries": 1,
+        "max_carries": 2,
         "require_overflow": None,
-        "target_letters": (4, 6),
-        "min_solver_steps": 40,
-        "max_attempts": 4000,
+        "target_letters": (5, 7),
+        "min_solver_steps": 200,
+        "max_attempts": 5000,
     },
     "medium": {
+        # v6.2: v6 (8-9 letters, 4000 steps) caused retries. Soften to 7-8 letters,
+        # 1500 steps — still ~2.3× v4 (650).
         "num_operands": 2,
         "num1_range": (1000, 9999),
         "num2_range": (1000, 9999),
@@ -347,11 +354,12 @@ DIFFICULTY_CONFIGS: Dict[str, Dict] = {
         "max_carries": 3,
         "require_overflow": None,
         "target_letters": (7, 8),
-        "min_solver_steps": 650,
-        "max_attempts": 5000,
+        "min_solver_steps": 1500,
+        "max_attempts": 8000,
     },
     "hard": {
-        # v2 recalibration: frontier-grade stress with longer carry chains and more letters.
+        # v6.2: v6 (10 letters, 12000 steps) likely infeasible. 9-10 letters, 5000 steps
+        # is still 2× v4 (2500).
         "num_operands": 2,
         "num1_range": (10000, 99999),
         "num2_range": (10000, 99999),
@@ -359,8 +367,8 @@ DIFFICULTY_CONFIGS: Dict[str, Dict] = {
         "max_carries": None,
         "require_overflow": None,
         "target_letters": (9, 10),
-        "min_solver_steps": 2500,
-        "max_attempts": 6000,
+        "min_solver_steps": 5000,
+        "max_attempts": 10000,
     },
 }
 

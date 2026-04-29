@@ -16,12 +16,15 @@ import argparse
 import csv
 import glob
 import json
+import sys
 from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
 
-PROJECT_ROOT = Path(__file__).parent.parent
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from _lib import PROJECT_ROOT
+
 TASKS = ["ferryman_en", "array_formula_en"]
 
 

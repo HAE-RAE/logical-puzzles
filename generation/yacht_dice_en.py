@@ -318,44 +318,54 @@ def format_solution(dice_results: List[List[int]], assignment: Dict[int, str],
 # Difficulty-based dice generator
 # ============================================================
 
-# v2 recalibration: num_rounds is fixed at 12 (solver core requires it).
-# Differentiation comes from roll_types/weights extremes.
 DIFFICULTY_CONFIGS: Dict[str, Dict] = {
-    "easy": {
-        # v3 recalibration: three_kind 85% to push structured-pattern easy further.
-        # Combined with relaxed _DIFFICULTY_BANDS.easy (greedy_gap 0-15) to let
-        # greedy-optimal puzzles through — breaks the 0% floor observed in v2.
-        "roll_types": ['three_kind', 'pair', 'high_sum', 'random'],
-        "weights":    [85, 15, 0, 0],
+    # Calibrated to step-count proxy: random_pattern ratio (more random dice =
+    # more category-comparison decisions per round). See
+    # docs/difficulty_definition.md §2.6 — note the proxy is weakest here
+    # because solver is deterministic; categorical complexity (mixed strategy)
+    # may dominate over raw step count.
+    # v2 recalibration: num_rounds is fixed at 12 (solver core requires it).
+    # Differentiation comes from roll_types/weights extremes.
+    "easy":   {
+        # v7.3: weights [80,20] 가 band [0,15] 와 호환 안 됨 (gap > 15 빈번 → 200 retry fail).
+        # v6 weights 회귀 — 빠른 generation. gpt-4o-mini 가 easy 도 못 푸는 것은
+        # yacht_dice 의 구조적 한계 (12-round optimization) — paper grade 에서
+        # "frontier-resistant" 라벨로 수용.
+        "roll_types": ['three_kind', 'pair', 'high_sum', 'normal'],
+        "weights":    [60, 20, 5, 15],
     },
     "medium": {
+        # v6: gpt-5.4-mini 87% at v3. Push 'normal' fraction up.
         "roll_types": ['partial_straight', 'pair', 'three_kind', 'normal'],
-        "weights":    [28, 12, 10, 50],
+        "weights":    [15, 10, 5, 70],
     },
-    "hard": {
-        # v2 recalibration: near-pure random; full DP optimization required.
-        "roll_types": ['full_house', 'three_kind', 'pair', 'normal'],
-        "weights":    [0, 10, 10, 80],
+    "hard":   {
+        # v6: gpt-5.4-mini 77% at v3. Pure random — no structured shortcuts.
+        "roll_types": ['normal'],
+        "weights":    [100],
     },
 }
 
 
-# Extreme-mismatch bands for greedy_gap and decision_complexity.
+# Extreme-mismatch bands for greedy_gap δ (docs/difficulty_definition.md §2.6).
+# The step-count proxy for yacht_dice is weak (solver is deterministic; most
+# of the "work" is the 12! assignment search regardless of dice). We only
+# reject obvious outliers — e.g., a hard puzzle where greedy already nears
+# optimal, or an easy puzzle that traps greedy by a large margin.
 _DIFFICULTY_BANDS = {
-    # v3 recalibration: Easy band loosened — accept greedy-optimal puzzles
-    # so LLM pattern-matching on structured rolls can succeed. v2's [10,20]
-    # gap required LLM to find non-greedy improvements that models don't reach.
+    # v7.3: weights v6 회귀 (easy 빠른 generation). bands 는 v6 medium/hard
+    # 겹침 [24,28] 만 제거 — easy/medium/hard 단조성만 보장.
     'easy': {
         'greedy_gap': {'min': 0, 'max': 15},
         'decision_complexity': {'min': 0.0, 'max': 3.0},
     },
     'medium': {
-        'greedy_gap': {'min': 18, 'max': 28},
-        'decision_complexity': {'min': 4.0, 'max': 5.0},
+        'greedy_gap': {'min': 16, 'max': 23},
+        'decision_complexity': {'min': 3.2, 'max': 4.7},
     },
     'hard': {
         'greedy_gap': {'min': 24, 'max': None},
-        'decision_complexity': {'min': 5.0, 'max': None},
+        'decision_complexity': {'min': 4.8, 'max': None},
     },
 }
 

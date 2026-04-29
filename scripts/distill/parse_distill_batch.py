@@ -14,28 +14,23 @@ OpenAI Batch API 결과를 SFT 학습 jsonl 로 변환
 
 import argparse
 import json
-import re
 import sys
 from collections import Counter
 from pathlib import Path
 
-from dotenv import load_dotenv
-from openai import OpenAI
-
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(PROJECT_ROOT))
-
-from evaluation.evaluators.array_formula import ArrayFormulaEvaluator
-from generation.array_formula_en import puzzle_to_prompt
-
-THINK_RE = re.compile(r"<think>(.*?)</think>", re.DOTALL | re.IGNORECASE)
-FINAL_RE = re.compile(
-    r"[Ff]inal\s*[Aa]nswer\s*[:：]\s*(.+?)(?:\n|$)", re.IGNORECASE
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from _lib import (
+    PROJECT_ROOT,
+    THINK_RE,
+    FINAL_RE,
+    load_jsonl,
+    get_openai_client,
+    ensure_dotenv,
 )
 
-
-def load_jsonl(path: Path):
-    return [json.loads(l) for l in path.read_text(encoding="utf-8").splitlines() if l.strip()]
+sys.path.insert(0, str(PROJECT_ROOT))
+from evaluation.evaluators.array_formula import ArrayFormulaEvaluator
+from generation.array_formula_en import puzzle_to_prompt
 
 
 def index_train(train_rows):
@@ -74,8 +69,8 @@ def main():
     parser.add_argument("--raw-output", help="raw batch output 저장 경로(선택)")
     args = parser.parse_args()
 
-    load_dotenv()
-    client = OpenAI()
+    ensure_dotenv()
+    client = get_openai_client()
 
     meta = json.loads((PROJECT_ROOT / args.meta_file).read_text())
     batch_id = meta["batch_id"]

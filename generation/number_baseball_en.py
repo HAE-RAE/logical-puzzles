@@ -46,38 +46,41 @@ class Difficulty(Enum):
 
 
 DIFFICULTY_CONFIGS: Dict[str, Dict] = {
+    # Difficulty is defined by how long the candidate set stays ambiguous, not
+    # just by the final candidate-space size. Hard should therefore prefer
+    # ball-heavy, low-strike hints that require multi-hint intersection.
     "easy": {
-        # v2 recalibration: 3-digit candidate space is small (720), so 4-5 hints
-        # typically narrow to 1 in 1-2 deductions.
+        # v6: top models hit 97-100% at v4. Reduce hints to 3-4 (was 4-5)
+        # for tighter inference. Keep 3-digit small space.
         "num_digits": 3,
-        "min_hints": 4,
-        "max_hints": 5,
+        "min_hints": 3,
+        "max_hints": 4,
         "preferred_strikes": (0, 2),
         "preferred_balls": (2, 3),
         "target_residual": (1, 12),
-        "min_ball_heavy_ratio": 0.10,
+        "min_ball_heavy_ratio": 0.30,
     },
     "medium": {
-        # v3 recalibration: fewer hints (2-3) + stronger ball-heavy to break gemini's
-        # 100% saturation at v2 (3-4 hints). 4-digit candidate space = 5040, so
-        # 2-3 hints requires careful cross-hint deduction.
-        "num_digits": 4,
-        "min_hints": 2,
+        # v7.3: 사용자 지시 — easy(3-digit) 와 명확히 분리. 5-digit 채택 (4-digit 보다 어렵고
+        # 6-digit hard 보다 빠른 generation). 3 hints + ball_heavy 0.75.
+        "num_digits": 5,
+        "min_hints": 3,
         "max_hints": 3,
         "preferred_strikes": (0, 1),
         "preferred_balls": (2, 4),
-        "target_residual": (2, 24),
-        "min_ball_heavy_ratio": 0.55,
+        "target_residual": (3, 30),
+        "min_ball_heavy_ratio": 0.75,
     },
     "hard": {
-        # v2 recalibration: fewer hints + heavier ball-bias forces cross-hint intersection.
+        # v7.4: strikes (0,0) 너무 tight (18min 0 puzzle). 0-1 strike 허용 +
+        # ball_heavy 0.80. medium(5-digit) 와 자릿수 +1 + ball_heavy ↑0.05 → 어려움.
         "num_digits": 6,
         "min_hints": 3,
         "max_hints": 4,
         "preferred_strikes": (0, 1),
-        "preferred_balls": (2, 5),
-        "target_residual": (4, 45),
-        "min_ball_heavy_ratio": 0.70,
+        "preferred_balls": (3, 5),
+        "target_residual": (4, 50),
+        "min_ball_heavy_ratio": 0.80,
     },
 }
 

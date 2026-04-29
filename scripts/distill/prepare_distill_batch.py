@@ -17,31 +17,12 @@ import json
 import sys
 from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(PROJECT_ROOT))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from _lib import PROJECT_ROOT, THINK_FORMAT_INSTRUCTION
 
+sys.path.insert(0, str(PROJECT_ROOT))
 from evaluation.evaluators.array_formula import ArrayFormulaEvaluator
 from generation.array_formula_en import puzzle_to_prompt
-
-THINK_FORMAT_INSTRUCTION = (
-    "\n\n### Response format (STRICTLY MANDATORY — your response is invalid otherwise)\n"
-    "You MUST produce an extensive, thorough chain-of-thought:\n"
-    "  - Identify EVERY row from EVERY table that is relevant to the question.\n"
-    "  - Show EVERY arithmetic step explicitly (do not skip intermediate calculations).\n"
-    "  - State each filtering or grouping criterion before applying it.\n"
-    "  - Aim for a detailed, fully verifiable trace (typically 500-1500 reasoning tokens). "
-    "A short answer is INSUFFICIENT — show your work.\n"
-    "Even if a reference outline is provided in the user message, "
-    "you MUST STILL produce the full step-by-step <think> trace. "
-    "Responses without proper <think>...</think> reasoning are REJECTED.\n"
-    "\n"
-    "Output structure (exactly):\n"
-    "<think>\n"
-    "  ...detailed multi-step reasoning here, listing each row, each calculation...\n"
-    "</think>\n"
-    "Final answer: <the answer>\n"
-    "Do not write anything after this line."
-)
 
 GUIDED_SUFFIX = (
     "\n\n### Reference solution outline (intermediate steps only — final number deliberately omitted)\n"
