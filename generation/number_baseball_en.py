@@ -691,6 +691,18 @@ def create_dataset_files(num_questions: int):
     remainder = num_questions % len(difficulties)
 
     all_puzzles = []
+    MAX_RETRIES_PER_PUZZLE = 50  # per-difficulty dedup retry budget
+
+    def _hint_key(problem):
+        # 모델이 보는 input 은 num_digits + hint set. 동일 hint set 은 reject.
+        hints = problem.get('hints', [])
+        return (
+            problem.get('num_digits'),
+            tuple(sorted(
+                (h.get('guess', ''), h.get('strikes', 0), h.get('balls', 0))
+                for h in hints if isinstance(h, dict)
+            )),
+        )
 
     for i, difficulty in enumerate(difficulties):
         count = puzzles_per_diff + (1 if i < remainder else 0)
@@ -701,28 +713,50 @@ def create_dataset_files(num_questions: int):
 
         print(f"\n=== Generating {diff_name} puzzles ({count} needed) ===")
 
+        seen_keys = set()
         diff_success = 0
-        for j in range(count):
+        retries = 0
+        max_retries = count * MAX_RETRIES_PER_PUZZLE
+        while diff_success < count:
             try:
                 problem = generator.generate_problem(difficulty)
-                is_valid, msg = validate_problem(problem)
-
-                if is_valid:
-                    puzzle_data = {
-                        'id': f'number_baseball_en_{diff_name}_{diff_success:04d}',
-                        'question': create_question(problem),
-                        'answer': problem['answer'],
-                        'solution': _build_baseball_solution_en(problem),
-                        'difficulty': diff_name,
-                    }
-                    all_puzzles.append(puzzle_data)
-                    diff_success += 1
-                    print(f"  [{j+1}/{count}] digits={problem['num_digits']}, "
-                          f"hints={len(problem['hints'])}, answer={problem['answer']}")
-                else:
-                    print(f"  [{j+1}/{count}] Validation failed: {msg}")
             except RuntimeError as e:
-                print(f"  [{j+1}/{count}] Failed: {e}")
+                retries += 1
+                print(f"  [attempt {diff_success + retries}] Failed: {e}")
+                if retries > max_retries:
+                    print(f"  ⚠️ retry budget exhausted at {diff_success}/{count} for {diff_name}")
+                    break
+                continue
+
+            is_valid, msg = validate_problem(problem)
+            if not is_valid:
+                retries += 1
+                print(f"  [attempt {diff_success + retries}] Validation failed: {msg}")
+                if retries > max_retries:
+                    print(f"  ⚠️ retry budget exhausted at {diff_success}/{count} for {diff_name}")
+                    break
+                continue
+
+            key = _hint_key(problem)
+            if key in seen_keys:
+                retries += 1
+                if retries > max_retries:
+                    print(f"  ⚠️ dedup retry budget exhausted at {diff_success}/{count} for {diff_name}")
+                    break
+                continue
+            seen_keys.add(key)
+
+            puzzle_data = {
+                'id': f'number_baseball_en_{diff_name}_{diff_success:04d}',
+                'question': create_question(problem),
+                'answer': problem['answer'],
+                'solution': _build_baseball_solution_en(problem),
+                'difficulty': diff_name,
+            }
+            all_puzzles.append(puzzle_data)
+            diff_success += 1
+            print(f"  [{diff_success}/{count}] digits={problem['num_digits']}, "
+                  f"hints={len(problem['hints'])}, answer={problem['answer']}")
 
     print(f"\nGenerated {len(all_puzzles)} puzzles")
 

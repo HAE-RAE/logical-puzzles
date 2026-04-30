@@ -14,7 +14,7 @@ logical-puzzles-me/inequality/generator.py에서 포팅:
 import random
 import json
 from pathlib import Path
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Tuple
 from dataclasses import dataclass, field
 from enum import Enum
 
@@ -257,17 +257,19 @@ class InequalityPuzzleGenerator:
         given_numbers: Dict[int, int],
         num_to_hide: int,
     ) -> Optional[set]:
-        """탐욕적 숨김: visible 유일성을 유지하면서 visible 탐색 노드 수를 최대화하는
-        인덱스를 선택한다. 선택 불가 시 None 반환.
+        """다양성 인지(diversity-aware) 숨김: visible 유일성을 유지하는 인덱스
+        중에서 max-nodes 의 70% 이상에 해당하는 후보들 중 무작위 추출.
+
+        결정적 max-nodes 선택은 작은 config (size ≤ 6) 에서 ~4% 의 동일 hidden
+        pattern attractor 를 유발했다. Top-tier 무작위 샘플링은 "어려운 hide"
+        는 유지하면서 ties 만 stochastic 하게 깬다.
+        선택 불가 시 None 반환.
         """
         hidden = set()
         total_ineqs = len(inequalities)
         for _ in range(num_to_hide):
-            best_idx = None
-            best_nodes = -1
-            candidates = list(range(total_ineqs))
-            random.shuffle(candidates)
-            for idx in candidates:
+            candidates_with_score: List[Tuple[int, int]] = []  # (idx, nodes)
+            for idx in range(total_ineqs):
                 if idx in hidden:
                     continue
                 trial_hidden = hidden | {idx}
@@ -279,12 +281,14 @@ class InequalityPuzzleGenerator:
                 visible_solutions = self._find_solutions(
                     size, visible_ineqs, given_numbers, max_count=2, _stats=stats
                 )
-                if len(visible_solutions) == 1 and stats['nodes'] > best_nodes:
-                    best_idx = idx
-                    best_nodes = stats['nodes']
-            if best_idx is None:
+                if len(visible_solutions) == 1:
+                    candidates_with_score.append((idx, stats['nodes']))
+            if not candidates_with_score:
                 return None
-            hidden.add(best_idx)
+            max_nodes = max(c[1] for c in candidates_with_score)
+            threshold = max(1, int(max_nodes * 0.7))
+            top = [idx for idx, n in candidates_with_score if n >= threshold]
+            hidden.add(random.choice(top))
         return hidden
 
     def generate_puzzle(self, difficulty: Difficulty, max_retries: int = 800) -> InequalityPuzzle:
@@ -514,6 +518,7 @@ def create_dataset_files(num_questions: int):
     remainder = num_questions % len(difficulties)
 
     all_puzzles = []
+    MAX_RETRIES_PER_PUZZLE = 50  # 난이도별 dedup 재시도 한도
 
     for i, difficulty in enumerate(difficulties):
         count = puzzles_per_diff + (1 if i < remainder else 0)
@@ -523,21 +528,41 @@ def create_dataset_files(num_questions: int):
 
         print(f"\n=== {diff_name} 퍼즐 생성 중 ({count}개 필요) ===")
 
-        for j in range(count):
+        seen_keys = set()
+        produced = 0
+        retries = 0
+        max_retries = count * MAX_RETRIES_PER_PUZZLE
+        while produced < count:
             try:
                 puzzle = generator.generate_puzzle(difficulty)
-                puzzle_data = {
-                    "id": f"inequality_ko_{diff_name}_{j:04d}",
-                    "question": create_question(puzzle),
-                    "answer": puzzle.get_answer_string(),
-                    "solution": _build_inequality_solution_ko(puzzle),
-                    "difficulty": diff_name,
-                }
-                all_puzzles.append(puzzle_data)
-                print(f"  [{j+1}/{count}] size={puzzle.size}, 정답={puzzle.get_answer_string()}, "
-                      f"steps={puzzle.step_metrics.get('visible_solver_steps', 0)}")
             except RuntimeError as e:
-                print(f"  [{j+1}/{count}] 실패: {e}")
+                retries += 1
+                print(f"  [시도 {produced + retries}] 실패: {e}")
+                if retries > max_retries:
+                    print(f"  ⚠️ {diff_name}: 재시도 한도 초과 ({produced}/{count})")
+                    break
+                continue
+
+            key = puzzle.to_problem_string()
+            if key in seen_keys:
+                retries += 1
+                if retries > max_retries:
+                    print(f"  ⚠️ {diff_name}: dedup 재시도 한도 초과 ({produced}/{count})")
+                    break
+                continue
+            seen_keys.add(key)
+
+            puzzle_data = {
+                "id": f"inequality_ko_{diff_name}_{produced:04d}",
+                "question": create_question(puzzle),
+                "answer": puzzle.get_answer_string(),
+                "solution": _build_inequality_solution_ko(puzzle),
+                "difficulty": diff_name,
+            }
+            all_puzzles.append(puzzle_data)
+            produced += 1
+            print(f"  [{produced}/{count}] size={puzzle.size}, 정답={puzzle.get_answer_string()}, "
+                  f"steps={puzzle.step_metrics.get('visible_solver_steps', 0)}")
 
     print(f"\n총 {len(all_puzzles)}개 퍼즐 생성 완료")
 
