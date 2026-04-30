@@ -490,6 +490,8 @@ def create_dataset_files(num_questions: int):
 
     all_puzzles = []
 
+    # Per-difficulty dedup: identical puzzle grids (same `puzzle` rows tuple) are
+    # rejected → 같은 input 이 한 difficulty bucket 안에서 두 번 나오지 않게.
     for i, difficulty in enumerate(difficulties):
         count = puzzles_per_diff + (1 if i < remainder else 0)
         if count == 0:
@@ -497,14 +499,21 @@ def create_dataset_files(num_questions: int):
 
         print(f"\n=== Generating {difficulty} puzzles ({count} needed) ===")
 
+        seen_keys: set = set()
         diff_success = 0
-        for j in range(count):
+        attempt = 0
+        # 각 attempt 가 seed_offset 10개를 시도. 4×4 easy 같이 grid 공간이 좁은
+        # 경우 무한 루프 방지로 50× 한도.
+        max_attempts = count * 50
+
+        while diff_success < count and attempt < max_attempts:
+            attempt += 1
             puzzle_id = f"minesweeper_en_{difficulty}_{diff_success:04d}"
 
             puzzle_generated = False
             for seed_offset in range(10):
                 generator.rng = random.Random(
-                    generator.seed + seed_offset + j * 100 + i * 10_000_000
+                    generator.seed + seed_offset + attempt * 100 + i * 10_000_000
                 )
 
                 result = generator.generate_puzzle_with_difficulty(
@@ -513,6 +522,13 @@ def create_dataset_files(num_questions: int):
                 )
 
                 if result:
+                    # dedup key: 모델이 보는 puzzle grid
+                    key = tuple(result['puzzle']) if isinstance(result['puzzle'], list) else result['puzzle']
+                    if key in seen_keys:
+                        puzzle_generated = False
+                        continue
+                    seen_keys.add(key)
+
                     result['question'] = create_prompt(result)
                     puzzle_data = {
                         "id": result["id"],
@@ -522,13 +538,16 @@ def create_dataset_files(num_questions: int):
                         "difficulty": result["difficulty"],
                     }
                     all_puzzles.append(puzzle_data)
-                    print(f"  [{j+1}/{count}] {result['description']}, answer={result['answer']}")
+                    print(f"  [{diff_success+1}/{count}] {result['description']}, answer={result['answer']}")
                     puzzle_generated = True
                     diff_success += 1
                     break
 
-            if not puzzle_generated:
-                print(f"  [{j+1}/{count}] Failed to generate")
+        if diff_success < count:
+            print(
+                f"  ⚠️ dedup retry budget exhausted at "
+                f"{diff_success}/{count} for {difficulty}"
+            )
 
     print(f"\nGenerated {len(all_puzzles)} puzzles total")
 

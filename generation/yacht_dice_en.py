@@ -655,6 +655,12 @@ def create_dataset_files(num_questions: int):
 
     all_puzzles: List[Dict] = []
     problem_id = 1
+    MAX_RETRIES_PER_PUZZLE = 30
+
+    def _dice_key(problem):
+        # per-difficulty dedup key — yacht_dice 는 dice_results 가 입력이므로
+        # 동일 sequence 의 puzzle 은 reject (12 라운드 × 6 face value 의 변형이 좁음)
+        return tuple(tuple(sorted(r)) for r in problem.get('dice_results', []))
 
     for i, difficulty in enumerate(difficulties):
         count = puzzles_per_diff + (1 if i < remainder else 0)
@@ -664,43 +670,63 @@ def create_dataset_files(num_questions: int):
         print(f"\n=== Generating {difficulty} puzzles ({count} needed) ===")
 
         diff_success = 0
-        for j in range(count):
+        seen = set()
+        retries = 0
+        max_retries = count * MAX_RETRIES_PER_PUZZLE
+        attempt_idx = 0
+        while diff_success < count:
+            attempt_idx += 1
             problem = generator.generate_problem(difficulty, problem_id)
             is_valid, message = generator.validate_problem(problem)
 
-            if is_valid:
-                dice_results = problem['dice_results']
-                optimal_score = problem['answer']
-                optimal_assignment = problem.get('optimal_assignment', {})
-                solution_str = _build_yacht_solution_en(
-                    dice_results=dice_results,
-                    optimal_assignment=optimal_assignment,
-                    optimal_score=optimal_score,
-                    config=config,
-                    difficulty=difficulty,
-                    step_metrics=problem.get('step_metrics', {}),
-                )
+            if not is_valid:
+                print(f"  [attempt {attempt_idx}] Invalid: {message}")
+                problem_id += 1
+                retries += 1
+                if retries > max_retries:
+                    print(f"  ⚠️ retry budget exhausted at {diff_success}/{count} for {difficulty}")
+                    break
+                continue
 
-                question = config.get_user_prompt(dice_results)
+            key = _dice_key(problem)
+            if key in seen:
+                retries += 1
+                problem_id += 1
+                if retries > max_retries:
+                    print(f"  ⚠️ dedup retry budget exhausted at {diff_success}/{count} for {difficulty}")
+                    break
+                continue
+            seen.add(key)
 
-                puzzle_data = {
-                    "id": f"yacht_dice_en_{difficulty}_{diff_success:04d}",
-                    "question": question,
-                    "answer": str(optimal_score),
-                    "solution": solution_str,
-                    "difficulty": difficulty,
-                }
-                all_puzzles.append(puzzle_data)
-                diff_success += 1
-                sm = problem['step_metrics']
-                print(
-                    f"  [{j+1}/{count}] score={optimal_score} "
-                    f"gap={sm['greedy_gap']} complexity={sm['total_decision_complexity']:.2f} "
-                    f"band_violation={sm['band_violation']}"
-                )
-            else:
-                print(f"  [{j+1}/{count}] Invalid: {message}")
+            dice_results = problem['dice_results']
+            optimal_score = problem['answer']
+            optimal_assignment = problem.get('optimal_assignment', {})
+            solution_str = _build_yacht_solution_en(
+                dice_results=dice_results,
+                optimal_assignment=optimal_assignment,
+                optimal_score=optimal_score,
+                config=config,
+                difficulty=difficulty,
+                step_metrics=problem.get('step_metrics', {}),
+            )
 
+            question = config.get_user_prompt(dice_results)
+
+            puzzle_data = {
+                "id": f"yacht_dice_en_{difficulty}_{diff_success:04d}",
+                "question": question,
+                "answer": str(optimal_score),
+                "solution": solution_str,
+                "difficulty": difficulty,
+            }
+            all_puzzles.append(puzzle_data)
+            diff_success += 1
+            sm = problem['step_metrics']
+            print(
+                f"  [{diff_success}/{count}] score={optimal_score} "
+                f"gap={sm['greedy_gap']} complexity={sm['total_decision_complexity']:.2f} "
+                f"band_violation={sm['band_violation']}"
+            )
             problem_id += 1
 
     print(f"\nGenerated {len(all_puzzles)} puzzles")

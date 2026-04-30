@@ -690,6 +690,18 @@ def create_dataset_files(num_questions: int):
     remainder = num_questions % len(difficulties)
 
     all_puzzles = []
+    MAX_RETRIES_PER_PUZZLE = 50  # 난이도별 dedup 재시도 한도
+
+    def _hint_key(problem):
+        # 모델이 보는 input 은 num_digits + hint set. 동일 hint set 은 reject.
+        hints = problem.get('hints', [])
+        return (
+            problem.get('num_digits'),
+            tuple(sorted(
+                (h.get('guess', ''), h.get('strikes', 0), h.get('balls', 0))
+                for h in hints if isinstance(h, dict)
+            )),
+        )
 
     for i, difficulty in enumerate(difficulties):
         count = puzzles_per_diff + (1 if i < remainder else 0)
@@ -700,28 +712,50 @@ def create_dataset_files(num_questions: int):
 
         print(f"\n=== {diff_name} 난이도 퍼즐 생성 중 ({count}개 필요) ===")
 
+        seen_keys = set()
         diff_success = 0
-        for j in range(count):
+        retries = 0
+        max_retries = count * MAX_RETRIES_PER_PUZZLE
+        while diff_success < count:
             try:
                 problem = generator.generate_problem(difficulty)
-                is_valid, msg = validate_problem(problem)
-
-                if is_valid:
-                    puzzle_data = {
-                        'id': f'number_baseball_ko_{diff_name}_{diff_success:04d}',
-                        'question': create_question(problem),
-                        'answer': problem['answer'],
-                        'solution': _build_baseball_solution_ko(problem),
-                        'difficulty': diff_name,
-                    }
-                    all_puzzles.append(puzzle_data)
-                    diff_success += 1
-                    print(f"  [{j+1}/{count}] 자릿수={problem['num_digits']}, "
-                          f"힌트={len(problem['hints'])}개, 정답={problem['answer']}")
-                else:
-                    print(f"  [{j+1}/{count}] 검증 실패: {msg}")
             except RuntimeError as e:
-                print(f"  [{j+1}/{count}] 실패: {e}")
+                retries += 1
+                print(f"  [시도 {diff_success + retries}] 실패: {e}")
+                if retries > max_retries:
+                    print(f"  ⚠️ {diff_name}: 재시도 한도 초과 ({diff_success}/{count})")
+                    break
+                continue
+
+            is_valid, msg = validate_problem(problem)
+            if not is_valid:
+                retries += 1
+                print(f"  [시도 {diff_success + retries}] 검증 실패: {msg}")
+                if retries > max_retries:
+                    print(f"  ⚠️ {diff_name}: 재시도 한도 초과 ({diff_success}/{count})")
+                    break
+                continue
+
+            key = _hint_key(problem)
+            if key in seen_keys:
+                retries += 1
+                if retries > max_retries:
+                    print(f"  ⚠️ {diff_name}: dedup 재시도 한도 초과 ({diff_success}/{count})")
+                    break
+                continue
+            seen_keys.add(key)
+
+            puzzle_data = {
+                'id': f'number_baseball_ko_{diff_name}_{diff_success:04d}',
+                'question': create_question(problem),
+                'answer': problem['answer'],
+                'solution': _build_baseball_solution_ko(problem),
+                'difficulty': diff_name,
+            }
+            all_puzzles.append(puzzle_data)
+            diff_success += 1
+            print(f"  [{diff_success}/{count}] 자릿수={problem['num_digits']}, "
+                  f"힌트={len(problem['hints'])}개, 정답={problem['answer']}")
 
     print(f"\n총 {len(all_puzzles)}개의 퍼즐이 생성되었습니다")
 
