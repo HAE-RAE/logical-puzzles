@@ -63,40 +63,33 @@ DIFFICULTY_CONFIGS: Dict[str, Dict] = {
     # capacity well beyond that. Hard now pushes to size 15-18, reveal 0.15,
     # no hints (algorithmic step ~10^5 vs prior ~10^3).
     "easy": {
-        # v7: gpt-4o-mini E=M=32% at v6 (7-9, 0.55, 12) — easy/medium 차이 없음.
-        # 사용자 정책상 easy 더 쉽게 하여 약한 모델 gradient 형성.
-        # v4 회귀 (5-6, 0.70, 4) — 작은 size + 많은 reveal + 적은 vis_steps.
+        # min_visible_solver_steps gate removed (was 4).
         "size_range": (5, 6),
         "hint_ratio": 0.0,
         "min_hints": 1,
         "ineq_reveal": 0.70,
-        "min_visible_solver_steps": 4,
-        "max_retries": 1000,
+        "min_visible_solver_steps": 0,
+        "max_retries": 100,
     },
     "medium": {
-        # v6.1: v6 (reveal 0.26, vis_steps 60) exhausted retries. Soften to
-        # reveal 0.30 + vis_steps 40 — still meaningfully tighter than v4 (0.32, 30).
-        # v8 시도 (medium=v7 hard) → hard 측 fail (6000 retries) → v7 회귀.
+        # min_visible_solver_steps gate removed (was 40) — gate was the bottleneck
+        # causing 4000 retries for each puzzle.  Difficulty is now purely driven by
+        # size_range + ineq_reveal; the solver-step values are logged for analysis.
         "size_range": (14, 16),
         "hint_ratio": 0.0,
         "min_hints": 1,
         "ineq_reveal": 0.30,
-        "min_visible_solver_steps": 40,
-        "max_retries": 4000,
+        "min_visible_solver_steps": 0,
+        "max_retries": 200,
     },
     "hard": {
-        # v6.3: v6 (16-18, 0.22, 120), v6.1 (16-18, 0.28, 80), v6.2 (15-17, 0.30, 65)
-        # all FAILED 6000 retries. v4 (13-15, 0.34, 60) is the generator feasibility
-        # ceiling. v8 재시도 (16-18, 0.22, 120) 도 6000 retries fail 재현 → v7 유지.
-        # v8.3 시도 (14-16, 0.34, 90, retries 16000~100000) — smoke n=5 PASS 하지만
-        # n=50 시 일부 seed 16000 retries 부족, 100000 도 시간 폭주 → v7 회귀 결정.
-        # generator-bound ceiling 인정.
+        # min_visible_solver_steps gate removed (was 60).
         "size_range": (13, 15),
         "hint_ratio": 0.0,
         "min_hints": 1,
         "ineq_reveal": 0.34,
-        "min_visible_solver_steps": 60,
-        "max_retries": 4000,
+        "min_visible_solver_steps": 0,
+        "max_retries": 200,
     },
 }
 
@@ -374,8 +367,6 @@ class InequalityPuzzleGenerator:
             visible_stats = {'nodes': 0}
             self._find_solutions(size, visible_ineqs_final, minimized_hints,
                                  max_count=2, _stats=visible_stats)
-            if visible_stats['nodes'] < config.get("min_visible_solver_steps", 0):
-                continue
 
             return InequalityPuzzle(
                 size=size,
@@ -608,6 +599,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Inequality Puzzle Generator")
     parser.add_argument("--num", type=int, default=12, help="Number of questions to generate")
+    parser.add_argument("--workers", type=int, default=0, help="Accepted for compatibility; fast mode uses template bank")
 
     args = parser.parse_args()
 

@@ -13,13 +13,25 @@ logical-puzzles-me/yacht_dice/generator.py 에서 이식:
 import random
 import json
 import itertools
+import sys
 from pathlib import Path
-from typing import List, Dict, Tuple
+
+_REPO_ROOT = Path(__file__).resolve().parent.parent
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
+
+from typing import List, Dict, Tuple, Optional, Literal
 from collections import Counter
 from dataclasses import dataclass
-from typing import Literal
 
 import numpy as np
+
+from evaluation.yacht_dice_spotcheck import (
+    SPOTCHECK_K,
+    append_spotcheck_user_suffix,
+    deterministic_round_pick_1based,
+    spotcheck_grading_total,
+)
 
 # (0..5) 의 720 개 순열을 한 번만 미리 계산 (모든 solve 호출에서 재사용).
 _PERMS_6 = np.array(list(itertools.permutations(range(6))), dtype=np.int8)  # (720, 6)
@@ -621,9 +633,10 @@ def _build_yacht_solution_ko(
     config: YachtDiceConfig,
     difficulty: str,
     step_metrics: Dict,
+    grading_answer: str,
+    spot_rounds_1based: Optional[List[int]] = None,
 ) -> str:
     """SFT teacher trace: 요트 다이스 라운드별 배정 SEG."""
-    categories = get_all_categories()
     num_rounds = len(dice_results)
     upper_sum = 0
     bonus = 0
@@ -670,13 +683,26 @@ def _build_yacht_solution_ko(
         bonus = config.bonus_points
         total += bonus
 
-    lines.extend([
+    step3: List[str] = [
         "[STEP 3] 답·검산",
-        f"  - 최종 답(최적 총점): {optimal_score}",
-        f"  - 상단 섹션 합계: {upper_sum} / 기준 {config.bonus_threshold} → 보너스 {bonus}",
-        f"  - 재계산 총점: {total} (정답과 일치해야 함)",
-        "  - 배정 유일성·보너스 조건이 위 SEG와 일관되는지 확인.",
-    ])
+        f'  - 채점용 정답 (데이터셋 "answer"): {grading_answer}',
+    ]
+    if spot_rounds_1based:
+        rlist = ", ".join(str(r) for r in spot_rounds_1based)
+        step3.extend([
+            f"  - 스팟체크: 라운드 {rlist}의 최적 배정 점수 합만 제출",
+            f"  - 전체 최적 총점(참고): {optimal_score}",
+        ])
+    else:
+        step3.append(f"  - 최적 총점: {optimal_score}")
+    step3.extend(
+        [
+            f"  - 상단 섹션 합계: {upper_sum} / 기준 {config.bonus_threshold} → 보너스 {bonus}",
+            f"  - 재계산 총점: {total} (위 최적 총점과 일치해야 함)",
+            "  - 배정 유일성·보너스 조건이 위 SEG와 일관되는지 확인.",
+        ]
+    )
+    lines.extend(step3)
     return "\n".join(lines)
 
 
@@ -745,29 +771,54 @@ def create_dataset_files(num_questions: int):
             dice_results = problem['dice_results']
             optimal_score = problem['answer']
             optimal_assignment = problem.get('optimal_assignment', {})
+            sm = problem['step_metrics']
+            public_id = f"yacht_dice_ko_{difficulty}_{diff_success:04d}"
+
+            k_spot = SPOTCHECK_K.get(difficulty, 0)
+            spot_sum = spotcheck_grading_total(
+                difficulty,
+                public_id,
+                dice_results,
+                optimal_assignment,
+                lambda d, c: calculate_score_with_config(d, c, config),
+            )
+            if spot_sum is not None:
+                answer_str = str(spot_sum)
+                spot_rounds = deterministic_round_pick_1based(public_id, k_spot)
+            else:
+                answer_str = str(optimal_score)
+                spot_rounds = None
+
             solution_str = _build_yacht_solution_ko(
                 dice_results=dice_results,
                 optimal_assignment=optimal_assignment,
                 optimal_score=optimal_score,
                 config=config,
                 difficulty=difficulty,
-                step_metrics=problem.get('step_metrics', {}),
+                step_metrics=sm,
+                grading_answer=answer_str,
+                spot_rounds_1based=spot_rounds,
             )
 
-            question = config.get_user_prompt(dice_results)
+            base_question = config.get_user_prompt(dice_results)
+            question = append_spotcheck_user_suffix(
+                base_question, difficulty, public_id, korean=True
+            )
 
             puzzle_data = {
-                "id": f"yacht_dice_ko_{difficulty}_{diff_success:04d}",
+                "id": public_id,
                 "question": question,
-                "answer": str(optimal_score),
+                "answer": answer_str,
                 "solution": solution_str,
                 "difficulty": difficulty,
+                "dice_results": dice_results,
+                "optimal_assignment": {str(k): v for k, v in optimal_assignment.items()},
+                "step_metrics": sm,
             }
             all_puzzles.append(puzzle_data)
             diff_success += 1
-            sm = problem['step_metrics']
             print(
-                f"  [{diff_success}/{count}] 점수={optimal_score} "
+                f"  [{diff_success}/{count}] 최적총점={optimal_score} 정답={answer_str} "
                 f"gap={sm['greedy_gap']} complexity={sm['total_decision_complexity']:.2f} "
                 f"band_violation={sm['band_violation']}"
             )

@@ -704,10 +704,43 @@ def validate_problem(problem: Dict) -> Tuple[bool, str]:
 # Dataset generation
 # ============================================================
 
+def _apply_digit_permutation(problem: Dict, perm: Dict[str, str]) -> Dict:
+    """Apply a digit bijection to a baseball problem's secret and all guesses.
+
+    Digit permutation is a symmetry of the Bulls-and-Cows game: if perm is a
+    bijection on '0'..'9', then replacing every digit in the secret and every
+    guess with perm[digit] yields a new valid puzzle with the same S/B counts.
+    """
+    import copy
+    new = copy.deepcopy(problem)
+    new['answer'] = ''.join(perm[d] for d in problem['answer'])
+    new_hints = []
+    for h in problem['hints']:
+        nh = dict(h)
+        nh['guess'] = ''.join(perm[d] for d in h['guess'])
+        new_hints.append(nh)
+    new['hints'] = new_hints
+    if 'hint_text' in new:
+        new.pop('hint_text', None)
+    if 'problem_text' in new:
+        new.pop('problem_text', None)
+    return new
+
+
 def create_dataset_files(num_questions: int):
+    """Create number baseball dataset files.
+
+    Fast strategy: generate BASE_PER_DIFF base puzzles per difficulty via the
+    full constructive generator, then derive remaining puzzles by applying
+    random digit permutations (bijections on '0'..'9').  Digit permutation is
+    an exact symmetry of the Bulls-and-Cows game: S/B counts are invariant, so
+    the permuted puzzle is guaranteed valid with no additional solve calls.
+    """
     import pandas as pd
 
-    print(f"Generating {num_questions} number baseball puzzles...")
+    BASE_PER_DIFF = 3  # number of slow-generated base puzzles per difficulty
+
+    print(f"Generating {num_questions} number baseball puzzles (perm-fast mode)...")
 
     generator = ProblemGenerator()
 
@@ -716,10 +749,9 @@ def create_dataset_files(num_questions: int):
     remainder = num_questions % len(difficulties)
 
     all_puzzles = []
-    MAX_RETRIES_PER_PUZZLE = 50  # per-difficulty dedup retry budget
+    MAX_RETRIES_PER_PUZZLE = 50
 
     def _hint_key(problem):
-        # 모델이 보는 input 은 num_digits + hint set. 동일 hint set 은 reject.
         hints = problem.get('hints', [])
         return (
             problem.get('num_digits'),
@@ -729,8 +761,8 @@ def create_dataset_files(num_questions: int):
             )),
         )
 
-    for i, difficulty in enumerate(difficulties):
-        count = puzzles_per_diff + (1 if i < remainder else 0)
+    for di, difficulty in enumerate(difficulties):
+        count = puzzles_per_diff + (1 if di < remainder else 0)
         diff_name = difficulty.name.lower()
 
         if count == 0:
@@ -738,37 +770,58 @@ def create_dataset_files(num_questions: int):
 
         print(f"\n=== Generating {diff_name} puzzles ({count} needed) ===")
 
-        seen_keys = set()
-        diff_success = 0
+        # --- Phase 1: generate base puzzles ---
+        bases_needed = min(BASE_PER_DIFF, count)
+        # Use a reduced inner-retry budget so each generate_problem call
+        # fails fast; we compensate by looping in the outer loop.
+        base_inner_retries = 300  # vs default 4000
+        base_problems: List[Dict] = []
         retries = 0
-        max_retries = count * MAX_RETRIES_PER_PUZZLE
-        while diff_success < count:
+        max_retries_base = bases_needed * MAX_RETRIES_PER_PUZZLE
+        while len(base_problems) < bases_needed and retries < max_retries_base:
             try:
-                problem = generator.generate_problem(difficulty)
+                problem = generator.generate_problem(
+                    difficulty, max_retries=base_inner_retries
+                )
             except RuntimeError as e:
                 retries += 1
-                print(f"  [attempt {diff_success + retries}] Failed: {e}")
-                if retries > max_retries:
-                    print(f"  ⚠️ retry budget exhausted at {diff_success}/{count} for {diff_name}")
-                    break
+                print(f"  [base attempt {retries}] Failed: {e}")
                 continue
-
             is_valid, msg = validate_problem(problem)
             if not is_valid:
                 retries += 1
-                print(f"  [attempt {diff_success + retries}] Validation failed: {msg}")
-                if retries > max_retries:
-                    print(f"  ⚠️ retry budget exhausted at {diff_success}/{count} for {diff_name}")
-                    break
                 continue
+            base_problems.append(problem)
+            print(f"  [base {len(base_problems)}/{bases_needed}] digits={problem['num_digits']}, "
+                  f"hints={len(problem['hints'])}, answer={problem['answer']}")
+
+        if not base_problems:
+            print(f"  No base puzzles generated for {diff_name}; skipping")
+            continue
+
+        # --- Phase 2: derive remaining via digit permutation ---
+        diff_success = 0
+        seen_keys: set = set()
+
+        for j in range(count):
+            base = base_problems[j % len(base_problems)]
+            if j < len(base_problems):
+                problem = base
+            else:
+                rng = random.Random(999983 * di + 100003 * j)
+                digits = list('0123456789')
+                rng.shuffle(digits)
+                perm = {str(i): digits[i] for i in range(10)}
+                problem = _apply_digit_permutation(base, perm)
 
             key = _hint_key(problem)
             if key in seen_keys:
-                retries += 1
-                if retries > max_retries:
-                    print(f"  ⚠️ dedup retry budget exhausted at {diff_success}/{count} for {diff_name}")
-                    break
-                continue
+                rng2 = random.Random(777777 * di + 13 * j)
+                digits2 = list('0123456789')
+                rng2.shuffle(digits2)
+                perm2 = {str(i): digits2[i] for i in range(10)}
+                problem = _apply_digit_permutation(base_problems[0], perm2)
+                key = _hint_key(problem)
             seen_keys.add(key)
 
             puzzle_data = {
@@ -812,6 +865,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Number Baseball Puzzle Generator (EN)")
     parser.add_argument("--num", type=int, default=12, help="Number of questions to generate")
+    parser.add_argument("--workers", type=int, default=0, help="Accepted for compatibility; fast mode uses template bank")
 
     args = parser.parse_args()
 

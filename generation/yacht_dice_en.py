@@ -13,13 +13,25 @@ Ported from logical-puzzles-me/yacht_dice/generator.py:
 import random
 import json
 import itertools
+import sys
 from pathlib import Path
-from typing import List, Dict, Tuple
+
+_REPO_ROOT = Path(__file__).resolve().parent.parent
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
+
+from typing import List, Dict, Tuple, Optional, Literal
 from collections import Counter
 from dataclasses import dataclass
-from typing import Literal
 
 import numpy as np
+
+from evaluation.yacht_dice_spotcheck import (
+    SPOTCHECK_K,
+    append_spotcheck_user_suffix,
+    deterministic_round_pick_1based,
+    spotcheck_grading_total,
+)
 
 # Precompute the 720 permutations of (0..5) once (used for every solve call).
 _PERMS_6 = np.array(list(itertools.permutations(range(6))), dtype=np.int8)  # (720, 6)
@@ -329,34 +341,29 @@ def format_solution(dice_results: List[List[int]], assignment: Dict[int, str],
 # ============================================================
 
 DIFFICULTY_CONFIGS: Dict[str, Dict] = {
-    # Calibrated to step-count proxy: random_pattern ratio (more random dice =
-    # more category-comparison decisions per round). See
-    # docs/difficulty_definition.md §2.6 — note the proxy is weakest here
-    # because solver is deterministic; categorical complexity (mixed strategy)
-    # may dominate over raw step count.
-    # v2 recalibration: num_rounds is fixed at 12 (solver core requires it).
-    # Differentiation comes from roll_types/weights extremes.
-    "easy":   {
-        # v7.3: weights [80,20] 가 band [0,15] 와 호환 안 됨 (gap > 15 빈번 → 200 retry fail).
-        # v6 weights 회귀 — 빠른 generation. gpt-4o-mini 가 easy 도 못 푸는 것은
-        # yacht_dice 의 구조적 한계 (12-round optimization) — paper grade 에서
-        # "frontier-resistant" 라벨로 수용.
-        "roll_types": ['three_kind', 'pair', 'high_sum', 'normal'],
-        "weights":    [60, 20, 5, 15],
+    # v15: align with ``evaluation.yacht_dice_spotcheck.SPOTCHECK_K`` + acc targets.
+    # - easy: even more high-signal rolls (yacht / straights) for reliable 2-round sums.
+    # - medium: a bit more ``normal`` chaos vs v14 to pull acc down from ~66%.
+    # - hard: same roll machinery as medium; bands separate difficulty.
+    "easy": {
+        "roll_types": [
+            "yacht",
+            "large_straight",
+            "small_straight",
+            "full_house",
+            "four_kind_high",
+            "three_kind",
+            "pair",
+        ],
+        "weights": [24, 22, 14, 14, 8, 10, 8],
     },
     "medium": {
-        # v8 shift: medium 슬롯이 v7 hard config 를 채택 (pure random, weights [100]).
-        # v7 medium (partial_straight + 3-kind + pair + normal weights [15,10,5,70])
-        # 데이터는 *_v7.jsonl 백업.
-        "roll_types": ['normal'],
-        "weights":    [100],
+        "roll_types": ["three_kind", "pair", "normal"],
+        "weights": [30, 30, 40],
     },
-    "hard":   {
-        # v8 candidate: pure random (동일) — yacht_dice 의 difficulty axis 는 dice
-        # generation 보다 _DIFFICULTY_BANDS 의 greedy_gap / decision_complexity 에 의해
-        # 좌우됨. roll_types 는 v7 hard 와 동일하게 두고 band 만 더 tight 하게 (아래).
-        "roll_types": ['normal'],
-        "weights":    [100],
+    "hard": {
+        "roll_types": ["three_kind", "pair", "normal"],
+        "weights": [18, 22, 60],
     },
 }
 
@@ -367,26 +374,20 @@ DIFFICULTY_CONFIGS: Dict[str, Dict] = {
 # reject obvious outliers — e.g., a hard puzzle where greedy already nears
 # optimal, or an easy puzzle that traps greedy by a large margin.
 _DIFFICULTY_BANDS = {
-    # v8.2 (Y-1): v8 결과 80/80/88 — gap 큰 puzzle 일수록 optimal vs second-best
-    # 차이 명확해 모델 정답률 ↑. 즉 greedy_gap 은 역방향 step proxy. 진짜 어려움은
-    # gap 작고 decision_complexity 높은 케이스. easy band 도 [0,10]/[0,2.5] 로 좁힘
-    # (hard 의 gap [0,25] 와 분리). band 검사는 abs(greedy_gap) 으로 통일하여
-    # minimize 모드에서도 동일 의미.
-    'easy': {
-        # v8.2 (Y-1): [0,10]/[0,2.5] 시도 → 200 retries fail 빈번. v8 회귀.
-        # easy 와 hard 의 gap 범위 겹침 ([0,15] ⊃ [0,25]) 은 complexity 로 분리.
-        'greedy_gap_abs': {'min': 0, 'max': 15},
-        'decision_complexity': {'min': 0.0, 'max': 3.0},
+    # v14: tighten easy further (push model toward near-greedy, low-tie puzzles).
+    # Medium / hard floors slightly relaxed vs v13 so hard dice fix still yields
+    # enough accepted puzzles under max_retries.
+    "easy": {
+        "greedy_gap_abs": {"min": 0, "max": 6},
+        "decision_complexity": {"min": 0.0, "max": 2.05},
     },
-    'medium': {
-        'greedy_gap_abs': {'min': 30, 'max': None},   # v8 hard 그대로
-        'decision_complexity': {'min': 5.5, 'max': None},
+    "medium": {
+        "greedy_gap_abs": {"min": 4, "max": 52},
+        "decision_complexity": {"min": 2.5, "max": 12.5},
     },
-    'hard': {
-        # v8.2 (Y-1): [0,25]/[9.5,∞] 시도 → 6/6 fail (200 retries 빈번 exhaust).
-        # gap 작음 + complexity 매우 높음 동시 만족이 드뭄. complexity 9.5→8 완화.
-        'greedy_gap_abs': {'min': 0, 'max': 29},      # gap 작게, medium [30,∞] 와 분리
-        'decision_complexity': {'min': 8.0, 'max': None},  # 완화
+    "hard": {
+        "greedy_gap_abs": {"min": 10, "max": None},
+        "decision_complexity": {"min": 4.5, "max": None},
     },
 }
 
@@ -406,48 +407,29 @@ class YachtDiceProblemGenerator:
             cfg = DIFFICULTY_CONFIGS["easy"]
             for _ in range(cfg.get("num_rounds", 12)):
                 roll_type = rng.choices(cfg["roll_types"], weights=cfg["weights"], k=1)[0]
-                if roll_type == 'three_kind':
-                    num = rng.randint(1, 6)
-                    dice = [num] * 3 + [rng.randint(1, 6) for _ in range(2)]
+                if roll_type == 'yacht':
+                    val = rng.randint(1, 6)
+                    dice_results.append([val] * 5)
+                elif roll_type == 'large_straight':
+                    start = rng.choice([1, 2])
+                    straight = list(range(start, start + 5))
+                    rng.shuffle(straight)
+                    dice_results.append(straight)
+                elif roll_type == 'small_straight':
+                    straight_set = rng.choice(
+                        [{1, 2, 3, 4}, {2, 3, 4, 5}, {3, 4, 5, 6}]
+                    )
+                    extra = rng.randint(1, 6)
+                    dice = list(straight_set) + [extra]
                     rng.shuffle(dice)
                     dice_results.append(dice)
-                elif roll_type == 'pair':
-                    num = rng.randint(1, 6)
-                    dice = [num] * 2 + [rng.randint(1, 6) for _ in range(3)]
+                elif roll_type == 'four_kind_high':
+                    val = rng.randint(3, 6)
+                    other = rng.choice([x for x in range(1, 7) if x != val])
+                    dice = [val] * 4 + [other]
                     rng.shuffle(dice)
                     dice_results.append(dice)
-                elif roll_type == 'high_sum':
-                    dice_results.append([rng.choice([4, 5, 6]) for _ in range(5)])
-                else:
-                    dice_results.append([rng.randint(1, 6) for _ in range(5)])
-
-        elif difficulty == "medium":
-            cfg = DIFFICULTY_CONFIGS["medium"]
-            for _ in range(cfg.get("num_rounds", 12)):
-                roll_type = rng.choices(cfg["roll_types"], weights=cfg["weights"], k=1)[0]
-                if roll_type == 'partial_straight':
-                    base = rng.sample(range(1, 7), 3)
-                    base.extend([rng.randint(1, 6) for _ in range(2)])
-                    rng.shuffle(base)
-                    dice_results.append(base)
-                elif roll_type == 'pair':
-                    num = rng.randint(1, 6)
-                    dice = [num] * 2 + [rng.randint(1, 6) for _ in range(3)]
-                    rng.shuffle(dice)
-                    dice_results.append(dice)
-                elif roll_type == 'three_kind':
-                    num = rng.randint(1, 6)
-                    dice = [num] * 3 + [rng.randint(1, 6) for _ in range(2)]
-                    rng.shuffle(dice)
-                    dice_results.append(dice)
-                else:
-                    dice_results.append([rng.randint(1, 6) for _ in range(5)])
-
-        else:  # hard
-            cfg = DIFFICULTY_CONFIGS["hard"]
-            for _ in range(cfg.get("num_rounds", 12)):
-                roll_type = rng.choices(cfg["roll_types"], weights=cfg["weights"], k=1)[0]
-                if roll_type == 'full_house':
+                elif roll_type == 'full_house':
                     nums = rng.sample(range(1, 7), 2)
                     dice = [nums[0]] * 3 + [nums[1]] * 2
                     rng.shuffle(dice)
@@ -465,16 +447,62 @@ class YachtDiceProblemGenerator:
                 else:
                     dice_results.append([rng.randint(1, 6) for _ in range(5)])
 
+        elif difficulty == "medium":
+            cfg = DIFFICULTY_CONFIGS["medium"]
+            for _ in range(cfg.get("num_rounds", 12)):
+                roll_type = rng.choices(cfg["roll_types"], weights=cfg["weights"], k=1)[0]
+                if roll_type == 'three_kind':
+                    num = rng.randint(1, 6)
+                    dice = [num] * 3 + [rng.randint(1, 6) for _ in range(2)]
+                    rng.shuffle(dice)
+                    dice_results.append(dice)
+                elif roll_type == 'pair':
+                    num = rng.randint(1, 6)
+                    dice = [num] * 2 + [rng.randint(1, 6) for _ in range(3)]
+                    rng.shuffle(dice)
+                    dice_results.append(dice)
+                else:
+                    dice_results.append([rng.randint(1, 6) for _ in range(5)])
+
+        else:  # hard
+            cfg = DIFFICULTY_CONFIGS["hard"]
+            for _ in range(cfg.get("num_rounds", 12)):
+                roll_type = rng.choices(cfg["roll_types"], weights=cfg["weights"], k=1)[0]
+                if roll_type == 'three_kind':
+                    num = rng.randint(1, 6)
+                    dice = [num] * 3 + [rng.randint(1, 6) for _ in range(2)]
+                    rng.shuffle(dice)
+                    dice_results.append(dice)
+                elif roll_type == 'pair':
+                    num = rng.randint(1, 6)
+                    dice = [num] * 2 + [rng.randint(1, 6) for _ in range(3)]
+                    rng.shuffle(dice)
+                    dice_results.append(dice)
+                else:
+                    dice_results.append([rng.randint(1, 6) for _ in range(5)])
+
         return dice_results
 
-    def generate_problem(self, difficulty: str, problem_id: int = 1, seed: int = None) -> Dict:
+    def generate_problem(self, difficulty: str, problem_id: int = 1, seed: int = None,
+                         max_retries: int = 200) -> Dict:
         """Generate a single problem; retries seeds until metrics fit difficulty band."""
         if seed is None:
             difficulty_offset = {"easy": 10000, "medium": 20000, "hard": 30000}
             seed = 1000 + problem_id + difficulty_offset.get(difficulty, 0)
 
+        # use difficulty-specific config if specified
+        diff_cfg = DIFFICULTY_CONFIGS.get(difficulty, {})
+        config = YachtDiceConfig(
+            bonus_threshold=diff_cfg.get("bonus_threshold", self.config.bonus_threshold),
+            bonus_points=self.config.bonus_points,
+            full_house_points=self.config.full_house_points,
+            small_straight_points=self.config.small_straight_points,
+            large_straight_points=self.config.large_straight_points,
+            yacht_points=self.config.yacht_points,
+            optimization_goal=self.config.optimization_goal,
+        )
+
         band = _DIFFICULTY_BANDS.get(difficulty, {})
-        max_retries = 200
         categories = get_all_categories()
         selected = None
         in_band = False
@@ -483,8 +511,8 @@ class YachtDiceProblemGenerator:
         for retry in range(max_retries):
             trial_seed = seed + retry * 997
             dice_results = self.generate_dice_by_difficulty(difficulty, trial_seed)
-            optimal_score, optimal_assignment, is_unique = solve_yacht_dice(dice_results, self.config)
-            greedy_score, _ = solve_yacht_dice_greedy(dice_results, self.config)
+            optimal_score, optimal_assignment, is_unique = solve_yacht_dice(dice_results, config)
+            greedy_score, _ = solve_yacht_dice_greedy(dice_results, config)
             greedy_gap = optimal_score - greedy_score
             # abs gap unifies maximize (gap>=0) and minimize (gap<=0) modes.
             greedy_gap_abs = abs(greedy_gap)
@@ -493,7 +521,7 @@ class YachtDiceProblemGenerator:
             per_round_top1: List[int] = []
             for dice in dice_results:
                 scores = sorted(
-                    (calculate_score_with_config(dice, c, self.config) for c in categories),
+                    (calculate_score_with_config(dice, c, config) for c in categories),
                     reverse=True,
                 )
                 top1, top2 = scores[0], scores[1]
@@ -503,10 +531,10 @@ class YachtDiceProblemGenerator:
             zero_margin_rounds = sum(1 for m in per_round_margin if m == 0)
 
             upper_sum = sum(
-                calculate_score_with_config(dice_results[idx], cat, self.config)
+                calculate_score_with_config(dice_results[idx], cat, config)
                 for idx, cat in optimal_assignment.items() if cat in UPPER_CATEGORIES
             )
-            bonus_applied = upper_sum >= self.config.bonus_threshold
+            bonus_applied = upper_sum >= config.bonus_threshold
 
             selected = {
                 'dice_results': dice_results,
@@ -582,7 +610,12 @@ class YachtDiceProblemGenerator:
                     if not (1 <= die <= 6):
                         return False, f"Round {round_idx+1}: Invalid die value {die}"
 
-            optimal_score, _, _ = solve_yacht_dice(dice_results, self.config)
+            difficulty = problem.get('difficulty', '')
+            diff_cfg = DIFFICULTY_CONFIGS.get(difficulty, {})
+            validate_config = YachtDiceConfig(
+                bonus_threshold=diff_cfg.get("bonus_threshold", self.config.bonus_threshold),
+            )
+            optimal_score, _, _ = solve_yacht_dice(dice_results, validate_config)
             if optimal_score != problem['answer']:
                 return False, f"Answer mismatch: expected {optimal_score}, got {problem['answer']}"
 
@@ -609,6 +642,8 @@ def _build_yacht_solution_en(
     config: "YachtDiceConfig",
     difficulty: str,
     step_metrics: Dict,
+    grading_answer: str,
+    spot_rounds_1based: Optional[List[int]] = None,
 ) -> str:
     """SFT teacher trace: yacht dice with per-round SEG assignments."""
     num_rounds = len(dice_results)
@@ -656,24 +691,48 @@ def _build_yacht_solution_en(
         bonus = config.bonus_points
         total += bonus
 
-    lines.extend([
+    bonus_note = f"upper section sum {upper_sum} / threshold {config.bonus_threshold} -> bonus {bonus}"
+    step3: List[str] = [
         "[STEP 3] Answer and verification",
-        f"  - Final answer (optimal total): {optimal_score}",
-        f"  - Upper section sum: {upper_sum} / threshold {config.bonus_threshold} -> bonus {bonus}",
-        f"  - Recomputed total: {total} (must match the final answer)",
-        "  - Check that each category is used at most once and the bonus trigger matches the SEG trace.",
-    ])
+        f'  - Graded answer (must match dataset "answer" column): {grading_answer}',
+    ]
+    if spot_rounds_1based:
+        rlist = ", ".join(str(r) for r in spot_rounds_1based)
+        step3.extend([
+            f"  - Spotcheck: sum of optimal-assignment scores for rounds {rlist} only",
+            f"  - Full optimal total (reference): {optimal_score}",
+        ])
+    else:
+        step3.append(f"  - Optimal total score: {optimal_score}")
+    step3.extend(
+        [
+            f"  - {bonus_note}",
+            f"  - Recomputed total: {total} (must match the optimal total above)",
+            "  - Check that each category is used at most once and the bonus trigger matches the SEG trace.",
+        ]
+    )
+    lines.extend(step3)
     return "\n".join(lines)
 
 
+
 def create_dataset_files(num_questions: int):
-    """Create CSV + JSONL dataset files for Yacht Dice puzzles."""
+    """Create CSV + JSONL dataset files for Yacht Dice puzzles.
+
+    Calls ``generate_problem`` with a per-difficulty inner retry budget so each
+    attempt usually finishes quickly while still preferring in-band dice (see
+    ``_DIFFICULTY_BANDS``).  Puzzles that exhaust retries may still be
+    out-of-band (``band_violation`` in step_metrics) but remain valid with the
+    correct optimal score under the per-difficulty ``YachtDiceConfig``.
+    """
     import pandas as pd
 
-    print(f"Generating {num_questions} Yacht Dice puzzles...")
+    fast_retries_by_diff = {"easy": 200, "medium": 120, "hard": 90}
+
+    print(f"Generating {num_questions} Yacht Dice puzzles (fast mode)...")
 
     generator = YachtDiceProblemGenerator()
-    config = YachtDiceConfig()
+    base_cfg = YachtDiceConfig()
 
     difficulties = ["easy", "medium", "hard"]
     puzzles_per_diff = num_questions // len(difficulties)
@@ -681,79 +740,117 @@ def create_dataset_files(num_questions: int):
 
     all_puzzles: List[Dict] = []
     problem_id = 1
-    MAX_RETRIES_PER_PUZZLE = 30
 
-    def _dice_key(problem):
-        # per-difficulty dedup key — yacht_dice 는 dice_results 가 입력이므로
-        # 동일 sequence 의 puzzle 은 reject (12 라운드 × 6 face value 의 변형이 좁음)
-        return tuple(tuple(sorted(r)) for r in problem.get('dice_results', []))
+    def _dice_key(dice_results):
+        return tuple(tuple(sorted(r)) for r in dice_results)
 
-    for i, difficulty in enumerate(difficulties):
-        count = puzzles_per_diff + (1 if i < remainder else 0)
+    for di, difficulty in enumerate(difficulties):
+        count = puzzles_per_diff + (1 if di < remainder else 0)
         if count == 0:
             continue
 
+        diff_cfg = DIFFICULTY_CONFIGS.get(difficulty, {})
+        config = YachtDiceConfig(
+            bonus_threshold=int(diff_cfg.get("bonus_threshold", base_cfg.bonus_threshold)),
+            bonus_points=base_cfg.bonus_points,
+            full_house_points=base_cfg.full_house_points,
+            small_straight_points=base_cfg.small_straight_points,
+            large_straight_points=base_cfg.large_straight_points,
+            yacht_points=base_cfg.yacht_points,
+            optimization_goal=base_cfg.optimization_goal,
+        )
+
         print(f"\n=== Generating {difficulty} puzzles ({count} needed) ===")
 
+        seen_keys: set = set()
         diff_success = 0
-        seen = set()
         retries = 0
-        max_retries = count * MAX_RETRIES_PER_PUZZLE
-        attempt_idx = 0
-        while diff_success < count:
-            attempt_idx += 1
-            problem = generator.generate_problem(difficulty, problem_id)
-            is_valid, message = generator.validate_problem(problem)
+        MAX_OUTER_RETRIES = count * 30
+        inner_retries = fast_retries_by_diff.get(difficulty, 70)
 
+        while diff_success < count and retries < MAX_OUTER_RETRIES:
+            retries += 1
+            problem = generator.generate_problem(
+                difficulty, problem_id, max_retries=inner_retries
+            )
+            is_valid, _ = generator.validate_problem(problem)
             if not is_valid:
-                print(f"  [attempt {attempt_idx}] Invalid: {message}")
                 problem_id += 1
-                retries += 1
-                if retries > max_retries:
-                    print(f"  ⚠️ retry budget exhausted at {diff_success}/{count} for {difficulty}")
-                    break
                 continue
 
-            key = _dice_key(problem)
-            if key in seen:
-                retries += 1
+            sm = problem.get("step_metrics", {})
+            # Easy: only keep in-band puzzles so the full-total task stays on the
+            # calibrated "easy" manifold (band_violation rows were ~20% acc drag).
+            if difficulty == "easy" and sm.get("band_violation"):
                 problem_id += 1
-                if retries > max_retries:
-                    print(f"  ⚠️ dedup retry budget exhausted at {diff_success}/{count} for {difficulty}")
-                    break
                 continue
-            seen.add(key)
+
+            key = _dice_key(problem['dice_results'])
+            if key in seen_keys:
+                problem_id += 1
+                continue
+            seen_keys.add(key)
 
             dice_results = problem['dice_results']
             optimal_score = problem['answer']
             optimal_assignment = problem.get('optimal_assignment', {})
+            public_id = f"yacht_dice_en_{difficulty}_{diff_success:04d}"
+
+            k_spot = SPOTCHECK_K.get(difficulty, 0)
+            spot_sum = spotcheck_grading_total(
+                difficulty,
+                public_id,
+                dice_results,
+                optimal_assignment,
+                lambda d, c: calculate_score_with_config(d, c, config),
+            )
+            if spot_sum is not None:
+                answer_str = str(spot_sum)
+                spot_rounds = deterministic_round_pick_1based(public_id, k_spot)
+            else:
+                answer_str = str(optimal_score)
+                spot_rounds = None
+
             solution_str = _build_yacht_solution_en(
                 dice_results=dice_results,
                 optimal_assignment=optimal_assignment,
                 optimal_score=optimal_score,
                 config=config,
                 difficulty=difficulty,
-                step_metrics=problem.get('step_metrics', {}),
+                step_metrics=sm,
+                grading_answer=answer_str,
+                spot_rounds_1based=spot_rounds,
             )
 
-            question = config.get_user_prompt(dice_results)
+            base_question = config.get_user_prompt(dice_results)
+            question = append_spotcheck_user_suffix(
+                base_question, difficulty, public_id, korean=False
+            )
 
             puzzle_data = {
-                "id": f"yacht_dice_en_{difficulty}_{diff_success:04d}",
+                "id": public_id,
                 "question": question,
-                "answer": str(optimal_score),
+                "answer": answer_str,
                 "solution": solution_str,
                 "difficulty": difficulty,
+                # Required by YachtDiceEvaluator for spotcheck (medium/hard).
+                "dice_results": dice_results,
+                "optimal_assignment": {str(k): v for k, v in optimal_assignment.items()},
+                "step_metrics": sm,
             }
             all_puzzles.append(puzzle_data)
             diff_success += 1
-            sm = problem['step_metrics']
             print(
-                f"  [{diff_success}/{count}] score={optimal_score} "
-                f"gap={sm['greedy_gap']} complexity={sm['total_decision_complexity']:.2f} "
-                f"band_violation={sm['band_violation']}"
+                f"  [{diff_success}/{count}] optimal_total={optimal_score} "
+                f"answer={answer_str} "
+                f"gap={sm.get('greedy_gap', '?')} "
+                f"complexity={sm.get('total_decision_complexity', 0):.2f} "
+                f"band_violation={sm.get('band_violation', '?')}"
             )
             problem_id += 1
+
+        if diff_success < count:
+            print(f"  ⚠️ only generated {diff_success}/{count} for {difficulty}")
 
     print(f"\nGenerated {len(all_puzzles)} puzzles")
 
@@ -784,6 +881,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description="Yacht Dice Puzzle Generator (EN)")
     parser.add_argument("--num", type=int, default=12, help="Number of questions to generate")
+    parser.add_argument("--workers", type=int, default=0, help="Ignored; reserved for shell compatibility")
     args = parser.parse_args()
 
     print("=" * 60)
