@@ -27,37 +27,24 @@ class HanoiEvaluator(BaseEvaluator):
     
     SYSTEM_PROMPT = """You are an expert puzzle solver specializing in the Tower of Hanoi.
 
-[PREREQUISITES & RULES]
+    [PREREQUISITES & RULES]
 
-Standard rules apply: only one disk can be moved at a time, and a larger disk cannot be placed on top of a smaller disk. Disks are numbered from 1 (smallest) to n (largest).
-The optimal solution for 'n' disks requires exactly 2^n - 1 moves.
-In an optimal sequence, a specific Disk 'd' moves exactly 2^(n-d) times.
-[ANSWER FORMAT INSTRUCTIONS]
-You must output your final answer formatted exactly as a tuple wrapped inside tags. Format rules based on the question asked:
+    Standard rules apply: only one disk can be moved at a time, and a larger disk cannot be placed on top of a smaller disk. Disks are numbered from 1 (smallest) to n (largest).
+    The optimal solution for 'n' disks requires exactly 2^n - 1 moves.
+    In an optimal sequence, a specific Disk 'd' moves exactly 2^(n-d) times.
+    [ANSWER FORMAT INSTRUCTIONS]
+    You must output your final answer formatted exactly as a tuple wrapped inside tags. Format rules based on the question asked:
 
-Minimum number of moves needed: (moves, moves, moves)
-How many times a specific disk moves: (disk_number, moves, moves)
-Which disk is moved on the k-th move / Describe a specific move: (disk_number, from_peg, to_peg)
-On which peg is a specific disk located: (disk_number, peg_number, peg_number)
-Which disks are on a specific peg: (*disks_in_ascending_order, peg_number, peg_number). If empty, use 'none' for the disk part.
-How many disks are in this Tower of Hanoi puzzle: (n, n, n)
-On which move number does Disk d first move, and on which move number does it last move: (first_move_number, last_move_number, disk_number)
-Provide ONLY the tag with the tuple inside. Do not provide any step-by-step reasoning, mathematical formulas, or additional text."""
+    Minimum number of moves needed: (moves, moves, moves)
+    How many times a specific disk moves: (disk_number, moves, moves)
+    Which disk is moved on the k-th move / Describe a specific move: (disk_number, from_peg, to_peg)
+    On which peg is a specific disk located: (disk_number, peg_number, peg_number)
+    Which disks are on a specific peg: (*disks_in_ascending_order, peg_number, peg_number). If empty, use 'none' for the disk part.
+    How many disks are in this Tower of Hanoi puzzle: (n, n, n)
+    On which move number does Disk d first move, and on which move number does it last move: (first_move_number, last_move_number, disk_number)
+    Provide ONLY the tag with the tuple inside. Do not provide any step-by-step reasoning, mathematical formulas, or additional text."""
 
 
-    SYSTEM_PROMPT_Easy ="""
-You are an expert puzzle solver specializing in the Tower of Hanoi. Standard rules apply: only one disk can be moved at a time, and a larger disk cannot be placed on top of a smaller disk. Disks are numbered from 1 (smallest) to n (largest).
-
-You must output your final answer formatted exactly as a tuple wrapped inside tags. Format rules based on the question asked:
-
-Minimum number of moves needed: (moves, moves, moves)
-How many times a specific disk moves: (disk_number, moves, moves)
-Which disk is moved on the k-th move / Describe a specific move: (disk_number, from_peg, to_peg)
-On which peg is a specific disk located: (disk_number, peg_number, peg_number)
-Which disks are on a specific peg: (*disks_in_ascending_order, peg_number, peg_number). If empty, use 'none' for the disk part.
-Provide ONLY the tag with the tuple inside. Do not provide any step-by-step reasoning, mathematical formulas, or additional text
-
-    """
     KOREAN_SYSTEM_PROMPT = """당신은 하노이 탑(Tower of Hanoi) 퍼즐을 전문으로 해결하는 전문가입니다.
 
     [사전 지식 및 규칙]
@@ -78,18 +65,6 @@ Provide ONLY the tag with the tuple inside. Do not provide any step-by-step reas
 
     튜플이 포함된 태그만 제공하십시오. 단계별 추론 과정, 수학 공식 또는 추가 텍스트를 제공하지 마십시오."""
 
-
-    KOREAN_SYSTEM_PROMPT_Easy = """당신은 하노이 탑(Tower of Hanoi) 퍼즐을 전문으로 해결하는 전문가입니다. 표준 규칙이 적용됩니다: 한 번에 하나의 원판만 이동할 수 있으며, 큰 원판을 작은 원판 위에 놓을 수 없습니다. 원판은 1(가장 작음)부터 n(가장 큼)까지 번호가 매겨져 있습니다.
-
-    최종 답변은 반드시 태그 안에 튜플 형태로 작성해야 합니다. 질문의 종류에 따른 형식 규칙은 다음과 같습니다:
-
-    - 필요한 최소 이동 횟수: (이동횟수, 이동횟수, 이동횟수)
-    - 특정 원판의 이동 횟수: (원판번호, 이동횟수, 이동횟수)
-    - k번째 이동에 움직이는 원판 / 특정 이동 설명: (원판번호, 출발기둥, 도착기둥)
-    - 특정 원판이 위치한 기둥: (원판번호, 기둥번호, 기둥번호)
-    - 특정 기둥에 있는 원판들: (*오름차순_원판들, 기둥번호, 기둥번호). 만약 비어있다면 원판 부분에 'none'을 사용.
-
-    튜플이 포함된 태그만 제공하십시오. 단계별 추론 과정, 수학 공식 또는 추가 텍스트를 제공하지 마십시오."""
 
     def _is_korean(self, puzzle: Optional[Dict] = None) -> bool:
         """Prefer task_name (e.g. …_ko_easy); else infer from expected answer."""
@@ -113,16 +88,10 @@ Provide ONLY the tag with the tuple inside. Do not provide any step-by-step reas
 
     def _get_system_prompt(self, puzzle: Dict) -> str:
         
-        if self._is_easy(puzzle):
-            if self._is_korean(puzzle):
-                return self.KOREAN_SYSTEM_PROMPT_Easy
-            else:
-                return self.SYSTEM_PROMPT_Easy
+        if self._is_korean(puzzle):
+            return self.KOREAN_SYSTEM_PROMPT
         else:
-            if self._is_korean(puzzle):
-                return self.KOREAN_SYSTEM_PROMPT
-            else:
-                return self.SYSTEM_PROMPT
+            return self.SYSTEM_PROMPT
 
     def _evaluate_single(
         self,
