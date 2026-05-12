@@ -17,7 +17,8 @@ def get_hanoi_moves(n, src, aux, dst):
     return moves
 
 def simulate_pegs(n, src, aux, dst, moves, steps):
-    pegs = {src: list(range(n, 0, -1)), aux: [], dst: []}
+    pegs = {0: [], 1: [], 2: []}
+    pegs[src] = list(range(n, 0, -1))
     for idx in range(min(steps, len(moves))):
         disk, from_peg, to_peg = moves[idx]
         pegs[from_peg].pop()
@@ -92,7 +93,7 @@ def _wrap_sft_hanoi_solution_en(solution, n, total_moves, qtype, answer):
         f"[STEP 2] Worked solution\n{step2}\n"
         f"[STEP 3] Answer and verification\n"
         f"  - Final answer: {answer}\n"
-        f"  - Cross-check 2^ formulas / simulation against the [SEG] trace."
+        f"  - Cross-check formulas / simulation against the [SEG] trace."
     )
 
 def _build_templates_easy(ctx, rng):
@@ -196,98 +197,72 @@ def _build_templates_medium(ctx, rng):
     aux = ctx["aux"]
     dst = ctx["dst"]
     total = ctx["total_moves"]
-    k = ctx["k"]
-    disk_k = ctx["disk_k"]
-    from_k = ctx["from_k"]
-    to_k = ctx["to_k"]
     moves = ctx["moves"]
-    pegs_after_k = ctx["pegs_after_k"]
-    peg_target = rng.choice([src, aux, dst])
-    disks_on_peg = sorted(pegs_after_k[peg_target])
-    disk_query = rng.randint(1, n)
-    peg_of_disk = None
-    for peg, stack in pegs_after_k.items():
-        if disk_query in stack:
-            peg_of_disk = peg
-            break
-    disk_count_k = sum(1 for d, _, _ in moves if d == disk_k)
-    disk_target = rng.randint(1, n)
-    disk_count_target = sum(1 for d, _, _ in moves if d == disk_target)
-    largest = n
-    largest_idx = next(idx for idx, (d, _, _) in enumerate(moves) if d == largest)
-    l_disk, l_from, l_to = moves[largest_idx]
-    ans_disks = f"({', '.join(str(d) for d in disks_on_peg)}, {peg_target}, {peg_target})" if disks_on_peg else f"(none, {peg_target}, {peg_target})"
+
+    k = rng.randint(15, 25)
+    if k > total:
+        k = total
+
+    sum_odd_disks = sum(d for i, (d, f, t) in enumerate(moves[:k]) if (i + 1) % 2 == 1)
+    sum_even_to = sum(t for i, (d, f, t) in enumerate(moves[:k]) if (i + 1) % 2 == 0)
+    ans_len_2 = f"({sum_odd_disks}, {sum_even_to})"
+
+    temp_pegs = {0: [], 1: [], 2: []}
+    temp_pegs[src] = list(range(n, 0, -1))
+    for d, f, t in moves[:k]:
+        temp_pegs[f].pop()
+        temp_pegs[t].append(d)
+
+    top0 = temp_pegs[0][-1] if temp_pegs[0] else 0
+    top1 = temp_pegs[1][-1] if temp_pegs[1] else 0
+    top2 = temp_pegs[2][-1] if temp_pegs[2] else 0
+    ans_len_3 = f"({top0}, {top1}, {top2})"
+
+    c1 = sum(1 for d, f, t in moves[:k] if d == 1)
+    c2 = sum(1 for d, f, t in moves[:k] if d == 2)
+    c3 = sum(1 for d, f, t in moves[:k] if d == 3)
+    ans_len_4 = f"({c1}, {c2}, {c3}, {k})"
+
     return [
         (
-            f"In the optimal solution for a Tower of Hanoi puzzle with {n} disks,\n"
-            f"how many times does Disk {disk_target} move in total?",
-            f"({disk_target}, {disk_count_target}, {disk_count_target})",
-            2,
-            "disk_move_count",
-            f"Step 1: In optimal Hanoi with {n} disks, Disk d moves 2^(n-d) times\n"
-            f"Step 2: Disk {disk_target}: 2^({n}-{disk_target}) = {2**(n - disk_target)}\n"
-            f"Final answer: {2**(n - disk_target)}"
+            f"In an optimal Tower of Hanoi sequence for {n} disks (start Peg {src}, dest Peg {dst}, aux Peg {aux}).\n"
+            f"Consider the first {k} moves, indexed with 1-based step numbers (i = 1, 2, ..., {k}).\n"
+            f"Compute two values:\n"
+            f"(a) S_odd = the SUM of disk numbers moved at ODD steps (i = 1, 3, 5, ...).\n"
+            f"(b) S_even = the SUM of destination peg numbers at EVEN steps (i = 2, 4, 6, ...).\n"
+            f"Provide the answer in the exact format: (S_odd, S_even).",
+            ans_len_2,
+            10,
+            "odd_disk_even_dest_sums",
+            f"Step 1: Use 1-based step index i.\n"
+            f"Step 2: For odd i, sum the disk number moved -> S_odd = {sum_odd_disks}.\n"
+            f"Step 3: For even i, sum the destination peg number -> S_even = {sum_even_to}.\n"
+            f"Final answer: {ans_len_2}"
         ),
         (
-            f"In the optimal solution of a Tower of Hanoi puzzle with {n} disks,\n"
-            f"all disks start on Peg {src} and must reach Peg {dst} (Peg {aux} is auxiliary).\n"
-            f"On which move number does the largest disk (Disk {n}) move?",
-            f"({l_disk}, {l_from}, {l_to})",
-            1,
-            "largest_disk_move",
-            f"Step 1: The largest disk (Disk {n}) moves exactly once\n"
-            f"Step 2: It moves on step {largest_idx + 1}: Peg {l_from} → Peg {l_to}\n"
-            f"Final answer: Move {largest_idx + 1}"
+            f"In an optimal Tower of Hanoi sequence for {n} disks (start Peg {src}, dest Peg {dst}, aux Peg {aux}).\n"
+            f"After exactly {k} moves, identify the disk number that is at the TOP of Peg 0, Peg 1, and Peg 2.\n"
+            f"If a peg is empty, use 0 for that peg.\n"
+            f"Provide the answer in the exact format: (top_disk_peg0, top_disk_peg1, top_disk_peg2).",
+            ans_len_3,
+            10,
+            "top_disks_after_k_moves",
+            f"Step 1: Simulate the first {k} moves to get exact peg states.\n"
+            f"Step 2: Find the top disk on Peg 0 -> {top0}, Peg 1 -> {top1}, Peg 2 -> {top2}.\n"
+            f"Final answer: {ans_len_3}"
         ),
         (
-            f"In an optimal Tower of Hanoi puzzle with {n} disks, all disks start on Peg {src}\n"
-            f"and must be moved to Peg {dst} using Peg {aux} as auxiliary.\n"
-            f"Describe the {k}-th move in the form (disk, from_peg, to_peg).",
-            f"({disk_k}, {from_k}, {to_k})",
-            4,
-            "kth_full_triplet",
-            f"Step 1: Generate optimal sequence for {n} disks: Peg {src} → Peg {dst}, auxiliary Peg {aux}\n"
-            f"Step 2: Total moves = 2^{n} - 1 = {total}\n"
-            f"Step 3: The {k}-th move is (Disk {disk_k}, Peg {from_k}, Peg {to_k})\n"
-            f"Final answer: ({disk_k}, {from_k}, {to_k})"
-        ),
-        (
-            f"In an optimal Tower of Hanoi solution with {n} disks, all disks start on Peg {src}\n"
-            f"and must be moved to Peg {dst}, using Peg {aux} as auxiliary.\n"
-            f"After exactly {k} moves, on which peg is Disk {disk_query} located?",
-            f"({disk_query}, {peg_of_disk}, {peg_of_disk})",
-            5,
-            "where_is_disk_after_k",
-            f"Step 1: Generate optimal sequence for {n} disks\n"
-            f"Step 2: Simulate {k} moves from initial state\n"
-            f"Step 3: State after {k} moves: {_format_peg_state(pegs_after_k)}\n"
-            f"Step 4: Disk {disk_query} is on Peg {peg_of_disk}\n"
-            f"Final answer: ({disk_query}, {peg_of_disk}, {peg_of_disk})"
-        ),
-        (
-            f"In a Tower of Hanoi puzzle with {n} disks (Peg {src} → Peg {dst}, Peg {aux} auxiliary),\n"
-            f"consider the optimal sequence of moves. After exactly {k} moves have been performed,\n"
-            f"which disks are on Peg {peg_target}? List all disk numbers in ascending order.",
-            ans_disks,
-            5,
-            "disks_on_peg_after_k",
-            f"Step 1: Generate optimal sequence for {n} disks\n"
-            f"Step 2: Simulate {k} moves\n"
-            f"Step 3: State after {k} moves: {_format_peg_state(pegs_after_k)}\n"
-            f"Step 4: Peg {peg_target} has: {disks_on_peg if disks_on_peg else 'no disks'}\n"
-            f"Final answer: {ans_disks}"
-        ),
-        (
-            f"In an optimal Tower of Hanoi solution with {n} disks (Peg {src} → Peg {dst}, Peg {aux} auxiliary),\n"
-            f"look at the {k}-th move of the sequence.\n"
-            f"How many times does the disk moved at step {k} move in the entire optimal solution?",
-            f"({disk_k}, {disk_count_k}, {disk_count_k})",
-            2,
-            "disk_k_total_moves",
-            f"Step 1: The {k}-th move involves Disk {disk_k}\n"
-            f"Step 2: Count all occurrences of Disk {disk_k} in the full sequence\n"
-            f"Step 3: Disk {disk_k} moves {disk_count_k} times total\n"
-            f"Final answer: ({disk_k}, {disk_count_k}, {disk_count_k})"
+            f"In an optimal Tower of Hanoi sequence for {n} disks (start Peg {src}, dest Peg {dst}, aux Peg {aux}).\n"
+            f"Consider the first {k} moves.\n"
+            f"Count how many times Disk 1 is moved, how many times Disk 2 is moved, and how many times Disk 3 is moved. Append the value of 'k' at the end.\n"
+            f"Provide the answer in the exact format: (count_disk1, count_disk2, count_disk3, k).",
+            ans_len_4,
+            10,
+            "disk_1_2_3_counts",
+            f"Step 1: Iterate through the first {k} moves.\n"
+            f"Step 2: Track moves for Disks 1, 2, and 3.\n"
+            f"Step 3: Disk 1: {c1}, Disk 2: {c2}, Disk 3: {c3}, k: {k}.\n"
+            f"Final answer: {ans_len_4}"
         )
     ]
 
@@ -297,129 +272,120 @@ def _build_templates_hard(ctx, rng):
     aux = ctx["aux"]
     dst = ctx["dst"]
     total = ctx["total_moves"]
-    k = ctx["k"]
-    disk_k = ctx["disk_k"]
-    from_k = ctx["from_k"]
-    to_k = ctx["to_k"]
     moves = ctx["moves"]
-    pegs_after_k = ctx["pegs_after_k"]
+    
+    k = rng.randint(total // 2, total - 5)
+    if k < 1:
+        k = total
 
-    k2 = rng.randint(total // 3, total - 1)
-    disk_k2, from_k2, to_k2 = moves[k2 - 1]
-    pegs_after_k2 = simulate_pegs(n, src, aux, dst, moves, k2)
-    peg_target = rng.choice([src, aux, dst])
-    disks_on_peg = sorted(pegs_after_k2[peg_target])
-    disk_query = rng.randint(1, min(4, n))
-    peg_of_disk = None
-    for peg, stack in pegs_after_k2.items():
-        if disk_query in stack:
-            peg_of_disk = peg
-            break
+    H1 = 0
+    H2 = 0
+    for i, (d, f, t) in enumerate(moves[:k]):
+        step = i + 1
+        H1 = (H1 * 33 + d * step + f) % 1000003
+        H2 = (H2 * 17 + d * t + step) % 1000003
+    ans_len_2 = f"({H1}, {H2})"
 
-    first_move_of_disk = {}
-    last_move_of_disk = {}
-    for idx, (d, f, t) in enumerate(moves):
-        if d not in first_move_of_disk:
-            first_move_of_disk[d] = (idx + 1, f, t)
-        last_move_of_disk[d] = (idx + 1, f, t)
+    temp_pegs = {0: [], 1: [], 2: []}
+    temp_pegs[src] = list(range(n, 0, -1))
+    
+    empty_dst_count = 0
+    odd_size_dst_count = 0
+    
+    for i, (d, f, t) in enumerate(moves[:k]):
+        if len(temp_pegs[t]) == 0:
+            empty_dst_count += 1
+        if len(temp_pegs[t]) % 2 != 0:
+            odd_size_dst_count += 1
+            
+        temp_pegs[f].pop()
+        temp_pegs[t].append(d)
 
-    target_disk_fl = rng.randint(1, n)
-    first_info = first_move_of_disk[target_disk_fl]
-    last_info = last_move_of_disk[target_disk_fl]
+    sum_sq_0 = sum(x**2 for x in temp_pegs[0])
+    sum_sq_1 = sum(x**2 for x in temp_pegs[1])
+    sum_sq_2 = sum(x**2 for x in temp_pegs[2])
+    ans_len_3 = f"({sum_sq_0}, {sum_sq_1}, {sum_sq_2})"
 
-    ans_disks = f"({', '.join(str(d) for d in disks_on_peg)}, {peg_target}, {peg_target})" if disks_on_peg else f"(none, {peg_target}, {peg_target})"
+    c_mult_3 = sum(1 for d, f, t in moves[:k] if d % 3 == 0)
+    ans_len_4 = f"({empty_dst_count}, {odd_size_dst_count}, {c_mult_3}, {k})"
 
     return [
         (
-            f"In a certain optimal Tower of Hanoi puzzle, all disks start on Peg {src}\n"
-            f"and the goal is to move them to Peg {dst} using Peg {aux} as auxiliary.\n"
-            f"It is known that on move {k}, Disk {disk_k} moves from Peg {from_k} to Peg {to_k}.\n"
-            f"How many disks are in this Tower of Hanoi puzzle?",
-            f"({n}, {n}, {n})",
-            1,
-            "inverse_find_n",
-            f"Step 1: We know move {k} is Disk {disk_k}: Peg {from_k} → Peg {to_k}\n"
-            f"Step 2: The largest disk number seen is {disk_k}, so n >= {disk_k}\n"
-            f"Step 3: Total moves = 2^n - 1 >= {k}, so n >= ceil(log2({k}+1))\n"
-            f"Step 4: The puzzle has {n} disks (verified: move {k} matches)\n"
-            f"Final answer: ({n}, {n}, {n})"
+            f"In an optimal Tower of Hanoi sequence for {n} disks (start Peg {src}, dest Peg {dst}, aux Peg {aux}).\n"
+            f"Consider the first {k} moves, indexed with 1-based step numbers (i = 1, 2, ..., {k}).\n"
+            f"At each step i, let D_i, F_i, T_i be the disk moved, the from-peg, and the to-peg respectively.\n"
+            f"Compute two running hash values. Initially H1 = 0 and H2 = 0. For each step i from 1 to {k}, update them exactly as follows:\n"
+            f"(a) H1 = (H1 * 33 + D_i * i + F_i) modulo 1000003.\n"
+            f"(b) H2 = (H2 * 17 + D_i * T_i + i) modulo 1000003.\n"
+            f"Provide the answer in the exact format: (H1, H2).",
+            ans_len_2,
+            10,
+            "polynomial_running_hash",
+            f"Step 1: Iterate the first {k} moves with 1-based index i.\n"
+            f"Step 2: Accumulate H1 = (H1 * 33 + D_i * i + F_i) % 1000003 -> {H1}.\n"
+            f"Step 3: Accumulate H2 = (H2 * 17 + D_i * T_i + i) % 1000003 -> {H2}.\n"
+            f"Final answer: {ans_len_2}"
         ),
         (
-            f"In an optimal Tower of Hanoi solution with {n} disks (Peg {src} → Peg {dst}, Peg {aux} auxiliary),\n"
-            f"after exactly {k2} moves, which disks are on Peg {peg_target}?\n"
-            f"List all disk numbers in ascending order.",
-            ans_disks,
-            12,
-            "disks_on_peg_after_k",
-            f"Step 1: Generate optimal sequence for {n} disks: Peg {src} → Peg {dst}\n"
-            f"Step 2: Simulate {k2} moves step by step\n"
-            f"Step 3: State after {k2} moves: {_format_peg_state(pegs_after_k2)}\n"
-            f"Step 4: Peg {peg_target}: {disks_on_peg if disks_on_peg else 'empty'}\n"
-            f"Final answer: {ans_disks}"
+            f"In an optimal Tower of Hanoi sequence for {n} disks (start Peg {src}, dest Peg {dst}, aux Peg {aux}).\n"
+            f"After exactly {k} moves, compute the sum of the SQUARES of the disk numbers residing on each peg.\n"
+            f"(e.g., if a peg has disks 2 and 3, its value is 2^2 + 3^2 = 13. If a peg is empty, its value is 0).\n"
+            f"Provide the answer in the exact format: (sum_sq_peg0, sum_sq_peg1, sum_sq_peg2).",
+            ans_len_3,
+            10,
+            "sum_of_squares_all_pegs",
+            f"Step 1: Simulate the first {k} moves precisely to get the full stack of each peg.\n"
+            f"Step 2: Calculate sum of squares for Peg 0 -> {sum_sq_0}, Peg 1 -> {sum_sq_1}, Peg 2 -> {sum_sq_2}.\n"
+            f" {ans_len_3}"
         ),
         (
-            f"In an optimal Tower of Hanoi solution with {n} disks (Peg {src} → Peg {dst}, Peg {aux} auxiliary),\n"
-            f"after exactly {k2} moves, on which peg is Disk {disk_query} located?",
-            f"({disk_query}, {peg_of_disk}, {peg_of_disk})",
-            12,
-            "where_is_disk_after_k",
-            f"Step 1: Generate optimal sequence for {n} disks\n"
-            f"Step 2: Simulate {k2} moves from initial state\n"
-            f"Step 3: State after {k2} moves: {_format_peg_state(pegs_after_k2)}\n"
-            f"Step 4: Disk {disk_query} is on Peg {peg_of_disk}\n"
-            f"Final answer: ({disk_query}, {peg_of_disk}, {peg_of_disk})"
-        ),
-        (
-            f"In an optimal Tower of Hanoi puzzle with {n} disks (Peg {src} → Peg {dst}, Peg {aux} auxiliary),\n"
-            f"describe the {k2}-th move in the form (disk, from_peg, to_peg).",
-            f"({disk_k2}, {from_k2}, {to_k2})",
-            3,
-            "kth_full_triplet",
-            f"Step 1: Generate optimal sequence for {n} disks: Peg {src} → Peg {dst}\n"
-            f"Step 2: Total moves = 2^{n} - 1 = {total}\n"
-            f"Step 3: The {k2}-th move is (Disk {disk_k2}, Peg {from_k2}, Peg {to_k2})\n"
-            f"Final answer: ({disk_k2}, {from_k2}, {to_k2})"
-        ),
-        (
-            f"In an optimal Tower of Hanoi solution with {n} disks (Peg {src} → Peg {dst}, Peg {aux} auxiliary),\n"
-            f"on which move number does Disk {target_disk_fl} first move, and on which move number does it last move?",
-            f"({first_info[0]}, {last_info[0]}, {target_disk_fl})",
-            1,
-            "first_last_move",
-            f"Step 1: Trace Disk {target_disk_fl} through the entire sequence\n"
-            f"Step 2: First move of Disk {target_disk_fl}: step {first_info[0]} (Peg {first_info[1]} → Peg {first_info[2]})\n"
-            f"Step 3: Last move of Disk {target_disk_fl}: step {last_info[0]} (Peg {last_info[1]} → Peg {last_info[2]})\n"
-            f" ({first_info[0]}, {last_info[0]}, {target_disk_fl})"
+            f"In an optimal Tower of Hanoi sequence for {n} disks (start Peg {src}, dest Peg {dst}, aux Peg {aux}).\n"
+            f"Consider the first {k} moves. Compute four values:\n"
+            f"(a) empty_dst_count = number of moves where the destination peg was COMPLETELY EMPTY immediately before the disk was placed on it.\n"
+            f"(b) odd_size_dst_count = number of moves where the destination peg had an ODD number of disks on it immediately before the disk was placed on it.\n"
+            f"(c) c_mult_3 = number of times the moved disk's number is an exact multiple of 3.\n"
+            f"(d) the exact value of k.\n"
+            f"Provide the answer in the exact format: (empty_dst_count, odd_size_dst_count, c_mult_3, k).",
+            ans_len_4,
+            10,
+            "conditional_state_counts",
+            f"Step 1: Iterate the first {k} moves.\n"
+            f"Step 2: Track the length of the destination peg before each move.\n"
+            f"Step 3: empty_dst_count = {empty_dst_count}, odd_size_dst_count = {odd_size_dst_count}, c_mult_3 = {c_mult_3}.\n"
+            f" {ans_len_4}"
         )
     ]
 
 def generate_all_datasets(num_per_difficulty=100, seed=2025):
     puzzles = []
+    
     difficulties = {
         "easy": {"n_weights": ([3, 4], [0.6, 0.4]), "builder": _build_templates_easy},
-        "medium": {"n_weights": ([5, 6, 7], [0.5, 0.3, 0.2]), "builder": _build_templates_medium},
-        "hard": {"n_weights": ([10, 11, 12], [0.2, 0.3, 0.5]), "builder": _build_templates_hard}
+        "medium": {"n_weights": ([7, 8, 9, 10], [0.25, 0.25, 0.25, 0.25]), "builder": _build_templates_medium},
+        "hard": {"n_weights": ([10, 11, 12, 13], [0.25, 0.25, 0.25, 0.25]), "builder": _build_templates_hard}
     }
-    
+
     rng = random.Random(seed)
     for diff, config in difficulties.items():
         seen_questions = set()
+        seen_signatures = set()
         idx = 0
-        while len([p for p in puzzles if p["difficulty"] == diff]) < num_per_difficulty:
+        attempts = 0
+        max_attempts = num_per_difficulty * 50
+        
+        while len([p for p in puzzles if p["difficulty"] == diff]) < num_per_difficulty and attempts < max_attempts:
+            attempts += 1
             n_choices, n_weights = config["n_weights"]
             n = rng.choices(n_choices, weights=n_weights)[0]
             src, aux, dst = rng.sample([0, 1, 2], 3)
+            
             moves = get_hanoi_moves(n, src, aux, dst)
             total_moves = len(moves)
-            
-            if diff == "hard":
-                k = rng.randint(total_moves // 3, total_moves - 1)
-            else:
-                k = rng.randint(1, total_moves)
-                
+
+            k = rng.randint(1, total_moves)
             disk_k, from_k, to_k = moves[k - 1]
             pegs_after_k = simulate_pegs(n, src, aux, dst, moves, k)
-            
+
             ctx = {
                 "n": n,
                 "src": src,
@@ -433,12 +399,14 @@ def generate_all_datasets(num_per_difficulty=100, seed=2025):
                 "to_k": to_k,
                 "pegs_after_k": pegs_after_k,
             }
-            
+
             templates = config["builder"](ctx, rng)
             question, answer, qtype, solution = _weighted_choice(rng, templates)
-            
-            if question not in seen_questions:
+
+            signature = (qtype, question, answer)
+            if question not in seen_questions and signature not in seen_signatures:
                 seen_questions.add(question)
+                seen_signatures.add(signature)
                 puzzle_hash = hashlib.md5(f"{seed}_{diff}_{idx}_{qtype}".encode()).hexdigest()[:8]
                 puzzles.append({
                     "id": f"hanoi_en_{diff}_{idx:04d}_{puzzle_hash}",
@@ -449,23 +417,23 @@ def generate_all_datasets(num_per_difficulty=100, seed=2025):
                 })
                 idx += 1
             seed += 1
-            
+
     return puzzles
 
-def save_all_datasets(puzzles, base_dir="./data"):
+def save_all_datasets(puzzles, base_dir="data"):
     base_path = Path(base_dir)
     csv_dir = base_path / "csv"
     json_dir = base_path / "jsonl"
     csv_dir.mkdir(parents=True, exist_ok=True)
     json_dir.mkdir(parents=True, exist_ok=True)
-    
+
     for diff in ["easy", "medium", "hard"]:
         diff_puzzles = [p for p in puzzles if p["difficulty"] == diff]
         json_path = json_dir / f"hanoi_en_{diff}.jsonl"
         with open(json_path, "w", encoding="utf-8") as f:
             for puzzle in diff_puzzles:
                 f.write(json.dumps(puzzle, ensure_ascii=False) + "\n")
-                
+
     csv_path = csv_dir / "hanoi_en.csv"
     csv_columns = ["id", "question", "answer", "solution", "difficulty"]
     with open(csv_path, "w", encoding="utf-8", newline="") as f:
@@ -476,145 +444,4 @@ def save_all_datasets(puzzles, base_dir="./data"):
 
 if __name__ == "__main__":
     generated_puzzles = generate_all_datasets(num_per_difficulty=100, seed=1)
-    save_all_datasets(generated_puzzles, "../data")
-
-
-"""
-import os
-import json
-import re
-from google import genai
-from google.genai import types
-
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "deep-agent-service-account.json"
-
-client = genai.Client(
-    vertexai=True,
-    project="deep-agent-490323",
-    location="global"
-)
----------------------------
-Easy 
-
-SYSTEM_PROMPT = You are an expert puzzle solver specializing in the Tower of Hanoi.
-Standard rules apply: only one disk can be moved at a time, and a larger disk cannot be placed on top of a smaller disk. Disks are numbered from 1 (smallest) to n (largest).
-
-You must output your final answer formatted exactly as a tuple wrapped inside <ANSWER> tags. 
-Format rules based on the question asked:
-- Minimum number of moves needed: (moves, moves, moves)
-- How many times a specific disk moves: (disk_number, moves, moves)
-- Which disk is moved on the k-th move / Describe a specific move: (disk_number, from_peg, to_peg)
-- On which peg is a specific disk located: (disk_number, peg_number, peg_number)
-- Which disks are on a specific peg: (*disks_in_ascending_order, peg_number, peg_number). If empty, use 'none' for the disk part.
-
-Provide ONLY the <ANSWER> tag with the tuple inside. Do not provide any step-by-step reasoning, mathematical formulas, or additional text.
-
----------------------------
-Medium Hard 
-
-SYSTEM_PROMPT = You are an expert puzzle solver specializing in the Tower of Hanoi.
-
-[PREREQUISITES & RULES]
-- Standard rules apply: only one disk can be moved at a time, and a larger disk cannot be placed on top of a smaller disk. Disks are numbered from 1 (smallest) to n (largest).
-- The optimal solution for 'n' disks requires exactly 2^n - 1 moves.
-- In an optimal sequence, a specific Disk 'd' moves exactly 2^(n-d) times.
-
-[ANSWER FORMAT INSTRUCTIONS]
-You must output your final answer formatted exactly as a tuple wrapped inside <ANSWER> tags. 
-Format rules based on the question asked:
-1. Minimum number of moves needed: (moves, moves, moves)
-2. How many times a specific disk moves: (disk_number, moves, moves)
-3. Which disk is moved on the k-th move / Describe a specific move: (disk_number, from_peg, to_peg)
-4. On which peg is a specific disk located: (disk_number, peg_number, peg_number)
-5. Which disks are on a specific peg: (*disks_in_ascending_order, peg_number, peg_number). If empty, use 'none' for the disk part.
-6. How many disks are in this Tower of Hanoi puzzle: (n, n, n)
-7. On which move number does Disk d first move, and on which move number does it last move: (first_move_number, last_move_number, disk_number)
-
-Provide ONLY the <ANSWER> tag with the tuple inside. Do not provide any step-by-step reasoning, mathematical formulas, or additional text.
-
----------------------------
-
-config = types.GenerateContentConfig(
-    temperature=1.0,
-    max_output_tokens=1100,
-    top_p=0.95,
-    top_k=64,
-    system_instruction=SYSTEM_PROMPT,
-    thinking_config=types.ThinkingConfig(
-        thinking_level=types.ThinkingLevel.MEDIUM
-    )
-)
-
-INPUT_FILE = "data2/jsonl/hanoi_en_easy.jsonl"
-OUTPUT_FILE = "output-easy2.jsonl"
-
-total_questions = 0
-correct_answers = 0
-results_log = []
-
-with open(INPUT_FILE, 'r', encoding='utf-8') as infile:
-    for line in infile:
-        if not line.strip():
-            continue
-            
-        data = json.loads(line)
-        prompt = f"Question: {data.get('question', '')}"
-        
-        try:
-            response = client.models.generate_content(
-                model="gemini-3-flash-preview",
-                contents=prompt,
-                config=config
-            )
-            model_output = response.text if response.text else ""
-        except Exception:
-            print("Except")
-            model_output = ""
-            
-        pred_answer = ""
-        match = re.search(r'<ANSWER>(.*?)</ANSWER>', model_output)
-        if match:
-            pred_answer = match.group(1).strip()
-        else:
-            pred_answer = model_output.strip()
-            
-        clean_gt = data.get("answer", "").replace(" ", "")
-        clean_pred = pred_answer.replace(" ", "")
-        is_correct = (clean_gt == clean_pred)
-        
-        if is_correct:
-            correct_answers += 1
-        total_questions += 1
-        
-        results_log.append({
-            "question": data.get("question", ""),
-            "gt_answer": data.get("answer", ""),
-            "pred_answer": pred_answer,
-            "is_correct": is_correct
-        })
-        accuracy = (correct_answers / total_questions) * 100
-        
-        print(f"Processed: {data.get('id', 'Unknown')} | Correct: {is_correct} | Acc : {accuracy:.4f}")
-
-with open(OUTPUT_FILE, 'w', encoding='utf-8') as outfile:
-    for record in results_log:
-        outfile.write(json.dumps(record, ensure_ascii=False))
-
-accuracy = (correct_answers / total_questions) * 100 if total_questions > 0 else 0
-print(f"Accuracy: {accuracy:.2f}%")
-
----------------------------
-
-Easy: Target 75% (Acceptable range: 65% - 85%) 
-Medium: Target 50% (Acceptable range: 40% - 60%)
-Hard: Target 25% (Acceptable range: 15% - 35%)
-
----------------------------
-
-Easy 68
-Medium 43 
-Hard 27 
-
----------------------------
-
-"""
+    save_all_datasets(generated_puzzles, "data")
