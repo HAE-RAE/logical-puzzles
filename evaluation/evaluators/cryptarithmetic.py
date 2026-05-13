@@ -72,21 +72,14 @@ Answer: [숫자]
 """
 
     def _is_korean(self, puzzle: Optional[Dict] = None) -> bool:
-        """Prefer task_name (e.g. …_ko_easy); else infer from puzzle text.
-
-        Note: in cryptarithmetic the ``answer`` field is always numeric so it
-        can never contain Hangul. We therefore inspect ``puzzle`` / ``question``
-        text as the fallback signal so ko puzzles are detected even when no
-        task_name is wired through (e.g. ad-hoc evaluations).
-        """
+        """Prefer task_name (e.g. …_ko_easy); else infer from expected answer."""
         task = getattr(self, "_task_name", None) or ""
         hint = locale_from_task_name(task)
         if hint is not None:
             return hint
         if puzzle is not None:
-            for key in ("puzzle", "question", "answer"):
-                if re.search(r"[가-힣]", str(puzzle.get(key, ""))):
-                    return True
+            expected = puzzle.get("answer", "")
+            return bool(re.search(r"[가-힣]", str(expected)))
         return False
 
     def _get_system_prompt(self, puzzle: Dict) -> str:
@@ -163,7 +156,6 @@ Answer: [숫자]
         difficulty = puzzle_data.get("difficulty", "easy")
         hide_ratio = HIDE_RATIO.get(difficulty, 0.0)
         mapping = puzzle_data.get("mapping", {})
-        is_korean = self._is_korean(puzzle_data)
 
         if hide_ratio <= 0 or not mapping:
             return puzzle_data["question"], set(mapping.keys()) if mapping else set()
@@ -224,28 +216,16 @@ Answer: [숫자]
         for w in mod_operands[1:]:
             op_lines += f"+ {w}\n"
 
-        if is_korean:
-            question = (
-                f"각 글자가 고유한 숫자(0-9)를 나타내는 복면산 퍼즐을 풀어주세요. "
-                f"서로 다른 글자는 서로 다른 숫자에 대응해야 합니다. "
-                f"첫 글자는 0이 될 수 없습니다. "
-                f"'*'은 알 수 없는 글자를 나타내며, 퍼즐에 이미 보이는 글자를 포함하여 어떤 글자든 될 수 있습니다. "
-                f"각 '*'은 독립적으로 다른 글자를 나타낼 수 있습니다.\n\n"
-                f"{op_lines}"
-                f"{separator}\n"
-                f"= {mod_result}"
-            )
-        else:
-            question = (
-                f"Solve this cryptarithmetic puzzle where each letter represents a unique digit (0-9). "
-                f"Different letters must map to different digits. "
-                f"Leading letters cannot be zero. "
-                f"'*' represents an unknown letter — it could be any letter, including one already visible in the puzzle. "
-                f"Each '*' independently may represent a different letter.\n\n"
-                f"{op_lines}"
-                f"{separator}\n"
-                f"= {mod_result}"
-            )
+        question = (
+            f"Solve this cryptarithmetic puzzle where each letter represents a unique digit (0-9). "
+            f"Different letters must map to different digits. "
+            f"Leading letters cannot be zero. "
+            f"'*' represents an unknown letter — it could be any letter, including one already visible in the puzzle. "
+            f"Each '*' independently may represent a different letter.\n\n"
+            f"{op_lines}"
+            f"{separator}\n"
+            f"= {mod_result}"
+        )
 
         # Compute visible letters
         visible: Set[str] = set()
@@ -292,13 +272,8 @@ Answer: [숫자]
             "use_squares": use_squares,
         }
 
-    def _build_spotcheck_suffix(self, spotcheck: Dict, puzzle: Optional[Dict] = None) -> str:
-        """Build prompt suffix with spotcheck instructions.
-
-        Localised to Korean when the puzzle is detected as ko so that the ko
-        user prompt is not mixed with English instructions (would otherwise
-        appear after the Hangul question text).
-        """
+    def _build_spotcheck_suffix(self, spotcheck: Dict) -> str:
+        """Build prompt suffix with spotcheck instructions."""
         selected_letters = spotcheck.get("letters", [])
         expected_value = spotcheck.get("expected_value")
         use_squares = spotcheck.get("use_squares", False)
@@ -307,23 +282,6 @@ Answer: [숫자]
             return ""
 
         letters_str = ", ".join(selected_letters)
-        is_korean = self._is_korean(puzzle) if puzzle is not None else False
-
-        if is_korean:
-            if use_squares:
-                return (
-                    f"\n\n문제를 푼 뒤, 다음 글자들에 대해: {letters_str}\n"
-                    f"1. 각 글자에 배정된 숫자를 찾으세요\n"
-                    f"2. 각 숫자를 제곱하세요(자기 자신과 곱하기)\n"
-                    f"3. 제곱한 값들을 모두 더하세요\n"
-                    f"Answer: [제곱합 정수]"
-                )
-            return (
-                f"\n\n문제를 푼 뒤, 다음 글자들에 배정된 숫자의 합을 계산하세요: "
-                f"{letters_str}\n"
-                f"Answer: [합 정수]"
-            )
-
         if use_squares:
             return (
                 f"\n\nAfter solving, for each of these letters: {letters_str}\n"
@@ -346,29 +304,18 @@ Answer: [숫자]
     def _extract_mapping_from_response(self, response_text: str) -> Optional[Dict[str, int]]:
         """Extract letter-to-digit mapping from model response.
 
-        Handles patterns like: A=1, B=2 or A: 1, B: 2 or A = 1.
-        Supports Latin letters (case-insensitive, normalised to uppercase) and
-        Hangul syllables (Korean ko puzzles). Hangul falls outside \\w word
-        boundaries so we use a non-letter lookaround for the Hangul branch.
+        Handles patterns like: A=1, B=2 or A: 1, B: 2 or A = 1
         """
         patterns = [
-            r'(?:\b([A-Za-z])|(?<![A-Za-z가-힣])([가-힣]))\s*=\s*(\d)(?![\d])',
-            r'(?:\b([A-Za-z])|(?<![A-Za-z가-힣])([가-힣]))\s*:\s*(\d)(?![\d])',
+            r'\b([A-Z])\s*=\s*(\d)\b',
+            r'\b([A-Z])\s*:\s*(\d)\b',
         ]
         mapping: Dict[str, int] = {}
         for pattern in patterns:
             matches = re.findall(pattern, response_text)
             if matches:
-                for latin, hangul, digit in matches:
-                    letter = latin or hangul
-                    # Uppercase Latin so "s=9" matches puzzle letter "S".
-                    # Hangul has no case so .upper() is a no-op for it.
-                    key = letter.upper()
-                    # Last-wins on conflict: LLMs typically state intermediate
-                    # reasoning first (e.g. "let y = 3") and the final answer
-                    # later (e.g. "Y = 2"), so the last value tends to be
-                    # canonical.
-                    mapping[key] = int(digit)
+                for letter, digit in matches:
+                    mapping[letter] = int(digit)
                 break
         return mapping if mapping else None
 
@@ -433,8 +380,8 @@ Answer: [숫자]
         # Generate spotcheck
         spotcheck = self._generate_spotcheck(puzzle, visible_letters)
 
-        # Build user content (suffix localised to puzzle lang)
-        suffix = self._build_spotcheck_suffix(spotcheck, puzzle)
+        # Build user content
+        suffix = self._build_spotcheck_suffix(spotcheck)
         user_content = modified_question + suffix
 
         # Enrich puzzle dict with transient metadata
