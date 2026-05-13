@@ -1,9 +1,10 @@
 """복면산(Cryptarithmetic) 퍼즐 생성기 - 한국어 버전
 
 구성적 생성: 역산술을 사용하여 유효한 퍼즐을 보장하며,
-다양한 매핑 전략으로 해의 개수를 제어합니다.
+다양한 매핑 전략으로 해의 개수를 제어합니다. 글자 풀은 한글 음절
+(HANGUL_SYLLABLES) 을 사용하므로 puzzle 본문이 모두 한국어로 구성됩니다.
 
-logical-puzzles-me/cryptarithmetic/generator.py 기반 이식:
+특징:
 - find_solutions 내부 _stats 를 통한 solver_steps 계측
 - min_solver_steps(역추적 노드 수) 기반 난이도 게이팅
 - 퍼즐 JSONL 에 step_metrics 필드 포함
@@ -18,6 +19,17 @@ from dataclasses import dataclass
 
 
 MAX_SOLUTIONS = 1
+
+
+# 한글 음절 풀: 1 음절 = puzzle 1 "글자". 영문 A-Z 대체.
+# 풀 크기 >= 10 이면 어떤 puzzle도 매핑 가능 (고유 숫자 최대 10).
+HANGUL_SYLLABLES = [
+    '가', '나', '다', '라', '마', '바', '사', '아', '자', '차',
+    '카', '타', '파', '하', '거', '너', '더', '러', '머', '버',
+    '서', '어', '저', '처', '커', '터', '퍼', '허', '고', '노',
+    '도', '로', '모', '보', '소', '오', '조', '초', '코', '토',
+    '포', '호', '구', '누', '두', '루', '무', '부', '수', '우',
+]
 
 
 @dataclass
@@ -182,18 +194,20 @@ def has_valid_solutions(puzzle: tuple) -> bool:
 
 
 def _create_letter_mapping(unique_digits: List[str], strategy: str = 'random') -> Dict[str, str]:
-    available_letters = list(string.ascii_uppercase)
+    """한국어 ko 생성기 전용: HANGUL_SYLLABLES 풀에서 매핑 생성.
+
+    'vowel_first' 전략은 음절 단위에서는 모음/자음 분리 의미가 없으므로
+    random 으로 fallback 한다.
+    """
+    available_letters = list(HANGUL_SYLLABLES)
 
     if strategy == 'random':
         random.shuffle(available_letters)
     elif strategy == 'reverse':
         available_letters = available_letters[::-1]
     elif strategy == 'vowel_first':
-        vowels = list('AEIOU')
-        consonants = [c for c in available_letters if c not in vowels]
-        random.shuffle(vowels)
-        random.shuffle(consonants)
-        available_letters = vowels + consonants
+        # ko: 음절 풀에서는 vowel 클러스터링이 무의미 → random fallback
+        random.shuffle(available_letters)
 
     return {digit: available_letters[i] for i, digit in enumerate(unique_digits)}
 
