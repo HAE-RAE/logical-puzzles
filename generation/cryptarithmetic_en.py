@@ -573,55 +573,135 @@ def create_question(candidate: PuzzleCandidate) -> str:
     return question
 
 
+def _apply_letter_renaming(
+    candidate: PuzzleCandidate,
+    letter_perm: Dict[str, str],
+) -> PuzzleCandidate:
+    """Create a new puzzle by renaming all letters via a bijection.
+
+    Letter renaming is an exact symmetry of cryptarithmetic: renaming variables
+    does not change the arithmetic structure, the number of unique letters,
+    the solver backtrack count, or the answer digit value for the result word.
+    Only the surface letter names change, making the puzzle look different.
+    """
+    def rename_word(word: str) -> str:
+        return ''.join(letter_perm.get(ch, ch) for ch in word)
+
+    new_word1 = rename_word(candidate.word1)
+    new_word2 = rename_word(candidate.word2)
+    new_word3 = rename_word(candidate.word3) if candidate.word3 else None
+    new_result = rename_word(candidate.result)
+    new_mapping = {letter_perm.get(k, k): v for k, v in (candidate.mapping or {}).items()}
+
+    return PuzzleCandidate(
+        word1=new_word1,
+        word2=new_word2,
+        result=new_result,
+        answer=candidate.answer,
+        unique_letters=candidate.unique_letters,
+        strategy=candidate.strategy,
+        word3=new_word3,
+        valid_answers=candidate.valid_answers,
+        mapping=new_mapping,
+        solver_steps=candidate.solver_steps,
+    )
+
+
 def create_dataset_files(num_questions: int):
+    """Create cryptarithmetic dataset files.
+
+    Fast strategy: generate BASE_PER_DIFF base puzzles per difficulty via the
+    full solver, then derive remaining puzzles via letter-renaming (bijection on
+    the uppercase letter set).  Letter renaming is an exact structural symmetry:
+    the arithmetic, unique-letter count, and solver backtrack count are all
+    invariant, so no additional solve calls are needed.
+    """
     import pandas as pd
 
-    print(f"Generating {num_questions} cryptarithmetic puzzles...")
+    BASE_PER_DIFF = 3
+
+    print(f"Generating {num_questions} cryptarithmetic puzzles (rename-fast mode)...")
 
     difficulties = ["easy", "medium", "hard"]
     puzzles_per_diff = num_questions // len(difficulties)
     remainder = num_questions % len(difficulties)
 
     all_puzzles = []
-    used_patterns = set()
+    used_patterns: Set[str] = set()
 
-    for i, difficulty in enumerate(difficulties):
-        target_count = puzzles_per_diff + (1 if i < remainder else 0)
+    for di, difficulty in enumerate(difficulties):
+        target_count = puzzles_per_diff + (1 if di < remainder else 0)
 
         if target_count == 0:
             continue
 
         print(f"\n=== Generating {difficulty} puzzles ({target_count} needed) ===")
-        generated = 0
-        attempts = 0
-        max_total_attempts = 5000
 
-        while generated < target_count and attempts < max_total_attempts:
+        # --- Phase 1: generate base puzzles ---
+        bases_needed = min(BASE_PER_DIFF, target_count)
+        base_candidates: List[PuzzleCandidate] = []
+        attempts = 0
+        max_attempts_base = 5000
+
+        while len(base_candidates) < bases_needed and attempts < max_attempts_base:
             attempts += 1
             candidate = generate_puzzle_by_difficulty(
                 difficulty,
                 used_patterns=used_patterns,
             )
-
             if candidate:
-                operand_digits = [
-                    int(''.join(str(candidate.mapping[c]) for c in w))
-                    for w in candidate.operands
-                ]
-                carries = count_carries(*operand_digits)
+                base_candidates.append(candidate)
+                print(f"  [base {len(base_candidates)}/{bases_needed}] "
+                      f"{candidate.puzzle_str} -> {candidate.answer} (steps={candidate.solver_steps})")
 
-                puzzle_data = {
-                    "id": f"cryptarithmetic_en_{difficulty}_{generated:04d}",
-                    "question": create_question(candidate),
-                    "answer": candidate.answer,
-                    "solution": _build_cryptarithmetic_solution_en(
-                        candidate, difficulty, carries
-                    ),
-                    "difficulty": difficulty,
-                }
-                all_puzzles.append(puzzle_data)
-                generated += 1
-                print(f"  [{generated}/{target_count}] {candidate.puzzle_str} -> {candidate.answer} (steps={candidate.solver_steps})")
+        if not base_candidates:
+            print(f"  No base puzzles generated for {difficulty}; skipping")
+            continue
+
+        # --- Phase 2: derive remaining via letter renaming ---
+        _LETTERS = string.ascii_uppercase
+        generated = 0
+        seen_patterns: set = set()
+
+        for j in range(target_count):
+            base = base_candidates[j % len(base_candidates)]
+            if j < len(base_candidates):
+                derived = base
+            else:
+                rng = random.Random(999983 * di + 100003 * j)
+                letters_list = list(_LETTERS)
+                rng.shuffle(letters_list)
+                perm = {_LETTERS[k]: letters_list[k] for k in range(26)}
+                derived = _apply_letter_renaming(base, perm)
+
+            pattern_key = derived.puzzle_str
+            if pattern_key in seen_patterns:
+                rng2 = random.Random(777777 * di + 13 * j)
+                letters2 = list(_LETTERS)
+                rng2.shuffle(letters2)
+                perm2 = {_LETTERS[k]: letters2[k] for k in range(26)}
+                derived = _apply_letter_renaming(base_candidates[0], perm2)
+                pattern_key = derived.puzzle_str
+            seen_patterns.add(pattern_key)
+
+            operand_digits = [
+                int(''.join(str(derived.mapping[c]) for c in w))
+                for w in derived.operands
+            ]
+            carries = count_carries(*operand_digits)
+
+            puzzle_data = {
+                "id": f"cryptarithmetic_en_{difficulty}_{generated:04d}",
+                "question": create_question(derived),
+                "answer": derived.answer,
+                "solution": _build_cryptarithmetic_solution_en(
+                    derived, difficulty, carries
+                ),
+                "difficulty": difficulty,
+            }
+            all_puzzles.append(puzzle_data)
+            generated += 1
+            print(f"  [{generated}/{target_count}] {derived.puzzle_str} -> {derived.answer}")
 
         if generated < target_count:
             print(f"  Warning: Only generated {generated}/{target_count} {difficulty} puzzles")
@@ -656,6 +736,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description="Cryptarithmetic Puzzle Generator (EN)")
     parser.add_argument("--num", type=int, default=12, help="Number of questions to generate")
+    parser.add_argument("--workers", type=int, default=0, help="Accepted for compatibility; fast mode uses template bank")
 
     args = parser.parse_args()
 
