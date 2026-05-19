@@ -6,6 +6,8 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Protocol, Tuple, TYPE_CHECKING
 
+from ..task_names import locale_from_task_name
+
 if TYPE_CHECKING:
     from ..model.base import BaseLLMClient
 
@@ -64,11 +66,30 @@ class BaseEvaluator(ABC):
     
     Each Evaluator should inherit from this class and implement only:
     - SYSTEM_PROMPT: Define as a class variable
+    - KOREAN_SYSTEM_PROMPT: Define as a class variable (optional; empty = no Korean variant)
     - _parse_answer(): Parse LLM response
     - _check_answer(): Check answer correctness
     """
     
     SYSTEM_PROMPT: str
+    KOREAN_SYSTEM_PROMPT: str = ""
+
+    def _is_korean(self, puzzle: Optional[Dict] = None) -> bool:
+        """Detect Korean locale from task_name, then question/answer text."""
+        task = getattr(self, "_task_name", None) or ""
+        hint = locale_from_task_name(task)
+        if hint is not None:
+            return hint
+        if puzzle is not None:
+            text = str(puzzle.get("question", "")) + str(puzzle.get("answer", ""))
+            return bool(re.search(r"[가-힣]", text))
+        return False
+
+    def _get_system_prompt(self, puzzle: Dict) -> str:
+        """Return the appropriate system prompt for the given puzzle."""
+        if self._is_korean(puzzle) and self.KOREAN_SYSTEM_PROMPT:
+            return self.KOREAN_SYSTEM_PROMPT
+        return self.SYSTEM_PROMPT
 
     @staticmethod
     def _strip_code_fences(text: str) -> str:
@@ -77,26 +98,11 @@ class BaseEvaluator(ABC):
         cleaned = re.sub(r"```", "", cleaned)
         return cleaned
 
-    @staticmethod
-    def _extract_last_boxed(text: str) -> Optional[str]:
-        """Extract the payload of the last LaTeX \\boxed{...} occurrence."""
-        pattern = re.compile(r"\\boxed\{((?:[^{}]|\{[^{}]*\})*)\}")
-        matches = pattern.findall(text)
-        if not matches:
-            return None
-        return matches[-1].strip()
-
-    def _extract_final_answer_text(
-        self,
-        response: str,
-        allow_boxed_fallback: bool = True,
-    ) -> Optional[str]:
+    def _extract_final_answer_text(self, response: str) -> Optional[str]:
         """
-        Extract final answer payload from response using unified label-first policy.
+        Extract final answer payload from the last labeled answer line.
 
-        Priority:
-        1) Last labeled answer line (Answer/Final answer/최종 답/정답/원문/Plaintext)
-        2) Last \\boxed{...} payload (optional fallback)
+        Matches: Answer / Final answer / 최종 답 / 정답 / 원문 / Plaintext (case-insensitive).
         """
         cleaned = self._strip_code_fences(response or "").strip()
         if not cleaned:
@@ -110,11 +116,6 @@ class BaseEvaluator(ABC):
         labels = label_pattern.findall(cleaned)
         if labels:
             return labels[-1].strip()
-
-        if allow_boxed_fallback:
-            boxed = self._extract_last_boxed(cleaned)
-            if boxed:
-                return boxed
 
         return None
     
@@ -227,7 +228,7 @@ class BaseEvaluator(ABC):
             Evaluation result
         """
         messages = [
-            {"role": "system", "content": self.SYSTEM_PROMPT},
+            {"role": "system", "content": self._get_system_prompt(puzzle)},
             {"role": "user", "content": puzzle["question"]}
         ]
         
@@ -263,7 +264,7 @@ class BaseEvaluator(ABC):
         messages_list = []
         for puzzle in puzzles:
             messages = [
-                {"role": "system", "content": self.SYSTEM_PROMPT},
+                {"role": "system", "content": self._get_system_prompt(puzzle)},
                 {"role": "user", "content": puzzle["question"]}
             ]
             messages_list.append(messages)
