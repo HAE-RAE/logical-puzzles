@@ -7,14 +7,9 @@ score_coordinates.
 
 import logging
 import re
-import time
-from typing import List, Dict, Any, Tuple, Optional, Set, TYPE_CHECKING
+from typing import Dict, Any, Tuple, Optional, Set
 
-from ..core.base import BaseEvaluator, EvaluationResult
-from ..task_names import locale_from_task_name
-
-if TYPE_CHECKING:
-    from ..model.base import BaseLLMClient
+from ..core.base import BaseEvaluator
 
 logger = logging.getLogger(__name__)
 
@@ -60,94 +55,6 @@ Answer: (0,1), (0,3), (2,4), ...
 (모든 지뢰 칸을 0부터 행·열 좌표로 "(행,열)" 형식에 맞게 나열; 행 우선 정렬; 숫자만, 접두어 없음.)
 """
 
-    def _is_korean(self, puzzle: Optional[Dict] = None) -> bool:
-        """Prefer task_name (e.g. …_ko_easy); else infer from expected answer."""
-        task = getattr(self, "_task_name", None) or ""
-        hint = locale_from_task_name(task)
-        if hint is not None:
-            return hint
-        if puzzle is not None:
-            return bool(re.search(r"[가-힣]", str(puzzle.get("question", ""))))
-        return False
-
-    def _get_system_prompt(self, puzzle: Dict) -> str:
-        return self.KOREAN_SYSTEM_PROMPT if self._is_korean(puzzle) else self.SYSTEM_PROMPT
-
-    def _evaluate_single(
-        self,
-        puzzle: Dict[str, Any],
-        llm_client: "BaseLLMClient",
-    ) -> EvaluationResult:
-        system_prompt = self._get_system_prompt(puzzle)
-        messages = [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": puzzle["question"]},
-        ]
-        start = time.time()
-        try:
-            response, usage = llm_client.generate(messages)
-            latency = (time.time() - start) * 1000
-            return self._process_response(puzzle, response, latency, usage)
-        except Exception as e:
-            latency = (time.time() - start) * 1000
-            return self._process_response(puzzle, "", latency, {"error": str(e)})
-
-    async def _evaluate_async(
-        self,
-        puzzles: List[Dict[str, Any]],
-        llm_client: "BaseLLMClient",
-        verbose: bool = True,
-        max_concurrent: int = 10,
-    ) -> List[EvaluationResult]:
-        from ..core.base import logger as base_logger
-
-        messages_list = []
-        for puzzle in puzzles:
-            system_prompt = self._get_system_prompt(puzzle)
-            messages_list.append([
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": puzzle["question"]},
-            ])
-
-        total_puzzles = len(puzzles)
-        task_name = getattr(self, "_task_name", None)
-        task_prefix = f"[{task_name}] " if task_name else ""
-
-        if verbose:
-            base_logger.info(
-                f"{task_prefix}Starting async evaluation: {total_puzzles} puzzles, "
-                f"max_concurrent={max_concurrent}"
-            )
-
-        start_time = time.time()
-
-        def progress_callback(completed, total):
-            if verbose:
-                percentage = (completed / total) * 100
-                if completed % max(1, total // 10) == 0 or completed == total:
-                    base_logger.info(
-                        f"{task_prefix}API calls progress: {completed}/{total} ({percentage:.0f}%)"
-                    )
-
-        responses = await llm_client.async_batch_generate(
-            messages_list,
-            max_concurrent=max_concurrent,
-            progress_callback=progress_callback if verbose else None,
-        )
-        total_latency = (time.time() - start_time) * 1000
-
-        if verbose:
-            base_logger.info(
-                f"{task_prefix}API calls completed: {total_puzzles}/{total_puzzles} in "
-                f"{total_latency:.0f}ms ({total_latency/total_puzzles:.0f}ms per puzzle)"
-            )
-
-        results = []
-        for puzzle, (response, usage) in zip(puzzles, responses):
-            latency_ms = usage.get("latency_ms", 0)
-            results.append(self._process_response(puzzle, response, latency_ms, usage))
-        return results
-
     @staticmethod
     def _parse_coord_set(text: str) -> Optional[Set[Tuple[int, int]]]:
         """Extract a set of (r,c) pairs from an output string."""
@@ -181,7 +88,7 @@ Answer: (0,1), (0,3), (2,4), ...
         return None
 
     def _parse_answer(self, response: str, puzzle: Dict) -> Optional[Set[Tuple[int, int]]]:
-        answer_text = self._extract_final_answer_text(response, allow_boxed_fallback=False)
+        answer_text = self._extract_final_answer_text(response)
         if answer_text:
             parsed = self._parse_coord_set(answer_text)
             if parsed is not None:

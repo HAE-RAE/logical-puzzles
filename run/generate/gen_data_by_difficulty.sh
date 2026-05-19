@@ -61,32 +61,34 @@ echo "Starting parallel generation..."
 # # _run_bg "logic_grid_en" generation/logic_grid_en.py --num-samples "$TOTAL" --workers "$WORKERS"
 # _run_bg "logic_grid_ko" generation/logic_grid_ko.py --num-samples "$TOTAL" --workers "$WORKERS"
 
-# _run_bg "sat_puzzle_en" generation/sat_puzzle_en.py --num-samples "$TOTAL" --workers "$WORKERS"
+# # _run_bg "sat_puzzle_en" generation/sat_puzzle_en.py --num-samples "$TOTAL" --workers "$WORKERS"
 # _run_bg "sat_puzzle_ko" generation/sat_puzzle_ko.py --num-samples "$TOTAL" --workers "$WORKERS"
 
 
 
-_run_bg "inequality_en"      generation/inequality_en.py      --num "$TOTAL" --workers "$WORKERS"
-# # _run_bg "inequality_ko" generation/inequality_ko.py --num "$TOTAL" --workers "$WORKERS"
+# _run_bg "inequality_en"      generation/inequality_en.py      --num "$TOTAL" --workers "$WORKERS"
+# _run_bg "inequality_ko" generation/inequality_ko.py --num "$TOTAL" --workers "$WORKERS"
 
-_run_bg "minesweeper_en"    generation/minesweeper_en.py    --num "$TOTAL" --workers "$WORKERS"
-# # _run_bg "minesweeper_ko" generation/minesweeper_ko.py --num "$TOTAL" --workers "$WORKERS"
+# _run_bg "minesweeper_en"    generation/minesweeper_en.py    --num "$TOTAL" --workers "$WORKERS"
+# _run_bg "minesweeper_ko" generation/minesweeper_ko.py --num "$TOTAL" --workers "$WORKERS"
 
-_run_bg "number_baseball_en" generation/number_baseball_en.py --num "$TOTAL" --workers "$WORKERS"
-# # _run_bg "number_baseball_ko" generation/number_baseball_ko.py --num "$TOTAL" --workers "$WORKERS"
+# _run_bg "number_baseball_en" generation/number_baseball_en.py --num "$TOTAL" --workers "$WORKERS"
+# _run_bg "number_baseball_ko" generation/number_baseball_ko.py --num "$TOTAL" --workers "$WORKERS"
 
-_run_bg "sudoku_en"         generation/sudoku_en.py         --num "$TOTAL" --workers "$WORKERS"
-# # _run_bg "sudoku_ko" generation/sudoku_ko.py --num "$TOTAL" --workers "$WORKERS"
+# _run_bg "sudoku_en"         generation/sudoku_en.py         --num "$TOTAL" --workers "$WORKERS"
+# _run_bg "sudoku_ko" generation/sudoku_ko.py --num "$TOTAL" --workers "$WORKERS"
 
-_run_bg "yacht_dice_en"     generation/yacht_dice_en.py     --num "$TOTAL" --workers "$WORKERS"
+# _run_bg "yacht_dice_en"     generation/yacht_dice_en.py     --num "$TOTAL" --workers "$WORKERS"
 # _run_bg "yacht_dice_ko" generation/yacht_dice_ko.py --num "$TOTAL" --workers "$WORKERS"
 
-_run_bg "cryptarithmetic_en" generation/cryptarithmetic_en.py --num "$TOTAL" --workers "$WORKERS"
-# # _run_bg "cryptarithmetic_ko" generation/cryptarithmetic_ko.py --num "$TOTAL" --workers "$WORKERS"
+# _run_bg "cryptarithmetic_en" generation/cryptarithmetic_en.py --num "$TOTAL" --workers "$WORKERS"
+# _run_bg "cryptarithmetic_ko" generation/cryptarithmetic_ko.py --num "$TOTAL" --workers "$WORKERS"
 
 
-_run_bg "kinship" generation/kinship.py --num "$PER_DIFF" --workers "$WORKERS"
-# # _run_bg "kinship_vision" generation/kinship_vision.py --num "$PER_DIFF" --workers "$WORKERS"
+
+
+# _run_bg "kinship" generation/kinship.py --num "$PER_DIFF" --workers "$WORKERS"
+# _run_bg "kinship_vision" generation/kinship_vision.py --num "$PER_DIFF" --workers "$WORKERS"
 
 echo ""
 echo "Waiting for ${#PIDS[@]} background task(s) to finish..."
