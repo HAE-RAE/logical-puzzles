@@ -1072,85 +1072,147 @@ def create_question(puzzle_str: str, positions: List[str]) -> str:
 # Dataset generation
 # ============================================================================
 
+def _apply_full_transform(
+    puzzle_grid: Grid,
+    solution_grid: Grid,
+    rng: random.Random,
+) -> Tuple[Grid, Grid]:
+    """Apply random Sudoku symmetry transforms to both puzzle and solution grids.
+
+    The *same* permutation is applied to both grids so they stay consistent.
+    Transforms: digit relabelling + row-in-band shuffle + col-in-stack shuffle
+    + band shuffle + stack shuffle + geometric symmetry.
+    These are exact Sudoku symmetries: uniqueness and givens count are preserved.
+    """
+    perm = random_digit_permutation(rng)
+    p = relabel_digits(puzzle_grid, perm)
+    s = relabel_digits(solution_grid, perm)
+
+    for band in range(3):
+        seed_b = rng.randint(0, 2**31)
+        p = shuffle_rows_in_band(p, band, random.Random(seed_b))
+        s = shuffle_rows_in_band(s, band, random.Random(seed_b))
+
+    for stack in range(3):
+        seed_st = rng.randint(0, 2**31)
+        p = shuffle_cols_in_stack(p, stack, random.Random(seed_st))
+        s = shuffle_cols_in_stack(s, stack, random.Random(seed_st))
+
+    seed_bd = rng.randint(0, 2**31)
+    p = shuffle_bands(p, random.Random(seed_bd))
+    s = shuffle_bands(s, random.Random(seed_bd))
+
+    seed_sk = rng.randint(0, 2**31)
+    p = shuffle_stacks(p, random.Random(seed_sk))
+    s = shuffle_stacks(s, random.Random(seed_sk))
+
+    sym = rng.choice(list(SYMMETRY_OPS.keys()))
+    op = SYMMETRY_OPS[sym]
+    p = op(p)
+    s = op(s)
+    return p, s
+
+
+def _make_puzzle_record(
+    puzzle_grid: Grid,
+    solution_grid: Grid,
+    difficulty: str,
+    idx: int,
+    secret_hex: str,
+) -> Dict:
+    puzzle_str = to_string(puzzle_grid)
+    solution_str = to_string(solution_grid)
+    k = DIFFICULTY_CONFIGS[difficulty].spotcheck_k
+    canonical_hash = f"sha256:{hashlib.sha256(puzzle_str.encode()).hexdigest()}"
+    positions = select_spotcheck_positions(canonical_hash, secret_hex, k)
+    answer_str = make_spotcheck_answer(solution_grid, positions)
+    question = create_question(puzzle_str, positions)
+    return {
+        'id': f'sudoku_en_{difficulty}_{idx:04d}',
+        'question': question,
+        'answer': answer_str,
+        'solution': _build_sudoku_solution_en(
+            puzzle_str=puzzle_str,
+            solution_str=solution_str,
+            positions=positions,
+            answer_str=answer_str,
+            difficulty=difficulty,
+            givens_count=count_givens(puzzle_grid),
+        ),
+        'difficulty': difficulty,
+    }
+
+
 def create_dataset_files(num_questions: int):
-    """Create sudoku dataset files (CSV + JSONL)."""
+    """Create sudoku dataset files (CSV + JSONL).
+
+    Fast strategy: generate BASE_PER_DIFF base puzzles per difficulty via the
+    full solver, then derive the remaining puzzles via Sudoku symmetry transforms
+    (digit relabelling + row/col/band shuffles + reflections/rotations).
+    These transforms are exact symmetries: uniqueness and givens-count are
+    guaranteed to be preserved, so no additional solve calls are needed.
+    """
     import pandas as pd
 
-    print(f"Generating {num_questions} sudoku puzzles...")
+    BASE_PER_DIFF = 5  # number of slow-generated base puzzles per difficulty
+
+    print(f"Generating {num_questions} sudoku puzzles (transform-fast mode)...")
 
     difficulties = ['easy', 'medium', 'hard']
     puzzles_per_diff = num_questions // len(difficulties)
     remainder = num_questions % len(difficulties)
 
     all_puzzles: List[Dict] = []
-    puzzle_id = 0
     secret_hex = '0' * 64
     max_retries = 140
 
-    for i, difficulty in enumerate(difficulties):
-        count = puzzles_per_diff + (1 if i < remainder else 0)
+    for di, difficulty in enumerate(difficulties):
+        count = puzzles_per_diff + (1 if di < remainder else 0)
         if count == 0:
             continue
 
         print(f"\n=== Generating {difficulty} puzzles ({count} needed) ===")
-        generated = 0
 
-        for j in range(count):
-            puzzle_str = None
-            solution_strs = None
-            metadata = None
+        # --- Phase 1: generate base puzzles via slow solver ---
+        bases_needed = min(BASE_PER_DIFF, count)
+        base_pairs: List[Tuple[Grid, Grid, dict]] = []
+        for b in range(bases_needed):
             last_err = None
             for retry in range(max_retries):
-                seed = 42 + puzzle_id * 1000 + retry
+                seed = 7919 * di + 1031 * b + retry
                 try:
-                    puzzle_str, solution_strs, metadata = generate_difficulty_puzzle(
-                        difficulty, seed
-                    )
+                    p_str, sol_strs, meta = generate_difficulty_puzzle(difficulty, seed)
+                    base_pairs.append((from_string(p_str), from_string(sol_strs[0]), meta))
+                    print(f"  [base {b+1}/{bases_needed}] givens={meta['givens_count']}")
                     break
                 except RuntimeError as e:
                     last_err = e
-                    continue
+            else:
+                print(f"  [base {b+1}/{bases_needed}] failed after {max_retries} retries: {last_err}")
 
-            if puzzle_str is None:
-                print(f"  [{j+1}/{count}] Failed after {max_retries} retries: {last_err}")
-                puzzle_id += 1
-                continue
+        if not base_pairs:
+            print(f"  No base puzzles generated for {difficulty}; skipping")
+            continue
 
+        # --- Phase 2: derive remaining puzzles via symmetry transforms ---
+        generated = 0
+        for j in range(count):
+            base_pg, base_sg, base_meta = base_pairs[j % len(base_pairs)]
+            if j < len(base_pairs):
+                pg, sg = base_pg, base_sg
+            else:
+                rng = random.Random(999983 * di + 1000003 * j)
+                pg, sg = _apply_full_transform(base_pg, base_sg, rng)
             try:
-                solution_grid = from_string(solution_strs[0])
-                k = DIFFICULTY_CONFIGS[difficulty].spotcheck_k
-
-                canonical_hash = f"sha256:{hashlib.sha256(puzzle_str.encode()).hexdigest()}"
-                positions = select_spotcheck_positions(canonical_hash, secret_hex, k)
-                answer_str = make_spotcheck_answer(solution_grid, positions)
-                legacy_code = make_spotcheck_code(solution_grid, positions)
-
-                question = create_question(puzzle_str, positions)
-
-                puzzle_data = {
-                    'id': f'sudoku_en_{difficulty}_{generated:04d}',
-                    'question': question,
-                    'answer': answer_str,
-                    'solution': _build_sudoku_solution_en(
-                        puzzle_str=puzzle_str,
-                        solution_str=solution_strs[0],
-                        positions=positions,
-                        answer_str=answer_str,
-                        difficulty=difficulty,
-                        givens_count=metadata['givens_count'],
-                    ),
-                    'difficulty': difficulty,
-                }
-                all_puzzles.append(puzzle_data)
+                record = _make_puzzle_record(pg, sg, difficulty, generated, secret_hex)
+                all_puzzles.append(record)
                 generated += 1
                 print(
-                    f"  [{j+1}/{count}] givens={metadata['givens_count']}, "
-                    f"answer='{answer_str}' (k={k})"
+                    f"  [{j+1}/{count}] givens={count_givens(pg)}, "
+                    f"answer='{record['answer']}'"
                 )
             except Exception as e:
-                print(f"  [{j+1}/{count}] Post-process failed: {e}")
-
-            puzzle_id += 1
+                print(f"  [{j+1}/{count}] post-process failed: {e}")
 
         if generated < count:
             print(f"  Warning: only generated {generated}/{count} {difficulty} puzzles")
@@ -1182,6 +1244,7 @@ def create_dataset_files(num_questions: int):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Sudoku Puzzle Generator (EN)")
     parser.add_argument("--num", type=int, default=12, help="Number of questions to generate")
+    parser.add_argument("--workers", type=int, default=0, help="Accepted for compatibility; fast mode uses template bank")
     args = parser.parse_args()
 
     print("=" * 60)

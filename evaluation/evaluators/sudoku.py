@@ -18,7 +18,6 @@ import time
 from typing import Dict, Any, List, Optional, Tuple, TYPE_CHECKING
 
 from ..core.base import BaseEvaluator, EvaluationResult
-from ..task_names import locale_from_task_name
 
 if TYPE_CHECKING:
     from ..model.base import BaseLLMClient
@@ -60,23 +59,6 @@ Answer: d1 d2 d3 ...
     # ========================================================================
     # Language helpers
     # ========================================================================
-
-    def _is_korean(self, puzzle: Optional[Dict] = None) -> bool:
-        """Prefer task_name (e.g. …_ko_easy); else infer from expected answer."""
-        task = getattr(self, "_task_name", None) or ""
-        hint = locale_from_task_name(task)
-        if hint is not None:
-            return hint
-        if puzzle is not None:
-            question = puzzle.get("question", "")
-            if re.search(r"[가-힣]", str(question)):
-                return True
-        return False
-
-    def _get_system_prompt(self, puzzle: Dict) -> str:
-        if self._is_korean(puzzle):
-            return self.KOREAN_SYSTEM_PROMPT
-        return self.SYSTEM_PROMPT
 
     # ========================================================================
     # Spotcheck helpers
@@ -151,7 +133,7 @@ Answer: d1 d2 d3 ...
             return None
 
         cleaned = self._strip_code_fences(response)
-        answer_text = self._extract_final_answer_text(cleaned, allow_boxed_fallback=False)
+        answer_text = self._extract_final_answer_text(cleaned)
 
         k = self._expected_k(puzzle)
 

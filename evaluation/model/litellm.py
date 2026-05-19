@@ -102,13 +102,13 @@ class LiteLLMClient(BaseLLMClient):
             },
         )
 
-    def _handle_error(self, e: Exception, latency_ms: float, is_async: bool = False):
+    def _handle_error(self, e: Exception, latency_ms: float, is_async: bool = False) -> "Exception":
         prefix = "LLM async generation" if is_async else "LLM generation"
         error_msg = f"{prefix} failed after {latency_ms:.0f}ms: {str(e)}"
         if "api_key" in str(e).lower() or "authentication" in str(e).lower():
             error_msg += "\nHint: Check if your API key is set correctly in .env file"
         logger.error(error_msg)
-        raise Exception(error_msg)
+        return Exception(error_msg)
 
     def generate(self, messages: List[Dict]) -> Tuple[str, Dict]:
         start = time.time()
@@ -117,7 +117,7 @@ class LiteLLMClient(BaseLLMClient):
             response = completion(**params)
             return self._extract_response(response, (time.time() - start) * 1000)
         except Exception as e:
-            self._handle_error(e, (time.time() - start) * 1000, is_async=False)
+            raise self._handle_error(e, (time.time() - start) * 1000, is_async=False)
 
     async def _async_generate(
         self, messages: List[Dict], max_retries: int = 3
@@ -131,13 +131,14 @@ class LiteLLMClient(BaseLLMClient):
             except Exception as e:
                 latency_ms = (time.time() - start) * 1000
                 if attempt == max_retries - 1:
-                    self._handle_error(e, latency_ms, is_async=True)
+                    raise self._handle_error(e, latency_ms, is_async=True)
                 wait_time = min(2 ** attempt, 30)
                 logger.warning(
                     f"LLM async generation failed (attempt {attempt + 1}/{max_retries}): "
                     f"{str(e)[:200]}. Retrying in {wait_time}s..."
                 )
                 await asyncio.sleep(wait_time)
+        raise RuntimeError("unreachable: retry loop exited without return or raise")
 
     def __repr__(self) -> str:
         return f"LiteLLMClient(model={self.model}, gen_kwargs={self.gen_kwargs})"

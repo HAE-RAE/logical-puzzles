@@ -1,12 +1,8 @@
 import logging
 import re
-from typing import List, Dict, Any, Tuple, Optional, TYPE_CHECKING
+from typing import Dict, Any, Tuple, Optional
 
-from ..core.base import BaseEvaluator, EvaluationResult
-from ..task_names import locale_from_task_name
-
-if TYPE_CHECKING:
-    from ..model.base import BaseLLMClient
+from ..core.base import BaseEvaluator
 
 logger = logging.getLogger(__name__)
 
@@ -39,22 +35,6 @@ Answer: WORD
 Answer: 복호결과
 (공백 없는 한글 등 지문이 요구하는 형태. 평가기는 가장 마지막 Answer: 줄만 채점에 사용합니다.)
 """
-
-    def _is_korean(self, puzzle: Optional[Dict] = None) -> bool:
-        """Prefer task_name (e.g. …_ko_easy); else infer from expected answer."""
-        task = getattr(self, "_task_name", None) or ""
-        hint = locale_from_task_name(task)
-        if hint is not None:
-            return hint
-        if puzzle is not None:
-            expected = puzzle.get("answer", "")
-            return bool(re.search(r"[가-힣]", str(expected)))
-        return False
-
-    def _get_system_prompt(self, puzzle: Dict) -> str:
-        if self._is_korean(puzzle):
-            return self.KOREAN_SYSTEM_PROMPT
-        return self.SYSTEM_PROMPT
 
     @staticmethod
     def trim_to_last_answer_line(raw: str) -> str:
@@ -157,97 +137,3 @@ Answer: 복호결과
         correct = expected_normalized == predicted_normalized
         return correct, 1.0 if correct else 0.0
     
-    def _evaluate_single(
-        self,
-        puzzle: Dict[str, Any],
-        llm_client: "BaseLLMClient"
-    ) -> "EvaluationResult":
-        """
-        단일 퍼즐 평가 (한글/영문에 따라 적절한 SYSTEM_PROMPT 사용)
-        """
-        import time
-        system_prompt = self._get_system_prompt(puzzle)
-        messages = [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": puzzle["question"]}
-        ]
-        
-        start = time.time()
-        try:
-            response, usage = llm_client.generate(messages)
-            latency = (time.time() - start) * 1000
-            return self._process_response(puzzle, response, latency, usage)
-        except Exception as e:
-            latency = (time.time() - start) * 1000
-            return self._process_response(puzzle, "", latency, {"error": str(e)})
-    
-    async def _evaluate_async(
-        self,
-        puzzles: List[Dict[str, Any]],
-        llm_client: "BaseLLMClient",
-        verbose: bool = True,
-        max_concurrent: int = 10
-    ) -> List["EvaluationResult"]:
-        """
-        비동기 평가 실행 (한글/영문에 따라 적절한 SYSTEM_PROMPT 사용)
-        """
-        import time
-        from ..core.base import logger
-        
-        # 모든 메시지 준비 (각 퍼즐에 맞는 SYSTEM_PROMPT 사용)
-        messages_list = []
-        for puzzle in puzzles:
-            system_prompt = self._get_system_prompt(puzzle)
-            messages = [
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": puzzle["question"]}
-            ]
-            messages_list.append(messages)
-        
-        total_puzzles = len(puzzles)
-        task_name = getattr(self, '_task_name', None)
-        task_prefix = f"[{task_name}] " if task_name else ""
-        
-        if verbose:
-            logger.info(f"{task_prefix}Starting async evaluation: {total_puzzles} puzzles, max_concurrent={max_concurrent}")
-        
-        # 비동기 배치 생성
-        start_time = time.time()
-        
-        def progress_callback(completed, total):
-            if verbose:
-                percentage = (completed / total) * 100
-                if completed % max(1, total // 10) == 0 or completed == total:
-                    logger.info(f"{task_prefix}API calls progress: {completed}/{total} ({percentage:.0f}%)")
-        
-        responses = await llm_client.async_batch_generate(
-            messages_list, 
-            max_concurrent=max_concurrent,
-            progress_callback=progress_callback if verbose else None
-        )
-        total_latency = (time.time() - start_time) * 1000
-        
-        if verbose:
-            logger.info(f"{task_prefix}API calls completed: {total_puzzles}/{total_puzzles} in {total_latency:.0f}ms ({total_latency/total_puzzles:.0f}ms per puzzle)")
-        
-        # 결과 처리
-        results = []
-        correct_count = 0
-        error_count = 0
-        
-        for puzzle, (response, usage) in zip(puzzles, responses):
-            latency_ms = usage.get("latency_ms", 0)
-            result = self._process_response(puzzle, response, latency_ms, usage)
-            
-            if result.correct:
-                correct_count += 1
-            if result.error:
-                error_count += 1
-            
-            results.append(result)
-        
-        if verbose:
-            incorrect_count = total_puzzles - correct_count - error_count
-            logger.info(f"Processing completed: {correct_count} correct, {incorrect_count} incorrect, {error_count} errors")
-        
-        return results

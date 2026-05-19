@@ -8,18 +8,21 @@
 import argparse
 import json
 import os
+import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 import requests
-from dotenv import load_dotenv
 
-load_dotenv(Path(__file__).resolve().parent.parent / ".env")
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from _lib import PROJECT_ROOT, ensure_dotenv
+
+ensure_dotenv(PROJECT_ROOT / ".env")
 API_KEY = os.getenv("GEMINI_API_KEY")
 if not API_KEY:
     raise SystemExit("GEMINI_API_KEY is not set. Please check the .env file.")
 
-MODEL = "gemini-3-flash"
+MODEL = "gemini-3-flash-preview"
 url = f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:generateContent"
 headers = {"Content-Type": "application/json"}
 params = {"key": API_KEY}

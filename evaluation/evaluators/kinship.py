@@ -1,7 +1,7 @@
+import base64
 import logging
 import re
-import base64
-import os
+import time
 from pathlib import Path
 from typing import List, Dict, Any, Tuple, Optional, TYPE_CHECKING
 
@@ -146,8 +146,7 @@ Answer: A (A~Z 중 보기에 해당하는 한 글자)
     
     def _parse_answer(self, response: str, puzzle: Dict) -> Optional[str]:
         """
-        Extract choice letter from LLM response.
-        Tries \\boxed{} first, then falls back to heuristic patterns.
+        Extract choice letter from LLM response (Answer: line and heuristics).
         """
         valid_choices = set(puzzle.get("choices", {}).keys()) if isinstance(puzzle.get("choices"), dict) else None
         if valid_choices:
@@ -163,12 +162,6 @@ Answer: A (A~Z 중 보기에 해당하는 한 글자)
         answer_match = re.search(r'(?i)\banswer\s*[:：]\s*([A-Z])\b', answer_text)
         if answer_match:
             letter = answer_match.group(1).upper()
-            if len(letter) == 1 and letter.isalpha() and letter <= max_letter and _valid(letter):
-                return letter
-
-        boxed = re.search(r'\\boxed\{([^}]+)\}', response)
-        if boxed:
-            letter = boxed.group(1).strip().upper()
             if len(letter) == 1 and letter.isalpha() and letter <= max_letter and _valid(letter):
                 return letter
 
@@ -213,21 +206,6 @@ Answer: A (A~Z 중 보기에 해당하는 한 글자)
         correct = predicted == expected
         return correct, 1.0 if correct else 0.0
     
-    def evaluate(
-        self,
-        puzzles: List[Dict[str, Any]],
-        llm_client: "BaseLLMClient",
-        verbose: bool = True,
-        use_async: bool = False,
-        max_concurrent: int = 10,
-        task_name: Optional[str] = None
-    ) -> List[EvaluationResult]:
-        """
-        평가 실행 (task_name을 저장하여 이미지 처리 여부 결정)
-        """
-        self._task_name = task_name
-        return super().evaluate(puzzles, llm_client, verbose, use_async, max_concurrent)
-    
     def _evaluate_single(
         self,
         puzzle: Dict[str, Any],
@@ -236,7 +214,6 @@ Answer: A (A~Z 중 보기에 해당하는 한 글자)
         """
         단일 퍼즐 평가 (이미지 포함 가능)
         """
-        import time
         messages = self._prepare_messages(puzzle, getattr(self, '_task_name', None))
         
         start = time.time()
@@ -258,9 +235,6 @@ Answer: A (A~Z 중 보기에 해당하는 한 글자)
         """
         비동기 평가 실행 (이미지 포함 가능)
         """
-        import time
-        from ..core.base import logger
-        
         # 모든 메시지 준비
         messages_list = []
         task_name = getattr(self, '_task_name', None)

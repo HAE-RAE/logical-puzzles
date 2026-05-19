@@ -17,7 +17,6 @@ import time
 from typing import Dict, Any, List, Set, Tuple, Optional, TYPE_CHECKING
 
 from ..core.base import BaseEvaluator, EvaluationResult
-from ..task_names import locale_from_task_name
 
 if TYPE_CHECKING:
     from ..model.base import BaseLLMClient
@@ -70,22 +69,6 @@ Answer: [number]
 마지막 줄은 반드시 아래 형식으로 작성하세요:
 Answer: [숫자]
 """
-
-    def _is_korean(self, puzzle: Optional[Dict] = None) -> bool:
-        """Prefer task_name (e.g. …_ko_easy); else infer from expected answer."""
-        task = getattr(self, "_task_name", None) or ""
-        hint = locale_from_task_name(task)
-        if hint is not None:
-            return hint
-        if puzzle is not None:
-            expected = puzzle.get("answer", "")
-            return bool(re.search(r"[가-힣]", str(expected)))
-        return False
-
-    def _get_system_prompt(self, puzzle: Dict) -> str:
-        if self._is_korean(puzzle):
-            return self.KOREAN_SYSTEM_PROMPT
-        return self.SYSTEM_PROMPT
 
     # ========================================================================
     # Answer parsing and checking (base interface)

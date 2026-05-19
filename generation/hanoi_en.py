@@ -1,6 +1,5 @@
 import random
 import json
-import hashlib
 import csv
 from pathlib import Path
 
@@ -101,93 +100,40 @@ def _build_templates_easy(ctx, rng):
     src = ctx["src"]
     aux = ctx["aux"]
     dst = ctx["dst"]
-    total = ctx["total_moves"]
-    k = ctx["k"]
-    disk_k = ctx["disk_k"]
-    from_k = ctx["from_k"]
-    to_k = ctx["to_k"]
     moves = ctx["moves"]
-    pegs_after_k = ctx["pegs_after_k"]
-    largest = n
-    largest_idx = next(idx for idx, (d, _, _) in enumerate(moves) if d == largest)
-    l_disk, l_from, l_to = moves[largest_idx]
-    disk_target = rng.randint(1, n)
-    disk_count = sum(1 for d, _, _ in moves if d == disk_target)
-    disk_query = rng.randint(1, n)
-    peg_of_disk = None
-    for peg, stack in pegs_after_k.items():
-        if disk_query in stack:
-            peg_of_disk = peg
-            break
+    k = ctx["k"]
+
+    # Running triple-hash: requires sequential iteration, no closed-form shortcut.
+    H1 = H2 = H3 = 0
+    for i, (d, f, t) in enumerate(moves[:k]):
+        step = i + 1
+        H1 = (H1 * 33 + d * step + f) % 1000003
+        H2 = (H2 * 17 + d * t + step) % 1000003
+        H3 = (H3 * 7 + f * t + d) % 1000003
+    answer = f"({H1}, {H2}, {H3})"
+
+    solution = (
+        f"Step 1: Generate the optimal move sequence for {n} disks: Peg {src} → Peg {dst} via Peg {aux}.\n"
+        f"Step 2: Iterate steps i = 1 to {k}, updating H1/H2/H3 at each step.\n"
+        f"Step 3: Final values — H1={H1}, H2={H2}, H3={H3}.\n"
+        f"Final answer: {answer}"
+    )
+
     return [
-        (
-            f"In a Tower of Hanoi puzzle with {n} disks, all disks start on Peg {src}.\n"
-            f"The goal is to move all disks to Peg {dst} using Peg {aux} as auxiliary,\n"
-            f"following the usual rules (move one disk at a time, never place a larger disk on a smaller one).\n"
-            f"What is the minimum number of moves needed to complete the puzzle?",
-            f"({total}, {total}, {total})",
-            5,
-            "min_moves",
-            f"Step 1: The minimum moves for n disks = 2^n - 1\n"
-            f"Step 2: n = {n}, so 2^{n} - 1 = {total}\n"
-            f"Final answer: {total}"
-        ),
-        (
-            f"In the optimal solution for a Tower of Hanoi puzzle with {n} disks,\n"
-            f"how many times does Disk {disk_target} move in total?",
-            f"({disk_target}, {disk_count}, {disk_count})",
-            5,
-            "disk_move_count",
-            f"Step 1: In optimal solution, Disk d moves 2^(n-d) times\n"
-            f"Step 2: Disk {disk_target} with n={n}: moves = 2^({n}-{disk_target}) = {2**(n - disk_target)}\n"
-            f"Step 3: Verify by counting: {disk_count}\n"
-            f"Final answer: {disk_count}"
-        ),
-        (
-            f"In the optimal solution of a Tower of Hanoi puzzle with {n} disks,\n"
-            f"all disks start on Peg {src} and must reach Peg {dst} (Peg {aux} is auxiliary).\n"
-            f"On which move number does the largest disk (Disk {n}) move?",
-            f"({l_disk}, {l_from}, {l_to})",
-            4,
-            "largest_disk_move",
-            f"Step 1: The largest disk (Disk {n}) moves exactly once in the optimal solution\n"
-            f"Step 2: It moves on step {largest_idx + 1}: Peg {l_from} → Peg {l_to}\n"
-            f"Final answer: Move {largest_idx + 1}"
-        ),
-        (
-            f"Consider the optimal solution of a Tower of Hanoi puzzle with {n} disks.\n"
-            f"All disks start on Peg {src} and must be moved to Peg {dst} (Peg {aux} is auxiliary).\n"
-            f"In this optimal sequence, which disk is moved on the {k}-th move?",
-            f"({disk_k}, {from_k}, {to_k})",
-            2,
-            "kth_disk",
-            f"Step 1: Generate optimal move sequence for {n} disks: Peg {src} → Peg {dst}\n"
-            f"Step 2: Total moves = {total}\n"
-            f"Step 3: The {k}-th move is Disk {disk_k} from Peg {from_k} to Peg {to_k}\n"
-            f"Final answer: Disk {disk_k}"
-        ),
-        (
-            f"In the optimal {n}-disk Tower of Hanoi solution from Peg {src} to Peg {dst}\n"
-            f"(with Peg {aux} as auxiliary), from which peg to which peg does the disk move on the {k}-th move?",
-            f"({disk_k}, {from_k}, {to_k})",
-            2,
-            "kth_from_to",
-            f"Step 1: Generate optimal move sequence for {n} disks\n"
-            f"Step 2: The {k}-th move: Disk {disk_k}, Peg {from_k} → Peg {to_k}\n"
-            f"Final answer: Peg {from_k} → Peg {to_k}"
-        ),
         (
             f"In an optimal Tower of Hanoi solution with {n} disks, all disks start on Peg {src}\n"
             f"and must be moved to Peg {dst}, using Peg {aux} as auxiliary.\n"
-            f"After exactly {k} moves, on which peg is Disk {disk_query} located?",
-            f"({disk_query}, {peg_of_disk}, {peg_of_disk})",
+            f"Consider the first {k} moves. At each step i (1-indexed), let D_i be the disk moved,\n"
+            f"F_i the source peg, and T_i the destination peg.\n"
+            f"Starting with H1 = H2 = H3 = 0, update for each step i from 1 to {k}:\n"
+            f"  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003\n"
+            f"  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003\n"
+            f"  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003\n"
+            f"Provide the final values in the exact format: (H1, H2, H3).",
+            answer,
             1,
-            "where_is_disk_after_k",
-            f"Step 1: Generate optimal sequence for {n} disks\n"
-            f"Step 2: Simulate {k} moves from initial state\n"
-            f"Step 3: State after {k} moves: {_format_peg_state(pegs_after_k)}\n"
-            f"Step 4: Disk {disk_query} is on Peg {peg_of_disk}\n"
-            f"Final answer: ({disk_query}, {peg_of_disk}, {peg_of_disk})"
+            "triple_hash",
+            solution,
         )
     ]
 
@@ -196,73 +142,42 @@ def _build_templates_medium(ctx, rng):
     src = ctx["src"]
     aux = ctx["aux"]
     dst = ctx["dst"]
-    total = ctx["total_moves"]
     moves = ctx["moves"]
+    k = ctx["k"]
 
-    k = rng.randint(15, 25)
-    if k > total:
-        k = total
+    # Running triple-hash: same structure as easy but with higher k (calibrated for ~50% accuracy).
+    # Exp error model recalibrated at k=24→88%: C=0.00541, a=0.1292.
+    # k=34 (avg of 31-37) → error≈56% → accuracy≈56%; acceptable for ~50% target.
+    H1 = H2 = H3 = 0
+    for i, (d, f, t) in enumerate(moves[:k]):
+        step = i + 1
+        H1 = (H1 * 33 + d * step + f) % 1000003
+        H2 = (H2 * 17 + d * t + step) % 1000003
+        H3 = (H3 * 7 + f * t + d) % 1000003
+    answer = f"({H1}, {H2}, {H3})"
 
-    sum_odd_disks = sum(d for i, (d, f, t) in enumerate(moves[:k]) if (i + 1) % 2 == 1)
-    sum_even_to = sum(t for i, (d, f, t) in enumerate(moves[:k]) if (i + 1) % 2 == 0)
-    ans_len_2 = f"({sum_odd_disks}, {sum_even_to})"
-
-    temp_pegs = {0: [], 1: [], 2: []}
-    temp_pegs[src] = list(range(n, 0, -1))
-    for d, f, t in moves[:k]:
-        temp_pegs[f].pop()
-        temp_pegs[t].append(d)
-
-    top0 = temp_pegs[0][-1] if temp_pegs[0] else 0
-    top1 = temp_pegs[1][-1] if temp_pegs[1] else 0
-    top2 = temp_pegs[2][-1] if temp_pegs[2] else 0
-    ans_len_3 = f"({top0}, {top1}, {top2})"
-
-    c1 = sum(1 for d, f, t in moves[:k] if d == 1)
-    c2 = sum(1 for d, f, t in moves[:k] if d == 2)
-    c3 = sum(1 for d, f, t in moves[:k] if d == 3)
-    ans_len_4 = f"({c1}, {c2}, {c3}, {k})"
+    solution = (
+        f"Step 1: Generate the optimal move sequence for {n} disks: Peg {src} → Peg {dst} via Peg {aux}.\n"
+        f"Step 2: Iterate steps i = 1 to {k}, updating H1/H2/H3 at each step.\n"
+        f"Step 3: Final values — H1={H1}, H2={H2}, H3={H3}.\n"
+        f"Final answer: {answer}"
+    )
 
     return [
         (
-            f"In an optimal Tower of Hanoi sequence for {n} disks (start Peg {src}, dest Peg {dst}, aux Peg {aux}).\n"
-            f"Consider the first {k} moves, indexed with 1-based step numbers (i = 1, 2, ..., {k}).\n"
-            f"Compute two values:\n"
-            f"(a) S_odd = the SUM of disk numbers moved at ODD steps (i = 1, 3, 5, ...).\n"
-            f"(b) S_even = the SUM of destination peg numbers at EVEN steps (i = 2, 4, 6, ...).\n"
-            f"Provide the answer in the exact format: (S_odd, S_even).",
-            ans_len_2,
-            10,
-            "odd_disk_even_dest_sums",
-            f"Step 1: Use 1-based step index i.\n"
-            f"Step 2: For odd i, sum the disk number moved -> S_odd = {sum_odd_disks}.\n"
-            f"Step 3: For even i, sum the destination peg number -> S_even = {sum_even_to}.\n"
-            f"Final answer: {ans_len_2}"
-        ),
-        (
-            f"In an optimal Tower of Hanoi sequence for {n} disks (start Peg {src}, dest Peg {dst}, aux Peg {aux}).\n"
-            f"After exactly {k} moves, identify the disk number that is at the TOP of Peg 0, Peg 1, and Peg 2.\n"
-            f"If a peg is empty, use 0 for that peg.\n"
-            f"Provide the answer in the exact format: (top_disk_peg0, top_disk_peg1, top_disk_peg2).",
-            ans_len_3,
-            10,
-            "top_disks_after_k_moves",
-            f"Step 1: Simulate the first {k} moves to get exact peg states.\n"
-            f"Step 2: Find the top disk on Peg 0 -> {top0}, Peg 1 -> {top1}, Peg 2 -> {top2}.\n"
-            f"Final answer: {ans_len_3}"
-        ),
-        (
-            f"In an optimal Tower of Hanoi sequence for {n} disks (start Peg {src}, dest Peg {dst}, aux Peg {aux}).\n"
-            f"Consider the first {k} moves.\n"
-            f"Count how many times Disk 1 is moved, how many times Disk 2 is moved, and how many times Disk 3 is moved. Append the value of 'k' at the end.\n"
-            f"Provide the answer in the exact format: (count_disk1, count_disk2, count_disk3, k).",
-            ans_len_4,
-            10,
-            "disk_1_2_3_counts",
-            f"Step 1: Iterate through the first {k} moves.\n"
-            f"Step 2: Track moves for Disks 1, 2, and 3.\n"
-            f"Step 3: Disk 1: {c1}, Disk 2: {c2}, Disk 3: {c3}, k: {k}.\n"
-            f"Final answer: {ans_len_4}"
+            f"In an optimal Tower of Hanoi solution with {n} disks, all disks start on Peg {src}\n"
+            f"and must be moved to Peg {dst}, using Peg {aux} as auxiliary.\n"
+            f"Consider the first {k} moves. At each step i (1-indexed), let D_i be the disk moved,\n"
+            f"F_i the source peg, and T_i the destination peg.\n"
+            f"Starting with H1 = H2 = H3 = 0, update for each step i from 1 to {k}:\n"
+            f"  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003\n"
+            f"  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003\n"
+            f"  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003\n"
+            f"Provide the final values in the exact format: (H1, H2, H3).",
+            answer,
+            1,
+            "triple_hash",
+            solution,
         )
     ]
 
@@ -274,9 +189,9 @@ def _build_templates_hard(ctx, rng):
     total = ctx["total_moves"]
     moves = ctx["moves"]
     
-    k = rng.randint(total // 2, total - 5)
-    if k < 1:
-        k = total
+    lo_k = max(1, int(total * 0.68))
+    hi_k = max(lo_k, total - 5)
+    k = rng.randint(lo_k, hi_k)
 
     H1 = 0
     H2 = 0
@@ -319,7 +234,7 @@ def _build_templates_hard(ctx, rng):
             f"(b) H2 = (H2 * 17 + D_i * T_i + i) modulo 1000003.\n"
             f"Provide the answer in the exact format: (H1, H2).",
             ans_len_2,
-            10,
+            12,
             "polynomial_running_hash",
             f"Step 1: Iterate the first {k} moves with 1-based index i.\n"
             f"Step 2: Accumulate H1 = (H1 * 33 + D_i * i + F_i) % 1000003 -> {H1}.\n"
@@ -332,7 +247,7 @@ def _build_templates_hard(ctx, rng):
             f"(e.g., if a peg has disks 2 and 3, its value is 2^2 + 3^2 = 13. If a peg is empty, its value is 0).\n"
             f"Provide the answer in the exact format: (sum_sq_peg0, sum_sq_peg1, sum_sq_peg2).",
             ans_len_3,
-            10,
+            6,
             "sum_of_squares_all_pegs",
             f"Step 1: Simulate the first {k} moves precisely to get the full stack of each peg.\n"
             f"Step 2: Calculate sum of squares for Peg 0 -> {sum_sq_0}, Peg 1 -> {sum_sq_1}, Peg 2 -> {sum_sq_2}.\n"
@@ -347,7 +262,7 @@ def _build_templates_hard(ctx, rng):
             f"(d) the exact value of k.\n"
             f"Provide the answer in the exact format: (empty_dst_count, odd_size_dst_count, c_mult_3, k).",
             ans_len_4,
-            10,
+            6,
             "conditional_state_counts",
             f"Step 1: Iterate the first {k} moves.\n"
             f"Step 2: Track the length of the destination peg before each move.\n"
@@ -360,9 +275,14 @@ def generate_all_datasets(num_per_difficulty=100, seed=2025):
     puzzles = []
     
     difficulties = {
-        "easy": {"n_weights": ([3, 4], [0.6, 0.4]), "builder": _build_templates_easy},
-        "medium": {"n_weights": ([7, 8, 9, 10], [0.25, 0.25, 0.25, 0.25]), "builder": _build_templates_medium},
-        "hard": {"n_weights": ([10, 11, 12, 13], [0.25, 0.25, 0.25, 0.25]), "builder": _build_templates_hard}
+        # All difficulties use triple-hash (easy/medium) or dual-hash+simulation (hard).
+        # Recalibrated exp model at k=24→88%: C=0.00541, a=0.1292.
+        # easy:   n=6-8, k=27-33 (avg 30) → accuracy≈74%. Target: 75%.
+        # medium: n=7-9, k=31-37 (avg 34) → accuracy≈56%. Target: 50%.
+        # hard:   n=12-15, k=68-100% of total (set inside builder). Target: 25%.
+        "easy": {"n_weights": ([6, 7, 8], [0.34, 0.33, 0.33]), "builder": _build_templates_easy},
+        "medium": {"n_weights": ([7, 8, 9], [0.34, 0.33, 0.33]), "builder": _build_templates_medium},
+        "hard": {"n_weights": ([12, 13, 14, 15], [0.25, 0.25, 0.25, 0.25]), "builder": _build_templates_hard}
     }
 
     rng = random.Random(seed)
@@ -382,7 +302,16 @@ def generate_all_datasets(num_per_difficulty=100, seed=2025):
             moves = get_hanoi_moves(n, src, aux, dst)
             total_moves = len(moves)
 
-            k = rng.randint(1, total_moves)
+            # Recalibrated exp model at k=24→88%: C=0.00541, a=0.1292.
+            # Easy:   k=27-33 (avg 30) → error≈26% → accuracy≈74%. Target: 75%.
+            # Medium: k=31-37 (avg 34) → error≈44% → accuracy≈56%. Target: 50%.
+            # Hard:   k set inside _build_templates_hard (68-100% of total).
+            if diff == "easy":
+                k = rng.randint(27, min(33, total_moves))
+            elif diff == "medium":
+                k = rng.randint(31, min(37, total_moves))
+            else:
+                k = rng.randint(1, total_moves)
             disk_k, from_k, to_k = moves[k - 1]
             pegs_after_k = simulate_pegs(n, src, aux, dst, moves, k)
 
@@ -407,9 +336,8 @@ def generate_all_datasets(num_per_difficulty=100, seed=2025):
             if question not in seen_questions and signature not in seen_signatures:
                 seen_questions.add(question)
                 seen_signatures.add(signature)
-                puzzle_hash = hashlib.md5(f"{seed}_{diff}_{idx}_{qtype}".encode()).hexdigest()[:8]
                 puzzles.append({
-                    "id": f"hanoi_en_{diff}_{idx:04d}_{puzzle_hash}",
+                    "id": f"hanoi_en_{diff}_{idx:04d}",
                     "question": question,
                     "answer": answer,
                     "solution": _wrap_sft_hanoi_solution_en(solution, n, total_moves, qtype, answer),

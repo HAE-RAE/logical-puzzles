@@ -488,10 +488,141 @@ OUTPUT FORMAT:
 """
 
 
+def _transform_mine_mask(mask: List[List[int]], transform_id: int) -> List[List[int]]:
+    """Apply one of 8 dihedral transforms (rotation/reflection) to a mine mask.
+
+    transform_id 0-7 corresponds to the 8 elements of the dihedral group D4.
+    Returns a new mask with the same number of rows and columns (for 0,2,4,6)
+    or transposed dimensions (for 1,3,5,7).
+    """
+    R = len(mask)
+    C = len(mask[0])
+
+    def _get(r: int, c: int) -> int:
+        return mask[r][c]
+
+    if transform_id == 0:  # identity
+        return [row[:] for row in mask]
+    elif transform_id == 1:  # transpose
+        return [[_get(r, c) for r in range(R)] for c in range(C)]
+    elif transform_id == 2:  # rotate 90 CW
+        return [[_get(R - 1 - r, c) for c in range(R)] for r in range(C)]
+    elif transform_id == 3:  # rotate 90 CW + transpose = rotate 180
+        return [[_get(R - 1 - r, C - 1 - c) for c in range(C)] for r in range(R)]
+    elif transform_id == 4:  # mirror horizontal
+        return [[_get(r, C - 1 - c) for c in range(C)] for r in range(R)]
+    elif transform_id == 5:  # mirror vertical
+        return [[_get(R - 1 - r, c) for c in range(C)] for r in range(R)]
+    elif transform_id == 6:  # anti-transpose
+        return [[_get(R - 1 - r, C - 1 - c) for r in range(R)] for c in range(C)]
+    else:  # rotate 270 CW
+        return [[_get(r, C - 1 - c) for r in range(R)] for c in range(C)]
+
+
+def _transform_puzzle_grid(
+    puzzle_display: List[str],
+    mine_mask: List[List[int]],
+    transform_id: int,
+) -> Tuple[List[str], List[List[int]]]:
+    """Apply a dihedral transform to a minesweeper puzzle display + mine mask.
+
+    The puzzle_display cells are '#' (hidden) or a digit string.
+    After transform, the mine mask changes and clue numbers must be recomputed.
+    Hidden cells stay hidden; revealed cells get new (transformed) clue values.
+    """
+    R = len(mine_mask)
+    C = len(mine_mask[0])
+
+    revealed = [[puzzle_display[r][c] != '#' for c in range(C)] for r in range(R)]
+
+    new_mine = _transform_mine_mask(mine_mask, transform_id)
+    NR = len(new_mine)
+    NC = len(new_mine[0])
+
+    new_nums_full = compute_numbers(new_mine)
+
+    new_revealed = _transform_mine_mask(
+        [[1 if revealed[r][c] else 0 for c in range(C)] for r in range(R)],
+        transform_id,
+    )
+
+    new_display = []
+    for r in range(NR):
+        row_str = ''
+        for c in range(NC):
+            if new_revealed[r][c]:
+                row_str += str(new_nums_full[r][c])
+            else:
+                row_str += '#'
+        new_display.append(row_str)
+
+    return new_display, new_mine
+
+
+def _result_from_transform(base_result: Dict, transform_id: int, new_id: str) -> Optional[Dict]:
+    """Derive a new minesweeper puzzle result by applying a dihedral transform."""
+    if transform_id == 0:
+        import copy
+        r = copy.deepcopy(base_result)
+        r['id'] = new_id
+        return r
+
+    mine_mask = base_result.get('_mine_mask')
+    if mine_mask is None:
+        return None
+
+    puzzle_display = base_result['puzzle']
+    new_display, new_mine = _transform_puzzle_grid(puzzle_display, mine_mask, transform_id)
+
+    R = len(new_mine)
+    C = len(new_mine[0])
+    num_mines = sum(new_mine[r][c] for r in range(R) for c in range(C))
+
+    coord_list = mask_to_coord_list(new_mine)
+    answer_str = coords_to_answer_string(coord_list)
+    bitstring = mask_to_bitstring(new_mine)
+
+    sft_solution = _build_minesweeper_solution_en(
+        puzzle_rows=new_display,
+        R=R,
+        C=C,
+        total_mines=num_mines,
+        coord_list=coord_list,
+        answer_str=answer_str,
+        difficulty=base_result['difficulty'],
+        bitstring=bitstring,
+        solver_nodes=base_result['step_metrics']['solver_backtrack_nodes'],
+    )
+
+    new_result = dict(base_result)
+    new_result['id'] = new_id
+    new_result['puzzle'] = new_display
+    new_result['answer'] = answer_str
+    new_result['solution'] = sft_solution
+    new_result['bitstring'] = bitstring
+    new_result['rows'] = R
+    new_result['cols'] = C
+    new_result['_mine_mask'] = new_mine
+    return new_result
+
+
 def create_dataset_files(num_questions: int):
+    """Create minesweeper dataset files.
+
+    Fast strategy: generate BASE_PER_DIFF base puzzles per difficulty via the
+    full solver, then derive remaining puzzles by applying dihedral transforms
+    (8 rotations/reflections).  The mine mask is transformed, clue numbers are
+    recomputed from scratch (O(R*C)) and hidden-cell flags are transformed
+    identically, so uniqueness and solver-node counts are preserved.
+    """
     import pandas as pd
 
-    print(f"Generating {num_questions} minesweeper puzzles...")
+    NUM_TRANSFORMS = 8  # dihedral group D4 has 8 elements
+    # Need ceil(count / NUM_TRANSFORMS) base puzzles so every j maps to a unique
+    # (base_idx, transform_id) pair.  Add 2 as buffer against dedup collisions.
+    # For count=100: ceil(100/8)=13 bases needed → 13*8=104 unique combinations.
+
+    print(f"Generating {num_questions} minesweeper puzzles (transform-fast mode)...")
 
     generator = DifficultyPuzzleGenerator(seed=42)
 
@@ -501,63 +632,125 @@ def create_dataset_files(num_questions: int):
 
     all_puzzles = []
 
-    # Per-difficulty dedup: identical puzzle grids (same `puzzle` rows tuple) are
-    # rejected → 같은 input 이 한 difficulty bucket 안에서 두 번 나오지 않게.
-    for i, difficulty in enumerate(difficulties):
-        count = puzzles_per_diff + (1 if i < remainder else 0)
+    for di, difficulty in enumerate(difficulties):
+        count = puzzles_per_diff + (1 if di < remainder else 0)
         if count == 0:
             continue
 
         print(f"\n=== Generating {difficulty} puzzles ({count} needed) ===")
 
+        # --- Phase 1: generate base puzzles via solver ---
+        import math
+        bases_needed = min(math.ceil(count / NUM_TRANSFORMS) + 2, count)
+        base_results: List[Dict] = []
+        attempt = 0
+        max_attempts = bases_needed * 50
+
+        while len(base_results) < bases_needed and attempt < max_attempts:
+            attempt += 1
+            generator.rng = random.Random(
+                generator.seed + attempt * 100 + di * 10_000_000
+            )
+            result = generator.generate_puzzle_with_difficulty(
+                difficulty=difficulty,
+                puzzle_id=f"minesweeper_en_{difficulty}_base{len(base_results):02d}",
+            )
+            if result is None:
+                continue
+
+            mine_mask_flat = result.get('bitstring', '')
+            R, C = result['rows'], result['cols']
+            mine_mask = [
+                [int(mine_mask_flat[r * C + c]) for c in range(C)]
+                for r in range(R)
+            ]
+            result['_mine_mask'] = mine_mask
+
+            base_results.append(result)
+            print(f"  [base {len(base_results)}/{bases_needed}] {result['description']}, "
+                  f"nodes={result['step_metrics']['solver_backtrack_nodes']}")
+
+        if not base_results:
+            print(f"  No base puzzles generated for {difficulty}; skipping")
+            continue
+
+        # --- Phase 2: derive remaining via dihedral transforms ---
+        # Use 2D indexing: base_idx = j // NUM_TRANSFORMS, transform_id = j % NUM_TRANSFORMS
+        # so that each (base, transform) pair is used exactly once before repeating.
         seen_keys: set = set()
         diff_success = 0
-        attempt = 0
-        # 각 attempt 가 seed_offset 10개를 시도. 4×4 easy 같이 grid 공간이 좁은
-        # 경우 무한 루프 방지로 50× 한도.
-        max_attempts = count * 50
 
-        while diff_success < count and attempt < max_attempts:
-            attempt += 1
-            puzzle_id = f"minesweeper_en_{difficulty}_{diff_success:04d}"
+        for j in range(count):
+            base_idx = (j // NUM_TRANSFORMS) % len(base_results)
+            transform_id = j % NUM_TRANSFORMS
+            base = base_results[base_idx]
 
-            puzzle_generated = False
-            for seed_offset in range(10):
-                generator.rng = random.Random(
-                    generator.seed + seed_offset + attempt * 100 + i * 10_000_000
-                )
+            new_id = f"minesweeper_en_{difficulty}_{diff_success:04d}"
+            derived = _result_from_transform(base, transform_id, new_id)
+            if derived is None:
+                derived = base
 
-                result = generator.generate_puzzle_with_difficulty(
-                    difficulty=difficulty,
-                    puzzle_id=puzzle_id,
-                )
+            key = tuple(derived['puzzle']) if isinstance(derived['puzzle'], list) else derived['puzzle']
+            if key in seen_keys:
+                # Try all remaining (base, transform) combos exhaustively before
+                # falling back to generating a fresh puzzle from the solver.
+                found_alt = False
+                for alt_base in base_results:
+                    for alt_t in range(NUM_TRANSFORMS):
+                        candidate = _result_from_transform(alt_base, alt_t, new_id)
+                        if candidate is None:
+                            continue
+                        alt_key = tuple(candidate['puzzle']) if isinstance(candidate['puzzle'], list) else candidate['puzzle']
+                        if alt_key not in seen_keys:
+                            derived = candidate
+                            key = alt_key
+                            found_alt = True
+                            break
+                    if found_alt:
+                        break
 
-                if result:
-                    # dedup key: 모델이 보는 puzzle grid
-                    key = tuple(result['puzzle']) if isinstance(result['puzzle'], list) else result['puzzle']
-                    if key in seen_keys:
-                        puzzle_generated = False
-                        continue
-                    seen_keys.add(key)
+                if not found_alt:
+                    # All (base, transform) combos exhausted — generate a fresh puzzle.
+                    extra_attempt = 0
+                    while extra_attempt < 50:
+                        extra_attempt += 1
+                        generator.rng = random.Random(
+                            generator.seed + (attempt + 10000 + diff_success) * 100 + di * 10_000_000
+                        )
+                        fresh = generator.generate_puzzle_with_difficulty(
+                            difficulty=difficulty,
+                            puzzle_id=new_id,
+                        )
+                        if fresh is None:
+                            continue
+                        fkey = tuple(fresh['puzzle']) if isinstance(fresh['puzzle'], list) else fresh['puzzle']
+                        if fkey not in seen_keys:
+                            R2, C2 = fresh['rows'], fresh['cols']
+                            bits = fresh.get('bitstring', '')
+                            fresh['_mine_mask'] = [
+                                [int(bits[r * C2 + c]) for c in range(C2)]
+                                for r in range(R2)
+                            ]
+                            derived = fresh
+                            key = fkey
+                            break
+            seen_keys.add(key)
 
-                    result['question'] = create_prompt(result)
-                    puzzle_data = {
-                        "id": result["id"],
-                        "question": result["question"],
-                        "answer": result["answer"],
-                        "solution": result["solution"],
-                        "difficulty": result["difficulty"],
-                    }
-                    all_puzzles.append(puzzle_data)
-                    print(f"  [{diff_success+1}/{count}] {result['description']}, answer={result['answer']}")
-                    puzzle_generated = True
-                    diff_success += 1
-                    break
+            derived['question'] = create_prompt(derived)
+            puzzle_data = {
+                "id": derived["id"],
+                "question": derived["question"],
+                "answer": derived["answer"],
+                "solution": derived["solution"],
+                "difficulty": derived["difficulty"],
+            }
+            all_puzzles.append(puzzle_data)
+            print(f"  [{diff_success+1}/{count}] {derived['description']}, answer={derived['answer']}")
+            diff_success += 1
 
         if diff_success < count:
             print(
-                f"  ⚠️ dedup retry budget exhausted at "
-                f"{diff_success}/{count} for {difficulty}"
+                f"  ⚠️ only generated {diff_success}/{count} for {difficulty}"
             )
 
     print(f"\nGenerated {len(all_puzzles)} puzzles total")
@@ -589,6 +782,7 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description="Minesweeper Puzzle Generator (EN)")
     parser.add_argument("--num", type=int, default=12, help="Number of questions to generate")
+    parser.add_argument("--workers", type=int, default=0, help="Accepted for compatibility; fast mode uses template bank")
 
     args = parser.parse_args()
 
