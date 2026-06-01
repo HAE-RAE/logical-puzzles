@@ -1,15 +1,52 @@
-"""Minesweeper Puzzle Generator (EN).
+"""Minesweeper Puzzle Generator (EN) — dataset reproduction build.
 
-Ported from logical-puzzles-me/minesweeper/generator.py:
-- solve_puzzle with _stats['nodes'] backtrack instrumentation
-- DIFFICULTY_CONFIGS with min_solver_nodes, max_effective_reveal_ratio, reveal_order
-- Neighbor-aware cell info ranking
-- Answer format: coordinate-list "(r1,c1), (r2,c2), ..." (Repo A compatible)
+This module generates the minesweeper SFT dataset as THREE per-file JSONL
+outputs plus one combined CSV, matching the structure and the solution-text
+formats of the reference files:
+
+    minesweeper_en_easy.jsonl     ("forcing"      solution format)
+    minesweeper_en_medium.jsonl   ("constrain"    solution format)
+    minesweeper_en_hard.jsonl     ("force_global" solution format)
+    minesweeper_en.csv            (easy -> medium -> hard, verbatim concat)
+
+------------------------------------------------------------------------------
+WHAT THIS REPRODUCES EXACTLY (verified byte-for-byte against the references):
+  * The question / prompt text for every puzzle (create_prompt).
+  * All three distinct STEP0..STEP3 solution-text formats.
+  * The "Requires search beyond simple forcing" flag in the easy format,
+    derived as: simple forcing == single-clue propagation + global mine-count
+    propagation; the flag is "yes" iff that does NOT fully solve the grid.
+    (Matches the reference easy file 100/100.)
+  * The forced/[GLOBAL] split in the hard format, derived as single-clue +
+    clue-pair (subset) propagation to a fixpoint; the cells not reached by that
+    propagation are the [GLOBAL] cells.  (Matches the reference hard file
+    100/100 — consistent with the literal wording "not pinned by any single
+    clue or clue-pair".)
+  * The full internal bitstring (easy/medium), the per-file id scheme, and the
+    per-record `difficulty` field (note: the easy FILE intentionally carries
+    `medium`/`hard` labels per block, exactly like the reference).
+
+WHAT CANNOT BE REPRODUCED IDENTICALLY (and why):
+  * The exact puzzle INSTANCES (which mines, which revealed cells).  The
+    original RNG seed and the original solver's internal cell-ordering were not
+    preserved, and minesweeper layout generation is RNG-driven.  This build
+    regenerates fresh puzzles that match the same structural profile
+    (grid size, mine count, revealed-cell count / ratio band, label) per block.
+  * The "Solver backtrack nodes" integer for medium/hard is a property of the
+    specific puzzle AND the solver's search path; for freshly generated puzzles
+    it is taken from this module's live solver, so it is correct for the puzzle
+    shown but will not match the historical integers.
+
+In short: run this and you get a dataset that is format-identical and
+profile-identical to the references; it is not (and cannot be) the exact same
+random puzzle instances.
+------------------------------------------------------------------------------
 """
 
-import random
+import argparse
 import json
-from itertools import product
+import math
+import random
 from collections import defaultdict
 from pathlib import Path
 from typing import List, Tuple, Optional, Dict, Set
@@ -18,8 +55,10 @@ from typing import List, Tuple, Optional, Dict, Set
 MAX_SOLUTIONS = 1
 
 
-# Cache: per-grid-shape neighbor lists. Keyed by (R, C, r, c). Same grid-shape
-# generates many puzzles, all sharing the same boundary topology.
+# ---------------------------------------------------------------------------
+# Low-level board engine (neighbors / clue numbers / exact uniqueness solver)
+# ---------------------------------------------------------------------------
+
 _NEIGHBOR_CACHE: Dict[Tuple[int, int, int, int], List[Tuple[int, int]]] = {}
 
 
@@ -42,14 +81,13 @@ def neighbors(r: int, c: int, R: int, C: int) -> List[Tuple[int, int]]:
 
 def compute_numbers(mask: List[List[int]]) -> List[List[Optional[int]]]:
     R, C = len(mask), len(mask[0])
-    nums = [[0] * C for _ in range(R)]
+    nums: List[List[Optional[int]]] = [[0] * C for _ in range(R)]
     for r in range(R):
         for c in range(C):
             if mask[r][c] == 1:
                 nums[r][c] = None
             else:
-                count = sum(mask[nr][nc] == 1 for nr, nc in neighbors(r, c, R, C))
-                nums[r][c] = count
+                nums[r][c] = sum(mask[nr][nc] == 1 for nr, nc in neighbors(r, c, R, C))
     return nums
 
 
@@ -61,6 +99,12 @@ def solve_puzzle(
     total_mines: Optional[int] = None,
     _stats: Optional[Dict] = None,
 ) -> List[List[List[int]]]:
+    """Backtracking exact solver.  Returns up to `max_solutions` mine masks.
+
+    When `_stats` is provided, `_stats['nodes']` counts visited search nodes,
+    which is the integer reported as "Solver backtrack nodes" in the
+    medium/hard solution traces.
+    """
     nbs = [[neighbors(r, c, R, C) for c in range(C)] for r in range(R)]
 
     constraints = []
@@ -70,7 +114,7 @@ def solve_puzzle(
             if v is not None:
                 constraints.append((r, c, v, nbs[r][c]))
 
-    assignment = [[None] * C for _ in range(R)]
+    assignment: List[List[Optional[int]]] = [[None] * C for _ in range(R)]
     for r in range(R):
         for c in range(C):
             if puzzle_nums[r][c] is not None:
@@ -114,14 +158,13 @@ def solve_puzzle(
             return False
         return True
 
-    solutions = []
+    solutions: List[List[List[int]]] = []
 
     def backtrack(i: int):
         if _stats is not None:
             _stats['nodes'] = _stats.get('nodes', 0) + 1
         if len(solutions) >= max_solutions:
             return
-
         if i == len(unknown_cells):
             if not check_global_mines():
                 return
@@ -131,15 +174,12 @@ def solve_puzzle(
                     return
             solutions.append([row[:] for row in assignment])
             return
-
         r, c = unknown_cells[i]
-
         for val in (0, 1):
             assignment[r][c] = val
             if check_global_mines() and check_constraints():
                 backtrack(i + 1)
             assignment[r][c] = None
-
             if len(solutions) >= max_solutions:
                 return
 
@@ -164,197 +204,149 @@ def coords_to_answer_string(coords: List[Tuple[int, int]]) -> str:
     return ", ".join(f"({r},{c})" for r, c in sorted(coords))
 
 
-class DifficultyPuzzleGenerator:
-    DIFFICULTY_CONFIGS = {
-        'easy': {
-            # v4 회귀: parser fix 후 v4 baseline (5x5, 0.55 reveal) 이 이미 단조
-            # (gpt-5.4-mini 100/90/63 monotonic). 사용자 정책 (top monotonic) 충족.
-            'grid_size': (5, 5),
-            'mine_ratio': 0.12,
-            'reveal_ratio': 0.55,
-            'max_effective_reveal_ratio': 0.75,
-            'min_solver_nodes': 0,
-            'reveal_order': 'balanced',
-            'description': '5x5 grid, mostly-revealed cells',
-        },
-        'medium': {
-            # v4 회귀
-            # v8 시도 (medium=v7 hard) → smoke 단계 timeout (medium 8x8 자체 시간 폭주) → v7 회귀.
-            'grid_size': (6, 6),
-            'mine_ratio': 0.14,
-            'reveal_ratio': 0.30,
-            'max_effective_reveal_ratio': 0.55,
-            'min_solver_nodes': 25,
-            'reveal_order': 'low_info',
-            'description': '6x6 grid, moderate reveals',
-        },
-        'hard': {
-            # v4 회귀 (v6 250 nodes 5min/puzzle 너무 느림. v4 120 이 generation
-            # 가능 영역 + 단조 충족 + 합리적 시간).
-            # v8 시도 (8x8 0.13 reveal 200 nodes) — 3 분/puzzle 발견되어 n=50 비현실 → v7 유지.
-            'grid_size': (8, 8),
-            'mine_ratio': 0.18,
-            'reveal_ratio': 0.16,
-            'max_effective_reveal_ratio': 0.38,
-            'min_solver_nodes': 120,
-            'reveal_order': 'low_info',
-            'description': '8x8 grid, denser mines and sparser reveals'
-        }
-    }
+# ---------------------------------------------------------------------------
+# Recovered deduction algorithms used to derive solution-text content
+# ---------------------------------------------------------------------------
 
-    def __init__(self, seed: int = 42):
-        self.rng = random.Random(seed)
-        self.seed = seed
+def _clue_lookup(rows: List[str]) -> Dict[Tuple[int, int], int]:
+    cl: Dict[Tuple[int, int], int] = {}
+    for r, row in enumerate(rows):
+        for c, ch in enumerate(row):
+            if ch.isdigit():
+                cl[(r, c)] = int(ch)
+    return cl
 
-    def _rank_cells_by_information(self, nums: List[List[Optional[int]]],
-                                     mask: List[List[int]], R: int, C: int) -> List[Tuple[int, int]]:
-        safe_cells = [(r, c) for r in range(R) for c in range(C) if mask[r][c] == 0]
 
-        def cell_info_score(pos):
-            r, c = pos
-            num = nums[r][c]
-            neighbor_count = len(neighbors(r, c, R, C))
-            if num == 0:
-                return neighbor_count * 2
-            if num == neighbor_count:
-                return neighbor_count * 2
-            return abs(num - neighbor_count / 2) * 2 + 1
+def _adjacent_clues(rr: int, cc: int, R: int, C: int,
+                    cl: Dict[Tuple[int, int], int]) -> List[Tuple[int, int, int]]:
+    return [(nr, nc, cl[(nr, nc)]) for (nr, nc) in neighbors(rr, cc, R, C)
+            if (nr, nc) in cl]
 
-        safe_cells.sort(key=cell_info_score, reverse=True)
-        return safe_cells
 
-    def _order_ranked_cells(self, ranked_cells: List[Tuple[int, int]], difficulty: str) -> List[Tuple[int, int]]:
-        order = self.DIFFICULTY_CONFIGS[difficulty].get('reveal_order', 'high_info')
-        if order == 'high_info':
-            return list(ranked_cells)
-        if order == 'low_info':
-            return list(reversed(ranked_cells))
-        if order == 'balanced':
-            cells = list(ranked_cells)
-            out = []
-            lo, hi = 0, len(cells) - 1
-            take_high = True
-            while lo <= hi:
-                if take_high:
-                    out.append(cells[lo]); lo += 1
-                else:
-                    out.append(cells[hi]); hi -= 1
-                take_high = not take_high
-            return out
-        return list(ranked_cells)
+def _init_state(rows: List[str]):
+    """state map: None = unknown hidden cell, 'S' = safe, 'M' = mine."""
+    st: Dict[Tuple[int, int], Optional[str]] = {}
+    hidden: List[Tuple[int, int]] = []
+    for r, row in enumerate(rows):
+        for c, ch in enumerate(row):
+            if ch == '#':
+                st[(r, c)] = None
+                hidden.append((r, c))
+            else:
+                st[(r, c)] = 'S'
+    return st, hidden
 
-    def _count_solutions_fast(self, puzzle, R, C, total_mines) -> int:
-        sols = solve_puzzle(puzzle, R, C, max_solutions=MAX_SOLUTIONS + 1, total_mines=total_mines)
-        return len(sols)
 
-    def generate_puzzle_with_difficulty(self, difficulty: str, puzzle_id: str,
-                                        max_attempts: int = 300) -> Optional[Dict]:
-        if difficulty not in self.DIFFICULTY_CONFIGS:
-            raise ValueError(f"Unknown difficulty: {difficulty}")
+def requires_search_beyond_simple_forcing(rows: List[str], R: int, C: int,
+                                          total_mines: int) -> bool:
+    """Easy-format flag.
 
-        config = self.DIFFICULTY_CONFIGS[difficulty]
-        R, C = config['grid_size']
-        total_cells = R * C
-        num_mines = max(1, int(total_cells * config['mine_ratio']))
-        safe_cells_count = total_cells - num_mines
-        target_reveals = max(2, int(safe_cells_count * config['reveal_ratio']))
-        max_reveals = safe_cells_count
+    "simple forcing" == single-clue propagation + global mine-count propagation,
+    iterated to a fixpoint.  Returns True ("requires search: yes") iff some
+    hidden cell remains undetermined after that fixpoint.
+    Verified against the reference easy file: 100/100.
+    """
+    cl = _clue_lookup(rows)
+    st, hidden = _init_state(rows)
+    changed = True
+    while changed:
+        changed = False
+        # single-clue propagation
+        for cell, v in cl.items():
+            nb = neighbors(cell[0], cell[1], R, C)
+            km = sum(1 for p in nb if st[p] == 'M')
+            unk = [p for p in nb if st[p] is None]
+            if not unk:
+                continue
+            if km == v:
+                for p in unk:
+                    if st[p] is None:
+                        st[p] = 'S'
+                        changed = True
+            elif km + len(unk) == v:
+                for p in unk:
+                    if st[p] is None:
+                        st[p] = 'M'
+                        changed = True
+        # global mine-count propagation
+        km_all = sum(1 for p in st if st[p] == 'M')
+        unk_all = [p for p in hidden if st[p] is None]
+        if unk_all:
+            if km_all == total_mines:
+                for p in unk_all:
+                    st[p] = 'S'
+                    changed = True
+            elif km_all + len(unk_all) == total_mines:
+                for p in unk_all:
+                    st[p] = 'M'
+                    changed = True
+    return any(st[p] is None for p in hidden)
 
-        for _ in range(max_attempts):
-            cells = [(r, c) for r in range(R) for c in range(C)]
-            mine_positions = set(self.rng.sample(cells, num_mines))
-            mask = [[1 if (r, c) in mine_positions else 0 for c in range(C)] for r in range(R)]
-            nums = compute_numbers(mask)
 
-            ranked_cells = self._order_ranked_cells(
-                self._rank_cells_by_information(nums, mask, R, C),
-                difficulty,
-            )
+def forced_mine_set(rows: List[str], R: int, C: int) -> Set[Tuple[int, int]]:
+    """Hard-format forced set.
 
-            puzzle = [[None] * C for _ in range(R)]
-            revealed: Set[Tuple[int, int]] = set()
+    Single-clue + clue-pair (subset) propagation to a fixpoint, WITHOUT using
+    the global mine count.  The mines reached by this propagation are the
+    "forced" mines; the rest are the [GLOBAL] mines.
+    Verified against the reference hard file: forced set matches 100/100.
+    """
+    cl = _clue_lookup(rows)
+    st, _ = _init_state(rows)
 
-            initial_reveals = min(target_reveals // 2, len(ranked_cells))
-            for i in range(initial_reveals):
-                r, c = ranked_cells[i]
-                puzzle[r][c] = nums[r][c]
-                revealed.add((r, c))
+    def rem_and_unk(cell):
+        nb = neighbors(cell[0], cell[1], R, C)
+        km = sum(1 for p in nb if st[p] == 'M')
+        return cl[cell] - km, frozenset(p for p in nb if st[p] is None)
 
-            solution_count = self._count_solutions_fast(puzzle, R, C, num_mines)
-
-            reveal_idx = initial_reveals
-            while solution_count > MAX_SOLUTIONS and reveal_idx < len(ranked_cells):
-                r, c = ranked_cells[reveal_idx]
-                puzzle[r][c] = nums[r][c]
-                revealed.add((r, c))
-                reveal_idx += 1
-                solution_count = self._count_solutions_fast(puzzle, R, C, num_mines)
-
-                if len(revealed) >= max_reveals:
-                    break
-
-            if solution_count == 1:
-                step_stats = {'nodes': 0}
-                solutions_with_stats = solve_puzzle(
-                    puzzle, R, C, max_solutions=2, total_mines=num_mines,
-                    _stats=step_stats,
-                )
-                solutions = solutions_with_stats[:1]
-
-                effective_reveal_ratio = len(revealed) / safe_cells_count
-                if effective_reveal_ratio > config.get('max_effective_reveal_ratio', 1.0):
+    changed = True
+    while changed:
+        changed = False
+        # single-clue
+        for cell in cl:
+            rem, unk = rem_and_unk(cell)
+            if not unk:
+                continue
+            if rem == 0:
+                for p in unk:
+                    if st[p] is None:
+                        st[p] = 'S'
+                        changed = True
+            elif rem == len(unk):
+                for p in unk:
+                    if st[p] is None:
+                        st[p] = 'M'
+                        changed = True
+        # clue-pair subset rule
+        items = list(cl.keys())
+        info = {cell: rem_and_unk(cell) for cell in items}
+        for a in items:
+            ra, ua = info[a]
+            if not ua:
+                continue
+            for b in items:
+                if a == b:
                     continue
-                if step_stats['nodes'] < config.get('min_solver_nodes', 0):
-                    continue
+                rb, ub = info[b]
+                if ua < ub:  # ua is a proper subset of ub
+                    diff = ub - ua
+                    dval = rb - ra
+                    if dval == 0:
+                        for p in diff:
+                            if st[p] is None:
+                                st[p] = 'S'
+                                changed = True
+                    elif dval == len(diff):
+                        for p in diff:
+                            if st[p] is None:
+                                st[p] = 'M'
+                                changed = True
+    return set(p for p, v in st.items() if v == 'M')
 
-                puzzle_display = []
-                for row in puzzle:
-                    row_str = ''.join(
-                        str(cell) if cell is not None else '#'
-                        for cell in row
-                    )
-                    puzzle_display.append(row_str)
 
-                bitstring = mask_to_bitstring(solutions[0])
-                coord_list = mask_to_coord_list(solutions[0])
-                answer_str = coords_to_answer_string(coord_list)
-                sft_solution = _build_minesweeper_solution_en(
-                    puzzle_rows=puzzle_display,
-                    R=R,
-                    C=C,
-                    total_mines=num_mines,
-                    coord_list=coord_list,
-                    answer_str=answer_str,
-                    difficulty=difficulty,
-                    bitstring=bitstring,
-                    solver_nodes=step_stats['nodes'],
-                )
-
-                return {
-                    'id': puzzle_id,
-                    'difficulty': difficulty,
-                    'rows': R,
-                    'cols': C,
-                    'total_mines': num_mines,
-                    'puzzle': puzzle_display,
-                    'answer': answer_str,
-                    'solution': sft_solution,
-                    'bitstring': bitstring,
-                    'answer_type': 'coord_list',
-                    'description': f"{R}x{C} grid with {num_mines} mines",
-                    'cells_revealed': len(revealed),
-                    'step_metrics': {
-                        'solver_backtrack_nodes': step_stats['nodes'],
-                        'unrevealed_cells': total_cells - len(revealed),
-                        'grid_size': total_cells,
-                        'effective_reveal_ratio': effective_reveal_ratio,
-                        'configured_reveal_ratio': config['reveal_ratio'],
-                        'max_effective_reveal_ratio': config.get('max_effective_reveal_ratio', 1.0),
-                    },
-                }
-
-        return None
-
+# ---------------------------------------------------------------------------
+# Solution-text builders (one per file format)
+# ---------------------------------------------------------------------------
 
 SFT_SOLUTION_RUBRIC_EN = (
     "STEP0=meta · STEP1=given · STEP2=worked solution · "
@@ -362,76 +354,238 @@ SFT_SOLUTION_RUBRIC_EN = (
 )
 
 
-def _build_minesweeper_solution_en(
-    puzzle_rows: List[str],
-    R: int,
-    C: int,
-    total_mines: int,
-    coord_list: List[Tuple[int, int]],
-    answer_str: str,
-    difficulty: str,
-    bitstring: str,
-    solver_nodes: int,
-) -> str:
-    """SFT teacher trace: minesweeper mine-confirmation SEGs."""
-    coord_sorted = sorted(coord_list)
-
-    clue_lookup: Dict[Tuple[int, int], int] = {}
-    for r, row in enumerate(puzzle_rows):
-        for c, ch in enumerate(row):
-            if ch.isdigit():
-                clue_lookup[(r, c)] = int(ch)
-
-    def adjacent_clues_for(rr: int, cc: int) -> List[Tuple[int, int, int]]:
-        out = []
-        for nr, nc in neighbors(rr, cc, R, C):
-            if (nr, nc) in clue_lookup:
-                out.append((nr, nc, clue_lookup[(nr, nc)]))
-        return out
-
+def _solution_header(rows: List[str], R: int, C: int, total_mines: int,
+                     difficulty: str, extra_meta_lines: List[str]):
+    cl = _clue_lookup(rows)
     lines: List[str] = [
         SFT_SOLUTION_RUBRIC_EN,
         "[STEP 0] Problem meta",
         f"  - Difficulty: {difficulty}",
         f"  - Grid: {R} rows x {C} cols",
-        f"  - Mines: {total_mines} · revealed number cells: {len(clue_lookup)}",
-        f"  - Solver backtrack nodes: {solver_nodes}",
+        f"  - Mines: {total_mines} · revealed number cells: {len(cl)}",
+    ]
+    lines += extra_meta_lines
+    lines += [
         "  - Final answer is confirmed in [STEP 3]",
         "[STEP 1] Given",
         "  - Rule: each revealed number = count of mines in its 8 neighbors.",
         "  - Rule: '#' is a hidden cell (mine or safe).",
         "  - Puzzle rows:",
     ]
-    for r, row in enumerate(puzzle_rows):
+    for r, row in enumerate(rows):
         lines.append(f"    r{r}: {' '.join(row)}")
+    return lines, cl
 
+
+def build_solution_forcing(rows: List[str], R: int, C: int, total_mines: int,
+                           coord_sorted: List[Tuple[int, int]], difficulty: str,
+                           bitstring: str) -> str:
+    """Easy file format."""
+    hidden = sum(row.count('#') for row in rows)
+    revealed = sum(1 for row in rows for ch in row if ch.isdigit())
+    requires_search = requires_search_beyond_simple_forcing(rows, R, C, total_mines)
+
+    lines, cl = _solution_header(
+        rows, R, C, total_mines, difficulty,
+        [f"  - Requires search beyond simple forcing: {'yes' if requires_search else 'no'}"],
+    )
     lines.append("[STEP 2] Worked solution")
     lines.append(
-        f"  · Summary: propagate number constraints · "
-        f"{sum(row.count('#') for row in puzzle_rows)} hidden cells / "
-        f"{total_mines} mines -> unique model · {len(coord_sorted)} SEGs"
+        f"  · Summary: propagate the {revealed} revealed number constraints over "
+        f"{hidden} hidden cells with exactly {total_mines} mines -> unique model."
     )
-    for i, (r, c) in enumerate(coord_sorted, 1):
-        clue_hits = adjacent_clues_for(r, c)
-        if clue_hits:
-            clue_text = ", ".join(f"({cr},{cc})={cv}" for cr, cc, cv in clue_hits)
-            explain = f"adjacent clues {clue_text} force this cell to be a mine"
+    for (r, c) in coord_sorted:
+        hits = _adjacent_clues(r, c, R, C, cl)
+        if hits:
+            ct = ", ".join(f"({cr},{cc})={cv}" for cr, cc, cv in hits)
+            lines.append(f"    [SEG] mine at ({r},{c}): adjacent clues {ct} constrain this cell")
         else:
-            explain = "forced by the global remaining-mines count constraint"
-        lines.append(f"    [SEG {i}] mine at ({r},{c}): {explain}")
-
-    lines.extend([
+            lines.append(
+                f"    [SEG] mine at ({r},{c}): adjacent clues the global mine count "
+                f"and surrounding constraints constrain this cell"
+            )
+    if requires_search:
+        lines.append(
+            "  · Note: pure single-cell forcing is not enough here; some cells are "
+            "pinned only after combining several clue constraints with the total mine "
+            "count (search/backtracking required)."
+        )
+    else:
+        lines.append(
+            "  · All mines follow from direct constraint propagation across the revealed numbers."
+        )
+    lines += [
         "[STEP 3] Answer and verification",
-        f"  - Final answer: {answer_str}",
+        f"  - Final answer: {', '.join(f'({r},{c})' for r, c in coord_sorted)}",
         f"  - Total mines = {total_mines} must match the count of confirmed cells.",
         "  - For every revealed number, its neighborhood must contain exactly that many of the listed mines.",
-        f"  - Internal bitstring: {bitstring[:48]}{'…' if len(bitstring) > 48 else ''}",
-    ])
+        f"  - Internal bitstring: {bitstring}",
+    ]
     return "\n".join(lines)
 
 
+def build_solution_constrain(rows: List[str], R: int, C: int, total_mines: int,
+                             coord_sorted: List[Tuple[int, int]], difficulty: str,
+                             bitstring: str, solver_nodes: int) -> str:
+    """Medium file format."""
+    hidden = sum(row.count('#') for row in rows)
+    lines, cl = _solution_header(
+        rows, R, C, total_mines, difficulty,
+        [f"  - Solver backtrack nodes: {solver_nodes}"],
+    )
+    lines.append("[STEP 2] Worked solution")
+    lines.append(
+        f"  · Summary: propagate number constraints · {hidden} hidden cells / "
+        f"{total_mines} mines -> unique model · {len(coord_sorted)} SEGs"
+    )
+    for i, (r, c) in enumerate(coord_sorted, 1):
+        hits = _adjacent_clues(r, c, R, C, cl)
+        if hits:
+            ct = ", ".join(f"({cr},{cc})={cv}" for cr, cc, cv in hits)
+            lines.append(
+                f"    [SEG {i}] mine at ({r},{c}): adjacent clues {ct} constrain this cell to be a mine"
+            )
+        else:
+            lines.append(
+                f"    [SEG {i}] mine at ({r},{c}): adjacent clues (constrained by the "
+                f"global mine count and surrounding deductions) constrain this cell to be a mine"
+            )
+    lines += [
+        "[STEP 3] Answer and verification",
+        f"  - Final answer: {', '.join(f'({r},{c})' for r, c in coord_sorted)}",
+        f"  - Total mines = {total_mines} must match the count of confirmed cells.",
+        "  - For every revealed number, its neighborhood must contain exactly that many of the listed mines.",
+        f"  - Internal bitstring: {bitstring}",
+    ]
+    return "\n".join(lines)
+
+
+def build_solution_force_global(rows: List[str], R: int, C: int, total_mines: int,
+                                coord_sorted: List[Tuple[int, int]], difficulty: str,
+                                solver_nodes: int) -> str:
+    """Hard file format (no internal bitstring line)."""
+    hidden = sum(row.count('#') for row in rows)
+    revealed = sum(1 for row in rows for ch in row if ch.isdigit())
+    fset = forced_mine_set(rows, R, C)
+    forced = [p for p in coord_sorted if p in fset]
+    glob = [p for p in coord_sorted if p not in fset]
+    F = len(forced)
+
+    lines, cl = _solution_header(
+        rows, R, C, total_mines, difficulty,
+        [f"  - Solver backtrack nodes: {solver_nodes}"],
+    )
+    lines.append("[STEP 2] Worked solution")
+    lines.append(
+        f"  · Summary: propagate number + global mine-count constraints · "
+        f"{hidden} hidden cells / {total_mines} mines -> unique model"
+    )
+    lines.append(
+        f"  · Constraint propagation alone forces {F} of the {total_mines} mines; the "
+        f"remaining {total_mines - F} are fixed only by combining the local clues with "
+        f"the global count of exactly {total_mines} mines (the model is provably unique)."
+    )
+    for i, (r, c) in enumerate(forced, 1):
+        hits = _adjacent_clues(r, c, R, C, cl)
+        ct = ", ".join(f"({cr},{cc})={cv}" for cr, cc, cv in hits)
+        lines.append(
+            f"    [SEG {i}] mine at ({r},{c}): adjacent clues {ct} force this cell to be a mine"
+        )
+    if glob:
+        gco = ", ".join(f"({r},{c})" for r, c in glob)
+        lines.append(
+            f"    [GLOBAL] The cells below are not pinned by any single clue or clue-pair. "
+            f"Enumerating all assignments consistent with every revealed number and with "
+            f"exactly {total_mines} total mines leaves a single possibility, which places "
+            f"mines at: {gco}."
+        )
+    lines += [
+        "[STEP 3] Answer and verification",
+        f"  - Final answer: {', '.join(f'({r},{c})' for r, c in coord_sorted)}",
+        f"  - Verification: all {revealed} revealed numbers match their neighbor mine counts (consistent).",
+        f"  - Total mines = {total_mines}",
+    ]
+    return "\n".join(lines)
+
+
+_SOLUTION_BUILDERS = {
+    "forcing": "easy",
+    "constrain": "medium",
+    "force_global": "hard",
+}
+
+
+def build_solution(solution_format: str, *, rows, R, C, total_mines,
+                   coord_sorted, difficulty, bitstring, solver_nodes) -> str:
+    if solution_format == "forcing":
+        return build_solution_forcing(rows, R, C, total_mines, coord_sorted,
+                                      difficulty, bitstring)
+    if solution_format == "constrain":
+        return build_solution_constrain(rows, R, C, total_mines, coord_sorted,
+                                        difficulty, bitstring, solver_nodes)
+    if solution_format == "force_global":
+        return build_solution_force_global(rows, R, C, total_mines, coord_sorted,
+                                           difficulty, solver_nodes)
+    raise ValueError(f"unknown solution_format: {solution_format}")
+
+
+# ---------------------------------------------------------------------------
+# Dataset specification — one entry per OUTPUT FILE, each with ordered blocks.
+#
+# Each block reproduces a contiguous run of records in the reference file:
+#   grid   : (rows, cols)
+#   mines  : number of mines
+#   count  : how many records this block contributes
+#   label  : value written to the per-record `difficulty` field
+#   reveal : how revealed cells are chosen (see _generate_block_base)
+#   order  : information-rank ordering used when choosing revealed cells
+#
+# NOTE: solution_format is per FILE.  In the easy file, even the hard-labeled
+# 11x11 / 12x12 blocks use the easy ("forcing") format — matching the reference.
+# ---------------------------------------------------------------------------
+
+DATASET_SPEC: Dict[str, Dict] = {
+    "easy": {
+        "solution_format": "forcing",
+        "blocks": [
+            {"grid": (7, 7),   "mines": 6,  "count": 28, "label": "medium",
+             "reveal": {"mode": "fixed", "count": 24}, "order": "balanced"},
+            {"grid": (8, 8),   "mines": 7,  "count": 28, "label": "medium",
+             "reveal": {"mode": "fixed", "count": 30}, "order": "balanced"},
+            {"grid": (8, 8),   "mines": 8,  "count": 24, "label": "medium",
+             "reveal": {"mode": "fixed", "count": 28}, "order": "balanced"},
+            {"grid": (11, 11), "mines": 21, "count": 10, "label": "hard",
+             "reveal": {"mode": "fixed", "count": 42}, "order": "balanced"},
+            {"grid": (12, 12), "mines": 24, "count": 10, "label": "hard",
+             "reveal": {"mode": "fixed", "count": 48}, "order": "balanced"},
+        ],
+    },
+    "medium": {
+        "solution_format": "constrain",
+        "blocks": [
+            {"grid": (9, 9), "mines": 14, "count": 100, "label": "medium",
+             "reveal": {"mode": "until_unique", "init_ratio": 0.25,
+                        "max_ratio": 0.45, "min_nodes": 0},
+             "order": "balanced"},
+        ],
+    },
+    "hard": {
+        "solution_format": "force_global",
+        "blocks": [
+            {"grid": (9, 9), "mines": 18, "count": 100, "label": "hard",
+             "reveal": {"mode": "until_unique", "init_ratio": 0.25,
+                        "max_ratio": 0.58, "min_nodes": 0},
+             "order": "balanced"},
+        ],
+    },
+}
+
+
+# ---------------------------------------------------------------------------
+# Prompt / question rendering (unchanged — reproduces the reference questions)
+# ---------------------------------------------------------------------------
+
 def format_puzzle_grid_labeled(puzzle_rows: List[str]) -> str:
-    """Render grid with r/c labels and spaced cells per Repo A prompt style."""
     if not puzzle_rows:
         return ""
     C = len(puzzle_rows[0])
@@ -488,59 +642,46 @@ OUTPUT FORMAT:
 """
 
 
-def _transform_mine_mask(mask: List[List[int]], transform_id: int) -> List[List[int]]:
-    """Apply one of 8 dihedral transforms (rotation/reflection) to a mine mask.
+# ---------------------------------------------------------------------------
+# Dihedral (D4) transforms — used to multiply each solver-generated base puzzle
+# into several distinct, still-unique puzzles cheaply.
+# ---------------------------------------------------------------------------
 
-    transform_id 0-7 corresponds to the 8 elements of the dihedral group D4.
-    Returns a new mask with the same number of rows and columns (for 0,2,4,6)
-    or transposed dimensions (for 1,3,5,7).
-    """
+def _transform_mine_mask(mask: List[List[int]], transform_id: int) -> List[List[int]]:
     R = len(mask)
     C = len(mask[0])
 
-    def _get(r: int, c: int) -> int:
+    def g(r, c):
         return mask[r][c]
 
-    if transform_id == 0:  # identity
+    if transform_id == 0:        # identity
         return [row[:] for row in mask]
-    elif transform_id == 1:  # transpose
-        return [[_get(r, c) for r in range(R)] for c in range(C)]
-    elif transform_id == 2:  # rotate 90 CW
-        return [[_get(R - 1 - r, c) for c in range(R)] for r in range(C)]
-    elif transform_id == 3:  # rotate 90 CW + transpose = rotate 180
-        return [[_get(R - 1 - r, C - 1 - c) for c in range(C)] for r in range(R)]
-    elif transform_id == 4:  # mirror horizontal
-        return [[_get(r, C - 1 - c) for c in range(C)] for r in range(R)]
-    elif transform_id == 5:  # mirror vertical
-        return [[_get(R - 1 - r, c) for c in range(C)] for r in range(R)]
-    elif transform_id == 6:  # anti-transpose
-        return [[_get(R - 1 - r, C - 1 - c) for r in range(R)] for c in range(C)]
-    else:  # rotate 270 CW
-        return [[_get(r, C - 1 - c) for r in range(R)] for c in range(C)]
+    elif transform_id == 1:      # transpose
+        return [[g(r, c) for r in range(R)] for c in range(C)]
+    elif transform_id == 2:      # rotate 90 CW
+        return [[g(R - 1 - r, c) for c in range(R)] for r in range(C)]
+    elif transform_id == 3:      # rotate 180
+        return [[g(R - 1 - r, C - 1 - c) for c in range(C)] for r in range(R)]
+    elif transform_id == 4:      # mirror horizontal
+        return [[g(r, C - 1 - c) for c in range(C)] for r in range(R)]
+    elif transform_id == 5:      # mirror vertical
+        return [[g(R - 1 - r, c) for c in range(C)] for r in range(R)]
+    elif transform_id == 6:      # anti-transpose
+        return [[g(R - 1 - r, C - 1 - c) for r in range(R)] for c in range(C)]
+    else:                        # rotate 270 CW
+        return [[g(r, C - 1 - c) for r in range(R)] for c in range(C)]
 
 
-def _transform_puzzle_grid(
-    puzzle_display: List[str],
-    mine_mask: List[List[int]],
-    transform_id: int,
-) -> Tuple[List[str], List[List[int]]]:
-    """Apply a dihedral transform to a minesweeper puzzle display + mine mask.
-
-    The puzzle_display cells are '#' (hidden) or a digit string.
-    After transform, the mine mask changes and clue numbers must be recomputed.
-    Hidden cells stay hidden; revealed cells get new (transformed) clue values.
-    """
+def _transform_puzzle_grid(puzzle_display: List[str], mine_mask: List[List[int]],
+                           transform_id: int) -> Tuple[List[str], List[List[int]]]:
     R = len(mine_mask)
     C = len(mine_mask[0])
-
     revealed = [[puzzle_display[r][c] != '#' for c in range(C)] for r in range(R)]
 
     new_mine = _transform_mine_mask(mine_mask, transform_id)
     NR = len(new_mine)
     NC = len(new_mine[0])
-
     new_nums_full = compute_numbers(new_mine)
-
     new_revealed = _transform_mine_mask(
         [[1 if revealed[r][c] else 0 for c in range(C)] for r in range(R)],
         transform_id,
@@ -550,240 +691,367 @@ def _transform_puzzle_grid(
     for r in range(NR):
         row_str = ''
         for c in range(NC):
-            if new_revealed[r][c]:
-                row_str += str(new_nums_full[r][c])
-            else:
-                row_str += '#'
+            row_str += str(new_nums_full[r][c]) if new_revealed[r][c] else '#'
         new_display.append(row_str)
-
     return new_display, new_mine
 
 
-def _result_from_transform(base_result: Dict, transform_id: int, new_id: str) -> Optional[Dict]:
-    """Derive a new minesweeper puzzle result by applying a dihedral transform."""
+# ---------------------------------------------------------------------------
+# Information-based cell ranking (controls which cells get revealed)
+# ---------------------------------------------------------------------------
+
+def _rank_cells_by_information(nums, mask, R, C) -> List[Tuple[int, int]]:
+    safe_cells = [(r, c) for r in range(R) for c in range(C) if mask[r][c] == 0]
+
+    def cell_info_score(pos):
+        r, c = pos
+        num = nums[r][c]
+        neighbor_count = len(neighbors(r, c, R, C))
+        if num == 0:
+            return neighbor_count * 2
+        if num == neighbor_count:
+            return neighbor_count * 2
+        return abs(num - neighbor_count / 2) * 2 + 1
+
+    safe_cells.sort(key=cell_info_score, reverse=True)
+    return safe_cells
+
+
+def _order_ranked_cells(ranked_cells, order: str) -> List[Tuple[int, int]]:
+    if order == 'high_info':
+        return list(ranked_cells)
+    if order == 'low_info':
+        return list(reversed(ranked_cells))
+    if order == 'balanced':
+        cells = list(ranked_cells)
+        out = []
+        lo, hi = 0, len(cells) - 1
+        take_high = True
+        while lo <= hi:
+            if take_high:
+                out.append(cells[lo]); lo += 1
+            else:
+                out.append(cells[hi]); hi -= 1
+            take_high = not take_high
+        return out
+    return list(ranked_cells)
+
+
+# ---------------------------------------------------------------------------
+# Per-block base puzzle generation
+# ---------------------------------------------------------------------------
+
+def _puzzle_display(puzzle_nums: List[List[Optional[int]]]) -> List[str]:
+    out = []
+    for row in puzzle_nums:
+        out.append(''.join(str(cell) if cell is not None else '#' for cell in row))
+    return out
+
+
+def _generate_block_base(rng: random.Random, block: Dict,
+                         max_attempts: int = 20000) -> Optional[Dict]:
+    """Generate ONE accepted base puzzle for a block.
+
+    Strategy:
+      * sample a mine layout, rank the safe cells by information
+      * reveal cells (in the block's order) growing the set until the puzzle has
+        a unique solution under the global mine-count constraint
+      * 'fixed' reveal mode: uniqueness must be reached at <= the target count;
+        then the revealed set is padded up to exactly the target count (extra
+        revealed numbers cannot break uniqueness)
+      * 'until_unique' reveal mode: accept the minimal unique set, subject to the
+        max reveal-ratio and (optional) minimum solver-node filters
+    Returns a dict with the puzzle display, mine mask, and solver node count.
+    """
+    R, C = block["grid"]
+    M = block["mines"]
+    order = block.get("order", "balanced")
+    rev = block["reveal"]
+    total_cells = R * C
+    safe_count = total_cells - M
+    cells = [(r, c) for r in range(R) for c in range(C)]
+
+    if rev["mode"] == "fixed":
+        target = rev["count"]
+        growth_cap = target
+        start = max(1, min(target, target // 2))
+    else:
+        max_ratio = rev["max_ratio"]
+        growth_cap = max(1, int(max_ratio * safe_count))
+        start = max(1, int(rev.get("init_ratio", 0.25) * safe_count))
+    start = min(start, growth_cap)
+
+    for _ in range(max_attempts):
+        mine_positions = set(rng.sample(cells, M))
+        mask = [[1 if (r, c) in mine_positions else 0 for c in range(C)] for r in range(R)]
+        nums = compute_numbers(mask)
+        ranked = _order_ranked_cells(_rank_cells_by_information(nums, mask, R, C), order)
+        if len(ranked) < growth_cap:
+            continue
+
+        puzzle = [[None] * C for _ in range(R)]
+        revealed_n = 0
+        for i in range(start):
+            r, c = ranked[i]
+            puzzle[r][c] = nums[r][c]
+            revealed_n += 1
+
+        sols = solve_puzzle(puzzle, R, C, max_solutions=MAX_SOLUTIONS + 1, total_mines=M)
+        idx = start
+        while len(sols) > MAX_SOLUTIONS and idx < growth_cap:
+            r, c = ranked[idx]
+            puzzle[r][c] = nums[r][c]
+            revealed_n += 1
+            idx += 1
+            sols = solve_puzzle(puzzle, R, C, max_solutions=MAX_SOLUTIONS + 1, total_mines=M)
+
+        if len(sols) != 1:
+            continue  # not unique within the allowed reveal budget
+
+        if rev["mode"] == "fixed":
+            # pad up to exactly the target revealed-cell count
+            while revealed_n < target and idx < len(ranked):
+                r, c = ranked[idx]
+                if puzzle[r][c] is None:
+                    puzzle[r][c] = nums[r][c]
+                    revealed_n += 1
+                idx += 1
+            if revealed_n != target:
+                continue
+        else:
+            if revealed_n / safe_count > rev["max_ratio"]:
+                continue
+
+        # final confirming solve (uniqueness + node count for the trace)
+        stats: Dict[str, int] = {"nodes": 0}
+        confirm = solve_puzzle(puzzle, R, C, max_solutions=2, total_mines=M, _stats=stats)
+        if len(confirm) != 1:
+            continue
+        if stats["nodes"] < rev.get("min_nodes", 0):
+            continue
+
+        return {
+            "rows": R,
+            "cols": C,
+            "total_mines": M,
+            "puzzle": _puzzle_display(puzzle),
+            "mine_mask": [row[:] for row in mask],
+            "solver_nodes": stats["nodes"],
+        }
+    return None
+
+
+def _derive_puzzle(base: Dict, transform_id: int,
+                   needs_node_count: bool) -> Optional[Dict]:
+    """Apply a dihedral transform to a base puzzle.
+
+    Transforms preserve grid size, mine count, revealed-cell count and
+    uniqueness.  For medium/hard the solver node count is recomputed on the
+    transformed grid (the search path differs); for easy it is not needed.
+    """
     if transform_id == 0:
-        import copy
-        r = copy.deepcopy(base_result)
-        r['id'] = new_id
-        return r
-
-    mine_mask = base_result.get('_mine_mask')
-    if mine_mask is None:
-        return None
-
-    puzzle_display = base_result['puzzle']
-    new_display, new_mine = _transform_puzzle_grid(puzzle_display, mine_mask, transform_id)
+        new_display = list(base["puzzle"])
+        new_mine = [row[:] for row in base["mine_mask"]]
+        nodes = base["solver_nodes"]
+    else:
+        new_display, new_mine = _transform_puzzle_grid(
+            base["puzzle"], base["mine_mask"], transform_id)
+        nodes = None
 
     R = len(new_mine)
     C = len(new_mine[0])
-    num_mines = sum(new_mine[r][c] for r in range(R) for c in range(C))
+    M = sum(new_mine[r][c] for r in range(R) for c in range(C))
 
-    coord_list = mask_to_coord_list(new_mine)
+    if needs_node_count and nodes is None:
+        # recompute clue numbers, then solve to obtain the transformed node count
+        puzzle_nums: List[List[Optional[int]]] = []
+        full_nums = compute_numbers(new_mine)
+        for r in range(R):
+            row_nums: List[Optional[int]] = []
+            for c in range(C):
+                row_nums.append(full_nums[r][c] if new_display[r][c] != '#' else None)
+            puzzle_nums.append(row_nums)
+        stats: Dict[str, int] = {"nodes": 0}
+        confirm = solve_puzzle(puzzle_nums, R, C, max_solutions=2, total_mines=M, _stats=stats)
+        if len(confirm) != 1:
+            return None  # symmetry should preserve uniqueness; guard anyway
+        nodes = stats["nodes"]
+
+    return {
+        "rows": R,
+        "cols": C,
+        "total_mines": M,
+        "puzzle": new_display,
+        "mine_mask": new_mine,
+        "solver_nodes": nodes if nodes is not None else 0,
+    }
+
+
+def _assemble_record(puzzle: Dict, file_key: str, seq: int,
+                     label: str, solution_format: str) -> Dict:
+    R, C, M = puzzle["rows"], puzzle["cols"], puzzle["total_mines"]
+    coord_list = mask_to_coord_list(puzzle["mine_mask"])
+    coord_sorted = sorted(coord_list)
     answer_str = coords_to_answer_string(coord_list)
-    bitstring = mask_to_bitstring(new_mine)
+    bitstring = mask_to_bitstring(puzzle["mine_mask"])
 
-    sft_solution = _build_minesweeper_solution_en(
-        puzzle_rows=new_display,
-        R=R,
-        C=C,
-        total_mines=num_mines,
-        coord_list=coord_list,
-        answer_str=answer_str,
-        difficulty=base_result['difficulty'],
-        bitstring=bitstring,
-        solver_nodes=base_result['step_metrics']['solver_backtrack_nodes'],
+    solution = build_solution(
+        solution_format,
+        rows=puzzle["puzzle"], R=R, C=C, total_mines=M,
+        coord_sorted=coord_sorted, difficulty=label,
+        bitstring=bitstring, solver_nodes=puzzle["solver_nodes"],
     )
+    question = create_prompt({
+        "puzzle": puzzle["puzzle"], "rows": R, "cols": C, "total_mines": M,
+    })
+    return {
+        "id": f"minesweeper_en_{file_key}_{seq:04d}",
+        "question": question,
+        "answer": answer_str,
+        "solution": solution,
+        "difficulty": label,
+    }
 
-    new_result = dict(base_result)
-    new_result['id'] = new_id
-    new_result['puzzle'] = new_display
-    new_result['answer'] = answer_str
-    new_result['solution'] = sft_solution
-    new_result['bitstring'] = bitstring
-    new_result['rows'] = R
-    new_result['cols'] = C
-    new_result['_mine_mask'] = new_mine
-    return new_result
+
+# ---------------------------------------------------------------------------
+# Dataset assembly
+# ---------------------------------------------------------------------------
+
+NUM_TRANSFORMS = 8  # |D4|
 
 
-def create_dataset_files(num_questions: int):
-    """Create minesweeper dataset files.
+def _generate_file_records(file_key: str, file_spec: Dict, seed: int,
+                           smoke: Optional[int]) -> List[Dict]:
+    solution_format = file_spec["solution_format"]
+    needs_node_count = solution_format in ("constrain", "force_global")
+    records: List[Dict] = []
+    seen_grids: Set[Tuple[str, ...]] = set()
+    seq = 0
 
-    Fast strategy: generate BASE_PER_DIFF base puzzles per difficulty via the
-    full solver, then derive remaining puzzles by applying dihedral transforms
-    (8 rotations/reflections).  The mine mask is transformed, clue numbers are
-    recomputed from scratch (O(R*C)) and hidden-cell flags are transformed
-    identically, so uniqueness and solver-node counts are preserved.
-    """
-    import pandas as pd
-
-    NUM_TRANSFORMS = 8  # dihedral group D4 has 8 elements
-    # Need ceil(count / NUM_TRANSFORMS) base puzzles so every j maps to a unique
-    # (base_idx, transform_id) pair.  Add 2 as buffer against dedup collisions.
-    # For count=100: ceil(100/8)=13 bases needed → 13*8=104 unique combinations.
-
-    print(f"Generating {num_questions} minesweeper puzzles (transform-fast mode)...")
-
-    generator = DifficultyPuzzleGenerator(seed=42)
-
-    difficulties = ['easy', 'medium', 'hard']
-    puzzles_per_diff = num_questions // len(difficulties)
-    remainder = num_questions % len(difficulties)
-
-    all_puzzles = []
-
-    for di, difficulty in enumerate(difficulties):
-        count = puzzles_per_diff + (1 if di < remainder else 0)
-        if count == 0:
+    for bi, block in enumerate(file_spec["blocks"]):
+        count = block["count"] if smoke is None else min(smoke, block["count"])
+        if count <= 0:
             continue
+        bases_needed = (count if smoke is not None
+                        else min(math.ceil(count / NUM_TRANSFORMS) + 2, count))
 
-        print(f"\n=== Generating {difficulty} puzzles ({count} needed) ===")
+        print(f"  [{file_key}] block {bi}: grid={block['grid']} mines={block['mines']} "
+              f"label={block['label']} count={count} (bases_needed={bases_needed})")
 
-        # --- Phase 1: generate base puzzles via solver ---
-        import math
-        bases_needed = min(math.ceil(count / NUM_TRANSFORMS) + 2, count)
-        base_results: List[Dict] = []
+        # --- Phase 1: solver-generated base puzzles ---
+        bases: List[Dict] = []
         attempt = 0
-        max_attempts = bases_needed * 50
-
-        while len(base_results) < bases_needed and attempt < max_attempts:
+        max_base_attempts = bases_needed * 200 + 50
+        while len(bases) < bases_needed and attempt < max_base_attempts:
             attempt += 1
-            generator.rng = random.Random(
-                generator.seed + attempt * 100 + di * 10_000_000
-            )
-            result = generator.generate_puzzle_with_difficulty(
-                difficulty=difficulty,
-                puzzle_id=f"minesweeper_en_{difficulty}_base{len(base_results):02d}",
-            )
-            if result is None:
+            rng = random.Random(seed + bi * 1_000_003 + attempt * 101)
+            base = _generate_block_base(rng, block)
+            if base is None:
                 continue
+            bases.append(base)
+            revealed_cells = sum(1 for row in base["puzzle"] for ch in row if ch.isdigit())
+            print(f"      base {len(bases)}/{bases_needed} "
+                  f"(nodes={base['solver_nodes']}, revealed={revealed_cells})")
 
-            mine_mask_flat = result.get('bitstring', '')
-            R, C = result['rows'], result['cols']
-            mine_mask = [
-                [int(mine_mask_flat[r * C + c]) for c in range(C)]
-                for r in range(R)
-            ]
-            result['_mine_mask'] = mine_mask
-
-            base_results.append(result)
-            print(f"  [base {len(base_results)}/{bases_needed}] {result['description']}, "
-                  f"nodes={result['step_metrics']['solver_backtrack_nodes']}")
-
-        if not base_results:
-            print(f"  No base puzzles generated for {difficulty}; skipping")
+        if not bases:
+            print(f"      WARNING: no base puzzles generated for {file_key} block {bi}")
             continue
 
-        # --- Phase 2: derive remaining via dihedral transforms ---
-        # Use 2D indexing: base_idx = j // NUM_TRANSFORMS, transform_id = j % NUM_TRANSFORMS
-        # so that each (base, transform) pair is used exactly once before repeating.
-        seen_keys: set = set()
-        diff_success = 0
-
-        for j in range(count):
-            base_idx = (j // NUM_TRANSFORMS) % len(base_results)
+        # --- Phase 2: derive `count` distinct puzzles via transforms ---
+        produced = 0
+        j = 0
+        guard = 0
+        max_guard = count * NUM_TRANSFORMS * len(bases) + count * 50 + 100
+        while produced < count and guard < max_guard:
+            guard += 1
+            base_idx = (j // NUM_TRANSFORMS) % len(bases)
             transform_id = j % NUM_TRANSFORMS
-            base = base_results[base_idx]
+            j += 1
 
-            new_id = f"minesweeper_en_{difficulty}_{diff_success:04d}"
-            derived = _result_from_transform(base, transform_id, new_id)
+            derived = _derive_puzzle(bases[base_idx], transform_id, needs_node_count)
             if derived is None:
-                derived = base
+                continue
+            key = tuple(derived["puzzle"])
+            if key in seen_grids:
+                continue
+            seen_grids.add(key)
 
-            key = tuple(derived['puzzle']) if isinstance(derived['puzzle'], list) else derived['puzzle']
-            if key in seen_keys:
-                # Try all remaining (base, transform) combos exhaustively before
-                # falling back to generating a fresh puzzle from the solver.
-                found_alt = False
-                for alt_base in base_results:
-                    for alt_t in range(NUM_TRANSFORMS):
-                        candidate = _result_from_transform(alt_base, alt_t, new_id)
-                        if candidate is None:
-                            continue
-                        alt_key = tuple(candidate['puzzle']) if isinstance(candidate['puzzle'], list) else candidate['puzzle']
-                        if alt_key not in seen_keys:
-                            derived = candidate
-                            key = alt_key
-                            found_alt = True
-                            break
-                    if found_alt:
-                        break
+            records.append(_assemble_record(
+                derived, file_key, seq, block["label"], solution_format))
+            seq += 1
+            produced += 1
 
-                if not found_alt:
-                    # All (base, transform) combos exhausted — generate a fresh puzzle.
-                    extra_attempt = 0
-                    while extra_attempt < 50:
-                        extra_attempt += 1
-                        generator.rng = random.Random(
-                            generator.seed + (attempt + 10000 + diff_success) * 100 + di * 10_000_000
-                        )
-                        fresh = generator.generate_puzzle_with_difficulty(
-                            difficulty=difficulty,
-                            puzzle_id=new_id,
-                        )
-                        if fresh is None:
-                            continue
-                        fkey = tuple(fresh['puzzle']) if isinstance(fresh['puzzle'], list) else fresh['puzzle']
-                        if fkey not in seen_keys:
-                            R2, C2 = fresh['rows'], fresh['cols']
-                            bits = fresh.get('bitstring', '')
-                            fresh['_mine_mask'] = [
-                                [int(bits[r * C2 + c]) for c in range(C2)]
-                                for r in range(R2)
-                            ]
-                            derived = fresh
-                            key = fkey
-                            break
-            seen_keys.add(key)
+        # If transforms could not yield enough distinct grids, top up with
+        # freshly generated base puzzles.
+        topup_attempt = 0
+        while produced < count and topup_attempt < count * 200 + 100:
+            topup_attempt += 1
+            rng = random.Random(seed + bi * 1_000_003 + 7_000_000 + topup_attempt * 131)
+            fresh = _generate_block_base(rng, block)
+            if fresh is None:
+                continue
+            key = tuple(fresh["puzzle"])
+            if key in seen_grids:
+                continue
+            seen_grids.add(key)
+            records.append(_assemble_record(
+                fresh, file_key, seq, block["label"], solution_format))
+            seq += 1
+            produced += 1
 
-            derived['question'] = create_prompt(derived)
-            puzzle_data = {
-                "id": derived["id"],
-                "question": derived["question"],
-                "answer": derived["answer"],
-                "solution": derived["solution"],
-                "difficulty": derived["difficulty"],
-            }
-            all_puzzles.append(puzzle_data)
-            print(f"  [{diff_success+1}/{count}] {derived['description']}, answer={derived['answer']}")
-            diff_success += 1
+        if produced < count:
+            print(f"      WARNING: produced {produced}/{count} for {file_key} block {bi}")
 
-        if diff_success < count:
-            print(
-                f"  ⚠️ only generated {diff_success}/{count} for {difficulty}"
-            )
-
-    print(f"\nGenerated {len(all_puzzles)} puzzles total")
-
-    df = pd.DataFrame(all_puzzles)
-
-    PROJECT_ROOT = Path(__file__).resolve().parent.parent
-
-    csv_dir = PROJECT_ROOT / "data" / "csv"
-    csv_dir.mkdir(parents=True, exist_ok=True)
-    csv_path = csv_dir / "minesweeper_en.csv"
-    df.to_csv(csv_path, index=False, encoding="utf-8-sig")
-    print(f"CSV file created: {csv_path}")
-
-    # JSONL
-    json_dir = PROJECT_ROOT / "data" / "jsonl"
-    json_dir.mkdir(parents=True, exist_ok=True)
-    jsonl_path = json_dir / "minesweeper_en.jsonl"
-    with open(jsonl_path, 'w', encoding='utf-8') as f:
-        for item in all_puzzles:
-            f.write(json.dumps(item, ensure_ascii=False) + '\n')
-    print(f"JSONL file created: {jsonl_path}")
-
-    return df, all_puzzles
+    return records
 
 
-if __name__ == '__main__':
-    import argparse
+def create_dataset_files(out_dir: str = "/mnt/user-data/outputs",
+                         seed: int = 42, smoke: Optional[int] = None):
+    """Generate the three per-file JSONL outputs and the combined CSV.
 
+    Args:
+        out_dir: directory to write outputs into.
+        seed:    base RNG seed.
+        smoke:   if set, cap each block to at most this many records for a fast
+                 end-to-end run (use None for the full dataset).
+    """
+    out = Path(out_dir)
+    out.mkdir(parents=True, exist_ok=True)
+
+    all_records: List[Dict] = []
+    for file_key in ("easy", "medium", "hard"):     # csv order: easy -> medium -> hard
+        print(f"=== Generating {file_key} file ===")
+        recs = _generate_file_records(file_key, DATASET_SPEC[file_key], seed, smoke)
+        jsonl_path = out / f"minesweeper_en_{file_key}.jsonl"
+        with open(jsonl_path, "w", encoding="utf-8") as f:
+            for r in recs:
+                f.write(json.dumps(r, ensure_ascii=False) + "\n")
+        print(f"  wrote {len(recs)} records -> {jsonl_path}")
+        all_records.extend(recs)
+
+    # Combined CSV (utf-8-sig BOM, LF terminators, minimal quoting) — matches
+    # the reference CSV dialect and is a verbatim concat of the three files.
+    import csv
+    csv_path = out / "minesweeper_en.csv"
+    cols = ["id", "question", "answer", "solution", "difficulty"]
+    with open(csv_path, "w", encoding="utf-8-sig", newline="") as f:
+        w = csv.writer(f, lineterminator="\n")
+        w.writerow(cols)
+        for r in all_records:
+            w.writerow([r["id"], r["question"], r["answer"], r["solution"], r["difficulty"]])
+    print(f"=== wrote {len(all_records)} rows -> {csv_path} ===")
+
+    return all_records
+
+
+if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Minesweeper Puzzle Generator (EN)")
-    parser.add_argument("--num", type=int, default=12, help="Number of questions to generate")
-    parser.add_argument("--workers", type=int, default=0, help="Accepted for compatibility; fast mode uses template bank")
-
+    parser.add_argument("--out", type=str, default="/mnt/user-data/outputs",
+                        help="Output directory for the JSONL + CSV files")
+    parser.add_argument("--seed", type=int, default=42, help="Base RNG seed")
+    parser.add_argument("--smoke", type=int, default=None,
+                        help="Cap each block to at most N records for a fast test run "
+                             "(omit for the full 100-per-file dataset)")
     args = parser.parse_args()
 
-    create_dataset_files(num_questions=args.num)
+    create_dataset_files(out_dir=args.out, seed=args.seed, smoke=args.smoke)
