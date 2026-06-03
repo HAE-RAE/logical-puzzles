@@ -769,39 +769,36 @@ DIFFICULTY_CONFIGS = {
     # v2 recalibration: previous 35-37 givens was still LLM-hard (all models ~0%).
     # 60 givens means 21 blanks — L1 naked-single scan alone should solve, enabling
     # frontier models to hit target 75%. medium / hard progressively reduce givens.
+    # v9 — mirrors sudoku_en.py (gemini-3-flash recalibration on EN). KO uses the
+    # same structural config (givens + spotcheck_k) but is NOT separately
+    # calibrated. EN 30-sample result: easy 70.0% / medium 56.7% / hard 23.3%.
     'easy': DifficultyConfig(
-        # v6: gemini ~52 / gpt-5.4-mini 98 — 충분한 gradient (절벽 + best spread).
-        # v7 시도 (65 givens) 는 사용자 판정상 불필요 → v6 유지.
-        min_givens=48,
-        max_givens=52,
-        target_givens=50,
+        # 41 givens / k4 → ~70% (solve-accuracy cliff sits at 40-42 givens).
+        min_givens=40,
+        max_givens=43,
+        target_givens=41,
         symmetry='rot180',
         minimal=False,
         forbid_trivial=False,
-        max_search_nodes=15,
-        spotcheck_k=3,
+        max_search_nodes=400,
+        spotcheck_k=4,
     ),
     'medium': DifficultyConfig(
-        # v6: gpt-5.4-mini 97% / gemini 13% at v2 40 givens — bimodal.
-        # Reduce to 32-36 to bridge gap (between v2 medium 40 and v2 hard 30).
-        # v8: 사용자 판정 — sudoku 는 이미 충분한 gap (gpt-5.4-mini 100/70/20,
-        # gemini 60/5/0) → v7 유지.
-        min_givens=32,
-        max_givens=36,
-        target_givens=34,
+        # 40 givens / k5 → ~50-57% (raised from 34 givens to make it easier).
+        min_givens=38,
+        max_givens=42,
+        target_givens=40,
         symmetry='rot180',
         minimal=False,
         forbid_trivial=False,
-        max_search_nodes=300,
+        max_search_nodes=400,
         spotcheck_k=5,
     ),
     'hard': DifficultyConfig(
-        # v6: gpt-5.4-mini 43% / gemini 0% at v2 30 givens — gemini struggling.
-        # Push to 24-28 givens for tougher reasoning model challenge.
-        # v8: 사용자 판정 — 이미 충분한 gap → v7 유지.
-        min_givens=24,
-        max_givens=28,
-        target_givens=26,
+        # 33 givens / k6 → ~23% (raised from 26 givens to make it easier).
+        min_givens=31,
+        max_givens=35,
+        target_givens=33,
         symmetry='rot180',
         minimal=False,
         forbid_trivial=False,
