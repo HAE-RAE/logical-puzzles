@@ -22,29 +22,35 @@ MAX_SOLUTIONS = 1  # All puzzles require exactly 1 unique solution
 
 @dataclass
 class PuzzleCandidate:
-    word1: str
-    word2: str
+    operand_words: List[str]  # N addend words (N >= 2), in order
     result: str
     answer: str
     unique_letters: int
     strategy: str
-    word3: str = None
     valid_answers: List[str] = None
     mapping: Dict[str, int] = None
     solver_steps: int = 0  # Backtrack node count from find_solutions
 
     @property
     def puzzle_str(self) -> str:
-        if self.word3:
-            return f"{self.word1} + {self.word2} + {self.word3} = {self.result}"
-        return f"{self.word1} + {self.word2} = {self.result}"
+        return " + ".join(self.operand_words) + f" = {self.result}"
 
     @property
     def operands(self):
-        ops = [self.word1, self.word2]
-        if self.word3:
-            ops.append(self.word3)
-        return ops
+        return list(self.operand_words)
+
+    # Back-compat accessors (some call sites refer to the first operands by name)
+    @property
+    def word1(self) -> str:
+        return self.operand_words[0]
+
+    @property
+    def word2(self) -> str:
+        return self.operand_words[1]
+
+    @property
+    def word3(self):
+        return self.operand_words[2] if len(self.operand_words) > 2 else None
 
 
 def find_solutions(
@@ -244,21 +250,19 @@ def has_overflow(*nums: int) -> bool:
 
 
 def generate_from_arithmetic(
-    num1: int,
-    num2: int,
+    nums: List[int],
     used_patterns: Set[str] = None,
-    num3: int = None,
 ) -> Optional[PuzzleCandidate]:
+    """Build a uniquely-solvable cryptarithmetic puzzle from N addends.
+
+    `nums` holds the N operand integers (N >= 2). The result is their sum.
+    """
     if used_patterns is None:
         used_patterns = set()
 
-    is_3op = num3 is not None
-    if is_3op:
-        result = num1 + num2 + num3
-        str_nums = [str(num1), str(num2), str(num3)]
-    else:
-        result = num1 + num2
-        str_nums = [str(num1), str(num2)]
+    result = sum(nums)
+    str_nums = [str(n) for n in nums]
+    is_2op = len(nums) == 2
 
     str_result = str(result)
     combined = ''.join(str_nums) + str_result
@@ -295,19 +299,17 @@ def generate_from_arithmetic(
             answer = str(result)
             strategy_stats[strategy]['success'] += 1
             return PuzzleCandidate(
-                word1=words[0],
-                word2=words[1],
+                operand_words=words,
                 result=result_word,
                 answer=answer,
                 unique_letters=len(set(''.join(words) + result_word)),
                 strategy=strategy,
-                word3=words[2] if len(words) > 2 else None,
                 valid_answers=[answer],
                 mapping=solutions[0][1],
                 solver_steps=stats['nodes'],
             )
 
-    if not is_3op:
+    if is_2op:
         for _ in range(5):
             strategy_stats['random_fallback']['tried'] += 1
             digit_to_letter = _create_letter_mapping(unique_digits, 'random')
@@ -330,13 +332,11 @@ def generate_from_arithmetic(
                 answer = str(result)
                 strategy_stats['random_fallback']['success'] += 1
                 return PuzzleCandidate(
-                    word1=words[0],
-                    word2=words[1],
+                    operand_words=words,
                     result=result_word,
                     answer=answer,
                     unique_letters=len(set(''.join(words) + result_word)),
                     strategy='random_fallback',
-                    word3=None,
                     valid_answers=[answer],
                     mapping=solutions[0][1],
                     solver_steps=stats['nodes'],
@@ -346,49 +346,72 @@ def generate_from_arithmetic(
 
 
 DIFFICULTY_CONFIGS: Dict[str, Dict] = {
-    # Calibrated to step-count proxy: letters × num_operands × (1 + carries).
-    # See docs/difficulty_definition.md §2.4. Prior sweep data invalid (infra
-    # bug); these values are set from algorithmic argument and will be
-    # fine-tuned after the next diagnostic.
+    # v9.3 — difficulty raised + recalibrated for a strong reasoning model.
+    # Calibration model: gemini/gemini-3-flash-preview (litellm), EN, 20
+    # puzzles/difficulty. Target bands: easy 7-9/10, medium 4-6/10, hard 2-4/10.
+    #
+    # Baseline (v8) was easy=100% / medium=100% / hard=85% — far too easy.
+    # Key finding from the sweep: the number of OPERANDS is the dominant lever
+    # for a strong model, while digit-width and carry-count are nearly inert.
+    #   2 operands  -> ~85-100%   (any 2-op puzzle is ~trivial)
+    #   3 operands  -> ~50%       (flat across 5/6/7/8-digit: v9..v9.2)
+    #   4 operands  -> ~20%
+    # Unique letters is capped at 10 (digits 0-9 only) so cannot be pushed.
+    # Final calibration result (v9.3, 20/difficulty on gemini-3-flash):
+    #   easy 75% (15/20) · medium 60% (12/20) · hard 20% (4/20) — all in band.
+    # Ladder:
+    #   easy   = 2 operands, 5-digit, 10 letters   (= old v8 hard level)
+    #   medium = 3 operands, 5-digit
+    #   hard   = 4 operands, 5-digit
     "easy": {
-        # v6: gemini 90 / gpt-5.4-mini 100 — 충분한 gradient. v7 시도 (3-4 letters)
-        # 는 사용자 판정상 불필요 → v6 유지.
+        # v9: 2-operand, 5-digit, near-max letters — equals the old v8 hard
+        # config (gemini 85%), which sits inside the easy band 70-90%.
         "num_operands": 2,
-        "num1_range": (100, 999),
-        "num2_range": (100, 999),
-        "min_carries": 1,
-        "max_carries": 2,
+        "num1_range": (10000, 99999),
+        "num2_range": (10000, 99999),
+        "min_carries": 4,
+        "max_carries": None,
         "require_overflow": None,
-        "target_letters": (5, 7),
-        "min_solver_steps": 200,
-        "max_attempts": 5000,
+        "target_letters": (10, 10),
+        "min_solver_steps": 8000,
+        "max_attempts": 12000,
     },
     "medium": {
-        # v8 shift: medium 슬롯이 v7 hard config 를 채택. 기존 v7 medium (7-8L, 1500s)
-        # 에서 9-10L, 5000s 로 step proxy 약 3× 증가. v7 medium 데이터는 *_v7.jsonl 백업.
-        "num_operands": 2,
-        "num1_range": (10000, 99999),
-        "num2_range": (10000, 99999),
-        "min_carries": 4,
+        # v9.4: 3 operands at 6-digit width + carry floor 5. v9.3 medium (3op,
+        # 5-digit) ran 47-70% (30-sample EN = 63%), above the 50% centre. The
+        # extra column + carry-floor-5 pulls medium down: EN 20-sample = 40%.
+        # Target band 40-60%.
+        "num_operands": 3,
+        "num1_range": (100000, 999999),
+        "num2_range": (100000, 999999),
+        "num3_range": (100000, 999999),
+        "min_carries": 5,
         "max_carries": None,
         "require_overflow": None,
-        "target_letters": (9, 10),
-        "min_solver_steps": 5000,
-        "max_attempts": 10000,
+        "target_letters": (10, 10),
+        "min_solver_steps": 10000,
+        "max_attempts": 15000,
     },
     "hard": {
-        # v8.1 candidate: letters 10-11, steps 9800 — easy(200) → medium(5000) gap=4800,
-        # medium(5000) → hard(9800) gap=4800 → 균일 step proxy gap. v8 (11-12L, 15000s)
-        # 는 0/5 (100 retries) fail — 9800/10-11L 로 완화.
-        "num_operands": 2,
+        # v9.3: FOUR operands (5-digit). For gemini-3-flash, 3-operand accuracy
+        # plateaued at ~45-50% across 5/6/7/8-digit widths (v9..v9.2) — column
+        # width and carry count barely moved the strong model. Operand *count* is
+        # the dominant lever (2op≈85% → 3op≈50%), so hard steps up to 4 operands:
+        # each column now sums 4 digits + carry (carry up to 3) and the
+        # letter-constraint network is denser. Target band 20-40%.
+        # (c6+ at 5-digit/4-operand is near-infeasible for unique solutions, so
+        # the carry floor stays at 5.)
+        "num_operands": 4,
         "num1_range": (10000, 99999),
         "num2_range": (10000, 99999),
-        "min_carries": 4,
+        "num3_range": (10000, 99999),
+        "num4_range": (10000, 99999),
+        "min_carries": 5,
         "max_carries": None,
         "require_overflow": None,
-        "target_letters": (10, 11),
-        "min_solver_steps": 9800,
-        "max_attempts": 12000,
+        "target_letters": (10, 10),
+        "min_solver_steps": 8000,
+        "max_attempts": 30000,
     },
 }
 
@@ -427,14 +450,11 @@ def generate_puzzle_by_difficulty(
         num_operands = config["num_operands"]
         max_attempts = config.get("max_attempts", 3000)
 
-        for _ in range(max_attempts):
-            num1 = random.randint(*config["num1_range"])
-            num2 = random.randint(*config["num2_range"])
-            num3 = None
-            if num_operands == 3:
-                num3 = random.randint(*config["num3_range"])
+        # One range per operand: num1_range, num2_range, ..., numN_range.
+        operand_ranges = [config[f"num{i}_range"] for i in range(1, num_operands + 1)]
 
-            operands = [num1, num2] + ([num3] if num3 is not None else [])
+        for _ in range(max_attempts):
+            operands = [random.randint(*r) for r in operand_ranges]
             result = sum(operands)
 
             if min_carries is not None or max_carries is not None:
@@ -454,7 +474,7 @@ def generate_puzzle_by_difficulty(
             if not (min_letters <= unique_digits <= max_letters):
                 continue
 
-            candidate = generate_from_arithmetic(num1, num2, used_patterns, num3=num3)
+            candidate = generate_from_arithmetic(operands, used_patterns)
             if (
                 candidate
                 and min_letters <= candidate.unique_letters <= max_letters
@@ -587,27 +607,23 @@ def _apply_letter_renaming(
     def rename_word(word: str) -> str:
         return ''.join(letter_perm.get(ch, ch) for ch in word)
 
-    new_word1 = rename_word(candidate.word1)
-    new_word2 = rename_word(candidate.word2)
-    new_word3 = rename_word(candidate.word3) if candidate.word3 else None
+    new_operand_words = [rename_word(w) for w in candidate.operand_words]
     new_result = rename_word(candidate.result)
     new_mapping = {letter_perm.get(k, k): v for k, v in (candidate.mapping or {}).items()}
 
     return PuzzleCandidate(
-        word1=new_word1,
-        word2=new_word2,
+        operand_words=new_operand_words,
         result=new_result,
         answer=candidate.answer,
         unique_letters=candidate.unique_letters,
         strategy=candidate.strategy,
-        word3=new_word3,
         valid_answers=candidate.valid_answers,
         mapping=new_mapping,
         solver_steps=candidate.solver_steps,
     )
 
 
-def create_dataset_files(num_questions: int):
+def create_dataset_files(num_questions: int, base_per_diff: int = 3):
     """Create cryptarithmetic dataset files.
 
     Fast strategy: generate BASE_PER_DIFF base puzzles per difficulty via the
@@ -618,7 +634,7 @@ def create_dataset_files(num_questions: int):
     """
     import pandas as pd
 
-    BASE_PER_DIFF = 3
+    BASE_PER_DIFF = base_per_diff
 
     print(f"Generating {num_questions} cryptarithmetic puzzles (rename-fast mode)...")
 
@@ -737,7 +753,11 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Cryptarithmetic Puzzle Generator (EN)")
     parser.add_argument("--num", type=int, default=12, help="Number of questions to generate")
     parser.add_argument("--workers", type=int, default=0, help="Accepted for compatibility; fast mode uses template bank")
+    parser.add_argument("--base-per-diff", type=int, default=3,
+                        help="Distinct base puzzles solved per difficulty before "
+                             "letter-rename fill. Set equal to per-difficulty count "
+                             "for full structural diversity (calibration).")
 
     args = parser.parse_args()
 
-    create_dataset_files(num_questions=args.num)
+    create_dataset_files(num_questions=args.num, base_per_diff=args.base_per_diff)
