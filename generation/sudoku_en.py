@@ -768,38 +768,38 @@ DIFFICULTY_CONFIGS = {
     # 60 givens means 21 blanks — L1 naked-single scan alone should solve, enabling
     # frontier models to hit target 75%. medium / hard progressively reduce givens.
     'easy': DifficultyConfig(
-        # v6: gemini ~52 / gpt-5.4-mini 98 — 충분한 gradient (절벽 + best spread).
-        # v7 시도 (65 givens) 는 사용자 판정상 불필요 → v6 유지.
-        min_givens=48,
-        max_givens=52,
-        target_givens=50,
+        # v9.2 (gemini-3-flash): solve-accuracy has a steep cliff around 40-42
+        # givens (42 givens ≈ 90-95%, 40 givens ≈ 50%). 70% sits at 41 givens.
+        # k stays at 4 (k3 at 41 givens measured 80%, k4 measured 70%). Final:
+        # 41 givens / k4 = 14/20 (70%) on the calibration batch. Target ~70%.
+        min_givens=40,
+        max_givens=43,
+        target_givens=41,
         symmetry='rot180',
         minimal=False,
         forbid_trivial=False,
-        max_search_nodes=15,
-        spotcheck_k=3,
+        max_search_nodes=400,
+        spotcheck_k=4,
     ),
     'medium': DifficultyConfig(
-        # v6: gpt-5.4-mini 97% / gemini 13% at v2 40 givens — bimodal.
-        # Reduce to 32-36 to bridge gap (between v2 medium 40 and v2 hard 30).
-        # v8: 사용자 판정 — sudoku 는 이미 충분한 gap (gpt-5.4-mini 100/70/20,
-        # gemini 60/5/0) → v7 유지.
-        min_givens=32,
-        max_givens=36,
-        target_givens=34,
+        # v9.2: 39 givens/k5 was 61% (100-sample) — givens 39-40 are flat ~61%.
+        # Pushed lower: 37 givens = 47.5%, 38 givens = 52.5% (both n=40). 38 chosen
+        # for ~50%. Target ~50%.
+        min_givens=37,
+        max_givens=39,
+        target_givens=38,
         symmetry='rot180',
         minimal=False,
         forbid_trivial=False,
-        max_search_nodes=300,
+        max_search_nodes=800,
         spotcheck_k=5,
     ),
     'hard': DifficultyConfig(
-        # v6: gpt-5.4-mini 43% / gemini 0% at v2 30 givens — gemini struggling.
-        # Push to 24-28 givens for tougher reasoning model challenge.
-        # v8: 사용자 판정 — 이미 충분한 gap → v7 유지.
-        min_givens=24,
-        max_givens=28,
-        target_givens=26,
+        # v9: 26 givens/k6 measured 7% (30-sample), below the 25% target → MORE
+        # givens (easier). Target ~25%.
+        min_givens=31,
+        max_givens=35,
+        target_givens=33,
         symmetry='rot180',
         minimal=False,
         forbid_trivial=False,
@@ -1143,7 +1143,7 @@ def _make_puzzle_record(
     }
 
 
-def create_dataset_files(num_questions: int):
+def create_dataset_files(num_questions: int, base_per_diff: int = 5):
     """Create sudoku dataset files (CSV + JSONL).
 
     Fast strategy: generate BASE_PER_DIFF base puzzles per difficulty via the
@@ -1154,7 +1154,7 @@ def create_dataset_files(num_questions: int):
     """
     import pandas as pd
 
-    BASE_PER_DIFF = 5  # number of slow-generated base puzzles per difficulty
+    BASE_PER_DIFF = base_per_diff  # number of slow-generated base puzzles per difficulty
 
     print(f"Generating {num_questions} sudoku puzzles (transform-fast mode)...")
 
@@ -1245,10 +1245,14 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Sudoku Puzzle Generator (EN)")
     parser.add_argument("--num", type=int, default=12, help="Number of questions to generate")
     parser.add_argument("--workers", type=int, default=0, help="Accepted for compatibility; fast mode uses template bank")
+    parser.add_argument("--base-per-diff", type=int, default=5,
+                        help="Distinct slow-generated base puzzles per difficulty before "
+                             "symmetry-transform fill. Set equal to per-difficulty count "
+                             "for full structural diversity (calibration).")
     args = parser.parse_args()
 
     print("=" * 60)
     print("Sudoku Puzzle Generator (EN)")
     print("=" * 60)
 
-    create_dataset_files(num_questions=args.num)
+    create_dataset_files(num_questions=args.num, base_per_diff=args.base_per_diff)
