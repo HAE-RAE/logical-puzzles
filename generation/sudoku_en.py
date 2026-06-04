@@ -782,15 +782,16 @@ DIFFICULTY_CONFIGS = {
         spotcheck_k=4,
     ),
     'medium': DifficultyConfig(
-        # v9: 34 givens/k5 measured 27% (30-sample), BELOW the 50% target → MORE
-        # givens (easier). Target ~50%.
-        min_givens=38,
-        max_givens=42,
-        target_givens=40,
+        # v9.2: 39 givens/k5 was 61% (100-sample) — givens 39-40 are flat ~61%.
+        # Pushed lower: 37 givens = 47.5%, 38 givens = 52.5% (both n=40). 38 chosen
+        # for ~50%. Target ~50%.
+        min_givens=37,
+        max_givens=39,
+        target_givens=38,
         symmetry='rot180',
         minimal=False,
         forbid_trivial=False,
-        max_search_nodes=400,
+        max_search_nodes=800,
         spotcheck_k=5,
     ),
     'hard': DifficultyConfig(

@@ -784,14 +784,16 @@ DIFFICULTY_CONFIGS = {
         spotcheck_k=4,
     ),
     'medium': DifficultyConfig(
-        # 40 givens / k5 → ~50-57% (raised from 34 givens to make it easier).
-        min_givens=38,
-        max_givens=42,
-        target_givens=40,
+        # 38 givens / k5 → ~50% on EN (53/100). Lowered from 40 givens (which was
+        # 62%) since 39-40 givens are flat ~61%. Mirrors EN; not separately
+        # calibrated for KO.
+        min_givens=37,
+        max_givens=39,
+        target_givens=38,
         symmetry='rot180',
         minimal=False,
         forbid_trivial=False,
-        max_search_nodes=400,
+        max_search_nodes=800,
         spotcheck_k=5,
     ),
     'hard': DifficultyConfig(
