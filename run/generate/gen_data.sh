@@ -121,5 +121,9 @@ python generation/yacht_dice_ko.py --num 100
 echo ""; echo "[29] saju_ko..."
 python generation/saju_ko.py --num 300
 
+# Jamo Composition (Korean-script structure, KO-only)
+echo ""; echo "[30] jamo_ko..."
+python generation/jamo_ko.py --num 300
+
 
 # bash scripts/gen_data.sh
