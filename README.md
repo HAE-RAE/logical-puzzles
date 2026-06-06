@@ -140,6 +140,14 @@ Combinatorial optimization problem of optimally assigning 12 dice results to 12 
 - **Various Rule Modifications**: Support changes to bonus, scores, optimization objectives
 - **Complex Scoring Rules**: Evaluate LLM's rule understanding and optimization ability
 
+### 16. Saju — Four Pillars / Manseryeok (KO)
+Korea-specific 사주(四柱) almanac task (nation-specific, KO-only like Kinship). Given a birth date/time, compute the sexagenary (60갑자) pillars: 연주(year), 월주(month), 일주(day), 시주(hour).
+
+- **Scripts**: `generation/saju_ko.py`
+- **Cultural Knowledge + Algorithm**: 입춘(立春) year boundary, 절기(節)-based month branch + 월두법(五虎遁), continuous 60갑자 day count (일진), 시두법(五鼠遁) hour stem
+- **Difficulty from Knowledge the Model Lacks**: 일주/일진(day pillar) and 시주(hour pillar) require memorized almanac data that frontier models cannot reconstruct by reasoning → naturally lands in the hard band (~24% for gemini-3-flash-preview, thinking medium)
+- **Deterministic Ground Truth**: 절기 via solar longitude (`ephem`, verified against KASI), 일주 cross-checked with `korean_lunar_calendar`
+
 
 ## Installation
 

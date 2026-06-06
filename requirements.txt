@@ -7,3 +7,5 @@ openpyxl>=3.0.0
 matplotlib>=3.5.0
 seaborn>=0.12.0
 numpy>=1.21.0
+ephem>=4.1  # saju_ko: 24절기(태양 황경)
+korean_lunar_calendar>=0.3  # saju_ko: 일주 60갑자 교차검증
