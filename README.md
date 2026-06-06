@@ -148,6 +148,14 @@ Korea-specific 사주(四柱) almanac task (nation-specific, KO-only like Kinshi
 - **Difficulty from Knowledge the Model Lacks**: 일주/일진(day pillar) and 시주(hour pillar) require memorized almanac data that frontier models cannot reconstruct by reasoning → naturally lands in the hard band (~24% for gemini-3-flash-preview, thinking medium)
 - **Deterministic Ground Truth**: 절기 via solar longitude (`ephem`, verified against KASI), 일주 cross-checked with `korean_lunar_calendar`
 
+### 17. Jamo Composition (KO)
+Korean-script structure task (nation-specific, KO-only). Decompose each 한글 syllable into 초성/중성/종성, shift the 초성 by a fixed number of positions, and recompose. Difficulty comes from 한글's syllable-block composition (including 겹받침), which has no English equivalent — a translated version collapses to a trivial Caesar shift.
+
+- **Scripts**: `generation/jamo_ko.py`
+- **Korean-script-dependent (not cultural)**: rules are given in the prompt; the challenge is correct decomposition/recomposition of 한글 blocks (초성·중성·종성, 겹받침)
+- **Difficulty from script structure (not length)**: the 받침(종성) handling is the knob. easy = 2 syllables, light 받침; medium = 2 syllables, single 받침; hard = 3 syllables with 겹받침. All three tiers land in-band for gemini-3-flash-preview (thinking medium): easy ~80% / medium ~45% / hard ~20%
+- **Deterministic Ground Truth**: pure Unicode composition (`0xAC00 + (초성×21+중성)×28+종성`); no lexical ambiguity, no external dependency
+
 
 ## Installation
 
