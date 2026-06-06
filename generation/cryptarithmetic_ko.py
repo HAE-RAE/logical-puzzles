@@ -20,6 +20,19 @@ from dataclasses import dataclass
 MAX_SOLUTIONS = 1
 
 
+# 한국어 복면산은 각 "글자"를 한글 음절 1개로 표현한다 (영문 A-Z 직번역이 아니라
+# 한국어 문제 자체를 푸는 방식). 가독성을 위해 흔한 한글 음절을 큐레이션한 풀이며,
+# 단일 퍼즐의 고유 숫자(최대 10개)를 모두 커버하도록 풀 크기는 >= 10 이어야 한다.
+# logical-puzzles-me/cryptarithmetic/generator.py 의 HANGUL_SYLLABLES 와 동일.
+HANGUL_SYLLABLES = [
+    '가', '나', '다', '라', '마', '바', '사', '아', '자', '차',
+    '카', '타', '파', '하', '거', '너', '더', '러', '머', '버',
+    '서', '어', '저', '처', '커', '터', '퍼', '허', '고', '노',
+    '도', '로', '모', '보', '소', '오', '조', '초', '코', '토',
+    '포', '호', '구', '누', '두', '루', '무', '부', '수', '우',
+]
+
+
 @dataclass
 class PuzzleCandidate:
     operand_words: List[str]  # N addend words (N >= 2), in order
@@ -188,18 +201,17 @@ def has_valid_solutions(puzzle: tuple) -> bool:
 
 
 def _create_letter_mapping(unique_digits: List[str], strategy: str = 'random') -> Dict[str, str]:
-    available_letters = list(string.ascii_uppercase)
+    # 한글 음절을 글자 풀로 사용한다 (1 음절 == 퍼즐의 1 글자).
+    available_letters = list(HANGUL_SYLLABLES)
 
     if strategy == 'random':
         random.shuffle(available_letters)
     elif strategy == 'reverse':
         available_letters = available_letters[::-1]
     elif strategy == 'vowel_first':
-        vowels = list('AEIOU')
-        consonants = [c for c in available_letters if c not in vowels]
-        random.shuffle(vowels)
-        random.shuffle(consonants)
-        available_letters = vowels + consonants
+        # 음절 단위에서는 모음/자음을 깔끔히 나눌 수 없으므로 random 으로 대체한다
+        # (전략은 그대로 유효한 매핑을 만든다). sibling generator.py 와 동일.
+        random.shuffle(available_letters)
 
     return {digit: available_letters[i] for i, digit in enumerate(unique_digits)}
 
