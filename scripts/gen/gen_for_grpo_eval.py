@@ -70,9 +70,13 @@ GENERATORS = [
     ("logic_grid_ko",      "generation/logic_grid_ko.py",      "--num-samples", 90,  "logic_grid_ko"),
     ("sat_puzzles_en",     "generation/sat_puzzle_en.py",      "--num-samples", 90,  "sat_puzzles_en"),
     ("sat_puzzles_ko",     "generation/sat_puzzle_ko.py",      "--num-samples", 90,  "sat_puzzles_ko"),
+    ("saju_ko",            "generation/saju_ko.py",            "--num",         90,  "saju_ko"),
 ]
 
-HANOI_MODULES = {"hanoi_en", "hanoi_ko"}
+# Generators that emit per-difficulty JSONL (<base>_{easy,medium,hard}.jsonl)
+# plus a combined CSV (no single combined <base>.jsonl) — concatenate per-diff
+# files when routing to the eval dir.
+HANOI_MODULES = {"hanoi_en", "hanoi_ko", "saju_ko"}
 
 
 def collect_protected_paths(out_basename: str) -> list[Path]:
@@ -81,7 +85,7 @@ def collect_protected_paths(out_basename: str) -> list[Path]:
         CSV_SRC_DIR / f"{out_basename}.csv",
         JSONL_SRC_DIR / f"{out_basename}.jsonl",
     ]
-    if out_basename in {"hanoi_en", "hanoi_ko"}:
+    if out_basename in HANOI_MODULES:
         for diff in ("easy", "medium", "hard"):
             paths.append(JSONL_SRC_DIR / f"{out_basename}_{diff}.jsonl")
     return paths

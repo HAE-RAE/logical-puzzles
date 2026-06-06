@@ -117,5 +117,9 @@ python generation/yacht_dice_en.py --num 100
 echo ""; echo "[28/28] yacht_dice_ko..."
 python generation/yacht_dice_ko.py --num 100
 
+# Saju / Four Pillars (Korean manseryeok, KO-only)
+echo ""; echo "[29] saju_ko..."
+python generation/saju_ko.py --num 300
+
 
 # bash scripts/gen_data.sh
