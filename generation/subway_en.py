@@ -9,7 +9,7 @@ KO 버전(subway_ko.py)의 노선망(EDGES)을 그대로 가져와 역 이름만
 
 [난이도] (최소 정거장 수)
 - easy:   4 ~ 11
-- medium: 14 ~ 19
+- medium: 17 ~ 23
 - hard:   20 ~ 40
 """
 
@@ -159,7 +159,7 @@ def route_to_text(path):
 
 STOP_BANDS = {
     'easy':   (4, 11),
-    'medium': (14, 19),
+    'medium': (17, 23),
     'hard':   (20, 40),
 }
 
