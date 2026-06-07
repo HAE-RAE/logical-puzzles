@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
-"""Boolean SAT (Satisfiability) Puzzle Generator - Korean Version
-[진행도] ☑ 완료
-[파일명] sat_puzzle_ko.py
-[목적] 한국어 기반 SAT 논리 퍼즐 생성
+"""
+Boolean SAT (Satisfiability) Puzzle Generator
 
-CNF (Conjunctive Normal Form) 형식의 논리 퍼즐을 한국어 자연어로 생성합니다.
-SAT 솔버를 사용하여 유일 해를 보장합니다.
+CNF(Conjunctive Normal Form) 형식의 논리 퍼즐을 자연어로 생성합니다.
+SAT 솔버로 유일 해를 보장합니다.
 """
 
 import random
@@ -30,7 +28,7 @@ class Difficulty(str, Enum):
 
 @dataclass
 class SATClause:
-    """단일 절 (리터럴의 논리합) 표현"""
+    """단일 절(리터럴의 논리합)을 나타냄"""
     literals: List[Tuple[str, bool]]  # [(변수명, 긍정인지), ...]
     
     def __str__(self):
@@ -45,7 +43,7 @@ class SATClause:
 
 @dataclass
 class SATPuzzle:
-    """완전한 SAT 퍼즐 표현"""
+    """완전한 SAT 퍼즐을 나타냄"""
     id: str
     difficulty: str
     domain: str
@@ -132,7 +130,7 @@ def _clause_satisfying_literal_ko(clause, assignment) -> str:
 
 
 def _build_sat_solution_ko(puzzle: SATPuzzle) -> str:
-    """SFT teacher trace: CNF + satisfying assignment."""
+    """SFT teacher trace: CNF + 만족 할당."""
     n_clauses = len(puzzle.clauses)
     n_vars = len(puzzle.variables)
     n_cons = len(puzzle.natural_constraints)
@@ -173,7 +171,7 @@ def _build_sat_solution_ko(puzzle: SATPuzzle) -> str:
 
 
 class SATPuzzleGenerator:
-    """유일 해를 보장하는 SAT 퍼즐 생성기"""
+    """유일 해를 보장하는 SAT 퍼즐 생성"""
     
     # 도메인 템플릿
     DOMAINS = {
@@ -237,7 +235,7 @@ class SATPuzzleGenerator:
         # 퍼즐 ID 생성
         puzzle_id = f"sat_{difficulty.lower()}_{random.randint(1000, 9999)}"
         
-        # Create temporary puzzle to generate full prompt
+        # 전체 프롬프트 생성을 위한 임시 퍼즐 생성
         temp_puzzle = SATPuzzle(
             id=puzzle_id,
             difficulty=difficulty,
@@ -249,7 +247,7 @@ class SATPuzzleGenerator:
             answer=solution
         )
         
-        # Generate complete prompt as question
+        # 완전한 프롬프트를 question으로 생성
         complete_prompt = temp_puzzle.to_prompt()
         temp_puzzle.question = complete_prompt
         
@@ -261,12 +259,12 @@ class SATPuzzleGenerator:
             Difficulty.EASY: {
                 # 목표: 약 75%. 이전 설정이 83%였으므로, 프롬프트는 medium보다
                 # 짧게 유지하면서 상태 공간을 조금 키운다.
-                'num_vars': random.randint(9, 10),
+                'num_vars': 9,
                 'min_clauses': 36,
-                'max_clauses': 58,
+                'max_clauses': 54,
                 'clause_length': (3, 4),
                 'unit_clause_rate': 0.0,
-                'negation_ratio': 0.52,
+                'negation_ratio': 0.51,
             },
             Difficulty.MEDIUM: {
                 # 목표: 약 50%. 이전 설정이 46%였으므로, 변수 11개는 유지하고
@@ -415,8 +413,8 @@ class SATPuzzleGenerator:
         config: dict
     ) -> bool:
         """
-        절이 유일 해로 이어지는지 검증
-        보정된 SAT 퍼즐은 변수 14개 이하이므로 전수 해 카운팅이 가능하다.
+        절이 유일 해로 이어지는지 검증.
+        보정된 SAT 퍼즐은 변수 14개로 제한되므로 전수 해 개수 세기가 가능합니다.
         """
         return self._count_solutions(variables, clauses, stop_after=2) == 1
     
@@ -510,7 +508,7 @@ def generate_dataset(
     import os
     from pathlib import Path
     
-    # Setup directories
+    # 디렉터리 설정
     PROJECT_ROOT = Path(__file__).resolve().parent.parent
     csv_dir = PROJECT_ROOT / "data" / "csv"
     json_dir = PROJECT_ROOT / "data" / "jsonl"
@@ -538,7 +536,7 @@ def generate_dataset(
         if i % 10 == 0:
             print(f"{i}/{num_samples} 퍼즐 생성 완료...")
     
-    # Re-assign ids to follow per-difficulty naming convention
+    # 난이도별 명명 규칙에 맞게 id 재할당
     diff_counters = {}
     for puzzle in puzzles:
         diff_name = getattr(puzzle.difficulty, "value", puzzle.difficulty)
@@ -558,13 +556,13 @@ def generate_dataset(
             "clauses": [[[lit[0], lit[1]] for lit in clause.literals] for clause in p.clauses],
         }
 
-    # JSONL로 저장
+    # JSONL
     jsonl_path = json_dir / "sat_puzzles_ko.jsonl"
     with open(jsonl_path, 'w', encoding='utf-8') as f:
         for puzzle in puzzles:
             f.write(json.dumps(_row(puzzle), ensure_ascii=False) + '\n')
     
-    # CSV로 저장
+    # CSV
     import csv as csv_module
     csv_path = csv_dir / "sat_puzzles_ko.csv"
     with open(csv_path, 'w', encoding='utf-8', newline='') as f:
@@ -583,7 +581,7 @@ def generate_dataset(
     print(f"\n✅ 데이터셋 생성 완료!")
     print(f"   총 퍼즐 수: {num_samples}")
     
-    # 난이도별 카운트
+    # 난이도별 개수
     easy_count = sum(1 for p in puzzles if p.difficulty == Difficulty.EASY)
     medium_count = sum(1 for p in puzzles if p.difficulty == Difficulty.MEDIUM)
     hard_count = sum(1 for p in puzzles if p.difficulty == Difficulty.HARD)

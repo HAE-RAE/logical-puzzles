@@ -15,7 +15,7 @@ class JourneyState:
 
     @property
     def continuous_drive_time_min(self):
-        """휴식 없이 누적된 연속 운항 시간(분). 휴식 시 continuous_moving_time_hours와 함께 0으로 리셋."""
+        """연속 운항 시간(분); 휴식 시 continuous_moving_time_hours와 함께 리셋."""
         return self.continuous_moving_time_hours * 60.0
 
     @property
@@ -33,13 +33,13 @@ def _fmt_hour(h):
 
 
 def _fmt_hhmm_from_decimal_hour(dec_h):
-    """시뮬레이션 절대시각(소수 시간)을 하루 주기의 HH:MM으로 표시."""
+    """시뮬레이션 절대 시각(소수 시간)을 24시간 주기 HH:MM으로 포맷."""
     minutes = int(round((float(dec_h) % 24.0) * 60.0)) % (24 * 60)
     return f"{minutes // 60:02d}:{minutes % 60:02d}"
 
 
 def _fmt_minutes_from_hours(hours):
-    """시간(h)을 분 단위 실수 문자열로."""
+    """시간 단위 지속 시간을 소수 분 문자열로 반환."""
     return f"{hours * 60.0:.2f}"
 
 
@@ -48,6 +48,7 @@ REST_COUNT_RANGES = {
     "medium": (14, 16), # 목표 50%; 현재 49%로 거의 보정됨
     "hard":   (30, 30), # 목표 25%; 생성 안정성을 유지하고 파라미터로 부담 조정
 }
+
 
 def generate_puzzle_question(difficulty="easy", rest_count_target=None):
     max_retries = 3000
@@ -130,7 +131,7 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
             if rest_count_target is not None:
                 params["rest_count_range"] = (rest_count_target, rest_count_target)
 
-            # --- 1. 시스템 규칙 및 초기 변수 랜덤 설정 ---
+            # --- 1. 시스템 규칙 및 무작위 변수 초기화 ---
             zone_a_reduction = random.randint(*params["zone_a_reduction_range"])
             if params.get("uniform_reduction"):
                 zone_b_reduction = zone_a_reduction
@@ -193,7 +194,7 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
 
             cargo_weight_kg = (item1_weight * item1_qty) + (item2_weight * item2_qty)
 
-            # 중간 하역 설정
+            # 중간 하역(mid-journey delivery) 설정
             delivery_km = None
             delivery_spec = None
             delivery_qty = 0
@@ -221,7 +222,7 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
 
             rest_increment = random.randint(*params["rest_increment_range"])
 
-            # 혼잡시간 설정
+            # 혼잡 시간 설정
             departure_hour = random.randint(7, 9)
             cong_offset = random.randint(*params["congestion_start_offset_range"])
             congestion_start_hour = departure_hour + cong_offset
@@ -238,8 +239,9 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
             solution = [
                 SFT_SOLUTION_RUBRIC_KO,
                 "[STEP 0] 문제 메타",
-                "  - 운항·휴식·화물·혼잡 시뮬레이션; 정답은 [STEP 3] '총 소요'에만.",
-                "[STEP 1] 주어진 조건 (초기·규정)",
+                "  - 화물·혼잡·휴식이 있는 강 운항 시뮬레이션; "
+                "최종 수치 답은 [STEP 3]에만 있다.",
+                "[STEP 1] 주어진 조건 (초기 조건 및 규칙)",
             ]
             solution.append(
                 f"  - 총 거리={total_distance}km, 배 정수속력="
@@ -262,7 +264,7 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
             if rest_increment > 0:
                 solution.append(f"  - 누적 휴식: 매 휴식마다 +{rest_increment}분")
             solution.append(f"  - 규정: {regulations}")
-            solution.append("[STEP 2] 풀이 전개 (구간별 시뮬 로그)")
+            solution.append("[STEP 2] 풀이 전개 (구간별 시뮬레이션 로그)")
             step2_header_idx = len(solution)
             summary_rests: list[tuple[float, int]] = []
             summary_unload: tuple[float, str, int] | None = None
@@ -306,7 +308,7 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
             rest_count = 0
             delivered = delivery_km is None
 
-            # --- 연속운항 제약 모순 사전 검증 ---
+            # --- 연속 운항 제약 사전 검증 ---
             for _zone in ("A", "B"):
                 if _zone == current_favorable_zone:
                     _eff = base_boat_speed_kph + current_speed_kph
@@ -420,7 +422,6 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                     distance_in_zone = total_distance - current_pos
                     in_zone = "B"
 
-                # 혼잡시간 체크
                 abs_time = (departure_hour
                             + journey.total_moving_time_hours
                             + journey.total_rest_time_hours)
@@ -459,7 +460,6 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                     if dist_to_delivery > 1e-6:
                         boundaries.append(dist_to_delivery)
 
-                # 혼잡시간 경계 (시간 기반 → 거리 변환)
                 if not in_congestion:
                     if abs_hour < congestion_start_hour:
                         t_to_cong = congestion_start_hour - abs_hour
@@ -531,7 +531,6 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                     f"{drive_cont_before_min:.1f}분 + {seg_minutes:.1f}분 = "
                     f"{drive_cont_after_min:.1f}분")
 
-                # 중간 하역
                 if (not delivered
                         and abs(journey.current_position_km - delivery_km)
                         < 1e-6):
@@ -557,7 +556,6 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                     elif is_heavy:
                         seg_lines.append("    → 여전히 초과, 규정 유지")
 
-                # 연속 운항 트리거 (fallback)
                 if ((not rest_due)
                         and journey.continuous_moving_time_hours
                         >= trigger_hours - 1e-9):
@@ -568,7 +566,6 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                         f"{drive_cont_after_min:.1f}분 ≥ 임계 {thr_min}분 "
                         f"(rest_due=True)")
 
-                # 휴게 지점 도착 → 휴식 판단
                 at_stop = abs(
                     (journey.current_position_km / rest_stop_interval_km)
                     - round(journey.current_position_km
@@ -591,8 +588,6 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
                     next_rest_km = (k + 1) * rest_stop_interval_km
                     target_km = min(next_rest_km, total_distance)
 
-                    # 빠른 판정: 물리적으로 가능한 최고 속도를 가정해도
-                    # 연속 운항 한계를 넘는다면 정밀 예측 없이 즉시 휴식.
                     distance_to_target = target_km - cur_pos
                     max_possible_speed = min(max_favorable_speed, max(adj_A, adj_B))
                     if max_possible_speed > 1e-9:
@@ -719,7 +714,7 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
             if summary_bits:
                 solution.insert(
                     step2_header_idx,
-                    "  · 요약: " + " · ".join(summary_bits))
+                    "  . 요약: " + " | ".join(summary_bits))
 
             rc_range = params.get("rest_count_range")
             if rc_range:
@@ -830,10 +825,9 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
             answer = f"{hours}시간 {minutes}분"
             solution.append(
                 "[STEP 3] 답·검산\n"
-                f"  - 총 소요: {total_hours:.4f}시간 = {total_minutes}분 = {answer}\n"
-                "  - 위 '[SEG n]' 로그는 STEP2(풀이 전개)에 해당하며, "
-                "합계/단위 변환(분→시·분)과 규정(무거운 화물 감속·의무 휴식)이 "
-                "빠짐 없이 반영됐는지 끝에서 한번 더 확인한다.")
+                f"  - 총 소요 시간: {total_hours:.4f}h = {total_minutes}분 = {answer}\n"
+                "  - 위 '[SEG n]' 라인은 STEP2 풀이 전개이며, "
+                "분→시+분 변환과 무거운 화물 속도 상한·의무 휴식 적용을 다시 확인한다.")
 
             return question, answer, solution
 
@@ -845,7 +839,7 @@ def generate_puzzle_question(difficulty="easy", rest_count_target=None):
 
 
 def _build_rest_count_targets(num_questions, rest_count_range):
-    """rest_count_range를 num_questions에 맞게 균등 배분한 타겟 리스트 반환."""
+    """rest_count_range에서 num_questions에 맞게 균등 분배된 휴식 횟수 타겟 생성."""
     if rest_count_range is None:
         return [None] * num_questions
     rc_min, rc_max = rest_count_range
@@ -967,7 +961,7 @@ def create_dataset_files(num_questions, difficulty=None):
 if __name__ == '__main__':
     import argparse
 
-    parser = argparse.ArgumentParser(description="Ferryman Puzzle Generator")
+    parser = argparse.ArgumentParser(description="뱃사공 퍼즐 생성기 (한국어)")
     parser.add_argument(
         "--num", type=int, default=100,
         help="Number of questions per difficulty level.")
@@ -979,16 +973,15 @@ if __name__ == '__main__':
     args = parser.parse_args()
     create_dataset_files(num_questions=args.num, difficulty=args.difficulty)
 
-    # 샘플 출력
-    # print("\n" + "="*80)
-    # print("샘플 문제 (각 난이도별 1개씩)")
-    # print("="*80)
-    # for diff in ["easy", "medium", "hard"]:
-    #     question, answer, solution = generate_puzzle_question(difficulty=diff)
-    #     print(f"\n========== [{diff.upper()}] 문제 샘플 ==========")
-    #     print("- question -\n", question)
-    #     print("\n- answer -\n", answer)
-    #     print("\n- solution -")
-    #     for step in solution:
-    #         print(step)
-    #     print("\n")
+    print("\n" + "="*80)
+    print("샘플 문제 (난이도별 1개씩)")
+    print("="*80)
+    for diff in ["easy", "medium", "hard"]:
+        question, answer, solution = generate_puzzle_question(difficulty=diff)
+        print(f"\n========== [{diff.upper()}] 샘플 ==========")
+        print("- question -\n", question)
+        print("\n- answer -\n", answer)
+        print("\n- solution -")
+        for step in solution:
+            print(step)
+        print("\n")

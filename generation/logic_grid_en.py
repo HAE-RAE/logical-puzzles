@@ -224,8 +224,8 @@ class LogicGridGenerator:
                 'num_people': 5,
                 'num_categories': 5,
                 'categories': ['HouseColor', 'Pet', 'Drink', 'Job', 'Hobby'],
-                'min_constraints': 16,
-                'max_constraints': 18,
+                'min_constraints': 18,
+                'max_constraints': 20,
                 'min_direct_constraints': 6,
                 'max_direct_constraints': 6,
             },
@@ -245,10 +245,10 @@ class LogicGridGenerator:
                 'num_people': 8,
                 'num_categories': 7,
                 'categories': ['HouseColor', 'Pet', 'Drink', 'Job', 'Hobby', 'Food', 'Transport'],
-                'min_constraints': 43,
-                'max_constraints': 46,
-                'min_direct_constraints': 10,
-                'max_direct_constraints': 10,
+                'min_constraints': 45,
+                'max_constraints': 48,
+                'min_direct_constraints': 11,
+                'max_direct_constraints': 11,
             }
         }
         return configs[difficulty]

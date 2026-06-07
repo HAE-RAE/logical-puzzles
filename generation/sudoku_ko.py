@@ -1,15 +1,15 @@
-"""스도쿠 퍼즐 생성기 (한국어).
+"""스도쿠 퍼즐 생성기 (KO).
 
-logical-puzzles-me/sudoku/* 모듈들을 단일 파일로 통합:
+logical-puzzles-me/sudoku/*의 단일 파일 포트:
 - DIFFICULTY_CONFIGS (탐색 노드 게이팅 + spotcheck_k: easy=3, medium=5, hard=6)
-- generate_complete (기본 라틴 스퀘어 + 무작위 변환)
-- _create_removal_groups (rot180 대칭 제거 그룹)
-- count_solutions / has_valid_solutions / find_all_solutions (MRV DFS)
-- solve_backtrack (SearchStats 반환)
-- LogicSolver (L1: naked_single, hidden_single / L2: locked_candidates, naked_pair)
-- rate() (DifficultyMeta 반환)
-- Spotcheck: select_spotcheck_positions + make_spotcheck_code + make_code
-  정답 형식: 스팟체크 위치의 숫자 K개를 공백으로 구분한 문자열.
+- generate_complete (표준형 기본 격자 + 무작위 변환)
+- _create_removal_groups (rot180 대칭 셀 쌍 제거)
+- count_solutions / has_valid_solutions / find_all_solutions (MRV DFS, MAX_SOLUTIONS=1)
+- solve_backtrack (SearchStats 반환: nodes, max_depth, avg_candidates)
+- LogicSolver (L1: naked_single, hidden_single + L2: locked_candidates, naked_pair)
+- rate() (DifficultyMeta 반환: label, tech_profile, max_tech_level, search_nodes)
+- Spotcheck: select_spotcheck_positions + make_spotcheck_code + make_code (HMAC-SHA256)
+  정답 형식: 스팟체크 위치의 숫자 K개를 공백으로 구분.
 """
 
 import argparse
@@ -274,7 +274,6 @@ def _base_solution() -> Grid:
 
 
 def generate_complete(seed: Optional[int] = None) -> Grid:
-    """무작위 유효 완성 스도쿠 격자를 생성합니다."""
     rng = random.Random(seed)
     base = _base_solution()
     result = apply_random_transforms(base, rng)
@@ -702,7 +701,6 @@ class DifficultyMeta:
 
 
 def rate(puzzle: Grid) -> DifficultyMeta:
-    """논리 솔버 + 백트래킹을 사용한 퍼즐 난이도 평가."""
     summary_l1 = solve_with_limit(puzzle, 'L1')
     if summary_l1.solved:
         return DifficultyMeta(
@@ -758,22 +756,22 @@ class DifficultyConfig:
     forbidden_rate_labels: Set[str] = field(default_factory=set)
 
 
-# Difficulty configurations.
+# 난이도 설정.
 #
-# Gemini 3 Flash is very strong at Sudoku when many givens are visible, and
-# very weak on "minimal" puzzles that require advanced deduction techniques.
-# The old configs created a 90% cliff between medium (97%) and hard (7%).
-# New configs rely purely on `givens_count` as the difficulty knob and
-# disable the `minimal` flag everywhere — this yields a smoother progression.
+# Gemini 3 Flash는 힌트가 많이 보이면 스도쿠에 매우 강하고,
+# 고급 추론이 필요한 "minimal" 퍼즐에는 매우 약합니다.
+# 이전 설정은 medium(97%)과 hard(7%) 사이에 90% 절벽을 만들었습니다.
+# 새 설정은 `givens_count`만 난이도 축으로 쓰고 `minimal` 플래그를
+# 전 구간에서 끕니다 — 더 완만한 난이도 곡선을 만듭니다.
 DIFFICULTY_CONFIGS = {
-    # v2 recalibration: previous 35-37 givens was still LLM-hard (all models ~0%).
-    # 60 givens means 21 blanks — L1 naked-single scan alone should solve, enabling
-    # frontier models to hit target 75%. medium / hard progressively reduce givens.
-    # v9 — mirrors sudoku_en.py (gemini-3-flash recalibration on EN). KO uses the
-    # same structural config (givens + spotcheck_k) but is NOT separately
-    # calibrated. EN 30-sample result: easy 70.0% / medium 56.7% / hard 23.3%.
+    # v2 재보정: 이전 35-37 힌트도 여전히 LLM에게 어려움(모든 모델 ~0%).
+    # 60 힌트는 빈칸 21개 — L1 naked-single 스캔만으로 풀 수 있어
+    # frontier 모델이 목표 75%에 도달 가능. medium/hard는 힌트를 점진적으로 줄임.
     'easy': DifficultyConfig(
-        # 41 givens / k4 → ~70% (solve-accuracy cliff sits at 40-42 givens).
+        # v9.2 (gemini-3-flash): 정답률은 40-42 힌트 근처에서 급격히 변함
+        # (42 힌트 ≈ 90-95%, 40 힌트 ≈ 50%). 70%는 41 힌트.
+        # k=4 유지(k3는 80%, k4는 70%). 최종: 41 힌트/k4 = 14/20(70%).
+        # 목표 ~70%.
         min_givens=40,
         max_givens=43,
         target_givens=41,
@@ -784,9 +782,9 @@ DIFFICULTY_CONFIGS = {
         spotcheck_k=4,
     ),
     'medium': DifficultyConfig(
-        # 38 givens / k5 → ~50% on EN (53/100). Lowered from 40 givens (which was
-        # 62%) since 39-40 givens are flat ~61%. Mirrors EN; not separately
-        # calibrated for KO.
+        # v9.2: 39 힌트/k5는 61%(100샘플) — 39-40 힌트는 ~61%로 평탄.
+        # 37 힌트=47.5%, 38 힌트=52.5%(둘 다 n=40). ~50%를 위해 38 선택.
+        # 목표 ~50%.
         min_givens=37,
         max_givens=39,
         target_givens=38,
@@ -797,7 +795,8 @@ DIFFICULTY_CONFIGS = {
         spotcheck_k=5,
     ),
     'hard': DifficultyConfig(
-        # 33 givens / k6 → ~23% (raised from 26 givens to make it easier).
+        # v9: 26 힌트/k6는 7%(30샘플), 목표 25%보다 낮음 → 힌트를 더 공개(쉽게).
+        # 목표 ~25%.
         min_givens=31,
         max_givens=35,
         target_givens=33,
@@ -835,7 +834,7 @@ def generate_difficulty_puzzle(
     difficulty: str,
     seed: Optional[int] = None,
 ) -> Tuple[str, List[str], dict]:
-    """정확히 1개의 해를 가지는 스도쿠 퍼즐을 생성합니다."""
+    """정확히 1개의 해를 갖는 스도쿠 퍼즐을 구성적으로 생성."""
     if difficulty not in DIFFICULTY_CONFIGS:
         raise ValueError(f"잘못된 난이도: {difficulty}")
 
@@ -1072,85 +1071,146 @@ def create_question(puzzle_str: str, positions: List[str]) -> str:
 # 데이터셋 생성
 # ============================================================================
 
-def create_dataset_files(num_questions: int):
-    """스도쿠 퍼즐 데이터셋 파일(CSV + JSONL)을 생성합니다."""
+def _apply_full_transform(
+    puzzle_grid: Grid,
+    solution_grid: Grid,
+    rng: random.Random,
+) -> Tuple[Grid, Grid]:
+    """퍼즐·해답 격자 모두에 무작위 스도쿠 대칭 변환 적용.
+
+    두 격자에 *동일한* 치환을 적용해 일관성을 유지합니다.
+    변환: 숫자 재라벨링 + 밴드 내 행 셔플 + 스택 내 열 셔플
+    + 밴드 셔플 + 스택 셔플 + 기하 대칭.
+    정확한 스도쿠 대칭이므로 유일성과 힌트 수가 보존됩니다.
+    """
+    perm = random_digit_permutation(rng)
+    p = relabel_digits(puzzle_grid, perm)
+    s = relabel_digits(solution_grid, perm)
+
+    for band in range(3):
+        seed_b = rng.randint(0, 2**31)
+        p = shuffle_rows_in_band(p, band, random.Random(seed_b))
+        s = shuffle_rows_in_band(s, band, random.Random(seed_b))
+
+    for stack in range(3):
+        seed_st = rng.randint(0, 2**31)
+        p = shuffle_cols_in_stack(p, stack, random.Random(seed_st))
+        s = shuffle_cols_in_stack(s, stack, random.Random(seed_st))
+
+    seed_bd = rng.randint(0, 2**31)
+    p = shuffle_bands(p, random.Random(seed_bd))
+    s = shuffle_bands(s, random.Random(seed_bd))
+
+    seed_sk = rng.randint(0, 2**31)
+    p = shuffle_stacks(p, random.Random(seed_sk))
+    s = shuffle_stacks(s, random.Random(seed_sk))
+
+    sym = rng.choice(list(SYMMETRY_OPS.keys()))
+    op = SYMMETRY_OPS[sym]
+    p = op(p)
+    s = op(s)
+    return p, s
+
+
+def _make_puzzle_record(
+    puzzle_grid: Grid,
+    solution_grid: Grid,
+    difficulty: str,
+    idx: int,
+    secret_hex: str,
+) -> Dict:
+    puzzle_str = to_string(puzzle_grid)
+    solution_str = to_string(solution_grid)
+    k = DIFFICULTY_CONFIGS[difficulty].spotcheck_k
+    canonical_hash = f"sha256:{hashlib.sha256(puzzle_str.encode()).hexdigest()}"
+    positions = select_spotcheck_positions(canonical_hash, secret_hex, k)
+    answer_str = make_spotcheck_answer(solution_grid, positions)
+    question = create_question(puzzle_str, positions)
+    return {
+        'id': f'sudoku_ko_{difficulty}_{idx:04d}',
+        'question': question,
+        'answer': answer_str,
+        'solution': _build_sudoku_solution_ko(
+            puzzle_str=puzzle_str,
+            solution_str=solution_str,
+            positions=positions,
+            answer_str=answer_str,
+            difficulty=difficulty,
+            givens_count=count_givens(puzzle_grid),
+        ),
+        'difficulty': difficulty,
+    }
+
+
+def create_dataset_files(num_questions: int, base_per_diff: int = 5):
+    """스도쿠 데이터셋 파일(CSV + JSONL) 생성.
+
+    빠른 전략: 난이도별 BASE_PER_DIFF개 기본 퍼즐을 전체 솔버로 생성한 뒤,
+    나머지는 스도쿠 대칭 변환(숫자 재라벨링 + 행/열/밴드 셔플 + 반사/회전)으로
+    파생합니다. 이 변환은 정확한 대칭이므로 유일성과 힌트 수가 보장되어
+    추가 solve 호출이 필요 없습니다.
+    """
     import pandas as pd
 
-    print(f"스도쿠 퍼즐 {num_questions}개 생성 중...")
+    BASE_PER_DIFF = base_per_diff  # 난이도별 느린 생성 기본 퍼즐 수
+
+    print(f"스도쿠 퍼즐 {num_questions}개 생성 중 (transform-fast mode)...")
 
     difficulties = ['easy', 'medium', 'hard']
     puzzles_per_diff = num_questions // len(difficulties)
     remainder = num_questions % len(difficulties)
 
     all_puzzles: List[Dict] = []
-    puzzle_id = 0
     secret_hex = '0' * 64
     max_retries = 140
 
-    for i, difficulty in enumerate(difficulties):
-        count = puzzles_per_diff + (1 if i < remainder else 0)
+    for di, difficulty in enumerate(difficulties):
+        count = puzzles_per_diff + (1 if di < remainder else 0)
         if count == 0:
             continue
 
         print(f"\n=== 난이도 '{difficulty}' 퍼즐 생성 중 ({count}개 필요) ===")
-        generated = 0
 
-        for j in range(count):
-            puzzle_str = None
-            solution_strs = None
-            metadata = None
+        # --- 1단계: 느린 솔버로 기본 퍼즐 생성 ---
+        bases_needed = min(BASE_PER_DIFF, count)
+        base_pairs: List[Tuple[Grid, Grid, dict]] = []
+        for b in range(bases_needed):
             last_err = None
             for retry in range(max_retries):
-                seed = 42 + puzzle_id * 1000 + retry
+                seed = 7919 * di + 1031 * b + retry
                 try:
-                    puzzle_str, solution_strs, metadata = generate_difficulty_puzzle(
-                        difficulty, seed
-                    )
+                    p_str, sol_strs, meta = generate_difficulty_puzzle(difficulty, seed)
+                    base_pairs.append((from_string(p_str), from_string(sol_strs[0]), meta))
+                    print(f"  [base {b+1}/{bases_needed}] givens={meta['givens_count']}")
                     break
                 except RuntimeError as e:
                     last_err = e
-                    continue
+            else:
+                print(f"  [base {b+1}/{bases_needed}] {max_retries}회 재시도 후 실패: {last_err}")
 
-            if puzzle_str is None:
-                print(f"  [{j+1}/{count}] {max_retries}회 재시도 후 실패: {last_err}")
-                puzzle_id += 1
-                continue
+        if not base_pairs:
+            print(f"  {difficulty} base 퍼즐 없음; 건너뜀")
+            continue
 
+        # --- 2단계: 대칭 변환으로 나머지 퍼즐 파생 ---
+        generated = 0
+        for j in range(count):
+            base_pg, base_sg, base_meta = base_pairs[j % len(base_pairs)]
+            if j < len(base_pairs):
+                pg, sg = base_pg, base_sg
+            else:
+                rng = random.Random(999983 * di + 1000003 * j)
+                pg, sg = _apply_full_transform(base_pg, base_sg, rng)
             try:
-                solution_grid = from_string(solution_strs[0])
-                k = DIFFICULTY_CONFIGS[difficulty].spotcheck_k
-
-                canonical_hash = f"sha256:{hashlib.sha256(puzzle_str.encode()).hexdigest()}"
-                positions = select_spotcheck_positions(canonical_hash, secret_hex, k)
-                answer_str = make_spotcheck_answer(solution_grid, positions)
-                legacy_code = make_spotcheck_code(solution_grid, positions)
-
-                question = create_question(puzzle_str, positions)
-
-                puzzle_data = {
-                    'id': f'sudoku_ko_{difficulty}_{generated:04d}',
-                    'question': question,
-                    'answer': answer_str,
-                    'solution': _build_sudoku_solution_ko(
-                        puzzle_str=puzzle_str,
-                        solution_str=solution_strs[0],
-                        positions=positions,
-                        answer_str=answer_str,
-                        difficulty=difficulty,
-                        givens_count=metadata['givens_count'],
-                    ),
-                    'difficulty': difficulty,
-                }
-                all_puzzles.append(puzzle_data)
+                record = _make_puzzle_record(pg, sg, difficulty, generated, secret_hex)
+                all_puzzles.append(record)
                 generated += 1
                 print(
-                    f"  [{j+1}/{count}] givens={metadata['givens_count']}, "
-                    f"answer='{answer_str}' (k={k})"
+                    f"  [{j+1}/{count}] givens={count_givens(pg)}, "
+                    f"answer='{record['answer']}'"
                 )
             except Exception as e:
                 print(f"  [{j+1}/{count}] 후처리 실패: {e}")
-
-            puzzle_id += 1
 
         if generated < count:
             print(f"  경고: {difficulty} 퍼즐 {generated}/{count}개만 생성")
@@ -1167,7 +1227,7 @@ def create_dataset_files(num_questions: int):
     df.to_csv(csv_path, index=False, encoding="utf-8-sig")
     print(f"CSV 파일 생성 완료: {csv_path}")
 
-    # JSONL 파일 저장
+    # JSONL
     json_dir = PROJECT_ROOT / "data" / "jsonl"
     json_dir.mkdir(parents=True, exist_ok=True)
     jsonl_path = json_dir / "sudoku_ko.jsonl"
@@ -1182,10 +1242,13 @@ def create_dataset_files(num_questions: int):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="스도쿠 퍼즐 생성기 (한국어)")
     parser.add_argument("--num", type=int, default=12, help="생성할 문제 수")
+    parser.add_argument("--workers", type=int, default=0, help="호환성용; fast mode는 템플릿 뱅크 사용")
+    parser.add_argument("--base-per-diff", type=int, default=5,
+                        help="대칭 변환 전 난이도별 slow-generated base 퍼즐 수")
     args = parser.parse_args()
 
     print("=" * 60)
     print("스도쿠 퍼즐 생성기 (한국어)")
     print("=" * 60)
 
-    create_dataset_files(num_questions=args.num)
+    create_dataset_files(num_questions=args.num, base_per_diff=args.base_per_diff)

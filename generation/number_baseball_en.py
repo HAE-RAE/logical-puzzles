@@ -41,6 +41,73 @@ def _get_candidate_space(num_digits: int) -> List[str]:
     return cached
 
 
+# Popcount table for 10-bit digit masks (0..1023). bit i set => digit i present.
+_POPCOUNT = [bin(i).count('1') for i in range(1024)]
+
+# Module-level cache: (string, digit_mask) per candidate, per num_digits.
+# The mask lets us compute balls without rebuilding set(secret) on every call:
+# for distinct-digit strings, balls = popcount(mask_s & mask_guess) - strikes.
+_CANDIDATE_MASK_CACHE: Dict[int, List[Tuple[str, int]]] = {}
+
+
+def _digit_mask(s: str) -> int:
+    mask = 0
+    for ch in s:
+        mask |= 1 << (ord(ch) - 48)
+    return mask
+
+
+def _get_candidate_masks(num_digits: int) -> List[Tuple[str, int]]:
+    cached = _CANDIDATE_MASK_CACHE.get(num_digits)
+    if cached is None:
+        cached = [(s, _digit_mask(s)) for s in _get_candidate_space(num_digits)]
+        _CANDIDATE_MASK_CACHE[num_digits] = cached
+    return cached
+
+
+# Module-level cache: residual count over the FULL space, keyed by (strikes,
+# balls), per num_digits. By digit/position symmetry the number of secrets that
+# yield a given (S,B) against a distinct-digit guess is independent of the
+# specific guess, so step 0 (current == full space) needs no per-hint scan.
+_RESIDUAL_COUNT_CACHE: Dict[int, Dict[Tuple[int, int], int]] = {}
+
+
+def _get_residual_counts(num_digits: int) -> Dict[Tuple[int, int], int]:
+    cached = _RESIDUAL_COUNT_CACHE.get(num_digits)
+    if cached is None:
+        masks = _get_candidate_masks(num_digits)
+        ref, ref_mask = masks[0]
+        counts: Dict[Tuple[int, int], int] = {}
+        for s, m in masks:
+            st = sum(1 for i in range(num_digits) if s[i] == ref[i])
+            key = (st, _POPCOUNT[m & ref_mask] - st)
+            counts[key] = counts.get(key, 0) + 1
+        _RESIDUAL_COUNT_CACHE[num_digits] = counts
+        cached = counts
+    return cached
+
+
+def _filter_by_hint(
+    current: List[Tuple[str, int]], guess: str, want_s: int, want_b: int
+) -> List[Tuple[str, int]]:
+    """Filter (string, mask) candidates matching a hint's S/B exactly.
+
+    Equivalent to keeping s where calculate_strikes_balls(s, guess) ==
+    (want_s, want_b), but avoids a per-candidate set() allocation by using a
+    precomputed digit mask. Hot loop for 5-6 digit generation."""
+    gmask = _digit_mask(guess)
+    n = len(guess)
+    out = []
+    for s, m in current:
+        st = 0
+        for i in range(n):
+            if s[i] == guess[i]:
+                st += 1
+        if st == want_s and _POPCOUNT[m & gmask] - st == want_b:
+            out.append((s, m))
+    return out
+
+
 @dataclass
 class Hint:
     guess: str
@@ -61,52 +128,90 @@ class Difficulty(Enum):
 
 
 DIFFICULTY_CONFIGS: Dict[str, Dict] = {
-    # Difficulty is defined by how long the candidate set stays ambiguous, not
-    # just by the final candidate-space size. Hard should therefore prefer
-    # ball-heavy, low-strike hints that require multi-hint intersection.
+    # v20: re-calibrate for gemini-3-flash-preview targets 75/50/25%.
+    #
+    # Measured accuracy by config (gemini-3-flash-preview, reasoning=medium):
+    #   v16  6D, 6 hints, digit-set fully revealed (all hints = secret perms) 68%
+    #   v18  5D, ~4 hints, info-greedy, no reveal -> 72%   (easy: on target)
+    #   v18  6D, ~4 hints, info-greedy, no reveal -> 15%
+    #   v19  6D, ~7 hints (extra_hints=3), no reveal -> 14%  (redundancy = NO effect)
+    #   v19  6D, ~5 hints (extra_hints=1), no reveal -> 12%
+    #
+    # Lessons:
+    #   - Redundant hint count does NOT move accuracy (v19 14% == v18 15%).
+    #   - num_digits is a CLIFF: 5D no-reveal=69-72%, 6D no-reveal=12-15%. The
+    #     50%/25% targets fall in that gap, so digit count alone can't hit them.
+    #   - The real lever is the DIGIT SET. Figuring out *which* digits the secret
+    #     uses is the hard part; once known it's just an arrangement. But the
+    #     model only exploits that when it's stated explicitly (a lone
+    #     strikes+balls==N hint buried among random ones did nothing in v19).
+    #
+    # v20 lever: `revealed_digits` — state j of the secret's digits explicitly in
+    # the prompt ("contains these digits, positions unknown"); the rest must be
+    # deduced. j tunes difficulty continuously between no-reveal (~14%) and
+    # full-reveal arrangement (~68%) on 6D. easy stays 5D no-reveal.
+    #
+    # NOTE: earlier score swings were an ENV bug (eval run without .venv), NOT a
+    # model change. With .venv active the model is stable, so this calibration
+    # will hold. Trustworthy no-reveal baseline (.venv, gemini-3-flash-preview):
+    #   5D = 96% · 6D = 89% · 7D = 62%   (8D measured this round)
+    # All above target -> need HARDER. reveal only EASES and digits jump coarsely
+    # (~-27%p per step), so the strategy is: overshoot hardness with +1 digit
+    # (accuracy below target), then ease back up with revealed_digits.
+    #
+    # v24:
+    #   easy   7D, j=2  -> aim 75% (7D no-reveal=62%, reveal eases up)
+    #   medium 8D, j=3  -> aim 50% (8D no-reveal ~25-35%, reveal eases up)
+    #   hard   8D, j=0  -> aim 25% (8D no-reveal ~25-35%)
+    # reveal magnitude on 7-8D in this env is unmeasured -> tune after next eval
+    # (raise j to ease a tier up, lower j to push it down).
+    #
+    # Generation is information-greedy (_select_info_greedy): pick the hint that
+    # shrinks the candidate set most, until one candidate remains. 100% reliable.
+    # preferred_strikes/balls bound the hint-pool profile (>=1 strike must be
+    # allowed so the greedy can resolve the final positional ambiguity).
     "easy": {
-        # v7.5: gpt-5.4-mini 84% (E) < 96% (M, 5-digit) — easy 가 medium 보다 어려운
-        # 비단조. 3-digit 공간(720)에 hints 3-4 만이라 ambiguity 잔존. hints 4-5 + balls
-        # 범위 확장 → 정보량↑, easy 가 진짜 쉬워지도록.
-        "num_digits": 3,
+        "num_digits": 7,
         "min_hints": 4,
-        "max_hints": 5,
+        "max_hints": 8,
+        "revealed_digits": 5,
         "preferred_strikes": (0, 2),
-        "preferred_balls": (1, 3),
-        "target_residual": (1, 8),
-        "min_ball_heavy_ratio": 0.30,
+        "preferred_balls": (0, 5),
+        "pool_size": 50,
     },
     "medium": {
-        # v7.3: 사용자 지시 — easy(3-digit) 와 명확히 분리. 5-digit 채택 (4-digit 보다 어렵고
-        # 6-digit hard 보다 빠른 generation). 3 hints + ball_heavy 0.75.
-        # v8 시도 (medium=v7 hard) → smoke 9분 0 produced timeout → v7 회귀.
-        "num_digits": 5,
-        "min_hints": 3,
-        "max_hints": 3,
-        "preferred_strikes": (0, 1),
-        "preferred_balls": (2, 4),
-        "target_residual": (3, 30),
-        "min_ball_heavy_ratio": 0.75,
+        "num_digits": 8,
+        "min_hints": 4,
+        "max_hints": 9,
+        # digit-SET reveal is a DEAD lever on 8D (r3=0.35, r6=0.35 — no movement).
+        # The model is bottlenecked by the 8-position ARRANGEMENT, not by which
+        # digits are present. So ease via POSITION reveal: pin (position -> digit)
+        # pairs, collapsing the arrangement work directly. Measured 8D map:
+        # p0=0.28, p1=0.65, p2=0.84 (~+28%p/position — coarse). 50% falls between
+        # p0 and p1, so use a FLOAT (expected positions): 0.6 => ~60% of puzzles
+        # get 1 pinned position, 40% get 0  =>  0.28*0.4 + 0.65*0.6 ≈ 0.50.
+        "revealed_digits": 0,
+        "revealed_positions": 0.6,
+        "preferred_strikes": (0, 2),
+        "preferred_balls": (0, 6),
+        "pool_size": 50,
     },
     "hard": {
-        # v7.4: strikes (0,0) 너무 tight (18min 0 puzzle). 0-1 strike 허용 +
-        # ball_heavy 0.80. medium(5-digit) 와 자릿수 +1 + ball_heavy ↑0.05 → 어려움.
-        # v8 재tighten 시도는 smoke 단계에서 medium 통과 못 함 → v7 유지.
-        "num_digits": 6,
-        "min_hints": 3,
-        "max_hints": 4,
-        "preferred_strikes": (0, 1),
-        "preferred_balls": (3, 5),
-        "target_residual": (4, 50),
-        "min_ball_heavy_ratio": 0.80,
+        "num_digits": 8,
+        "min_hints": 4,
+        "max_hints": 9,
+        "revealed_digits": 0,
+        "preferred_strikes": (0, 2),
+        "preferred_balls": (0, 6),
+        "pool_size": 50,
     },
 }
 
 
 class BullsAndCows:
     def __init__(self, num_digits: int = 3):
-        if num_digits not in [3, 4, 5, 6]:
-            raise ValueError("Number of digits must be 3, 4, 5, or 6")
+        if num_digits not in [3, 4, 5, 6, 7, 8]:
+            raise ValueError("Number of digits must be 3, 4, 5, 6, 7, or 8")
         self.num_digits = num_digits
 
     def generate_number(self) -> str:
@@ -169,6 +274,12 @@ class ProblemGenerator:
         self.game_4digit = BullsAndCows(4)
         self.game_5digit = BullsAndCows(5)
         self.game_6digit = BullsAndCows(6)
+        self.game_7digit = BullsAndCows(7)
+        self.game_8digit = BullsAndCows(8)
+        self._games = {
+            3: self.game_3digit, 4: self.game_4digit, 5: self.game_5digit,
+            6: self.game_6digit, 7: self.game_7digit, 8: self.game_8digit,
+        }
 
     def _is_duplicate_hint(self, hint: Hint, hints: List[Hint]) -> bool:
         for h in hints:
@@ -192,12 +303,19 @@ class ProblemGenerator:
         secret: str,
         difficulty: Difficulty,
         target_size: int = 80,
+        enrich_perms: bool = True,
     ) -> List[Hint]:
-        """Build candidate hint pool enriched with permutations of the secret
-        digits (yields more low-strike/high-ball hints)."""
+        """Build a candidate hint pool of distinct-digit guesses with their S/B.
+
+        When ``enrich_perms`` is True the pool is seeded with permutations of
+        the secret's digits (full-overlap hints, strikes+balls == num_digits) —
+        useful for the legacy ball-heavy strategy. The information-greedy path
+        sets it False: those full-permutation hints would reveal the entire
+        digit set for free, so we use only random guesses, which naturally
+        share fewer digits with the secret (a realistic Bulls-and-Cows hint)."""
         pool: Dict[tuple, Hint] = {}
 
-        if difficulty != Difficulty.EASY:
+        if enrich_perms and difficulty != Difficulty.EASY:
             perms = list(itertools.permutations(secret))
             random.shuffle(perms)
             for perm in perms:
@@ -352,61 +470,71 @@ class ProblemGenerator:
 
         return best_hint
 
-    def _select_hard_hint_sequence(
+    def _select_info_greedy(
         self,
         game: BullsAndCows,
-        secret: str,
         cfg: Dict[str, int],
-        candidate_space: List[str],
+        candidate_masks: List[Tuple[str, int]],
         hint_pool: List[Hint],
     ) -> Optional[Tuple[List[Hint], List[int]]]:
-        """Hard strategy: ball-heavy chain early, resolve uniqueness at end."""
+        """Information-greedy hint selection: at each step pick the pool hint
+        that shrinks the candidate set the most, until exactly one candidate
+        (the secret) remains.
+
+        Unlike the ball-heavy "stay ambiguous" strategy, this always converges
+        to a unique solution (each step strictly reduces the set and at least
+        one strike-bearing hint can resolve the last positional ambiguity), so
+        generation succeeds ~100% of the time across 5-7 digit spaces.
+
+        Returns (hints, residuals) or None if the pool cannot reach uniqueness
+        within max_hints (rare; caller retries with a fresh secret/pool)."""
         if not hint_pool:
             return None
 
+        min_hints = cfg["min_hints"]
+        max_hints = cfg["max_hints"]
+        full_counts = _get_residual_counts(len(candidate_masks[0][0]))
+
+        current = list(candidate_masks)
         hints: List[Hint] = []
         residuals: List[int] = []
-        current = list(candidate_space)
-        max_hints = cfg["max_hints"]
-        min_hints = cfg["min_hints"]
-        target_lo, target_hi = cfg["target_residual"]
 
-        ranked_pool = sorted(
-            hint_pool,
-            key=lambda h: (h.balls, -h.strikes),
-            reverse=True,
-        )
-
-        for step in range(max_hints):
+        while len(hints) < max_hints:
+            # Step 0: current is the full space, so residual depends only on
+            # (S,B) -> look it up instead of scanning (free); scan once for the
+            # chosen hint afterwards.
+            full_scan = not hints
             best = None
             best_filtered = None
-            best_score = None
-            for hint in ranked_pool:
+            best_residual = None
+            for hint in hint_pool:
                 if self._is_duplicate_hint(hint, hints):
                     continue
-                filtered = [
-                    s for s in current
-                    if game.calculate_strikes_balls(s, hint.guess) == (hint.strikes, hint.balls)
-                ]
-                residual = len(filtered)
+                if full_scan:
+                    residual = full_counts.get((hint.strikes, hint.balls), 0)
+                    filtered = None
+                else:
+                    filtered = _filter_by_hint(
+                        current, hint.guess, hint.strikes, hint.balls
+                    )
+                    residual = len(filtered)
                 if residual < 1:
                     continue
-                if step + 1 < min_hints and residual == 1:
+                # Don't resolve before the minimum hint budget is met.
+                if residual == 1 and len(hints) + 1 < min_hints:
                     continue
-                if step + 1 < max_hints and residual == 1:
-                    continue
-
-                ball_heavy = hint.balls >= 2 and hint.strikes <= 1
-                in_band = target_lo <= residual <= target_hi
-                closeness = -abs(residual - (target_lo + target_hi) / 2)
-                score = (ball_heavy, in_band, closeness, hint.balls, -hint.strikes)
-                if best_score is None or score > best_score:
+                if best_residual is None or residual < best_residual:
                     best = hint
                     best_filtered = filtered
-                    best_score = score
+                    best_residual = residual
 
             if best is None:
                 break
+
+            if best_filtered is None:
+                best_filtered = _filter_by_hint(
+                    current, best.guess, best.strikes, best.balls
+                )
 
             hints.append(best)
             current = best_filtered
@@ -415,35 +543,15 @@ class ProblemGenerator:
             if len(current) == 1 and len(hints) >= min_hints:
                 return hints, residuals
 
-        if len(hints) < min_hints:
-            return None
-
-        for hint in ranked_pool:
-            if self._is_duplicate_hint(hint, hints):
-                continue
-            filtered = [
-                s for s in current
-                if game.calculate_strikes_balls(s, hint.guess) == (hint.strikes, hint.balls)
-            ]
-            if len(filtered) == 1:
-                hints.append(hint)
-                residuals.append(1)
-                return hints, residuals
-
+        if len(current) == 1 and len(hints) >= min_hints:
+            return hints, residuals
         return None
 
     def generate_problem(self, difficulty: Difficulty, max_retries: int = 4000) -> Dict:
         """Constructively generate a puzzle with exactly 1 solution."""
         cfg = DIFFICULTY_CONFIGS[difficulty.name.lower()]
         num_digits = cfg["num_digits"]
-        if num_digits == 3:
-            game = self.game_3digit
-        elif num_digits == 4:
-            game = self.game_4digit
-        elif num_digits == 5:
-            game = self.game_5digit
-        else:
-            game = self.game_6digit
+        game = self._games.get(num_digits, self.game_6digit)
 
         min_hints = {difficulty: cfg["min_hints"]}
         max_hints = {difficulty: cfg["max_hints"]}
@@ -451,19 +559,26 @@ class ProblemGenerator:
         for retry in range(max_retries):
             secret = game.generate_number()
 
+            default_pool = 36 if difficulty == Difficulty.EASY else 28
             hint_pool = self._build_candidate_pool(
                 game,
                 secret,
                 difficulty,
-                target_size=36 if difficulty == Difficulty.EASY else 28,
+                target_size=cfg.get("pool_size", default_pool),
+                # Info-greedy (num_digits>=5) must not reveal the digit set via
+                # full-permutation hints; use random guesses only.
+                enrich_perms=num_digits < 5,
             )
 
-            # Cached: avoids rebuilding 151200-element list per retry for 6-digit hard.
+            # Cached: avoids rebuilding the permutation list per retry.
             candidate_space = _get_candidate_space(num_digits)
 
-            if difficulty == Difficulty.HARD:
-                structured = self._select_hard_hint_sequence(
-                    game, secret, cfg, candidate_space, hint_pool
+            # num_digits >= 5: information-greedy selection (100% reliable for
+            # 5-7 digit spaces). Smaller digit counts fall through to the legacy
+            # 2-step-lookahead path (_select_best_hint).
+            if num_digits >= 5:
+                structured = self._select_info_greedy(
+                    game, cfg, _get_candidate_masks(num_digits), hint_pool
                 )
                 if structured is None:
                     continue
@@ -505,16 +620,19 @@ class ProblemGenerator:
                 residuals = None
 
             if len(solutions) == 1 and len(hints) >= min_hints[difficulty]:
-                candidates = [''.join(p) for p in itertools.permutations('0123456789', num_digits)]
-                initial_candidates = len(candidates)
+                # initial_candidates is just the permutation count; no need to
+                # rebuild the (up to 151200-element) list on every success.
+                initial_candidates = len(_get_candidate_space(num_digits))
                 if residuals is None:
+                    cur = _get_candidate_masks(num_digits)
                     residuals = []
                     for h in hints:
-                        candidates = [
-                            c for c in candidates
-                            if game.calculate_strikes_balls(c, h.guess) == (h.strikes, h.balls)
-                        ]
-                        residuals.append(len(candidates))
+                        cur = _filter_by_hint(cur, h.guess, h.strikes, h.balls)
+                        residuals.append(len(cur))
+                    # Adding noise should never break uniqueness, but guard
+                    # against any unexpected order effect.
+                    if residuals[-1] != 1:
+                        continue
 
                 prev = initial_candidates
                 per_hint_bits = []
@@ -539,12 +657,37 @@ class ProblemGenerator:
                 if ball_heavy_ratio < cfg.get("min_ball_heavy_ratio", 0.0):
                     continue
 
+                # Difficulty knob: reveal j of the answer's digits explicitly
+                # (positions unknown). Stating the digit set is what actually
+                # eases the puzzle for the model — see DIFFICULTY_CONFIGS notes.
+                answer = solutions[0]
+                reveal_n = cfg.get("revealed_digits", 0)
+                revealed = sorted(random.sample(answer, reveal_n)) if reveal_n else []
+
+                # Position reveal: pin (position -> digit) pairs to ease the
+                # arrangement directly (stronger lever than digit-set reveal).
+                # Accepts a FLOAT = expected #positions: the integer part is always
+                # revealed, the fractional part with that probability. This gives a
+                # per-puzzle MIX so the tier average lands between integer steps
+                # (each integer step is a coarse ~+28%p on 8D).
+                reveal_pos_cfg = cfg.get("revealed_positions", 0)
+                base_pos = int(reveal_pos_cfg)
+                reveal_pos_n = base_pos + (
+                    1 if random.random() < (reveal_pos_cfg - base_pos) else 0
+                )
+                revealed_positions = []
+                if reveal_pos_n:
+                    idxs = sorted(random.sample(range(num_digits), reveal_pos_n))
+                    revealed_positions = [[i, answer[i]] for i in idxs]
+
                 return {
                     "difficulty": difficulty.name.lower(),
                     "num_digits": num_digits,
                     "hints": [hint.to_dict() for hint in hints],
                     "hint_text": self._format_hints(hints),
-                    "answer": solutions[0],
+                    "answer": answer,
+                    "revealed_digits": revealed,
+                    "revealed_positions": revealed_positions,
                     "problem_text": self._create_problem_text(num_digits, hints),
                     "step_metrics": {
                         "initial_candidates": initial_candidates,
@@ -650,6 +793,45 @@ def create_question(problem: Dict) -> str:
         for i, h in enumerate(hints)
     ])
 
+    # Optional difficulty aid: some of the secret's digits stated up front
+    # (positions unknown), the rest must be deduced from the hints.
+    revealed = problem.get('revealed_digits') or []
+    known_block = ""
+    if revealed:
+        known_list = ", ".join(str(d) for d in revealed)
+        if len(revealed) >= num_digits:
+            known_block = (
+                f"\nKnown: the secret is an arrangement of exactly these "
+                f"{num_digits} digits (work out their order from the hints):\n"
+                f"  {known_list}\n"
+            )
+        elif len(revealed) == 1:
+            known_block = (
+                f"\nKnown digit (this digit appears in the secret, position "
+                f"unknown; the other {num_digits - 1} are for you to deduce):\n"
+                f"  {known_list}\n"
+            )
+        else:
+            known_block = (
+                f"\nKnown digits (these {len(revealed)} digits appear in the secret, "
+                f"positions unknown; the other {num_digits - len(revealed)} are for you "
+                f"to deduce):\n  {known_list}\n"
+            )
+
+    # Optional difficulty aid: some (position -> digit) pairs pinned outright,
+    # so only the remaining positions must be worked out from the hints.
+    revealed_positions = problem.get('revealed_positions') or []
+    if revealed_positions:
+        pos_list = ", ".join(
+            f"position {int(i) + 1} = {d}" for i, d in revealed_positions
+        )
+        rest = num_digits - len(revealed_positions)
+        known_block += (
+            f"\nKnown positions (these digits are fixed at the given positions, "
+            f"counting from the left starting at 1; the other {rest} positions are "
+            f"for you to deduce):\n  {pos_list}\n"
+        )
+
     question = f"""Solve this Number Baseball (Bulls and Cows) puzzle.
 
 Rules:
@@ -660,7 +842,7 @@ Rules:
 
 Hints:
 {hints_text}
-
+{known_block}
 Think step by step and find the unique {num_digits}-digit secret number.
 
 Provide your answer in this format:
@@ -686,7 +868,24 @@ def validate_problem(problem: Dict) -> Tuple[bool, str]:
         if not game.check_number_against_hints(answer, hints):
             return False, f"Answer {answer} doesn't satisfy all hints"
 
-        solutions = game.find_all_solutions(hints, max_count=2)
+        revealed = problem.get('revealed_digits') or []
+        if any(str(d) not in answer for d in revealed):
+            return False, f"Revealed digits {revealed} not all in answer {answer}"
+
+        revealed_positions = problem.get('revealed_positions') or []
+        for i, d in revealed_positions:
+            if not (0 <= int(i) < num_digits) or answer[int(i)] != str(d):
+                return False, f"Revealed position {(i, d)} doesn't match answer {answer}"
+
+        # Mask-based uniqueness: iteratively filter the candidate space (each
+        # hint shrinks it), far faster than scanning all permutations per hint —
+        # important for 7-8 digit spaces (151K-1.8M candidates).
+        cur = _get_candidate_masks(num_digits)
+        for h in hints:
+            cur = _filter_by_hint(cur, h.guess, h.strikes, h.balls)
+            if len(cur) <= 1:
+                break
+        solutions = [s for s, _ in cur]
         if len(solutions) == 0:
             return False, "No solution exists for the given hints"
         elif len(solutions) > 1:
@@ -720,6 +919,12 @@ def _apply_digit_permutation(problem: Dict, perm: Dict[str, str]) -> Dict:
         nh['guess'] = ''.join(perm[d] for d in h['guess'])
         new_hints.append(nh)
     new['hints'] = new_hints
+    if problem.get('revealed_digits'):
+        new['revealed_digits'] = sorted(perm[str(d)] for d in problem['revealed_digits'])
+    if problem.get('revealed_positions'):
+        new['revealed_positions'] = [
+            [i, perm[str(d)]] for i, d in problem['revealed_positions']
+        ]
     if 'hint_text' in new:
         new.pop('hint_text', None)
     if 'problem_text' in new:
@@ -727,26 +932,48 @@ def _apply_digit_permutation(problem: Dict, perm: Dict[str, str]) -> Dict:
     return new
 
 
-def create_dataset_files(num_questions: int):
+def create_dataset_files(num_questions: int, difficulties: Optional[List[str]] = None):
     """Create number baseball dataset files.
 
-    Fast strategy: generate BASE_PER_DIFF base puzzles per difficulty via the
-    full constructive generator, then derive remaining puzzles by applying
-    random digit permutations (bijections on '0'..'9').  Digit permutation is
-    an exact symmetry of the Bulls-and-Cows game: S/B counts are invariant, so
-    the permuted puzzle is guaranteed valid with no additional solve calls.
+    Generation is now fast (~20ms easy / ~120ms medium / ~600ms hard per
+    puzzle) and 100% reliable via information-greedy selection, so every puzzle
+    is generated fresh for maximum diversity. Digit-permutation derivation is
+    kept only as a fallback to top up a difficulty whose fresh generation falls
+    short of the requested count (digit permutation is an exact symmetry of the
+    Bulls-and-Cows game: S/B counts are invariant, so the permuted puzzle is
+    valid with no extra solve calls).
+
+    ``difficulties`` restricts which tiers to generate (e.g. ``["medium"]`` to
+    re-tune one tier without touching the others). When a single tier is given,
+    ``num_questions`` is that tier's count; otherwise it is split across tiers.
+    The combined JSONL only contains the generated tiers, so the downstream
+    split step overwrites just those ``*_<tier>.jsonl`` files.
     """
     import pandas as pd
 
-    BASE_PER_DIFF = 3  # number of slow-generated base puzzles per difficulty
+    # All-fresh: cap >= any realistic per-difficulty count so bases_needed ==
+    # count (no permutation derivation unless fresh generation underperforms).
+    BASE_PER_DIFF = 100000
+
+    _name_to_diff = {
+        "easy": Difficulty.EASY, "medium": Difficulty.MEDIUM, "hard": Difficulty.HARD,
+    }
+    if difficulties is None:
+        difficulties = [Difficulty.EASY, Difficulty.MEDIUM, Difficulty.HARD]
+    else:
+        difficulties = [_name_to_diff[d.lower()] for d in difficulties]
 
     print(f"Generating {num_questions} number baseball puzzles (perm-fast mode)...")
 
     generator = ProblemGenerator()
 
-    difficulties = [Difficulty.EASY, Difficulty.MEDIUM, Difficulty.HARD]
-    puzzles_per_diff = num_questions // len(difficulties)
-    remainder = num_questions % len(difficulties)
+    # Single tier -> num_questions is that tier's count; else split across tiers.
+    if len(difficulties) == 1:
+        puzzles_per_diff = num_questions
+        remainder = 0
+    else:
+        puzzles_per_diff = num_questions // len(difficulties)
+        remainder = num_questions % len(difficulties)
 
     all_puzzles = []
     MAX_RETRIES_PER_PUZZLE = 50
@@ -864,7 +1091,8 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description="Number Baseball Puzzle Generator (EN)")
-    parser.add_argument("--num", type=int, default=12, help="Number of questions to generate")
+    parser.add_argument("--num", type=int, default=12, help="Number of questions to generate (per tier if --difficulty is set; else split across tiers)")
+    parser.add_argument("--difficulty", choices=["easy", "medium", "hard"], nargs="+", default=None, help="Generate only these tier(s), e.g. --difficulty medium")
     parser.add_argument("--workers", type=int, default=0, help="Accepted for compatibility; fast mode uses template bank")
 
     args = parser.parse_args()
@@ -873,4 +1101,4 @@ if __name__ == "__main__":
     print("Number Baseball (Bulls and Cows) Puzzle Generator")
     print("=" * 60)
 
-    create_dataset_files(num_questions=args.num)
+    create_dataset_files(num_questions=args.num, difficulties=args.difficulty)

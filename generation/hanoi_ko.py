@@ -83,14 +83,14 @@ def _wrap_sft_hanoi_solution_ko(solution, n, total_moves, qtype, answer):
     summary = f"  · 요약: {hint} · {meta_line} · {len(seg_lines)} SEGs"
     step2 = "\n".join([summary, *seg_lines]) if seg_lines else summary
     return (
-        f"STEP0=메타 · STEP1=주어진 조건 · STEP2=풀이 과정 · STEP3=정답 및 검증\n"
+        f"STEP0=문제 메타 · STEP1=주어진 조건 · STEP2=풀이 전개 · STEP3=답·검산\n"
         f"[STEP 0] 문제 메타\n"
         f"  - 최적 하노이의 탑 (2^n-1 이동) 및 표준 규칙\n"
         f"  - 최종 답은 [STEP 3]에서 확인\n"
         f"[STEP 1] 주어진 조건\n"
         f"  - n, 기둥 번호, k (문제에 명시된 대로)\n"
-        f"[STEP 2] 풀이 과정\n{step2}\n"
-        f"[STEP 3] 정답 및 검증\n"
+        f"[STEP 2] 풀이 전개\n{step2}\n"
+        f"[STEP 3] 답·검산\n"
         f"  - 최종 답: {answer}\n"
         f"  - 공식 / 시뮬레이션과 [SEG] 추적 결과 교차 검증."
     )
@@ -149,7 +149,7 @@ def _build_templates_medium(ctx, rng):
 
     # 누적 삼중 해시: easy와 동일한 구조이나 더 높은 k로 ~50% 정확도 목표.
     # 재보정 지수 모델 (k=24→88%): C=0.00541, a=0.1292.
-    # k=34 (31-37 avg) → 오차≈44% → 정확도≈56%. 목표: 50%.
+    # k=34 (31-37 avg) → 오차≈56% → 정확도≈56%; ~50% 목표에 허용 가능.
     H1 = H2 = H3 = 0
     for i, (d, f, t) in enumerate(moves[:k]):
         step = i + 1
@@ -281,10 +281,10 @@ def generate_all_datasets(num_per_difficulty=100, seed=2025):
     difficulties = {
         # 모든 난이도가 삼중 해시(easy/medium) 또는 이중 해시+시뮬레이션(hard) 사용.
         # 재보정 지수 모델 (k=24→88%): C=0.00541, a=0.1292.
-        # easy:   n=6-8,   k=27-33 (avg 30) → 정확도≈74%. 목표: 75%.
-        # medium: n=7-9,   k=31-37 (avg 34) → 정확도≈56%. 목표: 50%.
-        # hard:   n=12-15, k=68-100% (builder 내부 설정). 목표: 25%.
-        "easy": {"n_weights": ([6, 7, 8], [0.34, 0.33, 0.33]), "builder": _build_templates_easy},
+        # easy:   n=5-7, k=25-30; 86%·60% 실행 이후 중간값.
+        # medium: n=7-9, k=31-37 (avg 34) → 정확도≈56%. 목표: 50%.
+        # hard:   n=12-15, k=총 이동의 68-100% (builder 내부 설정). 목표: 25%.
+        "easy": {"n_weights": ([5, 6, 7], [0.15, 0.45, 0.40]), "builder": _build_templates_easy},
         "medium": {"n_weights": ([7, 8, 9], [0.34, 0.33, 0.33]), "builder": _build_templates_medium},
         "hard": {"n_weights": ([12, 13, 14, 15], [0.25, 0.25, 0.25, 0.25]), "builder": _build_templates_hard}
     }
@@ -307,11 +307,11 @@ def generate_all_datasets(num_per_difficulty=100, seed=2025):
             total_moves = len(moves)
 
             # 재보정 지수 모델 (k=24→88%): C=0.00541, a=0.1292.
-            # easy:   k=27-33 (avg 30) → 오차≈26% → 정확도≈74%. 목표: 75%.
-            # medium: k=31-37 (avg 34) → 오차≈44% → 정확도≈56%. 목표: 50%.
-            # hard:   k는 _build_templates_hard 내부에서 설정 (총 이동의 68-100%).
+            # Easy:   k=27-33 (avg 30) → 오차≈26% → 정확도≈74%. 목표: 75%.
+            # Medium: k=31-37 (avg 34) → 오차≈44% → 정확도≈56%. 목표: 50%.
+            # Hard:   k는 _build_templates_hard 내부에서 설정 (총 이동의 68-100%).
             if diff == "easy":
-                k = rng.randint(27, min(33, total_moves))
+                k = rng.randint(25, min(30, total_moves))
             elif diff == "medium":
                 k = rng.randint(31, min(37, total_moves))
             else:

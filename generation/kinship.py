@@ -832,33 +832,33 @@ def generate_question(difficulty="Medium", forced_chain=None):
     difficulty_lower = difficulty.lower() if isinstance(difficulty, str) else difficulty
     difficulty_config = {
         "easy": {
-            "num_choices": 8,
-            "num_noise_dialogues": 1,
-            "near_miss_distractor_ratio": 0.0,
-            "similar_distractor_ratio": 0.20,
-            "confusable_distractor_ratio": 0.20,
-            "shuffle_mode": "partial",
+            "num_choices": 26,
+            "num_noise_dialogues": 36,
+            "near_miss_distractor_ratio": 1.0,
+            "similar_distractor_ratio": 1.0,
+            "confusable_distractor_ratio": 1.0,
+            "shuffle_mode": "full",
             "ask_intermediate_prob": 0.0,
-            "reverse_prob": 0.20,
-            "force_reverse_min_steps": 0,
+            "reverse_prob": 1.0,
+            "force_reverse_min_steps": 99,
             "correction_prob": 0.0,
         },
         "medium": {
-            "num_choices": 12,
-            "num_noise_dialogues": 4,
-            "near_miss_distractor_ratio": 0.20,
-            "similar_distractor_ratio": 0.60,
-            "confusable_distractor_ratio": 0.30,
+            "num_choices": 26,
+            "num_noise_dialogues": 40,
+            "near_miss_distractor_ratio": 1.0,
+            "similar_distractor_ratio": 1.0,
+            "confusable_distractor_ratio": 1.0,
             "shuffle_mode": "full",
-            "ask_intermediate_prob": 0.30,
-            "reverse_prob": 0.70,
-            "force_reverse_min_steps": 2,
+            "ask_intermediate_prob": 0.0,
+            "reverse_prob": 1.0,
+            "force_reverse_min_steps": 99,
             "correction_prob": 0.0,
         },
         "hard": {
-            "num_choices": 20,
-            "num_noise_dialogues": 8,
-            "near_miss_distractor_ratio": 0.55,
+            "num_choices": 26,
+            "num_noise_dialogues": 112,
+            "near_miss_distractor_ratio": 1.0,
             "similar_distractor_ratio": 1.0,
             "confusable_distractor_ratio": 1.0,
             "shuffle_mode": "full",
@@ -1022,6 +1022,21 @@ def generate_question(difficulty="Medium", forced_chain=None):
 
     target_person = person_map[ask_person_index]
     target_chain = relation_chain[:ask_person_index + 1]
+
+    if difficulty_lower in ("medium", "hard"):
+        tracking_lines = [
+            "\n친구들이 중간에 정리한 메모는 다음과 같았다. 단, 이 메모에는 정답과 직접 관련 없는 인물도 함께 섞여 있다."
+        ]
+        chain_people = [person_map[i] for i in sorted(person_map)]
+        shuffled_people = chain_people[:]
+        random.shuffle(shuffled_people)
+        for idx, person in enumerate(shuffled_people, 1):
+            tracking_lines.append(f"- 메모 {idx}: '{person}'에 대한 설명은 위 대화 어딘가에 나온다.")
+        if difficulty_lower == "hard":
+            tracking_lines.append(
+                "- 주의: 같은 사람을 기준으로 말한 관계와, 상대방을 기준으로 거꾸로 말한 관계가 모두 섞여 있다."
+            )
+        dialogue_lines.extend(tracking_lines)
     
     all_titles = get_all_unique_titles()
     
@@ -1153,6 +1168,35 @@ def _round_robin_chains(all_chains, n):
     return result
 
 
+def _is_affinal_or_extended_chain(chain):
+    """Return True for spouse-side or extended branch relations."""
+    affinal = {"남편", "아내"}
+    extended_markers = {"형", "남동생", "누나", "언니", "오빠", "여동생", "아내", "남편", "자녀"}
+    return any(rel in affinal for rel in chain) or sum(rel in extended_markers for rel in chain[1:]) >= 2
+
+
+def _difficulty_chain_pool(all_chains, difficulty):
+    """Select relation chains whose hop length and branch complexity match a target difficulty."""
+    difficulty = difficulty.lower()
+    if difficulty == "easy":
+        # Easy still scored 94%; make 3-hop the floor and include some 4-hop.
+        pool = [c for c in all_chains if 3 <= len(c) - 1 <= 4]
+        longer = [c for c in pool if len(c) - 1 == 4]
+        shorter = [c for c in pool if len(c) - 1 == 3]
+        return longer * 60 + shorter
+    if difficulty == "medium":
+        pool = [c for c in all_chains if 4 <= len(c) - 1 <= 5]
+        complex_pool = [c for c in pool if _is_affinal_or_extended_chain(c)]
+        simple_pool = [c for c in pool if c not in complex_pool]
+        longest = [c for c in complex_pool if len(c) - 1 >= 5]
+        four_hop = [c for c in complex_pool if len(c) - 1 == 4]
+        return longest * 20 + four_hop + simple_pool
+    if difficulty == "hard":
+        longest = [c for c in all_chains if len(c) - 1 >= 5]
+        return longest
+    return list(all_chains)
+
+
 def create_dataset_files(num_questions_per_difficulty=128):
     import pandas as pd
     import json
@@ -1175,7 +1219,9 @@ def create_dataset_files(num_questions_per_difficulty=128):
     for difficulty in difficulties:
         print(f"\n=== Generating {difficulty} problems ({num_questions_per_difficulty} questions) ===")
 
-        chain_queue = _round_robin_chains(all_chains, num_questions_per_difficulty)
+        chain_pool = _difficulty_chain_pool(all_chains, difficulty)
+        print(f"  Chain pool: {len(chain_pool)} chains")
+        chain_queue = _round_robin_chains(chain_pool, num_questions_per_difficulty)
         diff_idx = 0
 
         for i, chain in enumerate(chain_queue):
@@ -1243,6 +1289,23 @@ def create_dataset_files(num_questions_per_difficulty=128):
             f.write(json.dumps(item, ensure_ascii=False) + '\n')
     
     print(f"JSONL file created! -> {jsonl_path}")
+
+    for diff in ("easy", "medium", "hard"):
+        split_path = json_dir / f"kinship_{diff}.jsonl"
+        split_items = [
+            item for item in all_generated_data
+            if str(item.get("difficulty", "")).lower() == diff
+        ]
+        with open(split_path, "w", encoding="utf-8") as f:
+            for item in split_items:
+                f.write(json.dumps(item, ensure_ascii=False) + "\n")
+        print(f"JSONL split created! -> {split_path} ({len(split_items)} rows)")
+
+        ko_split_path = json_dir / f"kinship_ko_{diff}.jsonl"
+        with open(ko_split_path, "w", encoding="utf-8") as f:
+            for item in split_items:
+                f.write(json.dumps(item, ensure_ascii=False) + "\n")
+        print(f"JSONL alias created! -> {ko_split_path} ({len(split_items)} rows)")
     
     return kinship_df, all_generated_data
 

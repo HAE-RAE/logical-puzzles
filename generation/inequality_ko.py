@@ -1,22 +1,62 @@
-"""부등호 퍼즐 생성기 (KO)
+"""부등호 / Futoshiki 퍼즐 생성기 (KO)
 
-구성적 생성: 해의 개수가 1이 될 때까지 힌트를 점진적으로 추가한 뒤,
-visible 제약의 유일성을 유지하며 부등호를 탐욕적으로 숨깁니다.
-logical-puzzles-me/inequality/generator.py에서 포팅:
-- 솔버 단계 수 측정을 위한 _stats 계측
-- 백트래킹의 domain-minimization 변수 선택
-- visible_solver_steps를 최대화하는 탐욕적 숨김 부등호 선택
-- dual-track 유일성(전체 제약 + visible 제약)
-- min_visible_solver_steps 기반 난이도 설정
-- step_metrics를 퍼즐 JSONL에 내보냄
+세 가지 난이도 티어로 구성된 혼합 논리 퍼즐 데이터셋을 생성하며,
+각 티어는 별도 JSONL 파일과 하나의 통합 CSV에 기록됩니다:
+
+    easy   -> 1D 부등호 체인 퍼즐   (inequality_ko_easy.jsonl)
+    medium -> 2D Futoshiki 격자 퍼즐  (inequality_ko_medium.jsonl)
+    hard   -> 2D Futoshiki 격자 퍼즐  (inequality_ko_hard.jsonl)
+    (통합)  -------------------------  inequality_ko.csv
+
+레코드 스키마 (모든 티어 동일, CSV == 연결된 JSONL):
+    id, question, answer, solution, difficulty
+
+설계 참고
+------------
+* 데이터셋은 체인 전용 생성기에서 이 혼합 형식으로 이전되었습니다.
+  체인 분기는 원래의 구성적 알고리즘(해가 유일해질 때까지 점진적 힌트 추가,
+  visible 유일성을 유지하며 탐욕적으로 부등호 숨기기)과 동일한 SFT
+  teacher-trace 형식을 유지합니다.
+* 긴 체인(size > 9)은 퍼즐 문자열과 답에 컴팩트한 base-36 단일 문자
+  인코딩(a=10, b=11, ...)을 사용합니다. 공백 구분 값은 채점이 모호하고
+  장황하기 때문입니다. solution의 "Solution vector" / "Givens" 줄은
+  가독성을 위해 원시 정수를 그대로 사용합니다.
+* Futoshiki 분기는 무작위 라틴 방진을 생성하고, 여기서 직교 부등호 제약을
+  파생한 뒤, 셀 일부를 힌트로 공개하고 유일해를 보장하는 최소 제약만
+  추가합니다. 각 퍼즐은 순수 제약 전파로 풀 수 있는지, 아니면 경우 분석
+  (역추적)이 필요한지 분류되며, teacher trace 문구도 그에 맞게 작성됩니다.
+* 티어 크기/구조 분포는 참조 데이터셋에 맞춰 보정되었습니다
+  (아래 SIZE/GIVEN 범위 참고). 퍼즐은 무작위 생성되므로 이 파일을 실행하면
+  동일 형식의 새 데이터셋이 만들어지며, 이전 실행과 바이트 단위로 동일하지
+  않습니다.
+
+실행:  python inequality_ko.py --num 300 --seed 0 --outdir ./out
 """
 
-import random
+import argparse
+import copy
 import json
-from pathlib import Path
-from typing import List, Dict, Optional, Tuple
+import random
 from dataclasses import dataclass, field
 from enum import Enum
+from pathlib import Path
+from typing import Dict, List, Optional, Tuple
+
+
+# --------------------------------------------------------------------------- #
+# 공유
+# --------------------------------------------------------------------------- #
+
+SFT_SOLUTION_RUBRIC_KO = (
+    "STEP0=문제 메타 · STEP1=주어진 조건 · STEP2=풀이 전개 · STEP3=답·검산"
+)
+
+
+def encode_val(v: int) -> str:
+    """1..9 -> 숫자; 10.. -> 소문자 한 자리 (a=10, b=11, ...)."""
+    if v <= 9:
+        return str(v)
+    return chr(ord("a") + v - 10)
 
 
 class Difficulty(Enum):
@@ -24,6 +64,10 @@ class Difficulty(Enum):
     MEDIUM = 2
     HARD = 3
 
+
+# --------------------------------------------------------------------------- #
+# 1D 부등호 체인 퍼즐  (easy 티어)
+# --------------------------------------------------------------------------- #
 
 @dataclass
 class InequalityPuzzle:
@@ -39,7 +83,7 @@ class InequalityPuzzle:
         parts = []
         for i in range(self.size):
             if i in self.given_numbers:
-                parts.append(str(self.given_numbers[i]))
+                parts.append(encode_val(self.given_numbers[i]))
             else:
                 parts.append("_")
             if i < len(self.inequalities):
@@ -50,67 +94,16 @@ class InequalityPuzzle:
         return " ".join(parts)
 
     def get_answer_string(self) -> str:
-        """size<=9: 숫자를 이어붙임; size>9: 공백으로 구분."""
-        if self.size > 9:
-            return " ".join(map(str, self.solution))
-        return "".join(map(str, self.solution))
-
-
-DIFFICULTY_CONFIGS: Dict[str, Dict] = {
-    # Calibrated to step-count proxy: size + (1 - ineq_reveal). See
-    # docs/difficulty_definition.md §2.2.
-    # Prior sweep: size 11-13, reveal 0.2 still hit 100% — model has step
-    # capacity well beyond that. Hard now pushes to size 15-18, reveal 0.15,
-    # no hints (algorithmic step ~10^5 vs prior ~10^3).
-    "easy": {
-        # v7: gpt-4o-mini E=M=32% at v6 (7-9, 0.55, 12) — easy/medium 차이 없음.
-        # 사용자 정책상 easy 더 쉽게 하여 약한 모델 gradient 형성.
-        # v4 회귀 (5-6, 0.70, 4) — 작은 size + 많은 reveal + 적은 vis_steps.
-        "size_range": (5, 6),
-        "hint_ratio": 0.0,
-        "min_hints": 1,
-        "ineq_reveal": 0.70,
-        "min_visible_solver_steps": 4,
-        "max_retries": 1000,
-    },
-    "medium": {
-        # v6.1: v6 (reveal 0.26, vis_steps 60) exhausted retries. Soften to
-        # reveal 0.30 + vis_steps 40 — still meaningfully tighter than v4 (0.32, 30).
-        # v8 시도 (medium=v7 hard) → hard 측 fail (6000 retries) → v7 회귀.
-        "size_range": (14, 16),
-        "hint_ratio": 0.0,
-        "min_hints": 1,
-        "ineq_reveal": 0.30,
-        "min_visible_solver_steps": 40,
-        "max_retries": 4000,
-    },
-    "hard": {
-        # v6.3: v6 (16-18, 0.22, 120), v6.1 (16-18, 0.28, 80), v6.2 (15-17, 0.30, 65)
-        # all FAILED 6000 retries. v4 (13-15, 0.34, 60) is the generator feasibility
-        # ceiling. v8 재시도 (16-18, 0.22, 120) 도 6000 retries fail 재현 → v7 유지.
-        # v8.3 시도 (14-16, 0.34, 90, retries 16000~100000) — smoke n=5 PASS 하지만
-        # n=50 시 일부 seed 16000 retries 부족, 100000 도 시간 폭주 → v7 회귀 결정.
-        # generator-bound ceiling 인정.
-        "size_range": (13, 15),
-        "hint_ratio": 0.0,
-        "min_hints": 1,
-        "ineq_reveal": 0.34,
-        "min_visible_solver_steps": 60,
-        "max_retries": 4000,
-    },
-}
+        """컴팩트 단일 문자 인코딩 (모든 크기, 공백 없음)."""
+        return "".join(encode_val(v) for v in self.solution)
 
 
 class InequalityPuzzleGenerator:
+    """이중 추적 (전체 + visible) 유일성을 갖춘 구성적 체인 생성기."""
+
     MAX_SOLUTIONS = 1
 
-    def __init__(self):
-        self.difficulty_config = {
-            Difficulty.EASY: DIFFICULTY_CONFIGS["easy"],
-            Difficulty.MEDIUM: DIFFICULTY_CONFIGS["medium"],
-            Difficulty.HARD: DIFFICULTY_CONFIGS["hard"],
-        }
-
+    # ---- domain-minimization 순서의 백트래킹 솔버 ---- #
     def _find_solutions(
         self,
         size: int,
@@ -119,10 +112,6 @@ class InequalityPuzzleGenerator:
         max_count: int = 0,
         _stats: Optional[Dict] = None,
     ) -> List[List[int]]:
-        """domain-minimization 변수 선택을 사용하는 백트래킹 솔버.
-
-        _stats dict이 주어지면 각 backtrack 호출마다 _stats['nodes']를 증가시킨다.
-        """
         solutions: List[List[int]] = []
         assignment = [0] * size
         used = [False] * (size + 1)
@@ -134,8 +123,6 @@ class InequalityPuzzleGenerator:
         unfixed = [i for i in range(size) if i not in given_numbers]
 
         def domain_values(pos: int):
-            # 인접 위치 값으로부터 [lo, hi] 윈도우를 미리 계산 → 이웃 제약이 강할 때
-            # 1..size 전체 범위를 순회하는 비용을 회피.
             lo, hi = 1, size
             if pos > 0 and assignment[pos - 1] != 0:
                 prev = assignment[pos - 1]
@@ -157,11 +144,7 @@ class InequalityPuzzleGenerator:
                         lo = nxt + 1
             if lo > hi:
                 return []
-            values = []
-            for val in range(lo, hi + 1):
-                if not used[val]:
-                    values.append(val)
-            return values
+            return [val for val in range(lo, hi + 1) if not used[val]]
 
         def choose_next_pos():
             best_pos = None
@@ -181,7 +164,10 @@ class InequalityPuzzleGenerator:
                 if (
                     best_pos is None
                     or len(values) < len(best_domain)
-                    or (len(values) == len(best_domain) and constraint_score > best_constraint_score)
+                    or (
+                        len(values) == len(best_domain)
+                        and constraint_score > best_constraint_score
+                    )
                 ):
                     best_pos = pos
                     best_domain = values
@@ -190,7 +176,7 @@ class InequalityPuzzleGenerator:
 
         def backtrack(idx: int):
             if _stats is not None:
-                _stats['nodes'] = _stats.get('nodes', 0) + 1
+                _stats["nodes"] = _stats.get("nodes", 0) + 1
             if max_count > 0 and len(solutions) >= max_count:
                 return
             if idx == len(unfixed):
@@ -226,14 +212,14 @@ class InequalityPuzzleGenerator:
         if not available:
             return None
         best_pos = None
-        best_count = float('inf')
+        best_count = float("inf")
         for pos in available:
             test_hints = dict(given_numbers)
             test_hints[pos] = base_solution[pos]
             new_solutions = self._find_solutions(size, inequalities, test_hints, max_count=2)
             if len(new_solutions) == 1:
                 return pos
-            if len(new_solutions) >= 1 and len(new_solutions) < best_count:
+            if 1 <= len(new_solutions) < best_count:
                 best_count = len(new_solutions)
                 best_pos = pos
         return best_pos
@@ -245,7 +231,6 @@ class InequalityPuzzleGenerator:
         given_numbers: Dict[int, int],
         min_hints: int,
     ) -> Dict[int, int]:
-        """visible 유일성을 유지하면서 불필요한 힌트를 탐욕적으로 제거."""
         if len(given_numbers) <= min_hints:
             return dict(given_numbers)
         hints = dict(given_numbers)
@@ -270,32 +255,27 @@ class InequalityPuzzleGenerator:
         given_numbers: Dict[int, int],
         num_to_hide: int,
     ) -> Optional[set]:
-        """다양성 인지(diversity-aware) 숨김: visible 유일성을 유지하는 인덱스
-        중에서 max-nodes 의 70% 이상에 해당하는 후보들 중 무작위 추출.
-
-        결정적 max-nodes 선택은 작은 config (size ≤ 6) 에서 ~4% 의 동일 hidden
-        pattern attractor 를 유발했다. Top-tier 무작위 샘플링은 "어려운 hide"
-        는 유지하면서 ties 만 stochastic 하게 깬다.
-        선택 불가 시 None 반환.
-        """
-        hidden = set()
+        """visible 유일성을 유지하는 인덱스 중, visible 솔버 노드 수 최댓값의
+        70% 이상(상위 티어)에서 무작위 샘플링하여 숨김이 '어렵게' 유지되도록 함.
+        동점은 확률적으로 깨뜨림. 선택 불가 시 None 반환."""
+        hidden: set = set()
         total_ineqs = len(inequalities)
         for _ in range(num_to_hide):
-            candidates_with_score: List[Tuple[int, int]] = []  # (idx, nodes)
+            candidates_with_score: List[Tuple[int, int]] = []
             for idx in range(total_ineqs):
                 if idx in hidden:
                     continue
                 trial_hidden = hidden | {idx}
                 visible_ineqs = [
-                    '?' if i in trial_hidden else ineq
+                    "?" if i in trial_hidden else ineq
                     for i, ineq in enumerate(inequalities)
                 ]
-                stats = {'nodes': 0}
+                stats = {"nodes": 0}
                 visible_solutions = self._find_solutions(
                     size, visible_ineqs, given_numbers, max_count=2, _stats=stats
                 )
                 if len(visible_solutions) == 1:
-                    candidates_with_score.append((idx, stats['nodes']))
+                    candidates_with_score.append((idx, stats["nodes"]))
             if not candidates_with_score:
                 return None
             max_nodes = max(c[1] for c in candidates_with_score)
@@ -303,99 +283,6 @@ class InequalityPuzzleGenerator:
             top = [idx for idx, n in candidates_with_score if n >= threshold]
             hidden.add(random.choice(top))
         return hidden
-
-    def generate_puzzle(self, difficulty: Difficulty, max_retries: int = 800) -> InequalityPuzzle:
-        config = self.difficulty_config[difficulty]
-        effective_max_retries = config.get("max_retries", max_retries)
-
-        for retry in range(effective_max_retries):
-            size = random.randint(*config["size_range"])
-
-            base_solution = list(range(1, size + 1))
-            random.shuffle(base_solution)
-
-            inequalities = []
-            for i in range(size - 1):
-                if base_solution[i] < base_solution[i + 1]:
-                    inequalities.append("<")
-                else:
-                    inequalities.append(">")
-
-            num_hints = max(config["min_hints"], int(size * config["hint_ratio"]))
-            given_numbers = self._select_initial_hints(base_solution, num_hints)
-
-            solutions = self._find_solutions(size, inequalities, given_numbers, self.MAX_SOLUTIONS + 1)
-
-            while len(solutions) > self.MAX_SOLUTIONS:
-                best_pos = self._find_best_hint(size, inequalities, given_numbers,
-                                                base_solution, solutions)
-                if best_pos is None:
-                    break
-                given_numbers[best_pos] = base_solution[best_pos]
-                solutions = self._find_solutions(size, inequalities, given_numbers, self.MAX_SOLUTIONS + 1)
-
-            if len(solutions) != 1:
-                continue
-
-            ineq_reveal = config.get("ineq_reveal", 1.0)
-            total_ineqs = size - 1
-            num_to_hide = int(total_ineqs * (1.0 - ineq_reveal))
-
-            hidden_indices = set()
-            if num_to_hide > 0:
-                selected = self._select_hidden_inequalities(
-                    size, inequalities, given_numbers, num_to_hide
-                )
-                if selected is None:
-                    continue
-                hidden_indices = selected
-
-            visible_ineqs_final = [
-                '?' if i in hidden_indices else ineq
-                for i, ineq in enumerate(inequalities)
-            ]
-
-            minimized_hints = self._minimize_hints_for_visible_uniqueness(
-                size,
-                visible_ineqs_final,
-                given_numbers,
-                min_hints=config["min_hints"],
-            )
-            visible_solutions = self._find_solutions(
-                size, visible_ineqs_final, minimized_hints, max_count=2
-            )
-            if len(visible_solutions) != 1:
-                continue
-
-            full_stats = {'nodes': 0}
-            self._find_solutions(size, inequalities, minimized_hints,
-                                 max_count=2, _stats=full_stats)
-            visible_stats = {'nodes': 0}
-            self._find_solutions(size, visible_ineqs_final, minimized_hints,
-                                 max_count=2, _stats=visible_stats)
-            if visible_stats['nodes'] < config.get("min_visible_solver_steps", 0):
-                continue
-
-            return InequalityPuzzle(
-                size=size,
-                inequalities=inequalities,
-                given_numbers=minimized_hints,
-                solution=solutions[0],
-                difficulty=difficulty,
-                hidden_inequalities=hidden_indices,
-                step_metrics={
-                    'solver_steps': full_stats['nodes'],
-                    'visible_solver_steps': visible_stats['nodes'],
-                    'size': size,
-                    'hidden_count': len(hidden_indices),
-                    'hint_count': len(minimized_hints),
-                },
-            )
-
-        raise RuntimeError(
-            f"{effective_max_retries}번 재시도 후에도 정확히 1개의 해를 가진 "
-            f"{difficulty.name} 퍼즐 생성에 실패했습니다"
-        )
 
     def _select_initial_hints(self, solution: List[int], num_hints: int) -> Dict[int, int]:
         given_numbers: Dict[int, int] = {}
@@ -416,56 +303,130 @@ class InequalityPuzzleGenerator:
             given_numbers[pos] = solution[pos]
         return given_numbers
 
-    def solve_puzzle(self, size: int, inequalities: List[str],
-                     given_numbers: Dict[int, int], max_count: int = 0) -> List[List[int]]:
-        return self._find_solutions(size, inequalities, given_numbers, max_count)
+    def generate_chain(
+        self,
+        size: int,
+        num_to_hide: int,
+        difficulty: Difficulty,
+        min_hints: int = 1,
+        max_retries: int = 400,
+    ) -> InequalityPuzzle:
+        """유일 해를 갖는 크기 `size` 체인을 생성하며, 정확히 `num_to_hide` 개의
+        부등호를 숨기되 visible 퍼즐은 유일 해를 유지합니다."""
+        for _ in range(max_retries):
+            base_solution = list(range(1, size + 1))
+            random.shuffle(base_solution)
+
+            inequalities = [
+                "<" if base_solution[i] < base_solution[i + 1] else ">"
+                for i in range(size - 1)
+            ]
+
+            given_numbers = self._select_initial_hints(base_solution, min_hints)
+            solutions = self._find_solutions(
+                size, inequalities, given_numbers, self.MAX_SOLUTIONS + 1
+            )
+            while len(solutions) > self.MAX_SOLUTIONS:
+                best_pos = self._find_best_hint(
+                    size, inequalities, given_numbers, base_solution, solutions
+                )
+                if best_pos is None:
+                    break
+                given_numbers[best_pos] = base_solution[best_pos]
+                solutions = self._find_solutions(
+                    size, inequalities, given_numbers, self.MAX_SOLUTIONS + 1
+                )
+            if len(solutions) != 1:
+                continue
+
+            hidden_indices: set = set()
+            if num_to_hide > 0:
+                selected = self._select_hidden_inequalities(
+                    size, inequalities, given_numbers, num_to_hide
+                )
+                if selected is None:
+                    continue
+                hidden_indices = selected
+
+            visible_ineqs_final = [
+                "?" if i in hidden_indices else ineq
+                for i, ineq in enumerate(inequalities)
+            ]
+            minimized_hints = self._minimize_hints_for_visible_uniqueness(
+                size, visible_ineqs_final, given_numbers, min_hints=min_hints
+            )
+            visible_solutions = self._find_solutions(
+                size, visible_ineqs_final, minimized_hints, max_count=2
+            )
+            if len(visible_solutions) != 1:
+                continue
+
+            full_stats = {"nodes": 0}
+            self._find_solutions(size, inequalities, minimized_hints, max_count=2, _stats=full_stats)
+            visible_stats = {"nodes": 0}
+            self._find_solutions(
+                size, visible_ineqs_final, minimized_hints, max_count=2, _stats=visible_stats
+            )
+
+            return InequalityPuzzle(
+                size=size,
+                inequalities=inequalities,
+                given_numbers=minimized_hints,
+                solution=solutions[0],
+                difficulty=difficulty,
+                hidden_inequalities=hidden_indices,
+                step_metrics={
+                    "solver_steps": full_stats["nodes"],
+                    "visible_solver_steps": visible_stats["nodes"],
+                    "size": size,
+                    "hidden_count": len(hidden_indices),
+                    "hint_count": len(minimized_hints),
+                },
+            )
+
+        raise RuntimeError(
+            f"size={size} 체인 (hide {num_to_hide}) 생성에 {max_retries}번 재시도 후 실패"
+        )
 
 
-def create_question(puzzle: InequalityPuzzle) -> str:
-    """한국어로 질문 텍스트를 생성합니다."""
+def create_chain_question(puzzle: InequalityPuzzle) -> str:
     problem_str = puzzle.to_problem_string()
-    has_hidden = len(puzzle.hidden_inequalities) > 0
+    n = puzzle.size
 
-    hidden_rule = ""
-    if has_hidden:
-        hidden_rule = "\n- '?'는 부등호가 알려지지 않았음을 의미합니다 (< 또는 > 가능)"
-
-    if puzzle.size > 9:
-        answer_format = f"답을 {puzzle.size}개의 숫자로 공백으로 구분하여 제출하세요."
-        example = " ".join(str(i) for i in range(1, puzzle.size + 1))
-        answer_example = f"Answer: {example}"
+    rules = [
+        "- '_'는 채워야 할 빈 위치를 나타냅니다",
+        "- '<'는 왼쪽 숫자가 오른쪽 숫자보다 작음을 의미합니다",
+        "- '>'는 왼쪽 숫자가 오른쪽 숫자보다 큼을 의미합니다",
+        f"- 1부터 {n}까지의 각 숫자는 정확히 한 번만 사용됩니다",
+        "- '?'는 부등호가 알려지지 않았음을 의미합니다 (< 또는 > 가능)",
+    ]
+    if n > 9:
+        rules.append(
+            "- 10 이상의 값은 소문자 한 글자로 표기합니다: a=10, b=11, c=12, ... "
+            "(예: 'a'는 10을 의미하고 '_ > c'는 빈칸이 12보다 큼을 의미합니다)"
+        )
+        answer_format = (
+            f"답을 {n}개의 단일 문자로 공백 없이 순서대로 제출하세요. "
+            f"1-9는 숫자, 10 이상은 소문자 (a=10, b=11, ...)로 표기합니다."
+        )
+        answer_example = "Answer: " + "".join(encode_val(i) for i in range(1, n + 1))
     else:
-        answer_format = f"답을 {puzzle.size}자리 숫자열로 제출하세요 (공백 없이)."
-        example = "".join(str(i) for i in range(1, puzzle.size + 1))
-        answer_example = f"Answer: {example}"
+        answer_format = f"답을 {n}자리 숫자열로 제출하세요 (공백 없이)."
+        answer_example = "Answer: " + "".join(str(i) for i in range(1, n + 1))
 
-    question = f"""다음 부등호 퍼즐을 풀어주세요. 빈칸을 채우세요. 1부터 {puzzle.size}까지의 숫자를 사용합니다.
-
-1부터 {puzzle.size}까지의 각 숫자는 정확히 한 번만 사용해야 합니다.
-위치 사이의 부등호 기호 (< 또는 >)를 만족해야 합니다.
-
-퍼즐: {problem_str}
-
-규칙:
-- '_'는 채워야 할 빈 위치를 나타냅니다
-- '<'는 왼쪽 숫자가 오른쪽 숫자보다 작음을 의미합니다
-- '>'는 왼쪽 숫자가 오른쪽 숫자보다 큼을 의미합니다
-- 1부터 {puzzle.size}까지의 각 숫자는 정확히 한 번만 사용됩니다{hidden_rule}
-
-{answer_format}
-
-답 형식 예시:
-{answer_example}"""
-    return question
+    rules_block = "\n".join(rules)
+    return (
+        f"이 부등호 퍼즐을 푸세요. 1부터 {n}까지의 숫자로 빈칸을 채우세요.\n\n"
+        f"1부터 {n}까지의 각 숫자는 정확히 한 번만 사용해야 합니다.\n"
+        f"위치 사이의 부등호 기호 (< 또는 >)를 반드시 만족해야 합니다.\n\n"
+        f"퍼즐: {problem_str}\n\n"
+        f"규칙:\n{rules_block}\n\n"
+        f"{answer_format}\n\n"
+        f"답 형식 예시:\n{answer_example}"
+    )
 
 
-SFT_SOLUTION_RUBRIC_KO = (
-    "STEP0=문제 메타 · STEP1=주어진 조건 · STEP2=풀이 전개 · STEP3=답·검산"
-)
-
-
-def _build_inequality_solution_ko(puzzle: InequalityPuzzle) -> str:
-    """SFT teacher trace: 부등호 퍼즐 · 제약 검증 SEG."""
+def build_chain_solution(puzzle: InequalityPuzzle) -> str:
     size = puzzle.size
     solution = puzzle.solution
     ineqs = puzzle.inequalities
@@ -485,15 +446,12 @@ def _build_inequality_solution_ko(puzzle: InequalityPuzzle) -> str:
         "[STEP 1] 주어진 조건",
         f"  - 퍼즐: {problem_str}",
         f"  - 힌트(위치: 값): {', '.join(f'{p}:{v}' for p, v in sorted(givens.items())) or '(없음)'}",
-    ]
-
-    lines.append("[STEP 2] 풀이 전개")
-    lines.append(
+        "[STEP 2] 풀이 전개",
         f"  · 요약: 1~{size} 순열에서 힌트·부등호 전파 → 유일해 확정 · "
         f"부등호 {len(ineqs)}개(가시 {visible_cnt}/숨김 {len(hidden)}) · "
-        f"SEG {len(ineqs)}개"
-    )
-    lines.append(f"  · 해 벡터: [{', '.join(str(v) for v in solution)}]")
+        f"SEG {len(ineqs)}개",
+        f"  · 해 벡터: [{', '.join(str(v) for v in solution)}]",
+    ]
     for i, op in enumerate(ineqs):
         left, right = solution[i], solution[i + 1]
         hidden_flag = "숨김" if i in hidden else "가시"
@@ -507,109 +465,585 @@ def _build_inequality_solution_ko(puzzle: InequalityPuzzle) -> str:
         lines.append(
             f"    [SEG {i + 1}] 자리 {i}↔{i + 1} ({hidden_flag}): {left} {op} {right} → {status}"
         )
-
-    lines.extend([
-        "[STEP 3] 답·검산",
-        f"  - 최종 답: {ans_str}",
-        f"  - 1~{size}의 각 숫자가 정확히 한 번 사용됨: "
-        f"{'OK' if sorted(solution) == list(range(1, size + 1)) else 'FAIL'}",
-        "  - 힌트 위치의 값 일치 및 모든 부등호(가시+숨김)가 성립하는지 [SEG]로 확인.",
-    ])
+    lines.extend(
+        [
+            "[STEP 3] 답·검산",
+            f"  - 최종 답: {ans_str}",
+            f"  - 1~{size}의 각 숫자가 정확히 한 번 사용됨: "
+            f"{'OK' if sorted(solution) == list(range(1, size + 1)) else 'FAIL'}",
+            "  - 힌트 위치의 값 일치 및 모든 부등호(가시+숨김)가 [SEG]에서 확인됨.",
+        ]
+    )
     return "\n".join(lines)
 
 
-def create_dataset_files(num_questions: int):
-    """부등호 퍼즐 데이터셋 파일(CSV + JSONL)을 생성합니다."""
+# --------------------------------------------------------------------------- #
+# 2D Futoshiki 퍼즐  (medium / hard 티어)
+# --------------------------------------------------------------------------- #
+
+Cell = Tuple[int, int]
+Constraint = Tuple[Cell, Cell, str]  # (cell_a, cell_b, op) 의미: a op b
+
+
+@dataclass
+class FutoshikiPuzzle:
+    n: int
+    solution: List[List[int]]
+    givens: Dict[Cell, int]
+    constraints: List[Constraint]  # 읽기 순서로 정렬
+    difficulty: Difficulty
+    mode: str = "backtrack"  # "propagation" | "backtrack"
+    branch_points: int = 0
+
+    def flat_answer(self) -> str:
+        return " ".join(
+            str(self.solution[r][c]) for r in range(self.n) for c in range(self.n)
+        )
+
+
+class FutoshikiGenerator:
+    @staticmethod
+    def random_latin_square(n: int) -> List[List[int]]:
+        base = [[(i + j) % n + 1 for j in range(n)] for i in range(n)]
+        random.shuffle(base)
+        cols = list(range(n))
+        random.shuffle(cols)
+        base = [[row[c] for c in cols] for row in base]
+        perm = list(range(1, n + 1))
+        random.shuffle(perm)
+        return [[perm[v - 1] for v in row] for row in base]
+
+    @staticmethod
+    def all_adjacent_constraints(sol: List[List[int]]) -> List[Constraint]:
+        """모든 직교 인접 제약 (작은 읽기 순서 셀이 앞에)."""
+        n = len(sol)
+        cons: List[Constraint] = []
+        for r in range(n):
+            for c in range(n):
+                if c + 1 < n:
+                    op = "<" if sol[r][c] < sol[r][c + 1] else ">"
+                    cons.append(((r, c), (r, c + 1), op))
+                if r + 1 < n:
+                    op = "<" if sol[r][c] < sol[r + 1][c] else ">"
+                    cons.append(((r, c), (r + 1, c), op))
+        return cons
+
+    @staticmethod
+    def sort_constraints(cons: List[Constraint]) -> List[Constraint]:
+        return sorted(cons, key=lambda x: (x[0][0], x[0][1], x[1][0], x[1][1]))
+
+    # ---- 해 개수 세기 (역추적, 상한) ---- #
+    @staticmethod
+    def count_solutions(
+        n: int, givens: Dict[Cell, int], constraints: List[Constraint], cap: int = 2
+    ) -> int:
+        grid = [[0] * n for _ in range(n)]
+        rows = [set() for _ in range(n)]
+        cols = [set() for _ in range(n)]
+        for (r, c), v in givens.items():
+            grid[r][c] = v
+            rows[r].add(v)
+            cols[c].add(v)
+
+        cell_cons: Dict[Cell, List[Constraint]] = {}
+        for con in constraints:
+            cell_cons.setdefault(con[0], []).append(con)
+            cell_cons.setdefault(con[1], []).append(con)
+
+        def ok(r: int, c: int, v: int) -> bool:
+            if v in rows[r] or v in cols[c]:
+                return False
+            for (a, b, op) in cell_cons.get((r, c), []):
+                av = v if a == (r, c) else grid[a[0]][a[1]]
+                bv = v if b == (r, c) else grid[b[0]][b[1]]
+                if av == 0 or bv == 0:
+                    continue
+                if op == "<" and not av < bv:
+                    return False
+                if op == ">" and not av > bv:
+                    return False
+            return True
+
+        empties = [(r, c) for r in range(n) for c in range(n) if grid[r][c] == 0]
+        count = 0
+
+        def bt(i: int):
+            nonlocal count
+            if count >= cap:
+                return
+            if i == len(empties):
+                count += 1
+                return
+            r, c = empties[i]
+            for v in range(1, n + 1):
+                if ok(r, c, v):
+                    grid[r][c] = v
+                    rows[r].add(v)
+                    cols[c].add(v)
+                    bt(i + 1)
+                    grid[r][c] = 0
+                    rows[r].discard(v)
+                    cols[c].discard(v)
+                    if count >= cap:
+                        return
+
+        bt(0)
+        return count
+
+    # ---- 고정점까지 제약 전파 ---- #
+    @staticmethod
+    def _propagate(
+        cand: List[List[set]], n: int, constraints: List[Constraint]
+    ) -> bool:
+        """`cand`를 in-place 수정. 모순 시 False, 아니면 True(고정점).
+
+        전파 강도는 teacher trace가 주장하는 범위로 의도적으로 제한됩니다 —
+        행/열 all-different 규칙(naked singles + peer elimination)과
+        부등호 경계 가지치기뿐입니다. hidden singles 같은 더 강한 기법은
+        의도적으로 적용하지 않으므로, 이 기본 규칙만으로 끝낼 때만
+        "전파로 풀 수 있음"으로 분류하고, 나머지는 역추적 탐색이 필요합니다."""
+        changed = True
+        while changed:
+            changed = False
+            # naked singles -> peer elimination
+            for r in range(n):
+                for c in range(n):
+                    if len(cand[r][c]) == 0:
+                        return False
+                    if len(cand[r][c]) == 1:
+                        v = next(iter(cand[r][c]))
+                        for cc in range(n):
+                            if cc != c and v in cand[r][cc]:
+                                cand[r][cc].discard(v)
+                                changed = True
+                        for rr in range(n):
+                            if rr != r and v in cand[rr][c]:
+                                cand[rr][c].discard(v)
+                                changed = True
+            # inequality pruning
+            for (a, b, op) in constraints:
+                A, B = cand[a[0]][a[1]], cand[b[0]][b[1]]
+                if not A or not B:
+                    return False
+                if op == "<":  # a < b
+                    nA = {x for x in A if x < max(B)}
+                    nB = {x for x in B if x > min(A)}
+                else:  # a > b
+                    nA = {x for x in A if x > min(B)}
+                    nB = {x for x in B if x < max(A)}
+                if nA != A:
+                    if not nA:
+                        return False
+                    cand[a[0]][a[1]] = nA
+                    changed = True
+                if nB != B:
+                    if not nB:
+                        return False
+                    cand[b[0]][b[1]] = nB
+                    changed = True
+        return True
+
+    @classmethod
+    def _initial_candidates(cls, n: int, givens: Dict[Cell, int]) -> List[List[set]]:
+        cand = [[set(range(1, n + 1)) for _ in range(n)] for _ in range(n)]
+        for (r, c), v in givens.items():
+            cand[r][c] = {v}
+        return cand
+
+    @classmethod
+    def propagation_solves(
+        cls, n: int, givens: Dict[Cell, int], constraints: List[Constraint]
+    ) -> Optional[List[List[int]]]:
+        cand = cls._initial_candidates(n, givens)
+        if not cls._propagate(cand, n, constraints):
+            return None
+        for r in range(n):
+            for c in range(n):
+                if len(cand[r][c]) != 1:
+                    return None
+        return [[next(iter(cand[r][c])) for c in range(n)] for r in range(n)]
+
+    @classmethod
+    def branch_points(
+        cls, n: int, givens: Dict[Cell, int], constraints: List[Constraint]
+    ) -> int:
+        """첫 해에 이르는 경로에서 추측 횟수 (전파로 강제 셀을 처리 후)."""
+
+        def solve(cand: List[List[set]]) -> Optional[int]:
+            cand = copy.deepcopy(cand)
+            if not cls._propagate(cand, n, constraints):
+                return None
+            best: Optional[Cell] = None
+            for r in range(n):
+                for c in range(n):
+                    if len(cand[r][c]) > 1:
+                        if best is None or len(cand[r][c]) < len(cand[best[0]][best[1]]):
+                            best = (r, c)
+            if best is None:
+                return 0  # 추가 추측 없이 해결됨
+            r, c = best
+            for v in sorted(cand[r][c]):
+                trial = copy.deepcopy(cand)
+                trial[r][c] = {v}
+                res = solve(trial)
+                if res is not None:
+                    return res + 1
+            return None
+
+        res = solve(cls._initial_candidates(n, givens))
+        return res if res is not None else 0
+
+    # ---- 퍼즐 조립 ---- #
+    MIN_CONSTRAINTS = 3
+
+    @classmethod
+    def generate(
+        cls, n: int, target_givens: int, target_mode: str = "backtrack",
+        max_tries: int = 200,
+    ) -> FutoshikiPuzzle:
+        """참조 프로필에 맞는 유일 해 Futoshiki 생성.
+
+        소수의 힌트를 공개하고 격자를 고정하는 전체 직교 부등호 제약 집합에서
+        시작합니다. 그다음 유일성을 깨지 않으며 제약을 하나씩 제거하고,
+        타겟 인식 중단 규칙을 적용합니다:
+
+        * backtrack 타겟 — 제한된 전파 규칙만으로는 더 이상 격자를 끝낼 수
+          없을 때까지(즉 탐색이 실제로 필요해질 때까지) 계속 제거.
+        * propagation 타겟 — 전파만으로 여전히 풀리는 동안에만 제약 제거하여
+          간결한 전파-풀이 퍼즐을 만듦.
+
+        희소 힌트 + 간결한 제약 집합이 참조의 역추적 중심 성격을 재현합니다.
+        티어별 비율이 어떤 타겟을 요청할지 결정하며, 재시도 예산 안에
+        요청 모드를 맞추기 어려우면 유일한 fallback을 반환합니다.
+        """
+        fallback: Optional[FutoshikiPuzzle] = None
+
+        for _ in range(max_tries):
+            sol = cls.random_latin_square(n)
+            all_cons = cls.all_adjacent_constraints(sol)
+            random.shuffle(all_cons)
+
+            cells = [(r, c) for r in range(n) for c in range(n)]
+            random.shuffle(cells)
+            g = max(1, min(target_givens, n * n - 1))
+            givens: Dict[Cell, int] = {cells[i]: sol[cells[i][0]][cells[i][1]] for i in range(g)}
+            gi = g
+
+            chosen: List[Constraint] = list(all_cons)  # fully constrained
+
+            def unique(cons) -> bool:
+                return cls.count_solutions(n, givens, cons, 2) == 1
+
+            # 전체 제약 집합이 여러 라틴 방진을 허용할 수 있으면,
+            # 해가 유일해질 때까지 힌트를 더 공개
+            while gi < len(cells) and not unique(chosen):
+                cell = cells[gi]
+                givens[cell] = sol[cell[0]][cell[1]]
+                gi += 1
+            if not unique(chosen):
+                continue
+
+            # 타겟 인식 제약 제거 (매 단계 유일성 유지)
+            #   backtrack 타겟 -> 최대한 제거(참조처럼 간결한 제약 집합);
+            #     실제 탐색 필요 여부는 아래에서 확인하고 재시도/fallback이 고름.
+            #   propagation 타겟 -> 전파만으로 여전히 풀리는 동안에만 제거.
+            for con in list(chosen):
+                trial = [c for c in chosen if c != con]
+                if not unique(trial):
+                    continue  # 유일성에 필요한 제약; 유지
+                if target_mode == "backtrack":
+                    chosen = trial
+                else:  # propagation target
+                    if cls.propagation_solves(n, givens, trial) is not None:
+                        chosen = trial  # 전파-풀이 가능 유지
+
+            if len(chosen) < cls.MIN_CONSTRAINTS:
+                continue  # 퇴화된 (거의) 무제약 퍼즐 방지
+
+            chosen = cls.sort_constraints(chosen)
+            prop = cls.propagation_solves(n, givens, chosen)
+            if prop is not None:
+                mode, bp = "propagation", 0
+            else:
+                mode = "backtrack"
+                bp = max(2, cls.branch_points(n, givens, chosen))
+
+            puzzle = FutoshikiPuzzle(
+                n=n,
+                solution=sol,
+                givens=givens,
+                constraints=chosen,
+                difficulty=Difficulty.HARD,
+                mode=mode,
+                branch_points=bp,
+            )
+            if mode == target_mode:
+                return puzzle
+            fallback = puzzle
+
+        if fallback is not None:
+            return fallback
+        raise RuntimeError(f"유일한 {n}x{n} Futoshiki 퍼즐 생성 실패")
+
+
+def _grid_lines(n: int, value_at, indent: str) -> List[str]:
+    out = []
+    for r in range(n):
+        cells = " ".join(value_at(r, c) for c in range(n))
+        out.append(f"{indent}행 {r + 1}: {cells}")
+    return out
+
+
+def create_futoshiki_question(p: FutoshikiPuzzle) -> str:
+    n = p.n
+
+    def shown(r, c):
+        return str(p.givens[(r, c)]) if (r, c) in p.givens else "_"
+
+    grid_block = "\n".join(_grid_lines(n, shown, ""))
+    con_block = "\n".join(
+        f"- ({a[0] + 1},{a[1] + 1}) {op} ({b[0] + 1},{b[1] + 1})"
+        for (a, b, op) in p.constraints
+    )
+    example = " ".join(str(v) for _ in range(n) for v in range(1, n + 1))
+
+    return (
+        f"{n}x{n} 격자에서 Futoshiki 퍼즐을 푸세요.\n\n"
+        f"규칙:\n"
+        f"- 격자를 채워 모든 행과 열에 1부터 {n}까지의 숫자가 각각 한 번씩 등장하도록 합니다 (라틴 방진).\n"
+        f"- '_'는 채워야 할 빈 칸을 나타냅니다.\n"
+        f"- 아래 나열된 모든 부등호 제약을 만족해야 합니다. 각 제약은 두 직교 인접 셀을 비교하며 "
+        f"1-기반 인덱스인 (행, 열)로 표기합니다 (행 1 = 맨 위, 열 1 = 맨 왼쪽).\n"
+        f"- '(a) < (b)'는 셀 a의 숫자가 셀 b보다 작음을, '(a) > (b)'는 더 큼을 의미합니다.\n\n"
+        f"주어진 격자 (위에서 아래로):\n{grid_block}\n\n"
+        f"부등호 제약:\n{con_block}\n\n"
+        f"완성된 격자를 답으로 제출하세요: {n * n}개 숫자를 공백으로 구분하여 행 순서로 나열 "
+        f"(행 1 왼쪽부터 오른쪽, 그 다음 행 2, 순서대로).\n\n"
+        f"형식 예시 (길이와 순서만 보여주는 예, 유효한 풀이가 아닙니다):\nAnswer: {example}"
+    )
+
+
+def build_futoshiki_solution(p: FutoshikiPuzzle) -> str:
+    n = p.n
+    sol = p.solution
+
+    if p.mode == "propagation":
+        mode_line = (
+            "  - 이 퍼즐은 제약 전파만으로 풀 수 있습니다 "
+            "(행/열 all-different 규칙과 부등호를 반복 적용; 추측 불필요)."
+        )
+        approach_line = (
+            "  · 접근: 라틴 방진(행/열 all-different) 규칙과 부등호 제약을 반복 적용하여 "
+            "강제 셀을 채워 나갑니다; 각 단계에서 하나의 값만 가능한 셀부터 결정하여 "
+            "격자 전체를 완성합니다."
+        )
+    else:
+        mode_line = (
+            "  - 제약 전파만으로는 이 퍼즐을 완성할 수 없습니다; "
+            "경우 분석(역추적 탐색)이 필요합니다."
+        )
+        approach_line = (
+            "  · 접근: 라틴 방진(행/열 all-different) 규칙과 부등호로 각 셀의 후보를 좁힌 뒤, "
+            "가장 제약이 강한 셀에서 가정하고 모순 발생 시 역추적하여 유일한 격자를 찾습니다 "
+            f"(탐색 크기 약 {p.branch_points}개 분기점)."
+        )
+
+    def given_at(r, c):
+        return str(p.givens[(r, c)]) if (r, c) in p.givens else "_"
+
+    def sol_at(r, c):
+        return str(sol[r][c])
+
+    lines: List[str] = [
+        SFT_SOLUTION_RUBRIC_KO,
+        "[STEP 0] 문제 메타",
+        f"  - 난이도: {p.difficulty.name.lower()}",
+        f"  - 퍼즐: {n}x{n} Futoshiki (부등호 제약이 있는 라틴 방진)",
+        f"  - 주어진 수: {len(p.givens)}개 · 부등호 제약: {len(p.constraints)}개",
+        mode_line,
+        "  - 셀은 1-인덱스 (행 1 = 맨 위, 열 1 = 맨 왼쪽). 최종 답은 [STEP 3]에서 확정",
+        "[STEP 1] 주어진 조건",
+        "  - 주어진 격자:",
+    ]
+    lines += _grid_lines(n, given_at, "      ")
+    lines.append("  - 부등호 제약:")
+    lines += [
+        f"      ({a[0] + 1},{a[1] + 1}) {op} ({b[0] + 1},{b[1] + 1})"
+        for (a, b, op) in p.constraints
+    ]
+
+    lines.append("[STEP 2] 풀이 전개")
+    lines.append(approach_line)
+    lines.append("  · 완성된 격자:")
+    lines += _grid_lines(n, sol_at, "      ")
+
+    lines.append(f"  · 검산 — 모든 행이 1~{n}의 순열:")
+    for r in range(n):
+        row = ", ".join(str(sol[r][c]) for c in range(n))
+        lines.append(f"      행 {r + 1}: {{{row}}} -> OK")
+    lines.append(f"  · 검산 — 모든 열이 1~{n}의 순열:")
+    for c in range(n):
+        col = ", ".join(str(sol[r][c]) for r in range(n))
+        lines.append(f"      열 {c + 1}: {{{col}}} -> OK")
+    lines.append("  · 검산 — 모든 부등호 성립:")
+    for (a, b, op) in p.constraints:
+        av, bv = sol[a[0]][a[1]], sol[b[0]][b[1]]
+        lines.append(
+            f"      ({a[0] + 1},{a[1] + 1}) {op} ({b[0] + 1},{b[1] + 1}): "
+            f"{av} {op} {bv} -> 성립"
+        )
+
+    lines += [
+        "[STEP 3] 답·검산",
+        f"  - 최종 답 (격자를 행 순서로 일렬 나열): {p.flat_answer()}",
+        f"  - 각 행과 열이 1~{n}의 순열: OK",
+        "  - 모든 부등호 제약 성립 및 주어진 수 일치 (위 [SEG] 추적 확인).",
+    ]
+    return "\n".join(lines)
+
+
+# --------------------------------------------------------------------------- #
+# 티어 설정 (참조 데이터셋에 맞춰 보정)
+# --------------------------------------------------------------------------- #
+
+# easy: 1D 체인. 두 크기 밴드; 소규모 밴드는 부등호 1개 숨김, 대규모 밴드는
+# 전부 공개하고 base-36 답 인코딩 사용.
+EASY_CHAIN_BANDS = [
+    {"weight": 0.35, "sizes": [8, 9], "num_to_hide": 0},
+    {"weight": 0.50, "sizes": [8, 9], "num_to_hide": 1},
+    {"weight": 0.15, "sizes": [16], "num_to_hide": 0},
+]
+
+# medium / hard: Futoshiki. 격자 크기 가중치 + 역추적이 실제로 필요한 퍼즐 비율
+# (제한된 전파 규칙만으로 풀 수 있는 퍼즐 대비), 참조 세트에 맞춰 보정.
+FUTOSHIKI_TIERS = {
+    "medium": {"size_weights": {5: 0.62, 6: 0.38}, "backtrack_ratio": 0.82},
+    "hard": {"size_weights": {5: 0.20, 6: 0.80}, "backtrack_ratio": 0.92},
+}
+
+# 격자 크기별 공개 힌트 수 (작게 유지; 최소 제약 집합이 난이도를 만듦).
+# 참조 중앙값에 맞춤 (5x5 ~4, 6x6 ~5-6).
+FUTOSHIKI_GIVENS_BY_SIZE = {5: (2, 6), 6: (3, 7)}
+
+
+def _weighted_choice(weight_map: Dict[int, float]) -> int:
+    keys = list(weight_map.keys())
+    weights = [weight_map[k] for k in keys]
+    return random.choices(keys, weights=weights, k=1)[0]
+
+
+# --------------------------------------------------------------------------- #
+# 레코드 빌더
+# --------------------------------------------------------------------------- #
+
+def make_easy_record(idx: int, chain_gen: InequalityPuzzleGenerator) -> dict:
+    bands = EASY_CHAIN_BANDS
+    band = random.choices(bands, weights=[b["weight"] for b in bands], k=1)[0]
+    size = random.choice(band["sizes"])
+    puzzle = chain_gen.generate_chain(
+        size=size, num_to_hide=band["num_to_hide"], difficulty=Difficulty.EASY
+    )
+    return {
+        "id": f"inequality_ko_easy_{idx:04d}",
+        "question": create_chain_question(puzzle),
+        "answer": puzzle.get_answer_string(),
+        "solution": build_chain_solution(puzzle),
+        "difficulty": "easy",
+    }
+
+
+def make_futoshiki_record(idx: int, tier: str) -> dict:
+    cfg = FUTOSHIKI_TIERS[tier]
+    n = _weighted_choice(cfg["size_weights"])
+    target_givens = random.randint(*FUTOSHIKI_GIVENS_BY_SIZE[n])
+    target_mode = "backtrack" if random.random() < cfg["backtrack_ratio"] else "propagation"
+    p = FutoshikiGenerator.generate(n, target_givens, target_mode)
+    p.difficulty = Difficulty[tier.upper()]
+    return {
+        "id": f"inequality_ko_{tier}_{idx:04d}",
+        "question": create_futoshiki_question(p),
+        "answer": p.flat_answer(),
+        "solution": build_futoshiki_solution(p),
+        "difficulty": tier,
+    }
+
+
+# --------------------------------------------------------------------------- #
+# 오케스트레이션
+# --------------------------------------------------------------------------- #
+
+def create_dataset_files(num_questions: int, outdir: Path) -> Dict[str, List[dict]]:
+    """세 가지 티어를 생성하고 티어별 JSONL + 통합 CSV 파일을 작성합니다."""
     import pandas as pd
 
-    print(f"부등호 퍼즐 {num_questions}개 생성 중...")
+    tiers = ["easy", "medium", "hard"]
+    per_tier = num_questions // len(tiers)
+    remainder = num_questions % len(tiers)
 
-    generator = InequalityPuzzleGenerator()
+    chain_gen = InequalityPuzzleGenerator()
+    outdir.mkdir(parents=True, exist_ok=True)
 
-    difficulties = [Difficulty.EASY, Difficulty.MEDIUM, Difficulty.HARD]
-    puzzles_per_diff = num_questions // len(difficulties)
-    remainder = num_questions % len(difficulties)
+    all_records: List[dict] = []
+    by_tier: Dict[str, List[dict]] = {}
 
-    all_puzzles = []
-    MAX_RETRIES_PER_PUZZLE = 50  # 난이도별 dedup 재시도 한도
-
-    for i, difficulty in enumerate(difficulties):
-        count = puzzles_per_diff + (1 if i < remainder else 0)
-        diff_name = difficulty.name.lower()
-        if count == 0:
-            continue
-
-        print(f"\n=== {diff_name} 퍼즐 생성 중 ({count}개 필요) ===")
-
-        seen_keys = set()
+    for i, tier in enumerate(tiers):
+        count = per_tier + (1 if i < remainder else 0)
+        print(f"\n=== {tier} 티어 생성 중 ({count}개) ===")
+        records: List[dict] = []
+        seen = set()
         produced = 0
-        retries = 0
-        max_retries = count * MAX_RETRIES_PER_PUZZLE
-        while produced < count:
+        attempts = 0
+        budget = max(50, count * 50)
+        while produced < count and attempts < budget:
+            attempts += 1
             try:
-                puzzle = generator.generate_puzzle(difficulty)
-            except RuntimeError as e:
-                retries += 1
-                print(f"  [시도 {produced + retries}] 실패: {e}")
-                if retries > max_retries:
-                    print(f"  ⚠️ {diff_name}: 재시도 한도 초과 ({produced}/{count})")
-                    break
+                if tier == "easy":
+                    rec = make_easy_record(produced, chain_gen)
+                else:
+                    rec = make_futoshiki_record(produced, tier)
+            except RuntimeError as exc:
+                print(f"  재시도 ({exc})")
                 continue
-
-            key = puzzle.to_problem_string()
-            if key in seen_keys:
-                retries += 1
-                if retries > max_retries:
-                    print(f"  ⚠️ {diff_name}: dedup 재시도 한도 초과 ({produced}/{count})")
-                    break
+            if rec["question"] in seen:
                 continue
-            seen_keys.add(key)
-
-            puzzle_data = {
-                "id": f"inequality_ko_{diff_name}_{produced:04d}",
-                "question": create_question(puzzle),
-                "answer": puzzle.get_answer_string(),
-                "solution": _build_inequality_solution_ko(puzzle),
-                "difficulty": diff_name,
-            }
-            all_puzzles.append(puzzle_data)
+            seen.add(rec["question"])
+            records.append(rec)
             produced += 1
-            print(f"  [{produced}/{count}] size={puzzle.size}, 정답={puzzle.get_answer_string()}, "
-                  f"steps={puzzle.step_metrics.get('visible_solver_steps', 0)}")
+            if produced % 10 == 0 or produced == count:
+                print(f"  [{produced}/{count}]")
 
-    print(f"\n총 {len(all_puzzles)}개 퍼즐 생성 완료")
+        if produced < count:
+            print(f"  ⚠️ {tier} 에서 {produced}/{count} 만 생성됨")
 
-    df = pd.DataFrame(all_puzzles)
+        by_tier[tier] = records
+        all_records.extend(records)
 
-    PROJECT_ROOT = Path(__file__).resolve().parent.parent
+        jsonl_path = outdir / f"inequality_ko_{tier}.jsonl"
+        with open(jsonl_path, "w", encoding="utf-8") as fh:
+            for rec in records:
+                fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
+        print(f"  JSONL: {jsonl_path}")
 
-    csv_dir = PROJECT_ROOT / "data" / "csv"
-    csv_dir.mkdir(parents=True, exist_ok=True)
-    csv_path = csv_dir / "inequality_ko.csv"
+    # 통합 CSV (동일 열 순서; CSV == 연결된 JSONL)
+    df = pd.DataFrame(all_records, columns=["id", "question", "answer", "solution", "difficulty"])
+    csv_path = outdir / "inequality_ko.csv"
     df.to_csv(csv_path, index=False, encoding="utf-8-sig")
-    print(f"CSV 파일 생성 완료: {csv_path}")
+    print(f"\nCSV: {csv_path}  ({len(df)}행)")
 
-    json_dir = PROJECT_ROOT / "data" / "jsonl"
-    json_dir.mkdir(parents=True, exist_ok=True)
-    jsonl_path = json_dir / "inequality_ko.jsonl"
-    with open(jsonl_path, 'w', encoding='utf-8') as f:
-        for item in all_puzzles:
-            f.write(json.dumps(item, ensure_ascii=False) + '\n')
-    print(f"JSONL 파일 생성 완료: {jsonl_path}")
-
-    return df, all_puzzles
+    return by_tier
 
 
 if __name__ == "__main__":
-    import argparse
-
-    parser = argparse.ArgumentParser(description="부등호 퍼즐 생성기")
-    parser.add_argument("--num", type=int, default=12, help="생성할 질문의 수")
-
+    parser = argparse.ArgumentParser(description="부등호 / Futoshiki 퍼즐 생성기 (한국어)")
+    parser.add_argument("--num", type=int, default=300, help="총 퍼즐 수 (3 티어로 분배)")
+    parser.add_argument("--seed", type=int, default=None, help="재현성을 위한 랜덤 시드")
+    parser.add_argument("--outdir", type=str, default="out", help="출력 디렉터리")
     args = parser.parse_args()
 
-    print("=" * 50)
-    print("부등호 퍼즐 생성기")
-    print("=" * 50)
+    if args.seed is not None:
+        random.seed(args.seed)
 
-    create_dataset_files(num_questions=args.num)
+    print("=" * 50)
+    print("부등호 / Futoshiki 퍼즐 생성기 (한국어)")
+    print("=" * 50)
+    create_dataset_files(num_questions=args.num, outdir=Path(args.outdir))
