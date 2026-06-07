@@ -16,31 +16,31 @@ DIFFICULTY_CONFIG = {
         "name": "easy",
         "cipher_stack": ["vigenere"],
         "keyword_logic": "direct",
-        "hint_count": 0,
-        "answer_length": (28, 32),
+        "hint_count": 1,
+        "answer_length": (20, 24),
         "show_algorithm_details": True,
         "show_decryption_order_hint": False,
         "description": "Easy (Target ~75%): Vigenere / Direct / Algorithm Detail / Slightly Shorter Text"
     },
     "LEVEL_1": {
         "name": "medium",
-        "cipher_stack": ["playfair", "vigenere"],
-        "keyword_logic": "positional",
-        "hint_count": 5,
-        "answer_length": (12, 16),
+        "cipher_stack": ["vigenere"],
+        "keyword_logic": "extraction",
+        "hint_count": 2,
+        "answer_length": (20, 24),
         "show_algorithm_details": True,
         "show_decryption_order_hint": True,
-        "description": "Medium (Target ~50%): Playfair + Vigenere / Positional / 5 Hints"
+        "description": "Medium (Target ~50%): Vigenere / Extraction / 2 Hints"
     },
     "LEVEL_2": {
         "name": "hard",
         "cipher_stack": ["transposition", "vigenere"],
-        "keyword_logic": "extraction",
-        "hint_count": 4,
-        "answer_length": (12, 16),
+        "keyword_logic": "positional",
+        "hint_count": 10,
+        "answer_length": (6, 10),
         "show_algorithm_details": True,
         "show_decryption_order_hint": True,
-        "description": "Hard (Target ~25%): Transposition + Vigenere / Extraction / 4 Hints"
+        "description": "Hard (Target ~25%): Transposition + Vigenere / Positional / 10 Hints"
     }
 }
 

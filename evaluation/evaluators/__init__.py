@@ -38,6 +38,7 @@ def _get_registry() -> Dict[str, Type]:
         "inequality_en": InequalityEvaluator,
         "inequality_ko": InequalityEvaluator,
         "kinship": KinshipEvaluator,
+        "kinship_ko": KinshipEvaluator,
         "kinship_vision": KinshipEvaluator,
         "saju_ko": SajuEvaluator,
         "jamo_ko": JamoEvaluator,

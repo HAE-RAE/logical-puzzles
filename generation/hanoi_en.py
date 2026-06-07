@@ -277,10 +277,10 @@ def generate_all_datasets(num_per_difficulty=100, seed=2025):
     difficulties = {
         # All difficulties use triple-hash (easy/medium) or dual-hash+simulation (hard).
         # Recalibrated exp model at k=24→88%: C=0.00541, a=0.1292.
-        # easy:   n=6-8, k=27-33 (avg 30) → accuracy≈74%. Target: 75%.
+        # easy:   n=5-7, k=25-30; midpoint after the 86% and 60% runs.
         # medium: n=7-9, k=31-37 (avg 34) → accuracy≈56%. Target: 50%.
         # hard:   n=12-15, k=68-100% of total (set inside builder). Target: 25%.
-        "easy": {"n_weights": ([6, 7, 8], [0.34, 0.33, 0.33]), "builder": _build_templates_easy},
+        "easy": {"n_weights": ([5, 6, 7], [0.15, 0.45, 0.40]), "builder": _build_templates_easy},
         "medium": {"n_weights": ([7, 8, 9], [0.34, 0.33, 0.33]), "builder": _build_templates_medium},
         "hard": {"n_weights": ([12, 13, 14, 15], [0.25, 0.25, 0.25, 0.25]), "builder": _build_templates_hard}
     }
@@ -307,7 +307,7 @@ def generate_all_datasets(num_per_difficulty=100, seed=2025):
             # Medium: k=31-37 (avg 34) → error≈44% → accuracy≈56%. Target: 50%.
             # Hard:   k set inside _build_templates_hard (68-100% of total).
             if diff == "easy":
-                k = rng.randint(27, min(33, total_moves))
+                k = rng.randint(25, min(30, total_moves))
             elif diff == "medium":
                 k = rng.randint(31, min(37, total_moves))
             else:

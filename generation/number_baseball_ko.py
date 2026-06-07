@@ -27,9 +27,9 @@ MAX_SOLUTIONS = 1  # 모든 난이도에서 정확히 1개의 해만 허용
 
 
 # 모듈 레벨 캐시: num_digits 별 후보 공간 문자열 목록.
-# 6-digit 의 경우 151200 개 — retry 마다 재생성하던 핫루프.
-# 반환 list 는 공유 (caller 가 수정하면 안 됨); 현재 caller 들은 list-comp 으로
-# 새 리스트를 만들어 rebind 하므로 안전.
+# 6-digit 공간 = 151200개 문자열; retry마다 재구축하던 핫루프.
+# 반환 list는 공유됨 (caller가 변경하면 안 됨); 현재 caller는 list comprehension으로
+# 새 필터링 list에 재바인딩하므로 안전함.
 _CANDIDATE_SPACE_CACHE: Dict[int, List[str]] = {}
 
 
@@ -39,6 +39,73 @@ def _get_candidate_space(num_digits: int) -> List[str]:
         cached = [''.join(p) for p in itertools.permutations('0123456789', num_digits)]
         _CANDIDATE_SPACE_CACHE[num_digits] = cached
     return cached
+
+
+# 10-bit 자릿수 마스크(0..1023)용 팝카운트 테이블. bit i가 set이면 digit i 존재.
+_POPCOUNT = [bin(i).count('1') for i in range(1024)]
+
+# 모듈 레벨 캐시: num_digits 별 후보마다 (string, digit_mask) 쌍.
+# 마스크로 매 호출마다 set(secret)을 재구축하지 않고 balls 계산 가능:
+# distinct-digit 문자열에서 balls = popcount(mask_s & mask_guess) - strikes.
+_CANDIDATE_MASK_CACHE: Dict[int, List[Tuple[str, int]]] = {}
+
+
+def _digit_mask(s: str) -> int:
+    mask = 0
+    for ch in s:
+        mask |= 1 << (ord(ch) - 48)
+    return mask
+
+
+def _get_candidate_masks(num_digits: int) -> List[Tuple[str, int]]:
+    cached = _CANDIDATE_MASK_CACHE.get(num_digits)
+    if cached is None:
+        cached = [(s, _digit_mask(s)) for s in _get_candidate_space(num_digits)]
+        _CANDIDATE_MASK_CACHE[num_digits] = cached
+    return cached
+
+
+# 모듈 레벨 캐시: 전체 공간에 대한 잔여 개수, (strikes, balls) 키, num_digits 별.
+# 자릿수/위치 대칭성에 따라 distinct-digit guess에 대해 주어진 (S,B)를
+# 산출하는 비밀 숫자 수는 특정 guess와 무관하므로, step 0(current == 전체 공간)에서는
+# 힌트별 스캔이 필요 없음.
+_RESIDUAL_COUNT_CACHE: Dict[int, Dict[Tuple[int, int], int]] = {}
+
+
+def _get_residual_counts(num_digits: int) -> Dict[Tuple[int, int], int]:
+    cached = _RESIDUAL_COUNT_CACHE.get(num_digits)
+    if cached is None:
+        masks = _get_candidate_masks(num_digits)
+        ref, ref_mask = masks[0]
+        counts: Dict[Tuple[int, int], int] = {}
+        for s, m in masks:
+            st = sum(1 for i in range(num_digits) if s[i] == ref[i])
+            key = (st, _POPCOUNT[m & ref_mask] - st)
+            counts[key] = counts.get(key, 0) + 1
+        _RESIDUAL_COUNT_CACHE[num_digits] = counts
+        cached = counts
+    return cached
+
+
+def _filter_by_hint(
+    current: List[Tuple[str, int]], guess: str, want_s: int, want_b: int
+) -> List[Tuple[str, int]]:
+    """힌트의 S/B와 정확히 일치하는 (string, mask) 후보 필터링.
+
+    calculate_strikes_balls(s, guess) == (want_s, want_b)인 s만 남기는 것과 동등하지만,
+    사전 계산된 digit mask를 사용해 per-candidate set() 할당을 피함.
+    5-6 자리 생성의 핫루프."""
+    gmask = _digit_mask(guess)
+    n = len(guess)
+    out = []
+    for s, m in current:
+        st = 0
+        for i in range(n):
+            if s[i] == guess[i]:
+                st += 1
+        if st == want_s and _POPCOUNT[m & gmask] - st == want_b:
+            out.append((s, m))
+    return out
 
 
 @dataclass
@@ -61,52 +128,90 @@ class Difficulty(Enum):
 
 
 DIFFICULTY_CONFIGS: Dict[str, Dict] = {
-    # Difficulty is defined by how long the candidate set stays ambiguous, not
-    # just by the final candidate-space size. Hard should therefore prefer
-    # ball-heavy, low-strike hints that require multi-hint intersection.
+    # v20: gemini-3-flash-preview 목표 75/50/25%에 맞게 재보정.
+    #
+    # 설정별 측정 정확도 (gemini-3-flash-preview, reasoning=medium):
+    #   v16  6D, 6 hints, digit-set 완전 공개 (모든 힌트 = secret perms) 68%
+    #   v18  5D, ~4 hints, info-greedy, no reveal -> 72%   (easy: 목표 달성)
+    #   v18  6D, ~4 hints, info-greedy, no reveal -> 15%
+    #   v19  6D, ~7 hints (extra_hints=3), no reveal -> 14%  (중복성 = 효과 없음)
+    #   v19  6D, ~5 hints (extra_hints=1), no reveal -> 12%
+    #
+    # 교훈:
+    #   - 중복 힌트 수는 정확도를 바꾸지 않음 (v19 14% == v18 15%).
+    #   - num_digits는 CLIFF: 5D no-reveal=69-72%, 6D no-reveal=12-15%. 50%/25% 목표는
+    #     그 간격에 걸쳐 있어 자릿수만으로는 맞출 수 없음.
+    #   - 진짜 레버는 DIGIT SET. 비밀 숫자가 *어떤* 자릿수를 쓰는지 알아내는 것이
+    #     어려운 부분; 일단 알면 배열만 남음. 하지만 모델은 명시적으로 기술될 때만
+    #     이를 활용함 (v19에서 무작위 힌트들 사이에 묻힌 단독 strikes+balls==N 힌트는
+    #     효과 없음).
+    #
+    # v20 레버: `revealed_digits` — 프롬프트에 비밀 숫자의 j개 자릿수를 명시
+    # ("이 자릿수들을 포함, 위치 미상"); 나머지는 추론해야 함. j는 no-reveal (~14%)과
+    # full-reveal arrangement (~68%) 사이에서 6D 난이도를 연속 조절.
+    # easy는 5D no-reveal 유지.
+    #
+    # NOTE: 이전 점수 변동은 모델 변경이 아니라 ENV 버그 (eval run without .venv)였음.
+    # .venv 활성화 시 모델은 안정적이므로 이 보정은 유지됨. 신뢰 가능한 no-reveal 기준선
+    # (.venv, gemini-3-flash-preview):
+    #   5D = 96% · 6D = 89% · 7D = 62%   (이번 라운드 8D 측정)
+    # 모두 목표 이상 -> 더 어렵게 필요. reveal은 완화만 하고 자릿수는 거칠게 점프
+    # (~-27%p/단계)하므로 전략: +1 자릿수로 난이도 overshoot (정확도 목표 이하),
+    # revealed_digits로 다시 완화.
+    #
+    # v24:
+    #   easy   7D, j=2  -> aim 75% (7D no-reveal=62%, reveal eases up)
+    #   medium 8D, j=3  -> aim 50% (8D no-reveal ~25-35%, reveal eases up)
+    #   hard   8D, j=0  -> aim 25% (8D no-reveal ~25-35%)
+    # 이 환경에서 7-8D reveal 크기는 미측정 -> 다음 eval 후 조정
+    # (j 올리면 티어 완화, j 내리면 더 어렵게).
+    #
+    # 생성은 정보 탐욕(_select_info_greedy): 후보 집합을 가장 많이 줄이는 힌트를
+    # 선택, 1개 후보가 남을 때까지. 100% 신뢰 가능.
+    # preferred_strikes/balls는 힌트 풀 프로파일을 제한 (>=1 strike 허용해야
+    # 탐욕 선택이 마지막 위치 모호성을 해결 가능).
     "easy": {
-        # v7.5: gpt-5.4-mini 84% (E) < 96% (M, 5-digit) — easy 가 medium 보다 어려운
-        # 비단조. 3-digit 공간(720)에 hints 3-4 만이라 ambiguity 잔존. hints 4-5 + balls
-        # 범위 확장 → 정보량↑, easy 가 진짜 쉬워지도록.
-        "num_digits": 3,
+        "num_digits": 7,
         "min_hints": 4,
-        "max_hints": 5,
+        "max_hints": 8,
+        "revealed_digits": 5,
         "preferred_strikes": (0, 2),
-        "preferred_balls": (1, 3),
-        "target_residual": (1, 8),
-        "min_ball_heavy_ratio": 0.30,
+        "preferred_balls": (0, 5),
+        "pool_size": 50,
     },
     "medium": {
-        # v7.3: 사용자 지시 — easy(3-digit) 와 명확히 분리. 5-digit 채택 (4-digit 보다 어렵고
-        # 6-digit hard 보다 빠른 generation). 3 hints + ball_heavy 0.75.
-        # v8 시도 (medium=v7 hard) → smoke 9분 0 produced timeout → v7 회귀.
-        "num_digits": 5,
-        "min_hints": 3,
-        "max_hints": 3,
-        "preferred_strikes": (0, 1),
-        "preferred_balls": (2, 4),
-        "target_residual": (3, 30),
-        "min_ball_heavy_ratio": 0.75,
+        "num_digits": 8,
+        "min_hints": 4,
+        "max_hints": 9,
+        # digit-SET reveal은 8D에서 DEAD 레버 (r3=0.35, r6=0.35 — 변화 없음).
+        # 모델 병목은 8개 위치 ARRANGEMENT, 어떤 자릿수가 있는지가 아님.
+        # 따라서 POSITION reveal로 완화: (위치 -> 자릿수) 쌍을 고정해 배열 작업을
+        # 직접 축소. 측정된 8D 맵:
+        # p0=0.28, p1=0.65, p2=0.84 (~+28%p/위치 — 거침).
+        # 50%는 p0과 p1 사이이므로 FLOAT(기대 위치 수) 사용: 0.6 => ~60% 퍼즐이
+        # 1개 위치 고정, 40%는 0개 => 0.28*0.4 + 0.65*0.6 ≈ 0.50.
+        "revealed_digits": 0,
+        "revealed_positions": 0.6,
+        "preferred_strikes": (0, 2),
+        "preferred_balls": (0, 6),
+        "pool_size": 50,
     },
     "hard": {
-        # v7.4: strikes (0,0) 너무 tight (18min 0 puzzle). 0-1 strike 허용 +
-        # ball_heavy 0.80. medium(5-digit) 와 자릿수 +1 + ball_heavy ↑0.05 → 어려움.
-        # v8 재tighten 시도는 smoke 단계에서 medium 통과 못 함 → v7 유지.
-        "num_digits": 6,
-        "min_hints": 3,
-        "max_hints": 4,
-        "preferred_strikes": (0, 1),
-        "preferred_balls": (3, 5),
-        "target_residual": (4, 50),
-        "min_ball_heavy_ratio": 0.80,
+        "num_digits": 8,
+        "min_hints": 4,
+        "max_hints": 9,
+        "revealed_digits": 0,
+        "preferred_strikes": (0, 2),
+        "preferred_balls": (0, 6),
+        "pool_size": 50,
     },
 }
 
 
 class BullsAndCows:
     def __init__(self, num_digits: int = 3):
-        if num_digits not in [3, 4, 5, 6]:
-            raise ValueError("자릿수는 3, 4, 5, 6 중 하나여야 합니다")
+        if num_digits not in [3, 4, 5, 6, 7, 8]:
+            raise ValueError("자릿수는 3, 4, 5, 6, 7, 8 중 하나여야 합니다")
         self.num_digits = num_digits
 
     def generate_number(self) -> str:
@@ -117,8 +222,8 @@ class BullsAndCows:
     def calculate_strikes_balls(self, secret: str, guess: str) -> Tuple[int, int]:
         if len(secret) != len(guess):
             raise ValueError("비밀 숫자와 추측의 자릿수가 같아야 합니다")
-        # Set lookup 은 "in" 체크당 O(1), str.__contains__ 은 O(n).
-        # 핫루프: 퍼즐 생성 retry 마다 O(num_digits!) 회 호출.
+        # set 조회는 str.__contains__의 O(n) 대비 "in" 검사당 O(1).
+        # 핫루프: 퍼즐 생성 retry마다 O(num_digits!)회 호출됨.
         secret_set = set(secret)
         strikes = 0
         balls = 0
@@ -169,6 +274,12 @@ class ProblemGenerator:
         self.game_4digit = BullsAndCows(4)
         self.game_5digit = BullsAndCows(5)
         self.game_6digit = BullsAndCows(6)
+        self.game_7digit = BullsAndCows(7)
+        self.game_8digit = BullsAndCows(8)
+        self._games = {
+            3: self.game_3digit, 4: self.game_4digit, 5: self.game_5digit,
+            6: self.game_6digit, 7: self.game_7digit, 8: self.game_8digit,
+        }
 
     def _is_duplicate_hint(self, hint: Hint, hints: List[Hint]) -> bool:
         for h in hints:
@@ -192,12 +303,18 @@ class ProblemGenerator:
         secret: str,
         difficulty: Difficulty,
         target_size: int = 80,
+        enrich_perms: bool = True,
     ) -> List[Hint]:
-        """비밀 숫자 순열을 활용하여 후보 힌트 풀을 구성합니다
-        (낮은 스트라이크/높은 볼 힌트 확보에 유리)."""
+        """S/B가 포함된 distinct-digit 추측으로 후보 힌트 풀 구성.
+
+        ``enrich_perms``가 True이면 비밀 숫자 자릿수의 순열(full-overlap 힌트,
+        strikes+balls == num_digits)로 풀을 시딩 — 레거시 볼 중심 전략에 유용.
+        정보 탐욕 경로는 False로 설정: 그런 전체 순열 힌트는 digit set 전체를
+        무료로 공개하므로, 비밀 숫자와 더 적은 자릿수를 공유하는 무작위 추측만
+        사용(현실적인 Bulls-and-Cows 힌트)."""
         pool: Dict[tuple, Hint] = {}
 
-        if difficulty != Difficulty.EASY:
+        if enrich_perms and difficulty != Difficulty.EASY:
             perms = list(itertools.permutations(secret))
             random.shuffle(perms)
             for perm in perms:
@@ -237,8 +354,8 @@ class ProblemGenerator:
         candidates: List[Hint],
         max_followups: int = 12,
     ) -> int:
-        """2단계 전방 탐색: `candidate` 적용 후 다음 힌트가 도달 가능한
-        최적 잔여 후보 수를 추정합니다. 중/상 난이도에서 사용."""
+        """2단계 전방 탐색: `candidate` 적용 후 다음 힌트로 가능한 최적 잔여를 찾음.
+        중/상 난이도에서 사용."""
         best = None
         base_hints = existing_hints + [candidate]
         base_candidates = [
@@ -352,61 +469,69 @@ class ProblemGenerator:
 
         return best_hint
 
-    def _select_hard_hint_sequence(
+    def _select_info_greedy(
         self,
         game: BullsAndCows,
-        secret: str,
         cfg: Dict[str, int],
-        candidate_space: List[str],
+        candidate_masks: List[Tuple[str, int]],
         hint_pool: List[Hint],
     ) -> Optional[Tuple[List[Hint], List[int]]]:
-        """상 난이도 전략: 초반에는 볼 중심 체인을 유지하고, 마지막에 유일 해로 수렴."""
+        """정보 탐욕 힌트 선택: 매 단계 후보 집합을 가장 많이 줄이는 풀 힌트를 선택,
+        정확히 1개의 후보(비밀 숫자)가 남을 때까지 반복.
+
+        볼 중심 "모호성 유지" 전략과 달리 항상 유일 해로 수렴(각 단계가 집합을 엄격히
+        줄이고 최소 1개의 스트라이크 힌트로 마지막 위치 모호성을 해결 가능), 5-7 자리
+        공간에서 생성 성공률 ~100%.
+
+        max_hints 내에 유일성에 도달할 수 없으면 (hints, residuals) 또는 None 반환
+        (드묾; caller가 새 비밀/풀로 재시도)."""
         if not hint_pool:
             return None
 
+        min_hints = cfg["min_hints"]
+        max_hints = cfg["max_hints"]
+        full_counts = _get_residual_counts(len(candidate_masks[0][0]))
+
+        current = list(candidate_masks)
         hints: List[Hint] = []
         residuals: List[int] = []
-        current = list(candidate_space)
-        max_hints = cfg["max_hints"]
-        min_hints = cfg["min_hints"]
-        target_lo, target_hi = cfg["target_residual"]
 
-        ranked_pool = sorted(
-            hint_pool,
-            key=lambda h: (h.balls, -h.strikes),
-            reverse=True,
-        )
-
-        for step in range(max_hints):
+        while len(hints) < max_hints:
+            # Step 0: current가 전체 공간이므로 잔여는 (S,B)에만 의존
+            # -> 조회로 대체(무료); 선택된 힌트에 대해서만
+            # 한 번 스캔.
+            full_scan = not hints
             best = None
             best_filtered = None
-            best_score = None
-            for hint in ranked_pool:
+            best_residual = None
+            for hint in hint_pool:
                 if self._is_duplicate_hint(hint, hints):
                     continue
-                filtered = [
-                    s for s in current
-                    if game.calculate_strikes_balls(s, hint.guess) == (hint.strikes, hint.balls)
-                ]
-                residual = len(filtered)
+                if full_scan:
+                    residual = full_counts.get((hint.strikes, hint.balls), 0)
+                    filtered = None
+                else:
+                    filtered = _filter_by_hint(
+                        current, hint.guess, hint.strikes, hint.balls
+                    )
+                    residual = len(filtered)
                 if residual < 1:
                     continue
-                if step + 1 < min_hints and residual == 1:
+                # 최소 힌트 예산이 채워지기 전에는 해결하지 않음.
+                if residual == 1 and len(hints) + 1 < min_hints:
                     continue
-                if step + 1 < max_hints and residual == 1:
-                    continue
-
-                ball_heavy = hint.balls >= 2 and hint.strikes <= 1
-                in_band = target_lo <= residual <= target_hi
-                closeness = -abs(residual - (target_lo + target_hi) / 2)
-                score = (ball_heavy, in_band, closeness, hint.balls, -hint.strikes)
-                if best_score is None or score > best_score:
+                if best_residual is None or residual < best_residual:
                     best = hint
                     best_filtered = filtered
-                    best_score = score
+                    best_residual = residual
 
             if best is None:
                 break
+
+            if best_filtered is None:
+                best_filtered = _filter_by_hint(
+                    current, best.guess, best.strikes, best.balls
+                )
 
             hints.append(best)
             current = best_filtered
@@ -415,35 +540,15 @@ class ProblemGenerator:
             if len(current) == 1 and len(hints) >= min_hints:
                 return hints, residuals
 
-        if len(hints) < min_hints:
-            return None
-
-        for hint in ranked_pool:
-            if self._is_duplicate_hint(hint, hints):
-                continue
-            filtered = [
-                s for s in current
-                if game.calculate_strikes_balls(s, hint.guess) == (hint.strikes, hint.balls)
-            ]
-            if len(filtered) == 1:
-                hints.append(hint)
-                residuals.append(1)
-                return hints, residuals
-
+        if len(current) == 1 and len(hints) >= min_hints:
+            return hints, residuals
         return None
 
     def generate_problem(self, difficulty: Difficulty, max_retries: int = 4000) -> Dict:
         """정확히 1개의 해를 가진 퍼즐을 구성적으로 생성합니다."""
         cfg = DIFFICULTY_CONFIGS[difficulty.name.lower()]
         num_digits = cfg["num_digits"]
-        if num_digits == 3:
-            game = self.game_3digit
-        elif num_digits == 4:
-            game = self.game_4digit
-        elif num_digits == 5:
-            game = self.game_5digit
-        else:
-            game = self.game_6digit
+        game = self._games.get(num_digits, self.game_6digit)
 
         min_hints = {difficulty: cfg["min_hints"]}
         max_hints = {difficulty: cfg["max_hints"]}
@@ -451,19 +556,26 @@ class ProblemGenerator:
         for retry in range(max_retries):
             secret = game.generate_number()
 
+            default_pool = 36 if difficulty == Difficulty.EASY else 28
             hint_pool = self._build_candidate_pool(
                 game,
                 secret,
                 difficulty,
-                target_size=36 if difficulty == Difficulty.EASY else 28,
+                target_size=cfg.get("pool_size", default_pool),
+                # 정보 탐욕(num_digits>=5)은 full-permutation 힌트로 digit set이
+                # 무료 노출되면 안 됨; 무작위 추측만 사용.
+                enrich_perms=num_digits < 5,
             )
 
-            # 캐싱: 6-digit hard 의 151200 list 를 retry 마다 재생성하지 않도록.
+            # 캐시: retry마다 순열 list 재구축 방지.
             candidate_space = _get_candidate_space(num_digits)
 
-            if difficulty == Difficulty.HARD:
-                structured = self._select_hard_hint_sequence(
-                    game, secret, cfg, candidate_space, hint_pool
+            # num_digits >= 5: 정보 탐욕 선택 (5-7 자리 공간에서 100% 신뢰 가능).
+            # 더 작은 자릿수는 레거시 2단계 전방 탐색 경로
+            # (_select_best_hint)로 폴백.
+            if num_digits >= 5:
+                structured = self._select_info_greedy(
+                    game, cfg, _get_candidate_masks(num_digits), hint_pool
                 )
                 if structured is None:
                     continue
@@ -471,8 +583,9 @@ class ProblemGenerator:
                 solutions = [secret]
             else:
                 hints = []
-                # 캐시를 그대로 alias 하지 않도록 복사 (이후 list-comp 이 새 리스트
-                # 를 만들어 rebind 하기는 하지만 초기 bind 가 캐시를 가리키는 것을 회피).
+                # 이후 filter 재바인딩이 캐시에 영향 주지 않도록 복사.
+                # (이후 list comprehension이 새 list를 만들지만, 초기 바인딩이
+                # 캐시를 alias하면 문제가 됨.)
                 solutions = list(candidate_space)
                 while len(hints) < max_hints[difficulty]:
                     if len(solutions) == 1 and len(hints) >= min_hints[difficulty]:
@@ -504,16 +617,19 @@ class ProblemGenerator:
                 residuals = None
 
             if len(solutions) == 1 and len(hints) >= min_hints[difficulty]:
-                candidates = [''.join(p) for p in itertools.permutations('0123456789', num_digits)]
-                initial_candidates = len(candidates)
+                # initial_candidates는 순열 개수뿐; 성공마다 (최대 151200 요소) list를
+                # 재구축할 필요 없음.
+                initial_candidates = len(_get_candidate_space(num_digits))
                 if residuals is None:
+                    cur = _get_candidate_masks(num_digits)
                     residuals = []
                     for h in hints:
-                        candidates = [
-                            c for c in candidates
-                            if game.calculate_strikes_balls(c, h.guess) == (h.strikes, h.balls)
-                        ]
-                        residuals.append(len(candidates))
+                        cur = _filter_by_hint(cur, h.guess, h.strikes, h.balls)
+                        residuals.append(len(cur))
+                    # 노이즈 추가가 유일성을 깨면 안 되지만, 예상치 못한 순서
+                    # 효과에 대비한 가드.
+                    if residuals[-1] != 1:
+                        continue
 
                 prev = initial_candidates
                 per_hint_bits = []
@@ -538,12 +654,37 @@ class ProblemGenerator:
                 if ball_heavy_ratio < cfg.get("min_ball_heavy_ratio", 0.0):
                     continue
 
+                # 난이도 손잡이: 정답의 j개 자릿수를 명시적으로 공개(위치 미상).
+                # digit set을 명시하는 것이 모델에게 실제로 퍼즐을 쉽게 만듦 —
+                # DIFFICULTY_CONFIGS 주석 참고.
+                answer = solutions[0]
+                reveal_n = cfg.get("revealed_digits", 0)
+                revealed = sorted(random.sample(answer, reveal_n)) if reveal_n else []
+
+                # 위치 공개: (위치 -> 자릿수) 쌍을 고정해 배열을 직접 완화
+                # (digit-set 공개보다 강한 레버).
+                # FLOAT = 기대 위치 수를 받음: 정수 부분은 항상
+                # 공개, 소수 부분은 그 확률로. 이를 통해
+                # 퍼즐별 MIX로 티어 평균이 정수 단계 사이에 오도록 함
+                # (각 정수 단계는 8D에서 거친 ~+28%p).
+                reveal_pos_cfg = cfg.get("revealed_positions", 0)
+                base_pos = int(reveal_pos_cfg)
+                reveal_pos_n = base_pos + (
+                    1 if random.random() < (reveal_pos_cfg - base_pos) else 0
+                )
+                revealed_positions = []
+                if reveal_pos_n:
+                    idxs = sorted(random.sample(range(num_digits), reveal_pos_n))
+                    revealed_positions = [[i, answer[i]] for i in idxs]
+
                 return {
                     "difficulty": difficulty.name.lower(),
                     "num_digits": num_digits,
                     "hints": [hint.to_dict() for hint in hints],
                     "hint_text": self._format_hints(hints),
-                    "answer": solutions[0],
+                    "answer": answer,
+                    "revealed_digits": revealed,
+                    "revealed_positions": revealed_positions,
                     "problem_text": self._create_problem_text(num_digits, hints),
                     "step_metrics": {
                         "initial_candidates": initial_candidates,
@@ -648,6 +789,42 @@ def create_question(problem: Dict) -> str:
         for i, h in enumerate(hints)
     ])
 
+    # 선택적 난이도 보조: 비밀 숫자의 일부 자릿수를 미리 공개
+    # (위치 미상), 나머지는 힌트로 추론.
+    revealed = problem.get('revealed_digits') or []
+    known_block = ""
+    if revealed:
+        known_list = ", ".join(str(d) for d in revealed)
+        if len(revealed) >= num_digits:
+            known_block = (
+                f"\n알려진 정보: 비밀 숫자는 다음 {num_digits}개 자릿수의 배열입니다 "
+                f"(힌트로 순서를 추론하세요):\n  {known_list}\n"
+            )
+        elif len(revealed) == 1:
+            known_block = (
+                f"\n알려진 자릿수 (이 숫자가 비밀 숫자에 포함되지만 위치는 모름; "
+                f"나머지 {num_digits - 1}개는 스스로 추론):\n  {known_list}\n"
+            )
+        else:
+            known_block = (
+                f"\n알려진 자릿수 (이 {len(revealed)}개 숫자가 비밀 숫자에 포함되지만 "
+                f"위치는 모름; 나머지 {num_digits - len(revealed)}개는 스스로 추론):\n"
+                f"  {known_list}\n"
+            )
+
+    # 선택적 난이도 보조: 일부 (위치 -> 자릿수) 쌍을 직접 고정하여
+    # 나머지 위치만 힌트로 풀도록 함.
+    revealed_positions = problem.get('revealed_positions') or []
+    if revealed_positions:
+        pos_list = ", ".join(
+            f"{int(i) + 1}번째 자리 = {d}" for i, d in revealed_positions
+        )
+        rest = num_digits - len(revealed_positions)
+        known_block += (
+            f"\n알려진 위치 (왼쪽부터 1번째 자리 기준으로 해당 자리의 숫자가 확정됨; "
+            f"나머지 {rest}개 자리는 추론):\n  {pos_list}\n"
+        )
+
     question = f"""다음 숫자 야구 퍼즐을 풀어보세요.
 
 규칙:
@@ -658,7 +835,7 @@ def create_question(problem: Dict) -> str:
 
 힌트:
 {hints_text}
-
+{known_block}
 단계별로 생각하며 유일한 {num_digits}자리 비밀 숫자를 찾으세요.
 
 다음 형식으로 답을 제시하세요:
@@ -684,7 +861,24 @@ def validate_problem(problem: Dict) -> Tuple[bool, str]:
         if not game.check_number_against_hints(answer, hints):
             return False, f"정답 {answer}이 모든 힌트를 만족하지 않습니다"
 
-        solutions = game.find_all_solutions(hints, max_count=2)
+        revealed = problem.get('revealed_digits') or []
+        if any(str(d) not in answer for d in revealed):
+            return False, f"공개된 자릿수 {revealed}가 정답 {answer}에 포함되지 않습니다"
+
+        revealed_positions = problem.get('revealed_positions') or []
+        for i, d in revealed_positions:
+            if not (0 <= int(i) < num_digits) or answer[int(i)] != str(d):
+                return False, f"공개된 위치 {(i, d)}가 정답 {answer}와 일치하지 않습니다"
+
+        # 마스크 기반 유일성: 후보 공간을 반복 필터링(각 힌트가 축소),
+        # 힌트마다 모든 순열을 스캔하는 것보다 훨씬 빠름 —
+        # 7-8 자리 공간(151K-1.8M 후보)에서 중요.
+        cur = _get_candidate_masks(num_digits)
+        for h in hints:
+            cur = _filter_by_hint(cur, h.guess, h.strikes, h.balls)
+            if len(cur) <= 1:
+                break
+        solutions = [s for s, _ in cur]
         if len(solutions) == 0:
             return False, "주어진 힌트를 만족하는 해가 존재하지 않습니다"
         elif len(solutions) > 1:
@@ -702,22 +896,78 @@ def validate_problem(problem: Dict) -> Tuple[bool, str]:
 # 데이터셋 생성
 # ============================================================
 
-def create_dataset_files(num_questions: int):
+def _apply_digit_permutation(problem: Dict, perm: Dict[str, str]) -> Dict:
+    """비밀 숫자와 모든 추측에 자릿수 전단사(bijection) 적용.
+
+    자릿수 순열은 Bulls-and-Cows 게임의 대칭성: perm이 '0'..'9'의 전단사이면
+    비밀 숫자와 모든 추측의 각 자릿수를 perm[digit]으로 치환해도 동일한 S/B를
+    갖는 새 유효 퍼즐이 생성됨."""
+    import copy
+    new = copy.deepcopy(problem)
+    new['answer'] = ''.join(perm[d] for d in problem['answer'])
+    new_hints = []
+    for h in problem['hints']:
+        nh = dict(h)
+        nh['guess'] = ''.join(perm[d] for d in h['guess'])
+        new_hints.append(nh)
+    new['hints'] = new_hints
+    if problem.get('revealed_digits'):
+        new['revealed_digits'] = sorted(perm[str(d)] for d in problem['revealed_digits'])
+    if problem.get('revealed_positions'):
+        new['revealed_positions'] = [
+            [i, perm[str(d)]] for i, d in problem['revealed_positions']
+        ]
+    if 'hint_text' in new:
+        new.pop('hint_text', None)
+    if 'problem_text' in new:
+        new.pop('problem_text', None)
+    return new
+
+
+def create_dataset_files(num_questions: int, difficulties: Optional[List[str]] = None):
+    """숫자 야구 데이터셋 파일 생성.
+
+    생성 속도 (~20ms easy / ~120ms medium / ~600ms hard/퍼즐)가 빠르고 정보 탐욕
+    선택으로 100% 신뢰 가능하므로, 다양성 극대화를 위해 모든 퍼즐을 새로 생성.
+    자릿수 순열 파생은 해당 난이도의 신규 생성이 요청 수에 미달할 때만 보충용으로
+    유지 (자릿수 순열은 Bulls-and-Cows 게임의 정확한 대칭: S/B 수 불변, 따라서
+    순열 퍼즐은 추가 solve 호출 없이 유효).
+
+    ``difficulties``는 생성할 티어를 제한 (예: ``["medium"]``으로 한 티어만 재조정).
+    단일 티어이면 ``num_questions``가 해당 티어 개수; 아니면 티어들에 분배.
+    합쳐진 JSONL에는 생성된 티어만 포함되므로, downstream split 단계는 해당
+    ``*_<tier>.jsonl`` 파일만 덮어씀.
+    """
     import pandas as pd
+
+    # 전부 신규 생성: cap >= 현실적인 난이도별 개수이므로 bases_needed == count
+    # (신규 생성이 부족할 때만 순열 파생).
+    BASE_PER_DIFF = 100000
+
+    _name_to_diff = {
+        "easy": Difficulty.EASY, "medium": Difficulty.MEDIUM, "hard": Difficulty.HARD,
+    }
+    if difficulties is None:
+        difficulties = [Difficulty.EASY, Difficulty.MEDIUM, Difficulty.HARD]
+    else:
+        difficulties = [_name_to_diff[d.lower()] for d in difficulties]
 
     print(f"{num_questions}개의 숫자 야구 퍼즐을 생성합니다...")
 
     generator = ProblemGenerator()
 
-    difficulties = [Difficulty.EASY, Difficulty.MEDIUM, Difficulty.HARD]
-    puzzles_per_diff = num_questions // len(difficulties)
-    remainder = num_questions % len(difficulties)
+    # 단일 티어 -> num_questions가 해당 티어 개수; 아니면 티어들에 분배.
+    if len(difficulties) == 1:
+        puzzles_per_diff = num_questions
+        remainder = 0
+    else:
+        puzzles_per_diff = num_questions // len(difficulties)
+        remainder = num_questions % len(difficulties)
 
     all_puzzles = []
-    MAX_RETRIES_PER_PUZZLE = 50  # 난이도별 dedup 재시도 한도
+    MAX_RETRIES_PER_PUZZLE = 50
 
     def _hint_key(problem):
-        # 모델이 보는 input 은 num_digits + hint set. 동일 hint set 은 reject.
         hints = problem.get('hints', [])
         return (
             problem.get('num_digits'),
@@ -727,8 +977,8 @@ def create_dataset_files(num_questions: int):
             )),
         )
 
-    for i, difficulty in enumerate(difficulties):
-        count = puzzles_per_diff + (1 if i < remainder else 0)
+    for di, difficulty in enumerate(difficulties):
+        count = puzzles_per_diff + (1 if di < remainder else 0)
         diff_name = difficulty.name.lower()
 
         if count == 0:
@@ -736,37 +986,58 @@ def create_dataset_files(num_questions: int):
 
         print(f"\n=== {diff_name} 난이도 퍼즐 생성 중 ({count}개 필요) ===")
 
-        seen_keys = set()
-        diff_success = 0
+        # --- Phase 1: 기반 퍼즐 생성 ---
+        bases_needed = min(BASE_PER_DIFF, count)
+        # 내부 retry 예산을 줄여 generate_problem 호출이 빠르게 실패하도록;
+        # 외부 루프에서 보상.
+        base_inner_retries = 300  # 기본값 4000 대비
+        base_problems: List[Dict] = []
         retries = 0
-        max_retries = count * MAX_RETRIES_PER_PUZZLE
-        while diff_success < count:
+        max_retries_base = bases_needed * MAX_RETRIES_PER_PUZZLE
+        while len(base_problems) < bases_needed and retries < max_retries_base:
             try:
-                problem = generator.generate_problem(difficulty)
+                problem = generator.generate_problem(
+                    difficulty, max_retries=base_inner_retries
+                )
             except RuntimeError as e:
                 retries += 1
-                print(f"  [시도 {diff_success + retries}] 실패: {e}")
-                if retries > max_retries:
-                    print(f"  ⚠️ {diff_name}: 재시도 한도 초과 ({diff_success}/{count})")
-                    break
+                print(f"  [기반 시도 {retries}] 실패: {e}")
                 continue
-
             is_valid, msg = validate_problem(problem)
             if not is_valid:
                 retries += 1
-                print(f"  [시도 {diff_success + retries}] 검증 실패: {msg}")
-                if retries > max_retries:
-                    print(f"  ⚠️ {diff_name}: 재시도 한도 초과 ({diff_success}/{count})")
-                    break
                 continue
+            base_problems.append(problem)
+            print(f"  [기반 {len(base_problems)}/{bases_needed}] 자릿수={problem['num_digits']}, "
+                  f"힌트={len(problem['hints'])}, 정답={problem['answer']}")
+
+        if not base_problems:
+            print(f"  {diff_name}: 기반 퍼즐 생성 실패; 건너뜀")
+            continue
+
+        # --- Phase 2: 자릿수 순열로 나머지 파생 ---
+        diff_success = 0
+        seen_keys: set = set()
+
+        for j in range(count):
+            base = base_problems[j % len(base_problems)]
+            if j < len(base_problems):
+                problem = base
+            else:
+                rng = random.Random(999983 * di + 100003 * j)
+                digits = list('0123456789')
+                rng.shuffle(digits)
+                perm = {str(i): digits[i] for i in range(10)}
+                problem = _apply_digit_permutation(base, perm)
 
             key = _hint_key(problem)
             if key in seen_keys:
-                retries += 1
-                if retries > max_retries:
-                    print(f"  ⚠️ {diff_name}: dedup 재시도 한도 초과 ({diff_success}/{count})")
-                    break
-                continue
+                rng2 = random.Random(777777 * di + 13 * j)
+                digits2 = list('0123456789')
+                rng2.shuffle(digits2)
+                perm2 = {str(i): digits2[i] for i in range(10)}
+                problem = _apply_digit_permutation(base_problems[0], perm2)
+                key = _hint_key(problem)
             seen_keys.add(key)
 
             puzzle_data = {
@@ -779,7 +1050,7 @@ def create_dataset_files(num_questions: int):
             all_puzzles.append(puzzle_data)
             diff_success += 1
             print(f"  [{diff_success}/{count}] 자릿수={problem['num_digits']}, "
-                  f"힌트={len(problem['hints'])}개, 정답={problem['answer']}")
+                  f"힌트={len(problem['hints'])}, 정답={problem['answer']}")
 
     print(f"\n총 {len(all_puzzles)}개의 퍼즐이 생성되었습니다")
 
@@ -809,12 +1080,14 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description="숫자 야구 퍼즐 생성기 (한국어)")
-    parser.add_argument("--num", type=int, default=12, help="생성할 문제 수")
+    parser.add_argument("--num", type=int, default=12, help="생성할 문제 수 (--difficulty 지정 시 해당 티어 수; 미지정 시 티어들에 분배)")
+    parser.add_argument("--difficulty", choices=["easy", "medium", "hard"], nargs="+", default=None, help="생성할 티어 지정, 예: --difficulty medium")
+    parser.add_argument("--workers", type=int, default=0, help="호환성용; fast mode는 template bank 사용")
 
     args = parser.parse_args()
 
     print("=" * 60)
-    print("숫자 야구 퍼즐 생성기")
+    print("숫자 야구(Bulls and Cows) 퍼즐 생성기 (한국어)")
     print("=" * 60)
 
-    create_dataset_files(num_questions=args.num)
+    create_dataset_files(num_questions=args.num, difficulties=args.difficulty)

@@ -7,31 +7,105 @@ Ported from logical-puzzles-me/yacht_dice/generator.py:
 - Greedy reference solver for greedy_gap metric
 - Per-round top1/top2 margin and decision_complexity metrics
 - Delta-band difficulty filtering with co-prime seed retry
-- step_metrics exported in puzzle JSONL
+- step_metrics used internally during generation (not exported to CSV/JSONL)
+
+Spotcheck helpers (formerly evaluation/yacht_dice_spotcheck.py) are defined
+inline below so this file is the single source of truth for generation.
 """
 
+import hashlib
 import random
 import json
 import itertools
 import sys
+from itertools import combinations
 from pathlib import Path
 
 _REPO_ROOT = Path(__file__).resolve().parent.parent
 if str(_REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT))
 
-from typing import List, Dict, Tuple, Optional, Literal
+from typing import List, Dict, Tuple, Optional, Literal, Callable
 from collections import Counter
 from dataclasses import dataclass
 
 import numpy as np
 
-from evaluation.yacht_dice_spotcheck import (
-    SPOTCHECK_K,
-    append_spotcheck_user_suffix,
-    deterministic_round_pick_1based,
-    spotcheck_grading_total,
-)
+
+# ============================================================
+# Spotcheck helpers (single source of truth)
+# ============================================================
+
+# Rounds in the spotcheck partial sum (0 => answer is full 12-round optimal total).
+# v33: easy K=2 + constructive dice -> graded answer is the SUM of two globally
+# exclusive fixed-score spot rounds (55/60/65/70/75/80/90/100, ...), not a single
+# {25,30,40,50}. Constructive placement keeps both spot scores stable under the
+# global optimum. medium/hard unchanged from v32 calibration.
+SPOTCHECK_K: Dict[str, int] = {
+    "easy": 2,
+    "medium": 1,
+    "hard": 5,
+}
+
+
+def deterministic_round_pick_1based(public_id: str, k: int) -> List[int]:
+    """Return ``k`` distinct round indices in 1..12, stable for a given ``public_id``."""
+    if k <= 0:
+        return []
+    digest = hashlib.sha256(f"yacht_dice_spotcheck_v1|{public_id}".encode()).digest()
+    h = int.from_bytes(digest[:16], "big")
+    combs = list(combinations(range(1, 13), k))
+    chosen = combs[h % len(combs)]
+    return sorted(chosen)
+
+
+def _category_for_round(optimal_assignment: Dict, round_idx0: int) -> str:
+    if round_idx0 in optimal_assignment:
+        return optimal_assignment[round_idx0]
+    return optimal_assignment[str(round_idx0)]
+
+
+def spotcheck_grading_total(
+    difficulty: str,
+    public_id: str,
+    dice_results: List[List[int]],
+    optimal_assignment: Dict,
+    score_fn: Callable[[List[int], str], int],
+) -> Optional[int]:
+    """Partial sum on spotcheck rounds, or ``None`` if ``k == 0``."""
+    k = SPOTCHECK_K.get(difficulty, 0)
+    if k <= 0:
+        return None
+    total = 0
+    for r1 in deterministic_round_pick_1based(public_id, k):
+        i0 = r1 - 1
+        cat = _category_for_round(optimal_assignment, i0)
+        total += score_fn(dice_results[i0], cat)
+    return total
+
+
+def append_spotcheck_user_suffix(
+    base_question: str,
+    difficulty: str,
+    public_id: str,
+) -> str:
+    """Append spotcheck instructions when ``SPOTCHECK_K[difficulty] > 0``."""
+    k = SPOTCHECK_K.get(difficulty, 0)
+    if k <= 0:
+        return base_question
+
+    rounds = deterministic_round_pick_1based(public_id, k)
+    rlist = ", ".join(str(r) for r in rounds)
+
+    suffix = (
+        f"\n\nIMPORTANT — Spotcheck grading (not the full 12-round total):\n"
+        f"First compute an optimal assignment that maximizes the usual total score over all 12 rounds "
+        f"(same rules and bonus as always). Using that optimal assignment, output ONLY the sum of "
+        f"the per-round scores for rounds {rlist}. Your final line must be exactly "
+        f"`Answer: <integer>` with that partial sum.\n"
+    )
+
+    return base_question + suffix
 
 # Precompute the 720 permutations of (0..5) once (used for every solve call).
 _PERMS_6 = np.array(list(itertools.permutations(range(6))), dtype=np.int8)  # (720, 6)
@@ -341,29 +415,29 @@ def format_solution(dice_results: List[List[int]], assignment: Dict[int, str],
 # ============================================================
 
 DIFFICULTY_CONFIGS: Dict[str, Dict] = {
-    # v15: align with ``evaluation.yacht_dice_spotcheck.SPOTCHECK_K`` + acc targets.
-    # - easy: even more high-signal rolls (yacht / straights) for reliable 2-round sums.
-    # - medium: a bit more ``normal`` chaos vs v14 to pull acc down from ~66%.
-    # - hard: same roll machinery as medium; bands separate difficulty.
+    # v21: easy dice 재구조화. v20 diversification 은 acc 17→20% 미세 개선뿐.
+    #   four_kind_high 의 "sum of all dice" 규칙이 모델에게 까다로움 → 제거.
+    #   full_house 는 (3a+2b vs 25 비교) 판단이 필요 → 제거.
+    #   yacht / LS / SS 만으로 압축 → 카테고리 매핑이 거의 결정적.
+    #   K=1 + is_unique 필터와 결합하여 ~30-50% 기대.
     "easy": {
+        # v31: fixed-score-dominant pool for K=2 sum answers.
+        # Spot rounds must land on Yacht/Straight/Full House (fixed values), so
+        # the pool is heavily weighted to those; a little three_kind keeps some
+        # non-spot variety without blocking acceptance.
         "roll_types": [
-            "yacht",
-            "large_straight",
-            "small_straight",
-            "full_house",
-            "four_kind_high",
+            "yacht", "large_straight", "small_straight", "full_house",
             "three_kind",
-            "pair",
         ],
-        "weights": [24, 22, 14, 14, 8, 10, 8],
+        "weights": [26, 22, 26, 22, 4],
     },
     "medium": {
-        "roll_types": ["three_kind", "pair", "normal"],
-        "weights": [30, 30, 40],
+        "roll_types": ["four_kind_high", "full_house", "three_kind", "pair", "normal"],
+        "weights": [12, 13, 25, 25, 25],
     },
     "hard": {
         "roll_types": ["three_kind", "pair", "normal"],
-        "weights": [18, 22, 60],
+        "weights": [15, 20, 65],
     },
 }
 
@@ -374,22 +448,108 @@ DIFFICULTY_CONFIGS: Dict[str, Dict] = {
 # reject obvious outliers — e.g., a hard puzzle where greedy already nears
 # optimal, or an easy puzzle that traps greedy by a large margin.
 _DIFFICULTY_BANDS = {
-    # v14: tighten easy further (push model toward near-greedy, low-tie puzzles).
-    # Medium / hard floors slightly relaxed vs v13 so hard dice fix still yields
-    # enough accepted puzzles under max_retries.
+    # v21 calibration (target 75/50/25 vs v20 measured 20/47/31):
+    # - easy: band loose (quality 는 dice mix + is_unique 필터로 보장).
+    # - medium: 변경 없음 (47% — target 안).
+    # - hard: 31% — 1%p 초과. floor 살짝 강화 (gap 18→20, complexity 6.0→6.5).
     "easy": {
-        "greedy_gap_abs": {"min": 0, "max": 6},
-        "decision_complexity": {"min": 0.0, "max": 2.05},
+        # v24: dice 다양화로 complexity 자연 증가 → band 도 완화.
+        # gap_abs 0-3 → 0-8 / complexity 0-1.5 → 0-3.0 로 확장.
+        "greedy_gap_abs": {"min": 0, "max": 8},
+        "decision_complexity": {"min": 0.0, "max": 3.0},
     },
     "medium": {
-        "greedy_gap_abs": {"min": 4, "max": 52},
-        "decision_complexity": {"min": 2.5, "max": 12.5},
+        "greedy_gap_abs": {"min": 3, "max": 30},
+        "decision_complexity": {"min": 2.0, "max": 7.0},
     },
     "hard": {
-        "greedy_gap_abs": {"min": 10, "max": None},
-        "decision_complexity": {"min": 4.5, "max": None},
+        "greedy_gap_abs": {"min": 20, "max": None},
+        "decision_complexity": {"min": 6.5, "max": None},
     },
 }
+
+
+# ============================================================
+# Easy-tier constructive builders
+# ============================================================
+# The easy task grades a sum of K spotcheck rounds taken from the GLOBAL optimal
+# assignment. Random dice rarely make those spot categories globally exclusive,
+# so models place e.g. Yacht on a different round and the spot sum collapses
+# below the gold (all errors are negative). To fix this we construct the dice so
+# each spot round carries a high-value category that NO other round can match,
+# forcing the global optimum to assign it there regardless of the rest.
+
+# Spot categories that are easy to make globally exclusive with a clear margin.
+EASY_SPOT_CATEGORIES = ("yacht", "large_straight", "small_straight", "full_house")
+EASY_SPOT_SCORE = {
+    "yacht": 50,
+    "large_straight": 40,
+    "small_straight": 30,
+    "full_house": 25,
+}
+
+
+def _build_easy_spot_dice(cat: str, rng: random.Random) -> List[int]:
+    """Dice for a spot round whose isolated top1 is ``cat`` with a large margin."""
+    if cat == "yacht":
+        v = rng.randint(1, 6)
+        return [v] * 5
+    if cat == "large_straight":
+        start = rng.choice([1, 2])
+        d = list(range(start, start + 5))
+        rng.shuffle(d)
+        return d
+    if cat == "small_straight":
+        base = list(rng.choice([[1, 2, 3, 4], [2, 3, 4, 5], [3, 4, 5, 6]]))
+        # Duplicate an existing value so the 5th die cannot extend to a large
+        # straight (keeps the round a clean Small Straight = 30).
+        d = base + [rng.choice(base)]
+        rng.shuffle(d)
+        return d
+    if cat == "full_house":
+        # a=1 keeps the three-of-a-kind sum small (<= 15) so Full House (25)
+        # stays the clear top1 with margin >= 10.
+        b = rng.choice([2, 3, 4, 5, 6])
+        d = [1, 1, 1, b, b]
+        rng.shuffle(d)
+        return d
+    raise ValueError(f"unknown spot category: {cat}")
+
+
+def _build_easy_noise_dice(rng: random.Random) -> List[int]:
+    """Low-value dice that cannot form yacht/straight/full-house/3-4-of-a-kind.
+
+    Uses a 2-1-2 split over three non-consecutive values, so no category that a
+    spot round relies on (Yacht/LS/SS/Full House) can be matched elsewhere.
+    """
+    for _ in range(200):
+        vals = rng.sample(range(1, 7), 3)
+        a, b, c = vals
+        dice = [a, a, b, c, c]  # counts 2-2-1 -> no 3-of-a-kind / full house / yacht
+        s = set(dice)
+        # reject any 4-in-a-row (small straight) just in case
+        if any({x, x + 1, x + 2, x + 3} <= s for x in (1, 2, 3)):
+            continue
+        rng.shuffle(dice)
+        return dice
+    # Fallback that is trivially safe.
+    return [1, 1, 3, 3, 5]
+
+
+def _build_easy_constructive_dice(
+    spot_rounds_0based: List[int],
+    spot_cats: List[str],
+    rng: random.Random,
+    num_rounds: int = 12,
+) -> List[List[int]]:
+    """Place each spot category on its spot round; fill the rest with noise."""
+    dice: List[Optional[List[int]]] = [None] * num_rounds
+    for idx, cat in zip(spot_rounds_0based, spot_cats):
+        dice[idx] = _build_easy_spot_dice(cat, rng)
+    for i in range(num_rounds):
+        if dice[i] is None:
+            dice[i] = _build_easy_noise_dice(rng)
+    return [list(d) for d in dice]
 
 
 class YachtDiceProblemGenerator:
@@ -484,8 +644,13 @@ class YachtDiceProblemGenerator:
         return dice_results
 
     def generate_problem(self, difficulty: str, problem_id: int = 1, seed: int = None,
-                         max_retries: int = 200) -> Dict:
-        """Generate a single problem; retries seeds until metrics fit difficulty band."""
+                         max_retries: int = 200, forced_dice: List[List[int]] = None) -> Dict:
+        """Generate a single problem; retries seeds until metrics fit difficulty band.
+
+        If ``forced_dice`` is supplied, the band-retry loop is skipped and metrics
+        are computed for that exact dice configuration (used by the constructive
+        easy-tier generator).
+        """
         if seed is None:
             difficulty_offset = {"easy": 10000, "medium": 20000, "hard": 30000}
             seed = 1000 + problem_id + difficulty_offset.get(difficulty, 0)
@@ -508,9 +673,13 @@ class YachtDiceProblemGenerator:
         in_band = False
         trial_seed = seed
 
-        for retry in range(max_retries):
+        effective_retries = 1 if forced_dice is not None else max_retries
+        for retry in range(effective_retries):
             trial_seed = seed + retry * 997
-            dice_results = self.generate_dice_by_difficulty(difficulty, trial_seed)
+            if forced_dice is not None:
+                dice_results = [list(r) for r in forced_dice]
+            else:
+                dice_results = self.generate_dice_by_difficulty(difficulty, trial_seed)
             optimal_score, optimal_assignment, is_unique = solve_yacht_dice(dice_results, config)
             greedy_score, _ = solve_yacht_dice_greedy(dice_results, config)
             greedy_gap = optimal_score - greedy_score
@@ -550,6 +719,11 @@ class YachtDiceProblemGenerator:
                 'zero_margin_rounds': zero_margin_rounds,
                 'bonus_applied': bonus_applied,
             }
+
+            # Constructive (forced) dice bypass band filtering entirely.
+            if forced_dice is not None:
+                in_band = True
+                break
 
             # New band key: greedy_gap_abs (legacy 'greedy_gap' also accepted).
             gap_band = band.get('greedy_gap_abs') or band.get('greedy_gap', {})
@@ -715,8 +889,13 @@ def _build_yacht_solution_en(
     return "\n".join(lines)
 
 
+DATASET_COLUMNS = ("id", "question", "answer", "solution", "difficulty")
 
-def create_dataset_files(num_questions: int):
+
+def create_dataset_files(
+    num_questions: int,
+    difficulties: Optional[List[str]] = None,
+):
     """Create CSV + JSONL dataset files for Yacht Dice puzzles.
 
     Calls ``generate_problem`` with a per-difficulty inner retry budget so each
@@ -724,22 +903,42 @@ def create_dataset_files(num_questions: int):
     ``_DIFFICULTY_BANDS``).  Puzzles that exhaust retries may still be
     out-of-band (``band_violation`` in step_metrics) but remain valid with the
     correct optimal score under the per-difficulty ``YachtDiceConfig``.
+
+    If ``difficulties`` is a single tier (e.g. ``["easy"]``), writes only
+    ``data/jsonl/yacht_dice_en_easy.jsonl`` and skips the combined CSV/JSONL.
     """
     import pandas as pd
 
-    fast_retries_by_diff = {"easy": 200, "medium": 120, "hard": 90}
+    fast_retries_by_diff = {"easy": 60, "medium": 120, "hard": 90}
 
-    print(f"Generating {num_questions} Yacht Dice puzzles (fast mode)...")
+    all_tiers = ["easy", "medium", "hard"]
+    if difficulties is None:
+        difficulties = list(all_tiers)
+    else:
+        difficulties = [d.lower() for d in difficulties]
+        bad = [d for d in difficulties if d not in all_tiers]
+        if bad:
+            raise ValueError(f"Unknown difficulty tier(s): {bad}; expected {all_tiers}")
+
+    print(
+        f"Generating {num_questions} Yacht Dice puzzles "
+        f"(tiers: {', '.join(difficulties)})..."
+    )
 
     generator = YachtDiceProblemGenerator()
     base_cfg = YachtDiceConfig()
 
-    difficulties = ["easy", "medium", "hard"]
     puzzles_per_diff = num_questions // len(difficulties)
     remainder = num_questions % len(difficulties)
 
     all_puzzles: List[Dict] = []
     problem_id = 1
+
+    # Easy-tier acceptance policy (K=2 constructive).
+    # Each spot round must be globally exclusive with a clear top1 margin; the
+    # graded answer is the SUM of those two fixed-score categories (55..100).
+    # No single answer value may exceed this share of the dataset (anti-collapse).
+    EASY_MAX_VALUE_SHARE = 0.20
 
     def _dice_key(dice_results):
         return tuple(tuple(sorted(r)) for r in dice_results)
@@ -767,12 +966,43 @@ def create_dataset_files(num_questions: int):
         retries = 0
         MAX_OUTER_RETRIES = count * 30
         inner_retries = fast_retries_by_diff.get(difficulty, 70)
+        easy_margin_min = 10
+        easy_value_counts: Dict[int, int] = {}
+        easy_max_per_value = max(2, int(round(EASY_MAX_VALUE_SHARE * count)))
 
         while diff_success < count and retries < MAX_OUTER_RETRIES:
             retries += 1
-            problem = generator.generate_problem(
-                difficulty, problem_id, max_retries=inner_retries
-            )
+            # Lightweight calibration: if acceptance is too low, relax the
+            # spot-round margin slightly so generation does not stall.
+            if difficulty == "easy" and retries % 40 == 0:
+                accepted_rate = diff_success / retries
+                if accepted_rate < 0.15:
+                    easy_margin_min = max(8, easy_margin_min - 1)
+            if difficulty == "easy":
+                # Constructive generation: plant globally-exclusive high-value
+                # categories on the deterministic spot rounds.
+                k_spot = SPOTCHECK_K.get("easy", 0)
+                public_id_pre = f"yacht_dice_en_easy_{diff_success:04d}"
+                spot_rounds_pre = [
+                    r - 1 for r in deterministic_round_pick_1based(public_id_pre, k_spot)
+                ]
+                crng = random.Random(1000 + problem_id + 10000)
+                spot_cats_choice = crng.sample(EASY_SPOT_CATEGORIES, len(spot_rounds_pre))
+                # Large + Small Straight cannot coexist: an LS round also scores
+                # Small Straight (30), which would break SS exclusivity.
+                while ("small_straight" in spot_cats_choice
+                       and "large_straight" in spot_cats_choice):
+                    spot_cats_choice = crng.sample(EASY_SPOT_CATEGORIES, len(spot_rounds_pre))
+                forced = _build_easy_constructive_dice(
+                    spot_rounds_pre, spot_cats_choice, crng
+                )
+                problem = generator.generate_problem(
+                    "easy", problem_id, forced_dice=forced
+                )
+            else:
+                problem = generator.generate_problem(
+                    difficulty, problem_id, max_retries=inner_retries
+                )
             is_valid, _ = generator.validate_problem(problem)
             if not is_valid:
                 problem_id += 1
@@ -784,6 +1014,84 @@ def create_dataset_files(num_questions: int):
             if difficulty == "easy" and sm.get("band_violation"):
                 problem_id += 1
                 continue
+            # v25: v21~v24 의 is_unique_assignment 필터는 generation 을 거의
+            # 완전히 막음 (8 dice 타입 다양화에도 pass rate ~0.1% 미만).
+            # 진짜 필요한 조건은 spot 라운드의 카테고리만 모든 최적해에서
+            # 일치하는 것 (전체 배정 유일성이 아님). K=2 이므로 두 스팟 라운드
+            # 대안: spot 라운드가 명백한 dominant 카테고리를 가지면
+            # (해당 라운드의 per_round_margin >= 10), 어떤 최적해를 골라도
+            # 그 라운드는 항상 같은 카테고리로 배정될 확률이 매우 높음.
+            if difficulty == "easy":
+                k_spot_check = SPOTCHECK_K.get("easy", 0)
+                if k_spot_check >= 1:
+                    spot_rounds_0based = [
+                        r - 1 for r in deterministic_round_pick_1based(
+                            f"yacht_dice_en_easy_{diff_success:04d}",
+                            k_spot_check,
+                        )
+                    ]
+                    # v27: ROOT CAUSE FIX. v21~v26 의 per_round_margin 필터는
+                    # 잘못된 신호였다 — 고립 평가시 spot 라운드의 best 카테고리를
+                    # 봤지만, spotcheck 정답은 *전역 최적 배정이 그 라운드에 실제
+                    # 부여한 카테고리*에 달려 있다. 카테고리 경쟁(예: SS 가능한
+                    # 라운드 여럿)이 있으면 둘이 달라져, 모델의 자연스러운 greedy
+                    # 답(이 라운드 최고점)이 gold(전역 최적의 leftover 배정)와
+                    # 불일치 → 47% 천장.
+                    # 올바른 조건: spot 라운드가 전역 최적 배정에서 자기 top1
+                    # (고립 최고점) 카테고리를 그대로 부여받았는가. 그러면 모델의
+                    # greedy 답 = gold. 추가로 margin ≥ 10 으로 그 top1 이 명확
+                    # 하도록 한다.
+                    opt_assign = problem.get("optimal_assignment", {})
+                    top1s = sm.get("per_round_top1", [])
+                    margins = sm.get("per_round_margin", [])
+                    dice_all = problem["dice_results"]
+                    spot_ok = True
+                    spot_cats: List[str] = []
+                    for idx in spot_rounds_0based:
+                        if idx >= len(top1s) or idx >= len(margins):
+                            spot_ok = False
+                            break
+                        cat = opt_assign.get(idx, opt_assign.get(str(idx)))
+                        if cat is None:
+                            spot_ok = False
+                            break
+                        assigned_score = calculate_score_with_config(
+                            dice_all[idx], cat, config
+                        )
+                        # (a) The global optimum must assign this round its
+                        # isolated top1 category, and that top1 must be clearly
+                        # dominant (large margin) on the round itself.
+                        if assigned_score != top1s[idx]:
+                            spot_ok = False
+                            break
+                        if margins[idx] < easy_margin_min:
+                            spot_ok = False
+                            break
+                        # (b) GLOBAL EXCLUSIVITY (root-cause fix for sub-target
+                        # accuracy): no OTHER round may score as high in this
+                        # category. This forces the global optimum to place
+                        # `cat` on this exact round, so the graded spot score is
+                        # stable no matter how the model solves the other rounds
+                        # (previously the model used e.g. Yacht on a different
+                        # round, yielding a lower spot sum -> all-negative errors).
+                        best_elsewhere = 0
+                        for j in range(len(dice_all)):
+                            if j == idx:
+                                continue
+                            s = calculate_score_with_config(dice_all[j], cat, config)
+                            if s > best_elsewhere:
+                                best_elsewhere = s
+                        if best_elsewhere >= assigned_score:
+                            spot_ok = False
+                            break
+                        spot_cats.append(cat)
+                    # (c) The two spot rounds must use distinct categories (a
+                    # category can only be assigned once across all 12 rounds).
+                    if spot_ok and len(set(spot_cats)) != len(spot_cats):
+                        spot_ok = False
+                    if not spot_ok:
+                        problem_id += 1
+                        continue
 
             key = _dice_key(problem['dice_results'])
             if key in seen_keys:
@@ -811,6 +1119,14 @@ def create_dataset_files(num_questions: int):
                 answer_str = str(optimal_score)
                 spot_rounds = None
 
+            if difficulty == "easy":
+                # Distribution control: cap how often any single answer value
+                # appears so the dataset does not collapse onto one number.
+                ans_num = int(answer_str)
+                if easy_value_counts.get(ans_num, 0) >= easy_max_per_value:
+                    problem_id += 1
+                    continue
+
             solution_str = _build_yacht_solution_en(
                 dice_results=dice_results,
                 optimal_assignment=optimal_assignment,
@@ -824,7 +1140,7 @@ def create_dataset_files(num_questions: int):
 
             base_question = config.get_user_prompt(dice_results)
             question = append_spotcheck_user_suffix(
-                base_question, difficulty, public_id, korean=False
+                base_question, difficulty, public_id
             )
 
             puzzle_data = {
@@ -833,12 +1149,10 @@ def create_dataset_files(num_questions: int):
                 "answer": answer_str,
                 "solution": solution_str,
                 "difficulty": difficulty,
-                # Required by YachtDiceEvaluator for spotcheck (medium/hard).
-                "dice_results": dice_results,
-                "optimal_assignment": {str(k): v for k, v in optimal_assignment.items()},
-                "step_metrics": sm,
             }
             all_puzzles.append(puzzle_data)
+            if difficulty == "easy":
+                easy_value_counts[int(answer_str)] = easy_value_counts.get(int(answer_str), 0) + 1
             diff_success += 1
             print(
                 f"  [{diff_success}/{count}] optimal_total={optimal_score} "
@@ -846,17 +1160,36 @@ def create_dataset_files(num_questions: int):
                 f"gap={sm.get('greedy_gap', '?')} "
                 f"complexity={sm.get('total_decision_complexity', 0):.2f} "
                 f"band_violation={sm.get('band_violation', '?')}"
+                + (
+                    f" easy_margin={easy_margin_min}"
+                    if difficulty == "easy" else ""
+                )
             )
             problem_id += 1
 
         if diff_success < count:
             print(f"  ⚠️ only generated {diff_success}/{count} for {difficulty}")
+        if difficulty == "easy" and diff_success > 0:
+            print(
+                "  easy answer distribution: "
+                + ", ".join(f"{k}={v}" for k, v in sorted(easy_value_counts.items()))
+            )
 
     print(f"\nGenerated {len(all_puzzles)} puzzles")
 
-    df = pd.DataFrame(all_puzzles)
-
+    df = pd.DataFrame(all_puzzles, columns=list(DATASET_COLUMNS))
     PROJECT_ROOT = Path(__file__).resolve().parent.parent
+    json_dir = PROJECT_ROOT / "data" / "jsonl"
+    json_dir.mkdir(parents=True, exist_ok=True)
+
+    if len(difficulties) == 1:
+        tier = difficulties[0]
+        jsonl_path = json_dir / f"yacht_dice_en_{tier}.jsonl"
+        with open(jsonl_path, "w", encoding="utf-8") as f:
+            for item in all_puzzles:
+                f.write(json.dumps(item, ensure_ascii=False) + "\n")
+        print(f"JSONL file created: {jsonl_path}")
+        return df, all_puzzles
 
     csv_dir = PROJECT_ROOT / "data" / "csv"
     csv_dir.mkdir(parents=True, exist_ok=True)
@@ -864,13 +1197,10 @@ def create_dataset_files(num_questions: int):
     df.to_csv(csv_path, index=False, encoding="utf-8-sig")
     print(f"CSV file created: {csv_path}")
 
-    # JSONL
-    json_dir = PROJECT_ROOT / "data" / "jsonl"
-    json_dir.mkdir(parents=True, exist_ok=True)
     jsonl_path = json_dir / "yacht_dice_en.jsonl"
-    with open(jsonl_path, 'w', encoding='utf-8') as f:
+    with open(jsonl_path, "w", encoding="utf-8") as f:
         for item in all_puzzles:
-            f.write(json.dumps(item, ensure_ascii=False) + '\n')
+            f.write(json.dumps(item, ensure_ascii=False) + "\n")
     print(f"JSONL file created: {jsonl_path}")
 
     return df, all_puzzles
@@ -880,11 +1210,23 @@ if __name__ == '__main__':
     import argparse
 
     parser = argparse.ArgumentParser(description="Yacht Dice Puzzle Generator (EN)")
-    parser.add_argument("--num", type=int, default=12, help="Number of questions to generate")
+    parser.add_argument(
+        "--num",
+        type=int,
+        default=12,
+        help="Question count (per tier if --difficulty is set; else split across easy/medium/hard)",
+    )
+    parser.add_argument(
+        "--difficulty",
+        choices=["easy", "medium", "hard"],
+        nargs="+",
+        default=None,
+        help="Generate only these tier(s), e.g. --difficulty easy",
+    )
     parser.add_argument("--workers", type=int, default=0, help="Ignored; reserved for shell compatibility")
     args = parser.parse_args()
 
     print("=" * 60)
     print("Yacht Dice Puzzle Generator")
     print("=" * 60)
-    create_dataset_files(num_questions=args.num)
+    create_dataset_files(num_questions=args.num, difficulties=args.difficulty)

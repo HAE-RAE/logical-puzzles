@@ -1,9 +1,7 @@
-"""Causal DAG (Directed Acyclic Graph) Reasoning Puzzle Generator - Korean Version
-[진행도] ☑ 완료
-[파일명] causal_dag_ko.py
-[목적] 한국어 기반 인과관계 DAG 추론 퍼즐 생성
+"""Causal DAG (Directed Acyclic Graph) Reasoning Puzzle Generator
 
-한국어로 사건-원인 관계를 표현하고 시간 전파를 추론하는 퍼즐을 생성합니다.
+사건 사슬과 시간 전파를 기반으로 인과 추론 퍼즐을 생성합니다.
+LLM의 시간에 따른 인과관계 추론 능력을 평가합니다.
 
 주요 기능:
 1. DAG 기반 사건 그래프 (순환 없음)
@@ -22,7 +20,7 @@ from enum import Enum
 
 
 class EventType(Enum):
-    """사건 카테고리"""
+    """퍼즐 생성용 사건 카테고리"""
     TECHNICAL = "기술"
     BUSINESS = "비즈니스"
     ENVIRONMENTAL = "환경"
@@ -31,7 +29,7 @@ class EventType(Enum):
 
 @dataclass
 class CausalEdge:
-    """사건 간 인과 관계"""
+    """사건 간 인과 관계를 나타냄"""
     from_event: str
     to_event: str
     delay: int  # 분 단위 시간 지연
@@ -47,7 +45,7 @@ class CausalEdge:
 
 @dataclass
 class Event:
-    """사건 노드"""
+    """인과 그래프의 사건을 나타냄"""
     id: str
     name: str
     description: str
@@ -59,7 +57,7 @@ class Event:
 
 @dataclass
 class CausalPuzzle:
-    """완전한 인과관계 추론 퍼즐"""
+    """완전한 인과 추론 퍼즐"""
     events: Dict[str, Event]
     edges: List[CausalEdge]
     trigger: str
@@ -99,10 +97,10 @@ class CausalPuzzle:
 
 
 class CausalPuzzleGenerator:
-    """인과 DAG 추론 퍼즐 생성기"""
+    """인과 DAG 추론 퍼즐 생성"""
     
     def __init__(self):
-        """사건 템플릿 초기화"""
+        """사건 템플릿으로 초기화"""
         self.event_templates = {
             EventType.TECHNICAL: [
                 ('전력차단', '주 전력망 장애 발생'),
@@ -187,16 +185,16 @@ class CausalPuzzleGenerator:
                 'shuffle_edges': True,
             },
             'medium': {
-                'num_events': random.randint(36, 42),
-                'edge_density': 0.80,
+                'num_events': random.randint(40, 46),
+                'edge_density': 0.88,
                 'delay_range': (20, 140),
                 'max_out_degree': 4,
-                'and_probability': 0.58,
-                'target_quantile': (0.62, 0.90),
+                'and_probability': 0.63,
+                'target_quantile': (0.70, 0.94),
                 'query_weights': {
-                    'occurrence_time': 0.10,
-                    'time_gap': 0.25,
-                    'count_by_target_time': 0.65,
+                    'occurrence_time': 0.03,
+                    'time_gap': 0.22,
+                    'count_by_target_time': 0.75,
                 },
                 'shuffle_edges': True,
             },
@@ -363,9 +361,9 @@ class CausalPuzzleGenerator:
         # 각 타겟 노드에 대해 간선 생성
         for i, to_id in enumerate(event_ids):
             if i == 0:
-                continue  # 첫 노드는 트리거 후보
+                continue  # 첫 노드 건너뜀 (트리거 후보)
 
-            # DAG를 유지하기 위해 이전 노드들에서만 전제 사건 선택
+            # DAG를 유지하기 위해 이전 노드에서만 전제 사건 선택
             possible_from = event_ids[:i]
             if not possible_from:
                 continue
@@ -424,8 +422,8 @@ class CausalPuzzleGenerator:
         earliest_time = {e_id: float('inf') for e_id in events}
         earliest_time[trigger] = trigger_time
         
-        # 같은 사건을 향하는 여러 대체 규칙이 있을 수 있으므로
-        # 규칙(edge)별로 전제 도달 시각을 따로 추적한다.
+        # 인과 규칙별 전제 도달 시각 추적. 같은 사건을 향하는 여러
+        # 대체 규칙이 있을 수 있으며 지연 시간이 다를 수 있다.
         prereq_arrival_times = {idx: {} for idx in range(len(edges))}
         
         # 우선순위 큐: (시간, 사건 ID)
@@ -453,7 +451,7 @@ class CausalPuzzleGenerator:
                 if current_event not in arrivals:
                     arrivals[current_event] = arrival_time
                 else:
-                    # 최초 도달 시간 유지
+                    # 이 전제 조건의 최초 도달 시각 유지
                     arrivals[current_event] = min(
                         arrivals[current_event],
                         arrival_time
@@ -690,7 +688,7 @@ SFT_SOLUTION_RUBRIC_KO = (
 
 
 def _reach_time_trace_ko(puzzle: CausalPuzzle) -> tuple:
-    """재계산한 최단 도달시각과 SEG 라인·요약 메타를 반환."""
+    """도달 시각 계산을 재현하고 SEG 추적 라인과 메타를 반환."""
     events = puzzle.events
     edges = puzzle.edges
     trigger = puzzle.trigger
@@ -788,7 +786,7 @@ def _reach_time_trace_ko(puzzle: CausalPuzzle) -> tuple:
 
 
 def _build_causal_dag_solution_ko(puzzle: CausalPuzzle) -> str:
-    """SFT teacher trace: 시간 전파 규칙과 요청된 정수 답."""
+    """SFT teacher trace: 전파 규칙과 요청된 정수 답."""
     n_ev = len(puzzle.events)
     n_ed = len(puzzle.edges)
     trace_lines, smry = _reach_time_trace_ko(puzzle)
@@ -823,30 +821,33 @@ def _build_causal_dag_solution_ko(puzzle: CausalPuzzle) -> str:
         "[STEP 0] 문제 메타",
         f"  - 난이도: {puzzle.difficulty}",
         f"  - 트리거 사건: {puzzle.trigger} (t = {puzzle.trigger_time}분)",
-        f"  - 질문 대상 사건: {puzzle.target_event}",
+        f"  - 대상 사건: {puzzle.target_event}",
         f"  - 질의 유형: {puzzle.query_type}",
         query_note,
-        f"  - 그래프: 사건 {n_ev}개, 엣지 {n_ed}개",
-        "  - 최종 요청 정수는 [STEP 3]에만 ‘검산용’으로 둔다. "
-        "먼저 [STEP 2]의 SEG 로그를 따라갈 것.",
-        "[STEP 1] 주어진 조건 (시간 전파·그래프 규칙, 문제 본문과 동일)",
-        "  - 엣지마다 지연이 있으며, 전제 사건이(들이) 발생한 뒤 결과로 전파.",
-        "  - OR: 전제 중 **가장 이른** 트리거(문제에 “FIRST”로 표기) — 구현은 각 "
-        "전제 도착시각+지연의 최소에 해당.",
-        "  - AND: 전제 **전부** 도달 후, 그 시각들 중 **최댓값**에 delay를 더함.",
-        "[STEP 2] 풀이 전개 (도달 시각 산출)",
+        f"  - 그래프 크기: 사건 {n_ev}개, 엣지 {n_ed}개",
+        "  - 최종 요청 정수는 [STEP 3](검산)에만 명시된다. "
+        "먼저 [STEP 2]의 SEG 로그를 따를 것.",
+        "[STEP 1] 주어진 조건 (프롬프트와 동일한 시간 전파 및 그래프 규칙)",
+        "  - 각 엣지에는 지연이 있으며, 하류 사건은 전제 사건이 발생한 뒤 "
+        "발화할 수 있다.",
+        "  - OR: 규칙을 만족하는 전제 도달 시각 중 **가장 이른** 시각을 사용 "
+        "(문제 표기: FIRST 전제에 의해 트리거).",
+        "  - AND: **모든** 전제가 발생할 때까지 기다린 뒤, 전제 완료 시각 중 "
+        "**가장 늦은** 시각에 엣지 지연을 더함.",
+        "[STEP 2] 풀이 전개 (도달 시각)",
         (f"  · 요약: {puzzle.trigger}(t={puzzle.trigger_time})"
          f" → {puzzle.target_event} · 도달 사건 "
          f"{smry['reached']}/{n_ev} · AND {smry['and_count']} / "
          f"OR {smry['or_count']} · 임계 경로 {smry['path_len']}홉"),
-        "  · 머릿속으로: 각 사건을 **최단 도달시각 오름차순**으로 처리, "
-        "AND는 max+delay / OR는 min+delay.",
+        "  · 머릿속으로: 최초 도달 시각 오름차순으로 사건을 처리; "
+        "AND는 max+지연, OR는 min+지연.",
     ]
     tail = [
         "[STEP 3] 답·검산",
         f"  - {answer_label}: {puzzle.answer}",
-        "  - 우선순위 큐 전파를 다시 돌려 같은 정수가 나오는지, 각 AND 마디에서 "
-        "max(prereqs)+delay, 각 OR 마디에서 min(prereqs)+delay 가 맞는지 확인.",
+        "  - 우선순위 큐 전파를 "
+        f"{puzzle.trigger} 시각 {puzzle.trigger_time}에서 다시 실행; "
+        "AND 노드에서는 max(전제)+지연, OR 노드에서는 min(전제)+지연을 확인.",
     ]
     return "\n".join(head + trace_lines + tail)
 
@@ -900,14 +901,16 @@ def create_dataset_files(num_questions: int):
     # CSV
     csv_dir = PROJECT_ROOT / "data" / "csv"
     csv_dir.mkdir(parents=True, exist_ok=True)
-    csv_path = csv_dir / f"causal_dag_ko.csv"
+
+    # 소문자 파일명
+    csv_path = csv_dir / "causal_dag_ko.csv"
     df.to_csv(csv_path, index=False, encoding="utf-8-sig")
     print(f"CSV 파일 생성: {csv_path}")
     
     # JSONL
     json_dir = PROJECT_ROOT / "data" / "jsonl"
     json_dir.mkdir(parents=True, exist_ok=True)
-    jsonl_path = json_dir / f"causal_dag_ko.jsonl"
+    jsonl_path = json_dir / "causal_dag_ko.jsonl"
     with open(jsonl_path, 'w', encoding='utf-8') as f:
         for item in all_puzzles:
             f.write(json.dumps(item, ensure_ascii=False) + '\n')
@@ -919,8 +922,8 @@ def create_dataset_files(num_questions: int):
 if __name__ == "__main__":
     import argparse
     
-    parser = argparse.ArgumentParser(description="Causal DAG Korean Puzzle Generator")
-    parser.add_argument("--num", type=int, default=300, help="Number of questions to generate")
+    parser = argparse.ArgumentParser(description="Causal DAG Puzzle Generator")
+    parser.add_argument("--num", type=int, default=300, help="생성할 질문 수")
     
     args = parser.parse_args()
     

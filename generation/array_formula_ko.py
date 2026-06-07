@@ -1,6 +1,6 @@
 """
-Array Formula Puzzle Generator (v5 - Quartile Calibration, Korean)
-Excel 배열 수식 기반 논리 퍼즐 생성기 - 한국어 버전
+Array Formula Puzzle Generator (v5 - Quartile Calibration)
+Excel 배열 수식 기반 논리 퍼즐 생성기
 
 Problem Types:
 1. lookup_query: INDEX-MATCH, VLOOKUP 스타일 데이터 조회
@@ -40,7 +40,7 @@ class Difficulty(Enum):
 
 @dataclass
 class ArrayFormulaConfig:
-    """문제 생성 설정"""
+    """문제 생성 구성"""
     difficulty: str = "medium"
     problem_type: Optional[str] = None
     seed: Optional[int] = None
@@ -109,6 +109,7 @@ def generate_product_table(
     categories = rng.sample(CATEGORIES, min(num_categories, len(CATEGORIES)))
     products = rng.sample(PRODUCT_NAMES, num_rows)
 
+    # 카테고리 불균등 분포 보장 (avg-of-avg 트랩에 중요)
     table = []
     for i, product in enumerate(products):
         row = {
@@ -142,7 +143,7 @@ def generate_sales_table(
     customer_table: Optional[List[Dict]] = None,
     difficulty: str = "easy"
 ) -> List[Dict[str, Any]]:
-    """주문 테이블 생성"""
+    """주문 테이블 생성, customer_id 선택적 포함"""
     rng = random.Random(seed + 1000)
 
     regions = rng.sample(REGIONS, min(num_regions, len(REGIONS)))
@@ -277,7 +278,7 @@ def _std_dev(values):
 
 
 def _weighted_choice(rng, templates):
-    """가중치 기반 랜덤 선택. 각 템플릿은 (question, answer, weight, solution) 튜플."""
+    """가중치가 있는 템플릿에서 선택. 각 템플릿은 (question, answer, weight, solution)."""
     weights = [t[2] for t in templates]
     total = sum(weights)
     r = rng.random() * total
@@ -322,7 +323,7 @@ def _calibrate_template_weights(difficulty: str, templates):
 
 
 def _make_tables_dict(product_table, sales_table, customer_table):
-    """표준 3테이블 딕셔너리 생성."""
+    """반환값용 표준 3테이블 딕셔너리 생성."""
     def columns(base_columns, table):
         extra_columns = []
         if table:
@@ -346,10 +347,10 @@ def _make_tables_dict(product_table, sales_table, customer_table):
 
 
 # ============================================================
-# 공통 데이터 생성
+# 생성기 공통 데이터 생성
 # ============================================================
 
-_ORDER_COUNTS = {"easy": (35, 50), "medium": (120, 170), "hard": (280, 360)}
+_ORDER_COUNTS = {"easy": (35, 50), "medium": (120, 170), "hard": (220, 300)}
 _CUSTOMER_COUNTS = {"easy": (10, 14), "medium": (18, 20), "hard": (20, 20)}
 
 
@@ -390,29 +391,29 @@ def generate_lookup_problem(
     regions_in_orders = list(set(s["지역"] for s in st))
 
     if config.difficulty == "easy":
-        # T1: 할인가 적용 주문가치
+        # T1: 할인가 적용 주문 가치
         target_order = rng.choice(st)
         t1_price = pm[target_order["상품명"]]["가격"]
         t1_disc = pm[target_order["상품명"]]["할인율"]
         t1_disc_price = int(t1_price * (100 - t1_disc) / 100)
         t1_disc_value = t1_disc_price * target_order["수량"]
 
-        # T2: 주문수량 2위 상품의 카테고리
+        # T2: 총 수량 rank-2 → 카테고리
         product_qty = _group_sum(st, lambda s: s["상품명"], lambda s: s["수량"])
         qty_ranked = _rank_groups(product_qty)
         rank2_name = qty_ranked[1][0] if len(qty_ranked) >= 2 else qty_ranked[0][0]
         rank2_cat = pm[rank2_name]["카테고리"]
 
-        # T3: 특정 카테고리 주문 건수
+        # T3: 카테고리 주문 건수
         tgt_cat = rng.choice(categories)
         cat_prods = set(p["상품명"] for p in pt if p["카테고리"] == tgt_cat)
         cat_order_count = len([s for s in st if s["상품명"] in cat_prods])
 
-        # T4: 특정 카테고리 평균 주문 수량 (소수점 버림)
+        # T4: 카테고리 평균 주문 수량 (버림)
         cat_orders = [s for s in st if s["상품명"] in cat_prods]
         cat_avg_qty = int(sum(s["수량"] for s in cat_orders) / len(cat_orders)) if cat_orders else 0
 
-        # T5: 주문→고객→지역 체인 조회
+        # T5: 주문 → 고객 → 지역 체인
         chain_order = rng.choice(st)
         chain_cust = cm[chain_order["고객번호"]]
 
@@ -503,14 +504,14 @@ def generate_lookup_problem(
         ]
 
     elif config.difficulty == "medium":
-        # T1: 매출 2위 상품의 카테고리 (순위 비교 필요)
+        # T1: 매출 rank-2 상품의 카테고리
         prod_revenue = _group_sum(st, lambda s: s["상품명"],
                                   lambda s: pm[s["상품명"]]["가격"] * s["수량"])
         rev_ranked = _rank_groups(prod_revenue)
         rank2_name = rev_ranked[1][0] if len(rev_ranked) >= 2 else rev_ranked[0][0]
         rank2_cat = pm[rank2_name]["카테고리"]
 
-        # T2: 특정 지역에서 가장 많이 소비한 고객 이름 (3테이블 조인)
+        # T2: 특정 지역 최다 소비 고객 (3테이블 조인)
         tgt_region = rng.choice(regions_in_orders)
         reg_orders = [s for s in st if s["지역"] == tgt_region]
         reg_cust_spend = _group_sum(reg_orders, lambda s: s["고객번호"],
@@ -519,7 +520,7 @@ def generate_lookup_problem(
         reg_top_cid = reg_spend_ranked[0][0] if reg_spend_ranked else ct[0]["고객번호"]
         reg_top_cust_name = cm[reg_top_cid]["이름"]
 
-        # T3: 특정 등급 고객이 가장 많이 주문한 상품의 할인율
+        # T3: 특정 등급 고객 최다 수량 주문 상품 → 할인율
         tgt_grade = rng.choice(["골드", "실버", "브론즈"])
         grade_cids = set(c["고객번호"] for c in ct if c["등급"] == tgt_grade)
         grade_orders = [s for s in st if s["고객번호"] in grade_cids]
@@ -528,7 +529,7 @@ def generate_lookup_problem(
         grade_top_prod = grade_qty_ranked[0][0] if grade_qty_ranked else pt[0]["상품명"]
         grade_top_disc = pm[grade_top_prod]["할인율"]
 
-        # T4: 특정 분기 매출 1위 상품을 주문한 고객 중 가장 오래된 가입연도
+        # T4: 분기 최다 매출 상품 → 해당 고객 중 최초 가입연도
         tgt_q = rng.choice(QUARTERS)
         q_orders = [s for s in st if s["분기"] == tgt_q]
         q_prod_rev = _group_sum(q_orders, lambda s: s["상품명"],
@@ -547,7 +548,7 @@ def generate_lookup_problem(
         t5_cat_orders = [s for s in st if s["상품명"] in t5_cat_prods]
         t5_cat_rev = sum(pm[s["상품명"]]["가격"] * s["수량"] for s in t5_cat_orders)
 
-        # NEW T6: 평균 수량 초과 주문의 매출
+        # T6 (new): 평균 수량 초과 주문의 매출
         all_qtys = [s["수량"] for s in st]
         avg_qty = sum(all_qtys) / len(all_qtys) if all_qtys else 0
         above_avg_orders = [s for s in st if s["수량"] > avg_qty]
@@ -590,7 +591,6 @@ def generate_lookup_problem(
              f"3단계: '{t5_cat}' 상품: {', '.join(list(t5_cat_prods)[:5])}\n"
              f"4단계: 매출 = {t5_cat_rev}\n최종 답: {t5_cat_rev}"),
 
-            # NEW T6: 평균 수량 초과 주문 매출
             (f"평균 주문 수량({int(avg_qty)})을 초과하는 주문의 총 매출액은 얼마입니까? (매출 = 가격 × 수량)",
              above_avg_rev, 2,
              f"1단계: 평균 수량 = {int(avg_qty)}\n"
@@ -599,7 +599,7 @@ def generate_lookup_problem(
         ]
 
     else:  # hard
-        # T1 (Pattern A): 평균 초과 소비 고객 → 고유 카테고리 수 2위 → 지역
+        # T1 (Pattern A): 평균 초과 소비 고객 → 고유 카테고리 수 rank-2 → 지역
         cust_spend = _group_sum(st, lambda s: s["고객번호"],
                                 lambda s: pm[s["상품명"]]["가격"] * s["수량"])
         avg_cust_spend = sum(cust_spend.values()) / len(cust_spend) if cust_spend else 0
@@ -613,7 +613,7 @@ def generate_lookup_problem(
         t1_cid = above_avg_dist_ranked[1][0] if len(above_avg_dist_ranked) >= 2 else above_avg_dist_ranked[0][0]
         t1_region = cm[t1_cid]["지역"]
 
-        # T2: 3건 이상 주문 고객 중 평균 주문 가치 2위 고객의 등급
+        # T2: 3건 이상 주문 고객 중 평균 주문 가치 rank-2 → 등급
         cust_order_counts = _group_count(st, lambda s: s["고객번호"])
         cust_3plus = {cid for cid, cnt in cust_order_counts.items() if cnt >= 3}
         if len(cust_3plus) < 2:
@@ -649,7 +649,7 @@ def generate_lookup_problem(
         t3_top_cid = t3_cust_ranked[0][0] if t3_cust_ranked else ct[0]["고객번호"]
         t3_membership = cm[t3_top_cid]["등급"]
 
-        # T4 (new): 2021 이전 가입 → 주문당 평균 소비 1위 → 최다 주문 카테고리 → 평균 재고
+        # T4 (new): join<2021 → 주문당 평균 소비 1위 → 최다 주문 카테고리 → 해당 카테고리 평균 재고
         old_cids = set(c["고객번호"] for c in ct if c["가입연도"] < 2021)
         old_orders = [s for s in st if s["고객번호"] in old_cids]
         old_cust_avg = {}
@@ -667,7 +667,7 @@ def generate_lookup_problem(
         t4_cat_prods = [p for p in pt if p["카테고리"] == t4_top_cat]
         t4_avg_stock = int(sum(p["재고"] for p in t4_cat_prods) / len(t4_cat_prods)) if t4_cat_prods else 0
 
-        # T5: 2021 이후 가입 고객 → 소비 1위 → 가장 많이 주문한 카테고리
+        # T5: 2021 이후 가입 고객 → 최다 소비 → 최다 주문 카테고리
         recent_cids = set(c["고객번호"] for c in ct if c["가입연도"] >= 2021)
         recent_orders = [s for s in st if s["고객번호"] in recent_cids]
         recent_spend = _group_sum(recent_orders, lambda s: s["고객번호"],
@@ -750,7 +750,7 @@ def generate_conditional_aggregation_problem(
     cat_prod_names = set(p["상품명"] for p in cat_products)
 
     if config.difficulty == "easy":
-        # T1: 카테고리별 매출 합계
+        # T1: 카테고리 매출
         cat_orders = [s for s in st if s["상품명"] in cat_prod_names]
         cat_revenue = sum(pm[s["상품명"]]["가격"] * s["수량"] for s in cat_orders)
 
@@ -760,12 +760,12 @@ def generate_conditional_aggregation_problem(
         # T3: 카테고리 평균 가격
         avg_price = int(sum(p["가격"] for p in cat_products) / len(cat_products)) if cat_products else 0
 
-        # T4: 특정 분기 주문 수량 합계
+        # T4: 분기 총 수량
         tgt_q = rng.choice(QUARTERS)
         q_orders = [s for s in st if s["분기"] == tgt_q]
         q_total_qty = sum(s["수량"] for s in q_orders)
 
-        # T5: 할인율 10% 이상 상품의 주문 건수
+        # T5: 할인율 >= 10% 주문 건수
         disc_prods = set(p["상품명"] for p in pt if p["할인율"] >= 10)
         disc_order_count = len([s for s in st if s["상품명"] in disc_prods])
 
@@ -839,7 +839,7 @@ def generate_conditional_aggregation_problem(
         ]
 
     elif config.difficulty == "medium":
-        # T1: 카테고리별 매출 비율 (%) - 비율 문제로 난이도 상승
+        # T1: 카테고리 매출 전체 대비 %
         cat_rev = _group_sum(st, lambda s: pm[s["상품명"]]["카테고리"],
                              lambda s: pm[s["상품명"]]["가격"] * s["수량"])
         total_rev = sum(cat_rev.values())
@@ -847,26 +847,26 @@ def generate_conditional_aggregation_problem(
         tgt_cat_rev = cat_rev.get(tgt_cat, 0)
         tgt_cat_pct = int(tgt_cat_rev * 100 / total_rev) if total_rev > 0 else 0
 
-        # T2: 고객별 평균 소비액 > 전체 평균인 고객 수 (비교 문제)
+        # T2: 평균 소비 초과 고객 수
         cust_spend = _group_sum(st, lambda s: s["고객번호"],
                                 lambda s: pm[s["상품명"]]["가격"] * s["수량"])
         avg_spend = sum(cust_spend.values()) / len(cust_spend) if cust_spend else 0
         custs_above = sum(1 for v in cust_spend.values() if v > avg_spend)
 
-        # T3: 특정 등급 고객 매출이 전체 매출의 몇 %인지
+        # T3: 등급별 매출 %
         tgt_grade = rng.choice(["골드", "실버", "브론즈"])
         grade_cids = set(c["고객번호"] for c in ct if c["등급"] == tgt_grade)
         grade_rev = sum(pm[s["상품명"]]["가격"] * s["수량"] for s in st if s["고객번호"] in grade_cids)
         grade_pct = int(grade_rev * 100 / total_rev) if total_rev > 0 else 0
 
-        # T4: 재고 중앙값보다 재고 많은 상품의 매출 비중 (%)
+        # T4: 재고 중앙값 초과 상품 매출 %
         stocks = [p["재고"] for p in pt]
         median_stock = _median(stocks)
         high_stock_prods = set(p["상품명"] for p in pt if p["재고"] > median_stock)
         high_stock_rev = sum(pm[s["상품명"]]["가격"] * s["수량"] for s in st if s["상품명"] in high_stock_prods)
         high_stock_pct = int(high_stock_rev * 100 / total_rev) if total_rev > 0 else 0
 
-        # T5 (new): 주문 건수가 가장 많은 분기 → 골드 고객 매출 비율
+        # T5 (new): 주문 최다 분기 → 골드 고객 매출 %
         q_counts = _group_count(st, lambda s: s["분기"])
         q_count_ranked = _rank_groups(q_counts)
         top_q = q_count_ranked[0][0] if q_count_ranked else "1분기"
@@ -876,7 +876,7 @@ def generate_conditional_aggregation_problem(
         top_q_gold_rev = sum(pm[s["상품명"]]["가격"] * s["수량"] for s in top_q_orders if s["고객번호"] in gold_cids)
         top_q_gold_pct = int(top_q_gold_rev * 100 / top_q_rev) if top_q_rev > 0 else 0
 
-        # NEW T6: 수량 가중 평균 가격과 단순 평균 가격의 차이
+        # T6 (new): 수량 가중 평균 가격 vs 단순 평균 가격 차이
         total_qty = sum(s["수량"] for s in st)
         qty_weighted_price = int(sum(pm[s["상품명"]]["가격"] * s["수량"] for s in st) / total_qty) if total_qty > 0 else 0
         simple_avg_price = int(sum(p["가격"] for p in pt) / len(pt)) if pt else 0
@@ -977,7 +977,7 @@ def generate_conditional_aggregation_problem(
         actual_disc_rev = total_disc_rev
         counterfactual_diff = abs(counterfactual_rev - actual_disc_rev)
 
-        # T5: 분기별 평균의 평균과 전체 평균 차이
+        # T5: 분기 avg-of-avg vs 전체 평균 차이 (유지)
         q_rev_map = _group_sum(st, lambda s: s["분기"],
                                lambda s: pm[s["상품명"]]["가격"] * s["수량"])
         q_counts = _group_count(st, lambda s: s["분기"])
@@ -1081,17 +1081,17 @@ def generate_array_computation_problem(
         cat_orders = [s for s in st if s["상품명"] in cat_prods]
         cat_sales = sum(product_prices[s["상품명"]] * s["수량"] for s in cat_orders)
 
-        # T4: 수량 조건 필터 매출
+        # T4: 고수량 조건 매출
         qty_thresh = rng.choice([15, 20, 25, 30])
         high_qty_orders = [s for s in st if s["수량"] > qty_thresh]
         high_qty_sales = sum(product_prices[s["상품명"]] * s["수량"] for s in high_qty_orders)
 
-        # NEW T5: 지역별 매출
+        # NEW T5: 지역 매출 교차 조회
         tgt_region = rng.choice(list(set(s["지역"] for s in st)))
         reg_orders = [s for s in st if s["지역"] == tgt_region]
         reg_revenue = sum(product_prices[s["상품명"]] * s["수량"] for s in reg_orders)
 
-        # NEW T6: 총 매출 vs 할인 매출 차이
+        # NEW T6: 총 매출 vs 할인 매출 차
         rev_diff = total_sales - total_disc_sales
 
         # NEW T7: 재고 중앙값 초과 상품 매출
@@ -1126,14 +1126,14 @@ def generate_array_computation_problem(
              f"2단계: 가격 조회, 매출 계산\n"
              f"3단계: 합계 = {high_qty_sales}\n최종 답: {high_qty_sales}"),
 
-            # NEW: 지역 매출 (weight=2)
+            # NEW: 지역 매출 교차 조회 (weight=2)
             (f"'{tgt_region}' 지역 주문의 총 매출액은 얼마입니까? (상품 테이블에서 가격 조회)",
              reg_revenue, 2,
              f"1단계: '{tgt_region}' 주문 필터링: {len(reg_orders)}건\n"
              f"2단계: 가격 × 수량 합산\n"
              f"3단계: 합계 = {reg_revenue}\n최종 답: {reg_revenue}"),
 
-            # NEW: 총 매출 vs 할인 매출 차이 (weight=2)
+            # NEW: 총 매출 vs 할인 매출 차 (weight=2)
             (f"총 매출액과 할인 적용 총 매출액의 차이는 얼마입니까? (총매출 - 할인매출, 할인매출은 소수점 버림 후 합산)",
              rev_diff, 2,
              f"1단계: 총 매출 = {total_sales}\n"
@@ -1165,14 +1165,14 @@ def generate_array_computation_problem(
             for s in above_avg_qty_orders
         ))
 
-        # T2: 지역별 매출 합계
+        # T2: 최다 매출 지역 매출
         reg_rev = _group_sum(st, lambda s: s["지역"],
                              lambda s: product_prices[s["상품명"]] * s["수량"])
         reg_ranked = _rank_groups(reg_rev)
         top_reg = reg_ranked[0][0] if reg_ranked else ""
         top_reg_rev = reg_ranked[0][1] if reg_ranked else 0
 
-        # T3: 골드와 실버 매출 차이
+        # T3: Gold-Silver 차
         gold_cids = set(c["고객번호"] for c in ct if c["등급"] == "골드")
         gold_orders = [s for s in st if s["고객번호"] in gold_cids]
         gold_sales = sum(product_prices[s["상품명"]] * s["수량"] for s in gold_orders)
@@ -1181,7 +1181,7 @@ def generate_array_computation_problem(
         silver_sales = sum(product_prices[s["상품명"]] * s["수량"] for s in silver_orders)
         gold_silver_diff = gold_sales - silver_sales
 
-        # T4: 특정 분기 할인 매출
+        # T4: 분기 할인 매출
         tgt_q = rng.choice(QUARTERS)
         q_orders = [s for s in st if s["분기"] == tgt_q]
         q_disc_rev = int(sum(
@@ -1253,7 +1253,7 @@ def generate_array_computation_problem(
         product_discounts = {p["상품명"]: p["할인율"] for p in pt}
         total_rev = sum(product_prices[s["상품명"]] * s["수량"] for s in st)
 
-        # T1 (KEEP): 매출 가중평균 할인율
+        # T1 (KEEP): 매출 가중 할인율
         weighted_disc_sum = sum(
             product_prices[s["상품명"]] * s["수량"] * product_discounts[s["상품명"]]
             for s in st
@@ -1275,7 +1275,7 @@ def generate_array_computation_problem(
         else:
             mc_max, mc_min, mc_ratio = 0, 1, 0
 
-        # T3 (REPLACED): 지역별 할인 매출 (전체 vs 2021 이후 가입 고객)
+        # T3 (REPLACED): 지역별 할인 매출 비교 (전체 vs 2021+ 가입 고객만)
         post2021_cids = set(c["고객번호"] for c in ct if c["가입연도"] >= 2021)
         reg_disc_all = {}
         reg_disc_post = {}
@@ -1290,7 +1290,7 @@ def generate_array_computation_problem(
             reg_diff_vals[reg] = int(reg_disc_all[reg]) - int(reg_disc_post.get(reg, 0))
         max_reg_diff = max(reg_diff_vals.values()) if reg_diff_vals else 0
 
-        # T4 (REPLACED): 매출 중앙값 기준 필터 → 비율
+        # T4 (REPLACED): 중앙값 기준 매출 필터 → 전체 대비 %
         order_revs = sorted(product_prices[s["상품명"]] * s["수량"] for s in st)
         median_rev = order_revs[len(order_revs) // 2] if order_revs else 0
         above_med_orders = [s for s in st if product_prices[s["상품명"]] * s["수량"] > median_rev]
@@ -1308,7 +1308,7 @@ def generate_array_computation_problem(
                 cat_ratios[cat] = int(cat_disc_rev.get(cat, 0) * 100 / cat_full_rev[cat])
         ratio_range = max(cat_ratios.values()) - min(cat_ratios.values()) if len(cat_ratios) >= 2 else 0
 
-        # T6 (KEEP): 할인/무할인 가격 차이
+        # T6 (KEEP): 할인 vs 무할인 가격 차
         disc_prods = [p for p in pt if p["할인율"] > 0]
         nodisc_prods = [p for p in pt if p["할인율"] == 0]
         if disc_prods:
@@ -1321,7 +1321,7 @@ def generate_array_computation_problem(
         price_gap = abs(disc_weighted_price - nodisc_avg_price)
 
         question_templates = [
-            # T1 (KEEP)
+            # T1 (KEEP): 매출 가중 할인율
             (f"매출 가중 평균 할인율은 얼마입니까? (= sum(매출×할인율)/sum(매출), 정수로 버림)",
              rev_weighted_disc, 1,
              f"1단계: 각 주문의 매출 × 할인율\n"
@@ -1336,7 +1336,7 @@ def generate_array_computation_problem(
              f"2단계: 최대 = {mc_max}, 최소(양수) = {mc_min}\n"
              f"3단계: 비율 = {mc_ratio}\n최종 답: {mc_ratio}"),
 
-            # T3 (REPLACED): 지역별 전체 vs 2021+ 할인 매출 차이
+            # T3 (REPLACED): 지역별 할인 매출, 전체 vs 2021 이후 가입 고객
             (f"각 지역의 전체 고객 할인 매출과 2021년 이후 가입 고객 할인 매출의 차이 중 최대값은 얼마입니까? (할인가 = 가격×(100-할인율)/100, 지역별 소수점 버림)",
              max_reg_diff, 2,
              f"1단계: 2021년 이후 가입 고객: {len(post2021_cids)}명\n"
@@ -1344,7 +1344,7 @@ def generate_array_computation_problem(
              f"3단계: 차이: {', '.join(f'{k}({v})' for k,v in sorted(reg_diff_vals.items(), key=lambda x: -x[1]))}\n"
              f"4단계: 최대 차이 = {max_reg_diff}\n최종 답: {max_reg_diff}"),
 
-            # T4 (REPLACED): 중앙값 기준 매출 비율
+            # T4 (REPLACED): 중앙값 필터 매출 비율
             (f"주문별 매출(가격×수량)이 중앙값을 초과하는 주문의 매출이 전체의 몇 %입니까? (중앙값 = 정렬 후 가운데 값, 소수점 버림)",
              above_med_pct, 2,
              f"1단계: 주문별 매출 계산, 정렬\n"
@@ -1352,14 +1352,14 @@ def generate_array_computation_problem(
              f"3단계: 초과 주문: {len(above_med_orders)}건, 매출 = {above_med_total}\n"
              f"4단계: 비율 = {above_med_pct}%\n최종 답: {above_med_pct}"),
 
-            # T5 (REPLACED): 카테고리별 할인 보존율 범위
+            # T5 (REPLACED): 카테고리별 할인/정가 비율 범위
             (f"카테고리별 할인 보존율(= 할인매출×100/정가매출, 카테고리별 소수점 버림)의 범위(최대-최소)는 얼마입니까?",
              ratio_range, 2,
              f"1단계: 카테고리별 정가 매출, 할인 매출 계산\n"
              f"2단계: 비율: {', '.join(f'{k}({v})' for k,v in sorted(cat_ratios.items(), key=lambda x: -x[1]))}\n"
              f"3단계: 범위 = {ratio_range}\n최종 답: {ratio_range}"),
 
-            # T6 (KEEP)
+            # T6 (KEEP): 할인 vs 무할인 가격 차
             (f"할인 상품(할인율>0)의 평균 할인가와 무할인 상품(할인율=0)의 평균 가격 차이는 얼마입니까? (절대값, 소수점 버림)",
              price_gap, 1,
              f"1단계: 할인 상품 {len(disc_prods)}개의 평균 할인가 = {disc_weighted_price}\n"
@@ -1397,13 +1397,13 @@ def generate_multi_condition_problem(
         tgt_region = rng.choice(regions_in_orders)
         product_cats = {p["상품명"]: p["카테고리"] for p in pt}
 
-        # T1: 지역+카테고리 필터 건수
+        # T1: 지역+카테고리 건수
         filtered_rc = [s for s in st
                        if s["지역"] == tgt_region
                        and product_cats.get(s["상품명"]) == tgt_cat]
         rc_count = len(filtered_rc)
 
-        # T2: 지역+분기 수량 합계
+        # T2: 지역+분기 수량
         tgt_quarter = rng.choice(QUARTERS)
         filtered_rq = [s for s in st
                        if s["지역"] == tgt_region and s["분기"] == tgt_quarter]
@@ -1413,7 +1413,7 @@ def generate_multi_condition_problem(
         reg_orders = [s for s in st if s["지역"] == tgt_region]
         reg_rev = sum(pm[s["상품명"]]["가격"] * s["수량"] for s in reg_orders)
 
-        # T4: 등급별 주문 수량
+        # T4: Gold 총 수량
         gold_cids = set(c["고객번호"] for c in ct if c["등급"] == "골드")
         gold_orders = [s for s in st if s["고객번호"] in gold_cids]
         gold_qty = sum(s["수량"] for s in gold_orders)
@@ -1432,7 +1432,7 @@ def generate_multi_condition_problem(
             for s in reg_orders
         ))
 
-        # NEW T8: 평균 가격 초과 상품의 지역 주문 건수
+        # NEW T8: 지역 내 평균 가격 초과 상품 건수
         avg_price = sum(p["가격"] for p in pt) / len(pt) if pt else 0
         high_price_prods = set(p["상품명"] for p in pt if p["가격"] > avg_price)
         high_price_reg_orders = [s for s in st if s["상품명"] in high_price_prods and s["지역"] == tgt_region]
@@ -1480,7 +1480,7 @@ def generate_multi_condition_problem(
              f"2단계: 할인가 × 수량 합산\n"
              f"3단계: 합계 = {reg_disc_rev}\n최종 답: {reg_disc_rev}"),
 
-            # NEW: 평균 가격 초과 상품의 지역 주문 건수 (weight=2)
+            # NEW: 지역 내 평균 가격 초과 상품 (weight=2)
             (f"'{tgt_region}'에서 평균 가격({int(avg_price)}) 초과 상품의 주문 건수는 몇 건입니까?",
              high_price_reg_count, 2,
              f"1단계: 평균 가격 = {int(avg_price)}\n"
@@ -1489,25 +1489,25 @@ def generate_multi_condition_problem(
         ]
 
     elif config.difficulty == "medium":
-        # T1: 카테고리+지역 수량 1위 지역
+        # T1: 카테고리 지역 1위
         cat_prods = set(p["상품명"] for p in pt if p["카테고리"] == tgt_cat)
         cat_orders = [s for s in st if s["상품명"] in cat_prods]
         reg_qty = _group_sum(cat_orders, lambda s: s["지역"], lambda s: s["수량"])
         reg_ranked = _rank_groups(reg_qty)
         top_region = reg_ranked[0][0] if reg_ranked else ""
 
-        # T2: 지역별 매출 2위
+        # T2: 지역 매출 2위
         region_rev = _group_sum(st, lambda s: s["지역"],
                                 lambda s: pm[s["상품명"]]["가격"] * s["수량"])
         rev_ranked = _rank_groups(region_rev)
         second_rev = rev_ranked[1][1] if len(rev_ranked) >= 2 else 0
 
-        # T3: 분기 건수 1위
+        # T3: 주문 최다 분기
         q_counts = _group_count(st, lambda s: s["분기"])
         q_count_ranked = _rank_groups(q_counts)
         top_q = q_count_ranked[0][0] if q_count_ranked else "1분기"
 
-        # T4 (REPLACED): 골드 고객 중 고유 상품 수 1위 카테고리
+        # T4 (REPLACED): Gold 고유 상품 수 최다 카테고리
         gold_cids = set(c["고객번호"] for c in ct if c["등급"] == "골드")
         gold_orders = [s for s in st if s["고객번호"] in gold_cids]
         gold_cat_prods = {}
@@ -1520,7 +1520,7 @@ def generate_multi_condition_problem(
         gold_cat_ranked = _rank_groups(gold_cat_distinct)
         top_gold_cat = gold_cat_ranked[0][0] if gold_cat_ranked else ""
 
-        # T5 (REPLACED): 주문 건수 1위 카테고리의 할인 매출
+        # T5 (REPLACED): 주문 최다 카테고리 → 해당 카테고리 할인 매출
         cat_order_counts = _group_count(st, lambda s: pm[s["상품명"]]["카테고리"])
         cat_count_ranked = _rank_groups(cat_order_counts)
         top_count_cat = cat_count_ranked[0][0] if cat_count_ranked else ""
@@ -1531,7 +1531,7 @@ def generate_multi_condition_problem(
             for s in top_count_cat_orders
         ))
 
-        # T6 (NEW): 지역별 골드 vs 비골드 주문 건수 차이
+        # T6 (NEW): 지역별 Gold vs 비Gold 주문 건수 차 (전체 대비)
         tgt_region = rng.choice(regions_in_orders)
         reg_total_orders = len([s for s in st if s["지역"] == tgt_region])
         reg_gold_orders = len([s for s in st if s["지역"] == tgt_region and s["고객번호"] in gold_cids])
@@ -1555,7 +1555,7 @@ def generate_multi_condition_problem(
              f"1단계: 분기별 건수: {', '.join(f'{k}({v})' for k,v in q_count_ranked)}\n"
              f"2단계: 1위 = '{top_q}'\n최종 답: {top_q}"),
 
-            # REPLACED T4: 골드 고유 상품 수 1위 카테고리
+            # REPLACED T4: Gold 카테고리별 고유 상품 수
             (f"골드 등급 고객의 주문에서 고유 상품 수가 가장 많은 카테고리는 무엇입니까? (카테고리명으로 답하세요)",
              top_gold_cat, 2,
              f"1단계: 골드 고객: {len(gold_cids)}명\n"
@@ -1563,14 +1563,14 @@ def generate_multi_condition_problem(
              f"3단계: 카테고리별 고유 상품 수: {', '.join(f'{k}({v})' for k,v in gold_cat_ranked)}\n"
              f"4단계: 1위 = '{top_gold_cat}'\n최종 답: {top_gold_cat}"),
 
-            # REPLACED T5: 최다 주문 카테고리의 할인 매출
+            # REPLACED T5: 주문 최다 카테고리 → 할인 매출
             (f"주문 건수가 가장 많은 카테고리의 할인 적용 매출액은 얼마입니까? (할인가 = 가격×(100-할인율)/100, 소수점 버림)",
              top_count_cat_disc_rev, 2,
              f"1단계: 카테고리별 주문 건수: {', '.join(f'{k}({v})' for k,v in cat_count_ranked)}\n"
              f"2단계: 1위 = '{top_count_cat}'\n"
              f"3단계: '{top_count_cat}' 할인 매출 = {top_count_cat_disc_rev}\n최종 답: {top_count_cat_disc_rev}"),
 
-            # NEW T6: 지역별 골드 vs 비골드 차이
+            # NEW T6: 지역 Gold vs 비Gold 주문 건수 차
             (f"'{tgt_region}'에서 비골드 주문 건수와 골드 주문 건수의 차이는 얼마입니까? (비골드 - 골드)",
              reg_non_gold - reg_gold_orders, 2,
              f"1단계: '{tgt_region}' 전체 주문: {reg_total_orders}건\n"
@@ -1580,7 +1580,7 @@ def generate_multi_condition_problem(
         ]
 
     else:  # hard
-        # T1 (KEEP): 소비 상위 3명 제외 후 특정 지역 매출
+        # T1 (KEEP): 소비 상위 3명 제외 + 지역
         tgt_region = rng.choice(regions_in_orders)
         cust_spend = _group_sum(st, lambda s: s["고객번호"],
                                 lambda s: pm[s["상품명"]]["가격"] * s["수량"])
@@ -1589,7 +1589,7 @@ def generate_multi_condition_problem(
         excl_top3_reg = [s for s in st if s["고객번호"] not in top3_cids and s["지역"] == tgt_region]
         excl_top3_reg_rev = sum(pm[s["상품명"]]["가격"] * s["수량"] for s in excl_top3_reg)
 
-        # T2 (REPLACED): 중앙값 기준 소비자 그룹별 할인≥15% 매출 비율 차이
+        # T2 (REPLACED): 중앙값 초과 vs 이하 소비 → disc≥15% 매출 % 차
         all_spends = sorted(cust_spend.values())
         median_spend = all_spends[len(all_spends) // 2] if all_spends else 0
         above_med_cids = set(cid for cid, sp in cust_spend.items() if sp > median_spend)
@@ -1607,7 +1607,7 @@ def generate_multi_condition_problem(
         below_pct = int(below_med_disc15_rev * 100 / below_med_total) if below_med_total > 0 else 0
         med_pct_diff = abs(above_pct - below_pct)
 
-        # T3 (KEEP): 골드 카테고리 비율
+        # T3 (KEEP): Gold 카테고리 %
         gold_cids = set(c["고객번호"] for c in ct if c["등급"] == "골드")
         gold_orders = [s for s in st if s["고객번호"] in gold_cids]
         gold_total = sum(pm[s["상품명"]]["가격"] * s["수량"] for s in gold_orders)
@@ -1616,7 +1616,7 @@ def generate_multi_condition_problem(
         gold_cat_rev = sum(pm[s["상품명"]]["가격"] * s["수량"] for s in gold_cat_orders)
         gold_cat_pct = int(gold_cat_rev * 100 / gold_total) if gold_total > 0 else 0
 
-        # T4 (REPLACED): 매출 1위 지역 → 상위 2명 제외 → 주문당 평균
+        # T4 (REPLACED): 매출 1위 지역 → 상위 2명 제외 → 평균 주문 가치
         region_rev = _group_sum(st, lambda s: s["지역"],
                                 lambda s: pm[s["상품명"]]["가격"] * s["수량"])
         reg_rev_ranked = _rank_groups(region_rev)
@@ -1626,7 +1626,7 @@ def generate_multi_condition_problem(
         top_reg_excl_rev = sum(pm[s["상품명"]]["가격"] * s["수량"] for s in top_reg_excl_orders)
         top_reg_excl_avg = int(top_reg_excl_rev / len(top_reg_excl_orders)) if top_reg_excl_orders else 0
 
-        # T5 (REPLACED): 주문 건수 3위 지역 → 최고 소비 고객 → 해당 지역 비율
+        # T5 (REPLACED): 주문 건수 3위 지역 → 최고 소비 고객 → 해당 지역 소비 %
         reg_counts = _group_count(st, lambda s: s["지역"])
         reg_count_ranked = _rank_groups(reg_counts)
         third_region = reg_count_ranked[2][0] if len(reg_count_ranked) >= 3 else (reg_count_ranked[-1][0] if reg_count_ranked else tgt_region)
@@ -1639,7 +1639,7 @@ def generate_multi_condition_problem(
         top_cust_third_spend = third_reg_cust_spend.get(top_cust_in_third, 0)
         top_cust_third_pct = int(top_cust_third_spend * 100 / top_cust_total_spend) if top_cust_total_spend > 0 else 0
 
-        # T6 (REPLACED): 골드+실버 vs 브론즈+없음 주문당 평균 매출 비율
+        # T6 (REPLACED): Gold+Silver vs Bronze+None 주문당 평균 매출 → ratio×100
         gs_cids = set(c["고객번호"] for c in ct if c["등급"] in ("골드", "실버"))
         bn_cids = set(c["고객번호"] for c in ct if c["등급"] in ("브론즈", "없음"))
         gs_orders = [s for s in st if s["고객번호"] in gs_cids]
@@ -1651,7 +1651,7 @@ def generate_multi_condition_problem(
         gs_bn_ratio = int(gs_avg * 100 / bn_avg) if bn_avg > 0 else 0
 
         question_templates = [
-            # T1 (KEEP)
+            # T1 (KEEP): 소비 상위 3명 제외 + 지역
             (f"소비액 상위 3명의 고객을 제외하고 '{tgt_region}'에서의 매출액은 얼마입니까?",
              excl_top3_reg_rev, 1,
              f"1단계: 고객별 소비액: {', '.join(f'{k}({v})' for k,v in spend_ranked[:5])}\n"
@@ -1659,7 +1659,7 @@ def generate_multi_condition_problem(
              f"3단계: 제외 후 '{tgt_region}' 주문: {len(excl_top3_reg)}건\n"
              f"4단계: 매출 = {excl_top3_reg_rev}\n최종 답: {excl_top3_reg_rev}"),
 
-            # T2 (REPLACED): 중앙값 소비자 그룹별 할인≥15% 비율 차이
+            # T2 (REPLACED): 중앙값 초과 vs 이하 disc≥15% 매출 %
             (f"고객을 소비액 중앙값 기준으로 나눌 때, 할인율 15% 이상 상품 매출 비율(%)의 차이는 얼마입니까? (각 그룹의 %를 소수점 버림 후 절대값)",
              med_pct_diff, 2,
              f"1단계: 소비액 정렬, 중앙값 = {median_spend}\n"
@@ -1667,7 +1667,7 @@ def generate_multi_condition_problem(
              f"3단계: 중앙값 이하: 할인≥15% 비율 = {below_pct}%\n"
              f"4단계: 차이 = {med_pct_diff}\n최종 답: {med_pct_diff}"),
 
-            # T3 (KEEP)
+            # T3 (KEEP): Gold 카테고리 %
             (f"골드 고객 전체 매출 중 '{tgt_cat}' 카테고리 비율은 몇 %입니까? (소수점 버림)",
              gold_cat_pct, 1,
              f"1단계: 골드 고객: {len(gold_cids)}명\n"
@@ -1675,7 +1675,7 @@ def generate_multi_condition_problem(
              f"3단계: 골드 '{tgt_cat}' 매출 = {gold_cat_rev}\n"
              f"4단계: % = {gold_cat_pct}\n최종 답: {gold_cat_pct}"),
 
-            # T4 (REPLACED): 매출 1위 지역 → 상위 2명 제외 → 평균
+            # T4 (REPLACED): 매출 1위 지역 → 상위 2명 제외 → 평균 주문 가치
             (f"매출 1위 지역('{top_rev_region}')에서 소비 상위 2명 제외 후 주문당 평균 매출은 얼마입니까? (소수점 버림)",
              top_reg_excl_avg, 2,
              f"1단계: 매출 1위 지역 = '{top_rev_region}'\n"
@@ -1683,7 +1683,7 @@ def generate_multi_condition_problem(
              f"3단계: '{top_rev_region}' 제외 후 주문: {len(top_reg_excl_orders)}건, 매출 = {top_reg_excl_rev}\n"
              f"4단계: 평균 = {top_reg_excl_avg}\n최종 답: {top_reg_excl_avg}"),
 
-            # T5 (REPLACED): 주문 건수 3위 지역 → 최고 소비 고객 → 지역 비율
+            # T5 (REPLACED): 3위 지역 → 최고 소비 고객 → 해당 지역 소비 %
             (f"주문 건수 3위 지역('{third_region}')의 최고 소비 고객이 해당 지역에서 차지하는 매출 비율은 몇 %입니까? (소수점 버림)",
              top_cust_third_pct, 2,
              f"1단계: 지역별 주문 건수: {', '.join(f'{k}({v})' for k,v in reg_count_ranked)}\n"
@@ -1691,7 +1691,7 @@ def generate_multi_condition_problem(
              f"3단계: '{third_region}' 최고 소비 = '{top_cust_in_third}' ({top_cust_third_spend})\n"
              f"4단계: 전체 소비 = {top_cust_total_spend}, 비율 = {top_cust_third_pct}%\n최종 답: {top_cust_third_pct}"),
 
-            # T6 (REPLACED): 골드+실버 vs 브론즈+없음 비율
+            # T6 (REPLACED): Gold+Silver vs Bronze+None 주문당 평균 매출 비율
             (f"골드+실버 고객의 주문당 평균 매출과 브론즈+없음 고객의 주문당 평균 매출의 비율은 얼마입니까? (골드실버평균×100/브론즈없음평균, 소수점 버림)",
              gs_bn_ratio, 2,
              f"1단계: 골드+실버 주문: {len(gs_orders)}건, 매출 = {gs_rev}, 평균 = {int(gs_avg)}\n"
@@ -1730,7 +1730,7 @@ def _generation_difficulty_for_target(label_difficulty: str, rng: random.Random)
     """데이터셋 라벨을 보정된 생성 난이도 혼합으로 매핑."""
     roll = rng.random()
     if label_difficulty == "easy":
-        return "medium" if roll < 0.55 else "easy"
+        return "medium" if roll < 0.82 else "easy"
     if label_difficulty == "medium":
         return "hard" if roll < 0.50 else "medium"
     return label_difficulty
@@ -1741,7 +1741,17 @@ def generate_puzzle(
     problem_type: Optional[str] = None,
     seed: Optional[int] = None
 ) -> Dict[str, Any]:
-    """단일 퍼즐 생성"""
+    """
+    단일 퍼즐 생성
+
+    Args:
+        difficulty: 난이도 ("easy", "medium", "hard")
+        problem_type: 문제 유형 (None이면 랜덤)
+        seed: 난수 시드
+
+    Returns:
+        퍼즐 딕셔너리
+    """
     if seed is None:
         seed = random.randint(1, 1000000)
 
@@ -1758,6 +1768,7 @@ def generate_puzzle(
     puzzle["generation_difficulty"] = generation_difficulty
     puzzle["difficulty"] = requested_difficulty
 
+    # ID 생성
     puzzle_hash = hashlib.md5(json.dumps(puzzle, sort_keys=True, ensure_ascii=False).encode()).hexdigest()[:8]
     puzzle["id"] = f"af_ko_{requested_difficulty}_{problem_type}_{puzzle_hash}"
     puzzle["seed"] = seed
@@ -1769,7 +1780,16 @@ def generate_dataset(
     num_per_difficulty: int = 100,
     seed: int = 2025
 ) -> List[Dict[str, Any]]:
-    """난이도별 데이터셋 생성"""
+    """
+    난이도별 데이터셋 생성
+
+    Args:
+        num_per_difficulty: 난이도별 퍼즐 수
+        seed: 기본 시드
+
+    Returns:
+        퍼즐 리스트
+    """
     puzzles = []
     difficulties = ["easy", "medium", "hard"]
     problem_types = list(PROBLEM_GENERATORS.keys())
@@ -1796,7 +1816,7 @@ def generate_dataset(
 
 
 def format_table_for_prompt(table_name: str, table_data: Dict) -> str:
-    """테이블을 프롬프트 문자열로 변환"""
+    """테이블을 프롬프트 문자열로 포맷"""
     columns = table_data["columns"]
     data = table_data["data"]
 
@@ -1839,7 +1859,6 @@ _SOLUTION_TYPE_LABELS_KO = {
     ProblemType.MULTI_CONDITION.value: "다중 조건(SUMIFS/MAXIFS류)",
 }
 
-# 유형별: 모델이 '무엇을 먼저 읽을지' 잡는 한두 문장 (질문마다 수치는 다름)
 _SFT_TYPE_REASONING_NUDGE_KO = {
     ProblemType.LOOKUP_QUERY.value: (
         "어떤 표(상품/주문/고객)을 어떤 키(상품명, 고객번호)로 잇는지 먼저 잡고, "
@@ -1883,7 +1902,7 @@ _FINAL_PREFIX_KO = re.compile(r"^\s*(?:최종\s*답|Final\s*answer)\s*[:：-]\s*
 
 
 def _worked_body_lines(solution: str) -> list:
-    """원본 'N단계: …' 문자열을 [SEG n] 형태로 재번호 + 최종답 줄은 드롭."""
+    """생성기 'N단계: …' 줄을 [SEG n]으로 재번호; '최종 답:' 줄은 제거."""
     s = (solution or "").strip()
     if not s:
         return [
@@ -1915,7 +1934,7 @@ def _solution_for_guided_distillation(
     answer_type: str,
     question: str = "",
 ) -> str:
-    """SFT Guided Distillation: 해설이 아니라 '추론·계산 궤적'이 드러나게 만든다."""
+    """SFT: 해설이 아니라 추론 궤적을 강조."""
     type_label = _SOLUTION_TYPE_LABELS_KO.get(problem_type, problem_type)
     fmt = "숫자만(단위 없음)" if answer_type == "number" else "텍스트(문제와 동일 표기)"
     nudge = _SFT_TYPE_REASONING_NUDGE_KO.get(
@@ -1967,7 +1986,13 @@ def save_dataset(
     puzzles: List[Dict],
     base_dir: str = "./data"
 ):
-    """데이터셋을 CSV와 JSONL로 저장"""
+    """
+    데이터셋을 CSV와 JSONL로 저장
+
+    출력 경로:
+    - data/csv/array_formula.csv
+    - data/jsonl/array_formula.jsonl
+    """
     base_path = Path(base_dir)
     csv_dir = base_path / "csv"
     json_dir = base_path / "jsonl"
@@ -1978,6 +2003,7 @@ def save_dataset(
     csv_path = csv_dir / "array_formula_ko.csv"
     jsonl_path = json_dir / "array_formula_ko.jsonl"
 
+    # 각 퍼즐에 질문 프롬프트 추가
     processed_puzzles = []
     for puzzle in puzzles:
         question = puzzle_to_prompt(puzzle)
@@ -1998,12 +2024,14 @@ def save_dataset(
         }
         processed_puzzles.append(processed)
 
+    # JSONL 저장
     with open(jsonl_path, "w", encoding="utf-8") as f:
         for puzzle in processed_puzzles:
             f.write(json.dumps(puzzle, ensure_ascii=False) + "\n")
 
     print(f"Saved {len(processed_puzzles)} puzzles to {jsonl_path}")
 
+    # CSV 저장
     csv_columns = ["id", "question", "answer", "solution", "difficulty"]
 
     with open(csv_path, "w", encoding="utf-8", newline="") as f:
@@ -2015,6 +2043,7 @@ def save_dataset(
 
     print(f"Saved {len(processed_puzzles)} puzzles to {csv_path}")
 
+    # 통계 출력
     stats = {}
     for puzzle in puzzles:
         key = f"{puzzle['difficulty']}_{puzzle['type']}"

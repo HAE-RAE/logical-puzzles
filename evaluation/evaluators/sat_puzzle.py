@@ -55,16 +55,25 @@ Answer: {"K팀": false, "L팀": true}
             response: LLM 응답 텍스트
             puzzle: 퍼즐 데이터
         """
-        variables = puzzle.get("variables", [])
+        variables = puzzle.get("variables") or list((puzzle.get("answer") or {}).keys())
         answer_text = self._extract_final_answer_text(response)
 
         def _validate(answer_obj: Any) -> Optional[Dict[str, bool]]:
             if not isinstance(answer_obj, dict):
                 return None
+            if not variables:
+                return answer_obj
+
+            # Preserve the dataset's canonical variable names while accepting
+            # harmless casing changes from the model, e.g. TeamA -> teama.
+            lower_key_map = {str(key).lower(): key for key in answer_obj}
+            canonical_answer: Dict[str, bool] = {}
             for var in variables:
-                if var not in answer_obj or not isinstance(answer_obj[var], bool):
+                key = var if var in answer_obj else lower_key_map.get(str(var).lower())
+                if key is None or not isinstance(answer_obj[key], bool):
                     return None
-            return answer_obj
+                canonical_answer[var] = answer_obj[key]
+            return canonical_answer
 
         def _parse_json_like(text: str) -> Optional[Dict[str, bool]]:
             if not text:
@@ -164,7 +173,18 @@ Answer: {"K팀": false, "L팀": true}
         
         # 완전 일치만 정답으로 인정
         for var in expected:
-            if var not in predicted or predicted[var] != expected[var]:
+            if var in predicted:
+                pred_value = predicted[var]
+            else:
+                pred_key = next(
+                    (key for key in predicted if str(key).lower() == str(var).lower()),
+                    None,
+                )
+                if pred_key is None:
+                    return False, 0.0
+                pred_value = predicted[pred_key]
+
+            if pred_value != expected[var]:
                 return False, 0.0
         
         return True, 1.0

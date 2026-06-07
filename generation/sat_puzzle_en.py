@@ -261,12 +261,12 @@ class SATPuzzleGenerator:
             Difficulty.EASY: {
                 # Target: ~75%. Previous setting scored 83%, so nudge the state
                 # space up while keeping prompts shorter than medium.
-                'num_vars': random.randint(9, 10),
+                'num_vars': 9,
                 'min_clauses': 36,
-                'max_clauses': 58,
+                'max_clauses': 54,
                 'clause_length': (3, 4),
                 'unit_clause_rate': 0.0,
-                'negation_ratio': 0.52,
+                'negation_ratio': 0.51,
             },
             Difficulty.MEDIUM: {
                 # Target: ~50%. Previous setting scored 46%, so keep 11 variables

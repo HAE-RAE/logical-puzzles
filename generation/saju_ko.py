@@ -28,6 +28,10 @@ from typing import Dict, List, Tuple
 
 import ephem
 
+SFT_SOLUTION_RUBRIC_KO = (
+    "STEP0=문제 메타 · STEP1=주어진 조건 · STEP2=풀이 전개 · STEP3=답·검산"
+)
+
 GAN = "갑을병정무기경신임계"
 JI = "자축인묘진사오미신유술해"
 ZODIAC = ["쥐", "소", "호랑이", "토끼", "용", "뱀", "말", "양", "원숭이", "닭", "개", "돼지"]
@@ -141,7 +145,7 @@ def e_year_pillar(rng):
         f"[STEP 2] 연주(年柱) = {a}",
     ]
     q = f"양력 {dt.year}년 {dt.month}월 {dt.day}일에 태어난 사람의 사주 연주(年柱) 간지는? (입춘 기준, 예: 갑자)"
-    return q, a, steps
+    return q, a, steps, "연주(年柱) 계산"
 
 
 def m_month_pillar(rng):
@@ -155,7 +159,7 @@ def m_month_pillar(rng):
     ]
     q = (f"양력 {dt.year}년 {dt.month}월 {dt.day}일 {h}시에 태어난 사람의 사주 월주(月柱) 간지는? "
          f"(절기 기준 월지 + 월두법, 예: 갑자)")
-    return q, a, steps
+    return q, a, steps, "월주(月柱) 계산"
 
 
 def m_hour_pillar_given_day(rng):
@@ -173,7 +177,7 @@ def m_hour_pillar_given_day(rng):
     ]
     q = (f"사주에서 일주(日柱)가 '{ilju_str}'인 사람이 {h}시에 태어났다. "
          f"시두법(五鼠遁)을 적용한 시주(時柱) 간지는? (예: 갑자)")
-    return q, a, steps
+    return q, a, steps, "시주(時柱) 계산 (일주 제공)"
 
 
 def h_day_pillar(rng):
@@ -181,7 +185,7 @@ def h_day_pillar(rng):
     a = ilju(dt.year, dt.month, dt.day)
     steps = [f"[STEP 1] 일주(日柱) = 연속 60갑자 일진 = {a}"]
     q = f"양력 {dt.year}년 {dt.month}월 {dt.day}일의 사주 일주(日柱) 간지는? (60갑자 일진, 예: 갑자)"
-    return q, a, steps
+    return q, a, steps, "일주(日柱) 계산"
 
 
 def h_hour_pillar(rng):
@@ -194,16 +198,39 @@ def h_hour_pillar(rng):
     ]
     q = (f"양력 {dt.year}년 {dt.month}월 {dt.day}일 {h}시에 태어난 사람의 사주 시주(時柱) 간지는? "
          f"(일간 + 시두법, 예: 갑자)")
-    return q, a, steps
+    return q, a, steps, "시주(時柱) 계산"
 
 
 RECIPES = {
-    # 측정(gemini reasoning=medium): easy 연주 ~100%(지식 바닥, 밴드 상단 초과),
-    # medium 시두법 시주 ~60%(in-band), hard 일주/시주 ~24%(in-band).
-    # gemini는 사주에서 65-85% 구간 능력이 없음(규칙 ~90-100% / 일진·시두법 20-60%).
-    "easy": [e_year_pillar],
-    "medium": [m_hour_pillar_given_day],
-    "hard": [h_day_pillar, h_hour_pillar],
+    # Latest calibration:
+    # - year pillar alone scored 97%, and hour-with-given-day scored 87%.
+    # - day/hour raw pillar tasks scored 24%, so mix them into easy/medium
+    #   to create intermediate target bands without changing the evaluator.
+    "easy": [
+        m_hour_pillar_given_day,
+        m_hour_pillar_given_day,
+        m_hour_pillar_given_day,
+        m_hour_pillar_given_day,
+        h_day_pillar,
+    ],
+    "medium": [
+        m_hour_pillar_given_day,
+        m_hour_pillar_given_day,
+        h_day_pillar,
+        h_hour_pillar,
+        h_day_pillar,
+    ],
+    "hard": [
+        h_day_pillar,
+        h_hour_pillar,
+        h_day_pillar,
+        h_hour_pillar,
+        h_day_pillar,
+        h_hour_pillar,
+        h_day_pillar,
+        h_hour_pillar,
+        m_hour_pillar_given_day,
+    ],
 }
 
 
@@ -211,8 +238,23 @@ def generate_one(difficulty: str, rng: random.Random):
     return rng.choice(RECIPES[difficulty])(rng)
 
 
-def build_solution_trace(steps: List[str]) -> str:
-    return "사주 기둥 계산:\n" + "\n".join(steps)
+def build_solution_trace(steps: List[str], answer: str, q_type: str) -> str:
+    solution = [
+        SFT_SOLUTION_RUBRIC_KO,
+        "[STEP 0] 문제 메타",
+        f"  - 사주 기둥 계산 유형: {q_type}",
+        "[STEP 1] 주어진 조건",
+    ]
+    for s in steps:
+        if s.startswith("[STEP 1]"):
+            solution.append("  - " + s[len("[STEP 1] "):])
+    step2_lines = [s for s in steps if s.startswith("[STEP 2]")]
+    if step2_lines:
+        solution.append("[STEP 2] 풀이 전개")
+        for s in step2_lines:
+            solution.append("  - " + s[len("[STEP 2] "):])
+    solution.append(f"[STEP 3] 답·검산\n  - 정답: {answer}")
+    return "\n".join(solution)
 
 
 # ---------------------------------------------------------------------------
@@ -242,7 +284,7 @@ def create_dataset_files(num_questions: int, seed: int = None):
         while len(records) < count and attempts < count * 400:
             attempts += 1
             try:
-                q, a, steps = generate_one(difficulty, rng)
+                q, a, steps, q_type = generate_one(difficulty, rng)
             except Exception:
                 continue
             if q in seen:
@@ -253,7 +295,7 @@ def create_dataset_files(num_questions: int, seed: int = None):
                 "id": f"saju_ko_{difficulty}_{idx:04d}",
                 "question": q,
                 "answer": a,
-                "solution": build_solution_trace(steps),
+                "solution": build_solution_trace(steps, a, q_type),
                 "difficulty": difficulty,
             })
         jsonl_path = json_dir / f"saju_ko_{difficulty}.jsonl"

@@ -350,7 +350,7 @@ def _make_tables_dict(product_table, sales_table, customer_table):
 # Data generation shared across generators
 # ============================================================
 
-_ORDER_COUNTS = {"easy": (35, 50), "medium": (120, 170), "hard": (280, 360)}
+_ORDER_COUNTS = {"easy": (35, 50), "medium": (120, 170), "hard": (220, 300)}
 _CUSTOMER_COUNTS = {"easy": (10, 14), "medium": (18, 20), "hard": (20, 20)}
 
 
@@ -1731,7 +1731,7 @@ def _generation_difficulty_for_target(label_difficulty: str, rng: random.Random)
     """Map dataset labels to calibrated generation difficulty mixtures."""
     roll = rng.random()
     if label_difficulty == "easy":
-        return "medium" if roll < 0.55 else "easy"
+        return "medium" if roll < 0.82 else "easy"
     if label_difficulty == "medium":
         return "hard" if roll < 0.50 else "medium"
     return label_difficulty

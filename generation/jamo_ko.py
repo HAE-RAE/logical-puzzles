@@ -24,6 +24,10 @@ import random
 from pathlib import Path
 from typing import Dict, List
 
+SFT_SOLUTION_RUBRIC_KO = (
+    "STEP0=문제 메타 · STEP1=주어진 조건 · STEP2=풀이 전개 · STEP3=답·검산"
+)
+
 CHO = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ"           # 19
 JUNG = "ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ"        # 21
 JONG = [""] + list("ㄱㄲㄳㄴㄵㄶㄷㄹ") + \
@@ -102,8 +106,26 @@ def generate_one(difficulty: str, rng: random.Random):
     return q, out, steps
 
 
-def build_solution_trace(steps: List[str]) -> str:
-    return "한글 자모 분해→초성 이동→재조합:\n" + "\n".join(steps)
+def build_solution_trace(steps: List[str], answer: str, difficulty: str) -> str:
+    cfg = TIER_CFG[difficulty]
+    solution = [
+        SFT_SOLUTION_RUBRIC_KO,
+        "[STEP 0] 문제 메타",
+        f"  - 한글 자모 변환: {cfg['n']}음절, 종성={cfg['jong']}; 초성 {SHIFT}칸 순환 이동",
+        "[STEP 1] 주어진 조건",
+    ]
+    for s in steps:
+        if s.startswith("[STEP 1]"):
+            solution.append("  - " + s[len("[STEP 1] "):])
+    solution.append("[STEP 2] 풀이 전개")
+    for s in steps:
+        if s.startswith("[STEP 2"):
+            solution.append("  " + s)
+    solution.append("[STEP 3] 답·검산")
+    for s in steps:
+        if s.startswith("[STEP 3]"):
+            solution.append("  - " + s[len("[STEP 3] "):])
+    return "\n".join(solution)
 
 
 def create_dataset_files(num_questions: int, seed: int = None):
@@ -137,7 +159,7 @@ def create_dataset_files(num_questions: int, seed: int = None):
                 "id": f"jamo_ko_{difficulty}_{idx:04d}",
                 "question": q,
                 "answer": a,
-                "solution": build_solution_trace(steps),
+                "solution": build_solution_trace(steps, a, difficulty),
                 "difficulty": difficulty,
             })
         jsonl_path = json_dir / f"jamo_ko_{difficulty}.jsonl"

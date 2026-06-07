@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
-"""Logic Grid Puzzle Generator - Korean Version
-[진행도] ☑ 완료
-[파일명] logic_grid_ko.py
-[목적] 한국어 기반 논리 그리드 퍼즐 생성
+"""
+Logic Grid Puzzle Generator
 
-아인슈타인 스타일 논리 그리드 퍼즐을 한국어로 생성합니다.
-CSP (제약 충족 문제) 백트래킹을 사용하여 유일 해를 보장합니다.
+유일 해를 보장하는 아인슈타인 스타일 논리 그리드 퍼즐을 생성합니다.
+백트래킹 CSP(제약 충족 문제) 솔버를 사용합니다.
 """
 
 import random
@@ -30,7 +28,7 @@ class Difficulty(str, Enum):
 
 @dataclass
 class LogicGridPuzzle:
-    """논리 그리드 퍼즐 표현"""
+    """논리 그리드 퍼즐을 나타냄"""
     id: str
     difficulty: str
     people: List[str]
@@ -95,7 +93,7 @@ class LogicGridPuzzle:
 
 
 def _build_logic_grid_solution_ko(puzzle: LogicGridPuzzle) -> str:
-    """SFT teacher trace: CSP + 정답 표."""
+    """SFT teacher trace: CSP + 답 격자."""
     import json as _json
     people = ", ".join(puzzle.people)
     cats = ", ".join(puzzle.attributes.keys())
@@ -140,7 +138,7 @@ def _build_logic_grid_solution_ko(puzzle: LogicGridPuzzle) -> str:
 
 
 class LogicGridGenerator:
-    """유일 해를 보장하는 논리 그리드 퍼즐 생성기"""
+    """유일 해를 보장하는 논리 그리드 퍼즐 생성"""
     
     # 사용 가능한 이름들
     NAMES = [
@@ -182,18 +180,18 @@ class LogicGridGenerator:
         # 퍼즐 ID 생성
         puzzle_id = f"logic_grid_{difficulty.lower()}_{random.randint(1000, 9999)}"
         
-        # Create temporary puzzle to generate full prompt
+        # 전체 프롬프트 생성을 위한 임시 퍼즐 생성
         temp_puzzle = LogicGridPuzzle(
             id=puzzle_id,
             difficulty=difficulty,
             people=people,
             attributes=attributes,
             constraints=constraints,
-            question="",  # Temporary placeholder
+            question="",  # 임시 자리표시자
             answer=solution
         )
         
-        # Generate complete prompt as question
+        # 완전한 프롬프트를 question으로 생성
         complete_prompt = temp_puzzle.to_prompt()
         temp_puzzle.question = complete_prompt
         
@@ -219,8 +217,8 @@ class LogicGridGenerator:
                 'num_people': 5,
                 'num_categories': 5,
                 'categories': ['집색깔', '애완동물', '음료', '직업', '취미'],
-                'min_constraints': 16,
-                'max_constraints': 18,
+                'min_constraints': 18,
+                'max_constraints': 20,
                 'min_direct_constraints': 6,
                 'max_direct_constraints': 6,
             },
@@ -240,10 +238,10 @@ class LogicGridGenerator:
                 'num_people': 8,
                 'num_categories': 7,
                 'categories': ['집색깔', '애완동물', '음료', '직업', '취미', '음식', '교통수단'],
-                'min_constraints': 43,
-                'max_constraints': 46,
-                'min_direct_constraints': 10,
-                'max_direct_constraints': 10,
+                'min_constraints': 45,
+                'max_constraints': 48,
+                'min_direct_constraints': 11,
+                'max_direct_constraints': 11,
             }
         }
         return configs[difficulty]
@@ -303,7 +301,7 @@ class LogicGridGenerator:
         )
         constraints.extend(indirect_constraints)
         
-        # 제약 조건 섞기
+        # 드러나는 순서가 되지 않도록 제약 조건 섞기
         random.shuffle(constraints)
         
         return constraints
@@ -442,15 +440,19 @@ class LogicGridGenerator:
         expected_solution: Dict[str, Dict[str, str]]
     ) -> bool:
         """
-        제약 조건이 정확히 하나의 해로 이어지는지 검증
-        이것은 단순화된 검사입니다 - 실제 운영 환경에서는 전체 CSP 솔버를 사용합니다.
+        제약이 정확히 하나의 해로 이어지는지 검증.
+        단순화된 검사이며, 실제 운영에서는 전체 CSP 솔버를 사용합니다.
         """
-        # 직접 할당이 몇 개나 지정되었는지 확인
+        # 당장은 재구성을 시도하는 기본 검사
+        # 제약 생성이 충분히 결정적이라고 가정
+        # 완전한 구현에서는 AC-3 등 CSP 알고리즘 사용
+        
+        # 직접 지정된 할당 수 세기
         direct_assignments = {}
         for person in people:
             direct_assignments[person] = {}
         
-        # 직접 할당을 위한 제약 조건 파싱
+        # 직접 할당을 위한 제약 파싱
         for constraint in constraints:
             for person in people:
                 if person in constraint:
@@ -489,7 +491,7 @@ def generate_dataset(
     import os
     from pathlib import Path
     
-    # Setup directories
+    # 디렉터리 설정
     PROJECT_ROOT = Path(__file__).resolve().parent.parent
     csv_dir = PROJECT_ROOT / "data" / "csv"
     json_dir = PROJECT_ROOT / "data" / "jsonl"
@@ -517,7 +519,7 @@ def generate_dataset(
         if i % 10 == 0:
             print(f"{i}/{num_samples} 퍼즐 생성 완료...")
     
-    # Re-assign ids to follow per-difficulty naming convention
+    # 난이도별 명명 규칙에 맞게 id 재할당
     diff_counters = {}
     for puzzle in puzzles:
         diff_name = getattr(puzzle.difficulty, "value", puzzle.difficulty)
@@ -559,7 +561,7 @@ def generate_dataset(
     print(f"\n✅ 데이터셋 생성 완료!")
     print(f"   총 퍼즐 수: {num_samples}")
     
-    # 난이도별 카운트
+    # 난이도별 개수
     easy_count = sum(1 for p in puzzles if p.difficulty == Difficulty.EASY)
     medium_count = sum(1 for p in puzzles if p.difficulty == Difficulty.MEDIUM)
     hard_count = sum(1 for p in puzzles if p.difficulty == Difficulty.HARD)

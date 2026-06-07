@@ -980,6 +980,9 @@ def _generate_file_records(file_key: str, file_spec: Dict, seed: int,
                 derived, file_key, seq, block["label"], solution_format))
             seq += 1
             produced += 1
+            if produced % 10 == 0 or produced == count:
+                print(f"      [{file_key}] block {bi}: {produced}/{count} puzzles",
+                      flush=True)
 
         # If transforms could not yield enough distinct grids, top up with
         # freshly generated base puzzles.
@@ -998,6 +1001,9 @@ def _generate_file_records(file_key: str, file_spec: Dict, seed: int,
                 fresh, file_key, seq, block["label"], solution_format))
             seq += 1
             produced += 1
+            if produced % 10 == 0 or produced == count:
+                print(f"      [{file_key}] block {bi}: {produced}/{count} puzzles (top-up)",
+                      flush=True)
 
         if produced < count:
             print(f"      WARNING: produced {produced}/{count} for {file_key} block {bi}")
