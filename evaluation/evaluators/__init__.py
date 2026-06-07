@@ -21,6 +21,8 @@ def _get_registry() -> Dict[str, Type]:
     from .yacht_dice import YachtDiceEvaluator
     from .saju import SajuEvaluator
     from .jamo import JamoEvaluator
+    from .subway_ko import SubwayKoEvaluator
+    from .water_jug_ko import WaterJugKoEvaluator
 
     return {
         "array_formula_en": ArrayFormulaEvaluator,
@@ -53,6 +55,8 @@ def _get_registry() -> Dict[str, Type]:
         "sudoku_ko": SudokuEvaluator,
         "yacht_dice_en": YachtDiceEvaluator,
         "yacht_dice_ko": YachtDiceEvaluator,
+        "subway_ko": SubwayKoEvaluator,
+        "water_jug_ko": WaterJugKoEvaluator,
     }
 
 
