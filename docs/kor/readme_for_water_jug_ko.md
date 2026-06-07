@@ -1,9 +1,9 @@
-# 물 붓기 (water_jug_ko) — 난이도 설계 문서
+# 물 붓기 (water_jug) — 난이도 설계 문서
 
-- 생성기: `generation/water_jug_ko.py`
-- 평가기: `evaluation/evaluators/water_jug_ko.py`
-- 데이터: `data/json/water_jug_ko_{easy,medium,hard}.jsonl`
-- 태스크명: `water_jug_ko`, `water_jug_ko_easy`, `water_jug_ko_medium`, `water_jug_ko_hard`
+- 생성기: `generation/water_jug_ko.py` (한국어) · `generation/water_jug_en.py` (영어)
+- 평가기: `evaluation/evaluators/water_jug.py` (en/ko 공용 — `WaterJugEvaluator`)
+- 데이터: `data/jsonl/water_jug_{ko,en}_{easy,medium,hard}.jsonl`
+- 태스크명: `water_jug_ko`, `water_jug_en` (+ `_easy`/`_medium`/`_hard`)
 
 ## 이 게임은 무엇인가요? (자세한 설명)
 
@@ -99,15 +99,17 @@ OP_BANDS = {
 - `_check_answer`: 정수 일치
 
 ## Gemini 3 Flash 기준선 (n=30/난이도, temp 0.6)
-| easy | medium | hard |
-|---|---|---|
-| 90% | 33% | 17% |
+| 언어 | easy | medium | hard |
+|---|---|---|---|
+| KO | 90% | 33% | 17% |
+| EN | 90% | 27% | 20% |
 
 오답의 예측오차(pred−gold)는 거의 전부 **양수** → 모델이 "동작하지만 비최적"인 수순을 냄.
 4개 신규 퍼즐 중 분리가 가장 가파름(추론/계획 능력 측정).
 
 ## 재생성
 ```bash
-python generation/water_jug_ko.py --num 100   # data/json 에 저장
+python generation/water_jug_ko.py --num 100   # KO, data/jsonl 에 저장
+python generation/water_jug_en.py --num 100   # EN, data/jsonl 에 저장
 python generation/water_jug_ko.py --demo       # 난이도별 샘플 출력
 ```

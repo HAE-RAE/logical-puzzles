@@ -1,9 +1,12 @@
-# 전철 경로 (subway_ko) — 난이도 설계 문서
+# 전철 경로 (subway) — 난이도 설계 문서
 
-- 생성기: `generation/subway_ko.py`
-- 평가기: `evaluation/evaluators/subway_ko.py`
-- 데이터: `data/json/subway_ko_{easy,medium,hard}.jsonl`
-- 태스크명: `subway_ko`, `subway_ko_easy`, `subway_ko_medium`, `subway_ko_hard`
+- 생성기: `generation/subway_ko.py` (한국어) · `generation/subway_en.py` (영어, 역명 로마자)
+- 평가기: `evaluation/evaluators/subway.py` (en/ko 공용 — `SubwayEvaluator`)
+- 데이터: `data/jsonl/subway_{ko,en}_{easy,medium,hard}.jsonl`
+- 태스크명: `subway_ko`, `subway_en` (+ `_easy`/`_medium`/`_hard`)
+
+> EN 버전은 KO의 노선망(EDGES)을 그대로 쓰고 역 이름만 로마자(Revised Romanization 근사)로
+> 변환한 것이라 그래프 토폴로지·난이도 대역이 KO와 100% 동일합니다.
 
 ## 이 게임은 무엇인가요? (자세한 설명)
 
@@ -113,15 +116,17 @@ STOP_BANDS = {
 - `_check_answer`: 정수 일치
 
 ## Gemini 3 Flash 기준선 (n=30/난이도, temp 0.6)
-| easy | medium | hard |
-|---|---|---|
-| 100% | 77% | 40% |
+| 언어 | easy | medium | hard |
+|---|---|---|---|
+| KO | 100% | 77% | 40% |
+| EN | 100% | 77% | 40% |
 
-오답은 대부분 **±1~2의 작은 세기 실수**(예: 정답 39, 예측 38 — 한 구간 역 수 오산).
-경로가 길수록 실수 확률이 늘어 단조 분리.
+KO·EN이 거의 동일(같은 그래프라 당연). 오답은 대부분 **±1~2의 작은 세기 실수**
+(예: 정답 39, 예측 38 — 한 구간 역 수 오산). 경로가 길수록 실수 확률이 늘어 단조 분리.
 
 ## 재생성
 ```bash
-python generation/subway_ko.py --num 100
-python generation/subway_ko.py --demo
+python generation/subway_ko.py --num 100   # KO, data/jsonl 에 저장
+python generation/subway_en.py --num 100   # EN, data/jsonl 에 저장
+python generation/subway_ko.py --demo      # 난이도별 샘플 출력
 ```

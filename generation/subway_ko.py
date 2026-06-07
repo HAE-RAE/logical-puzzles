@@ -336,7 +336,7 @@ def create_dataset_files(num_questions=100):
     PROJECT_ROOT = Path(__file__).resolve().parent.parent
     difficulties = ['easy', 'medium', 'hard']
 
-    data_dir = PROJECT_ROOT / 'data' / 'json'
+    data_dir = PROJECT_ROOT / 'data' / 'jsonl'
     data_dir.mkdir(parents=True, exist_ok=True)
 
     from collections import Counter
