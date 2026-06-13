@@ -1,0 +1,57 @@
+{
+  "array_formula_en": {
+    "easy": 0.83,
+    "medium": 0.52,
+    "hard": 0.28
+  },
+  "hanoi_en": {
+    "easy": 0.79,
+    "medium": 0.52,
+    "hard": 0.25
+  },
+  "number_baseball_en": {
+    "easy": 0.78,
+    "medium": 0.52,
+    "hard": 0.26
+  },
+  "inequality_en": {
+    "easy": 0.84,
+    "medium": 0.48,
+    "hard": 0.23
+  },
+  "causal_dag_en": {
+    "easy": 0.80,
+    "medium": 0.50,
+    "hard": 0.24
+  },
+  "cipher_en": {
+    "easy": 0.74,
+    "medium": 0.56,
+    "hard": 0.22
+  },
+  "sat_puzzles_en": {
+    "easy": 0.79,
+    "medium": 0.52,
+    "hard": 0.20
+  },
+  "ferryman_en": {
+    "easy": 0.76,
+    "medium": 0.49,
+    "hard": 0.22
+  },
+  "yacht_dice_en": {
+    "easy": 0.75,
+    "medium": 0.46,
+    "hard": 0.21
+  },
+  "minesweeper_en": {
+    "easy": 0.71,
+    "medium": 0.51,
+    "hard": 0.16
+  },
+  "logic_grid_en": {
+    "easy": 0.68,
+    "medium": 0.45,
+    "hard": 0.21
+  }
+}
