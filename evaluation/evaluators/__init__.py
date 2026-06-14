@@ -21,6 +21,8 @@ def _get_registry() -> Dict[str, Type]:
     from .yacht_dice import YachtDiceEvaluator
     from .saju import SajuEvaluator
     from .jamo import JamoEvaluator
+    from .word_chain import WordChainEvaluator
+    from .korean_units import KoreanUnitsEvaluator
     from .time import TimeEvaluator
     from .subway import SubwayEvaluator
     from .water_jug import WaterJugEvaluator
@@ -45,6 +47,8 @@ def _get_registry() -> Dict[str, Type]:
         "kinship_vision": KinshipEvaluator,
         "saju_ko": SajuEvaluator,
         "jamo_ko": JamoEvaluator,
+        "word_chain_ko": WordChainEvaluator,
+        "korean_units_ko": KoreanUnitsEvaluator,
         "time_ko": TimeEvaluator,
         "logic_grid_en": LogicGridEvaluator,
         "logic_grid_ko": LogicGridEvaluator,
