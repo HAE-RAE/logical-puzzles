@@ -1,4 +1,4 @@
-id,question,answer,solution,difficulty
+﻿id,question,answer,solution,difficulty
 hanoi_ko_easy_0000,"5개의 원판이 있는 하노이의 탑 최적 해법에서, 모든 원판은 기둥 0에서 시작하여
 기둥 2(으)로 이동해야 합니다 (기둥 1은(는) 보조).
 처음 28번의 이동을 생각해 봅시다. 각 단계 i (1부터 시작)에서 D_i를 이동한 원판,

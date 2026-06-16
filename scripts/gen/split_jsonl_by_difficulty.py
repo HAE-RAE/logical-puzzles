@@ -78,6 +78,11 @@ def split_one(
     counts = {}
     for d in DIFFS:
         items = buckets.get(d, [])
+        # Skip tiers absent from this source so a single-tier run doesn't
+        # truncate the other tiers' existing files to empty.
+        if not items:
+            counts[d] = 0
+            continue
         if max_per_difficulty is not None and len(items) > max_per_difficulty:
             items = items[:max_per_difficulty]
         out_path = out_dir / f"{stem}_{d}.jsonl"

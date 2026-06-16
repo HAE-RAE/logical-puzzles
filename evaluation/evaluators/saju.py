@@ -13,7 +13,10 @@ class SajuEvaluator(BaseEvaluator):
 
     SYSTEM_PROMPT = """### Instructions
 You are an expert at the Korean Four Pillars (saju / manseryeok).
-Reason step by step, then give the final pillar as a single 간지.
+
+### Rules
+1. Compute the requested pillar (year/month/day/hour) step by step.
+2. Give the final answer as a single 2-character 간지.
 
 ### Output format
 Your final line must be:

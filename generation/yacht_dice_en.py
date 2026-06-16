@@ -37,14 +37,15 @@ import numpy as np
 # ============================================================
 
 # Rounds in the spotcheck partial sum (0 => answer is full 12-round optimal total).
-# v33: easy K=2 + constructive dice -> graded answer is the SUM of two globally
-# exclusive fixed-score spot rounds (55/60/65/70/75/80/90/100, ...), not a single
-# {25,30,40,50}. Constructive placement keeps both spot scores stable under the
-# global optimum. medium/hard unchanged from v32 calibration.
+# v38 calibration (target 75/50/25; measured v37 easy 99%, medium 54%, hard 43%):
+# - easy: drop constructive dice → random in-band; K 3→2 (constructive made K irrelevant).
+# - medium: relax bands slightly (54→50).
+# - hard: K 6→9 (tightening bands to gap40/complexity10 STARVED generation, so
+#   harden via more spot rounds instead: 0.43 -> ~0.28, predictable & no starvation).
 SPOTCHECK_K: Dict[str, int] = {
     "easy": 2,
-    "medium": 1,
-    "hard": 5,
+    "medium": 2,
+    "hard": 8,
 }
 
 
@@ -158,12 +159,27 @@ Do NOT omit this line. Follow any specific instructions about what number to pro
 """
 
     def get_user_prompt(self, dice_results: List[List[int]]) -> str:
-        """Generate user prompt in English"""
-        goal = "maximum" if self.optimization_goal == "maximize" else "minimum"
-        prompt = f"Given the following 12 rounds of dice results, find the {goal} possible total score:\n\n"
+        """Generate user prompt in English with explicit scoring rules."""
+        prompt = (
+            "Given the following 12 rounds of dice results, find an optimal category "
+            "assignment.\n\n"
+            "Scoring rules (use these exact point values):\n"
+            f"- Full House: {self.full_house_points} points\n"
+            f"- Small Straight: {self.small_straight_points} points\n"
+            f"- Large Straight: {self.large_straight_points} points\n"
+            f"- Yacht: {self.yacht_points} points\n"
+            "- Aces through Sixes: sum of dice showing that number\n"
+            "- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify\n"
+            f"- Upper section bonus: +{self.bonus_points} when the sum of Aces through "
+            f"Sixes is {self.bonus_threshold} or more\n\n"
+        )
         for i, dice in enumerate(dice_results):
             prompt += f"Round {i+1}: {dice}\n"
-        prompt += f"\nCalculate the optimal assignment and provide the {goal} total score."
+        prompt += (
+            "\nCompute the optimal assignment. If additional instructions below specify "
+            "particular rounds, report only the requested partial sum—not the full "
+            "12-round total."
+        )
         return prompt
 
 
@@ -432,12 +448,13 @@ DIFFICULTY_CONFIGS: Dict[str, Dict] = {
         "weights": [26, 22, 26, 22, 4],
     },
     "medium": {
+        # v34: more four_kind / full_house (harder category decisions vs plain pairs).
         "roll_types": ["four_kind_high", "full_house", "three_kind", "pair", "normal"],
-        "weights": [12, 13, 25, 25, 25],
+        "weights": [18, 17, 22, 22, 21],
     },
     "hard": {
         "roll_types": ["three_kind", "pair", "normal"],
-        "weights": [15, 20, 65],
+        "weights": [10, 15, 75],
     },
 }
 
@@ -448,23 +465,20 @@ DIFFICULTY_CONFIGS: Dict[str, Dict] = {
 # reject obvious outliers — e.g., a hard puzzle where greedy already nears
 # optimal, or an easy puzzle that traps greedy by a large margin.
 _DIFFICULTY_BANDS = {
-    # v21 calibration (target 75/50/25 vs v20 measured 20/47/31):
-    # - easy: band loose (quality 는 dice mix + is_unique 필터로 보장).
-    # - medium: 변경 없음 (47% — target 안).
-    # - hard: 31% — 1%p 초과. floor 살짝 강화 (gap 18→20, complexity 6.0→6.5).
+    # v38 calibration (target 75/50/25; measured v37 easy 99%, medium 54%, hard 43%).
     "easy": {
-        # v24: dice 다양화로 complexity 자연 증가 → band 도 완화.
-        # gap_abs 0-3 → 0-8 / complexity 0-1.5 → 0-3.0 로 확장.
         "greedy_gap_abs": {"min": 0, "max": 8},
         "decision_complexity": {"min": 0.0, "max": 3.0},
     },
     "medium": {
-        "greedy_gap_abs": {"min": 3, "max": 30},
-        "decision_complexity": {"min": 2.0, "max": 7.0},
+        "greedy_gap_abs": {"min": 7, "max": 30},
+        "decision_complexity": {"min": 3.5, "max": 7.0},
     },
     "hard": {
-        "greedy_gap_abs": {"min": 20, "max": None},
-        "decision_complexity": {"min": 6.5, "max": None},
+        # v38b: kept at the floors that generate 100 puzzles fine (gap40/comp10
+        # starved generation). Hard is hardened via SPOTCHECK_K hard=9 instead.
+        "greedy_gap_abs": {"min": 30, "max": None},
+        "decision_complexity": {"min": 8.0, "max": None},
     },
 }
 
@@ -479,14 +493,32 @@ _DIFFICULTY_BANDS = {
 # each spot round carries a high-value category that NO other round can match,
 # forcing the global optimum to assign it there regardless of the rest.
 
-# Spot categories that are easy to make globally exclusive with a clear margin.
-EASY_SPOT_CATEGORIES = ("yacht", "large_straight", "small_straight", "full_house")
-EASY_SPOT_SCORE = {
-    "yacht": 50,
-    "large_straight": 40,
-    "small_straight": 30,
-    "full_house": 25,
-}
+# Spot categories for constructive easy dice — variable-score only (no Yacht/Straight
+# on spot rounds) so K=2 sums are harder than fixed 115/105 combos.
+# v39: easy is a per-puzzle mix of constructive (trivial ~0.99) and random
+# (~0.30) puzzles. Calibration: f*0.99 + (1-f)*0.30 = 0.75 -> f ~= 0.69.
+EASY_CONSTRUCTIVE_FRACTION = 0.69
+
+EASY_SPOT_CATEGORIES = (
+    "full_house", "three_of_a_kind", "four_of_a_kind",
+)
+# Yacht category names that need a smaller per-round margin (variable score).
+_EASY_VARIABLE_YACHT_CATS = frozenset({"Three-Of-A-Kind", "Four-Of-A-Kind"})
+
+
+def _pick_easy_spot_cats(k: int, rng: random.Random) -> List[str]:
+    """Sample ``k`` distinct easy spot keys."""
+    if k <= 0:
+        return []
+    if k > len(EASY_SPOT_CATEGORIES):
+        raise ValueError(f"easy spot k={k} exceeds pool size {len(EASY_SPOT_CATEGORIES)}")
+    return rng.sample(EASY_SPOT_CATEGORIES, k)
+
+
+def _easy_margin_required(yacht_cat: str, default_min: int) -> int:
+    if yacht_cat in _EASY_VARIABLE_YACHT_CATS:
+        return 2
+    return default_min
 
 
 def _build_easy_spot_dice(cat: str, rng: random.Random) -> List[int]:
@@ -511,6 +543,18 @@ def _build_easy_spot_dice(cat: str, rng: random.Random) -> List[int]:
         # stays the clear top1 with margin >= 10.
         b = rng.choice([2, 3, 4, 5, 6])
         d = [1, 1, 1, b, b]
+        rng.shuffle(d)
+        return d
+    if cat == "three_of_a_kind":
+        v = rng.randint(3, 6)
+        others = rng.sample([x for x in range(1, 7) if x != v], 2)
+        d = [v, v, v, others[0], others[1]]
+        rng.shuffle(d)
+        return d
+    if cat == "four_of_a_kind":
+        v = rng.randint(3, 6)
+        other = rng.choice([x for x in range(1, 7) if x != v])
+        d = [v, v, v, v, other]
         rng.shuffle(d)
         return d
     raise ValueError(f"unknown spot category: {cat}")
@@ -670,6 +714,7 @@ class YachtDiceProblemGenerator:
         band = _DIFFICULTY_BANDS.get(difficulty, {})
         categories = get_all_categories()
         selected = None
+        best_complex = None  # hardest (max-complexity) candidate seen (fallback)
         in_band = False
         trial_seed = seed
 
@@ -719,6 +764,11 @@ class YachtDiceProblemGenerator:
                 'zero_margin_rounds': zero_margin_rounds,
                 'bonus_applied': bonus_applied,
             }
+            # Track the hardest (max-complexity) candidate as the band_violation
+            # fallback (used by hard, which accepts out-of-band dice): makes
+            # band-exempt hard dice genuinely hard instead of a random last seed.
+            if best_complex is None or total_decision_complexity > best_complex['total_decision_complexity']:
+                best_complex = selected
 
             # Constructive (forced) dice bypass band filtering entirely.
             if forced_dice is not None:
@@ -742,6 +792,10 @@ class YachtDiceProblemGenerator:
                 in_band = True
                 break
 
+        # Fallback: if no in-band puzzle was found, use the hardest one seen
+        # (not the last random seed) so band-exempt hard dice stay difficult.
+        if not in_band and best_complex is not None:
+            selected = best_complex
         band_violation = not in_band
 
         problem = {
@@ -909,7 +963,9 @@ def create_dataset_files(
     """
     import pandas as pd
 
-    fast_retries_by_diff = {"easy": 60, "medium": 120, "hard": 90}
+    # hard lowered 200->40: max-complexity fallback runs ALL retries per puzzle
+    # (in-band is rare), so 200 made hard gen ~50s/puzzle. best-of-40 is still hard.
+    fast_retries_by_diff = {"easy": 120, "medium": 150, "hard": 100}
 
     all_tiers = ["easy", "medium", "hard"]
     if difficulties is None:
@@ -934,11 +990,7 @@ def create_dataset_files(
     all_puzzles: List[Dict] = []
     problem_id = 1
 
-    # Easy-tier acceptance policy (K=2 constructive).
-    # Each spot round must be globally exclusive with a clear top1 margin; the
-    # graded answer is the SUM of those two fixed-score categories (55..100).
-    # No single answer value may exceed this share of the dataset (anti-collapse).
-    EASY_MAX_VALUE_SHARE = 0.20
+    # Easy-tier acceptance: K=2 constructive (variable spot cats) + exclusivity filter.
 
     def _dice_key(dice_results):
         return tuple(tuple(sorted(r)) for r in dice_results)
@@ -968,7 +1020,6 @@ def create_dataset_files(
         inner_retries = fast_retries_by_diff.get(difficulty, 70)
         easy_margin_min = 10
         easy_value_counts: Dict[int, int] = {}
-        easy_max_per_value = max(2, int(round(EASY_MAX_VALUE_SHARE * count)))
 
         while diff_success < count and retries < MAX_OUTER_RETRIES:
             retries += 1
@@ -978,27 +1029,22 @@ def create_dataset_files(
                 accepted_rate = diff_success / retries
                 if accepted_rate < 0.15:
                     easy_margin_min = max(8, easy_margin_min - 1)
-            if difficulty == "easy":
-                # Constructive generation: plant globally-exclusive high-value
-                # categories on the deterministic spot rounds.
+            # v39: easy is a PER-PUZZLE MIX — constructive dominant-category dice
+            # (trivial, ~0.99) for EASY_CONSTRUCTIVE_FRACTION of puzzles, random
+            # band-filtered dice (a real optimization, ~0.30) for the rest. The
+            # average lands at the 75 target (constructive alone=0.99 too easy,
+            # random alone=0.30 too hard).
+            if difficulty == "easy" and random.Random(424242 + problem_id).random() < EASY_CONSTRUCTIVE_FRACTION:
+                crng = random.Random(1000 + problem_id + 10000)
                 k_spot = SPOTCHECK_K.get("easy", 0)
                 public_id_pre = f"yacht_dice_en_easy_{diff_success:04d}"
                 spot_rounds_pre = [
                     r - 1 for r in deterministic_round_pick_1based(public_id_pre, k_spot)
                 ]
-                crng = random.Random(1000 + problem_id + 10000)
-                spot_cats_choice = crng.sample(EASY_SPOT_CATEGORIES, len(spot_rounds_pre))
-                # Large + Small Straight cannot coexist: an LS round also scores
-                # Small Straight (30), which would break SS exclusivity.
-                while ("small_straight" in spot_cats_choice
-                       and "large_straight" in spot_cats_choice):
-                    spot_cats_choice = crng.sample(EASY_SPOT_CATEGORIES, len(spot_rounds_pre))
                 forced = _build_easy_constructive_dice(
-                    spot_rounds_pre, spot_cats_choice, crng
+                    spot_rounds_pre, _pick_easy_spot_cats(len(spot_rounds_pre), crng), crng,
                 )
-                problem = generator.generate_problem(
-                    "easy", problem_id, forced_dice=forced
-                )
+                problem = generator.generate_problem("easy", problem_id, forced_dice=forced)
             else:
                 problem = generator.generate_problem(
                     difficulty, problem_id, max_retries=inner_retries
@@ -1009,89 +1055,16 @@ def create_dataset_files(
                 continue
 
             sm = problem.get("step_metrics", {})
-            # Easy: only keep in-band puzzles so the full-total task stays on the
-            # calibrated "easy" manifold (band_violation rows were ~20% acc drag).
-            if difficulty == "easy" and sm.get("band_violation"):
+            # Reject out-of-band dice on easy/medium. Hard is EXEMPT: its tight
+            # bands (gap>=30, complexity>=8) are too rare for random dice, so
+            # rejecting band_violation stalls hard generation for hours. K=9
+            # already provides the hard difficulty, so accept best-effort dice.
+            if difficulty != "hard" and sm.get("band_violation"):
                 problem_id += 1
                 continue
-            # v25: v21~v24 의 is_unique_assignment 필터는 generation 을 거의
-            # 완전히 막음 (8 dice 타입 다양화에도 pass rate ~0.1% 미만).
-            # 진짜 필요한 조건은 spot 라운드의 카테고리만 모든 최적해에서
-            # 일치하는 것 (전체 배정 유일성이 아님). K=2 이므로 두 스팟 라운드
-            # 대안: spot 라운드가 명백한 dominant 카테고리를 가지면
-            # (해당 라운드의 per_round_margin >= 10), 어떤 최적해를 골라도
-            # 그 라운드는 항상 같은 카테고리로 배정될 확률이 매우 높음.
-            if difficulty == "easy":
-                k_spot_check = SPOTCHECK_K.get("easy", 0)
-                if k_spot_check >= 1:
-                    spot_rounds_0based = [
-                        r - 1 for r in deterministic_round_pick_1based(
-                            f"yacht_dice_en_easy_{diff_success:04d}",
-                            k_spot_check,
-                        )
-                    ]
-                    # v27: ROOT CAUSE FIX. v21~v26 의 per_round_margin 필터는
-                    # 잘못된 신호였다 — 고립 평가시 spot 라운드의 best 카테고리를
-                    # 봤지만, spotcheck 정답은 *전역 최적 배정이 그 라운드에 실제
-                    # 부여한 카테고리*에 달려 있다. 카테고리 경쟁(예: SS 가능한
-                    # 라운드 여럿)이 있으면 둘이 달라져, 모델의 자연스러운 greedy
-                    # 답(이 라운드 최고점)이 gold(전역 최적의 leftover 배정)와
-                    # 불일치 → 47% 천장.
-                    # 올바른 조건: spot 라운드가 전역 최적 배정에서 자기 top1
-                    # (고립 최고점) 카테고리를 그대로 부여받았는가. 그러면 모델의
-                    # greedy 답 = gold. 추가로 margin ≥ 10 으로 그 top1 이 명확
-                    # 하도록 한다.
-                    opt_assign = problem.get("optimal_assignment", {})
-                    top1s = sm.get("per_round_top1", [])
-                    margins = sm.get("per_round_margin", [])
-                    dice_all = problem["dice_results"]
-                    spot_ok = True
-                    spot_cats: List[str] = []
-                    for idx in spot_rounds_0based:
-                        if idx >= len(top1s) or idx >= len(margins):
-                            spot_ok = False
-                            break
-                        cat = opt_assign.get(idx, opt_assign.get(str(idx)))
-                        if cat is None:
-                            spot_ok = False
-                            break
-                        assigned_score = calculate_score_with_config(
-                            dice_all[idx], cat, config
-                        )
-                        # (a) The global optimum must assign this round its
-                        # isolated top1 category, and that top1 must be clearly
-                        # dominant (large margin) on the round itself.
-                        if assigned_score != top1s[idx]:
-                            spot_ok = False
-                            break
-                        if margins[idx] < easy_margin_min:
-                            spot_ok = False
-                            break
-                        # (b) GLOBAL EXCLUSIVITY (root-cause fix for sub-target
-                        # accuracy): no OTHER round may score as high in this
-                        # category. This forces the global optimum to place
-                        # `cat` on this exact round, so the graded spot score is
-                        # stable no matter how the model solves the other rounds
-                        # (previously the model used e.g. Yacht on a different
-                        # round, yielding a lower spot sum -> all-negative errors).
-                        best_elsewhere = 0
-                        for j in range(len(dice_all)):
-                            if j == idx:
-                                continue
-                            s = calculate_score_with_config(dice_all[j], cat, config)
-                            if s > best_elsewhere:
-                                best_elsewhere = s
-                        if best_elsewhere >= assigned_score:
-                            spot_ok = False
-                            break
-                        spot_cats.append(cat)
-                    # (c) The two spot rounds must use distinct categories (a
-                    # category can only be assigned once across all 12 rounds).
-                    if spot_ok and len(set(spot_cats)) != len(spot_cats):
-                        spot_ok = False
-                    if not spot_ok:
-                        problem_id += 1
-                        continue
+            # v38: easy's constructive spot-exclusivity checks removed — easy now
+            # uses random, band-filtered dice like medium/hard (the old checks
+            # only made sense for planted dominant-category dice).
 
             key = _dice_key(problem['dice_results'])
             if key in seen_keys:
@@ -1118,14 +1091,6 @@ def create_dataset_files(
             else:
                 answer_str = str(optimal_score)
                 spot_rounds = None
-
-            if difficulty == "easy":
-                # Distribution control: cap how often any single answer value
-                # appears so the dataset does not collapse onto one number.
-                ans_num = int(answer_str)
-                if easy_value_counts.get(ans_num, 0) >= easy_max_per_value:
-                    problem_id += 1
-                    continue
 
             solution_str = _build_yacht_solution_en(
                 dice_results=dice_results,

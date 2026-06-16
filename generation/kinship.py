@@ -1111,41 +1111,41 @@ def generate_question(difficulty="Medium", forced_chain=None):
     question = "\n".join(dialogue_lines)
 
     SFT_SOLUTION_RUBRIC = (
-        "STEP0=meta · STEP1=given · STEP2=worked solution · "
-        "STEP3=answer and verification"
+        "STEP0=문제 메타 · STEP1=주어진 조건 · STEP2=풀이 전개 · "
+        "STEP3=답·검산"
     )
     n_hops = len(target_chain) - 1
     explanation = [
         SFT_SOLUTION_RUBRIC,
-        "[STEP 0] Problem meta",
-        f"  - Task: determine the kinship title of the target person from 'me'.",
-        f"  - Difficulty: {difficulty}",
-        f"  - Relation-chain length (hops): {n_hops}",
-        "  - Final answer is confirmed in [STEP 3]",
-        "[STEP 1] Given",
-        "  - Dialogue-stated relationships (one per hop) and multiple-choice options.",
-        f"  - Target combined chain: {n_hops}-hop relation from 'me'.",
-        "[STEP 2] Worked solution",
-        f"  · Summary: compose {n_hops} pairwise kinship relations left-to-right · "
-        f"map composed chain to the Korean kinship title · {n_hops} SEGs",
+        "[STEP 0] 문제 메타",
+        f"  - 과제: '나'를 기준으로 대상 인물의 가족 호칭을 결정한다.",
+        f"  - 난이도: {difficulty.lower()}",
+        f"  - 관계 사슬 길이(hop 수): {n_hops}",
+        "  - 최종 답은 [STEP 3]에서 확인",
+        "[STEP 1] 주어진 조건",
+        "  - 대화로 제시된 관계(hop당 하나)와 객관식 보기.",
+        f"  - 대상 결합 사슬: '나'로부터 {n_hops}-hop 관계.",
+        "[STEP 2] 풀이 전개",
+        f"  · 요약: {n_hops}개의 쌍별 관계를 왼쪽에서 오른쪽으로 합성 · "
+        f"합성된 사슬을 한국어 호칭으로 매핑 · {n_hops} SEG",
     ]
-    temp_chain_str = "me"
+    temp_chain_str = "나"
     for i, rel in enumerate(target_chain[1:], 1):
         person = person_map[i]
         explanation.append(
-            f"    [SEG {i}] Hop {i}: infer from the dialogue that '{person}' is "
-            f"'{temp_chain_str}'s {rel}'."
+            f"    [SEG {i}] Hop {i}: 대화로부터 '{person}'이(가) "
+            f"'{temp_chain_str}의 {rel}'임을 추론."
         )
-        temp_chain_str += f"'s {rel}"
+        temp_chain_str += f"의 {rel}"
     explanation.append(
-        f"  · Composed chain: {temp_chain_str} → '{answer}'."
+        f"  · 합성된 사슬: {temp_chain_str} → '{answer}'."
     )
     explanation.extend([
-        "[STEP 3] Answer and verification",
-        f"  - Combined relationship '{temp_chain_str}' resolves to the title '{answer}'.",
-        f"  - Answer: {correct_letter}",
-        "  - Cross-check: every SEG hop is explicitly stated in the dialogue and the "
-        "final title matches the chain→title mapping.",
+        "[STEP 3] 답·검산",
+        f"  - 결합 관계 '{temp_chain_str}'은(는) 호칭 '{answer}'으로 귀결.",
+        f"  - 답: {correct_letter}",
+        "  - 교차 검증: 모든 SEG hop이 대화에 명시되어 있고 "
+        "최종 호칭이 사슬→호칭 매핑과 일치함.",
     ])
     
 
