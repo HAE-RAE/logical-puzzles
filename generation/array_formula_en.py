@@ -88,6 +88,10 @@ CATEGORIES = ["Fruit", "Dairy", "Meat", "Grain", "Beverage", "Vegetable", "Seafo
 REGIONS = ["Seoul", "Busan", "Daegu", "Incheon", "Gwangju", "Daejeon", "Ulsan", "Sejong"]
 QUARTERS = ["Q1", "Q2", "Q3", "Q4"]
 MEMBERSHIPS = ["Gold", "Silver", "Bronze", "None"]
+# Answers that read as "no answer" and are ungradeable if returned as the final answer.
+# "None" is a valid membership tier (a non-member) and may appear in tables, but a
+# membership-lookup question must never RESOLVE to it.
+AMBIGUOUS_ANSWERS = {"None", ""}
 
 CUSTOMER_NAMES = [
     "Kim Minsu", "Lee Younghee", "Park Cheolsu", "Choi Jiyoung", "Jung Donghyun",
@@ -1756,16 +1760,24 @@ def generate_puzzle(
     if seed is None:
         seed = random.randint(1, 1000000)
 
-    rng = random.Random(seed)
     requested_difficulty = difficulty
-    generation_difficulty = _generation_difficulty_for_target(requested_difficulty, rng)
-    config = ArrayFormulaConfig(difficulty=generation_difficulty, seed=seed)
+    # Reject puzzles whose final answer is ambiguous (e.g. a membership lookup that
+    # resolves to the "None" tier, which is indistinguishable from "no answer").
+    # Retry with a bumped seed; ids are reassigned downstream so this is safe.
+    base_seed = seed
+    for attempt in range(50):
+        seed = base_seed + attempt * 7919
+        rng = random.Random(seed)
+        generation_difficulty = _generation_difficulty_for_target(requested_difficulty, rng)
+        config = ArrayFormulaConfig(difficulty=generation_difficulty, seed=seed)
 
-    if problem_type is None:
-        problem_type = rng.choice(list(PROBLEM_GENERATORS.keys()))
+        ptype = problem_type if problem_type is not None else rng.choice(list(PROBLEM_GENERATORS.keys()))
+        generator = PROBLEM_GENERATORS[ptype]
+        puzzle = generator(config, rng)
+        if str(puzzle.get("answer")).strip() not in AMBIGUOUS_ANSWERS:
+            break
 
-    generator = PROBLEM_GENERATORS[problem_type]
-    puzzle = generator(config, rng)
+    problem_type = ptype
     puzzle["generation_difficulty"] = generation_difficulty
     puzzle["difficulty"] = requested_difficulty
 

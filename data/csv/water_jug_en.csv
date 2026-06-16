@@ -1,0 +1,3809 @@
+﻿id,question,answer,solution,difficulty
+water_jug_en_easy_0,"There are 2 jugs. Their capacities are A=6 liters, B=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 4 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",4 moves,"[START] A=0, B=0
+[1] Fill B -> A=0, B=5
+[2] Pour B->A -> A=5, B=0
+[3] Fill B -> A=5, B=5
+[4] Pour B->A -> A=6, B=4
+
+Minimum moves: 4",easy
+water_jug_en_easy_1,"There are 2 jugs. Their capacities are A=7 liters, B=4 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 1 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",4 moves,"[START] A=0, B=0
+[1] Fill B -> A=0, B=4
+[2] Pour B->A -> A=4, B=0
+[3] Fill B -> A=4, B=4
+[4] Pour B->A -> A=7, B=1
+
+Minimum moves: 4",easy
+water_jug_en_easy_2,"There are 2 jugs. Their capacities are A=5 liters, B=3 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 2 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",2 moves,"[START] A=0, B=0
+[1] Fill A -> A=5, B=0
+[2] Pour A->B -> A=2, B=3
+
+Minimum moves: 2",easy
+water_jug_en_easy_3,"There are 2 jugs. Their capacities are A=8 liters, B=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 1 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",2 moves,"[START] A=0, B=0
+[1] Fill A -> A=8, B=0
+[2] Pour A->B -> A=1, B=7
+
+Minimum moves: 2",easy
+water_jug_en_easy_4,"There are 2 jugs. Their capacities are A=5 liters, B=4 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 1 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",2 moves,"[START] A=0, B=0
+[1] Fill A -> A=5, B=0
+[2] Pour A->B -> A=1, B=4
+
+Minimum moves: 2",easy
+water_jug_en_easy_5,"There are 2 jugs. Their capacities are A=9 liters, B=8 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 1 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",2 moves,"[START] A=0, B=0
+[1] Fill A -> A=9, B=0
+[2] Pour A->B -> A=1, B=8
+
+Minimum moves: 2",easy
+water_jug_en_easy_6,"There are 2 jugs. Their capacities are A=9 liters, B=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 2 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",2 moves,"[START] A=0, B=0
+[1] Fill A -> A=9, B=0
+[2] Pour A->B -> A=2, B=7
+
+Minimum moves: 2",easy
+water_jug_en_easy_7,"There are 2 jugs. Their capacities are A=9 liters, B=4 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 1 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",4 moves,"[START] A=0, B=0
+[1] Fill A -> A=9, B=0
+[2] Pour A->B -> A=5, B=4
+[3] Empty B -> A=5, B=0
+[4] Pour A->B -> A=1, B=4
+
+Minimum moves: 4",easy
+water_jug_en_easy_8,"There are 2 jugs. Their capacities are A=7 liters, B=3 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 4 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",2 moves,"[START] A=0, B=0
+[1] Fill A -> A=7, B=0
+[2] Pour A->B -> A=4, B=3
+
+Minimum moves: 2",easy
+water_jug_en_easy_9,"There are 2 jugs. Their capacities are A=7 liters, B=6 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 5 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",4 moves,"[START] A=0, B=0
+[1] Fill B -> A=0, B=6
+[2] Pour B->A -> A=6, B=0
+[3] Fill B -> A=6, B=6
+[4] Pour B->A -> A=7, B=5
+
+Minimum moves: 4",easy
+water_jug_en_easy_10,"There are 2 jugs. Their capacities are A=8 liters, B=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 2 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",4 moves,"[START] A=0, B=0
+[1] Fill B -> A=0, B=5
+[2] Pour B->A -> A=5, B=0
+[3] Fill B -> A=5, B=5
+[4] Pour B->A -> A=8, B=2
+
+Minimum moves: 4",easy
+water_jug_en_easy_11,"There are 2 jugs. Their capacities are A=9 liters, B=4 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 5 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",2 moves,"[START] A=0, B=0
+[1] Fill A -> A=9, B=0
+[2] Pour A->B -> A=5, B=4
+
+Minimum moves: 2",easy
+water_jug_en_easy_12,"There are 2 jugs. Their capacities are A=7 liters, B=3 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 6 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",4 moves,"[START] A=0, B=0
+[1] Fill B -> A=0, B=3
+[2] Pour B->A -> A=3, B=0
+[3] Fill B -> A=3, B=3
+[4] Pour B->A -> A=6, B=0
+
+Minimum moves: 4",easy
+water_jug_en_easy_13,"There are 2 jugs. Their capacities are A=8 liters, B=3 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 2 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",4 moves,"[START] A=0, B=0
+[1] Fill A -> A=8, B=0
+[2] Pour A->B -> A=5, B=3
+[3] Empty B -> A=5, B=0
+[4] Pour A->B -> A=2, B=3
+
+Minimum moves: 4",easy
+water_jug_en_easy_14,"There are 2 jugs. Their capacities are A=8 liters, B=6 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 4 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",4 moves,"[START] A=0, B=0
+[1] Fill B -> A=0, B=6
+[2] Pour B->A -> A=6, B=0
+[3] Fill B -> A=6, B=6
+[4] Pour B->A -> A=8, B=4
+
+Minimum moves: 4",easy
+water_jug_en_easy_15,"There are 2 jugs. Their capacities are A=8 liters, B=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 3 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",2 moves,"[START] A=0, B=0
+[1] Fill A -> A=8, B=0
+[2] Pour A->B -> A=3, B=5
+
+Minimum moves: 2",easy
+water_jug_en_easy_16,"There are 2 jugs. Their capacities are A=7 liters, B=4 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 3 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",2 moves,"[START] A=0, B=0
+[1] Fill A -> A=7, B=0
+[2] Pour A->B -> A=3, B=4
+
+Minimum moves: 2",easy
+water_jug_en_easy_17,"There are 2 jugs. Their capacities are A=9 liters, B=3 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 6 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",2 moves,"[START] A=0, B=0
+[1] Fill A -> A=9, B=0
+[2] Pour A->B -> A=6, B=3
+
+Minimum moves: 2",easy
+water_jug_en_easy_18,"There are 2 jugs. Their capacities are A=9 liters, B=4 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 8 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",4 moves,"[START] A=0, B=0
+[1] Fill B -> A=0, B=4
+[2] Pour B->A -> A=4, B=0
+[3] Fill B -> A=4, B=4
+[4] Pour B->A -> A=8, B=0
+
+Minimum moves: 4",easy
+water_jug_en_easy_19,"There are 2 jugs. Their capacities are A=6 liters, B=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 1 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",2 moves,"[START] A=0, B=0
+[1] Fill A -> A=6, B=0
+[2] Pour A->B -> A=1, B=5
+
+Minimum moves: 2",easy
+water_jug_en_easy_20,"There are 2 jugs. Their capacities are A=5 liters, B=3 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 1 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",4 moves,"[START] A=0, B=0
+[1] Fill B -> A=0, B=3
+[2] Pour B->A -> A=3, B=0
+[3] Fill B -> A=3, B=3
+[4] Pour B->A -> A=5, B=1
+
+Minimum moves: 4",easy
+water_jug_en_easy_21,"There are 2 jugs. Their capacities are A=8 liters, B=6 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 2 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",2 moves,"[START] A=0, B=0
+[1] Fill A -> A=8, B=0
+[2] Pour A->B -> A=2, B=6
+
+Minimum moves: 2",easy
+water_jug_en_easy_22,"There are 2 jugs. Their capacities are A=9 liters, B=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 4 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",2 moves,"[START] A=0, B=0
+[1] Fill A -> A=9, B=0
+[2] Pour A->B -> A=4, B=5
+
+Minimum moves: 2",easy
+water_jug_en_easy_23,"There are 2 jugs. Their capacities are A=9 liters, B=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 5 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",4 moves,"[START] A=0, B=0
+[1] Fill B -> A=0, B=7
+[2] Pour B->A -> A=7, B=0
+[3] Fill B -> A=7, B=7
+[4] Pour B->A -> A=9, B=5
+
+Minimum moves: 4",easy
+water_jug_en_easy_24,"There are 2 jugs. Their capacities are A=9 liters, B=6 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 3 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",2 moves,"[START] A=0, B=0
+[1] Fill A -> A=9, B=0
+[2] Pour A->B -> A=3, B=6
+
+Minimum moves: 2",easy
+water_jug_en_easy_25,"There are 2 jugs. Their capacities are A=4 liters, B=3 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 1 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",2 moves,"[START] A=0, B=0
+[1] Fill A -> A=4, B=0
+[2] Pour A->B -> A=1, B=3
+
+Minimum moves: 2",easy
+water_jug_en_easy_26,"There are 2 jugs. Their capacities are A=8 liters, B=3 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 5 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",2 moves,"[START] A=0, B=0
+[1] Fill A -> A=8, B=0
+[2] Pour A->B -> A=5, B=3
+
+Minimum moves: 2",easy
+water_jug_en_easy_27,"There are 2 jugs. Their capacities are A=7 liters, B=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 2 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",2 moves,"[START] A=0, B=0
+[1] Fill A -> A=7, B=0
+[2] Pour A->B -> A=2, B=5
+
+Minimum moves: 2",easy
+water_jug_en_easy_28,"There are 2 jugs. Their capacities are A=4 liters, B=3 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 2 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",4 moves,"[START] A=0, B=0
+[1] Fill B -> A=0, B=3
+[2] Pour B->A -> A=3, B=0
+[3] Fill B -> A=3, B=3
+[4] Pour B->A -> A=4, B=2
+
+Minimum moves: 4",easy
+water_jug_en_easy_29,"There are 2 jugs. Their capacities are A=9 liters, B=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 1 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",4 moves,"[START] A=0, B=0
+[1] Fill B -> A=0, B=5
+[2] Pour B->A -> A=5, B=0
+[3] Fill B -> A=5, B=5
+[4] Pour B->A -> A=9, B=1
+
+Minimum moves: 4",easy
+water_jug_en_easy_30,"There are 2 jugs. Their capacities are A=5 liters, B=4 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 3 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",4 moves,"[START] A=0, B=0
+[1] Fill B -> A=0, B=4
+[2] Pour B->A -> A=4, B=0
+[3] Fill B -> A=4, B=4
+[4] Pour B->A -> A=5, B=3
+
+Minimum moves: 4",easy
+water_jug_en_easy_31,"There are 2 jugs. Their capacities are A=7 liters, B=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 3 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",4 moves,"[START] A=0, B=0
+[1] Fill B -> A=0, B=5
+[2] Pour B->A -> A=5, B=0
+[3] Fill B -> A=5, B=5
+[4] Pour B->A -> A=7, B=3
+
+Minimum moves: 4",easy
+water_jug_en_easy_32,"There are 2 jugs. Their capacities are A=9 liters, B=8 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 7 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",4 moves,"[START] A=0, B=0
+[1] Fill B -> A=0, B=8
+[2] Pour B->A -> A=8, B=0
+[3] Fill B -> A=8, B=8
+[4] Pour B->A -> A=9, B=7
+
+Minimum moves: 4",easy
+water_jug_en_easy_33,"There are 2 jugs. Their capacities are A=8 liters, B=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 6 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",4 moves,"[START] A=0, B=0
+[1] Fill B -> A=0, B=7
+[2] Pour B->A -> A=7, B=0
+[3] Fill B -> A=7, B=7
+[4] Pour B->A -> A=8, B=6
+
+Minimum moves: 4",easy
+water_jug_en_easy_34,"There are 2 jugs. Their capacities are A=8 liters, B=3 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 6 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",4 moves,"[START] A=0, B=0
+[1] Fill B -> A=0, B=3
+[2] Pour B->A -> A=3, B=0
+[3] Fill B -> A=3, B=3
+[4] Pour B->A -> A=6, B=0
+
+Minimum moves: 4",easy
+water_jug_en_easy_35,"There are 2 jugs. Their capacities are A=7 liters, B=3 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 1 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",4 moves,"[START] A=0, B=0
+[1] Fill A -> A=7, B=0
+[2] Pour A->B -> A=4, B=3
+[3] Empty B -> A=4, B=0
+[4] Pour A->B -> A=1, B=3
+
+Minimum moves: 4",easy
+water_jug_en_easy_36,"There are 2 jugs. Their capacities are A=7 liters, B=6 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 1 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",2 moves,"[START] A=0, B=0
+[1] Fill A -> A=7, B=0
+[2] Pour A->B -> A=1, B=6
+
+Minimum moves: 2",easy
+water_jug_en_easy_37,"There are 2 jugs. Their capacities are A=6 liters, B=4 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 2 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",2 moves,"[START] A=0, B=0
+[1] Fill A -> A=6, B=0
+[2] Pour A->B -> A=2, B=4
+
+Minimum moves: 2",easy
+water_jug_en_medium_0,"There are 2 jugs. Their capacities are A=8 liters, B=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 6 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",6 moves,"[START] A=0, B=0
+[1] Fill A -> A=8, B=0
+[2] Pour A->B -> A=3, B=5
+[3] Empty B -> A=3, B=0
+[4] Pour A->B -> A=0, B=3
+[5] Fill A -> A=8, B=3
+[6] Pour A->B -> A=6, B=5
+
+Minimum moves: 6",medium
+water_jug_en_medium_1,"There are 2 jugs. Their capacities are A=9 liters, B=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 4 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",6 moves,"[START] A=0, B=0
+[1] Fill A -> A=9, B=0
+[2] Pour A->B -> A=2, B=7
+[3] Empty B -> A=2, B=0
+[4] Pour A->B -> A=0, B=2
+[5] Fill A -> A=9, B=2
+[6] Pour A->B -> A=4, B=7
+
+Minimum moves: 6",medium
+water_jug_en_medium_2,"There are 3 jugs. Their capacities are A=11 liters, B=8 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 9 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",5 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=8, C=0
+[2] Pour B->A -> A=8, B=0, C=0
+[3] Pour A->C -> A=1, B=0, C=7
+[4] Fill B -> A=1, B=8, C=7
+[5] Pour B->A -> A=9, B=0, C=7
+
+Minimum moves: 5",medium
+water_jug_en_medium_3,"There are 3 jugs. Their capacities are A=12 liters, B=7 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 8 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",7 moves,"[START] A=0, B=0, C=0
+[1] Fill C -> A=0, B=0, C=5
+[2] Pour C->A -> A=5, B=0, C=0
+[3] Fill C -> A=5, B=0, C=5
+[4] Pour C->A -> A=10, B=0, C=0
+[5] Pour A->B -> A=3, B=7, C=0
+[6] Pour B->C -> A=3, B=2, C=5
+[7] Pour C->A -> A=8, B=2, C=0
+
+Minimum moves: 7",medium
+water_jug_en_medium_4,"There are 3 jugs. Their capacities are A=12 liters, B=11 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 9 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",6 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=12, B=0, C=0
+[2] Pour A->C -> A=5, B=0, C=7
+[3] Fill B -> A=5, B=11, C=7
+[4] Empty C -> A=5, B=11, C=0
+[5] Pour A->C -> A=0, B=11, C=5
+[6] Pour B->C -> A=0, B=9, C=7
+
+Minimum moves: 6",medium
+water_jug_en_medium_5,"There are 2 jugs. Their capacities are A=11 liters, B=9 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 4 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",6 moves,"[START] A=0, B=0
+[1] Fill A -> A=11, B=0
+[2] Pour A->B -> A=2, B=9
+[3] Empty B -> A=2, B=0
+[4] Pour A->B -> A=0, B=2
+[5] Fill A -> A=11, B=2
+[6] Pour A->B -> A=4, B=9
+
+Minimum moves: 6",medium
+water_jug_en_medium_6,"There are 3 jugs. Their capacities are A=11 liters, B=9 liters, C=6 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 10 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",6 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=11, B=0, C=0
+[2] Pour A->C -> A=5, B=0, C=6
+[3] Empty C -> A=5, B=0, C=0
+[4] Pour A->C -> A=0, B=0, C=5
+[5] Fill A -> A=11, B=0, C=5
+[6] Pour A->C -> A=10, B=0, C=6
+
+Minimum moves: 6",medium
+water_jug_en_medium_7,"There are 2 jugs. Their capacities are A=5 liters, B=4 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 2 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",6 moves,"[START] A=0, B=0
+[1] Fill A -> A=5, B=0
+[2] Pour A->B -> A=1, B=4
+[3] Empty B -> A=1, B=0
+[4] Pour A->B -> A=0, B=1
+[5] Fill A -> A=5, B=1
+[6] Pour A->B -> A=2, B=4
+
+Minimum moves: 6",medium
+water_jug_en_medium_8,"There are 2 jugs. Their capacities are A=11 liters, B=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 8 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",6 moves,"[START] A=0, B=0
+[1] Fill A -> A=11, B=0
+[2] Pour A->B -> A=4, B=7
+[3] Empty B -> A=4, B=0
+[4] Pour A->B -> A=0, B=4
+[5] Fill A -> A=11, B=4
+[6] Pour A->B -> A=8, B=7
+
+Minimum moves: 6",medium
+water_jug_en_medium_9,"There are 3 jugs. Their capacities are A=12 liters, B=8 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 6 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",6 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=8, C=0
+[2] Pour B->C -> A=0, B=3, C=5
+[3] Empty C -> A=0, B=3, C=0
+[4] Pour B->C -> A=0, B=0, C=3
+[5] Fill B -> A=0, B=8, C=3
+[6] Pour B->C -> A=0, B=6, C=5
+
+Minimum moves: 6",medium
+water_jug_en_medium_10,"There are 2 jugs. Their capacities are A=7 liters, B=6 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 2 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",6 moves,"[START] A=0, B=0
+[1] Fill A -> A=7, B=0
+[2] Pour A->B -> A=1, B=6
+[3] Empty B -> A=1, B=0
+[4] Pour A->B -> A=0, B=1
+[5] Fill A -> A=7, B=1
+[6] Pour A->B -> A=2, B=6
+
+Minimum moves: 6",medium
+water_jug_en_medium_11,"There are 3 jugs. Their capacities are A=11 liters, B=10 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 2 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",5 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=10, C=0
+[2] Pour B->A -> A=10, B=0, C=0
+[3] Pour A->C -> A=3, B=0, C=7
+[4] Fill B -> A=3, B=10, C=7
+[5] Pour B->A -> A=11, B=2, C=7
+
+Minimum moves: 5",medium
+water_jug_en_medium_12,"There are 3 jugs. Their capacities are A=10 liters, B=7 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 9 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",5 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=7, C=0
+[2] Pour B->A -> A=7, B=0, C=0
+[3] Pour A->C -> A=2, B=0, C=5
+[4] Fill B -> A=2, B=7, C=5
+[5] Pour B->A -> A=9, B=0, C=5
+
+Minimum moves: 5",medium
+water_jug_en_medium_13,"There are 2 jugs. Their capacities are A=10 liters, B=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 6 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",6 moves,"[START] A=0, B=0
+[1] Fill A -> A=10, B=0
+[2] Pour A->B -> A=3, B=7
+[3] Empty B -> A=3, B=0
+[4] Pour A->B -> A=0, B=3
+[5] Fill A -> A=10, B=3
+[6] Pour A->B -> A=6, B=7
+
+Minimum moves: 6",medium
+water_jug_en_medium_14,"There are 3 jugs. Their capacities are A=12 liters, B=7 liters, C=6 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 3 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",7 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=7, C=0
+[2] Pour B->A -> A=7, B=0, C=0
+[3] Pour A->C -> A=1, B=0, C=6
+[4] Fill B -> A=1, B=7, C=6
+[5] Pour B->A -> A=8, B=0, C=6
+[6] Fill B -> A=8, B=7, C=6
+[7] Pour B->A -> A=12, B=3, C=6
+
+Minimum moves: 7",medium
+water_jug_en_medium_15,"There are 3 jugs. Their capacities are A=8 liters, B=5 liters, C=4 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 6 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",5 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=5, C=0
+[2] Pour B->A -> A=5, B=0, C=0
+[3] Pour A->C -> A=1, B=0, C=4
+[4] Fill B -> A=1, B=5, C=4
+[5] Pour B->A -> A=6, B=0, C=4
+
+Minimum moves: 5",medium
+water_jug_en_medium_16,"There are 2 jugs. Their capacities are A=10 liters, B=9 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 2 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",6 moves,"[START] A=0, B=0
+[1] Fill A -> A=10, B=0
+[2] Pour A->B -> A=1, B=9
+[3] Empty B -> A=1, B=0
+[4] Pour A->B -> A=0, B=1
+[5] Fill A -> A=10, B=1
+[6] Pour A->B -> A=2, B=9
+
+Minimum moves: 6",medium
+water_jug_en_medium_17,"There are 3 jugs. Their capacities are A=12 liters, B=10 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 11 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",7 moves,"[START] A=0, B=0, C=0
+[1] Fill C -> A=0, B=0, C=7
+[2] Pour C->A -> A=7, B=0, C=0
+[3] Fill C -> A=7, B=0, C=7
+[4] Pour C->B -> A=7, B=7, C=0
+[5] Pour A->B -> A=4, B=10, C=0
+[6] Pour B->C -> A=4, B=3, C=7
+[7] Pour C->A -> A=11, B=3, C=0
+
+Minimum moves: 7",medium
+water_jug_en_medium_18,"There are 2 jugs. Their capacities are A=9 liters, B=4 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 3 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",6 moves,"[START] A=0, B=0
+[1] Fill B -> A=0, B=4
+[2] Pour B->A -> A=4, B=0
+[3] Fill B -> A=4, B=4
+[4] Pour B->A -> A=8, B=0
+[5] Fill B -> A=8, B=4
+[6] Pour B->A -> A=9, B=3
+
+Minimum moves: 6",medium
+water_jug_en_medium_19,"There are 2 jugs. Their capacities are A=9 liters, B=8 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 2 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",6 moves,"[START] A=0, B=0
+[1] Fill A -> A=9, B=0
+[2] Pour A->B -> A=1, B=8
+[3] Empty B -> A=1, B=0
+[4] Pour A->B -> A=0, B=1
+[5] Fill A -> A=9, B=1
+[6] Pour A->B -> A=2, B=8
+
+Minimum moves: 6",medium
+water_jug_en_medium_20,"There are 3 jugs. Their capacities are A=10 liters, B=7 liters, C=4 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 5 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",6 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=7, C=0
+[2] Fill C -> A=0, B=7, C=4
+[3] Pour C->A -> A=4, B=7, C=0
+[4] Pour B->A -> A=10, B=1, C=0
+[5] Pour A->C -> A=6, B=1, C=4
+[6] Pour C->B -> A=6, B=5, C=0
+
+Minimum moves: 6",medium
+water_jug_en_medium_21,"There are 3 jugs. Their capacities are A=11 liters, B=7 liters, C=4 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 5 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",7 moves,"[START] A=0, B=0, C=0
+[1] Fill C -> A=0, B=0, C=4
+[2] Pour C->A -> A=4, B=0, C=0
+[3] Fill C -> A=4, B=0, C=4
+[4] Pour C->A -> A=8, B=0, C=0
+[5] Pour A->B -> A=1, B=7, C=0
+[6] Pour B->C -> A=1, B=3, C=4
+[7] Pour C->A -> A=5, B=3, C=0
+
+Minimum moves: 7",medium
+water_jug_en_medium_22,"There are 3 jugs. Their capacities are A=12 liters, B=10 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 4 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",6 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=12, B=0, C=0
+[2] Pour A->B -> A=2, B=10, C=0
+[3] Empty B -> A=2, B=0, C=0
+[4] Pour A->B -> A=0, B=2, C=0
+[5] Fill A -> A=12, B=2, C=0
+[6] Pour A->B -> A=4, B=10, C=0
+
+Minimum moves: 6",medium
+water_jug_en_medium_23,"There are 3 jugs. Their capacities are A=12 liters, B=11 liters, C=8 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 2 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",5 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=11, C=0
+[2] Pour B->A -> A=11, B=0, C=0
+[3] Pour A->C -> A=3, B=0, C=8
+[4] Fill B -> A=3, B=11, C=8
+[5] Pour B->A -> A=12, B=2, C=8
+
+Minimum moves: 5",medium
+water_jug_en_medium_24,"There are 2 jugs. Their capacities are A=11 liters, B=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 4 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",6 moves,"[START] A=0, B=0
+[1] Fill B -> A=0, B=5
+[2] Pour B->A -> A=5, B=0
+[3] Fill B -> A=5, B=5
+[4] Pour B->A -> A=10, B=0
+[5] Fill B -> A=10, B=5
+[6] Pour B->A -> A=11, B=4
+
+Minimum moves: 6",medium
+water_jug_en_medium_25,"There are 2 jugs. Their capacities are A=11 liters, B=4 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 1 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",6 moves,"[START] A=0, B=0
+[1] Fill B -> A=0, B=4
+[2] Pour B->A -> A=4, B=0
+[3] Fill B -> A=4, B=4
+[4] Pour B->A -> A=8, B=0
+[5] Fill B -> A=8, B=4
+[6] Pour B->A -> A=11, B=1
+
+Minimum moves: 6",medium
+water_jug_en_medium_26,"There are 3 jugs. Their capacities are A=9 liters, B=7 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 6 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",5 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=9, B=0, C=0
+[2] Pour A->B -> A=2, B=7, C=0
+[3] Pour A->C -> A=0, B=7, C=2
+[4] Fill A -> A=9, B=7, C=2
+[5] Pour A->C -> A=6, B=7, C=5
+
+Minimum moves: 5",medium
+water_jug_en_medium_27,"There are 3 jugs. Their capacities are A=12 liters, B=11 liters, C=4 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 2 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",6 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=12, B=0, C=0
+[2] Pour A->B -> A=1, B=11, C=0
+[3] Empty B -> A=1, B=0, C=0
+[4] Pour A->B -> A=0, B=1, C=0
+[5] Fill A -> A=12, B=1, C=0
+[6] Pour A->B -> A=2, B=11, C=0
+
+Minimum moves: 6",medium
+water_jug_en_medium_28,"There are 3 jugs. Their capacities are A=10 liters, B=9 liters, C=8 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 5 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",7 moves,"[START] A=0, B=0, C=0
+[1] Fill C -> A=0, B=0, C=8
+[2] Pour C->A -> A=8, B=0, C=0
+[3] Fill C -> A=8, B=0, C=8
+[4] Pour C->A -> A=10, B=0, C=6
+[5] Pour C->B -> A=10, B=6, C=0
+[6] Pour A->C -> A=2, B=6, C=8
+[7] Pour C->B -> A=2, B=9, C=5
+
+Minimum moves: 7",medium
+water_jug_en_medium_29,"There are 3 jugs. Their capacities are A=11 liters, B=9 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 8 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",5 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=11, B=0, C=0
+[2] Pour A->B -> A=2, B=9, C=0
+[3] Pour A->C -> A=0, B=9, C=2
+[4] Fill A -> A=11, B=9, C=2
+[5] Pour A->C -> A=8, B=9, C=5
+
+Minimum moves: 5",medium
+water_jug_en_medium_30,"There are 3 jugs. Their capacities are A=9 liters, B=5 liters, C=4 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 2 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",6 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=5, C=0
+[2] Pour B->C -> A=0, B=1, C=4
+[3] Empty C -> A=0, B=1, C=0
+[4] Pour B->C -> A=0, B=0, C=1
+[5] Fill B -> A=0, B=5, C=1
+[6] Pour B->C -> A=0, B=2, C=4
+
+Minimum moves: 6",medium
+water_jug_en_medium_31,"There are 2 jugs. Their capacities are A=10 liters, B=6 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 8 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",6 moves,"[START] A=0, B=0
+[1] Fill A -> A=10, B=0
+[2] Pour A->B -> A=4, B=6
+[3] Empty B -> A=4, B=0
+[4] Pour A->B -> A=0, B=4
+[5] Fill A -> A=10, B=4
+[6] Pour A->B -> A=8, B=6
+
+Minimum moves: 6",medium
+water_jug_en_medium_32,"There are 3 jugs. Their capacities are A=12 liters, B=8 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 10 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",6 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=12, B=0, C=0
+[2] Pour A->C -> A=5, B=0, C=7
+[3] Empty C -> A=5, B=0, C=0
+[4] Pour A->C -> A=0, B=0, C=5
+[5] Fill A -> A=12, B=0, C=5
+[6] Pour A->C -> A=10, B=0, C=7
+
+Minimum moves: 6",medium
+water_jug_en_medium_33,"There are 2 jugs. Their capacities are A=11 liters, B=8 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 6 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",6 moves,"[START] A=0, B=0
+[1] Fill A -> A=11, B=0
+[2] Pour A->B -> A=3, B=8
+[3] Empty B -> A=3, B=0
+[4] Pour A->B -> A=0, B=3
+[5] Fill A -> A=11, B=3
+[6] Pour A->B -> A=6, B=8
+
+Minimum moves: 6",medium
+water_jug_en_medium_34,"There are 2 jugs. Their capacities are A=12 liters, B=11 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 2 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",6 moves,"[START] A=0, B=0
+[1] Fill A -> A=12, B=0
+[2] Pour A->B -> A=1, B=11
+[3] Empty B -> A=1, B=0
+[4] Pour A->B -> A=0, B=1
+[5] Fill A -> A=12, B=1
+[6] Pour A->B -> A=2, B=11
+
+Minimum moves: 6",medium
+water_jug_en_medium_35,"There are 3 jugs. Their capacities are A=12 liters, B=7 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 4 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",6 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=7, C=0
+[2] Pour B->C -> A=0, B=2, C=5
+[3] Empty C -> A=0, B=2, C=0
+[4] Pour B->C -> A=0, B=0, C=2
+[5] Fill B -> A=0, B=7, C=2
+[6] Pour B->C -> A=0, B=4, C=5
+
+Minimum moves: 6",medium
+water_jug_en_medium_36,"There are 3 jugs. Their capacities are A=12 liters, B=8 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 9 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",5 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=12, B=0, C=0
+[2] Pour A->B -> A=4, B=8, C=0
+[3] Pour A->C -> A=0, B=8, C=4
+[4] Fill A -> A=12, B=8, C=4
+[5] Pour A->C -> A=9, B=8, C=7
+
+Minimum moves: 5",medium
+water_jug_en_medium_37,"There are 3 jugs. Their capacities are A=12 liters, B=11 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 3 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",6 moves,"[START] A=0, B=0, C=0
+[1] Fill C -> A=0, B=0, C=5
+[2] Pour C->A -> A=5, B=0, C=0
+[3] Fill C -> A=5, B=0, C=5
+[4] Pour C->A -> A=10, B=0, C=0
+[5] Fill C -> A=10, B=0, C=5
+[6] Pour C->A -> A=12, B=0, C=3
+
+Minimum moves: 6",medium
+water_jug_en_medium_38,"There are 3 jugs. Their capacities are A=11 liters, B=9 liters, C=8 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 4 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",6 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=11, B=0, C=0
+[2] Pour A->B -> A=2, B=9, C=0
+[3] Empty B -> A=2, B=0, C=0
+[4] Pour A->B -> A=0, B=2, C=0
+[5] Fill A -> A=11, B=2, C=0
+[6] Pour A->B -> A=4, B=9, C=0
+
+Minimum moves: 6",medium
+water_jug_en_medium_39,"There are 3 jugs. Their capacities are A=12 liters, B=11 liters, C=4 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 9 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",5 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=12, B=0, C=0
+[2] Pour A->B -> A=1, B=11, C=0
+[3] Pour A->C -> A=0, B=11, C=1
+[4] Fill A -> A=12, B=11, C=1
+[5] Pour A->C -> A=9, B=11, C=4
+
+Minimum moves: 5",medium
+water_jug_en_medium_40,"There are 3 jugs. Their capacities are A=11 liters, B=6 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 2 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",6 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=6, C=0
+[2] Pour B->C -> A=0, B=1, C=5
+[3] Empty C -> A=0, B=1, C=0
+[4] Pour B->C -> A=0, B=0, C=1
+[5] Fill B -> A=0, B=6, C=1
+[6] Pour B->C -> A=0, B=2, C=5
+
+Minimum moves: 6",medium
+water_jug_en_medium_41,"There are 3 jugs. Their capacities are A=12 liters, B=6 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 9 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",7 moves,"[START] A=0, B=0, C=0
+[1] Fill C -> A=0, B=0, C=5
+[2] Pour C->A -> A=5, B=0, C=0
+[3] Fill C -> A=5, B=0, C=5
+[4] Pour C->A -> A=10, B=0, C=0
+[5] Pour A->B -> A=4, B=6, C=0
+[6] Pour B->C -> A=4, B=1, C=5
+[7] Pour C->A -> A=9, B=1, C=0
+
+Minimum moves: 7",medium
+water_jug_en_medium_42,"There are 3 jugs. Their capacities are A=12 liters, B=11 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 8 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",5 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=12, B=0, C=0
+[2] Pour A->B -> A=1, B=11, C=0
+[3] Pour A->C -> A=0, B=11, C=1
+[4] Fill A -> A=12, B=11, C=1
+[5] Pour A->C -> A=8, B=11, C=5
+
+Minimum moves: 5",medium
+water_jug_en_medium_43,"There are 3 jugs. Their capacities are A=12 liters, B=10 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 1 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",5 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=10, C=0
+[2] Pour B->A -> A=10, B=0, C=0
+[3] Pour A->C -> A=3, B=0, C=7
+[4] Fill B -> A=3, B=10, C=7
+[5] Pour B->A -> A=12, B=1, C=7
+
+Minimum moves: 5",medium
+water_jug_en_medium_44,"There are 3 jugs. Their capacities are A=10 liters, B=7 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 6 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",6 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=10, B=0, C=0
+[2] Pour A->B -> A=3, B=7, C=0
+[3] Empty B -> A=3, B=0, C=0
+[4] Pour A->B -> A=0, B=3, C=0
+[5] Fill A -> A=10, B=3, C=0
+[6] Pour A->B -> A=6, B=7, C=0
+
+Minimum moves: 6",medium
+water_jug_en_medium_45,"There are 2 jugs. Their capacities are A=7 liters, B=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 4 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",6 moves,"[START] A=0, B=0
+[1] Fill A -> A=7, B=0
+[2] Pour A->B -> A=2, B=5
+[3] Empty B -> A=2, B=0
+[4] Pour A->B -> A=0, B=2
+[5] Fill A -> A=7, B=2
+[6] Pour A->B -> A=4, B=5
+
+Minimum moves: 6",medium
+water_jug_en_medium_46,"There are 2 jugs. Their capacities are A=12 liters, B=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 10 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",6 moves,"[START] A=0, B=0
+[1] Fill A -> A=12, B=0
+[2] Pour A->B -> A=5, B=7
+[3] Empty B -> A=5, B=0
+[4] Pour A->B -> A=0, B=5
+[5] Fill A -> A=12, B=5
+[6] Pour A->B -> A=10, B=7
+
+Minimum moves: 6",medium
+water_jug_en_medium_47,"There are 3 jugs. Their capacities are A=10 liters, B=8 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 1 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",5 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=8, C=0
+[2] Pour B->A -> A=8, B=0, C=0
+[3] Pour A->C -> A=3, B=0, C=5
+[4] Fill B -> A=3, B=8, C=5
+[5] Pour B->A -> A=10, B=1, C=5
+
+Minimum moves: 5",medium
+water_jug_en_medium_48,"There are 3 jugs. Their capacities are A=12 liters, B=11 liters, C=8 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 6 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",6 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=11, C=0
+[2] Pour B->C -> A=0, B=3, C=8
+[3] Empty C -> A=0, B=3, C=0
+[4] Pour B->C -> A=0, B=0, C=3
+[5] Fill B -> A=0, B=11, C=3
+[6] Pour B->C -> A=0, B=6, C=8
+
+Minimum moves: 6",medium
+water_jug_en_medium_49,"There are 2 jugs. Their capacities are A=10 liters, B=8 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 4 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",6 moves,"[START] A=0, B=0
+[1] Fill A -> A=10, B=0
+[2] Pour A->B -> A=2, B=8
+[3] Empty B -> A=2, B=0
+[4] Pour A->B -> A=0, B=2
+[5] Fill A -> A=10, B=2
+[6] Pour A->B -> A=4, B=8
+
+Minimum moves: 6",medium
+water_jug_en_medium_50,"There are 3 jugs. Their capacities are A=12 liters, B=9 liters, C=4 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 11 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",5 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=12, B=0, C=0
+[2] Pour A->B -> A=3, B=9, C=0
+[3] Pour A->C -> A=0, B=9, C=3
+[4] Fill A -> A=12, B=9, C=3
+[5] Pour A->C -> A=11, B=9, C=4
+
+Minimum moves: 5",medium
+water_jug_en_medium_51,"There are 3 jugs. Their capacities are A=12 liters, B=6 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 8 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",6 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=12, B=0, C=0
+[2] Pour A->C -> A=7, B=0, C=5
+[3] Fill B -> A=7, B=6, C=5
+[4] Empty C -> A=7, B=6, C=0
+[5] Pour A->C -> A=2, B=6, C=5
+[6] Pour B->A -> A=8, B=0, C=5
+
+Minimum moves: 6",medium
+water_jug_en_medium_52,"There are 3 jugs. Their capacities are A=9 liters, B=6 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 7 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",5 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=9, B=0, C=0
+[2] Pour A->B -> A=3, B=6, C=0
+[3] Pour A->C -> A=0, B=6, C=3
+[4] Fill A -> A=9, B=6, C=3
+[5] Pour A->C -> A=7, B=6, C=5
+
+Minimum moves: 5",medium
+water_jug_en_medium_53,"There are 3 jugs. Their capacities are A=12 liters, B=11 liters, C=9 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 4 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",5 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=12, B=0, C=0
+[2] Pour A->B -> A=1, B=11, C=0
+[3] Pour A->C -> A=0, B=11, C=1
+[4] Fill A -> A=12, B=11, C=1
+[5] Pour A->C -> A=4, B=11, C=9
+
+Minimum moves: 5",medium
+water_jug_en_medium_54,"There are 3 jugs. Their capacities are A=10 liters, B=9 liters, C=4 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 7 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",5 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=10, B=0, C=0
+[2] Pour A->B -> A=1, B=9, C=0
+[3] Pour A->C -> A=0, B=9, C=1
+[4] Fill A -> A=10, B=9, C=1
+[5] Pour A->C -> A=7, B=9, C=4
+
+Minimum moves: 5",medium
+water_jug_en_medium_55,"There are 3 jugs. Their capacities are A=12 liters, B=9 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 8 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",5 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=12, B=0, C=0
+[2] Pour A->B -> A=3, B=9, C=0
+[3] Pour A->C -> A=0, B=9, C=3
+[4] Fill A -> A=12, B=9, C=3
+[5] Pour A->C -> A=8, B=9, C=7
+
+Minimum moves: 5",medium
+water_jug_en_medium_56,"There are 3 jugs. Their capacities are A=9 liters, B=5 liters, C=4 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 6 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",5 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=5, C=0
+[2] Pour B->A -> A=5, B=0, C=0
+[3] Pour A->C -> A=1, B=0, C=4
+[4] Fill B -> A=1, B=5, C=4
+[5] Pour B->A -> A=6, B=0, C=4
+
+Minimum moves: 5",medium
+water_jug_en_medium_57,"There are 3 jugs. Their capacities are A=12 liters, B=11 liters, C=6 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 4 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",5 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=11, C=0
+[2] Pour B->A -> A=11, B=0, C=0
+[3] Pour A->C -> A=5, B=0, C=6
+[4] Fill B -> A=5, B=11, C=6
+[5] Pour B->A -> A=12, B=4, C=6
+
+Minimum moves: 5",medium
+water_jug_en_medium_58,"There are 3 jugs. Their capacities are A=8 liters, B=7 liters, C=6 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 3 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",5 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=8, B=0, C=0
+[2] Pour A->B -> A=1, B=7, C=0
+[3] Pour A->C -> A=0, B=7, C=1
+[4] Fill A -> A=8, B=7, C=1
+[5] Pour A->C -> A=3, B=7, C=6
+
+Minimum moves: 5",medium
+water_jug_en_medium_59,"There are 3 jugs. Their capacities are A=11 liters, B=8 liters, C=4 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 2 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",7 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=11, B=0, C=0
+[2] Pour A->B -> A=3, B=8, C=0
+[3] Pour A->C -> A=0, B=8, C=3
+[4] Fill A -> A=11, B=8, C=3
+[5] Pour A->C -> A=10, B=8, C=4
+[6] Empty B -> A=10, B=0, C=4
+[7] Pour A->B -> A=2, B=8, C=4
+
+Minimum moves: 7",medium
+water_jug_en_medium_60,"There are 3 jugs. Their capacities are A=9 liters, B=8 liters, C=4 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 6 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",5 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=9, B=0, C=0
+[2] Pour A->B -> A=1, B=8, C=0
+[3] Pour A->C -> A=0, B=8, C=1
+[4] Fill A -> A=9, B=8, C=1
+[5] Pour A->C -> A=6, B=8, C=4
+
+Minimum moves: 5",medium
+water_jug_en_medium_61,"There are 3 jugs. Their capacities are A=12 liters, B=11 liters, C=10 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 7 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",7 moves,"[START] A=0, B=0, C=0
+[1] Fill C -> A=0, B=0, C=10
+[2] Pour C->A -> A=10, B=0, C=0
+[3] Fill C -> A=10, B=0, C=10
+[4] Pour C->A -> A=12, B=0, C=8
+[5] Pour C->B -> A=12, B=8, C=0
+[6] Pour A->C -> A=2, B=8, C=10
+[7] Pour C->B -> A=2, B=11, C=7
+
+Minimum moves: 7",medium
+water_jug_en_medium_62,"There are 3 jugs. Their capacities are A=10 liters, B=7 liters, C=4 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 9 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",5 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=10, B=0, C=0
+[2] Pour A->B -> A=3, B=7, C=0
+[3] Pour A->C -> A=0, B=7, C=3
+[4] Fill A -> A=10, B=7, C=3
+[5] Pour A->C -> A=9, B=7, C=4
+
+Minimum moves: 5",medium
+water_jug_en_medium_63,"There are 3 jugs. Their capacities are A=11 liters, B=10 liters, C=8 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 4 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",5 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=11, B=0, C=0
+[2] Pour A->B -> A=1, B=10, C=0
+[3] Pour A->C -> A=0, B=10, C=1
+[4] Fill A -> A=11, B=10, C=1
+[5] Pour A->C -> A=4, B=10, C=8
+
+Minimum moves: 5",medium
+water_jug_en_medium_64,"There are 3 jugs. Their capacities are A=11 liters, B=6 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 9 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",7 moves,"[START] A=0, B=0, C=0
+[1] Fill C -> A=0, B=0, C=5
+[2] Pour C->A -> A=5, B=0, C=0
+[3] Fill C -> A=5, B=0, C=5
+[4] Pour C->A -> A=10, B=0, C=0
+[5] Pour A->B -> A=4, B=6, C=0
+[6] Pour B->C -> A=4, B=1, C=5
+[7] Pour C->A -> A=9, B=1, C=0
+
+Minimum moves: 7",medium
+water_jug_en_medium_65,"There are 3 jugs. Their capacities are A=11 liters, B=9 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 6 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",5 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=11, B=0, C=0
+[2] Pour A->B -> A=2, B=9, C=0
+[3] Pour A->C -> A=0, B=9, C=2
+[4] Fill A -> A=11, B=9, C=2
+[5] Pour A->C -> A=6, B=9, C=7
+
+Minimum moves: 5",medium
+water_jug_en_medium_66,"There are 3 jugs. Their capacities are A=11 liters, B=7 liters, C=6 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 9 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",5 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=11, B=0, C=0
+[2] Pour A->B -> A=4, B=7, C=0
+[3] Pour A->C -> A=0, B=7, C=4
+[4] Fill A -> A=11, B=7, C=4
+[5] Pour A->C -> A=9, B=7, C=6
+
+Minimum moves: 5",medium
+water_jug_en_medium_67,"There are 3 jugs. Their capacities are A=11 liters, B=10 liters, C=9 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 6 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",7 moves,"[START] A=0, B=0, C=0
+[1] Fill C -> A=0, B=0, C=9
+[2] Pour C->A -> A=9, B=0, C=0
+[3] Fill C -> A=9, B=0, C=9
+[4] Pour C->A -> A=11, B=0, C=7
+[5] Pour C->B -> A=11, B=7, C=0
+[6] Pour A->C -> A=2, B=7, C=9
+[7] Pour C->B -> A=2, B=10, C=6
+
+Minimum moves: 7",medium
+water_jug_en_medium_68,"There are 3 jugs. Their capacities are A=8 liters, B=7 liters, C=4 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 2 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",5 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=7, C=0
+[2] Pour B->A -> A=7, B=0, C=0
+[3] Pour A->C -> A=3, B=0, C=4
+[4] Fill B -> A=3, B=7, C=4
+[5] Pour B->A -> A=8, B=2, C=4
+
+Minimum moves: 5",medium
+water_jug_en_medium_69,"There are 3 jugs. Their capacities are A=11 liters, B=9 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 1 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",7 moves,"[START] A=0, B=0, C=0
+[1] Fill C -> A=0, B=0, C=7
+[2] Pour C->A -> A=7, B=0, C=0
+[3] Fill C -> A=7, B=0, C=7
+[4] Pour C->A -> A=11, B=0, C=3
+[5] Pour C->B -> A=11, B=3, C=0
+[6] Pour A->C -> A=4, B=3, C=7
+[7] Pour C->B -> A=4, B=9, C=1
+
+Minimum moves: 7",medium
+water_jug_en_medium_70,"There are 3 jugs. Their capacities are A=12 liters, B=7 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 9 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",5 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=7, C=0
+[2] Pour B->A -> A=7, B=0, C=0
+[3] Pour A->C -> A=2, B=0, C=5
+[4] Fill B -> A=2, B=7, C=5
+[5] Pour B->A -> A=9, B=0, C=5
+
+Minimum moves: 5",medium
+water_jug_en_medium_71,"There are 3 jugs. Their capacities are A=12 liters, B=7 liters, C=4 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 10 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",5 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=7, C=0
+[2] Pour B->A -> A=7, B=0, C=0
+[3] Pour A->C -> A=3, B=0, C=4
+[4] Fill B -> A=3, B=7, C=4
+[5] Pour B->A -> A=10, B=0, C=4
+
+Minimum moves: 5",medium
+water_jug_en_medium_72,"There are 3 jugs. Their capacities are A=11 liters, B=10 liters, C=9 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 3 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",5 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=11, B=0, C=0
+[2] Pour A->B -> A=1, B=10, C=0
+[3] Pour A->C -> A=0, B=10, C=1
+[4] Fill A -> A=11, B=10, C=1
+[5] Pour A->C -> A=3, B=10, C=9
+
+Minimum moves: 5",medium
+water_jug_en_medium_73,"There are 3 jugs. Their capacities are A=12 liters, B=5 liters, C=4 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 6 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",5 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=5, C=0
+[2] Pour B->A -> A=5, B=0, C=0
+[3] Pour A->C -> A=1, B=0, C=4
+[4] Fill B -> A=1, B=5, C=4
+[5] Pour B->A -> A=6, B=0, C=4
+
+Minimum moves: 5",medium
+water_jug_en_medium_74,"There are 3 jugs. Their capacities are A=12 liters, B=7 liters, C=6 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 8 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",5 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=7, C=0
+[2] Pour B->A -> A=7, B=0, C=0
+[3] Pour A->C -> A=1, B=0, C=6
+[4] Fill B -> A=1, B=7, C=6
+[5] Pour B->A -> A=8, B=0, C=6
+
+Minimum moves: 5",medium
+water_jug_en_medium_75,"There are 3 jugs. Their capacities are A=11 liters, B=10 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 5 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",5 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=11, B=0, C=0
+[2] Pour A->B -> A=1, B=10, C=0
+[3] Pour A->C -> A=0, B=10, C=1
+[4] Fill A -> A=11, B=10, C=1
+[5] Pour A->C -> A=5, B=10, C=7
+
+Minimum moves: 5",medium
+water_jug_en_medium_76,"There are 3 jugs. Their capacities are A=11 liters, B=8 liters, C=4 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 10 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",5 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=11, B=0, C=0
+[2] Pour A->B -> A=3, B=8, C=0
+[3] Pour A->C -> A=0, B=8, C=3
+[4] Fill A -> A=11, B=8, C=3
+[5] Pour A->C -> A=10, B=8, C=4
+
+Minimum moves: 5",medium
+water_jug_en_medium_77,"There are 3 jugs. Their capacities are A=9 liters, B=5 liters, C=4 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 7 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",7 moves,"[START] A=0, B=0, C=0
+[1] Fill C -> A=0, B=0, C=4
+[2] Pour C->A -> A=4, B=0, C=0
+[3] Fill C -> A=4, B=0, C=4
+[4] Pour C->A -> A=8, B=0, C=0
+[5] Pour A->B -> A=3, B=5, C=0
+[6] Pour B->C -> A=3, B=1, C=4
+[7] Pour C->A -> A=7, B=1, C=0
+
+Minimum moves: 7",medium
+water_jug_en_medium_78,"There are 3 jugs. Their capacities are A=12 liters, B=9 liters, C=4 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 10 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",7 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=9, C=0
+[2] Pour B->A -> A=9, B=0, C=0
+[3] Pour A->C -> A=5, B=0, C=4
+[4] Fill B -> A=5, B=9, C=4
+[5] Empty C -> A=5, B=9, C=0
+[6] Pour A->C -> A=1, B=9, C=4
+[7] Pour B->A -> A=10, B=0, C=4
+
+Minimum moves: 7",medium
+water_jug_en_hard_0,"There are 3 jugs. Their capacities are A=13 liters, B=12 liters, C=11 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 5 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",9 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=13, B=0, C=0
+[2] Pour A->B -> A=1, B=12, C=0
+[3] Pour A->C -> A=0, B=12, C=1
+[4] Fill A -> A=13, B=12, C=1
+[5] Pour A->C -> A=3, B=12, C=11
+[6] Empty C -> A=3, B=12, C=0
+[7] Pour A->C -> A=0, B=12, C=3
+[8] Fill A -> A=13, B=12, C=3
+[9] Pour A->C -> A=5, B=12, C=11
+
+Minimum moves: 9",hard
+water_jug_en_hard_1,"There are 3 jugs. Their capacities are A=15 liters, B=11 liters, C=8 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 2 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",8 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=15, B=0, C=0
+[2] Pour A->C -> A=7, B=0, C=8
+[3] Fill B -> A=7, B=11, C=8
+[4] Empty C -> A=7, B=11, C=0
+[5] Pour A->C -> A=0, B=11, C=7
+[6] Pour B->C -> A=0, B=10, C=8
+[7] Empty C -> A=0, B=10, C=0
+[8] Pour B->C -> A=0, B=2, C=8
+
+Minimum moves: 8",hard
+water_jug_en_hard_2,"There are 3 jugs. Their capacities are A=12 liters, B=10 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 6 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",8 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=10, C=0
+[2] Pour B->A -> A=10, B=0, C=0
+[3] Fill B -> A=10, B=10, C=0
+[4] Pour B->A -> A=12, B=8, C=0
+[5] Empty A -> A=0, B=8, C=0
+[6] Pour B->A -> A=8, B=0, C=0
+[7] Fill B -> A=8, B=10, C=0
+[8] Pour B->A -> A=12, B=6, C=0
+
+Minimum moves: 8",hard
+water_jug_en_hard_3,"There are 3 jugs. Their capacities are A=14 liters, B=13 liters, C=12 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 8 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",8 moves,"[START] A=0, B=0, C=0
+[1] Fill C -> A=0, B=0, C=12
+[2] Pour C->A -> A=12, B=0, C=0
+[3] Fill C -> A=12, B=0, C=12
+[4] Pour C->A -> A=14, B=0, C=10
+[5] Empty A -> A=0, B=0, C=10
+[6] Pour C->A -> A=10, B=0, C=0
+[7] Fill C -> A=10, B=0, C=12
+[8] Pour C->A -> A=14, B=0, C=8
+
+Minimum moves: 8",hard
+water_jug_en_hard_4,"There are 3 jugs. Their capacities are A=13 liters, B=8 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 9 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",11 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=8, C=0
+[2] Pour B->A -> A=8, B=0, C=0
+[3] Pour A->C -> A=3, B=0, C=5
+[4] Fill B -> A=3, B=8, C=5
+[5] Pour B->A -> A=11, B=0, C=5
+[6] Fill B -> A=11, B=8, C=5
+[7] Empty C -> A=11, B=8, C=0
+[8] Pour A->C -> A=6, B=8, C=5
+[9] Empty C -> A=6, B=8, C=0
+[10] Pour A->C -> A=1, B=8, C=5
+[11] Pour B->A -> A=9, B=0, C=5
+
+Minimum moves: 11",hard
+water_jug_en_hard_5,"There are 3 jugs. Their capacities are A=15 liters, B=13 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 14 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",9 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=15, B=0, C=0
+[2] Pour A->B -> A=2, B=13, C=0
+[3] Pour A->C -> A=0, B=13, C=2
+[4] Fill A -> A=15, B=13, C=2
+[5] Pour A->C -> A=12, B=13, C=5
+[6] Empty B -> A=12, B=0, C=5
+[7] Pour A->B -> A=0, B=12, C=5
+[8] Fill A -> A=15, B=12, C=5
+[9] Pour A->B -> A=14, B=13, C=5
+
+Minimum moves: 9",hard
+water_jug_en_hard_6,"There are 3 jugs. Their capacities are A=14 liters, B=9 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 3 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",8 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=9, C=0
+[2] Pour B->C -> A=0, B=4, C=5
+[3] Empty C -> A=0, B=4, C=0
+[4] Pour B->C -> A=0, B=0, C=4
+[5] Fill B -> A=0, B=9, C=4
+[6] Pour B->C -> A=0, B=8, C=5
+[7] Empty C -> A=0, B=8, C=0
+[8] Pour B->C -> A=0, B=3, C=5
+
+Minimum moves: 8",hard
+water_jug_en_hard_7,"There are 3 jugs. Their capacities are A=14 liters, B=13 liters, C=9 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 11 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",8 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=14, B=0, C=0
+[2] Pour A->B -> A=1, B=13, C=0
+[3] Empty B -> A=1, B=0, C=0
+[4] Pour A->B -> A=0, B=1, C=0
+[5] Fill A -> A=14, B=1, C=0
+[6] Pour A->B -> A=2, B=13, C=0
+[7] Pour B->C -> A=2, B=4, C=9
+[8] Pour C->A -> A=11, B=4, C=0
+
+Minimum moves: 8",hard
+water_jug_en_hard_8,"There are 3 jugs. Their capacities are A=11 liters, B=10 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 3 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",8 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=10, C=0
+[2] Pour B->A -> A=10, B=0, C=0
+[3] Fill B -> A=10, B=10, C=0
+[4] Pour B->A -> A=11, B=9, C=0
+[5] Empty A -> A=0, B=9, C=0
+[6] Pour B->A -> A=9, B=0, C=0
+[7] Fill C -> A=9, B=0, C=5
+[8] Pour C->A -> A=11, B=0, C=3
+
+Minimum moves: 8",hard
+water_jug_en_hard_9,"There are 3 jugs. Their capacities are A=13 liters, B=7 liters, C=6 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 10 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",11 moves,"[START] A=0, B=0, C=0
+[1] Fill C -> A=0, B=0, C=6
+[2] Pour C->A -> A=6, B=0, C=0
+[3] Fill C -> A=6, B=0, C=6
+[4] Pour C->A -> A=12, B=0, C=0
+[5] Pour A->B -> A=5, B=7, C=0
+[6] Empty B -> A=5, B=0, C=0
+[7] Fill C -> A=5, B=0, C=6
+[8] Pour C->A -> A=11, B=0, C=0
+[9] Pour A->B -> A=4, B=7, C=0
+[10] Pour B->C -> A=4, B=1, C=6
+[11] Pour C->A -> A=10, B=1, C=0
+
+Minimum moves: 11",hard
+water_jug_en_hard_10,"There are 3 jugs. Their capacities are A=14 liters, B=10 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 2 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",8 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=10, C=0
+[2] Pour B->A -> A=10, B=0, C=0
+[3] Fill B -> A=10, B=10, C=0
+[4] Pour B->A -> A=14, B=6, C=0
+[5] Empty A -> A=0, B=6, C=0
+[6] Pour B->A -> A=6, B=0, C=0
+[7] Fill B -> A=6, B=10, C=0
+[8] Pour B->A -> A=14, B=2, C=0
+
+Minimum moves: 8",hard
+water_jug_en_hard_11,"There are 3 jugs. Their capacities are A=15 liters, B=14 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 10 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",9 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=15, B=0, C=0
+[2] Pour A->B -> A=1, B=14, C=0
+[3] Pour A->C -> A=0, B=14, C=1
+[4] Fill A -> A=15, B=14, C=1
+[5] Pour A->C -> A=9, B=14, C=7
+[6] Empty B -> A=9, B=0, C=7
+[7] Pour A->B -> A=0, B=9, C=7
+[8] Fill A -> A=15, B=9, C=7
+[9] Pour A->B -> A=10, B=14, C=7
+
+Minimum moves: 9",hard
+water_jug_en_hard_12,"There are 3 jugs. Their capacities are A=15 liters, B=11 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 9 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",8 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=15, B=0, C=0
+[2] Pour A->C -> A=8, B=0, C=7
+[3] Empty C -> A=8, B=0, C=0
+[4] Pour A->C -> A=1, B=0, C=7
+[5] Empty C -> A=1, B=0, C=0
+[6] Pour A->C -> A=0, B=0, C=1
+[7] Fill A -> A=15, B=0, C=1
+[8] Pour A->C -> A=9, B=0, C=7
+
+Minimum moves: 8",hard
+water_jug_en_hard_13,"There are 3 jugs. Their capacities are A=15 liters, B=8 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 11 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",13 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=8, C=0
+[2] Pour B->A -> A=8, B=0, C=0
+[3] Pour A->C -> A=1, B=0, C=7
+[4] Fill B -> A=1, B=8, C=7
+[5] Pour B->A -> A=9, B=0, C=7
+[6] Fill B -> A=9, B=8, C=7
+[7] Empty C -> A=9, B=8, C=0
+[8] Pour A->C -> A=2, B=8, C=7
+[9] Pour B->A -> A=10, B=0, C=7
+[10] Fill B -> A=10, B=8, C=7
+[11] Empty C -> A=10, B=8, C=0
+[12] Pour A->C -> A=3, B=8, C=7
+[13] Pour B->A -> A=11, B=0, C=7
+
+Minimum moves: 13",hard
+water_jug_en_hard_14,"There are 3 jugs. Their capacities are A=15 liters, B=10 liters, C=9 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 13 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",8 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=15, B=0, C=0
+[2] Pour A->B -> A=5, B=10, C=0
+[3] Empty B -> A=5, B=0, C=0
+[4] Fill C -> A=5, B=0, C=9
+[5] Pour C->A -> A=14, B=0, C=0
+[6] Pour A->B -> A=4, B=10, C=0
+[7] Pour B->C -> A=4, B=1, C=9
+[8] Pour C->A -> A=13, B=1, C=0
+
+Minimum moves: 8",hard
+water_jug_en_hard_15,"There are 3 jugs. Their capacities are A=13 liters, B=8 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 12 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",9 moves,"[START] A=0, B=0, C=0
+[1] Fill C -> A=0, B=0, C=5
+[2] Pour C->A -> A=5, B=0, C=0
+[3] Fill C -> A=5, B=0, C=5
+[4] Pour C->A -> A=10, B=0, C=0
+[5] Pour A->B -> A=2, B=8, C=0
+[6] Pour B->C -> A=2, B=3, C=5
+[7] Pour C->A -> A=7, B=3, C=0
+[8] Fill C -> A=7, B=3, C=5
+[9] Pour C->A -> A=12, B=3, C=0
+
+Minimum moves: 9",hard
+water_jug_en_hard_16,"There are 3 jugs. Their capacities are A=11 liters, B=6 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 3 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",8 moves,"[START] A=0, B=0, C=0
+[1] Fill C -> A=0, B=0, C=5
+[2] Pour C->B -> A=0, B=5, C=0
+[3] Fill C -> A=0, B=5, C=5
+[4] Pour C->B -> A=0, B=6, C=4
+[5] Empty B -> A=0, B=0, C=4
+[6] Pour C->B -> A=0, B=4, C=0
+[7] Fill C -> A=0, B=4, C=5
+[8] Pour C->B -> A=0, B=6, C=3
+
+Minimum moves: 8",hard
+water_jug_en_hard_17,"There are 3 jugs. Their capacities are A=15 liters, B=11 liters, C=9 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 14 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",8 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=11, C=0
+[2] Pour B->A -> A=11, B=0, C=0
+[3] Fill C -> A=11, B=0, C=9
+[4] Pour C->A -> A=15, B=0, C=5
+[5] Empty A -> A=0, B=0, C=5
+[6] Pour C->A -> A=5, B=0, C=0
+[7] Fill C -> A=5, B=0, C=9
+[8] Pour C->A -> A=14, B=0, C=0
+
+Minimum moves: 8",hard
+water_jug_en_hard_18,"There are 3 jugs. Their capacities are A=15 liters, B=8 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 4 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",12 moves,"[START] A=0, B=0, C=0
+[1] Fill C -> A=0, B=0, C=7
+[2] Pour C->B -> A=0, B=7, C=0
+[3] Fill C -> A=0, B=7, C=7
+[4] Pour C->B -> A=0, B=8, C=6
+[5] Empty B -> A=0, B=0, C=6
+[6] Pour C->B -> A=0, B=6, C=0
+[7] Fill C -> A=0, B=6, C=7
+[8] Pour C->B -> A=0, B=8, C=5
+[9] Empty B -> A=0, B=0, C=5
+[10] Pour C->B -> A=0, B=5, C=0
+[11] Fill C -> A=0, B=5, C=7
+[12] Pour C->B -> A=0, B=8, C=4
+
+Minimum moves: 12",hard
+water_jug_en_hard_19,"There are 3 jugs. Their capacities are A=12 liters, B=7 liters, C=6 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 9 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",8 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=7, C=0
+[2] Pour B->A -> A=7, B=0, C=0
+[3] Fill B -> A=7, B=7, C=0
+[4] Pour B->A -> A=12, B=2, C=0
+[5] Empty A -> A=0, B=2, C=0
+[6] Pour B->A -> A=2, B=0, C=0
+[7] Fill B -> A=2, B=7, C=0
+[8] Pour B->A -> A=9, B=0, C=0
+
+Minimum moves: 8",hard
+water_jug_en_hard_20,"There are 3 jugs. Their capacities are A=15 liters, B=10 liters, C=8 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 11 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",8 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=15, B=0, C=0
+[2] Pour A->B -> A=5, B=10, C=0
+[3] Empty B -> A=5, B=0, C=0
+[4] Fill C -> A=5, B=0, C=8
+[5] Pour C->A -> A=13, B=0, C=0
+[6] Pour A->B -> A=3, B=10, C=0
+[7] Pour B->C -> A=3, B=2, C=8
+[8] Pour C->A -> A=11, B=2, C=0
+
+Minimum moves: 8",hard
+water_jug_en_hard_21,"There are 3 jugs. Their capacities are A=14 liters, B=12 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 11 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",8 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=14, B=0, C=0
+[2] Pour A->B -> A=2, B=12, C=0
+[3] Empty B -> A=2, B=0, C=0
+[4] Pour A->B -> A=0, B=2, C=0
+[5] Fill A -> A=14, B=2, C=0
+[6] Pour A->B -> A=4, B=12, C=0
+[7] Pour B->C -> A=4, B=5, C=7
+[8] Pour C->A -> A=11, B=5, C=0
+
+Minimum moves: 8",hard
+water_jug_en_hard_22,"There are 3 jugs. Their capacities are A=11 liters, B=9 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 10 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",8 moves,"[START] A=0, B=0, C=0
+[1] Fill C -> A=0, B=0, C=7
+[2] Pour C->A -> A=7, B=0, C=0
+[3] Fill C -> A=7, B=0, C=7
+[4] Pour C->A -> A=11, B=0, C=3
+[5] Empty A -> A=0, B=0, C=3
+[6] Pour C->A -> A=3, B=0, C=0
+[7] Fill C -> A=3, B=0, C=7
+[8] Pour C->A -> A=10, B=0, C=0
+
+Minimum moves: 8",hard
+water_jug_en_hard_23,"There are 3 jugs. Their capacities are A=15 liters, B=8 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 3 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",10 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=8, C=0
+[2] Pour B->C -> A=0, B=1, C=7
+[3] Empty C -> A=0, B=1, C=0
+[4] Pour B->C -> A=0, B=0, C=1
+[5] Fill B -> A=0, B=8, C=1
+[6] Pour B->C -> A=0, B=2, C=7
+[7] Empty C -> A=0, B=2, C=0
+[8] Pour B->C -> A=0, B=0, C=2
+[9] Fill B -> A=0, B=8, C=2
+[10] Pour B->C -> A=0, B=3, C=7
+
+Minimum moves: 10",hard
+water_jug_en_hard_24,"There are 3 jugs. Their capacities are A=15 liters, B=8 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 10 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",9 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=8, C=0
+[2] Pour B->A -> A=8, B=0, C=0
+[3] Pour A->C -> A=1, B=0, C=7
+[4] Fill B -> A=1, B=8, C=7
+[5] Pour B->A -> A=9, B=0, C=7
+[6] Fill B -> A=9, B=8, C=7
+[7] Empty C -> A=9, B=8, C=0
+[8] Pour A->C -> A=2, B=8, C=7
+[9] Pour B->A -> A=10, B=0, C=7
+
+Minimum moves: 9",hard
+water_jug_en_hard_25,"There are 3 jugs. Their capacities are A=12 liters, B=10 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 11 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",9 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=12, B=0, C=0
+[2] Pour A->B -> A=2, B=10, C=0
+[3] Pour A->C -> A=0, B=10, C=2
+[4] Fill A -> A=12, B=10, C=2
+[5] Pour A->C -> A=9, B=10, C=5
+[6] Empty B -> A=9, B=0, C=5
+[7] Pour A->B -> A=0, B=9, C=5
+[8] Fill A -> A=12, B=9, C=5
+[9] Pour A->B -> A=11, B=10, C=5
+
+Minimum moves: 9",hard
+water_jug_en_hard_26,"There are 3 jugs. Their capacities are A=14 liters, B=10 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 12 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",10 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=14, B=0, C=0
+[2] Pour A->B -> A=4, B=10, C=0
+[3] Empty B -> A=4, B=0, C=0
+[4] Pour A->B -> A=0, B=4, C=0
+[5] Fill A -> A=14, B=4, C=0
+[6] Pour A->B -> A=8, B=10, C=0
+[7] Empty B -> A=8, B=0, C=0
+[8] Pour A->B -> A=0, B=8, C=0
+[9] Fill A -> A=14, B=8, C=0
+[10] Pour A->B -> A=12, B=10, C=0
+
+Minimum moves: 10",hard
+water_jug_en_hard_27,"There are 3 jugs. Their capacities are A=15 liters, B=11 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 2 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",9 moves,"[START] A=0, B=0, C=0
+[1] Fill C -> A=0, B=0, C=7
+[2] Pour C->A -> A=7, B=0, C=0
+[3] Fill C -> A=7, B=0, C=7
+[4] Pour C->A -> A=14, B=0, C=0
+[5] Pour A->B -> A=3, B=11, C=0
+[6] Pour B->C -> A=3, B=4, C=7
+[7] Pour C->A -> A=10, B=4, C=0
+[8] Fill C -> A=10, B=4, C=7
+[9] Pour C->A -> A=15, B=4, C=2
+
+Minimum moves: 9",hard
+water_jug_en_hard_28,"There are 3 jugs. Their capacities are A=15 liters, B=13 liters, C=12 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 7 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",8 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=13, C=0
+[2] Pour B->A -> A=13, B=0, C=0
+[3] Fill C -> A=13, B=0, C=12
+[4] Pour C->A -> A=15, B=0, C=10
+[5] Empty A -> A=0, B=0, C=10
+[6] Pour C->A -> A=10, B=0, C=0
+[7] Fill C -> A=10, B=0, C=12
+[8] Pour C->A -> A=15, B=0, C=7
+
+Minimum moves: 8",hard
+water_jug_en_hard_29,"There are 3 jugs. Their capacities are A=14 liters, B=13 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 3 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",10 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=14, B=0, C=0
+[2] Pour A->B -> A=1, B=13, C=0
+[3] Empty B -> A=1, B=0, C=0
+[4] Pour A->B -> A=0, B=1, C=0
+[5] Fill A -> A=14, B=1, C=0
+[6] Pour A->B -> A=2, B=13, C=0
+[7] Empty B -> A=2, B=0, C=0
+[8] Pour A->B -> A=0, B=2, C=0
+[9] Fill A -> A=14, B=2, C=0
+[10] Pour A->B -> A=3, B=13, C=0
+
+Minimum moves: 10",hard
+water_jug_en_hard_30,"There are 3 jugs. Their capacities are A=15 liters, B=14 liters, C=13 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 6 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",10 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=15, B=0, C=0
+[2] Pour A->C -> A=2, B=0, C=13
+[3] Empty C -> A=2, B=0, C=0
+[4] Pour A->C -> A=0, B=0, C=2
+[5] Fill A -> A=15, B=0, C=2
+[6] Pour A->C -> A=4, B=0, C=13
+[7] Empty C -> A=4, B=0, C=0
+[8] Pour A->C -> A=0, B=0, C=4
+[9] Fill A -> A=15, B=0, C=4
+[10] Pour A->C -> A=6, B=0, C=13
+
+Minimum moves: 10",hard
+water_jug_en_hard_31,"There are 3 jugs. Their capacities are A=13 liters, B=10 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 4 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",8 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=10, C=0
+[2] Pour B->A -> A=10, B=0, C=0
+[3] Fill B -> A=10, B=10, C=0
+[4] Pour B->A -> A=13, B=7, C=0
+[5] Empty A -> A=0, B=7, C=0
+[6] Pour B->A -> A=7, B=0, C=0
+[7] Fill B -> A=7, B=10, C=0
+[8] Pour B->A -> A=13, B=4, C=0
+
+Minimum moves: 8",hard
+water_jug_en_hard_32,"There are 3 jugs. Their capacities are A=14 liters, B=9 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 12 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",11 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=9, C=0
+[2] Pour B->A -> A=9, B=0, C=0
+[3] Pour A->C -> A=4, B=0, C=5
+[4] Fill B -> A=4, B=9, C=5
+[5] Pour B->A -> A=13, B=0, C=5
+[6] Fill B -> A=13, B=9, C=5
+[7] Empty C -> A=13, B=9, C=0
+[8] Pour A->C -> A=8, B=9, C=5
+[9] Empty C -> A=8, B=9, C=0
+[10] Pour A->C -> A=3, B=9, C=5
+[11] Pour B->A -> A=12, B=0, C=5
+
+Minimum moves: 11",hard
+water_jug_en_hard_33,"There are 3 jugs. Their capacities are A=15 liters, B=13 liters, C=9 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 1 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",8 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=15, B=0, C=0
+[2] Pour A->C -> A=6, B=0, C=9
+[3] Fill B -> A=6, B=13, C=9
+[4] Empty C -> A=6, B=13, C=0
+[5] Pour A->C -> A=0, B=13, C=6
+[6] Pour B->C -> A=0, B=10, C=9
+[7] Empty C -> A=0, B=10, C=0
+[8] Pour B->C -> A=0, B=1, C=9
+
+Minimum moves: 8",hard
+water_jug_en_hard_34,"There are 3 jugs. Their capacities are A=14 liters, B=13 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 11 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",8 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=13, C=0
+[2] Pour B->A -> A=13, B=0, C=0
+[3] Fill B -> A=13, B=13, C=0
+[4] Pour B->A -> A=14, B=12, C=0
+[5] Empty A -> A=0, B=12, C=0
+[6] Pour B->A -> A=12, B=0, C=0
+[7] Fill B -> A=12, B=13, C=0
+[8] Pour B->A -> A=14, B=11, C=0
+
+Minimum moves: 8",hard
+water_jug_en_hard_35,"There are 3 jugs. Their capacities are A=13 liters, B=12 liters, C=6 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 3 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",10 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=13, B=0, C=0
+[2] Pour A->B -> A=1, B=12, C=0
+[3] Empty B -> A=1, B=0, C=0
+[4] Pour A->B -> A=0, B=1, C=0
+[5] Fill A -> A=13, B=1, C=0
+[6] Pour A->B -> A=2, B=12, C=0
+[7] Empty B -> A=2, B=0, C=0
+[8] Pour A->B -> A=0, B=2, C=0
+[9] Fill A -> A=13, B=2, C=0
+[10] Pour A->B -> A=3, B=12, C=0
+
+Minimum moves: 10",hard
+water_jug_en_hard_36,"There are 3 jugs. Their capacities are A=14 liters, B=9 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 11 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",9 moves,"[START] A=0, B=0, C=0
+[1] Fill C -> A=0, B=0, C=5
+[2] Pour C->A -> A=5, B=0, C=0
+[3] Fill C -> A=5, B=0, C=5
+[4] Pour C->A -> A=10, B=0, C=0
+[5] Pour A->B -> A=1, B=9, C=0
+[6] Pour B->C -> A=1, B=4, C=5
+[7] Pour C->A -> A=6, B=4, C=0
+[8] Fill C -> A=6, B=4, C=5
+[9] Pour C->A -> A=11, B=4, C=0
+
+Minimum moves: 9",hard
+water_jug_en_hard_37,"There are 3 jugs. Their capacities are A=13 liters, B=9 liters, C=8 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 11 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",8 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=13, B=0, C=0
+[2] Pour A->B -> A=4, B=9, C=0
+[3] Empty B -> A=4, B=0, C=0
+[4] Fill C -> A=4, B=0, C=8
+[5] Pour C->A -> A=12, B=0, C=0
+[6] Pour A->B -> A=3, B=9, C=0
+[7] Pour B->C -> A=3, B=1, C=8
+[8] Pour C->A -> A=11, B=1, C=0
+
+Minimum moves: 8",hard
+water_jug_en_hard_38,"There are 3 jugs. Their capacities are A=11 liters, B=10 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 8 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",8 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=10, C=0
+[2] Pour B->A -> A=10, B=0, C=0
+[3] Fill B -> A=10, B=10, C=0
+[4] Pour B->A -> A=11, B=9, C=0
+[5] Empty A -> A=0, B=9, C=0
+[6] Pour B->A -> A=9, B=0, C=0
+[7] Fill B -> A=9, B=10, C=0
+[8] Pour B->A -> A=11, B=8, C=0
+
+Minimum moves: 8",hard
+water_jug_en_hard_39,"There are 3 jugs. Their capacities are A=13 liters, B=11 liters, C=9 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 10 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",9 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=13, B=0, C=0
+[2] Pour A->B -> A=2, B=11, C=0
+[3] Pour A->C -> A=0, B=11, C=2
+[4] Fill A -> A=13, B=11, C=2
+[5] Pour A->C -> A=6, B=11, C=9
+[6] Empty C -> A=6, B=11, C=0
+[7] Pour A->C -> A=0, B=11, C=6
+[8] Fill A -> A=13, B=11, C=6
+[9] Pour A->C -> A=10, B=11, C=9
+
+Minimum moves: 9",hard
+water_jug_en_hard_40,"There are 3 jugs. Their capacities are A=14 liters, B=11 liters, C=8 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 7 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",9 moves,"[START] A=0, B=0, C=0
+[1] Fill C -> A=0, B=0, C=8
+[2] Pour C->A -> A=8, B=0, C=0
+[3] Fill C -> A=8, B=0, C=8
+[4] Pour C->A -> A=14, B=0, C=2
+[5] Pour C->B -> A=14, B=2, C=0
+[6] Pour A->C -> A=6, B=2, C=8
+[7] Pour C->B -> A=6, B=10, C=0
+[8] Fill C -> A=6, B=10, C=8
+[9] Pour C->B -> A=6, B=11, C=7
+
+Minimum moves: 9",hard
+water_jug_en_hard_41,"There are 3 jugs. Their capacities are A=13 liters, B=12 liters, C=6 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 10 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",8 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=12, C=0
+[2] Pour B->A -> A=12, B=0, C=0
+[3] Fill B -> A=12, B=12, C=0
+[4] Pour B->A -> A=13, B=11, C=0
+[5] Empty A -> A=0, B=11, C=0
+[6] Pour B->A -> A=11, B=0, C=0
+[7] Fill B -> A=11, B=12, C=0
+[8] Pour B->A -> A=13, B=10, C=0
+
+Minimum moves: 8",hard
+water_jug_en_hard_42,"There are 3 jugs. Their capacities are A=14 liters, B=11 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 13 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",8 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=14, B=0, C=0
+[2] Pour A->B -> A=3, B=11, C=0
+[3] Empty B -> A=3, B=0, C=0
+[4] Pour A->B -> A=0, B=3, C=0
+[5] Fill A -> A=14, B=3, C=0
+[6] Pour A->B -> A=6, B=11, C=0
+[7] Pour B->C -> A=6, B=4, C=7
+[8] Pour C->A -> A=13, B=4, C=0
+
+Minimum moves: 8",hard
+water_jug_en_hard_43,"There are 3 jugs. Their capacities are A=12 liters, B=11 liters, C=6 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 8 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",8 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=12, B=0, C=0
+[2] Pour A->B -> A=1, B=11, C=0
+[3] Empty B -> A=1, B=0, C=0
+[4] Pour A->B -> A=0, B=1, C=0
+[5] Fill A -> A=12, B=1, C=0
+[6] Pour A->B -> A=2, B=11, C=0
+[7] Pour B->C -> A=2, B=5, C=6
+[8] Pour C->A -> A=8, B=5, C=0
+
+Minimum moves: 8",hard
+water_jug_en_hard_44,"There are 3 jugs. Their capacities are A=12 liters, B=7 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 11 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",9 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=7, C=0
+[2] Pour B->A -> A=7, B=0, C=0
+[3] Pour A->C -> A=2, B=0, C=5
+[4] Fill B -> A=2, B=7, C=5
+[5] Pour B->A -> A=9, B=0, C=5
+[6] Fill B -> A=9, B=7, C=5
+[7] Empty C -> A=9, B=7, C=0
+[8] Pour A->C -> A=4, B=7, C=5
+[9] Pour B->A -> A=11, B=0, C=5
+
+Minimum moves: 9",hard
+water_jug_en_hard_45,"There are 3 jugs. Their capacities are A=13 liters, B=12 liters, C=11 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 6 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",10 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=13, B=0, C=0
+[2] Pour A->C -> A=2, B=0, C=11
+[3] Empty C -> A=2, B=0, C=0
+[4] Pour A->C -> A=0, B=0, C=2
+[5] Fill A -> A=13, B=0, C=2
+[6] Pour A->C -> A=4, B=0, C=11
+[7] Empty C -> A=4, B=0, C=0
+[8] Pour A->C -> A=0, B=0, C=4
+[9] Fill A -> A=13, B=0, C=4
+[10] Pour A->C -> A=6, B=0, C=11
+
+Minimum moves: 10",hard
+water_jug_en_hard_46,"There are 3 jugs. Their capacities are A=14 liters, B=8 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 11 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",10 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=14, B=0, C=0
+[2] Pour A->B -> A=6, B=8, C=0
+[3] Empty B -> A=6, B=0, C=0
+[4] Pour A->B -> A=0, B=6, C=0
+[5] Fill A -> A=14, B=6, C=0
+[6] Pour A->B -> A=12, B=8, C=0
+[7] Empty B -> A=12, B=0, C=0
+[8] Pour A->B -> A=4, B=8, C=0
+[9] Pour B->C -> A=4, B=1, C=7
+[10] Pour C->A -> A=11, B=1, C=0
+
+Minimum moves: 10",hard
+water_jug_en_hard_47,"There are 3 jugs. Their capacities are A=12 liters, B=11 liters, C=6 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 9 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",8 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=11, C=0
+[2] Pour B->A -> A=11, B=0, C=0
+[3] Fill B -> A=11, B=11, C=0
+[4] Pour B->A -> A=12, B=10, C=0
+[5] Empty A -> A=0, B=10, C=0
+[6] Pour B->A -> A=10, B=0, C=0
+[7] Fill B -> A=10, B=11, C=0
+[8] Pour B->A -> A=12, B=9, C=0
+
+Minimum moves: 8",hard
+water_jug_en_hard_48,"There are 3 jugs. Their capacities are A=12 liters, B=11 liters, C=10 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 5 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",9 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=12, B=0, C=0
+[2] Pour A->B -> A=1, B=11, C=0
+[3] Pour A->C -> A=0, B=11, C=1
+[4] Fill A -> A=12, B=11, C=1
+[5] Pour A->C -> A=3, B=11, C=10
+[6] Empty C -> A=3, B=11, C=0
+[7] Pour A->C -> A=0, B=11, C=3
+[8] Fill A -> A=12, B=11, C=3
+[9] Pour A->C -> A=5, B=11, C=10
+
+Minimum moves: 9",hard
+water_jug_en_hard_49,"There are 3 jugs. Their capacities are A=11 liters, B=6 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 8 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",9 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=6, C=0
+[2] Pour B->A -> A=6, B=0, C=0
+[3] Pour A->C -> A=1, B=0, C=5
+[4] Fill B -> A=1, B=6, C=5
+[5] Pour B->A -> A=7, B=0, C=5
+[6] Fill B -> A=7, B=6, C=5
+[7] Empty C -> A=7, B=6, C=0
+[8] Pour A->C -> A=2, B=6, C=5
+[9] Pour B->A -> A=8, B=0, C=5
+
+Minimum moves: 9",hard
+water_jug_en_hard_50,"There are 3 jugs. Their capacities are A=14 liters, B=11 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 5 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",8 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=11, C=0
+[2] Pour B->A -> A=11, B=0, C=0
+[3] Fill B -> A=11, B=11, C=0
+[4] Pour B->A -> A=14, B=8, C=0
+[5] Empty A -> A=0, B=8, C=0
+[6] Pour B->A -> A=8, B=0, C=0
+[7] Fill B -> A=8, B=11, C=0
+[8] Pour B->A -> A=14, B=5, C=0
+
+Minimum moves: 8",hard
+water_jug_en_hard_51,"There are 3 jugs. Their capacities are A=14 liters, B=13 liters, C=11 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 7 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",8 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=13, C=0
+[2] Pour B->A -> A=13, B=0, C=0
+[3] Fill C -> A=13, B=0, C=11
+[4] Pour C->A -> A=14, B=0, C=10
+[5] Empty A -> A=0, B=0, C=10
+[6] Pour C->A -> A=10, B=0, C=0
+[7] Fill C -> A=10, B=0, C=11
+[8] Pour C->A -> A=14, B=0, C=7
+
+Minimum moves: 8",hard
+water_jug_en_hard_52,"There are 3 jugs. Their capacities are A=12 liters, B=7 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 1 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",8 moves,"[START] A=0, B=0, C=0
+[1] Fill C -> A=0, B=0, C=5
+[2] Pour C->B -> A=0, B=5, C=0
+[3] Fill C -> A=0, B=5, C=5
+[4] Pour C->B -> A=0, B=7, C=3
+[5] Empty B -> A=0, B=0, C=3
+[6] Pour C->B -> A=0, B=3, C=0
+[7] Fill C -> A=0, B=3, C=5
+[8] Pour C->B -> A=0, B=7, C=1
+
+Minimum moves: 8",hard
+water_jug_en_hard_53,"There are 3 jugs. Their capacities are A=14 liters, B=12 liters, C=9 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 13 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",8 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=14, B=0, C=0
+[2] Pour A->B -> A=2, B=12, C=0
+[3] Empty B -> A=2, B=0, C=0
+[4] Pour A->B -> A=0, B=2, C=0
+[5] Fill A -> A=14, B=2, C=0
+[6] Pour A->B -> A=4, B=12, C=0
+[7] Pour B->C -> A=4, B=3, C=9
+[8] Pour C->A -> A=13, B=3, C=0
+
+Minimum moves: 8",hard
+water_jug_en_hard_54,"There are 3 jugs. Their capacities are A=13 liters, B=10 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 12 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",8 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=10, C=0
+[2] Pour B->A -> A=10, B=0, C=0
+[3] Fill B -> A=10, B=10, C=0
+[4] Pour B->A -> A=13, B=7, C=0
+[5] Empty A -> A=0, B=7, C=0
+[6] Pour B->A -> A=7, B=0, C=0
+[7] Fill C -> A=7, B=0, C=5
+[8] Pour C->A -> A=12, B=0, C=0
+
+Minimum moves: 8",hard
+water_jug_en_hard_55,"There are 3 jugs. Their capacities are A=13 liters, B=12 liters, C=11 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 7 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",8 moves,"[START] A=0, B=0, C=0
+[1] Fill C -> A=0, B=0, C=11
+[2] Pour C->A -> A=11, B=0, C=0
+[3] Fill C -> A=11, B=0, C=11
+[4] Pour C->A -> A=13, B=0, C=9
+[5] Empty A -> A=0, B=0, C=9
+[6] Pour C->A -> A=9, B=0, C=0
+[7] Fill C -> A=9, B=0, C=11
+[8] Pour C->A -> A=13, B=0, C=7
+
+Minimum moves: 8",hard
+water_jug_en_hard_56,"There are 3 jugs. Their capacities are A=14 liters, B=10 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 2 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",8 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=10, C=0
+[2] Pour B->A -> A=10, B=0, C=0
+[3] Fill B -> A=10, B=10, C=0
+[4] Pour B->A -> A=14, B=6, C=0
+[5] Empty A -> A=0, B=6, C=0
+[6] Pour B->A -> A=6, B=0, C=0
+[7] Fill B -> A=6, B=10, C=0
+[8] Pour B->A -> A=14, B=2, C=0
+
+Minimum moves: 8",hard
+water_jug_en_hard_57,"There are 3 jugs. Their capacities are A=15 liters, B=14 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 12 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",8 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=14, C=0
+[2] Pour B->A -> A=14, B=0, C=0
+[3] Fill B -> A=14, B=14, C=0
+[4] Pour B->A -> A=15, B=13, C=0
+[5] Empty A -> A=0, B=13, C=0
+[6] Pour B->A -> A=13, B=0, C=0
+[7] Fill B -> A=13, B=14, C=0
+[8] Pour B->A -> A=15, B=12, C=0
+
+Minimum moves: 8",hard
+water_jug_en_hard_58,"There are 3 jugs. Their capacities are A=14 liters, B=12 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 1 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",9 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=12, C=0
+[2] Pour B->A -> A=12, B=0, C=0
+[3] Pour A->C -> A=5, B=0, C=7
+[4] Fill B -> A=5, B=12, C=7
+[5] Pour B->A -> A=14, B=3, C=7
+[6] Empty A -> A=0, B=3, C=7
+[7] Pour B->A -> A=3, B=0, C=7
+[8] Fill B -> A=3, B=12, C=7
+[9] Pour B->A -> A=14, B=1, C=7
+
+Minimum moves: 9",hard
+water_jug_en_hard_59,"There are 3 jugs. Their capacities are A=13 liters, B=11 liters, C=9 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 12 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",10 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=13, B=0, C=0
+[2] Pour A->C -> A=4, B=0, C=9
+[3] Empty C -> A=4, B=0, C=0
+[4] Pour A->C -> A=0, B=0, C=4
+[5] Fill A -> A=13, B=0, C=4
+[6] Pour A->C -> A=8, B=0, C=9
+[7] Empty C -> A=8, B=0, C=0
+[8] Pour A->C -> A=0, B=0, C=8
+[9] Fill A -> A=13, B=0, C=8
+[10] Pour A->C -> A=12, B=0, C=9
+
+Minimum moves: 10",hard
+water_jug_en_hard_60,"There are 3 jugs. Their capacities are A=14 liters, B=11 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 9 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",10 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=14, B=0, C=0
+[2] Pour A->B -> A=3, B=11, C=0
+[3] Empty B -> A=3, B=0, C=0
+[4] Pour A->B -> A=0, B=3, C=0
+[5] Fill A -> A=14, B=3, C=0
+[6] Pour A->B -> A=6, B=11, C=0
+[7] Empty B -> A=6, B=0, C=0
+[8] Pour A->B -> A=0, B=6, C=0
+[9] Fill A -> A=14, B=6, C=0
+[10] Pour A->B -> A=9, B=11, C=0
+
+Minimum moves: 10",hard
+water_jug_en_hard_61,"There are 3 jugs. Their capacities are A=13 liters, B=7 liters, C=6 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 9 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",9 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=7, C=0
+[2] Pour B->A -> A=7, B=0, C=0
+[3] Pour A->C -> A=1, B=0, C=6
+[4] Fill B -> A=1, B=7, C=6
+[5] Pour B->A -> A=8, B=0, C=6
+[6] Fill B -> A=8, B=7, C=6
+[7] Empty C -> A=8, B=7, C=0
+[8] Pour A->C -> A=2, B=7, C=6
+[9] Pour B->A -> A=9, B=0, C=6
+
+Minimum moves: 9",hard
+water_jug_en_hard_62,"There are 3 jugs. Their capacities are A=14 liters, B=10 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 12 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",10 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=14, B=0, C=0
+[2] Pour A->B -> A=4, B=10, C=0
+[3] Empty B -> A=4, B=0, C=0
+[4] Pour A->B -> A=0, B=4, C=0
+[5] Fill A -> A=14, B=4, C=0
+[6] Pour A->B -> A=8, B=10, C=0
+[7] Empty B -> A=8, B=0, C=0
+[8] Pour A->B -> A=0, B=8, C=0
+[9] Fill A -> A=14, B=8, C=0
+[10] Pour A->B -> A=12, B=10, C=0
+
+Minimum moves: 10",hard
+water_jug_en_hard_63,"There are 3 jugs. Their capacities are A=14 liters, B=13 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 4 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",9 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=13, C=0
+[2] Pour B->A -> A=13, B=0, C=0
+[3] Pour A->C -> A=6, B=0, C=7
+[4] Fill B -> A=6, B=13, C=7
+[5] Pour B->A -> A=14, B=5, C=7
+[6] Empty A -> A=0, B=5, C=7
+[7] Pour B->A -> A=5, B=0, C=7
+[8] Fill B -> A=5, B=13, C=7
+[9] Pour B->A -> A=14, B=4, C=7
+
+Minimum moves: 9",hard
+water_jug_en_hard_64,"There are 3 jugs. Their capacities are A=13 liters, B=10 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 9 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",10 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=13, B=0, C=0
+[2] Pour A->B -> A=3, B=10, C=0
+[3] Empty B -> A=3, B=0, C=0
+[4] Pour A->B -> A=0, B=3, C=0
+[5] Fill A -> A=13, B=3, C=0
+[6] Pour A->B -> A=6, B=10, C=0
+[7] Empty B -> A=6, B=0, C=0
+[8] Pour A->B -> A=0, B=6, C=0
+[9] Fill A -> A=13, B=6, C=0
+[10] Pour A->B -> A=9, B=10, C=0
+
+Minimum moves: 10",hard
+water_jug_en_hard_65,"There are 3 jugs. Their capacities are A=13 liters, B=12 liters, C=6 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 9 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",9 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=13, B=0, C=0
+[2] Pour A->B -> A=1, B=12, C=0
+[3] Pour A->C -> A=0, B=12, C=1
+[4] Fill A -> A=13, B=12, C=1
+[5] Pour A->C -> A=8, B=12, C=6
+[6] Empty B -> A=8, B=0, C=6
+[7] Pour A->B -> A=0, B=8, C=6
+[8] Fill A -> A=13, B=8, C=6
+[9] Pour A->B -> A=9, B=12, C=6
+
+Minimum moves: 9",hard
+water_jug_en_hard_66,"There are 3 jugs. Their capacities are A=14 liters, B=12 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 13 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",12 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=14, B=0, C=0
+[2] Pour A->B -> A=2, B=12, C=0
+[3] Empty B -> A=2, B=0, C=0
+[4] Pour A->B -> A=0, B=2, C=0
+[5] Fill A -> A=14, B=2, C=0
+[6] Pour A->B -> A=4, B=12, C=0
+[7] Empty B -> A=4, B=0, C=0
+[8] Pour A->B -> A=0, B=4, C=0
+[9] Fill A -> A=14, B=4, C=0
+[10] Pour A->B -> A=6, B=12, C=0
+[11] Pour B->C -> A=6, B=5, C=7
+[12] Pour C->A -> A=13, B=5, C=0
+
+Minimum moves: 12",hard
+water_jug_en_hard_67,"There are 3 jugs. Their capacities are A=14 liters, B=13 liters, C=12 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 5 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",9 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=14, B=0, C=0
+[2] Pour A->B -> A=1, B=13, C=0
+[3] Pour A->C -> A=0, B=13, C=1
+[4] Fill A -> A=14, B=13, C=1
+[5] Pour A->C -> A=3, B=13, C=12
+[6] Empty C -> A=3, B=13, C=0
+[7] Pour A->C -> A=0, B=13, C=3
+[8] Fill A -> A=14, B=13, C=3
+[9] Pour A->C -> A=5, B=13, C=12
+
+Minimum moves: 9",hard
+water_jug_en_hard_68,"There are 3 jugs. Their capacities are A=15 liters, B=8 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 12 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",11 moves,"[START] A=0, B=0, C=0
+[1] Fill C -> A=0, B=0, C=7
+[2] Pour C->A -> A=7, B=0, C=0
+[3] Fill C -> A=7, B=0, C=7
+[4] Pour C->A -> A=14, B=0, C=0
+[5] Pour A->B -> A=6, B=8, C=0
+[6] Empty B -> A=6, B=0, C=0
+[7] Fill C -> A=6, B=0, C=7
+[8] Pour C->A -> A=13, B=0, C=0
+[9] Pour A->B -> A=5, B=8, C=0
+[10] Pour B->C -> A=5, B=1, C=7
+[11] Pour C->A -> A=12, B=1, C=0
+
+Minimum moves: 11",hard
+water_jug_en_hard_69,"There are 3 jugs. Their capacities are A=15 liters, B=14 liters, C=13 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 5 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",9 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=15, B=0, C=0
+[2] Pour A->B -> A=1, B=14, C=0
+[3] Pour A->C -> A=0, B=14, C=1
+[4] Fill A -> A=15, B=14, C=1
+[5] Pour A->C -> A=3, B=14, C=13
+[6] Empty C -> A=3, B=14, C=0
+[7] Pour A->C -> A=0, B=14, C=3
+[8] Fill A -> A=15, B=14, C=3
+[9] Pour A->C -> A=5, B=14, C=13
+
+Minimum moves: 9",hard
+water_jug_en_hard_70,"There are 3 jugs. Their capacities are A=12 liters, B=11 liters, C=6 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 3 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",9 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=11, C=0
+[2] Pour B->A -> A=11, B=0, C=0
+[3] Pour A->C -> A=5, B=0, C=6
+[4] Fill B -> A=5, B=11, C=6
+[5] Pour B->A -> A=12, B=4, C=6
+[6] Empty A -> A=0, B=4, C=6
+[7] Pour B->A -> A=4, B=0, C=6
+[8] Fill B -> A=4, B=11, C=6
+[9] Pour B->A -> A=12, B=3, C=6
+
+Minimum moves: 9",hard
+water_jug_en_hard_71,"There are 3 jugs. Their capacities are A=15 liters, B=14 liters, C=8 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 11 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",9 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=14, C=0
+[2] Pour B->A -> A=14, B=0, C=0
+[3] Pour A->C -> A=6, B=0, C=8
+[4] Fill B -> A=6, B=14, C=8
+[5] Pour B->A -> A=15, B=5, C=8
+[6] Empty C -> A=15, B=5, C=0
+[7] Pour B->C -> A=15, B=0, C=5
+[8] Pour A->B -> A=1, B=14, C=5
+[9] Pour B->C -> A=1, B=11, C=8
+
+Minimum moves: 9",hard
+water_jug_en_hard_72,"There are 3 jugs. Their capacities are A=14 liters, B=9 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 2 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",10 moves,"[START] A=0, B=0, C=0
+[1] Fill C -> A=0, B=0, C=5
+[2] Pour C->B -> A=0, B=5, C=0
+[3] Fill C -> A=0, B=5, C=5
+[4] Pour C->B -> A=0, B=9, C=1
+[5] Empty B -> A=0, B=0, C=1
+[6] Pour C->B -> A=0, B=1, C=0
+[7] Fill C -> A=0, B=1, C=5
+[8] Pour C->B -> A=0, B=6, C=0
+[9] Fill C -> A=0, B=6, C=5
+[10] Pour C->B -> A=0, B=9, C=2
+
+Minimum moves: 10",hard
+water_jug_en_hard_73,"There are 3 jugs. Their capacities are A=13 liters, B=7 liters, C=6 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 3 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",10 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=7, C=0
+[2] Pour B->C -> A=0, B=1, C=6
+[3] Empty C -> A=0, B=1, C=0
+[4] Pour B->C -> A=0, B=0, C=1
+[5] Fill B -> A=0, B=7, C=1
+[6] Pour B->C -> A=0, B=2, C=6
+[7] Empty C -> A=0, B=2, C=0
+[8] Pour B->C -> A=0, B=0, C=2
+[9] Fill B -> A=0, B=7, C=2
+[10] Pour B->C -> A=0, B=3, C=6
+
+Minimum moves: 10",hard
+water_jug_en_hard_74,"There are 3 jugs. Their capacities are A=14 liters, B=13 liters, C=12 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 7 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",11 moves,"[START] A=0, B=0, C=0
+[1] Fill C -> A=0, B=0, C=12
+[2] Pour C->A -> A=12, B=0, C=0
+[3] Fill C -> A=12, B=0, C=12
+[4] Pour C->A -> A=14, B=0, C=10
+[5] Empty A -> A=0, B=0, C=10
+[6] Pour C->A -> A=10, B=0, C=0
+[7] Fill C -> A=10, B=0, C=12
+[8] Pour C->A -> A=14, B=0, C=8
+[9] Pour C->B -> A=14, B=8, C=0
+[10] Pour A->C -> A=2, B=8, C=12
+[11] Pour C->B -> A=2, B=13, C=7
+
+Minimum moves: 11",hard
+water_jug_en_hard_75,"There are 3 jugs. Their capacities are A=15 liters, B=14 liters, C=13 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 8 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",11 moves,"[START] A=0, B=0, C=0
+[1] Fill C -> A=0, B=0, C=13
+[2] Pour C->A -> A=13, B=0, C=0
+[3] Fill C -> A=13, B=0, C=13
+[4] Pour C->A -> A=15, B=0, C=11
+[5] Empty A -> A=0, B=0, C=11
+[6] Pour C->A -> A=11, B=0, C=0
+[7] Fill C -> A=11, B=0, C=13
+[8] Pour C->A -> A=15, B=0, C=9
+[9] Pour C->B -> A=15, B=9, C=0
+[10] Pour A->C -> A=2, B=9, C=13
+[11] Pour C->B -> A=2, B=14, C=8
+
+Minimum moves: 11",hard
+water_jug_en_hard_76,"There are 3 jugs. Their capacities are A=14 liters, B=13 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 10 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",12 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=14, B=0, C=0
+[2] Pour A->B -> A=1, B=13, C=0
+[3] Empty B -> A=1, B=0, C=0
+[4] Pour A->B -> A=0, B=1, C=0
+[5] Fill A -> A=14, B=1, C=0
+[6] Pour A->B -> A=2, B=13, C=0
+[7] Empty B -> A=2, B=0, C=0
+[8] Pour A->B -> A=0, B=2, C=0
+[9] Fill A -> A=14, B=2, C=0
+[10] Pour A->B -> A=3, B=13, C=0
+[11] Pour B->C -> A=3, B=6, C=7
+[12] Pour C->A -> A=10, B=6, C=0
+
+Minimum moves: 12",hard
+water_jug_en_hard_77,"There are 3 jugs. Their capacities are A=15 liters, B=13 liters, C=11 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 1 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",11 moves,"[START] A=0, B=0, C=0
+[1] Fill C -> A=0, B=0, C=11
+[2] Pour C->A -> A=11, B=0, C=0
+[3] Fill C -> A=11, B=0, C=11
+[4] Pour C->A -> A=15, B=0, C=7
+[5] Empty A -> A=0, B=0, C=7
+[6] Pour C->A -> A=7, B=0, C=0
+[7] Fill C -> A=7, B=0, C=11
+[8] Pour C->A -> A=15, B=0, C=3
+[9] Pour C->B -> A=15, B=3, C=0
+[10] Pour A->C -> A=4, B=3, C=11
+[11] Pour C->B -> A=4, B=13, C=1
+
+Minimum moves: 11",hard
+water_jug_en_hard_78,"There are 3 jugs. Their capacities are A=13 liters, B=8 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 4 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",10 moves,"[START] A=0, B=0, C=0
+[1] Fill C -> A=0, B=0, C=5
+[2] Pour C->B -> A=0, B=5, C=0
+[3] Fill C -> A=0, B=5, C=5
+[4] Pour C->B -> A=0, B=8, C=2
+[5] Empty B -> A=0, B=0, C=2
+[6] Pour C->B -> A=0, B=2, C=0
+[7] Fill C -> A=0, B=2, C=5
+[8] Pour C->B -> A=0, B=7, C=0
+[9] Fill C -> A=0, B=7, C=5
+[10] Pour C->B -> A=0, B=8, C=4
+
+Minimum moves: 10",hard
+water_jug_en_hard_79,"There are 3 jugs. Their capacities are A=14 liters, B=11 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 2 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",10 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=14, B=0, C=0
+[2] Pour A->B -> A=3, B=11, C=0
+[3] Empty B -> A=3, B=0, C=0
+[4] Pour A->B -> A=0, B=3, C=0
+[5] Fill A -> A=14, B=3, C=0
+[6] Pour A->B -> A=6, B=11, C=0
+[7] Empty B -> A=6, B=0, C=0
+[8] Pour A->B -> A=0, B=6, C=0
+[9] Fill C -> A=0, B=6, C=7
+[10] Pour C->B -> A=0, B=11, C=2
+
+Minimum moves: 10",hard
+water_jug_en_hard_80,"There are 3 jugs. Their capacities are A=14 liters, B=12 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 6 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",10 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=14, B=0, C=0
+[2] Pour A->B -> A=2, B=12, C=0
+[3] Empty B -> A=2, B=0, C=0
+[4] Pour A->B -> A=0, B=2, C=0
+[5] Fill A -> A=14, B=2, C=0
+[6] Pour A->B -> A=4, B=12, C=0
+[7] Empty B -> A=4, B=0, C=0
+[8] Pour A->B -> A=0, B=4, C=0
+[9] Fill A -> A=14, B=4, C=0
+[10] Pour A->B -> A=6, B=12, C=0
+
+Minimum moves: 10",hard
+water_jug_en_hard_81,"There are 3 jugs. Their capacities are A=15 liters, B=14 liters, C=13 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 7 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",12 moves,"[START] A=0, B=0, C=0
+[1] Fill C -> A=0, B=0, C=13
+[2] Pour C->A -> A=13, B=0, C=0
+[3] Fill C -> A=13, B=0, C=13
+[4] Pour C->A -> A=15, B=0, C=11
+[5] Empty A -> A=0, B=0, C=11
+[6] Pour C->A -> A=11, B=0, C=0
+[7] Fill C -> A=11, B=0, C=13
+[8] Pour C->A -> A=15, B=0, C=9
+[9] Empty A -> A=0, B=0, C=9
+[10] Pour C->A -> A=9, B=0, C=0
+[11] Fill C -> A=9, B=0, C=13
+[12] Pour C->A -> A=15, B=0, C=7
+
+Minimum moves: 12",hard
+water_jug_en_hard_82,"There are 3 jugs. Their capacities are A=15 liters, B=13 liters, C=11 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 10 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",9 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=15, B=0, C=0
+[2] Pour A->B -> A=2, B=13, C=0
+[3] Pour A->C -> A=0, B=13, C=2
+[4] Fill A -> A=15, B=13, C=2
+[5] Pour A->C -> A=6, B=13, C=11
+[6] Empty C -> A=6, B=13, C=0
+[7] Pour A->C -> A=0, B=13, C=6
+[8] Fill A -> A=15, B=13, C=6
+[9] Pour A->C -> A=10, B=13, C=11
+
+Minimum moves: 9",hard
+water_jug_en_hard_83,"There are 3 jugs. Their capacities are A=14 liters, B=11 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 12 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",9 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=11, C=0
+[2] Pour B->A -> A=11, B=0, C=0
+[3] Pour A->C -> A=4, B=0, C=7
+[4] Fill B -> A=4, B=11, C=7
+[5] Pour B->A -> A=14, B=1, C=7
+[6] Empty A -> A=0, B=1, C=7
+[7] Pour B->A -> A=1, B=0, C=7
+[8] Fill B -> A=1, B=11, C=7
+[9] Pour B->A -> A=12, B=0, C=7
+
+Minimum moves: 9",hard
+water_jug_en_hard_84,"There are 3 jugs. Their capacities are A=14 liters, B=13 liters, C=12 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 6 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",10 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=14, B=0, C=0
+[2] Pour A->C -> A=2, B=0, C=12
+[3] Empty C -> A=2, B=0, C=0
+[4] Pour A->C -> A=0, B=0, C=2
+[5] Fill A -> A=14, B=0, C=2
+[6] Pour A->C -> A=4, B=0, C=12
+[7] Empty C -> A=4, B=0, C=0
+[8] Pour A->C -> A=0, B=0, C=4
+[9] Fill A -> A=14, B=0, C=4
+[10] Pour A->C -> A=6, B=0, C=12
+
+Minimum moves: 10",hard
+water_jug_en_hard_85,"There are 3 jugs. Their capacities are A=12 liters, B=7 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 6 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",10 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=7, C=0
+[2] Pour B->C -> A=0, B=2, C=5
+[3] Empty C -> A=0, B=2, C=0
+[4] Pour B->C -> A=0, B=0, C=2
+[5] Fill B -> A=0, B=7, C=2
+[6] Pour B->C -> A=0, B=4, C=5
+[7] Empty C -> A=0, B=4, C=0
+[8] Pour B->C -> A=0, B=0, C=4
+[9] Fill B -> A=0, B=7, C=4
+[10] Pour B->C -> A=0, B=6, C=5
+
+Minimum moves: 10",hard
+water_jug_en_hard_86,"There are 3 jugs. Their capacities are A=15 liters, B=13 liters, C=11 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 14 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",12 moves,"[START] A=0, B=0, C=0
+[1] Fill C -> A=0, B=0, C=11
+[2] Pour C->A -> A=11, B=0, C=0
+[3] Fill C -> A=11, B=0, C=11
+[4] Pour C->A -> A=15, B=0, C=7
+[5] Empty A -> A=0, B=0, C=7
+[6] Pour C->A -> A=7, B=0, C=0
+[7] Fill C -> A=7, B=0, C=11
+[8] Pour C->A -> A=15, B=0, C=3
+[9] Empty A -> A=0, B=0, C=3
+[10] Pour C->A -> A=3, B=0, C=0
+[11] Fill C -> A=3, B=0, C=11
+[12] Pour C->A -> A=14, B=0, C=0
+
+Minimum moves: 12",hard
+water_jug_en_hard_87,"There are 3 jugs. Their capacities are A=15 liters, B=13 liters, C=11 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 12 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",10 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=15, B=0, C=0
+[2] Pour A->C -> A=4, B=0, C=11
+[3] Empty C -> A=4, B=0, C=0
+[4] Pour A->C -> A=0, B=0, C=4
+[5] Fill A -> A=15, B=0, C=4
+[6] Pour A->C -> A=8, B=0, C=11
+[7] Empty C -> A=8, B=0, C=0
+[8] Pour A->C -> A=0, B=0, C=8
+[9] Fill A -> A=15, B=0, C=8
+[10] Pour A->C -> A=12, B=0, C=11
+
+Minimum moves: 10",hard
+water_jug_en_hard_88,"There are 3 jugs. Their capacities are A=15 liters, B=11 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 13 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",10 moves,"[START] A=0, B=0, C=0
+[1] Fill C -> A=0, B=0, C=7
+[2] Pour C->A -> A=7, B=0, C=0
+[3] Fill C -> A=7, B=0, C=7
+[4] Pour C->A -> A=14, B=0, C=0
+[5] Fill C -> A=14, B=0, C=7
+[6] Pour C->A -> A=15, B=0, C=6
+[7] Empty A -> A=0, B=0, C=6
+[8] Pour C->A -> A=6, B=0, C=0
+[9] Fill C -> A=6, B=0, C=7
+[10] Pour C->A -> A=13, B=0, C=0
+
+Minimum moves: 10",hard
+water_jug_en_hard_89,"There are 3 jugs. Their capacities are A=15 liters, B=14 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 4 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",12 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=14, C=0
+[2] Pour B->A -> A=14, B=0, C=0
+[3] Fill B -> A=14, B=14, C=0
+[4] Pour B->A -> A=15, B=13, C=0
+[5] Empty A -> A=0, B=13, C=0
+[6] Pour B->A -> A=13, B=0, C=0
+[7] Fill B -> A=13, B=14, C=0
+[8] Pour B->A -> A=15, B=12, C=0
+[9] Empty A -> A=0, B=12, C=0
+[10] Pour B->A -> A=12, B=0, C=0
+[11] Fill C -> A=12, B=0, C=7
+[12] Pour C->A -> A=15, B=0, C=4
+
+Minimum moves: 12",hard
+water_jug_en_hard_90,"There are 3 jugs. Their capacities are A=15 liters, B=14 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 3 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",10 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=15, B=0, C=0
+[2] Pour A->B -> A=1, B=14, C=0
+[3] Empty B -> A=1, B=0, C=0
+[4] Pour A->B -> A=0, B=1, C=0
+[5] Fill A -> A=15, B=1, C=0
+[6] Pour A->B -> A=2, B=14, C=0
+[7] Empty B -> A=2, B=0, C=0
+[8] Pour A->B -> A=0, B=2, C=0
+[9] Fill A -> A=15, B=2, C=0
+[10] Pour A->B -> A=3, B=14, C=0
+
+Minimum moves: 10",hard
+water_jug_en_hard_91,"There are 3 jugs. Their capacities are A=15 liters, B=14 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 11 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",12 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=14, C=0
+[2] Pour B->A -> A=14, B=0, C=0
+[3] Fill B -> A=14, B=14, C=0
+[4] Pour B->A -> A=15, B=13, C=0
+[5] Empty A -> A=0, B=13, C=0
+[6] Pour B->A -> A=13, B=0, C=0
+[7] Fill B -> A=13, B=14, C=0
+[8] Pour B->A -> A=15, B=12, C=0
+[9] Empty A -> A=0, B=12, C=0
+[10] Pour B->A -> A=12, B=0, C=0
+[11] Fill B -> A=12, B=14, C=0
+[12] Pour B->A -> A=15, B=11, C=0
+
+Minimum moves: 12",hard
+water_jug_en_hard_92,"There are 3 jugs. Their capacities are A=14 liters, B=9 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 8 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",10 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=14, B=0, C=0
+[2] Pour A->B -> A=5, B=9, C=0
+[3] Empty B -> A=5, B=0, C=0
+[4] Pour A->B -> A=0, B=5, C=0
+[5] Fill A -> A=14, B=5, C=0
+[6] Pour A->B -> A=10, B=9, C=0
+[7] Empty B -> A=10, B=0, C=0
+[8] Pour A->B -> A=1, B=9, C=0
+[9] Pour B->C -> A=1, B=2, C=7
+[10] Pour C->A -> A=8, B=2, C=0
+
+Minimum moves: 10",hard
+water_jug_en_hard_93,"There are 3 jugs. Their capacities are A=14 liters, B=10 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 7 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",10 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=10, C=0
+[2] Pour B->A -> A=10, B=0, C=0
+[3] Fill B -> A=10, B=10, C=0
+[4] Pour B->A -> A=14, B=6, C=0
+[5] Empty A -> A=0, B=6, C=0
+[6] Pour B->A -> A=6, B=0, C=0
+[7] Fill B -> A=6, B=10, C=0
+[8] Pour B->A -> A=14, B=2, C=0
+[9] Pour A->C -> A=9, B=2, C=5
+[10] Pour C->B -> A=9, B=7, C=0
+
+Minimum moves: 10",hard
+water_jug_en_hard_94,"There are 3 jugs. Their capacities are A=14 liters, B=10 liters, C=7 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 5 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",10 moves,"[START] A=0, B=0, C=0
+[1] Fill A -> A=14, B=0, C=0
+[2] Pour A->B -> A=4, B=10, C=0
+[3] Empty B -> A=4, B=0, C=0
+[4] Pour A->B -> A=0, B=4, C=0
+[5] Fill A -> A=14, B=4, C=0
+[6] Pour A->B -> A=8, B=10, C=0
+[7] Empty B -> A=8, B=0, C=0
+[8] Pour A->B -> A=0, B=8, C=0
+[9] Fill C -> A=0, B=8, C=7
+[10] Pour C->B -> A=0, B=10, C=5
+
+Minimum moves: 10",hard
+water_jug_en_hard_95,"There are 3 jugs. Their capacities are A=14 liters, B=9 liters, C=5 liters. All jugs start empty.
+
+One ""move"" is exactly one of:
+- Fill: fill a jug to the top from the tap
+- Empty: empty a jug completely
+- Pour: pour from one jug into another until the receiving jug is full or the pouring jug is empty
+
+What is the minimum number of moves to get exactly 7 liters in some jug?
+End your solution with a line in the exact format: `Answer: N moves`.",12 moves,"[START] A=0, B=0, C=0
+[1] Fill B -> A=0, B=9, C=0
+[2] Pour B->C -> A=0, B=4, C=5
+[3] Empty C -> A=0, B=4, C=0
+[4] Pour B->C -> A=0, B=0, C=4
+[5] Fill B -> A=0, B=9, C=4
+[6] Pour B->C -> A=0, B=8, C=5
+[7] Empty C -> A=0, B=8, C=0
+[8] Pour B->C -> A=0, B=3, C=5
+[9] Empty C -> A=0, B=3, C=0
+[10] Pour B->C -> A=0, B=0, C=3
+[11] Fill B -> A=0, B=9, C=3
+[12] Pour B->C -> A=0, B=7, C=5
+
+Minimum moves: 12",hard

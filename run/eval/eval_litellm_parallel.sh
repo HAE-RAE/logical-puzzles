@@ -36,28 +36,37 @@ echo ""
 
 
 TASKS=(
+
+    # 직번역
+
     # "array_formula_en_easy"
     # "array_formula_en_hard"
     # "array_formula_en_medium"
-    # # "array_formula_ko_easy"
-    # # "array_formula_ko_hard"
-    # # "array_formula_ko_medium"
+    # "array_formula_ko_easy"
+    # "array_formula_ko_hard"
+    # "array_formula_ko_medium"
 
-    # "cipher_en_easy"
-    # "cipher_en_hard"
-    # "cipher_en_medium"
-    # # "cipher_ko_easy"
-    # # "cipher_ko_hard"
-    # # "cipher_ko_medium"
+    # "subway_ko_easy"
+    # "subway_ko_hard"
+    # "subway_ko_medium"
+    # "subway_en_easy"
+    # "subway_en_hard"
+    # "subway_en_medium"
+
+    # "water_jug_en_easy"
+    # "water_jug_en_hard"
+    # "water_jug_en_medium"
+    # "water_jug_ko_easy"
+    # "water_jug_ko_hard"
+    # "water_jug_ko_medium"
 
     # "ferryman_en_easy"
     # "ferryman_en_hard"
     # "ferryman_en_medium"
-    # # "ferryman_ko_easy"
-    # # "ferryman_ko_hard"
-    # # "ferryman_ko_medium"
+    # "ferryman_ko_easy"
+    # "ferryman_ko_hard"
+    # "ferryman_ko_medium"
 
-    # 수용님
     # "hanoi_en_easy"
     # "hanoi_en_hard"
     # "hanoi_en_medium"
@@ -68,76 +77,100 @@ TASKS=(
     # "logic_grid_en_easy"
     # "logic_grid_en_hard"
     # "logic_grid_en_medium"
-    # # "logic_grid_ko_easy"
-    # # "logic_grid_ko_hard"
-    # # "logic_grid_ko_medium"
+    # "logic_grid_ko_easy"
+    # "logic_grid_ko_hard"
+    # "logic_grid_ko_medium"
 
     # "sat_puzzles_en_easy"
     # "sat_puzzles_en_hard"
     # "sat_puzzles_en_medium"
-    # # "sat_puzzles_ko_easy"
-    # # "sat_puzzles_ko_hard"
-    # # "sat_puzzles_ko_medium"
+    # "sat_puzzles_ko_easy"
+    # "sat_puzzles_ko_hard"
+    # "sat_puzzles_ko_medium"
 
     # "causal_dag_en_easy"
     # "causal_dag_en_hard"
     # "causal_dag_en_medium"
-    # # "causal_dag_ko_easy"
-    # # "causal_dag_ko_hard"
-    # # "causal_dag_ko_medium"
-
-    ###########################################
-    # "sudoku_en_easy"
-    # "sudoku_en_hard"
-    # "sudoku_en_medium"
-    # # "sudoku_ko_easy"
-    # # "sudoku_ko_hard"
-    # # "sudoku_ko_medium"
-
-    # "yacht_dice_en_easy"
-    # "yacht_dice_en_hard"
-    # "yacht_dice_en_medium"
-    # # "yacht_dice_ko_easy"
-    # # "yacht_dice_ko_hard"
-    # # "yacht_dice_ko_medium"
-
-    # "cryptarithmetic_en_easy"
-    # "cryptarithmetic_en_hard"
-    # "cryptarithmetic_en_medium"
-    # # "cryptarithmetic_ko_easy"
-    # # "cryptarithmetic_ko_hard"
-    # # "cryptarithmetic_ko_medium"
-
+    # "causal_dag_ko_easy"
+    # "causal_dag_ko_hard"
+    # "causal_dag_ko_medium"
+    
     # "inequality_en_easy"
     # "inequality_en_hard"
     # "inequality_en_medium"
-    # # "inequality_ko_easy"
-    # # "inequality_ko_hard"
-    # # "inequality_ko_medium"
+    # "inequality_ko_easy"
+    # "inequality_ko_hard"
+    # "inequality_ko_medium"
 
     # "minesweeper_en_easy"
     # "minesweeper_en_hard"
     # "minesweeper_en_medium"
-    # # "minesweeper_ko_easy"
-    # # "minesweeper_ko_hard"
-    # # "minesweeper_ko_medium"
+    # "minesweeper_ko_easy"
+    # "minesweeper_ko_hard"
+    # "minesweeper_ko_medium"
+
+    # "yacht_dice_en_easy" 
+    # "yacht_dice_en_hard"
+    # "yacht_dice_en_medium"
+    # "yacht_dice_ko_easy"
+    # "yacht_dice_ko_hard"
+    # "yacht_dice_ko_medium"
 
     # "number_baseball_en_easy"
     # "number_baseball_en_hard"
     # "number_baseball_en_medium"
-    # # "number_baseball_ko_easy"
-    # # "number_baseball_ko_hard"
-    # # "number_baseball_ko_medium"
+    # "number_baseball_ko_easy"
+    # "number_baseball_ko_hard"
+    # "number_baseball_ko_medium"
 
+    # "sudoku_en_easy"
+    # "sudoku_en_hard"
+    # "sudoku_en_medium"
+    # "sudoku_ko_easy"
+    # "sudoku_ko_hard"
+    # "sudoku_ko_medium"
+
+    ###########################################
+    
+    # "cipher_en_easy"
+    # "cipher_en_hard"
+    # "cipher_en_medium"
+    # "cipher_ko_easy"
+    # "cipher_ko_hard"
+    # "cipher_ko_medium"
+
+    # "cryptarithmetic_en_easy"
+    # "cryptarithmetic_en_hard"
+    # "cryptarithmetic_en_medium"
+    # "cryptarithmetic_ko_easy"
+    # "cryptarithmetic_ko_hard"
+    # "cryptarithmetic_ko_medium"
+
+    ###########################################
+
+    # "saju_ko_easy"
+    # "saju_ko_hard"
+    # "saju_ko_medium"
+
+    # "jamo_ko_easy"
+    # "jamo_ko_hard"
+    # "jamo_ko_medium"
+
+    # "kinship_ko_easy"
+    # "kinship_ko_hard"
+    # "kinship_ko_medium"
+
+    # "time_ko_easy"
+    # "time_ko_hard"
+    # "time_ko_medium"
 )
 
 START_TIME=$(date +%s)
-
 TOTAL_TASKS=${#TASKS[@]}
 CURRENT_TASK=0
 SUCCESS_COUNT=0
 FAIL_COUNT=0
-MAX_PARALLEL=4
+MAX_PARALLEL=5
 
 run_task() {
     local task=$1
@@ -161,7 +194,7 @@ run_task() {
         --gen-kwargs "$GEN_KWARGS" \
         --tasks "$task" \
         --async \
-        --max-concurrent 20 2>&1 | tee -a "$log_file"; then
+        --max-concurrent 10 2>&1 | tee -a "$log_file"; then
         echo -e "${GREEN}✓ $task Completed${NC}"
         echo "$task:SUCCESS" >> /tmp/eval_results_$$
         echo "" >> "$log_file"
@@ -216,7 +249,7 @@ SECONDS=$((ELAPSED_TIME % 60))
 echo -e "${BLUE}========================================${NC}"
 echo -e "${BLUE}Evaluation Completed (Gemini)${NC}"
 echo -e "${BLUE}========================================${NC}"
-echo -e "Total Tasks: ${TOTAL_TASKS}개"
+echo -e "Tresults/gemini_gemini-3-flash-preview/number_baseball_en_medium/gemini_gemini-3-flash-preview_number_baseball_en_medium_2026-06-03T21-03-02__0.84.jsonotal Tasks: ${TOTAL_TASKS}개"
 echo -e "${GREEN}Success: ${SUCCESS_COUNT}개${NC}"
 echo -e "${RED}Fail: ${FAIL_COUNT}개${NC}"
 

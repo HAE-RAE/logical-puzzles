@@ -21,6 +21,9 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[2]   # scripts/analysis/ -> project root
 acc = json.load(open(ROOT / "data/accuracy/accuracy_per_task.json"))
+# This analysis is EN-only (eff[] below is built per *_en task); the json now also
+# holds KO / Korean-exclusive tasks, so filter to EN here.
+acc = {k: v for k, v in acc.items() if k.endswith("_en")}
 TIERS = ["easy", "medium", "hard"]
 N = 100  # instances per cell (= jsonl line count, confirmed)
 

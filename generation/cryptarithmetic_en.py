@@ -563,7 +563,7 @@ def create_question(candidate: PuzzleCandidate) -> str:
 
 
 SFT_SOLUTION_RUBRIC_EN = (
-    "STEP0=meta · STEP1=given · STEP2=deduction · STEP3=answer & check"
+    "STEP0=meta · STEP1=given · STEP2=worked solution · STEP3=answer and verification"
 )
 
 
@@ -586,12 +586,12 @@ def _build_cryptarithmetic_solution_en(
 
     lines: List[str] = [
         SFT_SOLUTION_RUBRIC_EN,
-        "[STEP 0] meta",
+        "[STEP 0] Problem meta",
         f"  - difficulty: {difficulty}",
         f"  - puzzle: {op_lines_words}",
         f"  - letters: {n_total} total (given {n_total - n_hidden} · deduced {n_hidden})",
         f"  - carries: {carries}",
-        "[STEP 1] given",
+        "[STEP 1] Given",
         "  - Split each word into letters; each letter uses its alphabet group's table (A-I / J-R / S-Z).",
         "  - Within a group different letters = different digits; the three tables are independent.",
         "  - First letter of every word != 0.",
@@ -599,7 +599,7 @@ def _build_cryptarithmetic_solution_en(
         f"  - revealed J-R: {_format_table(revealed.get('g1', {}))}",
         f"  - revealed S-Z: {_format_table(revealed.get('g2', {}))}",
         f"  - target: numeric value of {result_word}.",
-        "[STEP 2] deduction (from the revealed key, force each unknown letter via the columns)",
+        "[STEP 2] Worked solution (from the revealed key, force each unknown letter via the columns)",
     ]
     lines.extend(_deduction_steps(
         tuple(operand_words + [result_word]),
@@ -634,7 +634,7 @@ def _build_cryptarithmetic_solution_en(
         carry = new_carry
 
     lines.extend([
-        "[STEP 3] answer & check",
+        "[STEP 3] Answer and verification",
         f"  - answer: {result_word} = {answer}",
         "  - re-verify each column sum and carry above.",
         "  - first letter of every word is non-zero; within each group letters are distinct digits.",

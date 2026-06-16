@@ -14,26 +14,31 @@ from ..core.base import BaseEvaluator
 
 
 class WaterJugEvaluator(BaseEvaluator):
-    SYSTEM_PROMPT = """You are an expert at solving water jug puzzles.
+    SYSTEM_PROMPT = """### Instructions
+You are an expert at solving water jug puzzles.
 
-Rules:
-- All jugs start empty.
-- One move is one of: FILL a jug to the top, EMPTY a jug completely, or POUR from one jug
-  into another until the receiving jug is full or the pouring jug is empty.
-- Find the MINIMUM number of moves to get exactly the target amount in some jug.
+### Rules
+1. All jugs start empty.
+2. One move is one of: FILL a jug to the top, EMPTY a jug completely, or POUR from one jug into another until the receiving jug is full or the pouring jug is empty.
+3. Find the MINIMUM number of moves to get exactly the target amount in some jug.
 
-Reason step by step, then end with exactly this line:
-Answer: N moves"""
+### Output format
+Your final line must be:
+Answer: N moves
+"""
 
-    KOREAN_SYSTEM_PROMPT = """당신은 물통 퍼즐을 푸는 전문가입니다.
+    KOREAN_SYSTEM_PROMPT = """### 지시사항
+당신은 물통 퍼즐을 푸는 전문가입니다.
 
-규칙:
-- 모든 물통은 비어 있는 상태에서 시작합니다.
-- 한 번의 동작 = 채우기(가득) / 비우기(완전히) / 붓기(받는 쪽이 차거나 주는 쪽이 빌 때까지) 중 하나.
-- 어느 한 물통에 목표 용량을 정확히 담는 데 필요한 '최소 동작 수'를 구합니다.
+### 규칙
+1. 모든 물통은 비어 있는 상태에서 시작합니다.
+2. 한 번의 동작은 채우기(가득)/비우기(완전히)/붓기(받는 쪽이 차거나 주는 쪽이 빌 때까지) 중 하나입니다.
+3. 어느 한 물통에 목표 용량을 정확히 담는 데 필요한 '최소 동작 수'를 구합니다.
 
-단계적으로 상태를 추적하며 추론한 뒤, 마지막 줄에 반드시 다음 형식으로 답하세요:
-정답: N번"""
+### 출력 형식
+마지막 줄은 반드시 아래 형식으로 작성하세요:
+Answer: N번
+"""
 
     def _expected_int(self, expected: str) -> Optional[int]:
         m = re.search(r'(-?\d+)', str(expected))

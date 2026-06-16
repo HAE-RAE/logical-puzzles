@@ -23,13 +23,18 @@ class TimeEvaluator(BaseEvaluator):
     SYSTEM_PROMPT = """### Instructions
 You solve Korean calendar reasoning puzzles (solar/lunar dates, day offsets,
 solar<->lunar conversion, and the sexagenary day-pillar 일진).
-Reason step by step, then give the final answer in the requested form.
+
+### Rules
+1. Reason step by step.
+2. Give the final answer in the requested form:
+   - date as YYYY.M.D (add (윤달) for a lunar leap month)
+   - weekday as 'X요일'
+   - 일진 as a 2-character 간지
 
 ### Output format
 Your final line must be:
-정답: <answer>
-(date as YYYY.M.D (add (윤달) for a lunar leap month); weekday as 'X요일'; 일진 as a
-2-character 간지. The evaluator uses only the last 정답: line.)
+Answer: <answer>
+(The evaluator uses only the last Answer: line.)
 """
 
     KOREAN_SYSTEM_PROMPT = """### 지시사항
@@ -45,8 +50,8 @@ Your final line must be:
 
 ### 출력 형식
 마지막 줄은 반드시 아래 형식으로 작성하세요:
-정답: <답>
-(평가기는 가장 마지막 '정답:' 줄만 채점에 사용합니다.)
+Answer: <답>
+(평가기는 가장 마지막 Answer: 줄만 채점에 사용합니다.)
 """
 
     # --------------------------------------------------------------------- #

@@ -24,7 +24,7 @@ acc = json.load(open(ROOT / "data/accuracy/accuracy_per_task.json"))
 TIERS = ["easy", "medium", "hard"]
 
 # log10(raw answer-candidate space) per task/tier.  None = Type C (no finite space).
-# Values sourced from docs/kor/module_algorithm_search_space.md.
+# Values sourced from docs/methodology/module_algorithm_search_space.md.
 LOG_RAW = {
     # Type A (scaling)
     "number_baseball_en": [2.857, 4.481, 5.180],     # P(10,N): 720 / 30240 / 151200
@@ -47,6 +47,10 @@ TYPE = {
     "cipher_en": "B", "yacht_dice_en": "B",
     "array_formula_en": "C", "hanoi_en": "C", "causal_dag_en": "C", "ferryman_en": "C",
 }
+
+# The json holds all tasks (EN/KO/Korean-exclusive); this analysis is EN-only and only
+# covers the tasks defined in LOG_RAW/TYPE above, so restrict acc to those.
+acc = {k: v for k, v in acc.items() if k in LOG_RAW}
 
 
 def pearson(x, y):

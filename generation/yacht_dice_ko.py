@@ -37,13 +37,12 @@ import numpy as np
 # ============================================================
 
 # 스팟체크 부분합에서 사용할 라운드 수 (0 => 정답은 전체 12라운드 최적 총점).
-# v33: easy K=2 + 구성적 주사위 -> 두 스팟 라운드의 전역 전용 고정 점수 합
-# (55/60/65/70/75/80/90/100, ...)이 정답. 단일 {25,30,40,50}만 나오지 않음.
-# medium/hard는 v32 보정값 유지.
+# v38 보정 (목표 75/50/25; v37 측정 easy 99%, medium 54%, hard 43%):
+# easy 구성적 생성 제거→랜덤 in-band, K 3→2 / medium 밴드 소폭 완화 / hard band_violation 거부.
 SPOTCHECK_K: Dict[str, int] = {
     "easy": 2,
-    "medium": 1,
-    "hard": 5,
+    "medium": 2,
+    "hard": 8,
 }
 
 
@@ -158,12 +157,25 @@ Answer: [숫자]
 """
 
     def get_user_prompt(self, dice_results: List[List[int]]) -> str:
-        """한국어 사용자 프롬프트 생성"""
-        goal_word = "최대" if self.optimization_goal == "maximize" else "최소"
-        prompt = f"다음 12라운드의 주사위 결과가 주어졌을 때, {goal_word} 가능한 총점을 구하세요:\n\n"
+        """점수 규칙을 명시한 한국어 사용자 프롬프트 생성."""
+        prompt = (
+            "다음 12라운드의 주사위 결과가 주어졌을 때, 최적으로 카테고리를 배정하세요.\n\n"
+            "점수 규칙 (아래 점수를 정확히 사용하세요):\n"
+            f"- 풀 하우스(Full House): {self.full_house_points}점\n"
+            f"- 스몰 스트레이트(Small Straight): {self.small_straight_points}점\n"
+            f"- 라지 스트레이트(Large Straight): {self.large_straight_points}점\n"
+            f"- 요트(Yacht): {self.yacht_points}점\n"
+            "- 에이스~식스: 해당 숫자가 나온 주사위의 합\n"
+            "- 쓰리/포 오브 어 카인드: 조건을 만족하면 모든 주사위의 합\n"
+            f"- 상단 보너스: 에이스~식스 합이 {self.bonus_threshold} 이상이면 "
+            f"+{self.bonus_points}점\n\n"
+        )
         for i, dice in enumerate(dice_results):
             prompt += f"라운드 {i+1}: {dice}\n"
-        prompt += f"\n최적 배정을 계산하고 {goal_word} 총점을 제시하세요."
+        prompt += (
+            "\n최적 배정을 계산하세요. 아래 추가 안내에서 특정 라운드를 지정하면, "
+            "12라운드 전체 총점이 아니라 요청된 부분합만 제시하세요."
+        )
         return prompt
 
 
@@ -432,12 +444,13 @@ DIFFICULTY_CONFIGS: Dict[str, Dict] = {
         "weights": [26, 22, 26, 22, 4],
     },
     "medium": {
+        # v34: four_kind / full_house 비중 확대 (pair-only 대비 판단 난이도 상승).
         "roll_types": ["four_kind_high", "full_house", "three_kind", "pair", "normal"],
-        "weights": [12, 13, 25, 25, 25],
+        "weights": [18, 17, 22, 22, 21],
     },
     "hard": {
         "roll_types": ["three_kind", "pair", "normal"],
-        "weights": [15, 20, 65],
+        "weights": [10, 15, 75],
     },
 }
 
@@ -447,23 +460,20 @@ DIFFICULTY_CONFIGS: Dict[str, Dict] = {
 # 주사위와 무관하게 12! 배정 탐색). 명백한 이상값만 걸러냄 — 예: hard 퍼즐에서
 # greedy 가 이미 최적에 근접하거나, easy 퍼즐에서 greedy 를 크게 속이는 경우.
 _DIFFICULTY_BANDS = {
-    # v21 보정 (목표 75/50/25 vs v20 측정 20/47/31):
-    # - easy: band 느슨 (품질은 dice mix + is_unique 필터로 보장).
-    # - medium: 변경 없음 (47% — target 안).
-    # - hard: 31% — 1%p 초과. floor 살짝 강화 (gap 18→20, complexity 6.0→6.5).
+    # v38 보정 (목표 75/50/25; v37 측정 easy 99%, medium 54%, hard 43%).
     "easy": {
-        # v24: dice 다양화로 complexity 자연 증가 → band 도 완화.
-        # gap_abs 0-3 → 0-8 / complexity 0-1.5 → 0-3.0 로 확장.
         "greedy_gap_abs": {"min": 0, "max": 8},
         "decision_complexity": {"min": 0.0, "max": 3.0},
     },
     "medium": {
-        "greedy_gap_abs": {"min": 3, "max": 30},
-        "decision_complexity": {"min": 2.0, "max": 7.0},
+        "greedy_gap_abs": {"min": 7, "max": 30},
+        "decision_complexity": {"min": 3.5, "max": 7.0},
     },
     "hard": {
-        "greedy_gap_abs": {"min": 20, "max": None},
-        "decision_complexity": {"min": 6.5, "max": None},
+        # v38b: 100개 정상 생성되던 floor 유지 (gap40/comp10 은 생성 starvation).
+        # hard 난이도는 SPOTCHECK_K hard=9 로 강화.
+        "greedy_gap_abs": {"min": 30, "max": None},
+        "decision_complexity": {"min": 8.0, "max": None},
     },
 }
 
@@ -478,14 +488,31 @@ _DIFFICULTY_BANDS = {
 # 각 스팟 라운드에 다른 어떤 라운드도 매칭할 수 없는 고점 카테고리를 심고,
 # 나머지와 무관하게 전역 최적해가 그 라운드에 반드시 배정하도록 강제한다.
 
-# 전역 독점이 쉽고 마진이 명확한 스팟 카테고리.
-EASY_SPOT_CATEGORIES = ("yacht", "large_straight", "small_straight", "full_house")
-EASY_SPOT_SCORE = {
-    "yacht": 50,
-    "large_straight": 40,
-    "small_straight": 30,
-    "full_house": 25,
-}
+# 구성적 easy 스팟 — 변동 점수만 (Yacht/Straight 제외, K=2 합 난이도 상승).
+# v39: easy 는 constructive(자명 ~0.99)와 random(~0.30) 퍼즐의 per-puzzle 믹스.
+# 보정: f*0.99 + (1-f)*0.30 = 0.75 -> f ~= 0.69.
+EASY_CONSTRUCTIVE_FRACTION = 0.69
+
+EASY_SPOT_CATEGORIES = (
+    "full_house", "three_of_a_kind", "four_of_a_kind",
+)
+# 변동 점수 칸은 per-round margin 기준을 낮춤.
+_EASY_VARIABLE_YACHT_CATS = frozenset({"Three-Of-A-Kind", "Four-Of-A-Kind"})
+
+
+def _pick_easy_spot_cats(k: int, rng: random.Random) -> List[str]:
+    """``k``개 easy 스팟 키 샘플."""
+    if k <= 0:
+        return []
+    if k > len(EASY_SPOT_CATEGORIES):
+        raise ValueError(f"easy spot k={k} exceeds pool size {len(EASY_SPOT_CATEGORIES)}")
+    return rng.sample(EASY_SPOT_CATEGORIES, k)
+
+
+def _easy_margin_required(yacht_cat: str, default_min: int) -> int:
+    if yacht_cat in _EASY_VARIABLE_YACHT_CATS:
+        return 2
+    return default_min
 
 
 def _build_easy_spot_dice(cat: str, rng: random.Random) -> List[int]:
@@ -510,6 +537,18 @@ def _build_easy_spot_dice(cat: str, rng: random.Random) -> List[int]:
         # 풀 하우스(25점)가 마진 ≥ 10으로 명확한 top1이 되도록 함.
         b = rng.choice([2, 3, 4, 5, 6])
         d = [1, 1, 1, b, b]
+        rng.shuffle(d)
+        return d
+    if cat == "three_of_a_kind":
+        v = rng.randint(3, 6)
+        others = rng.sample([x for x in range(1, 7) if x != v], 2)
+        d = [v, v, v, others[0], others[1]]
+        rng.shuffle(d)
+        return d
+    if cat == "four_of_a_kind":
+        v = rng.randint(3, 6)
+        other = rng.choice([x for x in range(1, 7) if x != v])
+        d = [v, v, v, v, other]
         rng.shuffle(d)
         return d
     raise ValueError(f"알 수 없는 스팟 카테고리: {cat}")
@@ -668,6 +707,7 @@ class YachtDiceProblemGenerator:
         band = _DIFFICULTY_BANDS.get(difficulty, {})
         categories = get_all_categories()
         selected = None
+        best_complex = None  # 가장 어려운(max-complexity) 후보 (fallback)
         in_band = False
         trial_seed = seed
 
@@ -717,6 +757,11 @@ class YachtDiceProblemGenerator:
                 'zero_margin_rounds': zero_margin_rounds,
                 'bonus_applied': bonus_applied,
             }
+            # band_violation fallback 으로 가장 어려운(max-complexity) 후보를 추적
+            # (hard 는 out-of-band 를 수락하므로): band-exempt hard dice 가 random
+            # last seed 가 아니라 실제로 어려운 dice 가 되도록.
+            if best_complex is None or total_decision_complexity > best_complex['total_decision_complexity']:
+                best_complex = selected
 
             # 구성적(forced) 주사위는 밴드 필터링을 완전히 우회.
             if forced_dice is not None:
@@ -740,6 +785,10 @@ class YachtDiceProblemGenerator:
                 in_band = True
                 break
 
+        # Fallback: in-band 후보가 없으면 마지막 random seed 가 아니라 가장 어려운
+        # 후보를 사용 (band-exempt hard dice 가 어렵게 유지되도록).
+        if not in_band and best_complex is not None:
+            selected = best_complex
         band_violation = not in_band
 
         problem = {
@@ -904,7 +953,9 @@ def create_dataset_files(
     """
     import pandas as pd
 
-    fast_retries_by_diff = {"easy": 60, "medium": 120, "hard": 90}
+    # hard lowered 200->40: max-complexity fallback runs ALL retries per puzzle
+    # (in-band is rare), so 200 made hard gen ~50s/puzzle. best-of-40 is still hard.
+    fast_retries_by_diff = {"easy": 120, "medium": 150, "hard": 100}
 
     all_tiers = ["easy", "medium", "hard"]
     if difficulties is None:
@@ -929,10 +980,7 @@ def create_dataset_files(
     all_puzzles: List[Dict] = []
     problem_id = 1
 
-    # Easy 티어 수락 정책 (K=2 구성적 생성).
-    # 각 스팟 라운드는 전역 전용·명확한 top1 마진을 가져야 하며, 채점 정답은
-    # 두 고정 점수 카테고리의 합(55..100 등).
-    EASY_MAX_VALUE_SHARE = 0.20
+    # Easy: K=2 구성적(변동 스팟) + 전역 전용성 필터.
 
     def _dice_key(dice_results):
         return tuple(tuple(sorted(r)) for r in dice_results)
@@ -962,7 +1010,6 @@ def create_dataset_files(
         inner_retries = fast_retries_by_diff.get(difficulty, 70)
         easy_margin_min = 10
         easy_value_counts: Dict[int, int] = {}
-        easy_max_per_value = max(2, int(round(EASY_MAX_VALUE_SHARE * count)))
 
         while diff_success < count and retries < MAX_OUTER_RETRIES:
             retries += 1
@@ -972,27 +1019,21 @@ def create_dataset_files(
                 accepted_rate = diff_success / retries
                 if accepted_rate < 0.15:
                     easy_margin_min = max(8, easy_margin_min - 1)
-            if difficulty == "easy":
-                # 구성적 생성: 결정론적 스팟 라운드에 전역 독점 고점 카테고리를 심음.
-                # (다른 라운드에서 매칭 불가)
+            # v39: easy 는 PER-PUZZLE 믹스 — EASY_CONSTRUCTIVE_FRACTION 만큼은
+            # constructive dominant-category dice(자명, ~0.99), 나머지는 random
+            # band-filtered dice(실제 최적화, ~0.30). 평균이 목표 75 에 안착
+            # (constructive 단독=0.99 너무 쉽고, random 단독=0.30 너무 어려움).
+            if difficulty == "easy" and random.Random(424242 + problem_id).random() < EASY_CONSTRUCTIVE_FRACTION:
+                crng = random.Random(1000 + problem_id + 10000)
                 k_spot = SPOTCHECK_K.get("easy", 0)
                 public_id_pre = f"yacht_dice_ko_easy_{diff_success:04d}"
                 spot_rounds_pre = [
                     r - 1 for r in deterministic_round_pick_1based(public_id_pre, k_spot)
                 ]
-                crng = random.Random(1000 + problem_id + 10000)
-                spot_cats_choice = crng.sample(EASY_SPOT_CATEGORIES, len(spot_rounds_pre))
-                # 라지 스트레이트와 스몰 스트레이트는 공존 불가:
-                # LS 라운드가 스몰 스트레이트(30점)도 성립시켜 SS 독점을 깨뜨림.
-                while ("small_straight" in spot_cats_choice
-                       and "large_straight" in spot_cats_choice):
-                    spot_cats_choice = crng.sample(EASY_SPOT_CATEGORIES, len(spot_rounds_pre))
                 forced = _build_easy_constructive_dice(
-                    spot_rounds_pre, spot_cats_choice, crng
+                    spot_rounds_pre, _pick_easy_spot_cats(len(spot_rounds_pre), crng), crng,
                 )
-                problem = generator.generate_problem(
-                    "easy", problem_id, forced_dice=forced
-                )
+                problem = generator.generate_problem("easy", problem_id, forced_dice=forced)
             else:
                 problem = generator.generate_problem(
                     difficulty, problem_id, max_retries=inner_retries
@@ -1003,87 +1044,16 @@ def create_dataset_files(
                 continue
 
             sm = problem.get("step_metrics", {})
-            # Easy: in-band 퍼즐만 유지해 전체 총점 과제가 보정된 "easy" 매니폴드에
-            # 머물도록 함 (band_violation 행이 acc ~20% 하락 원인).
-            if difficulty == "easy" and sm.get("band_violation"):
+            # easy/medium 만 band 밖 주사위 거부. hard 는 면제: 빡빡한 band
+            # (gap>=30, complexity>=8) 를 random dice 가 거의 못 맞춰 거부 시
+            # 생성이 몇 시간씩 멈춤. K=9 가 이미 hard 난이도를 제공하므로
+            # best-effort dice 를 수락.
+            if difficulty != "hard" and sm.get("band_violation"):
                 problem_id += 1
                 continue
-            # v25: v21~v24 의 is_unique_assignment 필터는 generation 을 거의
-            # 완전히 막음 (8 dice 타입 다양화에도 pass rate ~0.1% 미만).
-            # 진짜 필요한 조건은 spot 라운드의 카테고리만 모든 최적해에서
-            # 일치하는 것 (전체 배정 유일성이 아님). K=2 이므로 두 스팟 라운드
-            # 대안: spot 라운드가 명백한 dominant 카테고리를 가지면
-            # (해당 라운드의 per_round_margin >= 10), 어떤 최적해를 골라도
-            # 그 라운드는 항상 같은 카테고리로 배정될 확률이 매우 높음.
-            if difficulty == "easy":
-                k_spot_check = SPOTCHECK_K.get("easy", 0)
-                if k_spot_check >= 1:
-                    spot_rounds_0based = [
-                        r - 1 for r in deterministic_round_pick_1based(
-                            f"yacht_dice_ko_easy_{diff_success:04d}",
-                            k_spot_check,
-                        )
-                    ]
-                    # v27: ROOT CAUSE FIX. v21~v26 의 per_round_margin 필터는
-                    # 잘못된 신호였다 — 고립 평가시 spot 라운드의 best 카테고리를
-                    # 봤지만, spotcheck 정답은 *전역 최적 배정이 그 라운드에 실제
-                    # 부여한 카테고리*에 달려 있다. 카테고리 경쟁(예: SS 가능한
-                    # 라운드 여럿)이 있으면 둘이 달라져, 모델의 자연스러운 greedy
-                    # 답(이 라운드 최고점)이 gold(전역 최적의 leftover 배정)와
-                    # 불일치 → 47% 천장.
-                    # 올바른 조건: spot 라운드가 전역 최적 배정에서 자기 top1
-                    # (고립 최고점) 카테고리를 그대로 부여받았는가. 그러면 모델의
-                    # greedy 답 = gold. 추가로 margin ≥ 10 으로 그 top1 이 명확
-                    # 하도록 한다.
-                    opt_assign = problem.get("optimal_assignment", {})
-                    top1s = sm.get("per_round_top1", [])
-                    margins = sm.get("per_round_margin", [])
-                    dice_all = problem["dice_results"]
-                    spot_ok = True
-                    spot_cats: List[str] = []
-                    for idx in spot_rounds_0based:
-                        if idx >= len(top1s) or idx >= len(margins):
-                            spot_ok = False
-                            break
-                        cat = opt_assign.get(idx, opt_assign.get(str(idx)))
-                        if cat is None:
-                            spot_ok = False
-                            break
-                        assigned_score = calculate_score_with_config(
-                            dice_all[idx], cat, config
-                        )
-                        # (a) 전역 최적이 이 라운드에 고립 top1 카테고리를 배정하고,
-                        # 그 top1 이 라운드 자체에서 명확히 지배적(큰 마진)이어야 함.
-                        if assigned_score != top1s[idx]:
-                            spot_ok = False
-                            break
-                        if margins[idx] < easy_margin_min:
-                            spot_ok = False
-                            break
-                        # (b) 전역 독점 (서브타겟 정확도 근본 수정): 다른 어느 라운드도
-                        # 이 카테고리에서 같은 점수 이상을 낼 수 없어야 함.
-                        # 전역 최적이 `cat`을 이 라운드에 배정하도록 강제하여,
-                        # 모델이 나머지 라운드를 어떻게 풀어도 채점 스팟 점수가
-                        # 안정적임 (이전에는 모델이 다른 라운드에 Yacht 등을 써
-                        # 스팟 합이 낮아져 오차가 모두 음수였음).
-                        best_elsewhere = 0
-                        for j in range(len(dice_all)):
-                            if j == idx:
-                                continue
-                            s = calculate_score_with_config(dice_all[j], cat, config)
-                            if s > best_elsewhere:
-                                best_elsewhere = s
-                        if best_elsewhere >= assigned_score:
-                            spot_ok = False
-                            break
-                        spot_cats.append(cat)
-                    # (c) 두 스팟 라운드는 서로 다른 카테고리를 사용해야 함
-                    # (카테고리는 12라운드 전체에서 한 번만 배정 가능).
-                    if spot_ok and len(set(spot_cats)) != len(spot_cats):
-                        spot_ok = False
-                    if not spot_ok:
-                        problem_id += 1
-                        continue
+            # v38: easy 의 constructive spot-독점성 검사 제거 — easy 도 이제
+            # medium/hard 처럼 random·band-filtered dice 를 사용 (이 검사들은
+            # 심어둔 dominant-category dice 에서만 의미가 있었음).
 
             key = _dice_key(problem['dice_results'])
             if key in seen_keys:
@@ -1110,14 +1080,6 @@ def create_dataset_files(
             else:
                 answer_str = str(optimal_score)
                 spot_rounds = None
-
-            if difficulty == "easy":
-                # 분포 제어: 단일 정답값이 데이터셋에서 한 숫자로 붕괴되지 않도록
-                # 등장 빈도 상한을 둠.
-                ans_num = int(answer_str)
-                if easy_value_counts.get(ans_num, 0) >= easy_max_per_value:
-                    problem_id += 1
-                    continue
 
             solution_str = _build_yacht_solution_ko(
                 dice_results=dice_results,

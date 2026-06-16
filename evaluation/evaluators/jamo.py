@@ -9,7 +9,12 @@ class JamoEvaluator(BaseEvaluator):
 
     SYSTEM_PROMPT = """### Instructions
 You decompose Korean syllable blocks into 초성/중성/종성, shift components per the
-rule, and recompose. Reason step by step, then output the final string.
+rule, and recompose. Treat each double final consonant (겹받침: ㄺ, ㅄ, ...) as a
+single 종성.
+
+### Rules
+1. Decompose each syllable into 초성/중성/종성, shift the components per the rule, then recompose.
+2. Reason step by step, then output the final string.
 
 ### Output format
 Your final line must be:

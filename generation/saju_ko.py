@@ -183,7 +183,13 @@ def m_hour_pillar_given_day(rng):
 def h_day_pillar(rng):
     dt, _ = _rand_dt(rng)
     a = ilju(dt.year, dt.month, dt.day)
-    steps = [f"[STEP 1] 일주(日柱) = 연속 60갑자 일진 = {a}"]
+    jdn = _jdn(dt.year, dt.month, dt.day)
+    i = (jdn + 49) % 60
+    steps = [
+        f"[STEP 1] 양력 {dt.year}년 {dt.month}월 {dt.day}일이 주어짐 (일주는 날짜로 정해지는 연속 60갑자 일진).",
+        f"[STEP 2] 율리우스일수 JDN={jdn}; 간지 인덱스 = (JDN+49) mod 60 = {i} "
+        f"→ 천간 {GAN[i % 10]} · 지지 {JI[i % 12]} → 일주(日柱) = {a}",
+    ]
     q = f"양력 {dt.year}년 {dt.month}월 {dt.day}일의 사주 일주(日柱) 간지는? (60갑자 일진, 예: 갑자)"
     return q, a, steps, "일주(日柱) 계산"
 

@@ -1,57 +1,152 @@
 {
   "array_formula_en": {
-    "easy": 0.83,
-    "medium": 0.52,
-    "hard": 0.28
+    "easy": 0.74,
+    "medium": 0.5,
+    "hard": 0.31
+  },
+  "causal_dag_en": {
+    "easy": 0.79,
+    "medium": 0.57,
+    "hard": 0.32
+  },
+  "ferryman_en": {
+    "easy": 0.78,
+    "medium": 0.44,
+    "hard": 0.24
   },
   "hanoi_en": {
-    "easy": 0.79,
-    "medium": 0.52,
-    "hard": 0.25
-  },
-  "number_baseball_en": {
     "easy": 0.78,
+    "medium": 0.5,
+    "hard": 0.24
+  },
+  "inequality_en": {
+    "easy": 0.85,
     "medium": 0.52,
     "hard": 0.26
   },
-  "inequality_en": {
+  "logic_grid_en": {
     "easy": 0.84,
     "medium": 0.48,
-    "hard": 0.23
-  },
-  "causal_dag_en": {
-    "easy": 0.80,
-    "medium": 0.50,
     "hard": 0.24
   },
-  "cipher_en": {
-    "easy": 0.74,
-    "medium": 0.56,
+  "minesweeper_en": {
+    "easy": 0.76,
+    "medium": 0.44,
     "hard": 0.22
+  },
+  "number_baseball_en": {
+    "easy": 0.82,
+    "medium": 0.53,
+    "hard": 0.32
   },
   "sat_puzzles_en": {
     "easy": 0.79,
-    "medium": 0.52,
-    "hard": 0.20
+    "medium": 0.53,
+    "hard": 0.17
   },
-  "ferryman_en": {
-    "easy": 0.76,
-    "medium": 0.49,
-    "hard": 0.22
+  "sudoku_en": {
+    "easy": 0.81,
+    "medium": 0.52,
+    "hard": 0.23
   },
   "yacht_dice_en": {
-    "easy": 0.75,
-    "medium": 0.46,
-    "hard": 0.21
+    "easy": 0.76,
+    "medium": 0.54,
+    "hard": 0.31
   },
-  "minesweeper_en": {
-    "easy": 0.71,
-    "medium": 0.51,
-    "hard": 0.16
+  "array_formula_ko": {
+    "easy": 0.69,
+    "medium": 0.52,
+    "hard": 0.23
   },
-  "logic_grid_en": {
-    "easy": 0.68,
+  "causal_dag_ko": {
+    "easy": 0.78,
+    "medium": 0.53,
+    "hard": 0.35
+  },
+  "ferryman_ko": {
+    "easy": 0.63,
+    "medium": 0.42,
+    "hard": 0.18
+  },
+  "hanoi_ko": {
+    "easy": 0.67,
+    "medium": 0.36,
+    "hard": 0.27
+  },
+  "inequality_ko": {
+    "easy": 0.84,
+    "medium": 0.52,
+    "hard": 0.36
+  },
+  "logic_grid_ko": {
+    "easy": 0.77,
+    "medium": 0.4,
+    "hard": 0.29
+  },
+  "minesweeper_ko": {
+    "easy": 0.77,
     "medium": 0.45,
+    "hard": 0.17
+  },
+  "number_baseball_ko": {
+    "easy": 0.85,
+    "medium": 0.57,
+    "hard": 0.42
+  },
+  "sat_puzzles_ko": {
+    "easy": 0.87,
+    "medium": 0.52,
+    "hard": 0.22
+  },
+  "sudoku_ko": {
+    "easy": 0.82,
+    "medium": 0.58,
+    "hard": 0.17
+  },
+  "yacht_dice_ko": {
+    "easy": 0.77,
+    "medium": 0.51,
+    "hard": 0.38
+  },
+  "cipher_en": {
+    "easy": 0.75,
+    "medium": 0.55,
+    "hard": 0.23
+  },
+  "cipher_ko": {
+    "easy": 0.79,
+    "medium": 0.42,
+    "hard": 0.35
+  },
+  "cryptarithmetic_en": {
+    "easy": 0.78,
+    "medium": 0.47,
     "hard": 0.21
+  },
+  "cryptarithmetic_ko": {
+    "easy": 0.85,
+    "medium": 0.54,
+    "hard": 0.26
+  },
+  "jamo_ko": {
+    "easy": 0.69,
+    "medium": 0.5,
+    "hard": 0.33
+  },
+  "kinship_ko": {
+    "easy": 0.77,
+    "medium": 0.49,
+    "hard": 0.32
+  },
+  "saju_ko": {
+    "easy": 0.79,
+    "medium": 0.5,
+    "hard": 0.23
+  },
+  "time_ko": {
+    "easy": 0.77,
+    "medium": 0.54,
+    "hard": 0.19
   }
 }
