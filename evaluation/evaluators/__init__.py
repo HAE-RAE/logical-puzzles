@@ -24,6 +24,7 @@ def _get_registry() -> Dict[str, Type]:
     from .time import TimeEvaluator
     from .subway import SubwayEvaluator
     from .water_jug import WaterJugEvaluator
+    from .korean_units import KoreanUnitsEvaluator
 
     return {
         "array_formula_en": ArrayFormulaEvaluator,
@@ -46,6 +47,7 @@ def _get_registry() -> Dict[str, Type]:
         "saju_ko": SajuEvaluator,
         "jamo_ko": JamoEvaluator,
         "time_ko": TimeEvaluator,
+        "korean_units_ko": KoreanUnitsEvaluator,
         "logic_grid_en": LogicGridEvaluator,
         "logic_grid_ko": LogicGridEvaluator,
         "minesweeper_en": MinesweeperEvaluator,
