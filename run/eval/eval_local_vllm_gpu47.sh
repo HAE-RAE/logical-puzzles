@@ -15,12 +15,12 @@ cd "$PROJECT_ROOT"
 
 # ============ 설정 ============
 # 사용할 GPU 목록 (쉼표로 구분). 예: "0,1,2,3" → 4-way 텐서 병렬
-GPUS="0,1,2,3"
+GPUS="4,5,6,7"
 # 텐서 병렬 크기 (비우면 GPUS 개수로 자동 설정). 모든 모델에 동일 적용.
 TENSOR_PARALLEL_SIZE=""
 # GPU 메모리 사용률 (0~1). 대형 모델 OOM 시 조정.
 GPU_MEM_UTIL=0.90
-VLLM_PORT=8000
+VLLM_PORT=8001
 VLLM_HOST="0.0.0.0"
 REMOTE_URL="http://localhost:${VLLM_PORT}"
 GEN_KWARGS="temperature=0.6,max_tokens=16384,top_p=0.95,top_k=20,reasoning=on"
@@ -34,10 +34,10 @@ if [ -z "$TENSOR_PARALLEL_SIZE" ]; then
     TENSOR_PARALLEL_SIZE=$(echo "$GPUS" | tr ',' '\n' | grep -c .)
 fi
 
-# 평가할 모델 목록 - 그룹 A (GPU 0-3). 승혁 배정분의 절반. 그룹 B는 eval_local_vllm_gpu47.sh
+# 평가할 모델 목록 - 그룹 B (GPU 4-7). 그룹 A는 eval_local_vllm.sh
 MODELS=(
-    "google/gemma-4-31b-it"        # 31B dense
-    "upstage/Solar-Open-100B"      # 102B-A12B MoE
+    "LGAI-EXAONE/EXAONE-4.0-32B"   # 32B dense (텍스트 전용, 4.5는 vision이라 제외)
+    "openai/gpt-oss-120b"          # 117B-A5B MoE (MXFP4)
 )
 
 # 평가할 태스크 목록

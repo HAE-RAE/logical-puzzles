@@ -32,6 +32,9 @@ hrmcr/
 results*/
 evaluation_results/
 
+# 로컬 평가 실행 로그/셋업
+.setup_logs/
+
 # 학습된 모델 체크포인트
 models/
 
