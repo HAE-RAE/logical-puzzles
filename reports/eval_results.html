@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Logical Puzzles — Eval Results</title>
+<style>
+  :root{
+    --surface-0:#f5f6f8; --surface-1:#ffffff; --surface-2:#eef0f4;
+    --ink:#131720; --ink-2:#535a68; --ink-3:#8b93a2; --line:#e2e5ea;
+    --m1:#2a78d6; --m2:#eb6834; --m3:#4a3aa7;         /* gpt-oss / gemma / exaone */
+    --heat-w:245,246,248; --heat-s:14,110,74;          /* table heat ramp (light) */
+    --heat-flip:0.55;
+    --shadow:0 1px 2px rgba(16,20,28,.06),0 8px 24px -12px rgba(16,20,28,.18);
+    --font-sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    --font-mono:ui-monospace,"SF Mono","Cascadia Code","Roboto Mono",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --surface-0:#0e1116; --surface-1:#171b22; --surface-2:#1e232b;
+      --ink:#f1f3f7; --ink-2:#a7afbd; --ink-3:#69717e; --line:#272d36;
+      --m1:#3987e5; --m2:#e57a4b; --m3:#9085e9;
+      --heat-w:26,30,37; --heat-s:33,182,122;
+      --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="light"]{
+    --surface-0:#f5f6f8; --surface-1:#ffffff; --surface-2:#eef0f4;
+    --ink:#131720; --ink-2:#535a68; --ink-3:#8b93a2; --line:#e2e5ea;
+    --m1:#2a78d6; --m2:#eb6834; --m3:#4a3aa7;
+    --heat-w:245,246,248; --heat-s:14,110,74;
+    --shadow:0 1px 2px rgba(16,20,28,.06),0 8px 24px -12px rgba(16,20,28,.18);
+  }
+  :root[data-theme="dark"]{
+    --surface-0:#0e1116; --surface-1:#171b22; --surface-2:#1e232b;
+    --ink:#f1f3f7; --ink-2:#a7afbd; --ink-3:#69717e; --line:#272d36;
+    --m1:#3987e5; --m2:#e57a4b; --m3:#9085e9;
+    --heat-w:26,30,37; --heat-s:33,182,122;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -14px rgba(0,0,0,.6);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--surface-0);color:var(--ink);font-family:var(--font-sans);
+    line-height:1.5;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1180px;margin:0 auto;padding:40px 24px 72px}
+  .tnum{font-variant-numeric:tabular-nums;font-family:var(--font-mono)}
+
+  header{margin-bottom:32px}
+  .eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink-3);margin:0 0 10px}
+  h1{font-size:clamp(26px,4.4vw,40px);line-height:1.08;margin:0;font-weight:680;letter-spacing:-.02em;text-wrap:balance}
+  .sub{color:var(--ink-2);margin:12px 0 0;max-width:64ch;font-size:15px}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+  .chip{font-family:var(--font-mono);font-size:12px;color:var(--ink-2);background:var(--surface-2);
+    border:1px solid var(--line);border-radius:999px;padding:5px 11px}
+
+  h2{font-size:13px;font-family:var(--font-mono);letter-spacing:.1em;text-transform:uppercase;
+    color:var(--ink-3);margin:0 0 4px;font-weight:600}
+  .sec-note{color:var(--ink-2);font-size:13.5px;margin:0 0 18px}
+  section{margin-top:44px}
+
+  /* stat tiles */
+  .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  @media(max-width:680px){.tiles{grid-template-columns:1fr}}
+  .tile{background:var(--surface-1);border:1px solid var(--line);border-radius:14px;padding:18px 18px 16px;
+    box-shadow:var(--shadow);position:relative;overflow:hidden}
+  .tile::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c)}
+  .tile .name{display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:12.5px;color:var(--ink-2)}
+  .dot{width:9px;height:9px;border-radius:3px;background:var(--c);flex:none}
+  .tile .big{font-size:40px;font-weight:700;letter-spacing:-.02em;margin:8px 0 2px;line-height:1}
+  .tile .big small{font-size:18px;color:var(--ink-3);font-weight:600;margin-left:2px}
+  .tile .rank{position:absolute;top:16px;right:16px;font-family:var(--font-mono);font-size:11px;color:var(--ink-3)}
+  .dbreak{display:flex;gap:14px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+  .dbreak div{font-family:var(--font-mono);font-size:12px;color:var(--ink-3)}
+  .dbreak b{display:block;color:var(--ink);font-size:15px;font-weight:600;margin-top:2px}
+
+  /* table */
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface-1);box-shadow:var(--shadow)}
+  table{border-collapse:collapse;width:100%;min-width:720px}
+  th,td{text-align:right;padding:11px 12px;font-size:13.5px;white-space:nowrap}
+  thead th{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.03em;text-transform:uppercase;
+    color:var(--ink-3);font-weight:600;border-bottom:1px solid var(--line);cursor:default}
+  th.model,td.model{text-align:left;position:sticky;left:0;background:var(--surface-1);z-index:1}
+  td.model{border-bottom:1px solid var(--line)}
+  .mname{display:flex;align-items:center;gap:9px;font-weight:600}
+  .mname small{color:var(--ink-3);font-weight:400;font-family:var(--font-mono);font-size:11px}
+  td.heat{color:var(--hf);background:rgba(var(--heat-c),var(--ha));border-bottom:1px solid var(--surface-1)}
+  td.ov{font-weight:700;border-left:1px solid var(--line)}
+  tbody tr:hover td:not(.model){outline:1.5px solid color-mix(in oklab,var(--ink) 22%,transparent);outline-offset:-1.5px}
+
+  /* bar panels */
+  .panel{background:var(--surface-1);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);
+    padding:18px 20px 14px;margin-top:16px}
+  .phead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:14px}
+  .phead .pl{display:flex;align-items:center;gap:10px}
+  .phead .pl .dot{width:11px;height:11px}
+  .phead .mm{font-weight:660;font-size:16px}
+  .phead .mm small{color:var(--ink-3);font-weight:400;font-family:var(--font-mono);font-size:11px;margin-left:6px}
+  .phead .ov{font-family:var(--font-mono);font-size:13px;color:var(--ink-2)}
+  .phead .ov b{color:var(--ink);font-size:16px}
+  .plot{position:relative;overflow-x:auto;padding-left:34px}
+  .yaxis{position:absolute;left:0;top:0;bottom:26px;width:34px;pointer-events:none}
+  .yaxis span{position:absolute;right:6px;transform:translateY(-50%);font-family:var(--font-mono);
+    font-size:10px;color:var(--ink-3)}
+  .grid{position:absolute;left:34px;right:0;top:0;bottom:26px;pointer-events:none}
+  .grid i{position:absolute;left:0;right:0;height:1px;background:var(--line);opacity:.7}
+  .bars{display:flex;align-items:flex-end;gap:0;height:158px;min-width:640px}
+  .cluster{display:flex;align-items:flex-end;gap:3px;padding:0 9px;border-right:1px dashed var(--line);position:relative}
+  .cluster:last-child{border-right:0}
+  .cluster .clab{position:absolute;bottom:-24px;left:0;right:0;text-align:center;font-family:var(--font-mono);
+    font-size:9.5px;color:var(--ink-3);letter-spacing:.02em}
+  .bar{width:12px;border-radius:3px 3px 0 0;background:var(--c);align-self:flex-end;min-height:2px;
+    transition:filter .12s;cursor:pointer}
+  .bar:hover{filter:brightness(1.12) saturate(1.1)}
+  .bar.miss{background:repeating-linear-gradient(45deg,var(--line),var(--line) 3px,transparent 3px,transparent 6px);
+    min-height:100%;opacity:.5;border-radius:0}
+  .spacer{height:26px}
+
+  .legend{display:flex;flex-wrap:wrap;gap:18px;margin-top:18px;align-items:center}
+  .legend .grp{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--ink-2)}
+  .legend .sw{display:inline-flex;gap:3px}
+  .legend .sw i{width:13px;height:13px;border-radius:3px;display:block}
+  .lgmono{font-family:var(--font-mono);font-size:11.5px;color:var(--ink-3)}
+
+  footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);color:var(--ink-3);
+    font-size:12.5px;font-family:var(--font-mono);line-height:1.7}
+
+  /* tooltip */
+  #tt{position:fixed;z-index:50;pointer-events:none;opacity:0;transform:translateY(4px);
+    transition:opacity .1s;background:var(--ink);color:var(--surface-1);font-family:var(--font-mono);
+    font-size:12px;padding:7px 9px;border-radius:8px;box-shadow:var(--shadow);white-space:nowrap}
+  #tt b{color:var(--surface-1)}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">HAE-RAE · logical-puzzles benchmark</p>
+    <h1>추론 퍼즐 평가 결과</h1>
+    <p class="sub">8개 퍼즐 유형 × 한/영 × 난이도(easy·medium·hard), 태스크당 100문제 정확도.
+      로컬 vLLM으로 세 모델을 동일 그리드에서 평가했습니다.</p>
+    <div class="meta" id="meta"></div>
+  </header>
+
+  <section id="tiles-sec">
+    <h2>Overall accuracy</h2>
+    <p class="sec-note">모델별 45개 태스크 평균 정확도와 난이도별 분해.</p>
+    <div class="tiles" id="tiles"></div>
+  </section>
+
+  <section>
+    <h2>Category × Model</h2>
+    <p class="sec-note">셀 = 해당 유형(양 언어·전 난이도) 평균 정확도. 진할수록 높음. 행은 종합 정확도 내림차순.</p>
+    <div class="tablewrap"><table id="tbl"></table></div>
+  </section>
+
+  <section>
+    <h2>Per-task accuracy</h2>
+    <p class="sec-note">모델마다 45개 태스크를 유형별로 묶어 세로 막대로. 막대 높이 = 정확도, 색 농도 = 난이도(연함 easy → 진함 hard).</p>
+    <div id="panels"></div>
+    <div class="legend" id="legend"></div>
+  </section>
+
+  <footer id="foot"></footer>
+</div>
+<div id="tt"></div>
+
+<script>
+const RAW = {"openai/gpt-oss-120b":{"array_formula_en_easy":0.53,"array_formula_en_hard":0.06,"array_formula_en_medium":0.32,"array_formula_ko_easy":0.47,"array_formula_ko_hard":0.06,"array_formula_ko_medium":0.29,"causal_dag_en_easy":0.71,"causal_dag_en_hard":0.11,"causal_dag_en_medium":0.28,"causal_dag_ko_easy":0.72,"causal_dag_ko_hard":0.14,"causal_dag_ko_medium":0.33,"cipher_en_easy":0.89,"cipher_en_hard":0.22,"cipher_en_medium":0.55,"cipher_ko_easy":0.03,"cipher_ko_hard":0.0,"cipher_ko_medium":0.0,"cryptarithmetic_en_easy":0.63,"cryptarithmetic_en_hard":0.19,"cryptarithmetic_en_medium":0.32,"cryptarithmetic_ko_easy":0.16,"cryptarithmetic_ko_hard":0.02,"cryptarithmetic_ko_medium":0.1,"ferryman_en_easy":0.45,"ferryman_en_hard":0.0,"ferryman_en_medium":0.01,"ferryman_ko_easy":0.4,"ferryman_ko_hard":0.0,"ferryman_ko_medium":0.03,"hanoi_en_easy":0.65,"hanoi_en_hard":0.14,"hanoi_en_medium":0.49,"hanoi_ko_easy":0.55,"hanoi_ko_hard":0.17,"hanoi_ko_medium":0.51,"inequality_en_easy":0.85,"inequality_en_hard":0.28,"inequality_en_medium":0.45,"inequality_ko_easy":0.82,"inequality_ko_hard":0.39,"inequality_ko_medium":0.54,"jamo_ko_easy":0.16,"jamo_ko_hard":0.02,"jamo_ko_medium":0.04},
+"google/gemma-4-31b-it":{"array_formula_en_easy":0.53,"array_formula_en_hard":0.1,"array_formula_en_medium":0.31,"array_formula_ko_easy":0.56,"array_formula_ko_hard":0.09,"array_formula_ko_medium":0.3,"causal_dag_en_easy":0.79,"causal_dag_en_hard":0.29,"causal_dag_en_medium":0.44,"causal_dag_ko_easy":0.76,"causal_dag_ko_hard":0.2,"causal_dag_ko_medium":0.4,"cipher_en_easy":0.11,"cipher_en_hard":0.11,"cipher_en_medium":0.09,"cipher_ko_easy":0.11,"cipher_ko_hard":0.0,"cipher_ko_medium":0.0,"cryptarithmetic_en_easy":0.66,"cryptarithmetic_en_hard":0.06,"cryptarithmetic_en_medium":0.31,"cryptarithmetic_ko_easy":0.76,"cryptarithmetic_ko_hard":0.14,"cryptarithmetic_ko_medium":0.36,"ferryman_en_easy":0.73,"ferryman_en_hard":0.0,"ferryman_en_medium":0.09,"ferryman_ko_easy":0.46,"ferryman_ko_hard":0.0,"ferryman_ko_medium":0.02,"hanoi_en_easy":0.13,"hanoi_en_hard":0.23,"hanoi_en_medium":0.01,"hanoi_ko_easy":0.15,"hanoi_ko_hard":0.25,"hanoi_ko_medium":0.02,"inequality_en_easy":0.85,"inequality_en_hard":0.4,"inequality_en_medium":0.65,"inequality_ko_easy":0.84,"inequality_ko_hard":0.5,"inequality_ko_medium":0.71,"jamo_ko_easy":0.37,"jamo_ko_hard":0.02,"jamo_ko_medium":0.06},
+"LGAI-EXAONE/EXAONE-4.0-32B":{"array_formula_en_easy":0.17,"array_formula_en_hard":0.0,"array_formula_en_medium":0.03,"array_formula_ko_easy":0.18,"array_formula_ko_hard":0.02,"array_formula_ko_medium":0.04,"causal_dag_en_easy":0.58,"causal_dag_en_hard":0.03,"causal_dag_en_medium":0.03,"causal_dag_ko_easy":0.56,"causal_dag_ko_hard":0.03,"causal_dag_ko_medium":0.05,"cipher_en_easy":0.57,"cipher_en_hard":0.12,"cipher_en_medium":0.41,"cipher_ko_easy":0.0,"cipher_ko_hard":0.0,"cipher_ko_medium":0.0,"cryptarithmetic_en_easy":0.25,"cryptarithmetic_en_hard":0.02,"cryptarithmetic_en_medium":0.06,"cryptarithmetic_ko_easy":0.0,"cryptarithmetic_ko_hard":0.0,"cryptarithmetic_ko_medium":0.0,"ferryman_en_easy":0.01,"ferryman_en_hard":0.0,"ferryman_en_medium":0.0,"ferryman_ko_easy":0.01,"ferryman_ko_hard":0.0,"ferryman_ko_medium":0.0,"hanoi_en_easy":0.0,"hanoi_en_hard":0.07,"hanoi_en_medium":0.0,"hanoi_ko_easy":0.0,"hanoi_ko_hard":0.09,"hanoi_ko_medium":0.0,"inequality_en_easy":0.85,"inequality_en_hard":0.03,"inequality_ko_easy":0.8,"jamo_ko_hard":0.0,"jamo_ko_medium":0.0}};
+
+const MODELS=[
+  {key:"openai/gpt-oss-120b", label:"gpt-oss-120b", org:"openai", c:"var(--m1)"},
+  {key:"google/gemma-4-31b-it", label:"gemma-4-31b-it", org:"google", c:"var(--m2)"},
+  {key:"LGAI-EXAONE/EXAONE-4.0-32B", label:"EXAONE-4.0-32B", org:"LG AI", c:"var(--m3)"},
+];
+const CATS=[["array_formula","Array"],["causal_dag","Causal"],["cipher","Cipher"],["cryptarithmetic","Crypt"],
+  ["ferryman","Ferry"],["hanoi","Hanoi"],["inequality","Ineq"],["jamo","Jamo"]];
+const LANGS=["en","ko"], DIFFS=["easy","medium","hard"];
+const DIFF_A={easy:1.0, medium:0.62, hard:0.34};   // 색 농도 = 난이도
+
+// canonical 45-task order
+const TASK_ORDER=[];
+for(const [cat] of CATS){
+  const langs = cat==="jamo" ? ["ko"] : LANGS;
+  for(const l of langs) for(const d of DIFFS) TASK_ORDER.push({cat,l,d,key:`${cat}_${l}_${d}`});
+}
+const mean=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:null;
+const pct=v=>v==null?"—":Math.round(v*100);
+
+// ---- stat tiles ----
+const overall={}, byDiff={}, byCat={};
+for(const m of MODELS){
+  const d=RAW[m.key];
+  const all=TASK_ORDER.map(t=>d[t.key]).filter(v=>v!=null);
+  overall[m.key]=mean(all);
+  byDiff[m.key]=Object.fromEntries(DIFFS.map(df=>[df, mean(TASK_ORDER.filter(t=>t.d===df).map(t=>d[t.key]).filter(v=>v!=null))]));
+  byCat[m.key]=Object.fromEntries(CATS.map(([c])=>[c, mean(TASK_ORDER.filter(t=>t.cat===c).map(t=>d[t.key]).filter(v=>v!=null))]));
+}
+const ranked=[...MODELS].sort((a,b)=>overall[b.key]-overall[a.key]);
+
+document.getElementById("meta").innerHTML=
+  [`3 models`,`8 puzzle types`,`45 tasks · 100 puzzles each`,`ko + en`,`reasoning on · temp 0.6`]
+  .map(s=>`<span class="chip">${s}</span>`).join("");
+
+document.getElementById("tiles").innerHTML=ranked.map((m,i)=>{
+  const db=byDiff[m.key];
+  return `<div class="tile" style="--c:${m.c}">
+    <div class="rank">#${i+1}</div>
+    <div class="name"><span class="dot"></span>${m.label} <small>· ${m.org}</small></div>
+    <div class="big tnum">${pct(overall[m.key])}<small>%</small></div>
+    <div class="dbreak">
+      <div>easy<b class="tnum">${pct(db.easy)}%</b></div>
+      <div>medium<b class="tnum">${pct(db.medium)}%</b></div>
+      <div>hard<b class="tnum">${pct(db.hard)}%</b></div>
+    </div>
+  </div>`;
+}).join("");
+
+// ---- heat helpers ----
+function theme(){
+  const a=document.documentElement.getAttribute("data-theme");
+  if(a) return a;
+  return matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light";
+}
+function heatVars(v){
+  if(v==null) return `--ha:0;--heat-c:var(--heat-w);--hf:var(--ink-3)`;
+  const flip=0.55, dark=theme()==="dark";
+  const fg = v>=flip ? (dark?"#08130d":"#ffffff") : "var(--ink)";
+  const a=(0.10+0.90*v).toFixed(3);
+  return `--ha:${a};--heat-c:var(--heat-s);--hf:${fg}`;
+}
+
+// ---- table ----
+function renderTable(){
+  const head=`<thead><tr><th class="model">Model</th>${
+    CATS.map(([c,l])=>`<th title="${c}">${l}</th>`).join("")}<th class="ov" style="text-align:right">Overall</th></tr></thead>`;
+  const body=ranked.map(m=>{
+    const cells=CATS.map(([c])=>{
+      const v=byCat[m.key][c];
+      return `<td class="heat tnum" style="${heatVars(v)}">${pct(v)}</td>`;
+    }).join("");
+    return `<tr><td class="model"><span class="mname"><span class="dot" style="background:${m.c}"></span>
+      ${m.label}<small>${m.org}</small></span></td>${cells}
+      <td class="ov heat tnum" style="${heatVars(overall[m.key])}">${pct(overall[m.key])}</td></tr>`;
+  }).join("");
+  document.getElementById("tbl").innerHTML=head+"<tbody>"+body+"</tbody>";
+}
+
+// ---- bar panels ----
+const GRID=[0,25,50,75,100];
+function renderPanels(){
+  document.getElementById("panels").innerHTML=ranked.map(m=>{
+    const d=RAW[m.key];
+    let clusters="";
+    for(const [cat,lab] of CATS){
+      const tasks=TASK_ORDER.filter(t=>t.cat===cat);
+      const bars=tasks.map(t=>{
+        const v=d[t.key];
+        if(v==null) return `<div class="bar miss" title="${t.key} · 미평가"></div>`;
+        const h=Math.max(2, v*100);
+        return `<div class="bar" style="height:${h}%;--c:${m.c};opacity:${DIFF_A[t.d]}"
+          data-t="${t.cat}_${t.l}" data-d="${t.d}" data-v="${Math.round(v*100)}"></div>`;
+      }).join("");
+      clusters+=`<div class="cluster">${bars}<span class="clab">${lab}</span></div>`;
+    }
+    return `<div class="panel">
+      <div class="phead">
+        <span class="pl"><span class="dot" style="background:${m.c}"></span>
+          <span class="mm">${m.label}<small>${m.org}</small></span></span>
+        <span class="ov">overall <b class="tnum">${pct(overall[m.key])}%</b></span>
+      </div>
+      <div class="plot">
+        <div class="yaxis">${GRID.map(g=>`<span style="top:${100-g}%">${g}</span>`).join("")}</div>
+        <div class="grid">${GRID.map(g=>`<i style="top:${100-g}%"></i>`).join("")}</div>
+        <div class="bars">${clusters}</div>
+        <div class="spacer"></div>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+document.getElementById("legend").innerHTML=`
+  <span class="grp"><span class="lgmono">난이도</span>
+    <span class="sw"><i style="background:var(--m1);opacity:1"></i>
+    <i style="background:var(--m1);opacity:.62"></i><i style="background:var(--m1);opacity:.34"></i></span>
+    <span class="lgmono">easy · medium · hard</span></span>
+  <span class="grp"><span class="sw"><i class="miss" style="background:repeating-linear-gradient(45deg,var(--line),var(--line) 3px,transparent 3px,transparent 6px)"></i></span>
+    <span class="lgmono">미평가(태스크 없음)</span></span>
+  <span class="grp"><span class="lgmono">색 = 모델 · 높이 = 정확도(0–100%)</span></span>`;
+
+document.getElementById("foot").innerHTML=
+  `data: results/&lt;model&gt;/&lt;task&gt;/*.json · accuracy over 100 puzzles/task · reasoning on, temp 0.6, top_p 0.95<br>`+
+  `EXAONE-4.0-32B: inequality(en_medium·ko_medium·ko_hard)·jamo_ko_easy 미평가 → 해당 칸/막대는 빈칸 처리 · 평균은 평가된 태스크만.`;
+
+const tt=document.getElementById("tt");
+function showTip(e){
+  const b=e.target.closest(".bar"); if(!b){tt.style.opacity=0;return;}
+  if(b.classList.contains("miss")){tt.innerHTML=b.getAttribute("title");}
+  else tt.innerHTML=`<b>${b.dataset.t}</b> · ${b.dataset.d} &nbsp; <b>${b.dataset.v}%</b>`;
+  tt.style.opacity=1;
+  const r=b.getBoundingClientRect();
+  let x=r.left+r.width/2, y=r.top-10;
+  tt.style.left=Math.min(Math.max(x,60),innerWidth-60)+"px";
+  tt.style.top=y+"px"; tt.style.transform="translate(-50%,-100%)";
+}
+document.getElementById("panels").addEventListener("mousemove",showTip);
+document.getElementById("panels").addEventListener("mouseleave",()=>tt.style.opacity=0);
+
+function renderAll(){renderTable();renderPanels();}
+renderAll();
+// re-color heat cells on theme toggle
+new MutationObserver(renderTable).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+matchMedia("(prefers-color-scheme:dark)").addEventListener("change",renderTable);
+</script>
+
+</body>
+</html>
