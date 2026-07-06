@@ -251,6 +251,18 @@ Available tasks: {', '.join(available_tasks)}
                 **evaluate_kwargs
             )
 
+            # 서버 다운(연결 실패) 등으로 응답 대부분이 에러면, 가짜 0점 결과를
+            # 저장하지 않는다. 저장해버리면 SKIP_EXISTING 재실행이 이걸 "완료"로
+            # 보고 영구히 건너뛰어 0점이 박제된다.
+            error_count = sum(1 for r in results if r.error)
+            if results and error_count >= len(results) * 0.5:
+                logger.error(
+                    f"Aborting save for {task_name}: {error_count}/{len(results)} "
+                    f"responses errored (server likely down). Result NOT saved."
+                )
+                failed_tasks[task_name] = f"{error_count}/{len(results)} errored (not saved)"
+                continue
+
             result_handler.save(
                 task_name,
                 results,
@@ -291,6 +303,10 @@ Available tasks: {', '.join(available_tasks)}
         logger.info(f"Evaluation completed: {len(all_summaries)} succeeded, {len(failed_tasks)} failed (total: {total_attempted})")
     else:
         logger.warning(f"No tasks were successfully evaluated ({len(failed_tasks)} failed)")
+
+    # 실패한 task가 있으면 non-zero 종료 → 호출 스크립트가 SUCCESS로 오인하지 않게.
+    if failed_tasks:
+        sys.exit(1)
 
 
 if __name__ == "__main__":
