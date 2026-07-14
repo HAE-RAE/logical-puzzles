@@ -1,24 +1,41 @@
 # 추론 퍼즐 벤치마크 결과
 
-8개 퍼즐 유형 × 한/영 × 난이도(easy·medium·hard), 태스크당 100문제 정확도. 로컬 vLLM, reasoning on, temp 0.6, top_p 0.95.
+태스크당 100문제 정확도. 로컬 vLLM, reasoning on, temp 0.6, top_p 0.95.
 
-시각화(표+막대그래프): [`reports/eval_results.html`](eval_results.html)
+그래프: [`reports/eval_results.jpg`](eval_results.jpg) · 대시보드: [`reports/eval_results.html`](eval_results.html)
+
+> **커버리지 주의:** gpt-oss-120b만 전체 18개 유형(93 태스크)을 평가했고, gemma·EXAONE는 8개 공통 유형(45 태스크)까지만 평가됨. 미평가는 `—`.
+
+## 종합 · 난이도별 (%)
+
+| Model | tasks | 종합 | easy | medium | hard |
+|---|---|---|---|---|---|
+| gpt-oss-120b | 93 | **39** | 60 | 37 | 20 |
+| gemma-4-31b-it | 45 | **31** | 52 | 25 | 16 |
+| EXAONE-4.0-32B | 45 | **12** | 28 | 4 | 3 |
 
 ## 유형별 정확도 (%, 양 언어·전 난이도 평균)
 
-| Model | Array | Causal | Cipher | Crypt | Ferry | Hanoi | Ineq | Jamo | **종합** |
-|---|---|---|---|---|---|---|---|---|---|
-| gpt-oss-120b | 29 | 38 | 28 | 24 | 15 | 42 | 56 | 7 | **31** |
-| gemma-4-31b-it | 32 | 48 | 7 | 38 | 22 | 13 | 66 | 15 | **31** |
-| EXAONE-4.0-32B | 7 | 21 | 18 | 6 | 0 | 3 | 56 | 0 | **12** |
-
-## 난이도별 (%)
-
-| Model | easy | medium | hard |
+| Category | gpt-oss-120b | gemma-4-31b-it | EXAONE-4.0-32B |
 |---|---|---|---|
-| gpt-oss-120b | 53 | 28 | 12 |
-| gemma-4-31b-it | 52 | 25 | 16 |
-| EXAONE-4.0-32B | 28 | 5 | 3 |
+| array_formula | 29 | 32 | 7 |
+| causal_dag | 38 | 48 | 21 |
+| cipher | 28 | 7 | 18 |
+| cryptarithmetic | 24 | 38 | 6 |
+| ferryman | 15 | 22 | 0 |
+| hanoi | 42 | 13 | 3 |
+| inequality | 56 | 66 | 56 |
+| jamo | 7 | 15 | 0 |
+| kinship | 6 | — | 5 |
+| korean_units | 68 | — | — |
+| logic_grid | 26 | — | 44 |
+| minesweeper | 43 | — | — |
+| number_baseball | 50 | — | — |
+| saju | 14 | — | — |
+| sat_puzzles | 30 | — | — |
+| sudoku | 99 | — | — |
+| time | 55 | — | — |
+| yacht_dice | 52 | — | — |
 
 ## 태스크별 정확도 (%)
 
@@ -69,5 +86,51 @@
 | jamo_ko_easy | 16 | 37 | — |
 | jamo_ko_medium | 4 | 6 | 0 |
 | jamo_ko_hard | 2 | 2 | 0 |
-
-> EXAONE-4.0-32B: inequality(en_medium·ko_medium·ko_hard)·jamo_ko_easy 미평가(—). 종합/평균은 평가된 태스크만 반영.
+| kinship_ko_easy | 7 | — | 12 |
+| kinship_ko_medium | 4 | — | 1 |
+| kinship_ko_hard | 6 | — | 3 |
+| korean_units_ko_easy | 92 | — | — |
+| korean_units_ko_medium | 84 | — | — |
+| korean_units_ko_hard | 27 | — | — |
+| logic_grid_en_easy | 54 | — | 44 |
+| logic_grid_en_medium | 6 | — | — |
+| logic_grid_en_hard | 12 | — | — |
+| logic_grid_ko_easy | 59 | — | — |
+| logic_grid_ko_medium | 9 | — | — |
+| logic_grid_ko_hard | 14 | — | — |
+| minesweeper_en_easy | 78 | — | — |
+| minesweeper_en_medium | 47 | — | — |
+| minesweeper_en_hard | 6 | — | — |
+| minesweeper_ko_easy | 77 | — | — |
+| minesweeper_ko_medium | 37 | — | — |
+| minesweeper_ko_hard | 12 | — | — |
+| number_baseball_en_easy | 75 | — | — |
+| number_baseball_en_medium | 45 | — | — |
+| number_baseball_en_hard | 24 | — | — |
+| number_baseball_ko_easy | 82 | — | — |
+| number_baseball_ko_medium | 56 | — | — |
+| number_baseball_ko_hard | 20 | — | — |
+| saju_ko_easy | 19 | — | — |
+| saju_ko_medium | 13 | — | — |
+| saju_ko_hard | 11 | — | — |
+| sat_puzzles_en_easy | 57 | — | — |
+| sat_puzzles_en_medium | 27 | — | — |
+| sat_puzzles_en_hard | 5 | — | — |
+| sat_puzzles_ko_easy | 53 | — | — |
+| sat_puzzles_ko_medium | 29 | — | — |
+| sat_puzzles_ko_hard | 6 | — | — |
+| sudoku_en_easy | 99 | — | — |
+| sudoku_en_medium | 100 | — | — |
+| sudoku_en_hard | 98 | — | — |
+| sudoku_ko_easy | 99 | — | — |
+| sudoku_ko_medium | 100 | — | — |
+| sudoku_ko_hard | 100 | — | — |
+| time_ko_easy | 72 | — | — |
+| time_ko_medium | 55 | — | — |
+| time_ko_hard | 39 | — | — |
+| yacht_dice_en_easy | 76 | — | — |
+| yacht_dice_en_medium | 53 | — | — |
+| yacht_dice_en_hard | 35 | — | — |
+| yacht_dice_ko_easy | 73 | — | — |
+| yacht_dice_ko_medium | 47 | — | — |
+| yacht_dice_ko_hard | 25 | — | — |

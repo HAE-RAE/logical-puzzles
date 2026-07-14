@@ -1,0 +1,31 @@
+{
+  "metadata": {
+    "task": "inequality_en_hard",
+    "model": "LGAI-EXAONE/EXAONE-4.0-32B",
+    "timestamp": "2026-07-02T10-52-09",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "temperature": 0.6,
+      "max_tokens": 16384,
+      "top_p": 0.95,
+      "top_k": 20,
+      "enable_thinking": true
+    },
+    "gen_kwargs_cli": "temperature=0.6,max_tokens=16384,top_p=0.95,top_k=20,reasoning=on"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.03,
+      "correct_count": 3,
+      "total_count": 100,
+      "avg_latency_ms": 325177.34129190445
+    },
+    "by_difficulty": {
+      "hard": {
+        "total": 100,
+        "correct": 3,
+        "accuracy": 0.03
+      }
+    }
+  }
+}
