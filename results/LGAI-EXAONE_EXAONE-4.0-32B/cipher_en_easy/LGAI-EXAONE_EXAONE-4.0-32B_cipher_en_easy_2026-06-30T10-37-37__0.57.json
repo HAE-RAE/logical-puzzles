@@ -1,0 +1,31 @@
+{
+  "metadata": {
+    "task": "cipher_en_easy",
+    "model": "LGAI-EXAONE/EXAONE-4.0-32B",
+    "timestamp": "2026-06-30T10-37-37",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "temperature": 0.6,
+      "max_tokens": 16384,
+      "top_p": 0.95,
+      "top_k": 20,
+      "enable_thinking": true
+    },
+    "gen_kwargs_cli": "temperature=0.6,max_tokens=16384,top_p=0.95,top_k=20,reasoning=on"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.57,
+      "correct_count": 57,
+      "total_count": 100,
+      "avg_latency_ms": 242666.22242450714
+    },
+    "by_difficulty": {
+      "easy": {
+        "total": 100,
+        "correct": 57,
+        "accuracy": 0.57
+      }
+    }
+  }
+}

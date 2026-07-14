@@ -29,7 +29,6 @@ $RECYCLE.BIN/
 
 # data
 hrmcr/
-results*/
 evaluation_results/
 
 # 로컬 평가 실행 로그/셋업
@@ -40,3 +39,7 @@ models/
 
 # 실행 로그
 logs/
+
+# eval outputs: keep summary json, exclude bulky per-puzzle csv and logs
+results/**/*.csv
+results/**/log/

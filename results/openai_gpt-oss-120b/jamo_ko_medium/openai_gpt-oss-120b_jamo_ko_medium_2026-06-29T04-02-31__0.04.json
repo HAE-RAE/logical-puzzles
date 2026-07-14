@@ -1,0 +1,31 @@
+{
+  "metadata": {
+    "task": "jamo_ko_medium",
+    "model": "openai/gpt-oss-120b",
+    "timestamp": "2026-06-29T04-02-31",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "temperature": 0.6,
+      "max_tokens": 16384,
+      "top_p": 0.95,
+      "top_k": 20,
+      "enable_thinking": true
+    },
+    "gen_kwargs_cli": "temperature=0.6,max_tokens=16384,top_p=0.95,top_k=20,reasoning=on"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.04,
+      "correct_count": 4,
+      "total_count": 100,
+      "avg_latency_ms": 49054.1389298439
+    },
+    "by_difficulty": {
+      "medium": {
+        "total": 100,
+        "correct": 4,
+        "accuracy": 0.04
+      }
+    }
+  }
+}

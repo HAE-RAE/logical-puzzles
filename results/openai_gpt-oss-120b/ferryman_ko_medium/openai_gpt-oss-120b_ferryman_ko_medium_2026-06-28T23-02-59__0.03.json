@@ -1,0 +1,31 @@
+{
+  "metadata": {
+    "task": "ferryman_ko_medium",
+    "model": "openai/gpt-oss-120b",
+    "timestamp": "2026-06-28T23-02-59",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "temperature": 0.6,
+      "max_tokens": 16384,
+      "top_p": 0.95,
+      "top_k": 20,
+      "enable_thinking": true
+    },
+    "gen_kwargs_cli": "temperature=0.6,max_tokens=16384,top_p=0.95,top_k=20,reasoning=on"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.03,
+      "correct_count": 3,
+      "total_count": 100,
+      "avg_latency_ms": 69521.63419246674
+    },
+    "by_difficulty": {
+      "medium": {
+        "total": 100,
+        "correct": 3,
+        "accuracy": 0.03
+      }
+    }
+  }
+}
