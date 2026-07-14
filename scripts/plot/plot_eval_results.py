@@ -44,7 +44,8 @@ for r in rows:
 centers = {c: sum(xpos[i] for i, r in enumerate(rows) if r["category"] == c)
               / sum(1 for r in rows if r["category"] == c) for c in cats}
 
-fig, axes = plt.subplots(3, 1, figsize=(13, 9.2), dpi=150, sharex=True)
+width = max(13, 0.22 * len(rows) + 3)
+fig, axes = plt.subplots(3, 1, figsize=(width, 9.6), dpi=150, sharex=True)
 fig.patch.set_facecolor("white")
 
 def acc(r, key):
@@ -78,7 +79,8 @@ for ax, (mname, color) in zip(axes, MODELS):
             fontsize=10, color="#535a68", va="top")
 
 axes[-1].set_xticks([centers[c] for c in cats])
-axes[-1].set_xticklabels(cats, fontsize=9, color="#535a68")
+axes[-1].set_xticklabels(cats, fontsize=8.5, color="#535a68",
+                         rotation=40, ha="right")
 axes[-1].tick_params(axis="x", length=0)
 
 leg = [Patch(facecolor="#555", alpha=ALPHA[d], label=d) for d in ("easy", "medium", "hard")]
@@ -89,7 +91,8 @@ axes[0].legend(handles=leg, loc="upper right", fontsize=8.5, ncol=4,
 fig.suptitle("추론 퍼즐 벤치마크 — 태스크별 정확도  (태스크당 100문제, reasoning on)",
              fontsize=14, fontweight="bold", color="#131720", y=0.99)
 fig.text(0.5, 0.008,
-         "8개 유형 × 한/영 × easy·medium·hard = 45 tasks · 색 농도 = 난이도",
+         "색 농도 = 난이도(easy>medium>hard) · 빗금 = 미평가 · "
+         "gpt-oss만 전체 유형 평가(93), gemma·EXAONE는 8개 유형(45)만",
          ha="center", fontsize=9, color="#8b93a2")
 fig.tight_layout(rect=[0, 0.02, 1, 0.96])
 fig.savefig(OUT, format="jpg", dpi=150, facecolor="white", pil_kwargs={"quality": 92})
