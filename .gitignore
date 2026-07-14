@@ -40,6 +40,5 @@ models/
 # 실행 로그
 logs/
 
-# eval outputs: keep summary json, exclude bulky per-puzzle csv and logs
-results/**/*.csv
+# eval outputs: exclude only run logs (json+csv results are tracked)
 results/**/log/
