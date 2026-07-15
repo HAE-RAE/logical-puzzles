@@ -26,6 +26,7 @@ class EvaluationResult:
     latency_ms: float
     error: Optional[str] = None
     thinking_content: str = ""
+    finish_reason: str = ""
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -39,6 +40,7 @@ class EvaluationResult:
             "thinking_content": self.thinking_content,
             "latency_ms": self.latency_ms,
             "error": self.error,
+            "finish_reason": self.finish_reason,
         }
 
 
@@ -367,27 +369,34 @@ class BaseEvaluator(ABC):
                 raw_response=response,
                 latency_ms=latency_ms,
                 thinking_content=usage.get("thinking_content", "") if isinstance(usage, dict) else "",
+                finish_reason=usage.get("finish_reason", "") if isinstance(usage, dict) else "",
             )
         except Exception as e:
             # Error during response parsing/processing
-            return self._create_error_result(puzzle, response, latency_ms, str(e))
+            return self._create_error_result(
+                puzzle, response, latency_ms, str(e),
+                finish_reason=usage.get("finish_reason") or "error",
+            )
     
     def _create_error_result(
         self,
         puzzle: Dict[str, Any],
         response: str,
         latency_ms: float,
-        error: str
+        error: str,
+        finish_reason: str = "error"
     ) -> EvaluationResult:
         """
         Create error result
-        
+
         Args:
             puzzle: Puzzle data
             response: LLM response text (can be empty string on error)
             latency_ms: Response latency (milliseconds)
             error: Error message
-            
+            finish_reason: API finish_reason if the call succeeded but parsing failed;
+                defaults to "error" for failed calls (no response)
+
         Returns:
             EvaluationResult object (error state)
         """
@@ -400,7 +409,8 @@ class BaseEvaluator(ABC):
             predicted=None,
             raw_response=response if response else "",
             latency_ms=latency_ms,
-            error=error
+            error=error,
+            finish_reason=finish_reason
         )
     
     @abstractmethod

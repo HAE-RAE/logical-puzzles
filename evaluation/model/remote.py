@@ -40,11 +40,12 @@ def _openai_sse_parse_line(line: str) -> Optional[Dict]:
 
 def _openai_sse_accumulate_from_lines(
     lines: Any,
-) -> Tuple[str, str, Dict[str, Any]]:
-    """OpenAI-style chat completion SSE: accumulate content / reasoning, capture usage."""
+) -> Tuple[str, str, Dict[str, Any], str]:
+    """OpenAI-style chat completion SSE: accumulate content / reasoning, capture usage / finish_reason."""
     content_parts: List[str] = []
     thinking_parts: List[str] = []
     usage: Dict[str, Any] = {}
+    finish_reason = ""
 
     for line in lines:
         if line is None:
@@ -70,19 +71,23 @@ def _openai_sse_accumulate_from_lines(
             r = delta.get("reasoning_content") or delta.get("reasoning")
             if r:
                 thinking_parts.append(r)
+            fr = choice.get("finish_reason")
+            if fr:
+                finish_reason = str(fr)
 
     content = "".join(content_parts)
     thinking = "".join(thinking_parts)
-    return content, thinking, usage
+    return content, thinking, usage, finish_reason
 
 
 async def _openai_sse_accumulate_from_async_lines(
     lines: Any,
-) -> Tuple[str, str, Dict[str, Any]]:
+) -> Tuple[str, str, Dict[str, Any], str]:
     """동기 `accumulate`와 동일; aiohttp `readline` 등 async iterator용."""
     content_parts: List[str] = []
     thinking_parts: List[str] = []
     usage: Dict[str, Any] = {}
+    finish_reason = ""
 
     async for line in lines:
         if line is None:
@@ -108,10 +113,13 @@ async def _openai_sse_accumulate_from_async_lines(
             r = delta.get("reasoning_content") or delta.get("reasoning")
             if r:
                 thinking_parts.append(r)
+            fr = choice.get("finish_reason")
+            if fr:
+                finish_reason = str(fr)
 
     content = "".join(content_parts)
     thinking = "".join(thinking_parts)
-    return content, thinking, usage
+    return content, thinking, usage, finish_reason
 
 
 # 스크립트 등 외부에서 스트림 파싱 재사용 시 사용 (예: scripts/calltest_qwen.py)
@@ -161,6 +169,7 @@ class RemoteLLMClient(BaseLLMClient):
 
     @staticmethod
     def _parse_response(data: Dict, latency_ms: float) -> Tuple[str, Dict]:
+        finish_reason = data["choices"][0].get("finish_reason") or ""
         choice = data["choices"][0]["message"]
         content = choice.get("content", "") or ""
         # vLLM reasoning parser는 버전에 따라 `reasoning_content` 또는 `reasoning` 필드로 반환.
@@ -184,6 +193,7 @@ class RemoteLLMClient(BaseLLMClient):
                 "latency_ms": latency_ms,
                 "tokens": tokens,
                 "thinking_content": thinking,
+                "finish_reason": str(finish_reason),
             },
         )
 
@@ -205,7 +215,7 @@ class RemoteLLMClient(BaseLLMClient):
         self, resp: http_requests.Response, start: float
     ) -> Tuple[str, Dict]:
         resp.raise_for_status()
-        content, thinking, usage = _openai_sse_accumulate_from_lines(
+        content, thinking, usage, finish_reason = _openai_sse_accumulate_from_lines(
             resp.iter_lines(decode_unicode=True)
         )
         content, thinking = self._finalize_stream_texts(content, thinking)
@@ -219,6 +229,7 @@ class RemoteLLMClient(BaseLLMClient):
                 "latency_ms": latency_ms,
                 "tokens": tokens,
                 "thinking_content": thinking,
+                "finish_reason": finish_reason,
             },
         )
 
@@ -276,7 +287,7 @@ class RemoteLLMClient(BaseLLMClient):
                                     yield raw.decode("utf-8", errors="replace")
 
                             resp.raise_for_status()
-                            content, thinking, usage = await _openai_sse_accumulate_from_async_lines(
+                            content, thinking, usage, finish_reason = await _openai_sse_accumulate_from_async_lines(
                                 _line_iter()
                             )
                             content, thinking = self._finalize_stream_texts(content, thinking)
@@ -289,6 +300,7 @@ class RemoteLLMClient(BaseLLMClient):
                                     "latency_ms": (time.time() - start) * 1000,
                                     "tokens": tokens,
                                     "thinking_content": thinking,
+                                    "finish_reason": finish_reason,
                                 },
                             )
                         resp.raise_for_status()

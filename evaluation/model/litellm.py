@@ -89,16 +89,19 @@ class LiteLLMClient(BaseLLMClient):
         return LiteLLMClient._finalize_thinking_from_content(content, thinking)
 
     def _extract_response(self, response, latency_ms: float) -> Tuple[str, Dict]:
-        message = response.choices[0].message
+        choice = response.choices[0]
+        message = choice.message
         content, thinking = self._message_content_and_thinking(message)
         usage = getattr(response, "usage", None)
         tokens = getattr(usage, "total_tokens", 0) if usage is not None else 0
+        finish_reason = getattr(choice, "finish_reason", None) or ""
         return (
             content,
             {
                 "latency_ms": latency_ms,
                 "tokens": tokens or 0,
                 "thinking_content": thinking,
+                "finish_reason": str(finish_reason),
             },
         )
 

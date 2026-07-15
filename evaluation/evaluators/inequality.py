@@ -220,6 +220,10 @@ Answer: <왼쪽에서 오른쪽>
                 raw_response=response,
                 latency_ms=latency_ms,
                 thinking_content=usage.get("thinking_content", "") if isinstance(usage, dict) else "",
+                finish_reason=usage.get("finish_reason", "") if isinstance(usage, dict) else "",
             )
         except Exception as e:
-            return self._create_error_result(puzzle, response, latency_ms, str(e))
+            return self._create_error_result(
+                puzzle, response, latency_ms, str(e),
+                finish_reason=usage.get("finish_reason") or "error",
+            )

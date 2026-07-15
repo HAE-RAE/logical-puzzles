@@ -112,12 +112,13 @@ class ResultHandler:
                 "resps": result.raw_response,
                 "filtered_resps": str(result.predicted) if result.predicted is not None else "",  # Regex-extracted result
                 "exact_match": 1 if result.correct else 0,
-                "difficulty": result.difficulty
+                "difficulty": result.difficulty,
+                "finish_reason": result.finish_reason
             }
             rows.append(row)
 
         if rows:
-            fieldnames = ["id", "question", "answer", "thinking_content", "resps", "filtered_resps", "exact_match", "difficulty"]
+            fieldnames = ["id", "question", "answer", "thinking_content", "resps", "filtered_resps", "exact_match", "difficulty", "finish_reason"]
             with open(filepath, "w", encoding="utf-8", newline="") as f:
                 writer = csv.DictWriter(f, fieldnames=fieldnames)
                 writer.writeheader()
@@ -162,7 +163,8 @@ class ResultHandler:
                     "accuracy": summary["accuracy"],
                     "correct_count": summary["correct_count"],
                     "total_count": summary["total_count"],
-                    "avg_latency_ms": summary["avg_latency_ms"]
+                    "avg_latency_ms": summary["avg_latency_ms"],
+                    "finish_reason_counts": summary["finish_reason_counts"]
                 },
                 "by_difficulty": summary["by_difficulty"]
             }
@@ -213,7 +215,17 @@ class ResultHandler:
         
         # Error statistics
         errors = [r.error for r in results if r.error]
-        
+
+        # finish_reason distribution (e.g. {"stop": 95, "length": 3, "error": 2})
+        # empty finish_reason (provider did not report one) is counted as "unknown"
+        finish_reason_counts: Dict[str, int] = {}
+        for r in results:
+            reason = getattr(r, "finish_reason", "") or "unknown"
+            finish_reason_counts[reason] = finish_reason_counts.get(reason, 0) + 1
+        finish_reason_counts = dict(
+            sorted(finish_reason_counts.items(), key=lambda kv: (-kv[1], kv[0]))
+        )
+
         return {
             "accuracy": correct / total if total > 0 else 0,
             "correct_count": correct,
@@ -221,6 +233,7 @@ class ResultHandler:
             "avg_latency_ms": avg_latency,
             "by_difficulty": by_difficulty,
             "error_count": len(errors),
+            "finish_reason_counts": finish_reason_counts,
         }
     
     def load(self, filepath: Path) -> Dict[str, Any]:
