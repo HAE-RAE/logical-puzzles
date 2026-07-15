@@ -1,0 +1,31 @@
+{
+  "metadata": {
+    "task": "causal_dag_ko_easy",
+    "model": "openai/gpt-oss-120b",
+    "timestamp": "2026-07-15T01-06-56",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "temperature": 0.6,
+      "max_tokens": 100000,
+      "top_p": 0.95,
+      "top_k": 20,
+      "reasoning_effort": "medium"
+    },
+    "gen_kwargs_cli": "temperature=0.6,max_tokens=100000,top_p=0.95,top_k=20,reasoning_effort=medium"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.7,
+      "correct_count": 70,
+      "total_count": 100,
+      "avg_latency_ms": 111820.86462974548
+    },
+    "by_difficulty": {
+      "easy": {
+        "total": 100,
+        "correct": 70,
+        "accuracy": 0.7
+      }
+    }
+  }
+}
