@@ -233,6 +233,8 @@ The evaluation system supports two model routers:
 - **liteLLM**: Call cloud APIs (Gemini, OpenAI, Anthropic, etc.) via liteLLM library
 - **remote**: Call a self-hosted server (e.g. vLLM on Colab) via OpenAI-compatible API
 
+Per-model generation parameters (sampling, reasoning effort, max_tokens) for the full evaluation fleet are documented in [`run/eval/model_configs.yaml`](run/eval/model_configs.yaml) — the single source of truth for experiment configs.
+
 **liteLLM mode (cloud APIs):**
 
 ```bash

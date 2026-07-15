@@ -1,0 +1,223 @@
+# =============================================================================
+# 크로스모델 평가 파라미터 설정 (single source of truth)
+# =============================================================================
+# 작성: 2026-07-15 (논문용 본 실험 모델 fleet)
+#
+# 정책:
+#   - sampling(temperature/top_p/top_k 등): 각 모델이 배포한 설정을 따른다.
+#     우선순위 = HF repo generation_config.json > 모델카드 README 권장값
+#     > 프로바이더 공식 레퍼런스. reasoning API 모델은 temperature 미전송.
+#   - reasoning effort: 지원하는 모델은 전부 "medium"으로 통일
+#     (캘리브레이션 기준인 gemini-3-flash-preview thinking=medium과 정렬).
+#     effort 민감도는 별도 ablation으로 다룬다.
+#   - max_tokens: 전 모델 32768 통일. 단 컨텍스트 32k 모델(Midm-2.0,
+#     EXAONE-3.5)은 14336 (전 데이터셋 최장 프롬프트 17,862 tokens과 합산해도
+#     32,768 이내 — 실측: array_formula_en_medium, 두 모델 토크나이저 기준).
+#   - truncation: finish_reason 기반 truncation rate를 태스크×난이도별 집계,
+#     유의한 셀은 결과표에 각주 처리.
+#
+# gen_kwargs 필드는 evaluation/run.py --gen-kwargs 에 그대로 넣는 문자열.
+# =============================================================================
+
+meta:
+  max_prompt_tokens_measured: 17862   # array_formula_en_medium 최장 문항 (EXAONE-3.5 tokenizer)
+  unified_max_tokens: 32768
+  small_ctx_max_tokens: 14336         # ctx 32k 모델용 (17862 + 14336 = 32198 < 32768)
+  reasoning_effort_policy: medium     # effort 지원 모델 공통 (메인 테이블 확정, 2026-07-15)
+  cost_policy: >
+    프론티어 API는 Batch API 사용 (OpenAI/Anthropic/Gemini 50% 할인, 레이턴시 무관.
+    xAI는 배치 미지원 → 실시간). 예산 부족 시 프론티어만 tier당 서브샘플 + Wilson CI.
+  retrieved: "2026-07-15"
+
+# effort 민감도 ablation (메인 테이블과 별도):
+#   - 대상: claude-opus-4-8, gpt-5.5 (2개 모델)
+#   - 조건: {none 또는 최저 effort, medium, high} — "no-reasoning"은 여기의 최저 셀로만 다룸
+#     (메인 조건 불가 사유: gemini-3.1-pro는 thinking off 불가, 프로바이더별 디폴트가
+#      medium/high/low/off로 제각각이라 "디폴트" 조건은 비교 불성립)
+#   - 범위: 대표 태스크 5-6개 서브셋 × 3 tier
+ablation:
+  effort_sweep:
+    models: [claude-opus-4.8, gpt-5.5]
+    efforts: [minimal_or_none, medium, high]
+    scope: "대표 태스크 5-6개 × easy/medium/hard"
+
+# -----------------------------------------------------------------------------
+# 0. 캘리브레이션 기준 모델 (난이도 밴드의 정의 그 자체 — 변경 금지)
+# -----------------------------------------------------------------------------
+calibration_reference:
+  gemini-3-flash-preview:
+    model: gemini/gemini-3-flash-preview
+    router: litellm
+    env_key: GEMINI_API_KEY
+    gen_kwargs: "temperature=1.0,max_tokens=32768,top_p=0.95,top_k=64,reasoning_effort=medium"
+    note: >
+      난이도 밴드(easy 65-85 / medium 40-60 / hard 15-35)는 이 설정에서의
+      실측 정답률로 정의됨. 이 config는 벤치마크 스펙의 일부이므로 고정.
+      (run/eval/eval_litellm.sh 의 기존 설정과 동일)
+
+# -----------------------------------------------------------------------------
+# 1. 프론티어 API 모델 (각 프로바이더 네이티브 API, liteLLM 경유)
+#    공통: reasoning 모델이므로 temperature/top_p 미전송 (Claude/GPT는 보내면 400)
+# -----------------------------------------------------------------------------
+api_models:
+  claude-opus-4.8:
+    model: anthropic/claude-opus-4-8
+    router: litellm
+    env_key: ANTHROPIC_API_KEY
+    context_window: 1000000
+    max_output_cap: 128000
+    gen_kwargs: "max_tokens=32768,reasoning_effort=medium"
+    sampling_note: "temperature/top_p/top_k는 API에서 제거됨 — 전송 시 400"
+    reasoning_note: >
+      Opus 4.8은 thinking 파라미터를 생략하면 thinking OFF로 동작.
+      reasoning_effort=medium이 liteLLM에서 adaptive thinking + effort로
+      매핑되는지 calltest로 반드시 검증할 것 (매핑 실패 시 에러가 아니라
+      조용히 thinking off — 성능만 떨어져서 놓치기 쉬움).
+      네이티브 파라미터: thinking={type: adaptive}, output_config={effort: medium}
+    source: "Anthropic API reference (claude-api skill, 2026-06)"
+
+  gpt-5.5:
+    model: openai/gpt-5.5
+    router: litellm
+    env_key: OPENAI_API_KEY
+    context_window: 1050000
+    max_output_cap: 128000
+    gen_kwargs: "max_tokens=32768,reasoning_effort=medium"
+    sampling_note: "reasoning 모델 — temperature 미지원(400). max_tokens는 liteLLM이 max_completion_tokens로 변환"
+    reasoning_note: "reasoning_effort: none/low/medium(디폴트)/high/xhigh — medium은 디폴트와 동일"
+    source: "https://developers.openai.com/api/docs/models/gpt-5.5"
+
+  gemini-3.1-pro-preview:
+    model: gemini/gemini-3.1-pro-preview
+    router: litellm
+    env_key: GEMINI_API_KEY
+    context_window: 1000000
+    gen_kwargs: "temperature=1.0,max_tokens=32768,reasoning_effort=medium"
+    sampling_note: "temperature는 디폴트 1.0 고정 — Google이 변경 시 루핑/성능저하 경고"
+    reasoning_note: "thinking_level: low/medium(3.1 신규)/high(디폴트) — reasoning_effort→thinking_level 매핑 calltest 검증"
+    source: "https://ai.google.dev/gemini-api/docs/gemini-3"
+
+  grok-4.3:
+    model: xai/grok-4.3
+    router: litellm
+    env_key: XAI_API_KEY
+    context_window: 1000000
+    gen_kwargs: "max_tokens=32768,reasoning_effort=medium"
+    sampling_note: "temperature 지원(0-2)하나 디폴트 유지(미전송). presence/frequency_penalty·stop은 reasoning과 함께 쓰면 에러"
+    reasoning_note: "effort: none/low(디폴트)/medium/high — baseline reasoning 항상 on"
+    source: "https://docs.x.ai/developers/model-capabilities/text/reasoning"
+
+# -----------------------------------------------------------------------------
+# 2. 오픈 모델 (로컬 vLLM, remote router)
+#    sampling = 각 repo 배포 설정 (출처: source 필드)
+#    vLLM --max-model-len: 128k+ 모델은 >= 51200 (최장 프롬프트 ~18k + 출력 32768),
+#    ctx 32k 모델(Midm, EXAONE-3.5)은 32768 풀로.
+# -----------------------------------------------------------------------------
+open_models:
+  Qwen3.5-9B:
+    model: Qwen/Qwen3.5-9B          # 접미사 없는 리포가 포스트트레이닝 모델 (-Instruct 변형 없음)
+    router: remote
+    context_window: 262144
+    thinking: on                     # 하이브리드 — thinking 모드로 평가
+    gen_kwargs: "temperature=1.0,top_p=0.95,top_k=20,presence_penalty=1.5,max_tokens=32768"
+    source: "README (thinking mode, general tasks) — generation_config 없음"
+    note: "presence_penalty=1.5는 thinking 반복 루프 방지 권장값 — 빼먹지 말 것"
+
+  Qwen3.5-27B:
+    model: Qwen/Qwen3.5-27B
+    router: remote
+    context_window: 262144
+    thinking: on
+    gen_kwargs: "temperature=0.6,top_p=0.95,top_k=20,max_tokens=32768"
+    source: "generation_config.json"
+
+  Qwen3.5-397B-A17B:
+    model: Qwen/Qwen3.5-397B-A17B
+    router: remote
+    context_window: 262144
+    thinking: on
+    gen_kwargs: "temperature=0.6,top_p=0.95,top_k=20,max_tokens=32768"
+    source: "generation_config.json"
+
+  gemma-4-31b-it:
+    model: google/gemma-4-31b-it
+    router: remote
+    context_window: 262144
+    gen_kwargs: "temperature=1.0,top_p=0.95,top_k=64,max_tokens=32768"
+    source: "generation_config.json"
+    note: "파일럿은 temp 0.6으로 돌았음 — 본 실험은 배포 설정(1.0)으로 재실행"
+
+  gpt-oss-120b:
+    model: openai/gpt-oss-120b
+    router: remote
+    context_window: 131072
+    thinking: on
+    gen_kwargs: "temperature=1.0,top_p=1.0,max_tokens=32768"
+    source: "OpenAI reference implementation (repo generation_config에 샘플링 값 없음)"
+    note: "파일럿(93 variant 완주)은 temp 0.6 — 본 실험 1.0 재실행 or 각주"
+
+  DeepSeek-V4-Flash:
+    model: deepseek-ai/DeepSeek-V4-Flash
+    router: remote
+    context_window: 1048576
+    thinking: on
+    gen_kwargs: "temperature=1.0,top_p=1.0,max_tokens=32768"
+    source: "generation_config.json"
+
+  Llama-3.1-8B-Instruct:
+    model: meta-llama/Llama-3.1-8B-Instruct
+    router: remote
+    context_window: 131072
+    gen_kwargs: "temperature=0.6,top_p=0.9,max_tokens=32768"
+    source: "generation_config.json (gated repo — 공개 스펙)"
+
+  Llama-4-Maverick:
+    model: meta-llama/Llama-4-Maverick
+    router: remote
+    context_window: 1048576
+    gen_kwargs: "temperature=0.6,top_p=0.9,max_tokens=32768"
+    source: "generation_config.json (gated repo — 공개 스펙)"
+
+  EXAONE-4.0-32B:
+    model: LGAI-EXAONE/EXAONE-4.0-32B
+    router: remote
+    context_window: 131072
+    thinking: on                     # reasoning 모드로 평가
+    gen_kwargs: "temperature=0.6,top_p=0.95,max_tokens=32768"
+    source: "README (reasoning mode 예제; non-reasoning은 greedy)"
+
+  EXAONE-3.5-7.8B-Instruct:
+    model: LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct   # 리포명에 -Instruct 필수
+    router: remote
+    context_window: 32768
+    gen_kwargs: "temperature=0.0,max_tokens=14336"
+    source: "README 공식 예제 (do_sample=False → greedy)"
+    note: "ctx 32k → max_tokens 14336. vLLM --max-model-len 32768"
+
+  Solar-Open-100B:
+    model: upstage/Solar-Open-100B
+    router: remote
+    context_window: 131072
+    gen_kwargs: "temperature=0.8,top_p=0.95,max_tokens=32768"
+    source: "generation_config.json"
+
+  Midm-2.0-Base-Instruct:
+    model: K-intelligence/Midm-2.0-Base-Instruct
+    router: remote
+    context_window: 32768
+    gen_kwargs: "temperature=0.8,top_p=0.7,top_k=20,repetition_penalty=1.05,max_tokens=14336"
+    source: "generation_config.json"
+    note: "ctx 32k → max_tokens 14336. vLLM --max-model-len 32768"
+
+# -----------------------------------------------------------------------------
+# 3. 제외 모델 (기록용)
+# -----------------------------------------------------------------------------
+excluded_models:
+  SOLAR-10.7B-Instruct-v1.0:
+    model: upstage/SOLAR-10.7B-Instruct-v1.0
+    context_window: 4096
+    reason: "ctx 4k — 상당수 문항이 프롬프트조차 안 들어감 (95p 프롬프트 ~4-7k tokens). 점수가 추론이 아닌 입력 잘림을 측정하게 됨"
+  solar-pro-preview-instruct:
+    model: upstage/solar-pro-preview-instruct
+    context_window: 4096
+    reason: "동일 — ctx 4k. Upstage 대표는 Solar-Open-100B로 커버"

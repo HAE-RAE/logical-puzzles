@@ -17,15 +17,22 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 cd "$PROJECT_ROOT"
 
 # ============ 평가할 상용 모델들 ============
-# 형식: "litellm_model_string|||gen_kwargs"
-# 4개 모델 전부 OpenRouter 경유 (OPENROUTER_API_KEY 사용). reasoning_effort=medium 통일.
-# - reasoning 계열이라 temperature/top_p/top_k는 무시되거나 거부될 수 있어 제외.
-MODELS=(
-    "openrouter/openai/gpt-5.5|||max_tokens=32768,reasoning_effort=medium"
-    "openrouter/anthropic/claude-opus-4.8|||max_tokens=32768,reasoning_effort=medium"
-    "openrouter/google/gemini-3.1-pro-preview|||max_tokens=32768,reasoning_effort=medium"
-    "openrouter/x-ai/grok-4.3|||max_tokens=32768,reasoning_effort=medium"
-)
+# 모델·파라미터는 run/eval/model_configs.yaml 이 single source of truth.
+# 여기서 직접 수정하지 말고 YAML을 고칠 것.
+# 그룹 선택: 인자로 넘기면 해당 그룹만 (기본: api_models)
+#   bash run/eval/eval_litellm_multimodel.sh api_models
+#   bash run/eval/eval_litellm_multimodel.sh calibration_reference api_models
+GROUPS=("${@:-api_models}")
+
+MODELS=()
+while IFS= read -r line; do
+    MODELS+=("$line")
+done < <(python "$SCRIPT_DIR/get_model_config.py" --entries "${GROUPS[@]}")
+
+if [ ${#MODELS[@]} -eq 0 ]; then
+    echo -e "${RED}model_configs.yaml에서 모델을 못 읽음 (그룹: ${GROUPS[*]})${NC}"
+    exit 1
+fi
 # =============================================
 
 MAX_PARALLEL=5          # 모델 1개 안에서 동시에 돌릴 task 수
@@ -112,7 +119,17 @@ GLOBAL_START=$(date +%s)
 
 for entry in "${MODELS[@]}"; do
     MODEL="${entry%%|||*}"
-    GEN_KWARGS="${entry##*|||}"
+    rest="${entry#*|||}"
+    GEN_KWARGS="${rest%%|||*}"
+    ENV_KEY="${rest##*|||}"
+
+    # API 키 존재 확인 (셸 env 또는 .env) — 없으면 그 모델만 건너뜀
+    if [ -n "$ENV_KEY" ] && [ -z "${!ENV_KEY}" ] \
+        && ! grep -q "^${ENV_KEY}=." "$PROJECT_ROOT/.env" 2>/dev/null; then
+        echo -e "${RED}SKIP $MODEL — $ENV_KEY 미설정 (셸 env / .env 확인)${NC}"
+        continue
+    fi
+
     MODEL_DIR_NAME="${MODEL//\//_}"
     LOG_DIR="$PROJECT_ROOT/results/$MODEL_DIR_NAME/log"
     mkdir -p "$LOG_DIR"
