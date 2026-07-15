@@ -82,6 +82,7 @@ Multimodal problem combining family photo images and dialogue clues to identify 
 - **Visual Feature Mapping**: Distinguish people using 3 features: clothing color, position, appearance
 - **Multiple Choice Format**: 1 correct answer + 3 distractors (inducing visual confusion)
 - **Multimodal Reasoning**: Understand dialogue context → Search image → Connect relationship chain
+- **Data Status**: generation script only (`generation/kinship_vision.py`); no dataset in `data/` yet (sample assets in `evaluation/eval_data/kinship_vision/`)
 
 ### 10. Logic Grid (EN / KO)
 Constraint-based logical reasoning problem famous as Einstein's Riddle. Infer relationships among multiple people and attributes from constraint conditions.
@@ -130,7 +131,17 @@ NP-complete problem of finding value combinations that satisfy given logical exp
 - **Symmetry Support**: Improve aesthetic quality with rotation/reflection symmetry
 - **Reproducible**: Regenerate identical puzzles with fixed seeds
 
-### 15. Yacht Dice (EN / KO)
+### 15. Water Jug (EN / KO)
+Classic water pouring puzzle. Measure exactly the target amount using jugs of fixed capacities, and answer the minimum number of operations.
+
+- **Scripts**: `generation/water_jug_en.py`, `generation/water_jug_ko.py`
+- **Three Operations**: Fill a jug, empty a jug, pour until the source empties or the target fills
+- **BFS Ground Truth**: Minimum operation count guaranteed by breadth-first search
+- **Planning & Search**: Requires state-space search, not pattern matching
+- **Data Status**: 213 items per language in `data/csv/` only; JSONL splits currently live in `backups/data/`
+- **Details**: see `docs/kor/readme_for_water_jug_ko.md`
+
+### 16. Yacht Dice (EN / KO)
 Combinatorial optimization problem of optimally assigning 12 dice results to 12 categories to maximize total score.
 
 - **Scripts**: `generation/yacht_dice_en.py`, `generation/yacht_dice_ko.py`
@@ -140,7 +151,7 @@ Combinatorial optimization problem of optimally assigning 12 dice results to 12 
 - **Various Rule Modifications**: Support changes to bonus, scores, optimization objectives
 - **Complex Scoring Rules**: Evaluate LLM's rule understanding and optimization ability
 
-### 16. Saju — Four Pillars / Manseryeok (KO)
+### 17. Saju — Four Pillars / Manseryeok (KO)
 Korea-specific 사주(四柱) almanac task (nation-specific, KO-only like Kinship). Given a birth date/time, compute the sexagenary (60갑자) pillars: 연주(year), 월주(month), 일주(day), 시주(hour).
 
 - **Scripts**: `generation/saju_ko.py`
@@ -148,13 +159,37 @@ Korea-specific 사주(四柱) almanac task (nation-specific, KO-only like Kinshi
 - **Difficulty from Knowledge the Model Lacks**: 일주/일진(day pillar) and 시주(hour pillar) require memorized almanac data that frontier models cannot reconstruct by reasoning → naturally lands in the hard band (~24% for gemini-3-flash-preview, thinking medium)
 - **Deterministic Ground Truth**: 절기 via solar longitude (`ephem`, verified against KASI), 일주 cross-checked with `korean_lunar_calendar`
 
-### 17. Jamo Composition (KO)
+### 18. Jamo Composition (KO)
 Korean-script structure task (nation-specific, KO-only). Decompose each 한글 syllable into 초성/중성/종성, shift the 초성 by a fixed number of positions, and recompose. Difficulty comes from 한글's syllable-block composition (including 겹받침), which has no English equivalent — a translated version collapses to a trivial Caesar shift.
 
 - **Scripts**: `generation/jamo_ko.py`
 - **Korean-script-dependent (not cultural)**: rules are given in the prompt; the challenge is correct decomposition/recomposition of 한글 blocks (초성·중성·종성, 겹받침)
 - **Difficulty from script structure (not length)**: the 받침(종성) handling is the knob. easy = 2 syllables, light 받침; medium = 2 syllables, single 받침; hard = 3 syllables with 겹받침. All three tiers land in-band for gemini-3-flash-preview (thinking medium): easy ~80% / medium ~45% / hard ~20%
 - **Deterministic Ground Truth**: pure Unicode composition (`0xAC00 + (초성×21+중성)×28+종성`); no lexical ambiguity, no external dependency
+
+### 19. Time — Korean Calendar Reasoning (KO)
+Korea-specific date reasoning task (KO-only). Starting from a Korean holiday anchor (새해 첫날, 어린이날, 식목일, ...) and a relative-day expression (금일/명일/모레, ...), compute an offset date.
+
+- **Scripts**: `generation/time_ko.py`
+- **Language + Calendar Fusion**: Korean relative-day vocabulary and holiday knowledge combined with date arithmetic
+- **Answer Formats**: Gregorian date (`YYYY.M.D`) or the day's 일진(60갑자) depending on the variant
+- **Deterministic Ground Truth**: pure calendar computation
+
+### 20. Korean Units (KO)
+Traditional Korean measurement-unit conversion task (KO-only). Convert mixed-unit quantities (e.g. 결·정보·마지기·단·평) to a base unit using a conversion table given in the prompt, then compute a weighted signed sum.
+
+- **Scripts**: `generation/korean_units_ko.py`
+- **Unit Families**: area (평/단/마지기/정보/결), volume (되/말/섬), length (푼/치/자/장), weight (돈/냥/근/관)
+- **Randomized Rates**: conversion values are generated per problem — the table in the prompt is the only valid source, blocking memorized-knowledge shortcuts
+- **Multi-step Arithmetic**: unit conversion → per-item multiplier → signed aggregation
+
+### 21. Subway (KO)
+Seoul metro route inference. Answer the minimum number of stations between two stations (KO dataset only in `data/`; an EN generator with romanized station names exists).
+
+- **Scripts**: `generation/subway_ko.py`, `generation/subway_en.py`
+- **Two Variants**: the current dataset in `data/` is the **knowledge-based** variant (only lines and terminal stations are given — station-order/transfer knowledge of the 2023 Seoul network is required); the generator script produces the **self-contained** variant (full line map included in the prompt)
+- **BFS Ground Truth**: minimum station count via unweighted shortest path on the internal network graph
+- **Details**: see `docs/kor/readme_for_subway_ko.md`
 
 
 ## Installation
@@ -182,7 +217,7 @@ cp .env.example .env
 
 ```bash
 # Generate all puzzles
-bash scripts/gen_data.sh
+bash run/generate/gen_data.sh
 
 # Generate specific puzzle type
 python generation/kinship.py --num 100
@@ -223,23 +258,23 @@ python evaluation/run.py \
 
 | Script | Mode | Execution |
 |--------|------|-----------|
-| `eval_litellm.sh` | liteLLM | Sequential |
-| `eval_litellm_parallel.sh` | liteLLM | Parallel (5 concurrent) |
-| `eval_remote.sh` | Remote | Sequential |
-| `eval_remote_parallel.sh` | Remote | Parallel (5 concurrent) |
+| `run/eval/eval_litellm.sh` | liteLLM | Sequential |
+| `run/eval/eval_litellm_parallel.sh` | liteLLM | Parallel (5 concurrent) |
+| `run/eval/eval_remote.sh` | Remote | Sequential |
+| `run/eval/eval_remote_parallel.sh` | Remote | Parallel (5 concurrent) |
 
 ```bash
-bash scripts/eval_litellm_parallel.sh   # liteLLM (Gemini, etc.)
-bash scripts/eval_remote_parallel.sh    # Remote (Colab vLLM, etc.)
+bash run/eval/eval_litellm_parallel.sh   # liteLLM (Gemini, etc.)
+bash run/eval/eval_remote_parallel.sh    # Remote (Colab vLLM, etc.)
 ```
 
 **Monitoring & Visualization:**
 
 ```bash
-bash scripts/monitor.sh              # Monitor running evaluations
-bash scripts/monitor.sh detailed     # Detailed view
+bash run/monitor/monitor.sh              # Monitor running evaluations
+bash run/monitor/monitor.sh detailed     # Detailed view
 
-jupyter notebook scripts/viz_results.ipynb   # Visualize results
+jupyter notebook scripts/plot/viz_results.ipynb   # Visualize results
 ```
 
 See [docs/eng/evaluation.md](docs/eng/evaluation.md) for detailed usage.
@@ -247,8 +282,10 @@ See [docs/eng/evaluation.md](docs/eng/evaluation.md) for detailed usage.
 ## Data Format
 All puzzles are stored in two formats:
 
-- **CSV**: `data/csv/{puzzle_name}.csv` - Easy to view in spreadsheets
-- **JSONL**: `data/jsonl/{puzzle_name}.jsonl` - Easy to process programmatically
+- **CSV**: `data/csv/{puzzle_name}.csv` - All difficulties in one file, easy to view in spreadsheets
+- **JSONL**: `data/jsonl/{puzzle_name}_{difficulty}.jsonl` - Split by difficulty (`easy` / `medium` / `hard`), easy to process programmatically
+
+**Dataset Size:** 100 items per difficulty → 300 items per task. (Exception: `water_jug` has 213 items per language, CSV only — its JSONL splits are in `backups/data/`.)
 
 **Common Fields:**
 - `id`: Unique identifier
@@ -262,27 +299,23 @@ All puzzles are stored in two formats:
 
 ```
 logical-puzzles/
-├── data/                       # Generated datasets (gitignored)
-│   ├── csv/
-│   └── jsonl/
+├── backups/                    # Old generator versions & data snapshots
+│
+├── data/                       # Generated datasets (tracked in git)
+│   ├── accuracy/               # accuracy_per_task.json (per-task/difficulty accuracy)
+│   ├── csv/                    # {puzzle_name}.csv
+│   └── jsonl/                  # {puzzle_name}_{difficulty}.jsonl
 │
 ├── docs/                       # Documentation
-│   ├── README.md
-│   ├── evaluation.md
-│   ├── generation.md
-│   └── puzzles/
-│       ├── array_formula.md
-│       └── YACHT_DICE_USAGE.md
+│   ├── eng/                    # English docs (generation.md, evaluation.md)
+│   ├── kor/                    # Korean docs incl. per-task design docs
+│   └── methodology/            # Difficulty calibration & analysis docs
 │
 ├── evaluation/                 # Unified evaluation system
 │   ├── core/
 │   │   ├── base.py
 │   │   └── result_handler.py
-│   ├── model/                  # LLM client package
-│   │   ├── __init__.py         # create_client() factory
-│   │   ├── base.py             # BaseLLMClient (ABC)
-│   │   ├── litellm.py          # LiteLLMClient
-│   │   └── remote.py           # RemoteLLMClient (OpenAI-compatible)
+│   ├── eval_data/              # Static eval assets (e.g. kinship_vision image)
 │   ├── evaluators/
 │   │   ├── cipher.py
 │   │   ├── ferryman.py
@@ -290,39 +323,48 @@ logical-puzzles/
 │   │   ├── kinship.py
 │   │   └── ... (more evaluators)
 │   ├── legacy/                 # Legacy evaluation scripts (deprecated)
-│   └── run.py
+│   ├── model/                  # LLM client package
+│   │   ├── __init__.py         # create_client() factory
+│   │   ├── base.py             # BaseLLMClient (ABC)
+│   │   ├── litellm.py          # LiteLLMClient
+│   │   └── remote.py           # RemoteLLMClient (OpenAI-compatible)
+│   ├── run.py
+│   └── task_names.py
 │
 ├── generation/                 # Puzzle generation scripts
 │   ├── array_formula_en.py
 │   ├── array_formula_ko.py
 │   ├── causal_dag_en.py
 │   ├── causal_dag_ko.py
-│   ├── cryptarithmetic_en.py
-│   ├── cryptarithmetic_ko.py
-│   ├── ferryman_en.py
-│   ├── ferryman_ko.py
-│   ├── hanoi_en.py
-│   ├── hanoi_ko.py
 │   └── ...
 │
-├── results/                    # Evaluation results (gitignored)
+├── reports/                    # Aggregated evaluation reports
+│
+├── results/                    # Evaluation results (tracked; run logs gitignored)
 │   └── {model_name}/
-│       └── {task_name}/
+│       └── {task_name}_{difficulty}/
 │           ├── {model}_{task}_{timestamp}__{accuracy}.csv
 │           └── {model}_{task}_{timestamp}__{accuracy}.json
 │
-├── scripts/
-│   ├── gen_data.sh              # Generate all puzzles
-│   ├── eval_litellm.sh          # liteLLM evaluation (sequential)
-│   ├── eval_litellm_parallel.sh # liteLLM evaluation (parallel)
-│   ├── eval_remote.sh           # Remote evaluation (sequential)
-│   ├── eval_remote_parallel.sh  # Remote evaluation (parallel)
-│   ├── calltest.py              # API connection smoke test
-│   ├── qwen_baseline.ipynb      # Colab vLLM server for Qwen baseline
-│   ├── monitor.sh               # Monitor running evaluations
-│   └── viz_results.ipynb        # Result visualization notebook
+├── run/                        # Executable shell scripts
+│   ├── generate/               # gen_data.sh, gen_data_by_difficulty.sh, ...
+│   ├── eval/                   # eval_litellm.sh, eval_remote.sh, ...
+│   ├── monitor/                # monitor.sh
+│   └── pipeline/               # Distillation / training pipelines
+│
+├── scripts/                    # Python utilities
+│   ├── _lib/                   # Shared helpers (io, parsing, paths, ...)
+│   ├── analysis/               # Accuracy / search-space analysis
+│   ├── calltest/               # API connection smoke tests
+│   ├── distill/                # Distillation data pipeline
+│   ├── eval/                   # Ad-hoc eval utilities
+│   ├── gen/                    # Data post-processing (split, csv convert, ...)
+│   ├── plot/                   # viz_results.ipynb, qwen_baseline.ipynb, plots
+│   └── train/                  # SFT / GRPO training scripts
 │
 ├── validators/
+│   ├── audit_uniqueness.py
+│   ├── check_logic_grid_uniqueness.py
 │   ├── verify_logic_grid.py
 │   └── verify_sat.py
 │
@@ -341,10 +383,12 @@ Results are saved in `results/` directory with the following structure:
 ```
 results/
 └── {model_name}/
-    └── {task_name}/
+    └── {task_name}_{difficulty}/
         ├── {model}_{task}_{timestamp}__{accuracy}.csv  # Detailed results
-        └── {model}_{task}_{timestamp}__{accuracy}.json  # Summary by difficulty
+        └── {model}_{task}_{timestamp}__{accuracy}.json  # Summary
 ```
+
+Aggregated cross-model reports live in `reports/`, and a per-task accuracy summary is kept at `data/accuracy/accuracy_per_task.json`.
 
 ## Adding New Puzzles
 
@@ -363,10 +407,10 @@ evaluation/evaluators/{puzzle_name}.py # Evaluator (for unified system)
 
 ## Notes
 
-- The `data/` and `results/` directories are gitignored and stored locally only
+- The `data/` and `results/` directories are tracked in git; only run logs (`results/**/log/`) are gitignored
 - Do not commit API keys or sensitive information (use `.env` file)
 - Generated data is automatically saved to `data/csv/` and `data/jsonl/`
-- Evaluation results are saved in `results/{model}/{task}/` directory
+- Evaluation results are saved in `results/{model}/{task}_{difficulty}/` directory
 
 ## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
