@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "task": "kinship_ko_easy",
+    "model": "K-intelligence/Midm-2.0-Base-Instruct",
+    "timestamp": "2026-07-18T00-35-52",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "temperature": 0.8,
+      "top_p": 0.7,
+      "top_k": 20,
+      "repetition_penalty": 1.05,
+      "max_tokens": 14336
+    },
+    "gen_kwargs_cli": "temperature=0.8,top_p=0.7,top_k=20,repetition_penalty=1.05,max_tokens=14336"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.05,
+      "correct_count": 5,
+      "total_count": 100,
+      "avg_latency_ms": 3429.0806365013123,
+      "finish_reason_counts": {
+        "stop": 100
+      }
+    },
+    "by_difficulty": {
+      "easy": {
+        "total": 100,
+        "correct": 5,
+        "accuracy": 0.05
+      }
+    }
+  }
+}

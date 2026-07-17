@@ -1,0 +1,35 @@
+{
+  "metadata": {
+    "task": "logic_grid_en_hard",
+    "model": "K-intelligence/Midm-2.0-Base-Instruct",
+    "timestamp": "2026-07-17T22-47-57",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "temperature": 0.8,
+      "top_p": 0.7,
+      "top_k": 20,
+      "repetition_penalty": 1.05,
+      "max_tokens": 14336
+    },
+    "gen_kwargs_cli": "temperature=0.8,top_p=0.7,top_k=20,repetition_penalty=1.05,max_tokens=14336"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.0,
+      "correct_count": 0,
+      "total_count": 100,
+      "avg_latency_ms": 18603.837823867798,
+      "finish_reason_counts": {
+        "stop": 97,
+        "length": 3
+      }
+    },
+    "by_difficulty": {
+      "hard": {
+        "total": 100,
+        "correct": 0,
+        "accuracy": 0.0
+      }
+    }
+  }
+}
