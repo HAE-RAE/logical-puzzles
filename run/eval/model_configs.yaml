@@ -69,12 +69,12 @@ api_models:
     gen_kwargs: "max_tokens=32768,reasoning_effort=medium"
     sampling_note: "temperature/top_p/top_k는 API에서 제거됨 — 전송 시 400"
     reasoning_note: >
-      Opus 4.8은 thinking 파라미터를 생략하면 thinking OFF로 동작.
-      reasoning_effort=medium이 liteLLM에서 adaptive thinking + effort로
-      매핑되는지 calltest로 반드시 검증할 것 (매핑 실패 시 에러가 아니라
-      조용히 thinking off — 성능만 떨어져서 놓치기 쉬움).
-      네이티브 파라미터: thinking={type: adaptive}, output_config={effort: medium}
-    source: "Anthropic API reference (claude-api skill, 2026-06)"
+      [검증 완료 2026-07-15] liteLLM의 reasoning_effort 기본 매핑(thinking.type=enabled)은
+      이 모델에서 400. evaluation/model/litellm.py가 reasoning_effort를
+      thinking={type: adaptive} + output_config={effort: ...}로 자동 변환함
+      (ANTHROPIC_ADAPTIVE_THINKING_MODELS). adaptive는 모델이 스스로 thinking
+      여부를 결정 — 쉬운 문항에선 thinking 0이 정상.
+    source: "Anthropic API reference (claude-api skill) + calltest_api_models.py 실측"
 
   gpt-5.5:
     model: openai/gpt-5.5

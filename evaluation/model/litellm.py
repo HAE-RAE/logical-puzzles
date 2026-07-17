@@ -15,11 +15,13 @@ from .base import BaseLLMClient
 
 logger = logging.getLogger(__name__)
 
+# override=True 필수: litellm이 import 시점에 find_dotenv로 다른 프로젝트의 .env를
+# 먼저 로드할 수 있음(공유 venv 사용 시). 이 레포의 .env가 항상 우선해야 한다.
 env_path = Path(__file__).parent.parent.parent / ".env"
 if env_path.exists():
-    load_dotenv(env_path)
+    load_dotenv(env_path, override=True)
 else:
-    load_dotenv()
+    load_dotenv(override=True)
 
 if os.getenv("LITELLM_DEBUG", "false").lower() == "true":
     litellm.set_verbose = True
@@ -28,11 +30,20 @@ else:
     logging.getLogger("LiteLLM").setLevel(logging.WARNING)
 
 
+# Anthropic 모델 중 구형 thinking(enabled/budget_tokens)이 폐기되고
+# adaptive thinking + output_config.effort 를 쓰는 모델들.
+# reasoning_effort 를 그대로 보내면 liteLLM이 thinking.type=enabled 로 변환해 400.
+ANTHROPIC_ADAPTIVE_THINKING_MODELS = ("claude-opus-4-8",)
+
+
 class LiteLLMClient(BaseLLMClient):
     """LLM client via liteLLM (Gemini, OpenAI, etc.)."""
 
     def __init__(self, model: str, timeout: float = 600.0, gen_kwargs: Optional[Dict] = None):
         super().__init__(model, timeout, gen_kwargs)
+
+    def _uses_adaptive_thinking(self) -> bool:
+        return any(m in self.model for m in ANTHROPIC_ADAPTIVE_THINKING_MODELS)
 
     def _prepare_params(self, messages: List[Dict]) -> Dict:
         params: Dict = {
@@ -49,7 +60,12 @@ class LiteLLMClient(BaseLLMClient):
         if "top_k" in self.gen_kwargs:
             params["top_k"] = self.gen_kwargs["top_k"]
         if "reasoning_effort" in self.gen_kwargs:
-            params["reasoning_effort"] = self.gen_kwargs["reasoning_effort"]
+            if self._uses_adaptive_thinking():
+                # 검증: liteLLM 1.83.7이 thinking/output_config를 그대로 API에 전달함
+                params["thinking"] = {"type": "adaptive"}
+                params["output_config"] = {"effort": self.gen_kwargs["reasoning_effort"]}
+            else:
+                params["reasoning_effort"] = self.gen_kwargs["reasoning_effort"]
             # # Vertex / Gemini thinking: matches scripts/calltest_vertex.py
             # params["allowed_openai_params"] = ["reasoning_effort"]
         return params
