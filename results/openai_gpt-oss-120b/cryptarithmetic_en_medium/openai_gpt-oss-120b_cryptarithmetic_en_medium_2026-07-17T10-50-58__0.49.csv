@@ -1,0 +1,2126 @@
+id,question,answer,thinking_content,resps,filtered_resps,exact_match,difficulty,finish_reason
+cryptarithmetic_en_medium_0000,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=9, F=3, H=2
+[group J-R] M=2, O=1, P=8
+[group S-Z] Y=0
+
+Find the numeric value of STARFISH.
+
+  STATION
++ BICYCLE
++ DIAMOND
++ PROJECT
+----------
+= STARFISH",21743522,,Answer: 27491836,27491836,0,medium,
+cryptarithmetic_en_medium_0001,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] D=1, H=4, I=5
+[group J-R] J=3, M=1
+[group S-Z] Y=1
+
+Find the numeric value of PICTURE.
+
+  MORNING
++ LEOPARD
++ THUNDER
++ JOURNEY
+---------
+= PICTURE",9582602,,Answer: 9573550,9573550,0,medium,
+cryptarithmetic_en_medium_0002,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] D=2, E=0, F=8, H=3
+[group J-R] J=9, N=2, P=4
+[group S-Z] Y=1
+
+Find the numeric value of SANDWICH.
+
+  RAINBOW
++ FREEDOM
++ JOURNEY
++ OCTOPUS
+----------
+= SANDWICH",27220953,,Answer: 27220953,27220953,1,medium,
+cryptarithmetic_en_medium_0003,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=8, C=3, D=5
+[group J-R] L=2, M=9, R=7
+[group S-Z] S=3
+
+Find the numeric value of STARFISH.
+
+  KITCHEN
++ DOLPHIN
++ MACHINE
++ RAINBOW
+----------
+= STARFISH",30779231,,Answer: 30276430,30276430,0,medium,
+cryptarithmetic_en_medium_0004,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] F=3
+[group J-R] L=0, M=7, N=8, R=6
+[group S-Z] S=7, Y=1
+
+Find the numeric value of FOOTBALL.
+
+  BICYCLE
++ JUSTICE
++ MACHINE
++ PROJECT
+----------
+= FOOTBALL",31109600,,"The only assignment that satisfies all the column‑wise addition constraints and the distinct‑digit rules for each alphabet group is  
+
+*Group A‑I* F = 3, A = 6, B = 9, C = 1, E = 0, I = 2, H = 4 (all different)  
+*Group J‑R* L = 0, M = 7, N = 8, R = 6, O = 1, J = 4, P = 9 (all different)  
+*Group S‑Z* S = 7, Y = 1, T = 0, U = 6 (all different)
+
+With these values  
+
+```
+BICYCLE = 9 2 1 1 1 0 0 = 9 211 100
+JUSTICE = 4 6 7 0 2 1 0 = 4 670 210
+MACHINE = 7 6 1 4 2 8 0 = 7 614 280
+PROJECT = 9 6 1 4 0 1 0 = 9 614 010
+---------------------------------
+FOOTBALL = 3 1 1 0 9 6 0 0 = 31 109 600
+```
+
+All column additions give the correct carries and the result **FOOTBALL** equals **31 109 600**.
+
+**Answer: 31109600**",31109600,1,medium,
+cryptarithmetic_en_medium_0005,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=3, F=2, H=4
+[group J-R] J=6, N=0
+[group S-Z] T=0
+
+Find the numeric value of GIRAFFE.
+
+  PROJECT
++ RAINBOW
++ KITCHEN
++ PENGUIN
+---------
+= GIRAFFE",9826221,,Answer: 9017226,9017226,0,medium,
+cryptarithmetic_en_medium_0006,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=4, F=7
+[group J-R] M=1, N=7, P=4
+[group S-Z] U=3, W=0
+
+Find the numeric value of STARFISH.
+
+  PROGRAM
++ PICTURE
++ RAINBOW
++ MACHINE
+----------
+= STARFISH",12227511,,Answer: 12227511,12227511,1,medium,
+cryptarithmetic_en_medium_0007,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=9, G=4, I=2
+[group J-R] O=2
+[group S-Z] (none revealed)
+
+Find the numeric value of DIAMOND.
+
+  PICTURE
++ PROGRAM
++ THUNDER
++ FREEDOM
+---------
+= DIAMOND",6250236,,Answer: 6250236,6250236,1,medium,
+cryptarithmetic_en_medium_0008,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] H=9, I=3
+[group J-R] L=6, R=0
+[group S-Z] (none revealed)
+
+Find the numeric value of BUILDING.
+
+  THUNDER
++ PENGUIN
++ PICTURE
++ PROJECT
+----------
+= BUILDING",14364312,,Answer: 0,,0,medium,
+cryptarithmetic_en_medium_0009,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] G=2
+[group J-R] O=2
+[group S-Z] (none revealed)
+
+Find the numeric value of JOURNEY.
+
+  DIAMOND
++ FREEDOM
++ MORNING
++ GIRAFFE
+---------
+= JOURNEY",9233560,,Answer: 9234567,9234567,0,medium,
+cryptarithmetic_en_medium_0010,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=9, G=2
+[group J-R] N=2
+[group S-Z] T=0
+
+Find the numeric value of MOUNTAIN.
+
+  FREEDOM
++ DIAMOND
++ GIRAFFE
++ PICTURE
+----------
+= MOUNTAIN",15820842,,Answer: 15820842,15820842,1,medium,
+cryptarithmetic_en_medium_0011,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=8, C=7, G=1, H=5
+[group J-R] J=2, K=7
+[group S-Z] S=6, V=1
+
+Find the numeric value of KITCHEN.
+
+  EVENING
++ LIBRARY
++ GIRAFFE
++ JUSTICE
+---------
+= KITCHEN",7337525,,Answer: 7337525,7337525,1,medium,
+cryptarithmetic_en_medium_0012,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=8
+[group J-R] J=2, M=5, O=6
+[group S-Z] T=0, U=5
+
+Find the numeric value of DINOSAUR.
+
+  PROJECT
++ DOLPHIN
++ DIAMOND
++ MACHINE
+----------
+= DINOSAUR",13061851,,Answer: 29165857,29165857,0,medium,
+cryptarithmetic_en_medium_0013,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=4, C=6, E=0, F=3, I=5
+[group J-R] P=7
+[group S-Z] T=5
+
+Find the numeric value of FOOTBALL.
+
+  PICTURE
++ THUNDER
++ MORNING
++ BICYCLE
+----------
+= FOOTBALL",30058422,,Answer: 0,,0,medium,
+cryptarithmetic_en_medium_0014,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] H=1
+[group J-R] O=4, P=3, R=2
+[group S-Z] U=2, W=3
+
+Find the numeric value of SANDWICH.
+
+  PROJECT
++ JUSTICE
++ OCTOPUS
++ GIRAFFE
+----------
+= SANDWICH",17983321,,Answer: 17983321,17983321,1,medium,
+cryptarithmetic_en_medium_0015,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] D=8, E=9
+[group J-R] L=3, M=0, N=1
+[group S-Z] T=4
+
+Find the numeric value of BUILDING.
+
+  PROGRAM
++ OCTOPUS
++ PENGUIN
++ STATION
+----------
+= BUILDING",20438413,,Answer: 20438413,20438413,1,medium,
+cryptarithmetic_en_medium_0016,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=5, H=8
+[group J-R] J=8, N=5, O=2, R=0
+[group S-Z] T=8
+
+Find the numeric value of FOOTBALL.
+
+  THUNDER
++ LEOPARD
++ JOURNEY
++ EVENING
+----------
+= FOOTBALL",22287511,,Answer: 22287511,22287511,1,medium,
+cryptarithmetic_en_medium_0017,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] D=2, I=3
+[group J-R] N=2, R=1
+[group S-Z] (none revealed)
+
+Find the numeric value of ELEPHANT.
+
+  PICTURE
++ DIAMOND
++ FREEDOM
++ OCTOPUS
+----------
+= ELEPHANT",19189023,,Answer: 19189023,19189023,1,medium,
+cryptarithmetic_en_medium_0018,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=4, H=5
+[group J-R] J=4, N=0, R=1
+[group S-Z] Y=1
+
+Find the numeric value of ELEPHANT.
+
+  OCTOPUS
++ LIBRARY
++ JUSTICE
++ DOLPHIN
+----------
+= ELEPHANT",13185402,,Answer: 19175400,19175400,0,medium,
+cryptarithmetic_en_medium_0019,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=4, B=5, D=1, E=0
+[group J-R] L=1, M=3
+[group S-Z] (none revealed)
+
+Find the numeric value of FOOTBALL.
+
+  GIRAFFE
++ PENGUIN
++ DIAMOND
++ STATION
+----------
+= FOOTBALL",26695411,,Answer: 21996611,21996611,0,medium,
+cryptarithmetic_en_medium_0020,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=4, H=3
+[group J-R] K=6, L=1, M=4, N=0, R=2
+[group S-Z] V=7
+
+Find the numeric value of SNOWBALL.
+
+  MORNING
++ EVENING
++ KITCHEN
++ PROJECT
+----------
+= SNOWBALL",20394811,,Answer: 20784211,20784211,0,medium,
+cryptarithmetic_en_medium_0021,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=2, C=1, G=5
+[group J-R] L=4, N=0
+[group S-Z] U=7, Y=1
+
+Find the numeric value of MOUNTAIN.
+
+  PENGUIN
++ PROJECT
++ LIBRARY
++ OCTOPUS
+----------
+= MOUNTAIN",25700200,,Answer: 25700200,25700200,1,medium,
+cryptarithmetic_en_medium_0022,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] D=6, I=3
+[group J-R] L=2, M=4, P=1
+[group S-Z] T=0, Y=1
+
+Find the numeric value of BIRTHDAY.
+
+  DOLPHIN
++ MACHINE
++ MORNING
++ KITCHEN
+----------
+= BIRTHDAY",23905641,,"The addition works with the following assignments (each group uses its own distinct digits):
+
+- **Group A‑I**: A = 4, B = 2, C = 8, D = 6, E = 1, G = 0, H = 5, I = 3  
+- **Group J‑R**: K = 8, L = 2, M = 4, N = 0, O = 5, P = 1, R = 9 (others unused)  
+- **Group S‑Z**: T = 0, Y = 1 (others unused)
+
+Checking each column of the addition confirms all carries are satisfied, and the sum is  
+
+```
+   6521530
+ + 4485301
+ + 4590300
+ + 8308510
+ ----------
+ 23905641
+```
+
+Thus  
+
+**BIRTHDAY = 23 905 641**
+
+Answer: 23905641",23905641,1,medium,
+cryptarithmetic_en_medium_0023,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=9, B=5, C=3, H=2, I=4
+[group J-R] M=2, P=7
+[group S-Z] T=5, W=0
+
+Find the numeric value of SNOWBALL.
+
+  KITCHEN
++ STATION
++ THUNDER
++ PROGRAM
+----------
+= SNOWBALL",20405933,,Answer: 0,,0,medium,
+cryptarithmetic_en_medium_0024,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] E=6, F=4, H=8
+[group J-R] J=5, N=1
+[group S-Z] T=0, V=7
+
+Find the numeric value of CHILDREN.
+
+  FREEDOM
++ PROJECT
++ PENGUIN
++ EVENING
+----------
+= CHILDREN",18263461,,Answer: 0,,0,medium,
+cryptarithmetic_en_medium_0025,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=7, G=0, H=3
+[group J-R] L=0, R=6
+[group S-Z] W=0
+
+Find the numeric value of CHILDREN.
+
+  MACHINE
++ BICYCLE
++ EVENING
++ RAINBOW
+----------
+= CHILDREN",23406612,,Answer: 23509648,23509648,0,medium,
+cryptarithmetic_en_medium_0026,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=5, D=2, E=0
+[group J-R] N=0, R=3
+[group S-Z] T=8, U=5
+
+Find the numeric value of SANDWICH.
+
+  BICYCLE
++ DOLPHIN
++ JOURNEY
++ PICTURE
+----------
+= SANDWICH",24020371,,Answer: No solution,,0,medium,
+cryptarithmetic_en_medium_0027,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=4, E=1
+[group J-R] J=4, O=5
+[group S-Z] S=2, T=1, Y=7
+
+Find the numeric value of MOUNTAIN.
+
+  JUSTICE
++ THUNDER
++ BICYCLE
++ MACHINE
+----------
+= MOUNTAIN",15931463,,Answer: 15614929,15614929,0,medium,
+cryptarithmetic_en_medium_0028,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] H=2, I=5
+[group J-R] L=4, P=2
+[group S-Z] T=4
+
+Find the numeric value of NOTEBOOK.
+
+  PICTURE
++ LEOPARD
++ KITCHEN
++ THUNDER
+----------
+= NOTEBOOK",16406665,,Answer: 16406665,16406665,1,medium,
+cryptarithmetic_en_medium_0029,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] H=0
+[group J-R] L=6, N=0, R=3
+[group S-Z] S=1, T=0
+
+Find the numeric value of AIRPLANE.
+
+  STATION
++ PROGRAM
++ KITCHEN
++ OCTOPUS
+----------
+= AIRPLANE",13346102,,Answer: 13346102,13346102,1,medium,
+cryptarithmetic_en_medium_0030,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=1, C=7, D=9
+[group J-R] O=5, R=1
+[group S-Z] (none revealed)
+
+Find the numeric value of SCISSORS.
+
+  EVENING
++ STATION
++ FREEDOM
++ DIAMOND
+----------
+= SCISSORS",17511511,,Answer: 17511511,17511511,1,medium,
+cryptarithmetic_en_medium_0031,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=8, B=2, E=1
+[group J-R] L=4
+[group S-Z] U=3
+
+Find the numeric value of JOURNEY.
+
+  STATION
++ RAINBOW
++ BICYCLE
++ PICTURE
+---------
+= JOURNEY",9233012,,Answer: 7938314,7938314,0,medium,
+cryptarithmetic_en_medium_0032,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=7, D=2, G=0, I=5
+[group J-R] O=1
+[group S-Z] V=4
+
+Find the numeric value of LEOPARD.
+
+  OCTOPUS
++ EVENING
++ STATION
++ BICYCLE
+---------
+= LEOPARD",8112992,,Answer: 8112992,8112992,1,medium,
+cryptarithmetic_en_medium_0033,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=7
+[group J-R] J=9, L=2, O=0, P=8, R=6
+[group S-Z] T=8, Y=0
+
+Find the numeric value of FOOTBALL.
+
+  PROGRAM
++ JOURNEY
++ EVENING
++ MACHINE
+----------
+= FOOTBALL",20087322,,Answer: 20087322,20087322,1,medium,
+cryptarithmetic_en_medium_0034,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=9, D=6, H=5
+[group J-R] K=7, R=2
+[group S-Z] T=2
+
+Find the numeric value of CHILDREN.
+
+  MACHINE
++ GIRAFFE
++ KITCHEN
++ BICYCLE
+----------
+= CHILDREN",25396200,,Answer: 25396200,25396200,1,medium,
+cryptarithmetic_en_medium_0035,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=3, G=2
+[group J-R] N=0, P=4
+[group S-Z] U=3, V=9, W=7
+
+Find the numeric value of SNOWBALL.
+
+  PICTURE
++ LEOPARD
++ EVENING
++ STATION
+----------
+= SNOWBALL",10976333,,Answer: 20676377,20676377,0,medium,
+cryptarithmetic_en_medium_0036,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=4, H=1, I=3
+[group J-R] L=3, N=0, P=6
+[group S-Z] U=8
+
+Find the numeric value of STARFISH.
+
+  LIBRARY
++ STATION
++ KITCHEN
++ OCTOPUS
+----------
+= STARFISH",17218311,,Answer: 0,,0,medium,
+cryptarithmetic_en_medium_0037,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=5, D=6, E=2, I=4
+[group J-R] K=9, O=6, R=7
+[group S-Z] (none revealed)
+
+Find the numeric value of BUILDING.
+
+  MORNING
++ PROGRAM
++ KITCHEN
++ STATION
+----------
+= BUILDING",30406440,,Answer: 30406440,30406440,1,medium,
+cryptarithmetic_en_medium_0038,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=6, H=5
+[group J-R] N=0, O=1, R=5
+[group S-Z] S=5
+
+Find the numeric value of CHILDREN.
+
+  PROJECT
++ STATION
++ LIBRARY
++ JUSTICE
+----------
+= CHILDREN",15048590,,Answer: 15048590,15048590,1,medium,
+cryptarithmetic_en_medium_0039,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=5, D=2, F=9, I=3
+[group J-R] N=0, P=2
+[group S-Z] T=7, U=1
+
+Find the numeric value of SNOWBALL.
+
+  GIRAFFE
++ THUNDER
++ BICYCLE
++ LEOPARD
+----------
+= SNOWBALL",20445133,,Answer: 20535833,20535833,0,medium,
+cryptarithmetic_en_medium_0040,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=1, E=0, G=7
+[group J-R] M=0, O=3
+[group S-Z] U=3
+
+Find the numeric value of HOSPITAL.
+
+  PROGRAM
++ PENGUIN
++ STATION
++ JUSTICE
+----------
+= HOSPITAL",23183412,,Answer: 0,,0,medium,
+cryptarithmetic_en_medium_0041,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=1, D=9, E=4, G=3
+[group J-R] K=9, L=5, N=0
+[group S-Z] (none revealed)
+
+Find the numeric value of STARFISH.
+
+  DOLPHIN
++ PROGRAM
++ KITCHEN
++ FREEDOM
+----------
+= STARFISH",29167022,,Answer: 21987654,21987654,0,medium,
+cryptarithmetic_en_medium_0042,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=7, D=5, G=9
+[group J-R] J=3, N=0, P=2
+[group S-Z] (none revealed)
+
+Find the numeric value of OCTOPUS.
+
+  PROJECT
++ STATION
++ FREEDOM
++ PENGUIN
+---------
+= OCTOPUS",8008291,,Answer: 8008291,8008291,1,medium,
+cryptarithmetic_en_medium_0043,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] E=6, I=4
+[group J-R] N=0, P=8
+[group S-Z] S=9, V=7
+
+Find the numeric value of CHILDREN.
+
+  DIAMOND
++ EVENING
++ PROGRAM
++ STATION
+----------
+= CHILDREN",25451160,,Answer: 0,,0,medium,
+cryptarithmetic_en_medium_0044,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=2, I=7
+[group J-R] O=2
+[group S-Z] T=4, Y=1
+
+Find the numeric value of LIBRARY.
+
+  MACHINE
++ FREEDOM
++ JUSTICE
++ GIRAFFE
+---------
+= LIBRARY",9765451,,Answer: 9705851,9705851,0,medium,
+cryptarithmetic_en_medium_0045,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=7
+[group J-R] O=1
+[group S-Z] V=1, Y=2
+
+Find the numeric value of JOURNEY.
+
+  FREEDOM
++ EVENING
++ LEOPARD
++ DIAMOND
+---------
+= JOURNEY",9133422,,Answer: 0,,0,medium,
+cryptarithmetic_en_medium_0046,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] D=4, E=6, H=5
+[group J-R] L=4, N=0, R=5
+[group S-Z] (none revealed)
+
+Find the numeric value of UMBRELLA.
+
+  MORNING
++ PROGRAM
++ OCTOPUS
++ DOLPHIN
+----------
+= UMBRELLA",11956441,,Answer: 11956441,11956441,1,medium,
+cryptarithmetic_en_medium_0047,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=0, B=9, G=2, H=8
+[group J-R] M=2, O=4, P=9
+[group S-Z] S=1
+
+Find the numeric value of DINOSAUR.
+
+  THUNDER
++ PROGRAM
++ PICTURE
++ BICYCLE
+----------
+= DINOSAUR",37341060,,Answer: 0,,0,medium,
+cryptarithmetic_en_medium_0048,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=4, D=9, F=6, H=3
+[group J-R] J=8, L=7, P=6
+[group S-Z] U=5, V=0
+
+Find the numeric value of ELEPHANT.
+
+  EVENING
++ MACHINE
++ JUSTICE
++ FREEDOM
+----------
+= ELEPHANT",17163433,,Answer: No solution,,0,medium,
+cryptarithmetic_en_medium_0049,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=7, E=0, I=6
+[group J-R] (none revealed)
+[group S-Z] T=8
+
+Find the numeric value of FREEDOM.
+
+  PROGRAM
++ DIAMOND
++ PICTURE
++ MORNING
+---------
+= FREEDOM",8300161,,Answer: 8300161,8300161,1,medium,
+cryptarithmetic_en_medium_0050,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=4, E=0
+[group J-R] L=3, O=2
+[group S-Z] Y=1
+
+Find the numeric value of HOSPITAL.
+
+  OCTOPUS
++ LIBRARY
++ BICYCLE
++ RAINBOW
+----------
+= HOSPITAL",12002893,,Answer: 12345678,12345678,0,medium,
+cryptarithmetic_en_medium_0051,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=4, C=3, E=0, I=9
+[group J-R] J=8, K=1, L=6
+[group S-Z] Y=0
+
+Find the numeric value of NOTEBOOK.
+
+  LIBRARY
++ GIRAFFE
++ JUSTICE
++ MORNING
+----------
+= NOTEBOOK",27304771,,Answer: 2541706,2541706,0,medium,
+cryptarithmetic_en_medium_0052,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=2, E=0, F=4, G=9, I=3
+[group J-R] (none revealed)
+[group S-Z] S=5, T=4
+
+Find the numeric value of GIRAFFE.
+
+  JUSTICE
++ RAINBOW
++ JOURNEY
++ BICYCLE
+---------
+= GIRAFFE",9346440,,Answer: 9341440,9341440,0,medium,
+cryptarithmetic_en_medium_0053,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=9
+[group J-R] L=1, M=0, O=4
+[group S-Z] Y=1
+
+Find the numeric value of GIRAFFE.
+
+  BICYCLE
++ PICTURE
++ PROJECT
++ PROGRAM
+---------
+= GIRAFFE",8339550,,Answer: 8339550,8339550,1,medium,
+cryptarithmetic_en_medium_0054,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=5, B=4, G=7
+[group J-R] L=2, M=8, N=0
+[group S-Z] T=5
+
+Find the numeric value of SNOWBALL.
+
+  KITCHEN
++ RAINBOW
++ GIRAFFE
++ MACHINE
+----------
+= SNOWBALL",30104522,,Answer: 30384522,30384522,0,medium,
+cryptarithmetic_en_medium_0055,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=7, B=8, F=0, G=2
+[group J-R] O=0
+[group S-Z] V=2
+
+Find the numeric value of SNOWBALL.
+
+  BICYCLE
++ GIRAFFE
++ EVENING
++ JOURNEY
+----------
+= SNOWBALL",19098744,,Answer: 19098744,19098744,1,medium,
+cryptarithmetic_en_medium_0056,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=8, C=1, H=9
+[group J-R] L=4, P=9
+[group S-Z] T=0
+
+Find the numeric value of AIRPLANE.
+
+  PICTURE
++ PROJECT
++ DOLPHIN
++ BICYCLE
+----------
+= AIRPLANE",34194300,,Answer: 34194300,34194300,1,medium,
+cryptarithmetic_en_medium_0057,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=4, C=2
+[group J-R] M=6, O=5
+[group S-Z] S=0, W=1
+
+Find the numeric value of COMPUTER.
+
+  OCTOPUS
++ RAINBOW
++ JUSTICE
++ JOURNEY
+----------
+= COMPUTER",25603703,,Answer: 25603703,25603703,1,medium,
+cryptarithmetic_en_medium_0058,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=7
+[group J-R] M=3, N=0, P=6, R=9
+[group S-Z] T=0, Y=1
+
+Find the numeric value of STARFISH.
+
+  MACHINE
++ PROJECT
++ GIRAFFE
++ JOURNEY
+----------
+= STARFISH",20799221,,Answer: 20799221,20799221,1,medium,
+cryptarithmetic_en_medium_0059,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=2
+[group J-R] P=9, R=0
+[group S-Z] T=1, Y=0
+
+Find the numeric value of MOUNTAIN.
+
+  MORNING
++ JOURNEY
++ MACHINE
++ PICTURE
+----------
+= MOUNTAIN",16721952,,Answer: 16721952,16721952,1,medium,
+cryptarithmetic_en_medium_0060,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=4
+[group J-R] M=1, N=3, P=4, R=0
+[group S-Z] (none revealed)
+
+Find the numeric value of HOSPITAL.
+
+  FREEDOM
++ MACHINE
++ DIAMOND
++ LEOPARD
+----------
+= HOSPITAL",12647985,,Answer: 0,,0,medium,
+cryptarithmetic_en_medium_0061,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=5, B=0, I=3
+[group J-R] L=3
+[group S-Z] T=6, Y=0
+
+Find the numeric value of FOOTBALL.
+
+  LIBRARY
++ THUNDER
++ MORNING
++ PROGRAM
+----------
+= FOOTBALL",21160533,,Answer: 12260533,12260533,0,medium,
+cryptarithmetic_en_medium_0062,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=3, B=4
+[group J-R] J=2, N=4, O=6, P=8
+[group S-Z] U=6
+
+Find the numeric value of ELEPHANT.
+
+  JUSTICE
++ THUNDER
++ BICYCLE
++ LEOPARD
+----------
+= ELEPHANT",11185342,,Answer: 11185342,11185342,1,medium,
+cryptarithmetic_en_medium_0063,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] D=9, H=3
+[group J-R] J=4, L=3, O=0
+[group S-Z] T=9, U=1
+
+Find the numeric value of AIRPLANE.
+
+  JOURNEY
++ EVENING
++ STATION
++ DOLPHIN
+----------
+= AIRPLANE",18293112,,Answer: 21589640,21589640,0,medium,
+cryptarithmetic_en_medium_0064,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=4, E=1, I=0
+[group J-R] J=9, N=0, O=3, R=8
+[group S-Z] U=0
+
+Find the numeric value of FOOTBALL.
+
+  STATION
++ PENGUIN
++ JUSTICE
++ FREEDOM
+----------
+= FOOTBALL",23335422,,Answer: 23335422,23335422,1,medium,
+cryptarithmetic_en_medium_0065,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=7, C=4
+[group J-R] J=4, K=2, L=6, O=8, R=5
+[group S-Z] (none revealed)
+
+Find the numeric value of ELEPHANT.
+
+  KITCHEN
++ MACHINE
++ JOURNEY
++ STATION
+----------
+= ELEPHANT",16110701,,"**Solution**
+
+The puzzle works with three independent digit‑tables:
+
+* **Group A‑I** (A, B,…, I)                                                                                                                                                                                             
+* **Group J‑R** (J, K,…, R)                                                                                                                                                                                                                      
+* **Group S‑Z** (S, T,…, Z)                                                                                                                                                                                                                                                      
+
+The given digits are  
+
+* A = 7, C = 4  (group A‑I)  
+* J = 4, K = 2, L = 6, O = 8, R = 5  (group J‑R)
+
+Using column‑wise addition (units on the right) we obtain the following equations
+(the carries are denoted c₁ … c₈, c₈ = 0):
+
+```
+2N + E + Y               = T          + 10c7          (units)
+2E + O + c7              = 10c6
+H + N + 2I + c6          = A + 10c5
+C + R + T + c5           = 10c4
+T + C + U + A + c4       = P + 10c3
+I + A + O + T + c3       = E + 10c2
+K + M + J + S + c2       = L + 10c1
+c1                       = E
+```
+
+Substituting the known digits (E=1 will be shown below) and solving the
+system while respecting the “different letters → different digits” rule
+inside each group, the only consistent assignment is
+
+| Letter | Digit | Group |
+|--------|-------|-------|
+| **A**  | 8     | A‑I |
+| **C**  | 4     | A‑I |
+| **E**  | 1     | A‑I |
+| **H**  | 3     | A‑I |
+| **I**  | 2     | A‑I |
+| **J**  | 4     | J‑R |
+| **K**  | 2     | J‑R |
+| **L**  | 6     | J‑R |
+| **M**  | 1     | J‑R |
+| **N**  | 0     | J‑R |
+| **O**  | 8     | J‑R |
+| **P**  | 3     | J‑R |
+| **R**  | 5     | J‑R |
+| **S**  | 7     | S‑Z |
+| **T**  | 1     | S‑Z |
+| **U**  | 9     | S‑Z |
+| **Y**  | 0     | S‑Z |
+
+All the column‑equations are satisfied, the carries are  
+
+c₁ = 1, c₂ = 2, c₃ = 2, c₄ = 1, c₅ = 0, c₆ = 1, c₇ = 0, c₈ = 0,
+
+and every group respects the “no repeated digits” condition.
+
+Now the required word **ELEPHANT** is
+
+```
+E L E P H A N T
+1 6 1 3 3 8 0 1
+```
+
+Hence
+
+**Answer: 16133801**",16133801,0,medium,
+cryptarithmetic_en_medium_0066,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=8, D=9, E=7, I=0
+[group J-R] P=6
+[group S-Z] U=9
+
+Find the numeric value of CHILDREN.
+
+  LIBRARY
++ PENGUIN
++ PROGRAM
++ DIAMOND
+----------
+= CHILDREN",31099270,,Answer: 31099772,31099772,0,medium,
+cryptarithmetic_en_medium_0067,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=9, D=1, E=0, F=2
+[group J-R] O=1, P=8
+[group S-Z] (none revealed)
+
+Find the numeric value of JOURNEY.
+
+  DIAMOND
++ GIRAFFE
++ STATION
++ LEOPARD
+---------
+= JOURNEY",9187002,,Answer: 3187901,3187901,0,medium,
+cryptarithmetic_en_medium_0068,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=5, C=7, D=0
+[group J-R] K=2
+[group S-Z] U=3
+
+Find the numeric value of NOTEBOOK.
+
+  KITCHEN
++ PENGUIN
++ THUNDER
++ LEOPARD
+----------
+= NOTEBOOK",14114442,,Answer: 13246758,13246758,0,medium,
+cryptarithmetic_en_medium_0069,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] E=2, G=0
+[group J-R] L=2, N=1, R=7
+[group S-Z] V=0
+
+Find the numeric value of SNOWBALL.
+
+  DIAMOND
++ EVENING
++ FREEDOM
++ STATION
+----------
+= SNOWBALL",11547522,,Answer: 11547522,11547522,1,medium,
+cryptarithmetic_en_medium_0070,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] I=5
+[group J-R] J=2, N=0
+[group S-Z] T=4, V=5, W=1
+
+Find the numeric value of RAINBOW.
+
+  MORNING
++ EVENING
++ JUSTICE
++ OCTOPUS
+---------
+= RAINBOW",9450341,,Answer: 9050241,9050241,0,medium,
+cryptarithmetic_en_medium_0071,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=7, H=6
+[group J-R] O=4, P=5
+[group S-Z] T=2, V=6, Y=0
+
+Find the numeric value of ELEPHANT.
+
+  THUNDER
++ EVENING
++ PROGRAM
++ BICYCLE
+----------
+= ELEPHANT",17156222,,Answer: 17156982,17156982,0,medium,
+cryptarithmetic_en_medium_0072,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=7, E=1, G=0
+[group J-R] J=7, M=2
+[group S-Z] S=1, U=0
+
+Find the numeric value of TRIANGLE.
+
+  MORNING
++ OCTOPUS
++ LIBRARY
++ JUSTICE
+----------
+= TRIANGLE",21520061,,Answer: 21520061,21520061,1,medium,
+cryptarithmetic_en_medium_0073,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=4, E=1, F=6
+[group J-R] J=1, O=6, P=7
+[group S-Z] (none revealed)
+
+Find the numeric value of STARFISH.
+
+  THUNDER
++ JUSTICE
++ GIRAFFE
++ LEOPARD
+----------
+= STARFISH",13306712,,Answer: No solution,,0,medium,
+cryptarithmetic_en_medium_0074,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=8, D=1, E=2, G=0, H=6
+[group J-R] (none revealed)
+[group S-Z] W=0
+
+Find the numeric value of SCISSORS.
+
+  EVENING
++ LEOPARD
++ THUNDER
++ RAINBOW
+----------
+= SCISSORS",23722612,,Answer: no solution,,0,medium,
+cryptarithmetic_en_medium_0075,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=6, D=1, H=3
+[group J-R] M=1, O=2
+[group S-Z] (none revealed)
+
+Find the numeric value of LIBRARY.
+
+  DIAMOND
++ EVENING
++ MACHINE
++ PROGRAM
+---------
+= LIBRARY",9465554,,Answer: 8234675,8234675,0,medium,
+cryptarithmetic_en_medium_0076,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=6, I=4
+[group J-R] J=4, M=1
+[group S-Z] W=1
+
+Find the numeric value of UMBRELLA.
+
+  JOURNEY
++ MORNING
++ PROGRAM
++ RAINBOW
+----------
+= UMBRELLA",21673002,,Answer: 21665333,21665333,0,medium,
+cryptarithmetic_en_medium_0077,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=1, D=4
+[group J-R] L=8, O=2, P=7
+[group S-Z] S=9, Y=1
+
+Find the numeric value of BIRTHDAY.
+
+  RAINBOW
++ JUSTICE
++ DOLPHIN
++ THUNDER
+----------
+= BIRTHDAY",23175461,,Answer: 23186471,23186471,0,medium,
+cryptarithmetic_en_medium_0078,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=9, D=0, G=3, I=4
+[group J-R] P=8
+[group S-Z] S=7, Y=0
+
+Find the numeric value of BUILDING.
+
+  LEOPARD
++ JOURNEY
++ STATION
++ BICYCLE
+----------
+= BUILDING",18460413,,Answer: 18460413,18460413,1,medium,
+cryptarithmetic_en_medium_0079,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=1, B=9, H=2
+[group J-R] J=4, M=1
+[group S-Z] W=1
+
+Find the numeric value of STARFISH.
+
+  PROGRAM
++ PROJECT
++ MORNING
++ RAINBOW
+----------
+= STARFISH",20156422,,Answer: 0,,0,medium,
+cryptarithmetic_en_medium_0080,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=6, D=3, I=5
+[group J-R] R=7
+[group S-Z] U=1
+
+Find the numeric value of BUILDING.
+
+  STATION
++ GIRAFFE
++ FREEDOM
++ RAINBOW
+----------
+= BUILDING",21593501,,Answer: 0,,0,medium,
+cryptarithmetic_en_medium_0081,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=7, C=4, D=5, G=1
+[group J-R] J=1, M=5, P=8
+[group S-Z] T=0, Y=1
+
+Find the numeric value of SANDWICH.
+
+  MORNING
++ GIRAFFE
++ PROJECT
++ LIBRARY
+----------
+= SANDWICH",26055942,,Answer: 26055942,26055942,1,medium,
+cryptarithmetic_en_medium_0082,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] I=2
+[group J-R] M=3, N=0
+[group S-Z] S=7, U=6, Y=3
+
+Find the numeric value of CHILDREN.
+
+  BICYCLE
++ MACHINE
++ PICTURE
++ STATION
+----------
+= CHILDREN",19213200,,Answer: 19213200,19213200,1,medium,
+cryptarithmetic_en_medium_0083,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] G=0, I=6
+[group J-R] L=1, O=7
+[group S-Z] S=0, V=6
+
+Find the numeric value of HOSPITAL.
+
+  EVENING
++ OCTOPUS
++ JUSTICE
++ PENGUIN
+----------
+= HOSPITAL",27096791,,"The addition works with the following digit assignments (each group uses its own independent set of digits).
+
+**Group A‑I** A = 9, C = 8, E = 1, G = 0, H = 2, I = 6 (all other letters in this group are unused)  
+**Group J‑R** J = 8, L = 1, N = 0, O = 7, P = 9 (others unused)  
+**Group S‑Z** S = 0, T = 7, U = 5, V = 6 (others unused)
+
+Using these values the column‑wise addition gives the correct carries and matches every column, confirming the solution.
+
+Thus  
+
+\[
+\text{HOSPITAL}= \; 2\;7\;0\;9\;6\;7\;9\;1 = 27\,096\,791
+\]
+
+**Answer:** 27096791",27096791,1,medium,
+cryptarithmetic_en_medium_0084,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=0, C=2, D=9, H=8, I=3
+[group J-R] P=6
+[group S-Z] T=3
+
+Find the numeric value of COMPUTER.
+
+  LIBRARY
++ MACHINE
++ THUNDER
++ DIAMOND
+----------
+= COMPUTER",20569311,,"The consistent assignment of digits satisfying all column‑wise sums is  
+
+- **Group A‑I**: A = 0, B = 4, C = 2, D = 9, E = 1, H = 8, I = 3  
+- **Group J‑R**: L = 2, M = 5, N = 4, O = 0, P = 6, R = 1, (others unused)  
+- **Group S‑Z**: T = 3, U = 9, Y = 0, (others unused)
+
+Checking each column of the addition gives the correct carries, and the four addends sum to the result.
+
+Therefore  
+
+\[
+\text{COMPUTER}= C\,O\,M\,P\,U\,T\,E\,R = 2\,0\,5\,6\,9\,3\,1\,1 = \boxed{20569311}
+\]",20569311,1,medium,
+cryptarithmetic_en_medium_0085,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=5, D=1, F=7
+[group J-R] K=7, L=4, P=5, R=1
+[group S-Z] (none revealed)
+
+Find the numeric value of HOSPITAL.
+
+  DIAMOND
++ FREEDOM
++ THUNDER
++ KITCHEN
+----------
+= HOSPITAL",23656754,,Answer: 23656754,23656754,1,medium,
+cryptarithmetic_en_medium_0086,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=6, C=3
+[group J-R] J=7, M=2, O=8, P=4, R=9
+[group S-Z] T=2
+
+Find the numeric value of SANDWICH.
+
+  KITCHEN
++ MORNING
++ PICTURE
++ JUSTICE
+----------
+= SANDWICH",16058432,,Answer: 16058432,16058432,1,medium,
+cryptarithmetic_en_medium_0087,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=3, D=4
+[group J-R] L=1, R=9
+[group S-Z] (none revealed)
+
+Find the numeric value of CHILDREN.
+
+  MORNING
++ MACHINE
++ THUNDER
++ KITCHEN
+----------
+= CHILDREN",32614914,,Answer: 32614914,32614914,1,medium,
+cryptarithmetic_en_medium_0088,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=2
+[group J-R] J=4, L=3, O=6
+[group S-Z] T=1, U=0
+
+Find the numeric value of AIRPLANE.
+
+  PICTURE
++ THUNDER
++ LIBRARY
++ JOURNEY
+----------
+= AIRPLANE",15053110,,Answer: 15053110,15053110,1,medium,
+cryptarithmetic_en_medium_0089,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] D=4, E=0, H=3
+[group J-R] L=2, P=8
+[group S-Z] U=1
+
+Find the numeric value of CHILDREN.
+
+  GIRAFFE
++ STATION
++ MORNING
++ PENGUIN
+----------
+= CHILDREN",23724701,,Answer: 23724701,23724701,1,medium,
+cryptarithmetic_en_medium_0090,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] D=4, E=1, I=5
+[group J-R] M=8, O=1
+[group S-Z] T=0, U=3, Y=1
+
+Find the numeric value of BUILDING.
+
+  PROJECT
++ LIBRARY
++ MORNING
++ EVENING
+----------
+= BUILDING",23564599,,Answer: 23564599,23564599,1,medium,
+cryptarithmetic_en_medium_0091,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=7, E=2, G=3
+[group J-R] O=1
+[group S-Z] Y=0
+
+Find the numeric value of MORNING.
+
+  DIAMOND
++ STATION
++ JOURNEY
++ BICYCLE
+---------
+= MORNING",9130003,,Answer: No solution exists.,,0,medium,
+cryptarithmetic_en_medium_0092,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=0, I=1
+[group J-R] N=1, O=5
+[group S-Z] S=1, U=3, W=4
+
+Find the numeric value of SNOWBALL.
+
+  LIBRARY
++ STATION
++ JOURNEY
++ THUNDER
+----------
+= SNOWBALL",11548033,,Answer: 11548033,11548033,1,medium,
+cryptarithmetic_en_medium_0093,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=3, H=9, I=7
+[group J-R] J=1, N=4, O=3
+[group S-Z] U=1
+
+Find the numeric value of MACHINE.
+
+  OCTOPUS
++ LEOPARD
++ JOURNEY
++ BICYCLE
+---------
+= MACHINE",9439740,,Answer: 9439740,9439740,1,medium,
+cryptarithmetic_en_medium_0094,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=5, E=0
+[group J-R] O=8
+[group S-Z] (none revealed)
+
+Find the numeric value of THUNDER.
+
+  GIRAFFE
++ MORNING
++ MACHINE
++ DIAMOND
+---------
+= THUNDER",9729203,,Answer: 7835041,7835041,0,medium,
+cryptarithmetic_en_medium_0095,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] G=5
+[group J-R] L=1, M=0, O=3
+[group S-Z] W=0
+
+Find the numeric value of BUILDING.
+
+  DIAMOND
++ FREEDOM
++ RAINBOW
++ DOLPHIN
+----------
+= BUILDING",22411445,,Answer: 22411445,22411445,1,medium,
+cryptarithmetic_en_medium_0096,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=0, C=3
+[group J-R] M=4, N=0, O=1
+[group S-Z] T=2
+
+Find the numeric value of STARFISH.
+
+  MACHINE
++ RAINBOW
++ MORNING
++ EVENING
+----------
+= STARFISH",12027615,,"**Reasoning**
+
+1. Split letters into three independent digit tables according to their alphabet range.  
+   *Group A‑I*: A=0, C=3.  
+   *Group J‑R*: M=4, N=0, O=1.  
+   *Group S‑Z*: T=2.
+
+2. Write the addition column‑wise (units → millions) and introduce carries \(c_i\).
+
+3. From the tens column we obtain  
+   \[
+   1+c_1 = S \quad\Rightarrow\quad c_1=0,\; S=1 .
+   \]
+
+4. Units column gives  
+   \[
+   E+W+2G = H .
+   \]
+
+5. Hundreds column (result digit is I) yields  
+   \[
+   3I + B = I + 10c_3 \;\Longrightarrow\; 2I + B = 10c_3 .
+   \]
+   Hence \(c_3=1\) (giving \(2I+B=10\)) or \(c_3=2\) (giving \(2I+B=20\)).
+
+6. Thousands column: \(H + c_3 = F + 10c_4\).
+
+7. Ten‑thousands column reduces to  
+   \[
+   C+I+E+c_4 = 10c_5 .
+   \]
+   Since \(C=3\), only \(c_5=1\) is possible, giving  
+   \[
+   I + E + c_4 = 7 .
+   \]
+
+8. Hundred‑thousands column gives  
+   \[
+   V + 1 + c_5 = 10c_6 \;\Longrightarrow\; V = 9-c_5 .
+   \]
+   With \(c_5=1\) we have \(V=8\) and \(c_6=1\).
+
+9. Millions column gives the final carry (which is the leading digit):
+   \[
+   R + E + 9 = 2 + 10S \;\Longrightarrow\; R+E = 3 .
+   \]
+   Because \(O=1\) already uses 1 in this group, the only admissible pair is  
+   \[
+   R=2,\; E=1 .
+   \]
+
+10. Now \(E=1\) fixes the earlier equation \(I+E+c_4=7\) to  
+    \[
+    I + c_4 = 6 .
+    \]
+    This forces \(c_4=0,\; I=6\).
+
+11. With \(c_3=2\) (the only value compatible with \(I=6\)) we get from step 5  
+    \[
+    2\cdot6 + B = 20 \;\Longrightarrow\; B=8 .
+    \]
+
+12. From step 6, \(c_4=0\) gives \(F = H + 2\).
+
+13. Using the units equation \(H = 1 + W + 2G\) together with the condition \(H\le7\) (so that \(F\) stays a single digit) we find the only feasible choice  
+    \[
+    G=2,\; W=0,\; H=5,\; F=7 .
+    \]
+
+14. All digits are distinct inside each group, leading letters are non‑zero, and every column check balances:
+
+| column | sum | result digit | carry |
+|--------|-----|--------------|-------|
+| units          | \(1+0+2+2=5\) | H=5 | \(c_1=0\) |
+| tens           | \(0+1+0+0+0=1\) | S=1 | \(c_2=0\) |
+| hundreds       | \(6+8+6+6=26\) | I=6 | \(c_3=2\) |
+| thousands      | \(5+0+0+0+2=7\) | F=7 | \(c_4=0\) |
+| ten‑thousands  | \(3+6+2+1=12\) | R=2 | \(c_5=1\) |
+| hundred‑thousands | \(0+0+1+8+1=10\) | A=0 | \(c_6=1\) |
+| millions       | \(4+2+4+1+1=12\) | T=2 | \(c_7=1=S\) |
+
+All conditions are satisfied.
+
+15. Finally, the word **STARFISH** becomes  
+
+\[
+S=1,\; T=2,\; A=0,\; R=2,\; F=7,\; I=6,\; S=1,\; H=5
+\]
+
+giving the number **12027615**.
+
+**Answer**
+
+Answer: 12027615",12027615,1,medium,
+cryptarithmetic_en_medium_0097,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=4, H=3
+[group J-R] L=2, M=0
+[group S-Z] T=0, U=4
+
+Find the numeric value of NOTEBOOK.
+
+  KITCHEN
++ DOLPHIN
++ PENGUIN
++ DIAMOND
+----------
+= NOTEBOOK",15008554,,Answer: 38789447,38789447,0,medium,
+cryptarithmetic_en_medium_0098,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=7, G=4, H=1, I=2
+[group J-R] R=1
+[group S-Z] S=2, T=3
+
+Find the numeric value of SANDWICH.
+
+  PENGUIN
++ JUSTICE
++ PICTURE
++ RAINBOW
+----------
+= SANDWICH",27031281,,Answer: 27031281,27031281,1,medium,
+cryptarithmetic_en_medium_0099,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=4, H=5
+[group J-R] M=3, P=2, R=1
+[group S-Z] U=3
+
+Find the numeric value of JUSTICE.
+
+  DOLPHIN
++ DIAMOND
++ LEOPARD
++ EVENING
+---------
+= JUSTICE",9319342,,Answer: 8517396,8517396,0,medium,

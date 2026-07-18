@@ -1,0 +1,33 @@
+{
+  "metadata": {
+    "task": "number_baseball_ko_hard",
+    "model": "openai/gpt-oss-120b",
+    "timestamp": "2026-07-17T18-08-52",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "temperature": 1.0,
+      "top_p": 1.0,
+      "max_tokens": 64000,
+      "reasoning_effort": "medium"
+    },
+    "gen_kwargs_cli": "temperature=1.0,top_p=1.0,max_tokens=64000,reasoning_effort=medium"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.34,
+      "correct_count": 34,
+      "total_count": 100,
+      "avg_latency_ms": 347720.50067424774,
+      "finish_reason_counts": {
+        "stop": 100
+      }
+    },
+    "by_difficulty": {
+      "hard": {
+        "total": 100,
+        "correct": 34,
+        "accuracy": 0.34
+      }
+    }
+  }
+}

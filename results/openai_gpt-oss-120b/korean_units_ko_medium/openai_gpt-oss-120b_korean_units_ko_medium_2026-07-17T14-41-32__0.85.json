@@ -1,0 +1,33 @@
+{
+  "metadata": {
+    "task": "korean_units_ko_medium",
+    "model": "openai/gpt-oss-120b",
+    "timestamp": "2026-07-17T14-41-32",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "temperature": 1.0,
+      "top_p": 1.0,
+      "max_tokens": 64000,
+      "reasoning_effort": "medium"
+    },
+    "gen_kwargs_cli": "temperature=1.0,top_p=1.0,max_tokens=64000,reasoning_effort=medium"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.85,
+      "correct_count": 85,
+      "total_count": 100,
+      "avg_latency_ms": 127146.70352935791,
+      "finish_reason_counts": {
+        "stop": 100
+      }
+    },
+    "by_difficulty": {
+      "medium": {
+        "total": 100,
+        "correct": 85,
+        "accuracy": 0.85
+      }
+    }
+  }
+}

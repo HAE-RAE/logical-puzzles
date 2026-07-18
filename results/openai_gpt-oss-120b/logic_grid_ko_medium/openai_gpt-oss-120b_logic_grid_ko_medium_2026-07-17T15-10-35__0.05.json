@@ -1,0 +1,33 @@
+{
+  "metadata": {
+    "task": "logic_grid_ko_medium",
+    "model": "openai/gpt-oss-120b",
+    "timestamp": "2026-07-17T15-10-35",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "temperature": 1.0,
+      "top_p": 1.0,
+      "max_tokens": 64000,
+      "reasoning_effort": "medium"
+    },
+    "gen_kwargs_cli": "temperature=1.0,top_p=1.0,max_tokens=64000,reasoning_effort=medium"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.05,
+      "correct_count": 5,
+      "total_count": 100,
+      "avg_latency_ms": 89968.4476017952,
+      "finish_reason_counts": {
+        "stop": 100
+      }
+    },
+    "by_difficulty": {
+      "medium": {
+        "total": 100,
+        "correct": 5,
+        "accuracy": 0.05
+      }
+    }
+  }
+}
