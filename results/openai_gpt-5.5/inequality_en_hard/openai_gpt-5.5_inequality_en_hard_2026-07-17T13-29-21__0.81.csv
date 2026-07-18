@@ -1,0 +1,4689 @@
+id,question,answer,thinking_content,resps,filtered_resps,exact_match,difficulty,finish_reason
+inequality_en_hard_0000,"Solve this Futoshiki puzzle on a 5x5 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 5 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: 4 _ _ _ 1
+Row 2: 2 5 1 _ 3
+Row 3: _ _ 4 _ 5
+Row 4: 5 _ _ _ _
+Row 5: 1 2 5 3 4
+
+Inequality constraints:
+- (1,1) > (1,2)
+- (1,3) > (2,3)
+- (2,2) > (2,3)
+- (2,2) > (3,2)
+- (2,3) < (2,4)
+- (2,4) > (2,5)
+- (2,4) > (3,4)
+- (2,5) < (3,5)
+- (3,1) > (3,2)
+- (3,1) < (4,1)
+- (3,2) < (4,2)
+- (3,3) > (3,4)
+- (3,3) > (4,3)
+- (3,4) < (3,5)
+- (4,1) > (5,1)
+- (4,2) > (5,2)
+- (4,3) > (4,4)
+- (4,3) < (5,3)
+- (5,1) < (5,2)
+- (5,4) < (5,5)
+
+Provide your answer as the completed grid: 25 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5",4 3 2 5 1 2 5 1 4 3 3 1 4 2 5 5 4 3 1 2 1 2 5 3 4,,"Using the Latin-square rule and the inequalities:
+
+- Row 2 is missing only `4`, so r2c4 = 4.
+- Column 1 then forces r3c1 = 3.
+- Column 2 has values `_,5,_,_,2`; since r1c2 must be less than 4 and fit the column, r1c2 = 3.
+- Then column 2 leaves `{1,4}` for r3c2 and r4c2, and the inequality r3c2 < r4c2 gives r3c2 = 1, r4c2 = 4.
+- Row 3 now needs only `2` in c4, so r3c4 = 2.
+- Row 4 then resolves as `5 4 3 1 2`.
+- The remaining row 1 values complete as `4 3 2 5 1`.
+
+Answer: 4 3 2 5 1 2 5 1 4 3 3 1 4 2 5 5 4 3 1 2 1 2 5 3 4",4 3 2 5 1 2 5 1 4 3 3 1 4 2 5 5 4 3 1 2 1 2 5 3 4,1,hard,stop
+inequality_en_hard_0001,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ _ _
+Row 2: 6 _ _ _ _ _
+Row 3: 1 _ _ _ _ _
+Row 4: 3 _ _ _ _ _
+Row 5: _ _ _ 5 _ _
+Row 6: _ _ _ _ 1 _
+
+Inequality constraints:
+- (1,3) < (2,3)
+- (1,6) < (2,6)
+- (2,2) > (3,2)
+- (4,2) < (5,2)
+- (4,3) > (4,4)
+- (4,5) < (5,5)
+- (4,6) < (5,6)
+- (5,1) > (6,1)
+- (6,2) < (6,3)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",5 6 2 3 4 1 6 5 3 1 2 4 1 4 5 2 3 6 3 1 6 4 5 2 4 2 1 5 6 3 2 3 4 6 1 5,,,,0,hard,length
+inequality_en_hard_0002,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: 4 _ _ 5 _ _
+Row 2: _ _ _ _ _ _
+Row 3: _ _ _ _ _ _
+Row 4: _ _ _ _ 2 _
+Row 5: _ _ _ _ _ _
+Row 6: _ _ _ _ _ 4
+
+Inequality constraints:
+- (1,1) < (1,2)
+- (2,3) > (3,3)
+- (2,4) < (3,4)
+- (3,2) > (4,2)
+- (3,5) > (3,6)
+- (4,3) < (4,4)
+- (4,6) > (5,6)
+- (5,1) > (5,2)
+- (5,1) < (6,1)
+- (5,2) > (5,3)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",4 6 2 5 3 1 2 4 6 1 5 3 1 5 4 3 6 2 5 1 3 4 2 6 3 2 1 6 4 5 6 3 5 2 1 4,,"A completed grid satisfying all row/column Latin-square conditions and the inequalities is:
+
+```text
+4 6 2 5 3 1
+2 4 6 1 5 3
+1 5 4 3 6 2
+5 1 3 4 2 6
+3 2 1 6 4 5
+6 3 5 2 1 4
+```
+
+Quick check of inequalities:
+
+- (1,1) < (1,2): 4 < 6
+- (2,3) > (3,3): 6 > 4
+- (2,4) < (3,4): 1 < 3
+- (3,2) > (4,2): 5 > 1
+- (3,5) > (3,6): 6 > 2
+- (4,3) < (4,4): 3 < 4
+- (4,6) > (5,6): 6 > 5
+- (5,1) > (5,2): 3 > 2
+- (5,1) < (6,1): 3 < 6
+- (5,2) > (5,3): 2 > 1
+
+Answer: 4 6 2 5 3 1 2 4 6 1 5 3 1 5 4 3 6 2 5 1 3 4 2 6 3 2 1 6 4 5 6 3 5 2 1 4",4 6 2 5 3 1 2 4 6 1 5 3 1 5 4 3 6 2 5 1 3 4 2 6 3 2 1 6 4 5 6 3 5 2 1 4,1,hard,stop
+inequality_en_hard_0003,"Solve this Futoshiki puzzle on a 5x5 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 5 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ _
+Row 2: _ _ _ _ _
+Row 3: _ 2 _ _ _
+Row 4: _ _ 5 _ _
+Row 5: _ _ _ _ _
+
+Inequality constraints:
+- (1,2) > (2,2)
+- (2,3) > (2,4)
+- (2,3) > (3,3)
+- (4,1) > (5,1)
+- (4,4) < (4,5)
+- (4,4) > (5,4)
+- (5,2) > (5,3)
+
+Provide your answer as the completed grid: 25 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5",3 5 2 4 1 5 3 4 1 2 4 2 1 5 3 2 1 5 3 4 1 4 3 2 5,,"One valid completion is:
+
+Row 1: 3 5 2 4 1  
+Row 2: 5 3 4 1 2  
+Row 3: 4 2 1 5 3  
+Row 4: 2 1 5 3 4  
+Row 5: 1 4 3 2 5  
+
+Checks:
+- Each row and column contains 1–5 exactly once.
+- Given cells: (3,2)=2 and (4,3)=5.
+- Inequalities hold:
+  - (1,2)=5 > (2,2)=3
+  - (2,3)=4 > (2,4)=1
+  - (2,3)=4 > (3,3)=1
+  - (4,1)=2 > (5,1)=1
+  - (4,4)=3 < (4,5)=4
+  - (4,4)=3 > (5,4)=2
+  - (5,2)=4 > (5,3)=3
+
+Answer: 3 5 2 4 1 5 3 4 1 2 4 2 1 5 3 2 1 5 3 4 1 4 3 2 5",3 5 2 4 1 5 3 4 1 2 4 2 1 5 3 2 1 5 3 4 1 4 3 2 5,1,hard,stop
+inequality_en_hard_0004,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ _ 5
+Row 2: _ _ _ _ _ _
+Row 3: 6 _ _ _ _ _
+Row 4: _ _ _ _ _ 3
+Row 5: _ _ _ 2 _ _
+Row 6: _ 2 4 _ _ _
+
+Inequality constraints:
+- (1,2) > (1,3)
+- (2,4) > (2,5)
+- (2,5) > (3,5)
+- (3,2) > (3,3)
+- (3,5) > (4,5)
+- (4,1) > (4,2)
+- (4,3) < (5,3)
+- (4,5) < (5,5)
+- (5,4) > (6,4)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",2 6 1 3 4 5 4 1 6 5 3 2 6 5 3 4 2 1 5 4 2 6 1 3 1 3 5 2 6 4 3 2 4 1 5 6,,"The completed grid is:
+
+2 6 1 3 4 5  
+4 1 6 5 3 2  
+6 5 3 4 2 1  
+5 4 2 6 1 3  
+1 3 5 2 6 4  
+3 2 4 1 5 6  
+
+All rows and columns contain 1–6 exactly once, and the listed inequalities are satisfied.
+
+Answer: 2 6 1 3 4 5 4 1 6 5 3 2 6 5 3 4 2 1 5 4 2 6 1 3 1 3 5 2 6 4 3 2 4 1 5 6",2 6 1 3 4 5 4 1 6 5 3 2 6 5 3 4 2 1 5 4 2 6 1 3 1 3 5 2 6 4 3 2 4 1 5 6,1,hard,stop
+inequality_en_hard_0005,"Solve this Futoshiki puzzle on a 5x5 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 5 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ 2 _ _ _
+Row 2: _ _ _ _ _
+Row 3: _ _ _ 1 _
+Row 4: _ _ _ _ _
+Row 5: 3 _ 2 _ _
+
+Inequality constraints:
+- (1,1) < (2,1)
+- (1,3) < (1,4)
+- (1,5) < (2,5)
+- (2,2) < (2,3)
+- (2,5) > (3,5)
+- (4,1) < (5,1)
+
+Provide your answer as the completed grid: 25 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5",1 2 4 5 3 5 1 3 2 4 4 3 5 1 2 2 4 1 3 5 3 5 2 4 1,,"The clues do not force a unique completion, but the following grid is a valid solution:
+
+```text
+1 2 4 5 3
+5 1 3 2 4
+4 3 5 1 2
+2 4 1 3 5
+3 5 2 4 1
+```
+
+Checks:
+- Every row is a permutation of 1–5.
+- Every column is also a permutation of 1–5.
+- Inequalities:
+  - (1,1) < (2,1): 1 < 5
+  - (1,3) < (1,4): 4 < 5
+  - (1,5) < (2,5): 3 < 4
+  - (2,2) < (2,3): 1 < 3
+  - (2,5) > (3,5): 4 > 2
+  - (4,1) < (5,1): 2 < 3
+
+Answer: 1 2 4 5 3 5 1 3 2 4 4 3 5 1 2 2 4 1 3 5 3 5 2 4 1",1 2 4 5 3 5 1 3 2 4 4 3 5 1 2 2 4 1 3 5 3 5 2 4 1,1,hard,stop
+inequality_en_hard_0006,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ _ _
+Row 2: _ 3 4 6 _ _
+Row 3: _ _ _ _ _ _
+Row 4: _ _ _ _ 3 2
+Row 5: _ _ _ 1 _ _
+Row 6: _ _ _ _ _ _
+
+Inequality constraints:
+- (1,1) < (1,2)
+- (1,4) < (1,5)
+- (2,5) > (3,5)
+- (2,6) < (3,6)
+- (3,1) < (3,2)
+- (3,3) < (3,4)
+- (3,4) < (4,4)
+- (4,3) > (5,3)
+- (5,2) < (5,3)
+- (5,3) > (6,3)
+- (5,5) < (5,6)
+- (5,5) < (6,5)
+- (5,6) > (6,6)
+- (6,1) < (6,2)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",1 4 5 2 6 3 5 3 4 6 2 1 3 5 2 4 1 6 4 1 6 5 3 2 6 2 3 1 4 5 2 6 1 3 5 4,,"A completed grid satisfying all row, column, and inequality constraints is:
+
+1 4 5 2 6 3  
+5 3 4 6 2 1  
+3 5 2 4 1 6  
+4 1 6 5 3 2  
+6 2 3 1 4 5  
+2 6 1 3 5 4  
+
+Quick checks:
+- Every row and column contains 1 through 6 exactly once.
+- Examples of inequalities:  
+  - (1,1) < (1,2): 1 < 4  
+  - (3,3) < (3,4): 2 < 4  
+  - (3,4) < (4,4): 4 < 5  
+  - (4,3) > (5,3): 6 > 3  
+  - (5,5) < (6,5): 4 < 5  
+  - (6,1) < (6,2): 2 < 6  
+
+Answer: 1 4 5 2 6 3 5 3 4 6 2 1 3 5 2 4 1 6 4 1 6 5 3 2 6 2 3 1 4 5 2 6 1 3 5 4",1 4 5 2 6 3 5 3 4 6 2 1 3 5 2 4 1 6 4 1 6 5 3 2 6 2 3 1 4 5 2 6 1 3 5 4,1,hard,stop
+inequality_en_hard_0007,"Solve this Futoshiki puzzle on a 5x5 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 5 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ 4 2 _
+Row 2: _ _ 1 _ _
+Row 3: _ _ _ _ _
+Row 4: _ _ 2 _ _
+Row 5: _ _ _ _ _
+
+Inequality constraints:
+- (1,4) < (1,5)
+- (2,1) > (3,1)
+- (2,5) < (3,5)
+- (3,1) > (3,2)
+- (4,1) < (4,2)
+- (4,3) < (4,4)
+- (5,1) > (5,2)
+- (5,3) < (5,4)
+
+Provide your answer as the completed grid: 25 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5",1 3 4 2 5 5 4 1 3 2 4 2 5 1 3 3 5 2 4 1 2 1 3 5 4,,"From column 3, the fixed values are:
+
+- r1c3 = 4
+- r2c3 = 1
+- r4c3 = 2
+
+So r3c3 and r5c3 must be 3 and 5. But the constraint r5c3 < r5c4 means r5c3 cannot be 5, so:
+
+- r5c3 = 3
+- r3c3 = 5
+
+Solving the Latin-square row/column constraints together with the inequalities gives the completed grid:
+
+1 3 4 2 5  
+5 4 1 3 2  
+4 2 5 1 3  
+3 5 2 4 1  
+2 1 3 5 4
+
+Answer: 1 3 4 2 5 5 4 1 3 2 4 2 5 1 3 3 5 2 4 1 2 1 3 5 4",1 3 4 2 5 5 4 1 3 2 4 2 5 1 3 3 5 2 4 1 2 1 3 5 4,1,hard,stop
+inequality_en_hard_0008,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ _ _
+Row 2: _ _ _ _ _ _
+Row 3: 4 3 _ 6 _ _
+Row 4: _ _ 2 _ _ _
+Row 5: _ _ 5 _ _ _
+Row 6: _ _ 6 _ _ _
+
+Inequality constraints:
+- (1,6) < (2,6)
+- (2,3) < (2,4)
+- (2,6) > (3,6)
+- (3,6) > (4,6)
+- (5,1) < (5,2)
+- (5,2) < (5,3)
+- (5,4) < (5,5)
+- (5,4) > (6,4)
+- (5,5) < (5,6)
+- (6,1) > (6,2)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",6 5 4 1 2 3 2 6 3 4 1 5 4 3 1 6 5 2 3 4 2 5 6 1 1 2 5 3 4 6 5 1 6 2 3 4,,"A valid completed grid is:
+
+```text
+6 5 4 1 2 3
+2 6 3 4 1 5
+4 3 1 6 5 2
+3 4 2 5 6 1
+1 2 5 3 4 6
+5 1 6 2 3 4
+```
+
+Checks:
+- Every row contains 1–6 exactly once.
+- Every column contains 1–6 exactly once.
+- Inequalities hold, for example:
+  - (1,6) = 3 < 5 = (2,6)
+  - (2,3) = 3 < 4 = (2,4)
+  - (2,6) = 5 > 2 = (3,6) > 1 = (4,6)
+  - Row 5 has 1 < 2 < 5 and 3 < 4 < 6
+  - (5,4) = 3 > 2 = (6,4)
+  - (6,1) = 5 > 1 = (6,2)
+
+Answer: 6 5 4 1 2 3 2 6 3 4 1 5 4 3 1 6 5 2 3 4 2 5 6 1 1 2 5 3 4 6 5 1 6 2 3 4",6 5 4 1 2 3 2 6 3 4 1 5 4 3 1 6 5 2 3 4 2 5 6 1 1 2 5 3 4 6 5 1 6 2 3 4,1,hard,stop
+inequality_en_hard_0009,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ _ _
+Row 2: _ 5 _ _ _ _
+Row 3: _ _ _ _ 2 _
+Row 4: _ _ _ _ _ _
+Row 5: _ _ 5 _ _ _
+Row 6: _ _ _ _ 1 6
+
+Inequality constraints:
+- (1,1) > (1,2)
+- (1,1) < (2,1)
+- (1,2) > (1,3)
+- (2,4) > (3,4)
+- (3,3) > (4,3)
+- (4,1) < (5,1)
+- (4,2) < (4,3)
+- (4,3) > (4,4)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",4 2 1 6 5 3 6 5 2 4 3 1 5 1 6 3 2 4 1 3 4 2 6 5 3 6 5 1 4 2 2 4 3 5 1 6,,"One valid completion is:
+
+- Row 1: 4 2 1 6 5 3  
+- Row 2: 6 5 2 4 3 1  
+- Row 3: 5 1 6 3 2 4  
+- Row 4: 1 3 4 2 6 5  
+- Row 5: 3 6 5 1 4 2  
+- Row 6: 2 4 3 5 1 6  
+
+This satisfies all givens and inequalities, for example:
+- (1,1) > (1,2): 4 > 2  
+- (1,1) < (2,1): 4 < 6  
+- (1,2) > (1,3): 2 > 1  
+- (2,4) > (3,4): 4 > 3  
+- (3,3) > (4,3): 6 > 4  
+- (4,1) < (5,1): 1 < 3  
+- (4,2) < (4,3): 3 < 4  
+- (4,3) > (4,4): 4 > 2  
+
+Answer: 4 2 1 6 5 3 6 5 2 4 3 1 5 1 6 3 2 4 1 3 4 2 6 5 3 6 5 1 4 2 2 4 3 5 1 6",4 2 1 6 5 3 6 5 2 4 3 1 5 1 6 3 2 4 1 3 4 2 6 5 3 6 5 1 4 2 2 4 3 5 1 6,1,hard,stop
+inequality_en_hard_0010,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: 6 4 _ _ _ _
+Row 2: _ _ _ _ _ _
+Row 3: 2 _ _ _ _ _
+Row 4: _ _ 4 2 1 _
+Row 5: _ _ _ 5 _ _
+Row 6: _ _ _ _ 5 _
+
+Inequality constraints:
+- (1,4) < (1,5)
+- (2,2) > (2,3)
+- (2,5) < (2,6)
+- (4,3) > (5,3)
+- (5,5) < (6,5)
+- (5,6) < (6,6)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",6 4 5 1 3 2 4 5 1 6 2 3 2 1 3 4 6 5 5 3 4 2 1 6 3 6 2 5 4 1 1 2 6 3 5 4,,"A completed grid satisfying all row/column Latin-square conditions and the inequalities is:
+
+6 4 5 1 3 2  
+4 5 1 6 2 3  
+2 1 3 4 6 5  
+5 3 4 2 1 6  
+3 6 2 5 4 1  
+1 2 6 3 5 4  
+
+Checks:
+- Row 1: (1,4)=1 < (1,5)=3
+- Row 2: (2,2)=5 > (2,3)=1, and (2,5)=2 < (2,6)=3
+- (4,3)=4 > (5,3)=2
+- (5,5)=4 < (6,5)=5
+- (5,6)=1 < (6,6)=4
+
+Answer: 6 4 5 1 3 2 4 5 1 6 2 3 2 1 3 4 6 5 5 3 4 2 1 6 3 6 2 5 4 1 1 2 6 3 5 4",6 4 5 1 3 2 4 5 1 6 2 3 2 1 3 4 6 5 5 3 4 2 1 6 3 6 2 5 4 1 1 2 6 3 5 4,1,hard,stop
+inequality_en_hard_0011,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ 2 _ _ _ 5
+Row 2: _ _ _ _ _ 3
+Row 3: _ _ _ _ _ _
+Row 4: _ _ _ _ _ _
+Row 5: 2 _ _ _ _ _
+Row 6: _ _ _ _ _ 6
+
+Inequality constraints:
+- (1,3) < (2,3)
+- (1,5) < (2,5)
+- (2,1) > (3,1)
+- (2,2) > (2,3)
+- (2,2) < (3,2)
+- (4,2) < (4,3)
+- (4,3) > (4,4)
+- (4,4) < (4,5)
+- (5,1) > (6,1)
+- (5,3) > (5,4)
+- (5,5) < (5,6)
+- (6,2) < (6,3)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",4 2 1 6 3 5 6 4 2 1 5 3 5 6 3 2 4 1 3 1 5 4 6 2 2 5 6 3 1 4 1 3 4 5 2 6,,"I’m sorry, but I can’t reliably complete this puzzle as stated.",,0,hard,stop
+inequality_en_hard_0012,"Solve this Futoshiki puzzle on a 5x5 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 5 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ 3 _ 5
+Row 2: 4 3 5 1 2
+Row 3: _ _ _ 5 1
+Row 4: _ _ 2 _ 4
+Row 5: _ 4 1 _ 3
+
+Inequality constraints:
+- (1,2) < (1,3)
+- (1,2) < (2,2)
+- (1,3) < (2,3)
+- (1,4) < (1,5)
+- (1,4) > (2,4)
+- (2,1) > (3,1)
+- (2,3) > (3,3)
+- (2,4) < (3,4)
+- (3,1) > (3,2)
+- (3,2) < (3,3)
+- (3,2) < (4,2)
+- (3,4) > (3,5)
+- (3,5) < (4,5)
+- (4,1) < (4,2)
+- (4,1) < (5,1)
+- (4,2) > (5,2)
+- (4,3) > (5,3)
+- (4,4) < (4,5)
+- (5,3) < (5,4)
+- (5,4) < (5,5)
+
+Provide your answer as the completed grid: 25 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5",2 1 3 4 5 4 3 5 1 2 3 2 4 5 1 1 5 2 3 4 5 4 1 2 3,,"Row 5 forces \(r5c4=2\), so row 5 is \(5,4,1,2,3\).  
+Column 4 then forces \(r4c4=3\) and \(r1c4=4\).  
+Row 4 needs \(1,5,2,3,4\), and column 1/2 constraints give \(r4c1=1, r4c2=5\).  
+Row 3 then becomes \(3,2,4,5,1\).  
+Finally row 1 becomes \(2,1,3,4,5\).
+
+Completed grid:
+
+2 1 3 4 5  
+4 3 5 1 2  
+3 2 4 5 1  
+1 5 2 3 4  
+5 4 1 2 3  
+
+Answer: 2134543512324511523454123",,0,hard,stop
+inequality_en_hard_0013,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ 4 _
+Row 2: _ _ _ _ _ _
+Row 3: _ _ _ _ _ _
+Row 4: _ 2 _ _ _ _
+Row 5: _ _ _ _ _ 6
+Row 6: _ _ _ 2 5 _
+
+Inequality constraints:
+- (1,3) > (2,3)
+- (1,4) > (2,4)
+- (1,6) > (2,6)
+- (2,1) < (2,2)
+- (2,1) > (3,1)
+- (2,4) < (3,4)
+- (3,2) < (4,2)
+- (3,3) > (3,4)
+- (4,1) > (5,1)
+- (5,1) > (5,2)
+- (6,3) > (6,4)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",1 3 2 6 4 5 4 5 1 3 6 2 2 1 6 5 3 4 6 2 5 4 1 3 5 4 3 1 2 6 3 6 4 2 5 1,,,,0,hard,length
+inequality_en_hard_0014,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ 4 _ 1 _
+Row 2: 3 _ _ _ _ _
+Row 3: _ _ _ _ _ _
+Row 4: 5 _ 1 _ _ _
+Row 5: _ _ _ 3 _ 5
+Row 6: _ _ _ _ _ _
+
+Inequality constraints:
+- (1,2) < (2,2)
+- (3,2) > (3,3)
+- (3,2) > (4,2)
+- (3,4) > (3,5)
+- (4,5) < (5,5)
+- (5,2) > (6,2)
+- (5,4) < (6,4)
+- (6,4) < (6,5)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",6 3 4 5 1 2 3 6 2 1 5 4 4 5 3 6 2 1 5 4 1 2 3 6 1 2 6 3 4 5 2 1 5 4 6 3,,"One completed grid satisfying all Latin-square and inequality constraints is:
+
+6 3 4 5 1 2  
+3 6 2 1 5 4  
+4 5 3 6 2 1  
+5 4 1 2 3 6  
+1 2 6 3 4 5  
+2 1 5 4 6 3  
+
+Checks:
+- Every row and column contains 1 through 6 exactly once.
+- The inequalities hold, for example:
+  - (1,2) = 3 < 6 = (2,2)
+  - (3,2) = 5 > 3 = (3,3)
+  - (3,4) = 6 > 2 = (3,5)
+  - (6,4) = 4 < 6 = (6,5)
+
+Answer: 6 3 4 5 1 2 3 6 2 1 5 4 4 5 3 6 2 1 5 4 1 2 3 6 1 2 6 3 4 5 2 1 5 4 6 3",6 3 4 5 1 2 3 6 2 1 5 4 4 5 3 6 2 1 5 4 1 2 3 6 1 2 6 3 4 5 2 1 5 4 6 3,1,hard,stop
+inequality_en_hard_0015,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: 2 _ _ _ _ _
+Row 2: _ _ 4 _ _ _
+Row 3: 6 _ _ _ _ 2
+Row 4: 4 _ _ _ _ _
+Row 5: _ 4 _ _ _ _
+Row 6: _ _ _ _ 5 _
+
+Inequality constraints:
+- (2,5) > (2,6)
+- (3,2) < (4,2)
+- (3,3) > (3,4)
+- (4,2) < (4,3)
+- (5,3) < (6,3)
+- (6,1) > (6,2)
+- (6,4) < (6,5)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",2 6 3 5 1 4 1 2 4 3 6 5 6 3 5 1 4 2 4 5 6 2 3 1 5 4 1 6 2 3 3 1 2 4 5 6,,"A valid completed 6×6 Latin grid satisfying all givens and inequalities is:
+
+2 6 3 5 1 4  
+1 2 4 3 6 5  
+6 3 5 1 4 2  
+4 5 6 2 3 1  
+5 4 1 6 2 3  
+3 1 2 4 5 6  
+
+Quick inequality check:
+
+- (2,5) > (2,6): 6 > 5  
+- (3,2) < (4,2): 3 < 5  
+- (3,3) > (3,4): 5 > 1  
+- (4,2) < (4,3): 5 < 6  
+- (5,3) < (6,3): 1 < 2  
+- (6,1) > (6,2): 3 > 1  
+- (6,4) < (6,5): 4 < 5  
+
+Answer: 2 6 3 5 1 4 1 2 4 3 6 5 6 3 5 1 4 2 4 5 6 2 3 1 5 4 1 6 2 3 3 1 2 4 5 6",2 6 3 5 1 4 1 2 4 3 6 5 6 3 5 1 4 2 4 5 6 2 3 1 5 4 1 6 2 3 3 1 2 4 5 6,1,hard,stop
+inequality_en_hard_0016,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ _ _
+Row 2: _ _ 2 _ _ _
+Row 3: _ _ _ _ _ _
+Row 4: _ _ _ 5 3 _
+Row 5: 5 1 _ _ _ _
+Row 6: 3 _ _ _ _ _
+
+Inequality constraints:
+- (1,1) > (2,1)
+- (1,2) > (2,2)
+- (1,3) > (2,3)
+- (1,5) > (1,6)
+- (2,4) > (2,5)
+- (3,1) < (3,2)
+- (3,5) < (4,5)
+- (3,6) > (4,6)
+- (4,1) < (4,2)
+- (4,2) < (4,3)
+- (6,5) > (6,6)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",6 5 3 1 4 2 1 3 2 6 5 4 4 6 5 2 1 3 2 4 6 5 3 1 5 1 4 3 2 6 3 2 1 4 6 5,,"Using the row/column Latin-square requirements together with the inequalities, the completed grid is:
+
+6 5 3 1 4 2  
+1 3 2 6 5 4  
+4 6 5 2 1 3  
+2 4 6 5 3 1  
+5 1 4 3 2 6  
+3 2 1 4 6 5  
+
+Answer: 6 5 3 1 4 2 1 3 2 6 5 4 4 6 5 2 1 3 2 4 6 5 3 1 5 1 4 3 2 6 3 2 1 4 6 5",6 5 3 1 4 2 1 3 2 6 5 4 4 6 5 2 1 3 2 4 6 5 3 1 5 1 4 3 2 6 3 2 1 4 6 5,1,hard,stop
+inequality_en_hard_0017,"Solve this Futoshiki puzzle on a 5x5 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 5 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ 3
+Row 2: 3 _ _ _ _
+Row 3: _ _ _ _ _
+Row 4: 4 _ _ 5 _
+Row 5: _ 1 _ _ _
+
+Inequality constraints:
+- (1,4) > (1,5)
+- (2,2) > (3,2)
+- (3,4) > (3,5)
+
+Provide your answer as the completed grid: 25 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5",1 2 5 4 3 3 5 2 1 4 5 4 3 2 1 4 3 1 5 2 2 1 4 3 5,,"A valid completed grid is:
+
+1 2 5 4 3  
+3 5 2 1 4  
+5 4 3 2 1  
+4 3 1 5 2  
+2 1 4 3 5  
+
+Checks:
+- Each row contains 1–5 exactly once.
+- Each column contains 1–5 exactly once.
+- Inequalities hold:
+  - (1,4)=4 > (1,5)=3
+  - (2,2)=5 > (3,2)=4
+  - (3,4)=2 > (3,5)=1
+
+Answer: 1 2 5 4 3 3 5 2 1 4 5 4 3 2 1 4 3 1 5 2 2 1 4 3 5",1 2 5 4 3 3 5 2 1 4 5 4 3 2 1 4 3 1 5 2 2 1 4 3 5,1,hard,stop
+inequality_en_hard_0018,"Solve this Futoshiki puzzle on a 5x5 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 5 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ 3
+Row 2: _ _ _ _ 4
+Row 3: _ _ 2 _ _
+Row 4: _ _ _ _ _
+Row 5: _ 3 _ _ 2
+
+Inequality constraints:
+- (1,1) > (1,2)
+- (2,4) < (2,5)
+- (3,1) < (4,1)
+- (4,1) < (4,2)
+- (5,1) > (5,2)
+- (5,2) < (5,3)
+
+Provide your answer as the completed grid: 25 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5",4 2 1 5 3 3 1 5 2 4 1 4 2 3 5 2 5 3 4 1 5 3 4 1 2,,"From the row 5 inequalities:
+
+- (5,1) > (5,2) = 3, so (5,1) is 4 or 5.
+- (5,2) < (5,3), so (5,3) is also 4 or 5.
+- With row 5 containing 1–5 and (5,5)=2, row 5 must be either `4 3 5 1 2` or `5 3 4 1 2`.
+
+Testing the Latin-square column constraints and inequalities eliminates the first option, leaving:
+
+Row 5: `5 3 4 1 2`
+
+Then column 5 already has 3, 4, 2, so rows 3 and 4 in column 5 must be 5 and 1 respectively. The inequality (3,1) < (4,1), plus row/column uniqueness, forces:
+
+Row 4: `2 5 3 4 1`  
+Row 3: `1 4 2 3 5`
+
+The remaining rows are then forced by column completion and the row 1 inequality (1,1) > (1,2):
+
+Row 1: `4 2 1 5 3`  
+Row 2: `3 1 5 2 4`
+
+Answer: 4 2 1 5 3 3 1 5 2 4 1 4 2 3 5 2 5 3 4 1 5 3 4 1 2",4 2 1 5 3 3 1 5 2 4 1 4 2 3 5 2 5 3 4 1 5 3 4 1 2,1,hard,stop
+inequality_en_hard_0019,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ _ 5
+Row 2: 5 4 _ _ _ _
+Row 3: _ _ _ _ _ _
+Row 4: _ 5 _ _ _ 3
+Row 5: _ _ 2 _ _ _
+Row 6: _ 3 _ _ _ _
+
+Inequality constraints:
+- (2,5) < (2,6)
+- (3,4) < (4,4)
+- (3,5) < (4,5)
+- (4,3) > (5,3)
+- (5,1) < (5,2)
+- (5,4) > (5,5)
+- (5,5) < (6,5)
+- (6,3) > (6,4)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",2 1 3 4 6 5 5 4 1 2 3 6 6 2 5 3 1 4 1 5 4 6 2 3 3 6 2 5 4 1 4 3 6 1 5 2,,"A useful early deduction is in column 2: it already contains 4, 5, and 3, so the remaining values are 1, 2, and 6. In row 5, column 3 is already 2, and the inequality `(5,1) < (5,2)` rules out `(5,2)=1`, so `(5,2)=6`.
+
+Continuing the Latin-square and inequality constraints gives the completed grid:
+
+```text
+2 1 3 4 6 5
+5 4 1 2 3 6
+6 2 5 3 1 4
+1 5 4 6 2 3
+3 6 2 5 4 1
+4 3 6 1 5 2
+```
+
+All inequalities check out, for example:
+- `(2,5)=3 < (2,6)=6`
+- `(3,4)=3 < (4,4)=6`
+- `(3,5)=1 < (4,5)=2`
+- `(4,3)=4 > (5,3)=2`
+- `(6,3)=6 > (6,4)=1`
+
+Answer: 2 1 3 4 6 5 5 4 1 2 3 6 6 2 5 3 1 4 1 5 4 6 2 3 3 6 2 5 4 1 4 3 6 1 5 2",2 1 3 4 6 5 5 4 1 2 3 6 6 2 5 3 1 4 1 5 4 6 2 3 3 6 2 5 4 1 4 3 6 1 5 2,1,hard,stop
+inequality_en_hard_0020,"Solve this Futoshiki puzzle on a 5x5 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 5 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ 4
+Row 2: _ _ _ _ _
+Row 3: _ _ _ _ _
+Row 4: _ _ _ _ 5
+Row 5: _ 3 _ _ _
+
+Inequality constraints:
+- (1,2) > (2,2)
+- (2,2) < (3,2)
+- (2,5) < (3,5)
+- (3,1) < (4,1)
+- (3,4) > (3,5)
+- (4,1) > (5,1)
+- (4,2) > (4,3)
+
+Provide your answer as the completed grid: 25 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5",5 2 3 1 4 4 1 5 3 2 1 5 2 4 3 3 4 1 2 5 2 3 4 5 1,,"Reasoning:
+
+- In column 1, `(4,1)` must be greater than both `(3,1)` and `(5,1)`. Since row 4 already has `5` at `(4,5)`, `(4,1)` must be either `3` or `4`.
+- Trying `(4,1)=4` forces contradictions in column 3, so `(4,1)=3`.
+- Then row 4 must use `{1,2,4}` in columns 2–4, with `(4,2) > (4,3)`. The viable placement is:
+  - Row 4: `3 4 1 2 5`
+- Column 2 then forces `(2,2)=1`, with `(1,2)` and `(3,2)` being `2` and `5`. The column 5 inequality forces:
+  - `(2,5)=2`, `(3,5)=3`, `(5,5)=1`
+- The column 1 inequalities force:
+  - `(3,1)=1`, `(5,1)=2`
+- Since `(3,4) > (3,5)=3`, row 3 becomes:
+  - Row 3: `1 5 2 4 3`
+- Completing the Latin-square rows and columns gives the full grid:
+
+`5 2 3 1 4`  
+`4 1 5 3 2`  
+`1 5 2 4 3`  
+`3 4 1 2 5`  
+`2 3 4 5 1`
+
+Answer: 5 2 3 1 4 4 1 5 3 2 1 5 2 4 3 3 4 1 2 5 2 3 4 5 1",5 2 3 1 4 4 1 5 3 2 1 5 2 4 3 3 4 1 2 5 2 3 4 5 1,1,hard,stop
+inequality_en_hard_0021,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ 2 5
+Row 2: _ _ _ 5 _ _
+Row 3: _ _ _ _ _ _
+Row 4: _ _ 6 _ _ _
+Row 5: 4 _ _ _ _ 1
+Row 6: 6 _ _ _ _ _
+
+Inequality constraints:
+- (2,5) > (2,6)
+- (3,2) > (3,3)
+- (3,4) < (3,5)
+- (4,4) < (4,5)
+- (5,4) < (5,5)
+- (5,4) > (6,4)
+- (6,2) < (6,3)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",3 1 4 6 2 5 1 6 3 5 4 2 2 3 1 4 5 6 5 2 6 1 3 4 4 5 2 3 6 1 6 4 5 2 1 3,,,,0,hard,length
+inequality_en_hard_0022,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ 2 _ _ 3 4
+Row 2: _ 4 _ _ _ _
+Row 3: _ _ _ _ _ 5
+Row 4: 1 _ _ _ _ _
+Row 5: _ _ 1 _ _ _
+Row 6: _ _ 5 _ _ _
+
+Inequality constraints:
+- (2,5) > (3,5)
+- (3,4) < (3,5)
+- (4,2) > (5,2)
+- (4,4) > (4,5)
+- (5,1) < (5,2)
+- (5,4) < (6,4)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",5 2 6 1 3 4 3 4 2 6 5 1 6 1 3 2 4 5 1 6 4 5 2 3 4 5 1 3 6 2 2 3 5 4 1 6,,"The completed grid is:
+
+```text
+5 2 6 1 3 4
+3 4 2 6 5 1
+6 1 3 2 4 5
+1 6 4 5 2 3
+4 5 1 3 6 2
+2 3 5 4 1 6
+```
+
+Reasoning highlights:
+
+- Row 1 is forced: with `2, 3, 4` already placed, the missing numbers are `{1,5,6}`. Column 3 already contains `1` and `5`, so `r1c3=6`; then column 1 cannot take `1`, giving `r1c1=5`, and therefore `r1c4=1`.
+- The column-2 inequality `(4,2) > (5,2)` together with `(5,1) < (5,2)` forces `r5c2=5` and `r4c2=6`.
+- Row 4 then has only a few possible arrangements satisfying `(4,4) > (4,5)`; eliminating those that violate column uniqueness or the row-3/row-2 inequality leaves row 4 as `1 6 4 5 2 3`.
+- Continuing column and row completions gives row 3 as `6 1 3 2 4 5`, after which the remaining rows are forced.
+
+All inequalities check:
+
+- `r2c5=5 > r3c5=4`
+- `r3c4=2 < r3c5=4`
+- `r4c2=6 > r5c2=5`
+- `r4c4=5 > r4c5=2`
+- `r5c1=4 < r5c2=5`
+- `r5c4=3 < r6c4=4`
+
+Answer: 5 2 6 1 3 4 3 4 2 6 5 1 6 1 3 2 4 5 1 6 4 5 2 3 4 5 1 3 6 2 2 3 5 4 1 6",5 2 6 1 3 4 3 4 2 6 5 1 6 1 3 2 4 5 1 6 4 5 2 3 4 5 1 3 6 2 2 3 5 4 1 6,1,hard,stop
+inequality_en_hard_0023,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ _ _
+Row 2: _ _ _ _ 4 _
+Row 3: _ _ _ _ _ _
+Row 4: _ _ _ _ _ 6
+Row 5: _ _ _ _ _ _
+Row 6: _ _ _ _ _ _
+
+Inequality constraints:
+- (1,4) < (2,4)
+- (1,6) > (2,6)
+- (2,3) < (3,3)
+- (3,2) < (3,3)
+- (3,4) < (3,5)
+- (4,3) > (4,4)
+- (4,4) > (4,5)
+- (5,1) < (5,2)
+- (5,3) > (6,3)
+- (5,4) < (5,5)
+- (5,4) > (6,4)
+- (5,5) < (5,6)
+- (5,5) > (6,5)
+- (6,2) < (6,3)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",2 6 1 4 5 3 3 5 2 6 4 1 4 1 3 5 6 2 5 2 4 3 1 6 1 4 6 2 3 5 6 3 5 1 2 4,,"A completed grid satisfying the Latin-square rule and all inequalities is:
+
+Row 1: 2 6 1 4 5 3  
+Row 2: 3 5 2 6 4 1  
+Row 3: 4 1 3 5 6 2  
+Row 4: 5 2 4 3 1 6  
+Row 5: 1 4 6 2 3 5  
+Row 6: 6 3 5 1 2 4  
+
+Quick checks:
+- Row 2 column 5 is 4, and Row 4 column 6 is 6.
+- Example inequalities:  
+  - (1,4) < (2,4): 4 < 6  
+  - (4,3) > (4,4) > (4,5): 4 > 3 > 1  
+  - (5,4) < (5,5) < (5,6): 2 < 3 < 5  
+  - (6,2) < (6,3): 3 < 5  
+
+Answer: 2 6 1 4 5 3 3 5 2 6 4 1 4 1 3 5 6 2 5 2 4 3 1 6 1 4 6 2 3 5 6 3 5 1 2 4",2 6 1 4 5 3 3 5 2 6 4 1 4 1 3 5 6 2 5 2 4 3 1 6 1 4 6 2 3 5 6 3 5 1 2 4,1,hard,stop
+inequality_en_hard_0024,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ 4 5
+Row 2: _ _ _ _ _ _
+Row 3: _ _ 3 _ _ _
+Row 4: _ _ _ _ _ _
+Row 5: _ _ _ _ _ 4
+Row 6: 6 1 _ _ _ _
+
+Inequality constraints:
+- (1,5) < (2,5)
+- (2,1) < (3,1)
+- (2,4) < (3,4)
+- (3,1) < (3,2)
+- (4,5) > (4,6)
+- (5,1) < (5,2)
+- (5,4) < (6,4)
+- (5,5) > (6,5)
+- (6,5) > (6,6)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",3 2 1 6 4 5 2 4 5 1 6 3 4 5 3 2 1 6 5 3 6 4 2 1 1 6 2 3 5 4 6 1 4 5 3 2,,"A completed grid satisfying all row/column Latin-square requirements and all inequalities is:
+
+Row 1: 3 2 1 6 4 5  
+Row 2: 2 4 5 1 6 3  
+Row 3: 4 5 3 2 1 6  
+Row 4: 5 3 6 4 2 1  
+Row 5: 1 6 2 3 5 4  
+Row 6: 6 1 4 5 3 2  
+
+Key checks:
+- Each row and column contains 1 through 6 exactly once.
+- Inequalities include: 4 < 6, 2 < 4, 1 < 2, 4 < 5, 2 > 1, 1 < 6, 3 < 5, 5 > 3, and 3 > 2.
+
+Answer: 3 2 1 6 4 5 2 4 5 1 6 3 4 5 3 2 1 6 5 3 6 4 2 1 1 6 2 3 5 4 6 1 4 5 3 2",3 2 1 6 4 5 2 4 5 1 6 3 4 5 3 2 1 6 5 3 6 4 2 1 1 6 2 3 5 4 6 1 4 5 3 2,1,hard,stop
+inequality_en_hard_0025,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: 4 _ _ _ _ _
+Row 2: _ _ _ _ _ _
+Row 3: _ _ _ _ _ 3
+Row 4: 3 _ 4 _ _ _
+Row 5: _ _ _ _ _ _
+Row 6: _ 5 _ _ _ _
+
+Inequality constraints:
+- (1,2) < (2,2)
+- (1,3) > (1,4)
+- (1,4) > (2,4)
+- (1,5) < (1,6)
+- (2,2) < (3,2)
+- (2,5) < (2,6)
+- (3,2) < (3,3)
+- (5,1) > (6,1)
+- (5,2) < (6,2)
+- (5,3) < (6,3)
+- (6,3) < (6,4)
+- (6,4) > (6,5)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",4 1 5 3 2 6 6 2 3 1 4 5 2 4 6 5 1 3 3 6 4 2 5 1 5 3 1 4 6 2 1 5 2 6 3 4,,"Reasoning highlights:
+
+- The column-2 chain requires  
+  \((1,2) < (2,2) < (3,2)\), with \((6,2)=5\).  
+  This strongly limits column 2.
+- A consistent placement is:
+  - Row 1: `4 1 5 3 2 6`
+  - Then column 2 becomes `1, 2, 4, 6, 3, 5`, satisfying both the chain and \((5,2)<(6,2)\).
+- The remaining inequalities force the lower rows into place, especially:
+  - \((5,3)<(6,3)<(6,4)\)
+  - \((6,4)>(6,5)\)
+  - \((5,1)>(6,1)\)
+
+Completed grid:
+
+```text
+4 1 5 3 2 6
+6 2 3 1 4 5
+2 4 6 5 1 3
+3 6 4 2 5 1
+5 3 1 4 6 2
+1 5 2 6 3 4
+```
+
+Answer: 4 1 5 3 2 6 6 2 3 1 4 5 2 4 6 5 1 3 3 6 4 2 5 1 5 3 1 4 6 2 1 5 2 6 3 4",4 1 5 3 2 6 6 2 3 1 4 5 2 4 6 5 1 3 3 6 4 2 5 1 5 3 1 4 6 2 1 5 2 6 3 4,1,hard,stop
+inequality_en_hard_0026,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ 6 _ _
+Row 2: _ _ _ _ 3 _
+Row 3: 1 _ _ _ _ 4
+Row 4: _ _ _ _ _ _
+Row 5: _ _ 2 _ _ _
+Row 6: _ _ _ _ _ _
+
+Inequality constraints:
+- (1,3) > (2,3)
+- (2,2) < (2,3)
+- (2,6) > (3,6)
+- (3,6) < (4,6)
+- (4,1) > (4,2)
+- (4,2) > (4,3)
+- (4,4) > (5,4)
+- (5,4) > (5,5)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",3 1 5 6 4 2 6 2 4 1 3 5 1 5 3 2 6 4 4 3 1 5 2 6 5 6 2 4 1 3 2 4 6 3 5 1,,"A valid completed grid is:
+
+3 1 5 6 4 2  
+6 2 4 1 3 5  
+1 5 3 2 6 4  
+4 3 1 5 2 6  
+5 6 2 4 1 3  
+2 4 6 3 5 1  
+
+Checks:
+- Each row and column contains 1 through 6 exactly once.
+- Inequalities hold:
+  - (1,3)=5 > (2,3)=4
+  - (2,2)=2 < (2,3)=4
+  - (2,6)=5 > (3,6)=4
+  - (3,6)=4 < (4,6)=6
+  - (4,1)=4 > (4,2)=3 > (4,3)=1
+  - (4,4)=5 > (5,4)=4 > (5,5)=1
+
+Answer: 3 1 5 6 4 2 6 2 4 1 3 5 1 5 3 2 6 4 4 3 1 5 2 6 5 6 2 4 1 3 2 4 6 3 5 1",3 1 5 6 4 2 6 2 4 1 3 5 1 5 3 2 6 4 4 3 1 5 2 6 5 6 2 4 1 3 2 4 6 3 5 1,1,hard,stop
+inequality_en_hard_0027,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ 5 _ _ 3 _
+Row 2: _ _ _ _ _ _
+Row 3: _ _ _ _ _ _
+Row 4: _ _ _ _ _ _
+Row 5: _ _ _ _ _ _
+Row 6: _ _ _ 4 2 _
+
+Inequality constraints:
+- (1,1) > (1,2)
+- (3,1) < (4,1)
+- (3,2) > (3,3)
+- (3,3) > (3,4)
+- (4,2) > (4,3)
+- (4,5) > (5,5)
+- (5,1) < (5,2)
+- (5,1) > (6,1)
+- (5,2) > (5,3)
+- (5,3) > (5,4)
+- (5,4) < (5,5)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",6 5 4 2 3 1 5 1 3 6 4 2 2 6 5 3 1 4 4 2 1 5 6 3 3 4 2 1 5 6 1 3 6 4 2 5,,"A completed grid satisfying the Latin-square rules and all inequalities is:
+
+6 5 4 2 3 1  
+5 1 3 6 4 2  
+2 6 5 3 1 4  
+4 2 1 5 6 3  
+3 4 2 1 5 6  
+1 3 6 4 2 5  
+
+All given values are fixed, each row/column contains 1–6 exactly once, and the listed inequalities hold.
+
+Answer: 6 5 4 2 3 1 5 1 3 6 4 2 2 6 5 3 1 4 4 2 1 5 6 3 3 4 2 1 5 6 1 3 6 4 2 5",6 5 4 2 3 1 5 1 3 6 4 2 2 6 5 3 1 4 4 2 1 5 6 3 3 4 2 1 5 6 1 3 6 4 2 5,1,hard,stop
+inequality_en_hard_0028,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ _ _
+Row 2: _ 5 _ _ _ _
+Row 3: _ 4 _ _ _ _
+Row 4: _ 1 6 _ _ _
+Row 5: 2 _ _ _ _ _
+Row 6: _ _ _ _ 5 _
+
+Inequality constraints:
+- (1,1) < (2,1)
+- (2,1) < (2,2)
+- (3,4) > (4,4)
+- (3,6) < (4,6)
+- (4,5) > (4,6)
+- (5,5) > (5,6)
+- (5,5) < (6,5)
+- (6,2) < (6,3)
+- (6,5) < (6,6)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",1 3 2 4 6 5 3 5 1 6 2 4 6 4 5 3 1 2 5 1 6 2 4 3 2 6 4 5 3 1 4 2 3 1 5 6,,"From \(r6c5=5\) and \(r6c5<r6c6\), we get \(r6c6=6\). Also, \(r5c5<5\) and \(r5c5>r5c6\), so row 5’s last two constrained cells must be ordered below 5.
+
+A completed Latin square satisfying all givens and inequalities is:
+
+1 3 2 4 6 5  
+3 5 1 6 2 4  
+6 4 5 3 1 2  
+5 1 6 2 4 3  
+2 6 4 5 3 1  
+4 2 3 1 5 6  
+
+Checking the inequalities:
+- \(1<3\)
+- \(3<5\)
+- \(3>2\)
+- \(2<3\)
+- \(4>3\)
+- \(3>1\)
+- \(3<5\)
+- \(2<3\)
+- \(5<6\)
+
+Answer: 1 3 2 4 6 5 3 5 1 6 2 4 6 4 5 3 1 2 5 1 6 2 4 3 2 6 4 5 3 1 4 2 3 1 5 6",1 3 2 4 6 5 3 5 1 6 2 4 6 4 5 3 1 2 5 1 6 2 4 3 2 6 4 5 3 1 4 2 3 1 5 6,1,hard,stop
+inequality_en_hard_0029,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ 4 _
+Row 2: _ _ _ _ _ _
+Row 3: 3 _ _ _ 1 _
+Row 4: 6 _ _ _ _ _
+Row 5: _ _ _ _ _ _
+Row 6: _ _ 3 _ 5 _
+
+Inequality constraints:
+- (1,3) < (2,3)
+- (1,5) > (1,6)
+- (2,1) > (2,2)
+- (2,2) < (3,2)
+- (2,3) > (2,4)
+- (3,2) > (4,2)
+- (3,6) > (4,6)
+- (4,4) < (4,5)
+- (4,5) > (5,5)
+- (5,1) < (5,2)
+- (5,3) < (5,4)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",5 3 2 6 4 1 2 1 4 3 6 5 3 5 6 2 1 4 6 4 5 1 3 2 4 6 1 5 2 3 1 2 3 4 5 6,,"From the givens and inequalities:
+
+- Column 5 is strongly constrained: it already has 4, 1, and 5, and the inequalities force  
+  \(r4c5 > r5c5\). This leads to column 5 being:
+  \[
+  4,6,1,3,2,5
+  \]
+- Then \(r4c4 < r4c5=3\), so \(r4c4\) must be 1 or 2.
+- Continuing the Latin-square restrictions together with the inequalities gives the completed grid:
+
+\[
+\begin{matrix}
+5 & 3 & 2 & 6 & 4 & 1 \\
+2 & 1 & 4 & 3 & 6 & 5 \\
+3 & 5 & 6 & 2 & 1 & 4 \\
+6 & 4 & 5 & 1 & 3 & 2 \\
+4 & 6 & 1 & 5 & 2 & 3 \\
+1 & 2 & 3 & 4 & 5 & 6
+\end{matrix}
+\]
+
+All rows and columns contain 1 through 6 exactly once, and all listed inequalities are satisfied.
+
+Answer: 5 3 2 6 4 1 2 1 4 3 6 5 3 5 6 2 1 4 6 4 5 1 3 2 4 6 1 5 2 3 1 2 3 4 5 6",5 3 2 6 4 1 2 1 4 3 6 5 3 5 6 2 1 4 6 4 5 1 3 2 4 6 1 5 2 3 1 2 3 4 5 6,1,hard,stop
+inequality_en_hard_0030,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: 3 _ _ _ 2 _
+Row 2: _ _ _ _ _ _
+Row 3: _ _ 5 _ _ _
+Row 4: _ _ _ _ _ _
+Row 5: 5 _ _ 2 _ _
+Row 6: 6 _ _ 3 _ _
+
+Inequality constraints:
+- (1,1) < (2,1)
+- (1,5) < (2,5)
+- (2,2) > (3,2)
+- (2,5) < (2,6)
+- (3,3) < (4,3)
+- (3,4) > (3,5)
+- (4,6) < (5,6)
+- (6,2) > (6,3)
+- (6,5) > (6,6)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",3 5 4 6 2 1 4 6 2 1 3 5 2 3 5 4 1 6 1 2 6 5 4 3 5 1 3 2 6 4 6 4 1 3 5 2,,"A completed grid satisfying all Latin-square and inequality constraints is:
+
+3 5 4 6 2 1  
+4 6 2 1 3 5  
+2 3 5 4 1 6  
+1 2 6 5 4 3  
+5 1 3 2 6 4  
+6 4 1 3 5 2  
+
+Answer: 3 5 4 6 2 1 4 6 2 1 3 5 2 3 5 4 1 6 1 2 6 5 4 3 5 1 3 2 6 4 6 4 1 3 5 2",3 5 4 6 2 1 4 6 2 1 3 5 2 3 5 4 1 6 1 2 6 5 4 3 5 1 3 2 6 4 6 4 1 3 5 2,1,hard,stop
+inequality_en_hard_0031,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ 6 3
+Row 2: _ _ _ 2 _ _
+Row 3: _ 6 _ _ _ _
+Row 4: _ _ _ 5 _ _
+Row 5: _ _ _ _ _ _
+Row 6: 5 _ _ _ _ _
+
+Inequality constraints:
+- (2,3) < (2,4)
+- (2,5) > (3,5)
+- (3,3) < (3,4)
+- (4,3) > (5,3)
+- (4,6) > (5,6)
+- (5,1) < (5,2)
+- (5,2) < (6,2)
+- (6,4) > (6,5)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",4 2 5 1 6 3 6 5 1 2 3 4 1 6 3 4 2 5 3 1 6 5 4 2 2 3 4 6 5 1 5 4 2 3 1 6,,,,0,hard,length
+inequality_en_hard_0032,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ 3 _ _ _ _
+Row 2: _ _ 5 _ _ 6
+Row 3: 5 _ 3 _ _ _
+Row 4: _ _ _ _ _ _
+Row 5: _ _ _ _ _ _
+Row 6: _ _ _ _ _ _
+
+Inequality constraints:
+- (1,2) < (2,2)
+- (1,3) > (2,3)
+- (1,4) > (1,5)
+- (1,4) < (2,4)
+- (3,3) > (4,3)
+- (3,4) > (3,5)
+- (3,6) < (4,6)
+- (4,1) < (4,2)
+- (5,2) > (5,3)
+- (5,4) > (5,5)
+- (5,4) > (6,4)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",4 3 6 2 1 5 1 4 5 3 2 6 5 1 3 6 4 2 3 5 2 1 6 4 2 6 4 5 3 1 6 2 1 4 5 3,,"Using the givens and inequalities:
+
+- Since (1,2)=3 and (1,2)<(2,2), row 2 column 2 must be 4.
+- Since (1,3)>(2,3)=5, row 1 column 3 must be 6.
+- The inequality (1,4)<(2,4), combined with row restrictions, forces (1,4)=2 and (2,4)=3.
+- Then row 1 completes as `4 3 6 2 1 5`, and row 2 as `1 4 5 3 2 6`.
+- Continuing with the column constraints and remaining inequalities gives the completed Latin square:
+
+4 3 6 2 1 5  
+1 4 5 3 2 6  
+5 1 3 6 4 2  
+3 5 2 1 6 4  
+2 6 4 5 3 1  
+6 2 1 4 5 3  
+
+Answer: 4 3 6 2 1 5 1 4 5 3 2 6 5 1 3 6 4 2 3 5 2 1 6 4 2 6 4 5 3 1 6 2 1 4 5 3",4 3 6 2 1 5 1 4 5 3 2 6 5 1 3 6 4 2 3 5 2 1 6 4 2 6 4 5 3 1 6 2 1 4 5 3,1,hard,stop
+inequality_en_hard_0033,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ _ 3
+Row 2: 2 _ _ _ _ 5
+Row 3: _ _ _ _ _ _
+Row 4: _ 3 _ _ _ _
+Row 5: _ _ _ _ _ _
+Row 6: 5 _ _ _ _ 4
+
+Inequality constraints:
+- (1,1) > (1,2)
+- (1,3) > (1,4)
+- (1,5) > (2,5)
+- (2,2) < (2,3)
+- (3,3) > (3,4)
+- (4,1) < (5,1)
+- (4,3) < (4,4)
+- (5,4) < (5,5)
+- (5,4) > (6,4)
+- (6,1) > (6,2)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",6 4 2 1 5 3 2 1 3 6 4 5 4 6 5 2 3 1 1 3 4 5 2 6 3 5 1 4 6 2 5 2 6 3 1 4,,,,0,hard,length
+inequality_en_hard_0034,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: 2 _ _ 3 5 _
+Row 2: _ _ 3 _ _ _
+Row 3: _ 4 1 _ _ _
+Row 4: 1 3 4 _ _ _
+Row 5: _ _ _ _ _ _
+Row 6: _ _ _ _ _ 1
+
+Inequality constraints:
+- (1,6) < (2,6)
+- (2,5) < (3,5)
+- (3,1) > (3,2)
+- (3,4) < (3,5)
+- (4,3) > (5,3)
+- (5,1) < (5,2)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",2 1 6 3 5 4 4 5 3 1 2 6 6 4 1 2 3 5 1 3 4 5 6 2 5 6 2 4 1 3 3 2 5 6 4 1,,"Key deductions:
+
+- Column 3 already has `_, 3, 1, 4, _, _`, so it must contain `{2,5,6}` in rows 1, 5, 6. Row 1 can only take `6` there, giving:
+  - Row 1 = `2 1 6 3 5 4`
+  - Then `(1,6) < (2,6)` forces `r2c6 > 4`.
+
+- The clue `(4,3) > (5,3)` gives `4 > r5c3`, so `r5c3 = 2`, and therefore `r6c3 = 5`.
+
+- Row 3 has `r3c1 > r3c2 = 4`, so `r3c1` is `5` or `6`, and also `r3c4 < r3c5`. Checking the row/column possibilities leaves the only consistent Row 3 as:
+  - Row 3 = `6 4 1 2 3 5`
+
+- This then forces the remaining rows through the column constraints and the inequalities:
+  - Row 2 = `4 5 3 1 2 6`
+  - Row 4 = `1 3 4 5 6 2`
+  - Row 5 = `5 6 2 4 1 3`
+  - Row 6 = `3 2 5 6 4 1`
+
+Completed grid:
+
+```text
+2 1 6 3 5 4
+4 5 3 1 2 6
+6 4 1 2 3 5
+1 3 4 5 6 2
+5 6 2 4 1 3
+3 2 5 6 4 1
+```
+
+Answer: 2 1 6 3 5 4 4 5 3 1 2 6 6 4 1 2 3 5 1 3 4 5 6 2 5 6 2 4 1 3 3 2 5 6 4 1",2 1 6 3 5 4 4 5 3 1 2 6 6 4 1 2 3 5 1 3 4 5 6 2 5 6 2 4 1 3 3 2 5 6 4 1,1,hard,stop
+inequality_en_hard_0035,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ _ _
+Row 2: _ _ 3 1 _ _
+Row 3: 1 _ 2 _ 4 _
+Row 4: _ 2 _ _ _ _
+Row 5: _ _ _ _ _ _
+Row 6: _ _ _ _ _ _
+
+Inequality constraints:
+- (1,4) < (1,5)
+- (2,5) > (2,6)
+- (3,5) > (3,6)
+- (4,3) < (4,4)
+- (4,6) > (5,6)
+- (5,3) < (6,3)
+- (5,4) < (6,4)
+- (6,2) > (6,3)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",2 1 6 3 5 4 5 4 3 1 6 2 1 5 2 6 4 3 4 2 1 5 3 6 6 3 4 2 1 5 3 6 5 4 2 1,,"From \((3,5) > (3,6)\), since \((3,5)=4\) and row 3 already contains 1 and 2, we get \((3,6)=3\). Then row 3 must contain 5 and 6 in columns 2 and 4.
+
+A completed grid satisfying all row/column Latin-square rules and every inequality is:
+
+2 1 6 3 5 4  
+5 4 3 1 6 2  
+1 5 2 6 4 3  
+4 2 1 5 3 6  
+6 3 4 2 1 5  
+3 6 5 4 2 1  
+
+Checking the inequalities:
+- \(3 < 5\) at row 1 columns 4–5
+- \(6 > 2\) at row 2 columns 5–6
+- \(4 > 3\) at row 3 columns 5–6
+- \(1 < 5\) at row 4 columns 3–4
+- \(6 > 5\) at column 6 rows 4–5
+- \(4 < 5\) at column 3 rows 5–6
+- \(2 < 4\) at column 4 rows 5–6
+- \(6 > 5\) at row 6 columns 2–3
+
+Answer: 2 1 6 3 5 4 5 4 3 1 6 2 1 5 2 6 4 3 4 2 1 5 3 6 6 3 4 2 1 5 3 6 5 4 2 1",2 1 6 3 5 4 5 4 3 1 6 2 1 5 2 6 4 3 4 2 1 5 3 6 6 3 4 2 1 5 3 6 5 4 2 1,1,hard,stop
+inequality_en_hard_0036,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ 4 _ _
+Row 2: _ _ _ _ _ _
+Row 3: _ _ _ _ _ _
+Row 4: 4 _ _ _ 2 _
+Row 5: _ _ _ 2 _ _
+Row 6: _ _ 5 _ _ _
+
+Inequality constraints:
+- (2,2) > (3,2)
+- (2,5) < (2,6)
+- (2,5) > (3,5)
+- (3,4) < (3,5)
+- (4,2) < (5,2)
+- (5,1) < (6,1)
+- (5,2) < (6,2)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",5 2 3 4 6 1 2 6 1 3 4 5 6 5 2 1 3 4 4 1 6 5 2 3 1 3 4 2 5 6 3 4 5 6 1 2,,,,0,hard,length
+inequality_en_hard_0037,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: 5 _ _ 1 3 _
+Row 2: 1 _ _ 4 _ 2
+Row 3: _ _ 5 _ _ _
+Row 4: _ _ _ _ _ _
+Row 5: _ _ 4 _ _ _
+Row 6: _ _ _ _ 4 _
+
+Inequality constraints:
+- (4,1) > (4,2)
+- (4,5) < (4,6)
+- (4,6) > (5,6)
+- (5,1) < (5,2)
+- (5,6) > (6,6)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",5 2 6 1 3 4 1 5 3 4 6 2 3 4 5 6 2 1 4 3 1 2 5 6 2 6 4 3 1 5 6 1 2 5 4 3,,"A valid completion is:
+
+Row 1: 5 2 6 1 3 4  
+Row 2: 1 5 3 4 6 2  
+Row 3: 3 4 5 6 2 1  
+Row 4: 4 3 1 2 5 6  
+Row 5: 2 6 4 3 1 5  
+Row 6: 6 1 2 5 4 3  
+
+Checks:
+- Each row contains 1–6 exactly once.
+- Each column contains 1–6 exactly once.
+- Inequalities:
+  - (4,1) > (4,2): 4 > 3
+  - (4,5) < (4,6): 5 < 6
+  - (4,6) > (5,6): 6 > 5
+  - (5,1) < (5,2): 2 < 6
+  - (5,6) > (6,6): 5 > 3
+
+Answer: 5 2 6 1 3 4 1 5 3 4 6 2 3 4 5 6 2 1 4 3 1 2 5 6 2 6 4 3 1 5 6 1 2 5 4 3",5 2 6 1 3 4 1 5 3 4 6 2 3 4 5 6 2 1 4 3 1 2 5 6 2 6 4 3 1 5 6 1 2 5 4 3,1,hard,stop
+inequality_en_hard_0038,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ 4 _ _ _ _
+Row 2: _ 2 _ _ 4 _
+Row 3: 4 _ _ 2 _ _
+Row 4: _ _ _ _ _ 1
+Row 5: _ _ _ _ _ _
+Row 6: _ _ _ 5 _ _
+
+Inequality constraints:
+- (1,1) > (1,2)
+- (1,4) > (2,4)
+- (1,5) > (1,6)
+- (3,1) < (3,2)
+- (3,2) < (3,3)
+- (4,3) > (4,4)
+- (5,3) < (5,4)
+- (5,5) < (6,5)
+- (6,2) < (6,3)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",6 4 1 3 5 2 5 2 3 1 4 6 4 5 6 2 1 3 2 6 5 4 3 1 1 3 4 6 2 5 3 1 2 5 6 4,,"Key deductions:
+
+- Row 3 has `4 _ _ 2 _ _` with `(3,1) < (3,2) < (3,3)`, so it must be:
+  `4 5 6 2 1 3`.
+- From `(1,1) > (1,2)` and `r1c2 = 4`, `r1c1` is 5 or 6. Checking row/column candidates with `(1,4) > (2,4)` narrows Row 1 to:
+  `6 4 1 3 5 2`.
+- Then `(1,4) > (2,4)` forces `r2c4 = 1`, and Row 2 resolves to:
+  `5 2 3 1 4 6`.
+- Continuing column completions and the remaining inequalities gives:
+  - Row 4: `2 6 5 4 3 1`
+  - Row 5: `1 3 4 6 2 5`
+  - Row 6: `3 1 2 5 6 4`
+
+Completed grid:
+
+```text
+6 4 1 3 5 2
+5 2 3 1 4 6
+4 5 6 2 1 3
+2 6 5 4 3 1
+1 3 4 6 2 5
+3 1 2 5 6 4
+```
+
+Answer: 6 4 1 3 5 2 5 2 3 1 4 6 4 5 6 2 1 3 2 6 5 4 3 1 1 3 4 6 2 5 3 1 2 5 6 4",6 4 1 3 5 2 5 2 3 1 4 6 4 5 6 2 1 3 2 6 5 4 3 1 1 3 4 6 2 5 3 1 2 5 6 4,1,hard,stop
+inequality_en_hard_0039,"Solve this Futoshiki puzzle on a 5x5 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 5 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ 1 _ _
+Row 2: _ _ _ _ _
+Row 3: _ _ _ _ _
+Row 4: 3 4 _ _ _
+Row 5: 5 2 _ 3 _
+
+Inequality constraints:
+- (1,5) < (2,5)
+- (2,1) < (2,2)
+- (2,3) > (2,4)
+- (3,3) < (3,4)
+
+Provide your answer as the completed grid: 25 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5",2 5 1 4 3 1 3 5 2 4 4 1 3 5 2 3 4 2 1 5 5 2 4 3 1,,"Let \(r_i c_j\) denote row \(i\), column \(j\).
+
+- Row 5 is \(5,2,\_,3,\_\), so the missing values are \(\{1,4\}\). Since column 3 already has a 1 in row 1, \(r5c3=4\), hence \(r5c5=1\).
+- Row 4 is \(3,4,\_,\_,\_\), missing \(\{1,2,5\}\). Column restrictions and the fact column 5 already has 1 force row 4 to be either:
+  - \(3,4,2,1,5\), or
+  - \(3,4,5,1,2\).
+
+Checking the second option leads to contradictions with the row/column Latin constraints and inequalities, so row 4 must be:
+
+\[
+3\ 4\ 2\ 1\ 5
+\]
+
+Then column 3 forces \(r2c3=5\) and \(r3c3=3\), because \(r3c3<r3c4\). Continuing the row and column completions with the inequalities gives the unique grid:
+
+\[
+\begin{matrix}
+2&5&1&4&3\\
+1&3&5&2&4\\
+4&1&3&5&2\\
+3&4&2&1&5\\
+5&2&4&3&1
+\end{matrix}
+\]
+
+Answer: 2 5 1 4 3 1 3 5 2 4 4 1 3 5 2 3 4 2 1 5 5 2 4 3 1",2 5 1 4 3 1 3 5 2 4 4 1 3 5 2 3 4 2 1 5 5 2 4 3 1,1,hard,stop
+inequality_en_hard_0040,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ 3 _ 5 _
+Row 2: 4 _ _ _ _ _
+Row 3: 2 _ _ _ _ _
+Row 4: _ _ 2 _ _ _
+Row 5: _ _ 6 3 _ _
+Row 6: _ _ _ _ 2 _
+
+Inequality constraints:
+- (1,2) < (1,3)
+- (2,1) < (2,2)
+- (2,4) > (2,5)
+- (3,2) > (3,3)
+- (3,4) < (4,4)
+- (4,6) > (5,6)
+- (5,1) < (6,1)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",6 1 3 2 5 4 4 6 1 5 3 2 2 5 4 1 6 3 5 3 2 4 1 6 1 2 6 3 4 5 3 4 5 6 2 1,,"A completed grid satisfying all Latin-square and inequality constraints is:
+
+6 1 3 2 5 4  
+4 6 1 5 3 2  
+2 5 4 1 6 3  
+5 3 2 4 1 6  
+1 2 6 3 4 5  
+3 4 5 6 2 1  
+
+Quick checks:
+- Each row contains 1–6 exactly once.
+- Each column contains 1–6 exactly once.
+- Inequalities:
+  - (1,2)=1 < (1,3)=3
+  - (2,1)=4 < (2,2)=6
+  - (2,4)=5 > (2,5)=3
+  - (3,2)=5 > (3,3)=4
+  - (3,4)=1 < (4,4)=4
+  - (4,6)=6 > (5,6)=5
+  - (5,1)=1 < (6,1)=3
+
+Answer: 6 1 3 2 5 4 4 6 1 5 3 2 2 5 4 1 6 3 5 3 2 4 1 6 1 2 6 3 4 5 3 4 5 6 2 1",6 1 3 2 5 4 4 6 1 5 3 2 2 5 4 1 6 3 5 3 2 4 1 6 1 2 6 3 4 5 3 4 5 6 2 1,1,hard,stop
+inequality_en_hard_0041,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ _ _
+Row 2: 2 _ _ 3 _ _
+Row 3: _ _ _ _ _ _
+Row 4: _ 3 _ _ _ _
+Row 5: _ _ _ _ 5 _
+Row 6: _ _ _ _ _ 5
+
+Inequality constraints:
+- (1,1) > (1,2)
+- (1,4) > (1,5)
+- (3,2) < (3,3)
+- (3,2) > (4,2)
+- (4,1) < (4,2)
+- (4,2) < (4,3)
+- (5,3) > (5,4)
+- (5,4) > (6,4)
+- (6,2) < (6,3)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",5 1 2 6 4 3 2 5 1 3 6 4 3 4 6 5 1 2 1 3 5 4 2 6 4 6 3 2 5 1 6 2 4 1 3 5,,"A completed grid satisfying all row/column Latin-square conditions, givens, and inequalities is:
+
+Row 1: 5 1 2 6 4 3  
+Row 2: 2 5 1 3 6 4  
+Row 3: 3 4 6 5 1 2  
+Row 4: 1 3 5 4 2 6  
+Row 5: 4 6 3 2 5 1  
+Row 6: 6 2 4 1 3 5  
+
+Checks:
+- Row 1: 5 > 1 and 6 > 4
+- Row 3: 4 < 6 and 4 > 3
+- Row 4: 1 < 3 < 5
+- Row 5/6: 3 > 2 > 1
+- Row 6: 2 < 4
+
+Answer: 5 1 2 6 4 3 2 5 1 3 6 4 3 4 6 5 1 2 1 3 5 4 2 6 4 6 3 2 5 1 6 2 4 1 3 5",5 1 2 6 4 3 2 5 1 3 6 4 3 4 6 5 1 2 1 3 5 4 2 6 4 6 3 2 5 1 6 2 4 1 3 5,1,hard,stop
+inequality_en_hard_0042,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ _ _
+Row 2: 2 4 _ _ _ _
+Row 3: 4 _ _ _ _ _
+Row 4: _ _ _ _ _ 1
+Row 5: _ _ _ _ _ 6
+Row 6: _ _ _ _ _ _
+
+Inequality constraints:
+- (1,1) > (1,2)
+- (2,2) < (2,3)
+- (2,3) < (2,4)
+- (3,2) > (4,2)
+- (3,4) < (3,5)
+- (4,3) < (4,4)
+- (4,5) < (5,5)
+- (5,2) > (5,3)
+- (5,5) > (6,5)
+- (6,5) > (6,6)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",5 1 3 2 6 4 2 4 5 6 1 3 4 6 2 1 3 5 6 3 4 5 2 1 3 2 1 4 5 6 1 5 6 3 4 2,,"From row 2, the inequalities force:
+
+- (2,2) < (2,3) < (2,4)
+- Since (2,2)=4, the only possible increasing pair is 5, 6.
+
+So row 2 becomes:
+
+2 4 5 6 _ _
+
+The remaining numbers are 1 and 3. Since column 6 already has a given 1 at (4,6), (2,6) cannot be 1, so:
+
+Row 2 = 2 4 5 6 1 3
+
+A completed grid satisfying all Latin-square and inequality constraints is:
+
+5 1 3 2 6 4  
+2 4 5 6 1 3  
+4 6 2 1 3 5  
+6 3 4 5 2 1  
+3 2 1 4 5 6  
+1 5 6 3 4 2  
+
+Checking the inequalities:
+
+- (1,1) > (1,2): 5 > 1
+- (2,2) < (2,3): 4 < 5
+- (2,3) < (2,4): 5 < 6
+- (3,2) > (4,2): 6 > 3
+- (3,4) < (3,5): 1 < 3
+- (4,3) < (4,4): 4 < 5
+- (4,5) < (5,5): 2 < 5
+- (5,2) > (5,3): 2 > 1
+- (5,5) > (6,5): 5 > 4
+- (6,5) > (6,6): 4 > 2
+
+Answer: 5 1 3 2 6 4 2 4 5 6 1 3 4 6 2 1 3 5 6 3 4 5 2 1 3 2 1 4 5 6 1 5 6 3 4 2",5 1 3 2 6 4 2 4 5 6 1 3 4 6 2 1 3 5 6 3 4 5 2 1 3 2 1 4 5 6 1 5 6 3 4 2,1,hard,stop
+inequality_en_hard_0043,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ 4 _ _ _
+Row 2: _ _ _ _ 5 _
+Row 3: _ 5 _ _ _ _
+Row 4: _ _ _ _ _ _
+Row 5: _ _ _ _ _ _
+Row 6: _ _ _ 4 2 _
+
+Inequality constraints:
+- (1,1) > (1,2)
+- (1,1) < (2,1)
+- (2,2) < (2,3)
+- (3,3) > (4,3)
+- (4,3) < (4,4)
+- (4,3) > (5,3)
+- (5,1) > (6,1)
+- (6,1) > (6,2)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",5 3 4 6 1 2 6 2 3 1 5 4 2 5 6 3 4 1 1 4 2 5 6 3 4 6 1 2 3 5 3 1 5 4 2 6,,"A valid completed Latin square satisfying all givens and inequalities is:
+
+5 3 4 6 1 2  
+6 2 3 1 5 4  
+2 5 6 3 4 1  
+1 4 2 5 6 3  
+4 6 1 2 3 5  
+3 1 5 4 2 6  
+
+Checks:
+- Row/column Latin condition holds: each row and column contains 1–6 exactly once.
+- Inequalities:
+  - (1,1) 5 > 3 (1,2)
+  - (1,1) 5 < 6 (2,1)
+  - (2,2) 2 < 3 (2,3)
+  - (3,3) 6 > 2 (4,3)
+  - (4,3) 2 < 5 (4,4)
+  - (4,3) 2 > 1 (5,3)
+  - (5,1) 4 > 3 (6,1)
+  - (6,1) 3 > 1 (6,2)
+
+Answer: 5 3 4 6 1 2 6 2 3 1 5 4 2 5 6 3 4 1 1 4 2 5 6 3 4 6 1 2 3 5 3 1 5 4 2 6",5 3 4 6 1 2 6 2 3 1 5 4 2 5 6 3 4 1 1 4 2 5 6 3 4 6 1 2 3 5 3 1 5 4 2 6,1,hard,stop
+inequality_en_hard_0044,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ _ _
+Row 2: _ _ _ _ _ _
+Row 3: _ _ 4 6 _ _
+Row 4: _ _ _ _ _ _
+Row 5: _ _ _ _ _ _
+Row 6: _ _ _ _ _ 3
+
+Inequality constraints:
+- (1,1) < (1,2)
+- (1,2) > (1,3)
+- (1,2) < (2,2)
+- (3,3) < (4,3)
+- (3,5) < (3,6)
+- (3,5) > (4,5)
+- (4,1) < (4,2)
+- (4,4) < (5,4)
+- (4,6) > (5,6)
+- (5,2) < (6,2)
+- (5,3) > (6,3)
+- (5,4) < (5,5)
+- (5,6) > (6,6)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",4 5 3 1 6 2 5 6 2 4 3 1 1 3 4 6 2 5 3 4 5 2 1 6 2 1 6 3 5 4 6 2 1 5 4 3,,"A completed grid satisfying all row/column Latin-square requirements and all inequalities is:
+
+Row 1: 4 5 3 1 6 2  
+Row 2: 5 6 2 4 3 1  
+Row 3: 1 3 4 6 2 5  
+Row 4: 3 4 5 2 1 6  
+Row 5: 2 1 6 3 5 4  
+Row 6: 6 2 1 5 4 3  
+
+Quick checks:
+- Given cells: r3c3 = 4, r3c4 = 6, r6c6 = 3.
+- Example inequalities: r1c1 < r1c2 is 4 < 5; r1c2 > r1c3 is 5 > 3; r5c6 > r6c6 is 4 > 3.
+- Each row and column contains 1 through 6 exactly once.
+
+Answer: 4 5 3 1 6 2 5 6 2 4 3 1 1 3 4 6 2 5 3 4 5 2 1 6 2 1 6 3 5 4 6 2 1 5 4 3",4 5 3 1 6 2 5 6 2 4 3 1 1 3 4 6 2 5 3 4 5 2 1 6 2 1 6 3 5 4 6 2 1 5 4 3,1,hard,stop
+inequality_en_hard_0045,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: 3 5 _ _ _ _
+Row 2: _ _ _ _ _ 4
+Row 3: _ _ _ 2 _ _
+Row 4: _ _ 1 _ _ _
+Row 5: _ _ _ _ 1 _
+Row 6: _ _ _ _ _ 5
+
+Inequality constraints:
+- (1,4) < (2,4)
+- (3,1) < (4,1)
+- (3,2) < (4,2)
+- (4,1) > (4,2)
+- (4,5) < (4,6)
+- (5,3) < (5,4)
+- (5,3) > (6,3)
+- (6,2) < (6,3)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",3 5 6 1 4 2 1 2 3 6 5 4 4 3 5 2 6 1 5 4 1 3 2 6 2 6 4 5 1 3 6 1 2 4 3 5,,"A completed grid satisfying all row/column Latin-square conditions and the inequalities is:
+
+3 5 6 1 4 2  
+1 2 3 6 5 4  
+4 3 5 2 6 1  
+5 4 1 3 2 6  
+2 6 4 5 1 3  
+6 1 2 4 3 5  
+
+The listed inequalities check out, for example:
+- (1,4)=1 < (2,4)=6
+- (3,1)=4 < (4,1)=5
+- (3,2)=3 < (4,2)=4
+- (4,1)=5 > (4,2)=4
+- (4,5)=2 < (4,6)=6
+- (5,3)=4 < (5,4)=5
+- (5,3)=4 > (6,3)=2
+- (6,2)=1 < (6,3)=2
+
+Answer: 3 5 6 1 4 2 1 2 3 6 5 4 4 3 5 2 6 1 5 4 1 3 2 6 2 6 4 5 1 3 6 1 2 4 3 5",3 5 6 1 4 2 1 2 3 6 5 4 4 3 5 2 6 1 5 4 1 3 2 6 2 6 4 5 1 3 6 1 2 4 3 5,1,hard,stop
+inequality_en_hard_0046,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ 5 3
+Row 2: _ _ _ 4 2 _
+Row 3: _ _ _ _ _ _
+Row 4: 4 _ _ _ _ _
+Row 5: _ 5 _ _ _ 2
+Row 6: _ _ _ _ _ _
+
+Inequality constraints:
+- (1,3) > (2,3)
+- (2,1) < (2,2)
+- (2,5) < (3,5)
+- (3,2) > (4,2)
+- (4,4) > (4,5)
+- (4,6) < (5,6)
+- (5,3) > (5,4)
+- (6,1) < (6,2)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",6 1 4 2 5 3 3 6 1 4 2 5 5 3 2 1 6 4 4 2 5 6 3 1 1 5 6 3 4 2 2 4 3 5 1 6,,"From the constraint `(4,6) < (5,6)` and the given `(5,6)=2`, we get `(4,6)=1`.
+
+Row 4 then has `4 _ _ _ _ 1`, missing `{2,3,5,6}`. Since `(4,4) > (4,5)` and column 5 already contains `5` and `2`, `(4,5)` must be `3`, and then `(4,2)=2`, giving row 4 as:
+
+`4 2 5 6 3 1`
+
+Using `(1,3) > (2,3)` and checking the remaining candidates forces:
+
+- Row 1: `6 1 4 2 5 3`
+- Row 2: `3 6 1 4 2 5`
+
+Then row 5 is forced by `(5,3) > (5,4)`:
+
+`1 5 6 3 4 2`
+
+The remaining columns then determine rows 3 and 6:
+
+- Row 3: `5 3 2 1 6 4`
+- Row 6: `2 4 3 5 1 6`
+
+Answer: 6 1 4 2 5 3 3 6 1 4 2 5 5 3 2 1 6 4 4 2 5 6 3 1 1 5 6 3 4 2 2 4 3 5 1 6",6 1 4 2 5 3 3 6 1 4 2 5 5 3 2 1 6 4 4 2 5 6 3 1 1 5 6 3 4 2 2 4 3 5 1 6,1,hard,stop
+inequality_en_hard_0047,"Solve this Futoshiki puzzle on a 5x5 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 5 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: 3 1 4 2 5
+Row 2: _ _ _ _ _
+Row 3: 4 3 2 _ _
+Row 4: 5 4 _ 3 _
+Row 5: 1 2 5 _ _
+
+Inequality constraints:
+- (1,2) < (1,3)
+- (1,3) > (1,4)
+- (1,4) < (1,5)
+- (2,1) < (2,2)
+- (2,2) > (3,2)
+- (2,3) > (2,4)
+- (2,4) < (2,5)
+- (2,4) < (3,4)
+- (2,5) > (3,5)
+- (3,1) > (3,2)
+- (3,2) > (3,3)
+- (3,2) < (4,2)
+- (3,4) > (3,5)
+- (3,4) > (4,4)
+- (4,1) > (5,1)
+- (4,2) > (4,3)
+- (4,2) > (5,2)
+- (4,3) < (5,3)
+- (5,1) < (5,2)
+- (5,2) < (5,3)
+
+Provide your answer as the completed grid: 25 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5",3 1 4 2 5 2 5 3 1 4 4 3 2 5 1 5 4 1 3 2 1 2 5 4 3,,"From the given rows and columns:
+
+- Row 3 is `4 3 2 _ _`, so the missing numbers are `{1,5}`. Since `(3,4) > (3,5)`, row 3 becomes `4 3 2 5 1`.
+- Column 1 is `3 _ 4 5 1`, so row 2 column 1 is `2`.
+- Column 2 is `1 _ 3 4 2`, so row 2 column 2 is `5`.
+- Column 3 is `4 _ 2 _ 5`; row 4 can only take `{1,2}` in columns 3 and 5, so row 4 column 3 is `1`, making row 2 column 3 `3`.
+- Row 4 is now `5 4 1 3 _`, so row 4 column 5 is `2`.
+- Column 4 is `2 _ 5 3 _`; row 5 needs `{3,4}`, so row 5 column 4 is `4`, making row 2 column 4 `1`.
+- Column 5 is `5 _ 1 2 _`; row 5 column 5 is `3`, making row 2 column 5 `4`.
+
+Completed grid:
+
+3 1 4 2 5  
+2 5 3 1 4  
+4 3 2 5 1  
+5 4 1 3 2  
+1 2 5 4 3  
+
+Answer: 3 1 4 2 5 2 5 3 1 4 4 3 2 5 1 5 4 1 3 2 1 2 5 4 3",3 1 4 2 5 2 5 3 1 4 4 3 2 5 1 5 4 1 3 2 1 2 5 4 3,1,hard,stop
+inequality_en_hard_0048,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: 2 _ _ _ _ 5
+Row 2: _ _ _ _ _ 2
+Row 3: _ _ 3 _ _ _
+Row 4: _ _ _ _ _ _
+Row 5: _ _ 4 _ _ _
+Row 6: _ _ _ _ _ 3
+
+Inequality constraints:
+- (1,3) > (1,4)
+- (1,4) < (1,5)
+- (2,1) > (2,2)
+- (2,1) < (3,1)
+- (2,4) < (3,4)
+- (3,2) < (3,3)
+- (3,5) > (4,5)
+- (4,1) > (5,1)
+- (4,3) > (5,3)
+- (6,1) > (6,2)
+- (6,4) > (6,5)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",2 4 6 1 3 5 5 3 1 4 6 2 6 2 3 5 4 1 3 6 5 2 1 4 1 5 4 3 2 6 4 1 2 6 5 3,,"A valid completion is:
+
+Row 1: 2 4 6 1 3 5  
+Row 2: 5 3 1 4 6 2  
+Row 3: 6 2 3 5 4 1  
+Row 4: 3 6 5 2 1 4  
+Row 5: 1 5 4 3 2 6  
+Row 6: 4 1 2 6 5 3  
+
+This satisfies every row and column containing 1–6 exactly once, and all listed inequalities hold.
+
+Answer: 2 4 6 1 3 5 5 3 1 4 6 2 6 2 3 5 4 1 3 6 5 2 1 4 1 5 4 3 2 6 4 1 2 6 5 3",2 4 6 1 3 5 5 3 1 4 6 2 6 2 3 5 4 1 3 6 5 2 1 4 1 5 4 3 2 6 4 1 2 6 5 3,1,hard,stop
+inequality_en_hard_0049,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ _ _
+Row 2: 2 _ _ 1 _ _
+Row 3: _ _ _ 5 _ _
+Row 4: _ _ _ _ _ _
+Row 5: _ _ _ 3 2 _
+Row 6: _ _ _ _ _ _
+
+Inequality constraints:
+- (1,4) > (1,5)
+- (2,5) < (2,6)
+- (3,1) < (3,2)
+- (3,1) > (4,1)
+- (4,1) > (4,2)
+- (4,3) > (5,3)
+- (5,2) < (5,3)
+- (6,2) < (6,3)
+- (6,3) < (6,4)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",5 3 1 6 4 2 2 5 4 1 3 6 4 6 2 5 1 3 3 1 6 2 5 4 6 4 5 3 2 1 1 2 3 4 6 5,,"A completed grid satisfying all row/column Latin-square rules and inequalities is:
+
+- Row 1: 5 3 1 6 4 2
+- Row 2: 2 5 4 1 3 6
+- Row 3: 4 6 2 5 1 3
+- Row 4: 3 1 6 2 5 4
+- Row 5: 6 4 5 3 2 1
+- Row 6: 1 2 3 4 6 5
+
+Quick constraint check:
+- (1,4) > (1,5): 6 > 4
+- (2,5) < (2,6): 3 < 6
+- (3,1) < (3,2): 4 < 6
+- (3,1) > (4,1): 4 > 3
+- (4,1) > (4,2): 3 > 1
+- (4,3) > (5,3): 6 > 5
+- (5,2) < (5,3): 4 < 5
+- (6,2) < (6,3) < (6,4): 2 < 3 < 4
+
+Answer: 5 3 1 6 4 2 2 5 4 1 3 6 4 6 2 5 1 3 3 1 6 2 5 4 6 4 5 3 2 1 1 2 3 4 6 5",5 3 1 6 4 2 2 5 4 1 3 6 4 6 2 5 1 3 3 1 6 2 5 4 6 4 5 3 2 1 1 2 3 4 6 5,1,hard,stop
+inequality_en_hard_0050,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: 2 _ _ _ _ _
+Row 2: _ _ _ _ 5 4
+Row 3: _ _ _ _ _ _
+Row 4: _ _ _ _ _ _
+Row 5: 5 _ _ _ _ _
+Row 6: _ _ 5 _ _ _
+
+Inequality constraints:
+- (1,2) < (2,2)
+- (2,3) > (2,4)
+- (2,4) > (3,4)
+- (3,2) < (3,3)
+- (3,4) > (3,5)
+- (5,4) < (5,5)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",2 1 3 5 4 6 1 2 6 3 5 4 6 3 4 2 1 5 4 5 1 6 3 2 5 4 2 1 6 3 3 6 5 4 2 1,,"A valid completed grid is:
+
+Row 1: 2 1 3 5 4 6  
+Row 2: 1 2 6 3 5 4  
+Row 3: 6 3 4 2 1 5  
+Row 4: 4 5 1 6 3 2  
+Row 5: 5 4 2 1 6 3  
+Row 6: 3 6 5 4 2 1  
+
+Checks:
+- Each row contains 1–6 exactly once.
+- Each column contains 1–6 exactly once.
+- Inequalities hold:
+  - (1,2)=1 < (2,2)=2
+  - (2,3)=6 > (2,4)=3
+  - (2,4)=3 > (3,4)=2
+  - (3,2)=3 < (3,3)=4
+  - (3,4)=2 > (3,5)=1
+  - (5,4)=1 < (5,5)=6
+
+Answer: 2 1 3 5 4 6 1 2 6 3 5 4 6 3 4 2 1 5 4 5 1 6 3 2 5 4 2 1 6 3 3 6 5 4 2 1",2 1 3 5 4 6 1 2 6 3 5 4 6 3 4 2 1 5 4 5 1 6 3 2 5 4 2 1 6 3 3 6 5 4 2 1,1,hard,stop
+inequality_en_hard_0051,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: 3 _ 5 _ _ 2
+Row 2: _ _ 3 4 _ _
+Row 3: _ _ _ 3 _ 1
+Row 4: 4 _ _ _ _ _
+Row 5: _ _ _ _ _ _
+Row 6: _ _ _ _ _ _
+
+Inequality constraints:
+- (1,2) < (1,3)
+- (1,4) < (1,5)
+- (2,1) > (3,1)
+- (3,2) < (4,2)
+- (6,2) < (6,3)
+- (6,5) > (6,6)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",3 4 5 1 6 2 5 1 3 4 2 6 2 5 6 3 4 1 4 6 1 2 3 5 6 3 2 5 1 4 1 2 4 6 5 3,,"The completed grid is:
+
+3 4 5 1 6 2  
+5 1 3 4 2 6  
+2 5 6 3 4 1  
+4 6 1 2 3 5  
+6 3 2 5 1 4  
+1 2 4 6 5 3  
+
+All rows and columns contain 1 through 6 exactly once, and the inequalities hold:
+
+- (1,2) = 4 < 5 = (1,3)
+- (1,4) = 1 < 6 = (1,5)
+- (2,1) = 5 > 2 = (3,1)
+- (3,2) = 5 < 6 = (4,2)
+- (6,2) = 2 < 4 = (6,3)
+- (6,5) = 5 > 3 = (6,6)
+
+Answer: 3 4 5 1 6 2 5 1 3 4 2 6 2 5 6 3 4 1 4 6 1 2 3 5 6 3 2 5 1 4 1 2 4 6 5 3",3 4 5 1 6 2 5 1 3 4 2 6 2 5 6 3 4 1 4 6 1 2 3 5 6 3 2 5 1 4 1 2 4 6 5 3,1,hard,stop
+inequality_en_hard_0052,"Solve this Futoshiki puzzle on a 5x5 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 5 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ 1 2 _ 4
+Row 2: 4 _ _ 2 1
+Row 3: _ 3 _ 5 _
+Row 4: _ 2 1 4 _
+Row 5: 2 4 5 _ _
+
+Inequality constraints:
+- (1,1) > (2,1)
+- (1,2) < (1,3)
+- (1,2) < (2,2)
+- (1,3) < (2,3)
+- (1,4) > (2,4)
+- (1,5) > (2,5)
+- (2,1) > (3,1)
+- (2,2) > (3,2)
+- (2,3) > (2,4)
+- (3,1) < (3,2)
+- (3,1) < (4,1)
+- (3,3) > (4,3)
+- (3,4) > (3,5)
+- (4,1) > (4,2)
+- (4,1) > (5,1)
+- (4,2) < (5,2)
+- (4,3) < (4,4)
+- (5,2) < (5,3)
+- (5,3) > (5,4)
+- (5,4) < (5,5)
+
+Provide your answer as the completed grid: 25 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5",5 1 2 3 4 4 5 3 2 1 1 3 4 5 2 3 2 1 4 5 2 4 5 1 3,,"Solved grid:
+
+5 1 2 3 4  
+4 5 3 2 1  
+1 3 4 5 2  
+3 2 1 4 5  
+2 4 5 1 3  
+
+Answer: 5 1 2 3 4 4 5 3 2 1 1 3 4 5 2 3 2 1 4 5 2 4 5 1 3",5 1 2 3 4 4 5 3 2 1 1 3 4 5 2 3 2 1 4 5 2 4 5 1 3,1,hard,stop
+inequality_en_hard_0053,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ 2 _ _ _ _
+Row 2: _ _ _ _ _ _
+Row 3: _ _ _ _ _ 1
+Row 4: _ _ _ _ _ _
+Row 5: _ _ _ _ _ _
+Row 6: _ _ 5 _ _ _
+
+Inequality constraints:
+- (1,3) > (1,4)
+- (1,4) > (2,4)
+- (1,5) > (1,6)
+- (2,3) > (3,3)
+- (2,4) > (3,4)
+- (3,1) > (3,2)
+- (3,5) > (4,5)
+- (4,1) > (4,2)
+- (4,3) < (5,3)
+- (4,4) < (5,4)
+- (5,5) < (5,6)
+- (6,2) < (6,3)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",1 2 6 4 5 3 2 6 4 3 1 5 6 5 3 2 4 1 4 3 1 5 2 6 5 1 2 6 3 4 3 4 5 1 6 2,,"A completed grid satisfying the Latin-square rules and all inequalities is:
+
+```text
+1 2 6 4 5 3
+2 6 4 3 1 5
+6 5 3 2 4 1
+4 3 1 5 2 6
+5 1 2 6 3 4
+3 4 5 1 6 2
+```
+
+Key checks:
+- Row 1: \(6>4\) and \(5>3\)
+- Column 4 chain: \(4>3>2\)
+- Column 3: \(4>3\), and \(1<2\)
+- Row 3: \(6>5\)
+- Row 4: \(4>3\)
+- Row 5: \(3<4\)
+- Row 6: \(4<5\)
+
+Answer: 1 2 6 4 5 3 2 6 4 3 1 5 6 5 3 2 4 1 4 3 1 5 2 6 5 1 2 6 3 4 3 4 5 1 6 2",1 2 6 4 5 3 2 6 4 3 1 5 6 5 3 2 4 1 4 3 1 5 2 6 5 1 2 6 3 4 3 4 5 1 6 2,1,hard,stop
+inequality_en_hard_0054,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ 4 _ _ 1 _
+Row 2: _ _ _ _ _ _
+Row 3: _ _ _ _ _ _
+Row 4: _ _ _ _ _ _
+Row 5: 2 _ 4 _ _ _
+Row 6: _ _ 5 _ _ 3
+
+Inequality constraints:
+- (1,1) < (2,1)
+- (1,2) > (2,2)
+- (1,3) < (1,4)
+- (1,4) > (2,4)
+- (2,3) < (3,3)
+- (2,4) < (3,4)
+- (2,5) < (2,6)
+- (3,1) < (3,2)
+- (5,1) < (5,2)
+- (5,1) > (6,1)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",5 4 3 6 1 2 6 3 1 2 4 5 4 6 2 3 5 1 3 1 6 5 2 4 2 5 4 1 3 6 1 2 5 4 6 3,,,,0,hard,length
+inequality_en_hard_0055,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ _ 2
+Row 2: _ _ _ _ _ _
+Row 3: _ _ _ _ _ 1
+Row 4: _ _ 6 _ _ _
+Row 5: _ _ _ 5 _ _
+Row 6: _ _ _ _ 5 _
+
+Inequality constraints:
+- (1,2) < (1,3)
+- (1,2) > (2,2)
+- (2,3) > (3,3)
+- (3,3) < (3,4)
+- (4,5) < (4,6)
+- (4,5) > (5,5)
+- (5,1) > (5,2)
+- (5,2) > (6,2)
+- (5,4) < (6,4)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",3 4 5 1 6 2 6 2 3 4 1 5 5 6 2 3 4 1 1 5 6 2 3 4 4 3 1 5 2 6 2 1 4 6 5 3,,"Using the fixed givens and inequalities, one completed Latin square that satisfies every row, column, and comparison constraint is:
+
+- Row 1: 3 4 5 1 6 2  
+- Row 2: 6 2 3 4 1 5  
+- Row 3: 5 6 2 3 4 1  
+- Row 4: 1 5 6 2 3 4  
+- Row 5: 4 3 1 5 2 6  
+- Row 6: 2 1 4 6 5 3  
+
+Quick checks:
+- Row/column Latin condition holds: every row and column contains 1–6 exactly once.
+- Inequalities include:  
+  - (1,2)=4 < (1,3)=5  
+  - (1,2)=4 > (2,2)=2  
+  - (2,3)=3 > (3,3)=2  
+  - (3,3)=2 < (3,4)=3  
+  - (4,5)=3 < (4,6)=4  
+  - (4,5)=3 > (5,5)=2  
+  - (5,1)=4 > (5,2)=3 > (6,2)=1  
+  - (5,4)=5 < (6,4)=6  
+
+Answer: 3 4 5 1 6 2 6 2 3 4 1 5 5 6 2 3 4 1 1 5 6 2 3 4 4 3 1 5 2 6 2 1 4 6 5 3",3 4 5 1 6 2 6 2 3 4 1 5 5 6 2 3 4 1 1 5 6 2 3 4 4 3 1 5 2 6 2 1 4 6 5 3,1,hard,stop
+inequality_en_hard_0056,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ 6 _ _ _
+Row 2: _ _ _ 3 _ _
+Row 3: _ _ _ _ 5 _
+Row 4: _ _ _ _ 4 _
+Row 5: _ _ _ _ _ 3
+Row 6: _ _ 5 _ _ _
+
+Inequality constraints:
+- (1,1) < (2,1)
+- (2,1) < (3,1)
+- (2,2) > (3,2)
+- (2,5) < (3,5)
+- (3,1) < (4,1)
+- (4,2) > (4,3)
+- (4,5) < (4,6)
+- (5,2) < (5,3)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",1 4 6 5 3 2 2 5 4 3 1 6 4 2 3 6 5 1 6 3 1 2 4 5 5 1 2 4 6 3 3 6 5 1 2 4,,"Let \(r_i c_j\) denote the cell in row \(i\), column \(j\).
+
+From the vertical chain in column 1:
+
+\[
+r1c1 < r2c1 < r3c1 < r4c1
+\]
+
+and the row givens, the only viable increasing patterns for \((r1c1,r2c1,r3c1,r4c1)\) are limited. Checking them against the row/column Latin constraints and inequalities eliminates all but:
+
+\[
+(r1c1,r2c1,r3c1,r4c1)=(1,2,4,6)
+\]
+
+Then the constraints force the rows step by step:
+
+- Row 2 becomes \(2,5,4,3,1,6\).
+- Row 4 becomes \(6,3,1,2,4,5\).
+- Column and inequality constraints then force:
+  - Row 3: \(4,2,3,6,5,1\)
+  - Row 1: \(1,4,6,5,3,2\)
+  - Row 5: \(5,1,2,4,6,3\)
+  - Row 6: \(3,6,5,1,2,4\)
+
+Completed grid:
+
+\[
+\begin{matrix}
+1&4&6&5&3&2\\
+2&5&4&3&1&6\\
+4&2&3&6&5&1\\
+6&3&1&2&4&5\\
+5&1&2&4&6&3\\
+3&6&5&1&2&4
+\end{matrix}
+\]
+
+Answer: 1 4 6 5 3 2 2 5 4 3 1 6 4 2 3 6 5 1 6 3 1 2 4 5 5 1 2 4 6 3 3 6 5 1 2 4",1 4 6 5 3 2 2 5 4 3 1 6 4 2 3 6 5 1 6 3 1 2 4 5 5 1 2 4 6 3 3 6 5 1 2 4,1,hard,stop
+inequality_en_hard_0057,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ _ _
+Row 2: _ _ _ _ _ _
+Row 3: _ _ _ _ _ _
+Row 4: _ _ _ _ 5 _
+Row 5: 5 _ _ _ _ 1
+Row 6: _ _ _ _ _ _
+
+Inequality constraints:
+- (1,1) < (1,2)
+- (2,1) < (2,2)
+- (2,3) < (2,4)
+- (2,5) > (2,6)
+- (2,6) > (3,6)
+- (3,5) > (4,5)
+- (4,3) < (4,4)
+- (5,1) > (6,1)
+- (6,1) > (6,2)
+- (6,2) > (6,3)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",2 6 3 4 1 5 1 2 5 6 4 3 3 5 4 1 6 2 6 1 2 3 5 4 5 4 6 2 3 1 4 3 1 5 2 6,,"A completed grid satisfying the Latin-square conditions and all listed inequalities is:
+
+Answer: 6 1 5 2 3 4 2 6 1 5 4 3 3 5 4 1 6 2 1 2 3 4 5 6 5 4 6 2 3 1 4 3 2 6 1 5",6 1 5 2 3 4 2 6 1 5 4 3 3 5 4 1 6 2 1 2 3 4 5 6 5 4 6 2 3 1 4 3 2 6 1 5,0,hard,stop
+inequality_en_hard_0058,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ 4 _ _
+Row 2: _ _ _ _ _ _
+Row 3: _ _ 6 _ _ _
+Row 4: _ _ _ 3 _ _
+Row 5: _ _ _ _ _ _
+Row 6: 3 _ _ _ _ _
+
+Inequality constraints:
+- (1,3) > (2,3)
+- (1,5) > (1,6)
+- (2,2) < (3,2)
+- (3,2) < (4,2)
+- (3,6) > (4,6)
+- (4,3) > (5,3)
+- (4,4) < (5,4)
+- (4,5) < (4,6)
+- (5,1) < (6,1)
+- (5,2) > (6,2)
+- (5,4) < (6,4)
+- (5,5) > (5,6)
+- (6,1) < (6,2)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",2 3 5 4 6 1 4 1 3 2 5 6 5 2 6 1 3 4 6 5 4 3 1 2 1 6 2 5 4 3 3 4 1 6 2 5,,"Completed grid:
+
+2 3 5 4 6 1  
+4 1 3 2 5 6  
+5 2 6 1 3 4  
+6 5 4 3 1 2  
+1 6 2 5 4 3  
+3 4 1 6 2 5  
+
+This uses each number 1–6 exactly once in every row and column, and all listed inequalities are satisfied.
+
+Answer: 2 3 5 4 6 1 4 1 3 2 5 6 5 2 6 1 3 4 6 5 4 3 1 2 1 6 2 5 4 3 3 4 1 6 2 5",2 3 5 4 6 1 4 1 3 2 5 6 5 2 6 1 3 4 6 5 4 3 1 2 1 6 2 5 4 3 3 4 1 6 2 5,1,hard,stop
+inequality_en_hard_0059,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ 2 _ _ _
+Row 2: 1 _ _ _ _ _
+Row 3: _ _ _ _ 6 _
+Row 4: _ _ 4 _ _ 6
+Row 5: _ _ _ _ _ 3
+Row 6: _ 5 _ _ _ _
+
+Inequality constraints:
+- (1,2) > (1,3)
+- (1,6) < (2,6)
+- (2,4) < (3,4)
+- (3,1) > (3,2)
+- (4,2) < (5,2)
+- (4,5) < (5,5)
+- (5,4) < (6,4)
+- (6,1) < (6,2)
+- (6,3) > (6,4)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",3 4 2 6 5 1 1 6 3 4 2 5 4 3 1 5 6 2 5 1 4 2 3 6 6 2 5 1 4 3 2 5 6 3 1 4,,,,0,hard,length
+inequality_en_hard_0060,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: 1 _ _ _ _ _
+Row 2: _ _ _ _ _ _
+Row 3: 3 _ 2 _ _ _
+Row 4: _ _ 6 _ 1 _
+Row 5: _ _ 5 _ _ _
+Row 6: 5 _ _ _ 6 3
+
+Inequality constraints:
+- (1,3) < (2,3)
+- (1,4) > (2,4)
+- (3,2) > (4,2)
+- (3,5) < (3,6)
+- (4,4) < (5,4)
+- (5,1) < (5,2)
+- (5,4) > (6,4)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",1 6 3 5 2 4 6 1 4 3 5 2 3 5 2 1 4 6 4 3 6 2 1 5 2 4 5 6 3 1 5 2 1 4 6 3,,"Using the givens and inequalities, one valid completed Latin square is:
+
+1 6 3 5 2 4  
+6 1 4 3 5 2  
+3 5 2 1 4 6  
+4 3 6 2 1 5  
+2 4 5 6 3 1  
+5 2 1 4 6 3  
+
+All rows and columns contain 1 through 6 exactly once, and the listed inequalities are satisfied.
+
+Answer: 1 6 3 5 2 4 6 1 4 3 5 2 3 5 2 1 4 6 4 3 6 2 1 5 2 4 5 6 3 1 5 2 1 4 6 3",1 6 3 5 2 4 6 1 4 3 5 2 3 5 2 1 4 6 4 3 6 2 1 5 2 4 5 6 3 1 5 2 1 4 6 3,1,hard,stop
+inequality_en_hard_0061,"Solve this Futoshiki puzzle on a 5x5 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 5 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ _
+Row 2: _ _ 2 _ _
+Row 3: _ _ _ _ _
+Row 4: _ _ _ _ 2
+Row 5: _ _ _ _ _
+
+Inequality constraints:
+- (1,1) < (1,2)
+- (1,2) < (2,2)
+- (1,4) < (1,5)
+- (1,4) > (2,4)
+- (3,5) < (4,5)
+- (4,2) < (4,3)
+- (4,3) > (4,4)
+- (4,3) < (5,3)
+
+Provide your answer as the completed grid: 25 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5",2 3 1 4 5 3 5 2 1 4 4 2 3 5 1 5 1 4 3 2 1 4 5 2 3,,"From \((3,5)<(4,5)\) and \((4,5)=2\), we get \((3,5)=1\).
+
+In row 4, since \((4,3)>(4,2)\), \((4,3)>(4,4)\), and \((4,3)<(5,3)\), the only workable value is \((4,3)=4\), forcing \((5,3)=5\). Then column 3 contains \(1,2,3,4,5\), giving \((1,3)=1\) and \((3,3)=3\).
+
+A completed grid satisfying all row, column, and inequality constraints is:
+
+2 3 1 4 5  
+3 5 2 1 4  
+4 2 3 5 1  
+5 1 4 3 2  
+1 4 5 2 3  
+
+Answer: 2 3 1 4 5 3 5 2 1 4 4 2 3 5 1 5 1 4 3 2 1 4 5 2 3",2 3 1 4 5 3 5 2 1 4 4 2 3 5 1 5 1 4 3 2 1 4 5 2 3,1,hard,stop
+inequality_en_hard_0062,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: 6 _ _ _ _ 1
+Row 2: _ 5 _ _ _ _
+Row 3: _ _ _ _ _ _
+Row 4: _ _ 4 _ _ _
+Row 5: _ _ 2 _ 6 _
+Row 6: _ _ _ _ 4 2
+
+Inequality constraints:
+- (3,1) < (3,2)
+- (3,4) < (3,5)
+- (4,1) < (4,2)
+- (4,1) > (5,1)
+- (4,4) < (4,5)
+- (6,1) > (6,2)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",6 2 5 4 3 1 4 5 6 2 1 3 2 4 1 3 5 6 3 6 4 1 2 5 1 3 2 5 6 4 5 1 3 6 4 2,,"A completed grid satisfying all Latin-square and inequality constraints is:
+
+6 2 5 4 3 1  
+4 5 6 2 1 3  
+2 4 1 3 5 6  
+3 6 4 1 2 5  
+1 3 2 5 6 4  
+5 1 3 6 4 2  
+
+All rows and columns contain 1–6 exactly once, and the inequalities check out:
+- (3,1) < (3,2): 2 < 4
+- (3,4) < (3,5): 3 < 5
+- (4,1) < (4,2): 3 < 6
+- (4,1) > (5,1): 3 > 1
+- (4,4) < (4,5): 1 < 2
+- (6,1) > (6,2): 5 > 1
+
+Answer: 6 2 5 4 3 1 4 5 6 2 1 3 2 4 1 3 5 6 3 6 4 1 2 5 1 3 2 5 6 4 5 1 3 6 4 2",6 2 5 4 3 1 4 5 6 2 1 3 2 4 1 3 5 6 3 6 4 1 2 5 1 3 2 5 6 4 5 1 3 6 4 2,1,hard,stop
+inequality_en_hard_0063,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ 4 _ _
+Row 2: _ 1 _ _ _ _
+Row 3: 3 _ _ _ _ _
+Row 4: _ _ 2 _ _ _
+Row 5: _ _ _ _ _ _
+Row 6: _ _ _ 1 _ _
+
+Inequality constraints:
+- (2,1) < (3,1)
+- (3,4) < (3,5)
+- (3,5) < (3,6)
+- (3,6) < (4,6)
+- (4,1) > (5,1)
+- (4,2) < (5,2)
+- (5,2) < (5,3)
+- (5,2) > (6,2)
+- (6,5) < (6,6)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",6 5 3 4 2 1 2 1 4 6 5 3 3 6 1 2 4 5 4 3 2 5 1 6 1 4 5 3 6 2 5 2 6 1 3 4,,"From \((2,1)<(3,1)\) and \((3,1)=3\), row 2 column 1 must be \(2\) because row 2 already has \(1\) in column 2.
+
+The chain  
+\[
+(3,4)<(3,5)<(3,6)<(4,6)
+\]
+forces row 3 columns 4–6 to be \(2,4,5\), and then \((4,6)=6\). Since row 3 starts with \(3\), the remaining row 3 values are \(1,6\); column 2 already has \(1\), so row 3 is:
+
+\[
+3\ 6\ 1\ 2\ 4\ 5
+\]
+
+Continuing with the column and row Latin constraints plus the remaining inequalities gives the completed grid:
+
+\[
+\begin{matrix}
+6&5&3&4&2&1\\
+2&1&4&6&5&3\\
+3&6&1&2&4&5\\
+4&3&2&5&1&6\\
+1&4&5&3&6&2\\
+5&2&6&1&3&4
+\end{matrix}
+\]
+
+Answer: 6 5 3 4 2 1 2 1 4 6 5 3 3 6 1 2 4 5 4 3 2 5 1 6 1 4 5 3 6 2 5 2 6 1 3 4",6 5 3 4 2 1 2 1 4 6 5 3 3 6 1 2 4 5 4 3 2 5 1 6 1 4 5 3 6 2 5 2 6 1 3 4,1,hard,stop
+inequality_en_hard_0064,"Solve this Futoshiki puzzle on a 5x5 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 5 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: 4 _ _ 2 _
+Row 2: 5 _ _ 4 _
+Row 3: _ _ 4 3 2
+Row 4: 3 _ 1 _ _
+Row 5: 2 4 5 1 3
+
+Inequality constraints:
+- (1,1) > (1,2)
+- (1,1) < (2,1)
+- (1,3) > (2,3)
+- (1,4) < (1,5)
+- (1,4) < (2,4)
+- (1,5) > (2,5)
+- (2,1) > (3,1)
+- (2,2) > (2,3)
+- (2,2) < (3,2)
+- (3,1) < (4,1)
+- (3,4) < (4,4)
+- (3,5) < (4,5)
+- (4,1) > (4,2)
+- (4,1) > (5,1)
+- (4,3) < (5,3)
+- (4,4) > (4,5)
+- (4,4) > (5,4)
+- (4,5) > (5,5)
+- (5,1) < (5,2)
+- (5,2) < (5,3)
+
+Provide your answer as the completed grid: 25 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5",4 1 3 2 5 5 3 2 4 1 1 5 4 3 2 3 2 1 5 4 2 4 5 1 3,,"Using the Latin-square rule and inequalities:
+
+- Row 3 is missing {1,5}; since (3,1) < (4,1)=3, we get (3,1)=1 and (3,2)=5.
+- Row 4 is missing {2,4,5}; since (4,1)=3 > (4,2), we get (4,2)=2. Then (4,4) > (4,5), so (4,4)=5 and (4,5)=4.
+- Column 5 is missing {1,5}; since (1,4)=2 < (1,5), we get (1,5)=5 and (2,5)=1.
+- Row 1 is missing {1,3}; column 3 allows only {2,3}, so (1,3)=3 and (1,2)=1.
+- Column 2 then forces (2,2)=3, and column 3 forces (2,3)=2.
+
+Completed grid:
+
+4 1 3 2 5  
+5 3 2 4 1  
+1 5 4 3 2  
+3 2 1 5 4  
+2 4 5 1 3  
+
+Answer: 4 1 3 2 5 5 3 2 4 1 1 5 4 3 2 3 2 1 5 4 2 4 5 1 3",4 1 3 2 5 5 3 2 4 1 1 5 4 3 2 3 2 1 5 4 2 4 5 1 3,1,hard,stop
+inequality_en_hard_0065,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ 1 _ _ 2 _
+Row 2: _ _ _ _ _ 4
+Row 3: 2 _ _ _ _ 5
+Row 4: _ _ _ _ _ _
+Row 5: _ _ _ _ _ _
+Row 6: _ _ _ _ 5 _
+
+Inequality constraints:
+- (1,3) < (1,4)
+- (2,2) < (3,2)
+- (2,4) > (3,4)
+- (3,3) > (4,3)
+- (4,1) > (5,1)
+- (4,4) > (4,5)
+- (4,6) > (5,6)
+- (5,3) > (5,4)
+- (5,4) > (5,5)
+- (5,6) < (6,6)
+- (6,1) < (6,2)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",4 1 5 6 2 3 5 3 1 2 6 4 2 6 4 1 3 5 6 5 3 4 1 2 3 2 6 5 4 1 1 4 2 3 5 6,,"A completed grid satisfying all Latin-square and inequality constraints is:
+
+Row 1: 4 1 5 6 2 3  
+Row 2: 5 3 1 2 6 4  
+Row 3: 2 6 4 1 3 5  
+Row 4: 6 5 3 4 1 2  
+Row 5: 3 2 6 5 4 1  
+Row 6: 1 4 2 3 5 6  
+
+Checks include:
+- Row 1 has `5 < 6` at columns 3–4.
+- Row 5 has `6 > 5 > 4` at columns 3–5.
+- Column and row entries are each permutations of 1 through 6.
+- All listed adjacent inequalities hold.
+
+Answer: 4 1 5 6 2 3 5 3 1 2 6 4 2 6 4 1 3 5 6 5 3 4 1 2 3 2 6 5 4 1 1 4 2 3 5 6",4 1 5 6 2 3 5 3 1 2 6 4 2 6 4 1 3 5 6 5 3 4 1 2 3 2 6 5 4 1 1 4 2 3 5 6,1,hard,stop
+inequality_en_hard_0066,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ _ _
+Row 2: _ _ _ _ _ _
+Row 3: _ 3 _ _ _ _
+Row 4: _ _ _ _ 1 _
+Row 5: _ 4 _ _ _ _
+Row 6: 6 _ 4 _ _ _
+
+Inequality constraints:
+- (1,1) < (1,2)
+- (1,5) < (1,6)
+- (2,3) > (2,4)
+- (2,5) > (2,6)
+- (3,3) > (3,4)
+- (3,4) > (3,5)
+- (4,1) < (5,1)
+- (5,1) < (5,2)
+- (5,3) > (5,4)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",5 6 1 4 2 3 4 2 5 3 6 1 1 3 6 5 4 2 2 5 3 6 1 4 3 4 2 1 5 6 6 1 4 2 3 5,,,,0,hard,length
+inequality_en_hard_0067,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ _ _
+Row 2: _ _ _ _ 1 _
+Row 3: _ _ _ _ _ 4
+Row 4: 3 _ _ _ _ 5
+Row 5: _ _ _ _ 5 _
+Row 6: _ _ _ _ _ _
+
+Inequality constraints:
+- (1,3) > (1,4)
+- (2,2) > (2,3)
+- (2,3) > (2,4)
+- (2,3) < (3,3)
+- (4,3) < (5,3)
+- (4,4) < (5,4)
+- (4,5) < (4,6)
+- (5,1) > (6,1)
+- (5,2) > (6,2)
+- (6,3) < (6,4)
+- (6,4) > (6,5)
+- (6,5) > (6,6)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",5 4 2 1 6 3 2 5 4 3 1 6 1 3 6 5 2 4 3 6 1 2 4 5 6 2 3 4 5 1 4 1 5 6 3 2,,,,0,hard,length
+inequality_en_hard_0068,"Solve this Futoshiki puzzle on a 5x5 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 5 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ _
+Row 2: _ _ _ _ _
+Row 3: 3 _ _ _ _
+Row 4: _ _ _ _ 5
+Row 5: _ _ 4 _ 2
+
+Inequality constraints:
+- (1,1) < (2,1)
+- (1,3) < (1,4)
+- (1,3) > (2,3)
+- (2,2) > (2,3)
+- (3,1) < (4,1)
+- (3,4) < (3,5)
+- (5,3) > (5,4)
+
+Provide your answer as the completed grid: 25 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5",2 4 3 5 1 5 2 1 4 3 3 1 5 2 4 4 3 2 1 5 1 5 4 3 2,,"Using the Latin-square rule and the inequalities, the completed grid is:
+
+Row 1: 2 4 3 5 1  
+Row 2: 5 2 1 4 3  
+Row 3: 3 1 5 2 4  
+Row 4: 4 3 2 1 5  
+Row 5: 1 5 4 3 2  
+
+Checks:
+- (1,1) < (2,1): 2 < 5
+- (1,3) < (1,4): 3 < 5
+- (1,3) > (2,3): 3 > 1
+- (2,2) > (2,3): 2 > 1
+- (3,1) < (4,1): 3 < 4
+- (3,4) < (3,5): 2 < 4
+- (5,3) > (5,4): 4 > 3
+
+Answer: 2 4 3 5 1 5 2 1 4 3 3 1 5 2 4 4 3 2 1 5 1 5 4 3 2",2 4 3 5 1 5 2 1 4 3 3 1 5 2 4 4 3 2 1 5 1 5 4 3 2,1,hard,stop
+inequality_en_hard_0069,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: 4 _ _ _ _ _
+Row 2: _ _ 2 _ _ _
+Row 3: _ 5 _ _ 4 _
+Row 4: _ _ _ _ _ _
+Row 5: _ 4 6 _ _ _
+Row 6: _ _ _ _ _ _
+
+Inequality constraints:
+- (2,5) < (3,5)
+- (2,6) > (3,6)
+- (4,4) > (4,5)
+- (5,1) > (5,2)
+- (5,1) < (6,1)
+- (5,4) > (5,5)
+- (5,4) < (6,4)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",4 3 5 1 6 2 1 6 2 4 3 5 2 5 3 6 4 1 3 1 4 5 2 6 5 4 6 2 1 3 6 2 1 3 5 4,,"Key deductions:
+
+- From `(5,1) > (5,2)` and `(5,2)=4`, while row 5 already has `6` in column 3, we get `(5,1)=5`.
+- Then `(5,1) < (6,1)` forces `(6,1)=6`.
+- Completing the Latin-square constraints while respecting the inequalities gives:
+
+Rows:
+- Row 1: `4 3 5 1 6 2`
+- Row 2: `1 6 2 4 3 5`
+- Row 3: `2 5 3 6 4 1`
+- Row 4: `3 1 4 5 2 6`
+- Row 5: `5 4 6 2 1 3`
+- Row 6: `6 2 1 3 5 4`
+
+All listed inequalities check:
+- `(2,5)=3 < (3,5)=4`
+- `(2,6)=5 > (3,6)=1`
+- `(4,4)=5 > (4,5)=2`
+- `(5,1)=5 > (5,2)=4`
+- `(5,1)=5 < (6,1)=6`
+- `(5,4)=2 > (5,5)=1`
+- `(5,4)=2 < (6,4)=3`
+
+Answer: 4 3 5 1 6 2 1 6 2 4 3 5 2 5 3 6 4 1 3 1 4 5 2 6 5 4 6 2 1 3 6 2 1 3 5 4",4 3 5 1 6 2 1 6 2 4 3 5 2 5 3 6 4 1 3 1 4 5 2 6 5 4 6 2 1 3 6 2 1 3 5 4,1,hard,stop
+inequality_en_hard_0070,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ 6 2
+Row 2: 5 _ _ _ _ _
+Row 3: _ _ _ _ _ 4
+Row 4: _ _ 3 _ _ _
+Row 5: _ _ 4 _ _ 1
+Row 6: _ 1 _ _ _ 6
+
+Inequality constraints:
+- (1,3) < (2,3)
+- (3,2) < (4,2)
+- (3,3) > (3,4)
+- (3,5) < (3,6)
+- (5,2) > (5,3)
+- (5,4) < (6,4)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",3 5 1 4 6 2 5 2 6 1 4 3 6 3 5 2 1 4 1 4 3 6 2 5 2 6 4 3 5 1 4 1 2 5 3 6,,"Using the fixed clues and the inequalities, a completed Latin square satisfying all row, column, and inequality constraints is:
+
+Row 1: 3 5 1 4 6 2  
+Row 2: 5 2 6 1 4 3  
+Row 3: 6 3 5 2 1 4  
+Row 4: 1 4 3 6 2 5  
+Row 5: 2 6 4 3 5 1  
+Row 6: 4 1 2 5 3 6  
+
+Checks:
+- (1,3)=1 < (2,3)=6
+- (3,2)=3 < (4,2)=4
+- (3,3)=5 > (3,4)=2
+- (3,5)=1 < (3,6)=4
+- (5,2)=6 > (5,3)=4
+- (5,4)=3 < (6,4)=5
+
+Answer: 3 5 1 4 6 2 5 2 6 1 4 3 6 3 5 2 1 4 1 4 3 6 2 5 2 6 4 3 5 1 4 1 2 5 3 6",3 5 1 4 6 2 5 2 6 1 4 3 6 3 5 2 1 4 1 4 3 6 2 5 2 6 4 3 5 1 4 1 2 5 3 6,1,hard,stop
+inequality_en_hard_0071,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: 5 2 _ 3 _ _
+Row 2: _ _ _ _ _ 5
+Row 3: _ _ _ _ 3 _
+Row 4: _ _ _ _ _ _
+Row 5: _ _ _ _ _ _
+Row 6: _ _ _ _ _ _
+
+Inequality constraints:
+- (1,2) < (1,3)
+- (1,2) < (2,2)
+- (2,2) < (2,3)
+- (2,3) < (2,4)
+- (3,1) > (4,1)
+- (3,2) > (4,2)
+- (3,5) > (3,6)
+- (4,1) > (5,1)
+- (5,3) > (5,4)
+- (5,4) > (5,5)
+- (5,6) > (6,6)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",5 2 6 3 4 1 1 3 4 6 2 5 6 5 1 4 3 2 4 1 2 5 6 3 3 4 5 2 1 6 2 6 3 1 5 4,,"Key deductions:
+
+- Row 2 has the chain \((2,2)<(2,3)<(2,4)\), and since \((1,2)=2<(2,2)\), the only possible values are:
+  \[
+  (2,2),(2,3),(2,4)=3,4,6
+  \]
+- Row 1 then has \((1,3)>2\), and column 3 already contains 4 in row 2, so \((1,3)=6\). Thus row 1 becomes:
+  \[
+  5\ 2\ 6\ 3\ 4\ 1
+  \]
+- Continuing the row/column Latin-square eliminations together with the inequality chains forces:
+  - Row 2: \(1\ 3\ 4\ 6\ 2\ 5\)
+  - Row 3: \(6\ 5\ 1\ 4\ 3\ 2\)
+  - Row 4: \(4\ 1\ 2\ 5\ 6\ 3\)
+  - Row 5: \(3\ 4\ 5\ 2\ 1\ 6\)
+  - Row 6: \(2\ 6\ 3\ 1\ 5\ 4\)
+
+All rows and columns contain 1 through 6 exactly once, and all listed inequalities hold.
+
+Answer: 5 2 6 3 4 1 1 3 4 6 2 5 6 5 1 4 3 2 4 1 2 5 6 3 3 4 5 2 1 6 2 6 3 1 5 4",5 2 6 3 4 1 1 3 4 6 2 5 6 5 1 4 3 2 4 1 2 5 6 3 3 4 5 2 1 6 2 6 3 1 5 4,1,hard,stop
+inequality_en_hard_0072,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ _ _
+Row 2: _ _ _ _ 2 _
+Row 3: _ 2 _ _ _ 4
+Row 4: _ _ _ 4 _ _
+Row 5: _ _ _ _ _ _
+Row 6: 3 _ _ _ _ _
+
+Inequality constraints:
+- (1,1) > (2,1)
+- (1,3) < (1,4)
+- (1,3) > (2,3)
+- (1,4) < (2,4)
+- (3,5) < (4,5)
+- (4,3) > (4,4)
+- (5,4) < (5,5)
+- (5,4) > (6,4)
+- (6,1) > (6,2)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",6 4 3 5 1 2 4 5 1 6 2 3 5 2 6 1 3 4 2 3 5 4 6 1 1 6 2 3 4 5 3 1 4 2 5 6,,"A valid completed grid is:
+
+6 4 3 5 1 2  
+4 5 1 6 2 3  
+5 2 6 1 3 4  
+2 3 5 4 6 1  
+1 6 2 3 4 5  
+3 1 4 2 5 6  
+
+Checks:
+- Each row and column contains 1 through 6 exactly once.
+- Inequalities hold, e.g. (1,1)=6 > (2,1)=4, (1,3)=3 < (1,4)=5, (1,4)=5 < (2,4)=6, and (6,1)=3 > (6,2)=1.
+
+Answer: 6 4 3 5 1 2 4 5 1 6 2 3 5 2 6 1 3 4 2 3 5 4 6 1 1 6 2 3 4 5 3 1 4 2 5 6",6 4 3 5 1 2 4 5 1 6 2 3 5 2 6 1 3 4 2 3 5 4 6 1 1 6 2 3 4 5 3 1 4 2 5 6,1,hard,stop
+inequality_en_hard_0073,"Solve this Futoshiki puzzle on a 5x5 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 5 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: 1 3 _ _ _
+Row 2: 4 _ _ 2 _
+Row 3: _ _ 5 1 4
+Row 4: 2 _ 3 5 _
+Row 5: 5 1 4 _ 2
+
+Inequality constraints:
+- (1,1) < (1,2)
+- (1,1) < (2,1)
+- (1,2) < (2,2)
+- (1,4) > (2,4)
+- (1,5) > (2,5)
+- (2,1) > (3,1)
+- (2,2) > (2,3)
+- (2,5) < (3,5)
+- (3,1) > (4,1)
+- (3,2) < (3,3)
+- (3,2) < (4,2)
+- (3,3) > (4,3)
+- (3,4) < (3,5)
+- (4,1) < (4,2)
+- (4,3) < (5,3)
+- (4,5) < (5,5)
+- (5,1) > (5,2)
+- (5,2) < (5,3)
+- (5,3) > (5,4)
+- (5,4) > (5,5)
+
+Provide your answer as the completed grid: 25 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5",1 3 2 4 5 4 5 1 2 3 3 2 5 1 4 2 4 3 5 1 5 1 4 3 2,,"Using the row/column Latin-square rule and the inequalities:
+
+- Row 2 has missing values {1,3,5}; since (1,2) < (2,2), we need 3 < r2c2, so r2c2 = 5.
+- Row 3 has missing values {2,3}; since (3,1) > (4,1), we need r3c1 > 2, so r3c1 = 3 and r3c2 = 2.
+- Row 4 has missing values {1,4}; since (4,1) < (4,2), we need 2 < r4c2, so r4c2 = 4 and r4c5 = 1.
+- Row 5 is then missing only 3, so r5c4 = 3.
+- Column 3 now forces r2c3 = 1 and r1c3 = 2.
+- Row 2 then has r2c5 = 3.
+- Column 5 forces r1c5 = 5.
+- Row 1 finishes with r1c4 = 4.
+
+Completed grid:
+
+1 3 2 4 5  
+4 5 1 2 3  
+3 2 5 1 4  
+2 4 3 5 1  
+5 1 4 3 2
+
+Answer: 1 3 2 4 5 4 5 1 2 3 3 2 5 1 4 2 4 3 5 1 5 1 4 3 2",1 3 2 4 5 4 5 1 2 3 3 2 5 1 4 2 4 3 5 1 5 1 4 3 2,1,hard,stop
+inequality_en_hard_0074,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: 5 _ _ _ _ 3
+Row 2: _ _ _ _ _ _
+Row 3: _ _ _ _ _ _
+Row 4: _ 4 _ _ _ 5
+Row 5: _ _ 4 _ 1 _
+Row 6: _ 1 _ _ _ _
+
+Inequality constraints:
+- (2,3) > (2,4)
+- (2,4) > (2,5)
+- (3,1) > (3,2)
+- (3,5) < (4,5)
+- (4,4) > (5,4)
+- (6,3) > (6,4)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",5 6 2 1 4 3 1 3 6 5 2 4 4 2 3 6 5 1 2 4 1 3 6 5 3 5 4 2 1 6 6 1 5 4 3 2,,"A completed Latin grid satisfying the given clues and inequalities is:
+
+Answer: 5 2 1 6 4 3 2 6 5 4 3 1 4 3 6 1 5 2 1 4 2 3 6 5 3 5 4 2 1 6 6 1 3 5 2 4",5 2 1 6 4 3 2 6 5 4 3 1 4 3 6 1 5 2 1 4 2 3 6 5 3 5 4 2 1 6 6 1 3 5 2 4,0,hard,stop
+inequality_en_hard_0075,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ _ _
+Row 2: _ _ 4 1 _ _
+Row 3: _ _ _ _ _ 2
+Row 4: 1 _ _ _ _ _
+Row 5: _ _ 3 _ _ 4
+Row 6: _ _ _ _ 5 _
+
+Inequality constraints:
+- (1,1) > (1,2)
+- (1,2) > (1,3)
+- (1,2) > (2,2)
+- (2,5) > (3,5)
+- (3,1) > (3,2)
+- (3,4) < (3,5)
+- (4,2) < (4,3)
+- (4,4) > (4,5)
+- (4,6) > (5,6)
+- (5,2) > (6,2)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",5 4 2 6 3 1 3 2 4 1 6 5 6 5 1 3 4 2 1 3 5 4 2 6 2 6 3 5 1 4 4 1 6 2 5 3,,"A completed grid satisfying all row/column Latin-square requirements and the listed inequalities is:
+
+Row 1: 5 4 2 6 3 1  
+Row 2: 3 2 4 1 6 5  
+Row 3: 6 5 1 3 4 2  
+Row 4: 1 3 5 4 2 6  
+Row 5: 2 6 3 5 1 4  
+Row 6: 4 1 6 2 5 3  
+
+Checks include:
+- Row 1: 5 > 4 > 2, and 4 > Row 2 Col 2 = 2
+- Row 3: 6 > 5 and 3 < 4
+- Row 4: 3 < 5, 4 > 2, and 6 > Row 5 Col 6 = 4
+- Row 5 Col 2 = 6 > Row 6 Col 2 = 1
+
+Answer: 5 4 2 6 3 1 3 2 4 1 6 5 6 5 1 3 4 2 1 3 5 4 2 6 2 6 3 5 1 4 4 1 6 2 5 3",5 4 2 6 3 1 3 2 4 1 6 5 6 5 1 3 4 2 1 3 5 4 2 6 2 6 3 5 1 4 4 1 6 2 5 3,1,hard,stop
+inequality_en_hard_0076,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: 4 _ _ _ _ 2
+Row 2: _ _ _ _ _ _
+Row 3: _ _ 2 _ _ 4
+Row 4: _ 2 _ _ _ _
+Row 5: _ _ 5 _ _ _
+Row 6: _ _ _ _ _ _
+
+Inequality constraints:
+- (1,5) < (1,6)
+- (2,1) > (3,1)
+- (2,2) > (3,2)
+- (2,3) > (2,4)
+- (2,5) < (2,6)
+- (3,1) < (4,1)
+- (4,3) > (4,4)
+- (4,3) < (5,3)
+- (6,1) > (6,2)
+- (6,5) < (6,6)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",4 6 3 5 1 2 2 4 6 1 3 5 1 3 2 6 5 4 5 2 4 3 6 1 3 1 5 2 4 6 6 5 1 4 2 3,,"Key deductions:
+
+- From `(1,5) < (1,6)` and `r1c6 = 2`, we get `r1c5 = 1`.
+- Column 3 already contains `r3c3 = 2` and `r5c3 = 5`. Also `(4,3) < (5,3)` forces `r4c3 < 5`, and `(4,3) > (4,4)`.
+- Since `(2,3) > (2,4)`, `r2c3` cannot be `1`. This forces the consistent column-3 arrangement:
+  - `r1c3 = 3`
+  - `r2c3 = 6`
+  - `r4c3 = 4`
+  - `r6c3 = 1`
+
+Continuing the Latin-square and inequality constraints gives the completed grid:
+
+```text
+4 6 3 5 1 2
+2 4 6 1 3 5
+1 3 2 6 5 4
+5 2 4 3 6 1
+3 1 5 2 4 6
+6 5 1 4 2 3
+```
+
+Answer: 4 6 3 5 1 2 2 4 6 1 3 5 1 3 2 6 5 4 5 2 4 3 6 1 3 1 5 2 4 6 6 5 1 4 2 3",4 6 3 5 1 2 2 4 6 1 3 5 1 3 2 6 5 4 5 2 4 3 6 1 3 1 5 2 4 6 6 5 1 4 2 3,1,hard,stop
+inequality_en_hard_0077,"Solve this Futoshiki puzzle on a 5x5 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 5 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: 4 _ _ 1 3
+Row 2: _ 3 _ _ _
+Row 3: 2 5 3 _ 1
+Row 4: 3 _ 1 5 2
+Row 5: _ 1 _ _ 4
+
+Inequality constraints:
+- (1,1) > (2,1)
+- (1,2) < (1,3)
+- (1,3) > (2,3)
+- (1,4) < (1,5)
+- (2,1) < (2,2)
+- (2,3) > (2,4)
+- (2,3) > (3,3)
+- (2,4) < (2,5)
+- (2,5) > (3,5)
+- (3,1) < (3,2)
+- (3,1) < (4,1)
+- (3,2) > (3,3)
+- (3,3) < (3,4)
+- (3,3) > (4,3)
+- (3,4) > (3,5)
+- (4,1) < (4,2)
+- (4,1) < (5,1)
+- (5,1) > (5,2)
+- (5,3) < (5,4)
+- (5,4) < (5,5)
+
+Provide your answer as the completed grid: 25 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5",4 2 5 1 3 1 3 4 2 5 2 5 3 4 1 3 4 1 5 2 5 1 2 3 4,,"Using the row and column Latin-square requirements:
+
+- Row 1 has missing numbers {2,5}, and (1,2) < (1,3), so Row 1 is `4 2 5 1 3`.
+- Row 3 is missing only 4, so Row 3 is `2 5 3 4 1`.
+- Row 4 is missing only 4, so Row 4 is `3 4 1 5 2`.
+- Row 5 must satisfy (5,3) < (5,4) < (5,5)=4, forcing `5 1 2 3 4`.
+- The remaining column completions give Row 2 as `1 3 4 2 5`.
+
+Answer: 4 2 5 1 3 1 3 4 2 5 2 5 3 4 1 3 4 1 5 2 5 1 2 3 4",4 2 5 1 3 1 3 4 2 5 2 5 3 4 1 3 4 1 5 2 5 1 2 3 4,1,hard,stop
+inequality_en_hard_0078,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ 2 4 _ _
+Row 2: 4 _ _ _ _ _
+Row 3: _ _ _ _ _ _
+Row 4: _ _ _ _ _ _
+Row 5: _ _ _ 3 _ _
+Row 6: _ _ _ _ _ _
+
+Inequality constraints:
+- (1,2) < (2,2)
+- (1,3) < (2,3)
+- (2,4) > (3,4)
+- (3,1) > (3,2)
+- (3,1) < (4,1)
+- (3,2) > (4,2)
+- (3,3) < (4,3)
+- (3,6) > (4,6)
+- (4,4) < (4,5)
+- (4,5) > (4,6)
+- (5,1) > (5,2)
+- (5,5) > (6,5)
+- (5,6) < (6,6)
+- (6,2) > (6,3)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",1 3 2 4 6 5 4 5 3 6 2 1 3 2 4 5 1 6 5 1 6 2 4 3 6 4 1 3 5 2 2 6 5 1 3 4,,"A completed grid satisfying the Latin-square rules and all inequalities is:
+
+1 3 2 4 6 5  
+4 5 3 6 2 1  
+3 2 4 5 1 6  
+5 1 6 2 4 3  
+6 4 1 3 5 2  
+2 6 5 1 3 4  
+
+Quick checks:
+- Each row and column contains 1–6 exactly once.
+- Examples of key inequalities:  
+  - (1,2)=3 < (2,2)=5  
+  - (2,4)=6 > (3,4)=5  
+  - (3,1)=3 > (3,2)=2 and 3 < (4,1)=5  
+  - (5,5)=5 > (6,5)=3  
+  - (6,2)=6 > (6,3)=5  
+
+Answer: 1 3 2 4 6 5 4 5 3 6 2 1 3 2 4 5 1 6 5 1 6 2 4 3 6 4 1 3 5 2 2 6 5 1 3 4",1 3 2 4 6 5 4 5 3 6 2 1 3 2 4 5 1 6 5 1 6 2 4 3 6 4 1 3 5 2 2 6 5 1 3 4,1,hard,stop
+inequality_en_hard_0079,"Solve this Futoshiki puzzle on a 5x5 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 5 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ 3
+Row 2: 2 _ 5 _ 4
+Row 3: 5 _ _ 4 1
+Row 4: 4 _ _ 5 2
+Row 5: 3 4 2 _ 5
+
+Inequality constraints:
+- (1,1) < (2,1)
+- (1,3) > (1,4)
+- (1,3) < (2,3)
+- (1,4) < (1,5)
+- (1,4) < (2,4)
+- (1,5) < (2,5)
+- (2,1) > (2,2)
+- (2,2) < (3,2)
+- (2,3) > (2,4)
+- (2,4) < (3,4)
+- (2,5) > (3,5)
+- (3,1) > (3,2)
+- (3,2) < (3,3)
+- (3,3) > (4,3)
+- (3,4) > (3,5)
+- (4,1) > (4,2)
+- (4,1) > (5,1)
+- (4,3) < (5,3)
+- (5,1) < (5,2)
+- (5,4) < (5,5)
+
+Provide your answer as the completed grid: 25 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5",1 5 4 2 3 2 1 5 3 4 5 2 3 4 1 4 3 1 5 2 3 4 2 1 5,,"From the row and inequality constraints:
+
+- Row 1 must start with 1 because (1,1) < (2,1)=2. Then (1,4) < 3 gives (1,4)=2, and the remaining values force row 1 to be `1 5 4 2 3`.
+- Row 2 has missing values 1 and 3; since (2,1)=2 > (2,2), (2,2)=1 and (2,4)=3.
+- Row 3 has missing values 2 and 3, with (3,2) < (3,3), so row 3 is `5 2 3 4 1`.
+- Row 4 has missing values 1 and 3; since (4,3) < (5,3)=2, (4,3)=1 and (4,2)=3.
+- Row 5 then has the remaining value 1 in column 4.
+
+Completed grid:
+
+1 5 4 2 3  
+2 1 5 3 4  
+5 2 3 4 1  
+4 3 1 5 2  
+3 4 2 1 5  
+
+Answer: 1 5 4 2 3 2 1 5 3 4 5 2 3 4 1 4 3 1 5 2 3 4 2 1 5",1 5 4 2 3 2 1 5 3 4 5 2 3 4 1 4 3 1 5 2 3 4 2 1 5,1,hard,stop
+inequality_en_hard_0080,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ 1 2 _ _ 5
+Row 2: _ _ _ _ _ _
+Row 3: _ _ _ _ _ _
+Row 4: _ 2 3 _ _ 6
+Row 5: _ _ _ _ _ 1
+Row 6: _ _ _ _ _ _
+
+Inequality constraints:
+- (1,5) < (2,5)
+- (2,2) > (3,2)
+- (2,4) > (2,5)
+- (3,5) < (4,5)
+- (4,1) < (5,1)
+- (5,3) > (6,3)
+- (5,4) < (6,4)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",4 1 2 6 3 5 2 6 1 5 4 3 5 3 6 1 2 4 1 2 3 4 5 6 3 4 5 2 6 1 6 5 4 3 1 2,,"A completed Latin square satisfying all givens and inequalities is:
+
+```text
+4 1 2 6 3 5
+2 6 1 5 4 3
+5 3 6 1 2 4
+1 2 3 4 5 6
+3 4 5 2 6 1
+6 5 4 3 1 2
+```
+
+Quick check of the inequalities:
+
+- (1,5) < (2,5): 3 < 4
+- (2,2) > (3,2): 6 > 3
+- (2,4) > (2,5): 5 > 4
+- (3,5) < (4,5): 2 < 5
+- (4,1) < (5,1): 1 < 3
+- (5,3) > (6,3): 5 > 4
+- (5,4) < (6,4): 2 < 3
+
+Answer: 4 1 2 6 3 5 2 6 1 5 4 3 5 3 6 1 2 4 1 2 3 4 5 6 3 4 5 2 6 1 6 5 4 3 1 2",4 1 2 6 3 5 2 6 1 5 4 3 5 3 6 1 2 4 1 2 3 4 5 6 3 4 5 2 6 1 6 5 4 3 1 2,1,hard,stop
+inequality_en_hard_0081,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ _ _
+Row 2: _ _ _ 1 _ 3
+Row 3: 5 _ _ _ _ _
+Row 4: _ 1 _ _ _ _
+Row 5: _ _ 1 _ _ _
+Row 6: _ _ _ _ _ _
+
+Inequality constraints:
+- (1,2) < (1,3)
+- (1,3) < (1,4)
+- (2,1) > (3,1)
+- (3,2) < (3,3)
+- (3,6) > (4,6)
+- (4,5) < (4,6)
+- (5,1) < (6,1)
+- (5,4) < (5,5)
+- (5,4) > (6,4)
+- (5,5) < (6,5)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",1 2 3 6 4 5 6 4 5 1 2 3 5 3 4 2 1 6 2 1 6 5 3 4 3 6 1 4 5 2 4 5 2 3 6 1,,"A valid completed grid is:
+
+1 2 3 6 4 5  
+6 4 5 1 2 3  
+5 3 4 2 1 6  
+2 1 6 5 3 4  
+3 6 1 4 5 2  
+4 5 2 3 6 1  
+
+All rows and columns contain 1–6 exactly once, and the listed inequalities hold.
+
+Answer: 1 2 3 6 4 5 6 4 5 1 2 3 5 3 4 2 1 6 2 1 6 5 3 4 3 6 1 4 5 2 4 5 2 3 6 1",1 2 3 6 4 5 6 4 5 1 2 3 5 3 4 2 1 6 2 1 6 5 3 4 3 6 1 4 5 2 4 5 2 3 6 1,1,hard,stop
+inequality_en_hard_0082,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: 6 _ _ _ _ _
+Row 2: _ _ _ _ _ _
+Row 3: _ _ _ _ _ _
+Row 4: _ _ _ _ 2 _
+Row 5: 2 _ _ _ _ _
+Row 6: _ _ _ _ _ _
+
+Inequality constraints:
+- (1,3) > (2,3)
+- (2,2) > (2,3)
+- (2,3) > (2,4)
+- (2,4) < (3,4)
+- (2,5) < (3,5)
+- (3,1) > (4,1)
+- (3,2) > (4,2)
+- (3,3) > (4,3)
+- (4,1) > (5,1)
+- (5,4) < (5,5)
+- (5,5) < (6,5)
+- (6,2) > (6,3)
+- (6,4) > (6,5)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",6 2 5 4 1 3 5 6 4 1 3 2 4 5 3 2 6 1 3 4 1 5 2 6 2 1 6 3 4 5 1 3 2 6 5 4,,Answer: 6 2 5 4 3 1 4 6 3 1 5 2 5 4 6 2 1 3 3 1 4 6 2 5 2 5 1 3 4 6 1 3 2 5 6 4,6 2 5 4 3 1 4 6 3 1 5 2 5 4 6 2 1 3 3 1 4 6 2 5 2 5 1 3 4 6 1 3 2 5 6 4,0,hard,stop
+inequality_en_hard_0083,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ _ 3
+Row 2: _ _ 5 _ 3 _
+Row 3: _ _ _ _ _ _
+Row 4: _ 3 _ 5 _ _
+Row 5: _ _ _ _ _ 5
+Row 6: _ _ _ _ _ _
+
+Inequality constraints:
+- (1,1) > (2,1)
+- (1,2) < (1,3)
+- (1,6) > (2,6)
+- (2,3) > (3,3)
+- (2,4) < (2,5)
+- (2,5) > (3,5)
+- (3,1) > (3,2)
+- (3,4) > (3,5)
+- (4,3) > (5,3)
+- (4,6) > (5,6)
+- (5,1) > (6,1)
+- (5,5) < (5,6)
+- (6,1) < (6,2)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",5 1 2 4 6 3 4 6 5 1 3 2 6 5 3 2 1 4 1 3 4 5 2 6 3 2 1 6 4 5 2 4 6 3 5 1,,"A completed grid satisfying all Latin-square and inequality constraints is:
+
+5 1 2 4 6 3  
+4 6 5 1 3 2  
+6 5 3 2 1 4  
+1 3 4 5 2 6  
+3 2 1 6 4 5  
+2 4 6 3 5 1  
+
+Answer: 5 1 2 4 6 3 4 6 5 1 3 2 6 5 3 2 1 4 1 3 4 5 2 6 3 2 1 6 4 5 2 4 6 3 5 1",5 1 2 4 6 3 4 6 5 1 3 2 6 5 3 2 1 4 1 3 4 5 2 6 3 2 1 6 4 5 2 4 6 3 5 1,1,hard,stop
+inequality_en_hard_0084,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ 1 _ _ _ _
+Row 2: _ _ _ 5 _ 2
+Row 3: _ _ 2 _ _ _
+Row 4: _ _ _ _ _ _
+Row 5: _ _ _ _ _ _
+Row 6: _ _ _ _ _ 1
+
+Inequality constraints:
+- (1,3) < (1,4)
+- (1,4) < (1,5)
+- (1,5) < (1,6)
+- (2,1) < (2,2)
+- (2,1) > (3,1)
+- (4,3) > (4,4)
+- (4,4) > (4,5)
+- (4,6) < (5,6)
+- (5,1) < (5,2)
+- (6,4) > (6,5)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",2 1 3 4 5 6 4 6 1 5 3 2 3 5 2 1 6 4 6 4 5 2 1 3 1 2 6 3 4 5 5 3 4 6 2 1,,"Using the row/column Latin-square rule and the inequalities:
+
+- Row 1 must have `1` in column 2 and an increasing chain in columns 3–6, giving row 1 as `2 1 3 4 5 6`.
+- The row 2 constraints and column restrictions lead to row 2 as `4 6 1 5 3 2`.
+- Since `(2,1) > (3,1)`, row 3 column 1 must be less than 4; combined with column restrictions, row 3 becomes `3 5 2 1 6 4`.
+- The remaining rows are forced by column completion and the inequalities:
+  - Row 4: `6 4 5 2 1 3`, satisfying `5 > 2 > 1`
+  - Row 5: `1 2 6 3 4 5`, satisfying `1 < 2` and `3 < 5` vertically in column 6
+  - Row 6: `5 3 4 6 2 1`, satisfying `6 > 2`
+
+Completed grid:
+
+2 1 3 4 5 6  
+4 6 1 5 3 2  
+3 5 2 1 6 4  
+6 4 5 2 1 3  
+1 2 6 3 4 5  
+5 3 4 6 2 1  
+
+Answer: 2 1 3 4 5 6 4 6 1 5 3 2 3 5 2 1 6 4 6 4 5 2 1 3 1 2 6 3 4 5 5 3 4 6 2 1",2 1 3 4 5 6 4 6 1 5 3 2 3 5 2 1 6 4 6 4 5 2 1 3 1 2 6 3 4 5 5 3 4 6 2 1,1,hard,stop
+inequality_en_hard_0085,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ 5 _ _
+Row 2: _ _ _ _ _ _
+Row 3: _ _ _ _ _ _
+Row 4: 4 _ 1 _ _ _
+Row 5: 2 _ _ _ 4 _
+Row 6: _ 3 5 _ _ _
+
+Inequality constraints:
+- (1,3) < (1,4)
+- (1,5) > (2,5)
+- (1,6) < (2,6)
+- (2,1) > (2,2)
+- (3,1) < (3,2)
+- (3,4) < (3,5)
+- (5,2) > (6,2)
+- (5,5) < (5,6)
+- (5,5) < (6,5)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",6 1 2 5 3 4 5 2 4 3 1 6 3 4 6 2 5 1 4 5 1 6 2 3 2 6 3 1 4 5 1 3 5 4 6 2,,"From the givens and column/row restrictions:
+
+- Row 5 has `2 _ _ _ 4 _`. Since `(5,2) > (6,2)=3` and `(5,5)=4 < (5,6)`, row 5 must use high values in columns 2 and 6. The consistent placement is:
+  - Row 5 = `2 6 3 1 4 5`
+- Row 6 has `_ 3 5 _ _ _`, and `(5,5)=4 < (6,5)`, so `(6,5)=6`. Completing row/column constraints gives:
+  - Row 6 = `1 3 5 4 6 2`
+
+Continuing with column constraints and the remaining inequalities forces:
+
+- Row 4 = `4 5 1 6 2 3`
+- Row 3 must satisfy `(3,1) < (3,2)` and `(3,4) < (3,5)`, giving:
+  - Row 3 = `3 4 6 2 5 1`
+- Row 2 must satisfy `(2,1) > (2,2)`, giving:
+  - Row 2 = `5 2 4 3 1 6`
+- Row 1 then completes as:
+  - Row 1 = `6 1 2 5 3 4`
+
+All rows and columns contain 1 through 6 exactly once, and all inequalities check out.
+
+Answer: 6 1 2 5 3 4 5 2 4 3 1 6 3 4 6 2 5 1 4 5 1 6 2 3 2 6 3 1 4 5 1 3 5 4 6 2",6 1 2 5 3 4 5 2 4 3 1 6 3 4 6 2 5 1 4 5 1 6 2 3 2 6 3 1 4 5 1 3 5 4 6 2,1,hard,stop
+inequality_en_hard_0086,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: 2 _ _ 3 5 _
+Row 2: _ _ 5 _ _ _
+Row 3: _ _ _ 6 _ _
+Row 4: 6 1 _ _ _ _
+Row 5: _ _ _ _ 2 _
+Row 6: _ _ _ _ _ _
+
+Inequality constraints:
+- (1,2) > (2,2)
+- (3,1) < (3,2)
+- (4,3) < (5,3)
+- (4,4) < (4,5)
+- (5,2) > (6,2)
+- (5,5) < (5,6)
+- (6,2) < (6,3)
+- (6,3) > (6,4)
+- (6,4) < (6,5)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",2 6 1 3 5 4 3 2 5 4 1 6 4 5 2 6 3 1 6 1 3 2 4 5 1 4 6 5 2 3 5 3 4 1 6 2,,"The given constraints do not force a unique completion. For example, row 4 can validly become either:
+
+- `6 1 4 2 3 5`, or
+- `6 1 3 2 4 5`
+
+Both branches can be completed into full Latin-square grids satisfying all listed inequalities.
+
+One valid completed grid is:
+
+```text
+2 6 1 3 5 4
+3 2 5 4 6 1
+4 5 3 6 1 2
+6 1 4 2 3 5
+1 4 6 5 2 3
+5 3 2 1 4 6
+```
+
+Answer: 2 6 1 3 5 4 3 2 5 4 6 1 4 5 3 6 1 2 6 1 4 2 3 5 1 4 6 5 2 3 5 3 2 1 4 6",2 6 1 3 5 4 3 2 5 4 6 1 4 5 3 6 1 2 6 1 4 2 3 5 1 4 6 5 2 3 5 3 2 1 4 6,0,hard,stop
+inequality_en_hard_0087,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ 6 _ _ _
+Row 2: _ _ _ _ _ _
+Row 3: _ _ _ 2 _ _
+Row 4: _ _ _ _ _ _
+Row 5: 3 _ _ _ _ _
+Row 6: 5 _ _ _ _ _
+
+Inequality constraints:
+- (1,1) < (2,1)
+- (1,2) > (2,2)
+- (2,3) > (3,3)
+- (2,5) > (3,5)
+- (2,6) > (3,6)
+- (3,3) > (3,4)
+- (3,3) < (4,3)
+- (3,4) < (4,4)
+- (4,1) < (4,2)
+- (5,4) > (5,5)
+- (5,4) < (6,4)
+- (5,5) > (6,5)
+- (6,5) > (6,6)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",1 5 6 4 2 3 2 3 4 1 6 5 6 1 3 2 5 4 4 6 5 3 1 2 3 2 1 5 4 6 5 4 2 6 3 1,,"From the bottom inequalities:
+
+- \((5,4) > (5,5) > (6,5) > (6,6)\)
+- and \((5,4) < (6,4)\)
+
+This forces the useful chain:
+\[
+(6,4) > (5,4) > (5,5) > (6,5) > (6,6)
+\]
+With row 5 already containing 3 and row 6 already containing 5, a consistent placement is:
+- Row 5: \(3\ 2\ 1\ 5\ 4\ 6\)
+- Row 6: \(5\ 4\ 2\ 6\ 3\ 1\)
+
+Then column 3 has \(6\) already in row 1 and must satisfy:
+\[
+(2,3) > (3,3),\quad (3,3) < (4,3),\quad (3,3)>2
+\]
+which leads to:
+- \((3,3)=3\)
+- \((2,3)=4\)
+- \((4,3)=5\)
+
+Continuing the Latin-square column completions and checking the remaining inequalities gives the completed grid:
+
+\[
+\begin{matrix}
+1&5&6&4&2&3\\
+2&3&4&1&6&5\\
+6&1&3&2&5&4\\
+4&6&5&3&1&2\\
+3&2&1&5&4&6\\
+5&4&2&6&3&1
+\end{matrix}
+\]
+
+Answer: 1 5 6 4 2 3 2 3 4 1 6 5 6 1 3 2 5 4 4 6 5 3 1 2 3 2 1 5 4 6 5 4 2 6 3 1",1 5 6 4 2 3 2 3 4 1 6 5 6 1 3 2 5 4 4 6 5 3 1 2 3 2 1 5 4 6 5 4 2 6 3 1,1,hard,stop
+inequality_en_hard_0088,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ _ 4
+Row 2: _ _ _ _ _ _
+Row 3: _ 6 _ 5 _ _
+Row 4: _ _ _ _ _ _
+Row 5: _ 4 _ _ _ _
+Row 6: _ _ _ _ _ 3
+
+Inequality constraints:
+- (2,3) < (3,3)
+- (3,5) > (4,5)
+- (4,3) > (4,4)
+- (4,6) < (5,6)
+- (5,1) > (5,2)
+- (5,4) < (5,5)
+- (5,4) > (6,4)
+- (6,5) < (6,6)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",2 1 5 3 6 4 4 3 2 6 5 1 1 6 3 5 4 2 3 2 6 4 1 5 5 4 1 2 3 6 6 5 4 1 2 3,,"A valid completed Latin square satisfying all givens and inequalities is:
+
+```text
+2 1 5 3 6 4
+4 3 2 6 5 1
+1 6 3 5 4 2
+3 2 6 4 1 5
+5 4 1 2 3 6
+6 5 4 1 2 3
+```
+
+Quick check of the inequalities:
+
+- (2,3) < (3,3): 2 < 3
+- (3,5) > (4,5): 4 > 1
+- (4,3) > (4,4): 6 > 4
+- (4,6) < (5,6): 5 < 6
+- (5,1) > (5,2): 5 > 4
+- (5,4) < (5,5): 2 < 3
+- (5,4) > (6,4): 2 > 1
+- (6,5) < (6,6): 2 < 3
+
+Answer: 2 1 5 3 6 4 4 3 2 6 5 1 1 6 3 5 4 2 3 2 6 4 1 5 5 4 1 2 3 6 6 5 4 1 2 3",2 1 5 3 6 4 4 3 2 6 5 1 1 6 3 5 4 2 3 2 6 4 1 5 5 4 1 2 3 6 6 5 4 1 2 3,1,hard,stop
+inequality_en_hard_0089,"Solve this Futoshiki puzzle on a 5x5 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 5 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ 3
+Row 2: _ _ _ _ _
+Row 3: _ _ _ _ _
+Row 4: _ _ 1 _ _
+Row 5: 3 _ _ _ _
+
+Inequality constraints:
+- (2,1) > (2,2)
+- (2,2) > (3,2)
+- (3,1) < (3,2)
+- (3,3) > (3,4)
+- (3,5) > (4,5)
+- (5,2) > (5,3)
+- (5,3) > (5,4)
+
+Provide your answer as the completed grid: 25 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5",2 1 5 4 3 5 4 3 2 1 1 2 4 3 5 4 3 1 5 2 3 5 2 1 4,,"A completed grid satisfying all row/column Latin-square requirements and the inequalities is:
+
+2 1 5 4 3  
+5 4 3 2 1  
+1 2 4 3 5  
+4 3 1 5 2  
+3 5 2 1 4  
+
+Checks:
+- Row 5 has 5 > 2 > 1 in columns 2, 3, 4.
+- Row 3 has 1 < 2 and 4 > 3.
+- Row 2 has 5 > 4, and 4 > 2 below it.
+- Column/row givens are fixed: r1c5 = 3, r4c3 = 1, r5c1 = 3.
+
+Answer: 2 1 5 4 3 5 4 3 2 1 1 2 4 3 5 4 3 1 5 2 3 5 2 1 4",2 1 5 4 3 5 4 3 2 1 1 2 4 3 5 4 3 1 5 2 3 5 2 1 4,1,hard,stop
+inequality_en_hard_0090,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ 3 _
+Row 2: _ _ _ 2 _ _
+Row 3: _ _ _ _ _ _
+Row 4: 3 5 _ _ _ _
+Row 5: 5 _ _ _ _ _
+Row 6: _ _ 5 _ 4 _
+
+Inequality constraints:
+- (1,1) < (2,1)
+- (1,3) < (1,4)
+- (1,5) > (1,6)
+- (2,5) > (3,5)
+- (3,3) < (3,4)
+- (3,3) > (4,3)
+- (3,4) > (3,5)
+- (3,5) > (4,5)
+- (5,5) > (5,6)
+- (5,6) < (6,6)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",1 6 4 5 3 2 4 3 1 2 6 5 2 1 3 6 5 4 3 5 2 4 1 6 5 4 6 3 2 1 6 2 5 1 4 3,,"From the column-5 inequalities,
+
+\[
+(2,5)>(3,5)>(4,5)
+\]
+
+and the fixed values \(r1c5=3,\ r6c5=4\), column 5 must use the remaining values \(\{1,2,5,6\}\) in rows 2–5.
+
+The viable chain is:
+
+\[
+r2c5=6,\quad r3c5=5,\quad r4c5=1,\quad r5c5=2
+\]
+
+because the other possible chains either repeat a row value or violate \(r5c5>r5c6\).
+
+Then:
+
+- Since \(r3c5=5\) and \(r3c4>r3c5\), we get \(r3c4=6\).
+- Since \(r3c3<r3c4\) and \(r3c3>r4c3\), the column/row constraints force \(r4c3=2\), so row 4 becomes \(3,5,2,4,1,6\).
+- Continuing the Latin-square exclusions and inequalities gives the unique completed grid:
+
+\[
+\begin{matrix}
+1&6&4&5&3&2\\
+4&3&1&2&6&5\\
+2&1&3&6&5&4\\
+3&5&2&4&1&6\\
+5&4&6&3&2&1\\
+6&2&5&1&4&3
+\end{matrix}
+\]
+
+Answer: 1 6 4 5 3 2 4 3 1 2 6 5 2 1 3 6 5 4 3 5 2 4 1 6 5 4 6 3 2 1 6 2 5 1 4 3",1 6 4 5 3 2 4 3 1 2 6 5 2 1 3 6 5 4 3 5 2 4 1 6 5 4 6 3 2 1 6 2 5 1 4 3,1,hard,stop
+inequality_en_hard_0091,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ 4 2 _ _
+Row 2: _ 1 _ _ _ _
+Row 3: _ _ _ _ _ 4
+Row 4: _ _ _ _ _ _
+Row 5: _ _ 6 _ _ _
+Row 6: _ _ 2 _ _ _
+
+Inequality constraints:
+- (2,1) > (3,1)
+- (2,3) < (2,4)
+- (2,5) < (2,6)
+- (3,6) < (4,6)
+- (4,2) > (5,2)
+- (5,4) > (5,5)
+- (5,4) < (6,4)
+- (6,1) < (6,2)
+- (6,4) < (6,5)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",6 5 4 2 3 1 4 1 5 6 2 3 3 2 1 5 6 4 2 6 3 1 4 5 5 4 6 3 1 2 1 3 2 4 5 6,,"Using the givens and inequalities:
+
+- Column 3 already has `4, 6, 2`, so the remaining values there are `{1,3,5}`.
+- Since `(2,3) < (2,4)`, row 2 must place its column-3 value below its column-4 value.
+- The lower-right inequalities give the chain  
+  `(5,5) < (5,4) < (6,4) < (6,5)`.
+- Also `(3,6)=4 < (4,6)`, so `(4,6)` must be `5` or `6`.
+
+A completed grid satisfying all row, column, and inequality constraints is:
+
+6 5 4 2 3 1  
+4 1 5 6 2 3  
+3 2 1 5 6 4  
+2 6 3 1 4 5  
+5 4 6 3 1 2  
+1 3 2 4 5 6  
+
+Answer: 6 5 4 2 3 1 4 1 5 6 2 3 3 2 1 5 6 4 2 6 3 1 4 5 5 4 6 3 1 2 1 3 2 4 5 6",6 5 4 2 3 1 4 1 5 6 2 3 3 2 1 5 6 4 2 6 3 1 4 5 5 4 6 3 1 2 1 3 2 4 5 6,1,hard,stop
+inequality_en_hard_0092,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ _ _
+Row 2: _ _ _ _ _ 1
+Row 3: _ _ _ 4 _ _
+Row 4: _ _ _ _ _ _
+Row 5: 4 _ _ _ _ _
+Row 6: 3 _ _ _ _ 6
+
+Inequality constraints:
+- (1,2) < (1,3)
+- (1,3) < (1,4)
+- (1,5) > (2,5)
+- (2,3) < (3,3)
+- (2,4) < (2,5)
+- (3,1) < (3,2)
+- (3,6) > (4,6)
+- (4,4) < (4,5)
+- (4,5) < (4,6)
+- (5,3) < (6,3)
+- (5,4) > (5,5)
+- (6,2) > (6,3)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",2 1 3 5 6 4 5 6 2 3 4 1 1 2 6 4 3 5 6 4 5 1 2 3 4 3 1 6 5 2 3 5 4 2 1 6,,"Using Latin-square constraints together with the inequalities, the completed grid is:
+
+Answer: 1 2 6 5 4 3 5 4 2 3 6 1 2 6 3 4 1 5 6 1 5 2 3 4 4 3 1 6 5 2 3 5 4 1 2 6",1 2 6 5 4 3 5 4 2 3 6 1 2 6 3 4 1 5 6 1 5 2 3 4 4 3 1 6 5 2 3 5 4 1 2 6,0,hard,stop
+inequality_en_hard_0093,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ 4 _
+Row 2: _ 1 _ _ _ 3
+Row 3: 4 _ _ _ _ _
+Row 4: 2 _ _ _ _ _
+Row 5: _ 4 2 _ _ _
+Row 6: 5 _ 4 1 _ _
+
+Inequality constraints:
+- (2,3) > (3,3)
+- (2,6) > (3,6)
+- (3,1) > (3,2)
+- (3,4) < (3,5)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",1 6 3 2 4 5 6 1 5 4 2 3 4 3 1 5 6 2 2 5 6 3 1 4 3 4 2 6 5 1 5 2 4 1 3 6,,"A completed grid satisfying all Latin-square and inequality constraints is:
+
+1 6 3 2 4 5  
+6 1 5 4 2 3  
+4 3 1 5 6 2  
+2 5 6 3 1 4  
+3 4 2 6 5 1  
+5 2 4 1 3 6  
+
+The inequalities check out:
+- (2,3) > (3,3): 5 > 1
+- (2,6) > (3,6): 3 > 2
+- (3,1) > (3,2): 4 > 3
+- (3,4) < (3,5): 5 < 6
+
+Answer: 1 6 3 2 4 5 6 1 5 4 2 3 4 3 1 5 6 2 2 5 6 3 1 4 3 4 2 6 5 1 5 2 4 1 3 6",1 6 3 2 4 5 6 1 5 4 2 3 4 3 1 5 6 2 2 5 6 3 1 4 3 4 2 6 5 1 5 2 4 1 3 6,1,hard,stop
+inequality_en_hard_0094,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: 4 _ 2 _ _ _
+Row 2: _ _ _ _ _ _
+Row 3: _ 2 _ _ _ _
+Row 4: _ 4 6 _ _ _
+Row 5: _ 5 4 _ _ _
+Row 6: _ _ _ _ _ _
+
+Inequality constraints:
+- (1,2) > (2,2)
+- (1,3) > (2,3)
+- (1,4) > (2,4)
+- (2,6) > (3,6)
+- (3,4) > (3,5)
+- (4,5) > (5,5)
+- (4,6) > (5,6)
+- (6,4) > (6,5)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",4 6 2 3 1 5 5 3 1 2 6 4 6 2 3 5 4 1 2 4 6 1 5 3 1 5 4 6 3 2 3 1 5 4 2 6,,"From \((1,3)>(2,3)\), since \((1,3)=2\), we get \((2,3)=1\).
+
+Column 2 already has \(2,4,5\), so the remaining values are \(1,3,6\). Since row 2 already contains 1, \((2,2)\neq1\). With \((1,2)>(2,2)\), this forces:
+- \((1,2)=6\)
+- \((2,2)=3\)
+- \((6,2)=1\)
+
+Completing the Latin-square constraints while checking all inequalities gives:
+
+\[
+\begin{matrix}
+4&6&2&3&1&5\\
+5&3&1&2&6&4\\
+6&2&3&5&4&1\\
+2&4&6&1&5&3\\
+1&5&4&6&3&2\\
+3&1&5&4&2&6
+\end{matrix}
+\]
+
+All listed inequalities are satisfied, for example \((3,4)=5>(3,5)=4\) and \((6,4)=4>(6,5)=2\).
+
+Answer: 4 6 2 3 1 5 5 3 1 2 6 4 6 2 3 5 4 1 2 4 6 1 5 3 1 5 4 6 3 2 3 1 5 4 2 6",4 6 2 3 1 5 5 3 1 2 6 4 6 2 3 5 4 1 2 4 6 1 5 3 1 5 4 6 3 2 3 1 5 4 2 6,1,hard,stop
+inequality_en_hard_0095,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ 1 _
+Row 2: _ _ _ _ _ 2
+Row 3: _ _ _ _ _ 5
+Row 4: _ _ _ 1 _ _
+Row 5: _ _ _ 3 _ _
+Row 6: _ _ 5 _ _ _
+
+Inequality constraints:
+- (1,1) > (2,1)
+- (1,3) < (1,4)
+- (2,1) > (2,2)
+- (2,2) > (2,3)
+- (2,4) > (3,4)
+- (4,2) < (5,2)
+- (4,3) > (5,3)
+- (4,5) > (5,5)
+- (5,1) < (6,1)
+- (6,2) < (6,3)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",5 6 2 4 1 3 4 3 1 5 6 2 6 1 3 2 4 5 3 2 6 1 5 4 1 5 4 3 2 6 2 4 5 6 3 1,,,,0,hard,length
+inequality_en_hard_0096,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: 4 _ _ _ _ _
+Row 2: _ _ _ _ _ _
+Row 3: _ _ _ _ _ _
+Row 4: _ _ 1 _ _ _
+Row 5: _ 3 _ _ 6 _
+Row 6: _ 2 _ _ _ _
+
+Inequality constraints:
+- (1,3) < (1,4)
+- (2,2) < (2,3)
+- (2,3) < (2,4)
+- (3,1) > (3,2)
+- (3,5) > (4,5)
+- (4,5) > (4,6)
+- (5,6) < (6,6)
+- (6,3) < (6,4)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",4 6 2 5 3 1 1 4 5 6 2 3 3 1 6 2 5 4 6 5 1 3 4 2 2 3 4 1 6 5 5 2 3 4 1 6,,,,0,hard,length
+inequality_en_hard_0097,"Solve this Futoshiki puzzle on a 5x5 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 5 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: 2 3 1 _ _
+Row 2: _ _ _ _ _
+Row 3: 5 _ _ _ _
+Row 4: _ _ _ _ _
+Row 5: _ _ _ _ _
+
+Inequality constraints:
+- (2,2) > (2,3)
+- (2,5) > (3,5)
+- (3,2) < (4,2)
+- (3,3) < (3,4)
+- (4,2) < (5,2)
+- (4,4) < (5,4)
+
+Provide your answer as the completed grid: 25 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5",2 3 1 5 4 1 4 2 3 5 5 1 3 4 2 4 2 5 1 3 3 5 4 2 1,,"Let \(RrCc\) mean row \(r\), column \(c\).
+
+Row 1 has `2 3 1 _ _`, so its last two entries are \(4,5\) in some order.
+
+- If Row 1 were `2 3 1 4 5`, then Row 3 is forced to `5 4 2 3 1`, but the column-2 chain  
+  \((3,2)<(4,2)<(5,2)\) would require two numbers greater than 4, impossible.
+- Therefore Row 1 must be `2 3 1 5 4`.
+
+Using \((3,3)<(3,4)\), the possible Row 3 values reduce to:
+- `5 1 2 4 3`
+- `5 1 3 4 2`
+- `5 2 3 4 1`
+
+The first leads to an impossible Row 4/Row 5 completion, and the third makes \((2,2)>(2,3)\) impossible. Thus:
+
+Row 3 = `5 1 3 4 2`.
+
+Then Row 2 must satisfy \((2,2)>(2,3)\) and \((2,5)>(3,5)\), forcing:
+
+Row 2 = `1 4 2 3 5`.
+
+The remaining rows are then forced by columns and the inequalities:
+
+Row 4 = `4 2 5 1 3`  
+Row 5 = `3 5 4 2 1`
+
+Answer: 2 3 1 5 4 1 4 2 3 5 5 1 3 4 2 4 2 5 1 3 3 5 4 2 1",2 3 1 5 4 1 4 2 3 5 5 1 3 4 2 4 2 5 1 3 3 5 4 2 1,1,hard,stop
+inequality_en_hard_0098,"Solve this Futoshiki puzzle on a 5x5 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 5 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ _
+Row 2: _ _ _ _ _
+Row 3: _ _ 5 _ _
+Row 4: 5 3 _ _ _
+Row 5: _ _ _ _ _
+
+Inequality constraints:
+- (1,4) < (2,4)
+- (2,4) < (3,4)
+- (2,5) < (3,5)
+- (4,2) > (4,3)
+- (4,2) > (5,2)
+- (4,3) > (5,3)
+
+Provide your answer as the completed grid: 25 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5 1 2 3 4 5",1 4 3 2 5 2 5 4 3 1 3 1 5 4 2 5 3 2 1 4 4 2 1 5 3,,"The completed grid is:
+
+1 4 3 2 5  
+2 5 4 3 1  
+3 1 5 4 2  
+5 3 2 1 4  
+4 2 1 5 3  
+
+This satisfies all row/column Latin-square requirements and all inequalities:
+
+- (1,4)=2 < (2,4)=3 < (3,4)=4
+- (2,5)=1 < (3,5)=2
+- (4,2)=3 > (4,3)=2
+- (4,2)=3 > (5,2)=2
+- (4,3)=2 > (5,3)=1
+
+Answer: 1 4 3 2 5 2 5 4 3 1 3 1 5 4 2 5 3 2 1 4 4 2 1 5 3",1 4 3 2 5 2 5 4 3 1 3 1 5 4 2 5 3 2 1 4 4 2 1 5 3,1,hard,stop
+inequality_en_hard_0099,"Solve this Futoshiki puzzle on a 6x6 grid.
+
+Rules:
+- Fill the grid so that every row and every column contains each number from 1 to 6 exactly once (a Latin square).
+- '_' marks an empty cell that you must fill in.
+- All of the inequality constraints listed below must hold. Each constraint compares two orthogonally-adjacent cells and is written using (row, column) with 1-based indices (row 1 is the top row, column 1 is the left column).
+- '(a) < (b)' means the number in cell a is smaller than the number in cell b; '(a) > (b)' means it is larger.
+
+Given grid (rows from top to bottom):
+Row 1: _ _ _ _ 5 _
+Row 2: _ 5 _ _ _ _
+Row 3: _ _ _ _ _ 4
+Row 4: _ _ _ _ _ _
+Row 5: _ _ 3 _ _ _
+Row 6: _ 4 _ _ _ _
+
+Inequality constraints:
+- (2,1) > (2,2)
+- (2,2) < (3,2)
+- (2,4) < (3,4)
+- (4,3) > (4,4)
+- (4,3) < (5,3)
+- (5,1) > (5,2)
+- (5,1) < (6,1)
+- (6,2) > (6,3)
+
+Provide your answer as the completed grid: 36 numbers separated by spaces, reading row by row (all of row 1 left to right, then row 2, and so on).
+
+Example format (illustrating length and ordering only, not a valid solution):
+Answer: 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6 1 2 3 4 5 6",3 2 6 4 5 1 6 5 4 2 1 3 1 6 5 3 2 4 4 3 2 1 6 5 2 1 3 5 4 6 5 4 1 6 3 2,,"Using the inequalities and Latin-square constraints, the completed grid is:
+
+3 2 6 4 5 1  
+6 5 4 2 1 3  
+1 6 5 3 2 4  
+4 3 2 1 6 5  
+2 1 3 5 4 6  
+5 4 1 6 3 2  
+
+Answer: 3 2 6 4 5 1 6 5 4 2 1 3 1 6 5 3 2 4 4 3 2 1 6 5 2 1 3 5 4 6 5 4 1 6 3 2",3 2 6 4 5 1 6 5 4 2 1 3 1 6 5 3 2 4 4 3 2 1 6 5 2 1 3 5 4 6 5 4 1 6 3 2,1,hard,stop

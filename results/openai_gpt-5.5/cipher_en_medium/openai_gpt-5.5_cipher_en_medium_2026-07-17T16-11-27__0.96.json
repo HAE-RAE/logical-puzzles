@@ -1,0 +1,31 @@
+{
+  "metadata": {
+    "task": "cipher_en_medium",
+    "model": "openai/gpt-5.5",
+    "timestamp": "2026-07-17T16-11-27",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "max_tokens": 32768,
+      "reasoning_effort": "medium"
+    },
+    "gen_kwargs_cli": "max_tokens=32768,reasoning_effort=medium"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.96,
+      "correct_count": 96,
+      "total_count": 100,
+      "avg_latency_ms": 57925.334906578064,
+      "finish_reason_counts": {
+        "stop": 100
+      }
+    },
+    "by_difficulty": {
+      "medium": {
+        "total": 100,
+        "correct": 96,
+        "accuracy": 0.96
+      }
+    }
+  }
+}

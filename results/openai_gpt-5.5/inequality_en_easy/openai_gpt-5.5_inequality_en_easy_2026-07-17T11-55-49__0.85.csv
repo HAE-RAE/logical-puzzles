@@ -1,0 +1,2895 @@
+id,question,answer,thinking_content,resps,filtered_resps,exact_match,difficulty,finish_reason
+inequality_en_easy_0000,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 7 ? 6 < _ > 2 < _ > 4 < 9 > _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",768254913,,"Positions:
+
+`7 ? 6 < _ > 2 < _ > 4 < 9 > _ < _`
+
+Missing numbers are `1, 3, 5, 8`.
+
+- Since `6 < _`, the third position must be greater than 6, so it must be `8`.
+- Since `2 < _ > 4`, the fifth position must be greater than 4, so it must be `5`.
+- Remaining numbers are `1` and `3`.
+- Since `9 > _ < _`, the last two blanks must satisfy `_ < _`, so they are `1, 3`.
+
+Thus the sequence is:
+
+Answer: 768254913",768254913,1,easy,stop
+inequality_en_easy_0001,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 2 < 8 > 6 > 1 < 5 > _ < _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",28615347,,"Missing numbers are 3, 4, and 7.
+
+The end must satisfy:
+
+5 > _ < _ < _
+
+So the first blank must be less than 5, and then the last three blanks must increase. The only increasing arrangement that works is:
+
+3 < 4 < 7
+
+So the full sequence is:
+
+2 < 8 > 6 > 1 < 5 > 3 < 4 < 7
+
+Answer: 28615347",28615347,1,easy,stop
+inequality_en_easy_0002,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 9 > _ < 2 < _ > 7 ? 4 < _ < _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",912874563,,"The blanks must use the remaining numbers: 1, 3, 5, 6, 8.
+
+- Since `_ < 2`, the second position must be 1.
+- Since `2 < _ > 7`, the fourth position must be 8.
+- For `4 < _ < _ > _`, the remaining numbers are 3, 5, 6. This forces `4 < 5 < 6 > 3`.
+
+Answer: 912874563",912874563,1,easy,stop
+inequality_en_easy_0003,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 16.
+
+Each number from 1 to 16 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 7 > 4 < 6 < f > a > 8 > 1 < d < _ > e > 5 < b > 3 < 9 > _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 16 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+- Values 10 and above are written as single letters: a=10, b=11, c=12, ... (so 'a' means 10, and '_ > c' means the blank is greater than 12)
+
+Provide your answer as 16 single characters in order with no spaces, using digits for 1-9 and letters for 10 and up (a=10, b=11, ...).
+
+Example format:
+Answer: 123456789abcdefg",746fa81dge5b392c,,Answer: 746fa81dge5b392c,746815392,0,easy,stop
+inequality_en_easy_0004,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 7 ? 5 > 1 < 4 > 2 < _ > _ > _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",751429863,,"The blanks must use the remaining numbers: 3, 6, 8, 9.
+
+The final four blanks have inequalities:
+
+`_ > _ > _ > _`
+
+So they must be placed in descending order:
+
+`9 > 8 > 6 > 3`
+
+Thus the full sequence is:
+
+`7 > 5 > 1 < 4 > 2 < 9 > 8 > 6 > 3`
+
+Answer: 751429863",751429863,1,easy,stop
+inequality_en_easy_0005,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: _ < 2 < 7 > 4 < _ < _ < _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",12745683,,"Position 1 must be less than 2, so it can only be 1.
+
+The fixed values are then:
+
+1 < 2 < 7 > 4 < _ < _ < _ > _
+
+Remaining numbers are 3, 5, 6, 8.
+
+Since the sequence after 4 has to increase for three positions:
+
+4 < position 5 < position 6 < position 7
+
+Position 5 must be greater than 4, so 3 cannot go there or later in that increasing chain. Therefore 3 must be the final number.
+
+The remaining increasing chain is:
+
+5 < 6 < 8
+
+So the completed sequence is:
+
+1 2 7 4 5 6 8 3
+
+Answer: 12745683",12745683,1,easy,stop
+inequality_en_easy_0006,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 7 > 3 < 4 > 1 < 5 > _ < _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",73415268,,"The missing numbers are 2, 6, and 8.
+
+Since `5 > _`, the first blank must be less than 5, so it must be `2`.
+
+Then the remaining blanks must satisfy `_ < _`, using 6 and 8, so they are `6 < 8`.
+
+Answer: 73415268",73415268,1,easy,stop
+inequality_en_easy_0007,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 8 > 2 < 3 < 7 > 5 < _ > 6 ? _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",823759614,,"The missing numbers are 1, 4, and 9.
+
+From the segment `5 < _ > 6`, the blank must be greater than both 5 and 6, so it must be 9.
+
+That leaves 1 and 4 for the last two blanks. Since the final inequality is `_ < _`, they must be in increasing order: 1, then 4.
+
+Answer: 823759614",823759614,1,easy,stop
+inequality_en_easy_0008,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 6 ? 2 < 5 > 1 < 8 > _ < _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",62518347,,"The given numbers are:
+
+6 ? 2 < 5 > 1 < 8 > _ < _ < _
+
+The missing numbers are 3, 4, and 7.
+
+The last three blanks must satisfy:
+
+8 > _ < _ < _
+
+So the three blanks must be in increasing order after the first blank, and all are less than 8. Therefore they must be:
+
+3 < 4 < 7
+
+So the completed sequence is:
+
+6 2 5 1 8 3 4 7
+
+Answer: 62518347",62518347,1,easy,stop
+inequality_en_easy_0009,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 16.
+
+Each number from 1 to 16 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: d > b > 3 < 7 > 4 < a > 1 < _ > e > 6 > 2 < g > 8 < _ > _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 16 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+- Values 10 and above are written as single letters: a=10, b=11, c=12, ... (so 'a' means 10, and '_ > c' means the blank is greater than 12)
+
+Provide your answer as 16 single characters in order with no spaces, using digits for 1-9 and letters for 10 and up (a=10, b=11, ...).
+
+Example format:
+Answer: 123456789abcdefg",db374a1fe62g8c95,,"The blanks must use the missing values: `5, 9, c, f`.
+
+- `1 < _ > e` means the blank must be greater than `e = 14`, so it must be `f = 15`.
+- Remaining blanks are `5, 9, c`.
+- `8 < _ > _ > _` requires a descending chain after the first blank.
+- The only valid ordering is `c > 9 > 5`.
+
+Answer: db374a1fe62g8c95",374162895,0,easy,stop
+inequality_en_easy_0010,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 16.
+
+Each number from 1 to 16 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: d < e > 1 < 8 < b > 9 < g > c > 3 < 5 < 7 > 2 < a < _ > _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 16 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+- Values 10 and above are written as single letters: a=10, b=11, c=12, ... (so 'a' means 10, and '_ > c' means the blank is greater than 12)
+
+Provide your answer as 16 single characters in order with no spaces, using digits for 1-9 and letters for 10 and up (a=10, b=11, ...).
+
+Example format:
+Answer: 123456789abcdefg",de18b9gc3572af46,,"The only unused values are 4, 6, and 15 (`f`).
+
+The ending is:
+
+`a < _ > _ < _`
+
+Since `a = 10`, the first blank must be greater than 10, so it must be `f = 15`. Then the remaining two blanks must satisfy `_ < _`, so they are `4 < 6`.
+
+Answer: 13 14 1 8 11 9 16 12 3 5 7 2 10 15 4 6",101546,0,easy,stop
+inequality_en_easy_0011,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 6 ? 3 > 1 < _ > 5 < 8 > _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",63175824,,"The fixed numbers are:
+
+6 ? 3 > 1 < _ > 5 < 8 > _ < _
+
+Missing numbers: 2, 4, 7.
+
+- The blank after `1 < _ > 5` must be greater than 5, so it must be `7`.
+- The last two blanks satisfy `8 > _ < _`, and with remaining numbers `2` and `4`, we need `_ < _`, so they are `2 < 4`.
+
+Thus the completed sequence is:
+
+6 3 1 7 5 8 2 4
+
+Answer: 63175824",63175824,1,easy,stop
+inequality_en_easy_0012,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 9 > 1 < 6 < 7 > _ > _ > _ < 4 < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",916753248,,"The given numbers are:
+
+`9 > 1 < 6 < 7 > _ > _ > _ < 4 < _`
+
+The missing numbers are `{2, 3, 5, 8}`.
+
+Since the last blank must be greater than 4, it must be either `5` or `8`.
+
+The three blanks after 7 must form a decreasing chain:
+
+`7 > _ > _ > _ < 4`
+
+So those three numbers must all be less than 7 and in descending order. That means they must be `5 > 3 > 2`, leaving `8` for the final blank.
+
+Thus the completed sequence is:
+
+`9 > 1 < 6 < 7 > 5 > 3 > 2 < 4 < 8`
+
+Answer: 916753248",916753248,1,easy,stop
+inequality_en_easy_0013,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 16.
+
+Each number from 1 to 16 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: g > 1 < c < f > 7 < d > 8 > 4 < 9 < a > 3 < b > 5 < _ < _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 16 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+- Values 10 and above are written as single letters: a=10, b=11, c=12, ... (so 'a' means 10, and '_ > c' means the blank is greater than 12)
+
+Provide your answer as 16 single characters in order with no spaces, using digits for 1-9 and letters for 10 and up (a=10, b=11, ...).
+
+Example format:
+Answer: 123456789abcdefg",g1cf7d849a3b56e2,,"The only unused values are `2`, `6`, and `e` (14).
+
+The final inequalities are:
+
+`5 < _ < _ > _`
+
+So the first blank must be greater than 5, and less than the second blank.  
+If the first blank were `e`, it could not be less than anything remaining, so it must be `6`.  
+Then the middle blank must be `e`, leaving `2` for the last blank.
+
+Answer: g1cf7d849a3b56e2",178493562,0,easy,stop
+inequality_en_easy_0014,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 8 > 5 > 4 < 7 > 2 ? _ > _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",85472631,,"The missing numbers are 1, 3, and 6.
+
+Since the last three blanks must satisfy:
+
+_ > _ > _
+
+they must be in decreasing order:
+
+6 > 3 > 1
+
+So the full sequence is:
+
+8 > 5 > 4 < 7 > 2 < 6 > 3 > 1
+
+Answer: 85472631",85472631,1,easy,stop
+inequality_en_easy_0015,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 3 < 7 > 1 < 4 < _ < _ > _ < 6
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",37145826,,"The missing numbers are 2, 5, and 8.
+
+We need:
+
+3 < 7 > 1 < 4 < _ < _ > _ < 6
+
+Since the first blank must be greater than 4, it can be 5 or 8.  
+But it must also be less than the next blank, so it cannot be 8. Therefore:
+
+- First blank = 5
+- Second blank = 8
+- Third blank = 2
+
+This gives:
+
+3 < 7 > 1 < 4 < 5 < 8 > 2 < 6
+
+Answer: 37145826",37145826,1,easy,stop
+inequality_en_easy_0016,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 3 < 7 < _ ? 5 < _ > 4 > _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",37856412,,"Positions: `3 < 7 < _ ? 5 < _ > 4 > _ < _`
+
+- The third position must be greater than 7, so it must be `8`.
+- The fifth position must be greater than 5, and remaining possible value is `6`.
+- Remaining numbers are `1` and `2`.
+- Since the seventh position must be less than the eighth, they must be `1 < 2`.
+
+Answer: 37856412",37856412,1,easy,stop
+inequality_en_easy_0017,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 6 > 1 < 8 > 5 > _ < _ < _ > 3
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",61852473,,"The missing numbers are 2, 4, and 7.
+
+The blanks must satisfy:
+
+- 5 > _ < _ < _ > 3
+- So the three blanks must be in increasing order for the middle chain: `_ < _ < _`
+- Using remaining numbers 2, 4, 7 gives: `2 < 4 < 7`
+
+Full sequence:
+
+6 > 1 < 8 > 5 > 2 < 4 < 7 > 3
+
+Answer: 61852473",61852473,1,easy,stop
+inequality_en_easy_0018,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 2 < 9 > 7 < _ > 1 < 4 > _ < _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",297814365,,"The missing numbers are 3, 5, 6, and 8.
+
+- Since `7 < _`, the 4th position must be greater than 7, so it must be `8`.
+- Since `4 > _`, the 7th position must be less than 4, so it must be `3`.
+- Remaining numbers are 5 and 6 for the last two blanks.
+- Since `_ < _ > _` gives `3 < position 8 > position 9`, position 8 must be larger than position 9, so position 8 is `6` and position 9 is `5`.
+
+Answer: 297814365",297814365,1,easy,stop
+inequality_en_easy_0019,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 16.
+
+Each number from 1 to 16 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: b < d > 3 > _ < 5 < c > a > 7 < 9 > 1 < f > _ < _ < _ < _ > 6
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 16 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+- Values 10 and above are written as single letters: a=10, b=11, c=12, ... (so 'a' means 10, and '_ > c' means the blank is greater than 12)
+
+Provide your answer as 16 single characters in order with no spaces, using digits for 1-9 and letters for 10 and up (a=10, b=11, ...).
+
+Example format:
+Answer: 123456789abcdefg",bd325ca791f48eg6,,"Missing values are: 2, 4, 8, 14, 16.
+
+- The blank after `3 > _ < 5` must be less than 3, so it is `2`.
+- The remaining blanks are in `f > _ < _ < _ < _ > 6`, i.e. `15 > _ < _ < _ < _ > 6`.
+- They must be increasing across the four blanks, so the remaining numbers go in ascending order: `4, 8, 14, 16`.
+
+Encoded string: `bd325ca791f48eg6`
+
+Answer: 11 13 3 2 5 12 10 7 9 1 15 4 8 14 16 6",814166,0,easy,stop
+inequality_en_easy_0020,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 9 > 1 < 5 < 7 > 6 > 2 < 4 ? _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",915762438,,"The given numbers are:
+
+9, 1, 5, 7, 6, 2, 4, _, _
+
+The missing numbers from 1 to 9 are **3** and **8**.
+
+The final inequality is:
+
+_ < _
+
+So the smaller missing number must come first:
+
+3 < 8
+
+Thus the completed sequence is:
+
+Answer: 915762438",915762438,1,easy,stop
+inequality_en_easy_0021,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 3 < 8 > 2 > _ < 5 < 6 < 9 ? _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",382156974,,"The unused numbers are 1, 4, and 7.
+
+- The blank after `2 > _ < 5` must be less than 2, so it must be `1`.
+- The remaining blanks are 4 and 7.
+- Since `_ > _` at the end, they must be `7 > 4`.
+
+So the completed sequence is:
+
+Answer: 382156974",382156974,1,easy,stop
+inequality_en_easy_0022,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 1 < 4 < 7 > 3 > _ < _ > _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",14732865,,"The missing numbers are 2, 5, 6, and 8.
+
+From `3 > _`, the next blank must be less than 3, so it must be `2`.
+
+Then we have `2 < _ > _ > _` using 5, 6, and 8.  
+To satisfy `_ > _ > _`, they must go in descending order after the peak:
+
+`8 > 6 > 5`
+
+So the full sequence is:
+
+`1 < 4 < 7 > 3 > 2 < 8 > 6 > 5`
+
+Answer: 14732865",14732865,1,easy,stop
+inequality_en_easy_0023,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 1 < 5 ? 6 < 8 > 3 < 4 > _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",15683427,,"The missing numbers are 2 and 7.
+
+Since the puzzle ends with:
+
+4 > _ < _
+
+the first blank must be less than 4, so it must be 2.  
+Then the remaining blank is 7, and 2 < 7 is satisfied.
+
+Answer: 15683427",15683427,1,easy,stop
+inequality_en_easy_0024,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 4 > 2 < _ > _ > 6 > 1 ? _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",42876153,,"The blanks must use the remaining numbers: 3, 5, 7, 8.
+
+From `_ > 6`, the blank before 6 must be greater than 6, so it is 7 or 8.  
+But the previous blank must be greater than it, so the only possibility is:
+
+- Position 4 = 7
+- Position 3 = 8
+
+Remaining numbers are 3 and 5, and since `_ > _` at the end, they must be:
+
+- Position 7 = 5
+- Position 8 = 3
+
+Answer: 42876153",42876153,1,easy,stop
+inequality_en_easy_0025,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 5 > 2 < 9 > 1 < 6 > _ < _ < _ > 4
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",529163784,,"The missing numbers are 3, 7, and 8.
+
+From `6 > _`, the first blank must be less than 6, so it must be **3**.  
+Then the remaining blanks must satisfy `_ < _ > 4`, and with 7 and 8 available, they must be **7 < 8**.
+
+So the completed sequence is:
+
+Answer: 529163784",529163784,1,easy,stop
+inequality_en_easy_0026,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 16.
+
+Each number from 1 to 16 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 9 > _ < d < _ > 6 > 1 < g > 4 < b < e > 7 < a > 3 < 5 > _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 16 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+- Values 10 and above are written as single letters: a=10, b=11, c=12, ... (so 'a' means 10, and '_ > c' means the blank is greater than 12)
+
+Provide your answer as 16 single characters in order with no spaces, using digits for 1-9 and letters for 10 and up (a=10, b=11, ...).
+
+Example format:
+Answer: 123456789abcdefg",98df61g4be7a352c,,"The blanks must be filled with the unused values: 2, 8, 12, 15.
+
+- `9 > _ < d(13)` means the first blank is less than 9, so it can be 2 or 8.
+- `d(13) < _ > 6` means the second blank must be greater than 13, so it must be 15.
+- `5 > _ < _` means the third blank must be less than 5, so it must be 2.
+- Then the first blank must be 8, and the last blank is 12.
+
+So the sequence is `98df61g4be7a352c`.
+
+Answer: 9 8 13 15 6 1 16 4 11 14 7 10 3 5 2 12",1035212,0,easy,stop
+inequality_en_easy_0027,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 4 ? 1 < 7 < _ > 6 > 2 < _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",41786253,,"The fixed numbers are:
+
+4 ? 1 < 7 < _ > 6 > 2 < _ > _
+
+Missing numbers are 3, 5, and 8.
+
+- Since `7 < _`, the blank after 7 must be greater than 7, so it must be 8.
+- Remaining numbers are 3 and 5.
+- Since `2 < _ > _`, the first remaining blank must be greater than the last blank, so it must be 5, then the last is 3.
+
+Completed sequence: 4 1 7 8 6 2 5 3
+
+Answer: 41786253",41786253,1,easy,stop
+inequality_en_easy_0028,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 3 < 9 > 2 < 6 > 4 < _ > 7 ? _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",392648715,,"The missing numbers are 1, 5, and 8.
+
+- The blank after 4 must satisfy `4 < _ > 7`, so it must be greater than 7. The only missing number greater than 7 is 8.
+- The last two blanks must satisfy `_ < _`, using the remaining numbers 1 and 5, so they must be `1 < 5`.
+- The `?` between 7 and 1 can be `>`, so it is satisfiable.
+
+Answer: 392648715",392648715,1,easy,stop
+inequality_en_easy_0029,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 3 > 1 < 8 > 6 > 4 > _ < _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",31864275,,"The missing numbers are 2, 5, and 7.
+
+Since `4 > _`, the next blank must be less than 4, so it must be `2`.
+
+Then we have `2 < _ > _`, using 5 and 7. To satisfy this, the middle blank must be `7`, leaving `5` last.
+
+Answer: 31864275",31864275,1,easy,stop
+inequality_en_easy_0030,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 1 < 3 < 6 < _ < _ > 5 > _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",13678524,,"Positions 4, 5, 7, and 8 must use the remaining numbers: 2, 4, 7, 8.
+
+From `6 < _ < _`, the 4th number must be greater than 6, and the 5th must be greater than the 4th.  
+So they must be `7 < 8`.
+
+Then the remaining numbers for the last two blanks are 2 and 4.  
+Since `5 > _ < _`, the 7th number must be less than the 8th, so they must be `2 < 4`.
+
+Thus the full sequence is:
+
+Answer: 13678524",13678524,1,easy,stop
+inequality_en_easy_0031,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 1 < 4 < _ < _ < _ > _ < _ ? _ > 8
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",145672398,,"The last inequality is `_ > 8`, so that blank must be `9`.
+
+Then the first chain is:
+
+`1 < 4 < _ < _ < _`
+
+The only remaining numbers greater than 4 that can fill those three increasing blanks are `5, 6, 7`, in that order.
+
+That leaves `2` and `3` for the two blanks in `_ < _`, so they must be `2 < 3`.
+
+Thus the completed sequence is:
+
+`1 < 4 < 5 < 6 < 7 > 2 < 3 < 9 > 8`
+
+Answer: 145672398",145672398,1,easy,stop
+inequality_en_easy_0032,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 16.
+
+Each number from 1 to 16 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 1 < d > 6 > 5 < g > 8 > 4 < e < _ > 7 < 9 < b < _ > 3 < _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 16 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+- Values 10 and above are written as single letters: a=10, b=11, c=12, ... (so 'a' means 10, and '_ > c' means the blank is greater than 12)
+
+Provide your answer as 16 single characters in order with no spaces, using digits for 1-9 and letters for 10 and up (a=10, b=11, ...).
+
+Example format:
+Answer: 123456789abcdefg",1d65g84ef79bc3a2,,"The missing values are forced as follows:
+
+- After `e < _`, since `e = 14`, the blank must be greater than 14. Only `f = 15` is available.
+- After `b < _`, since `b = 11`, the blank must be greater than 11. The only remaining option is `c = 12`.
+- Then `3 < _ > _` with remaining values `a = 10` and `2` forces `a > 2`.
+
+Answer: 1d65g84ef79bc3a2",165847932,0,easy,stop
+inequality_en_easy_0033,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 6 ? 1 < 8 > 5 > 2 < _ > _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",61852743,,"The missing numbers are 3, 4, and 7.
+
+From the ending:
+
+2 < _ > _ > _
+
+The first blank must be greater than 2 and also greater than the next blank, and the last two blanks must decrease. So the three missing numbers must be in descending order:
+
+7 > 4 > 3
+
+Thus the full sequence is:
+
+6 1 8 5 2 7 4 3
+
+Answer: 61852743",61852743,1,easy,stop
+inequality_en_easy_0034,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 6 < _ < _ > 1 < 4 < 9 > 3 > _ ? _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",678149325,,"The fixed numbers are 6, 1, 4, 9, and 3, so the missing numbers are 2, 5, 7, and 8.
+
+From `6 < _ < _`, the first two blanks must be greater than 6 and increasing, so they must be `7` and `8`.
+
+From `3 > _ ? _`, the blank after 3 must be less than 3, so it must be `2`. The remaining number is `5`.
+
+Thus the completed sequence is:
+
+Answer: 678149325",678149325,1,easy,stop
+inequality_en_easy_0035,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 8 > 6 > 1 < 5 > _ < 3 < _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",86152374,,"The given positions are:
+
+8 > 6 > 1 < 5 > _ < 3 < _ > _
+
+Missing numbers are 2, 4, and 7.
+
+- The blank after 5 must be less than 5 and less than 3, so it must be 2.
+- Then the remaining blanks are 4 and 7.
+- Since 3 < _ > _, the next blank must be 7, leaving 4 for the last position.
+
+Answer: 86152374",86152374,1,easy,stop
+inequality_en_easy_0036,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 7 ? 4 < 5 < 8 < _ > _ < 2 < _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",745891263,,"The fixed values are:
+
+7 ? 4 < 5 < 8 < _ > _ < 2 < _ > _
+
+Missing numbers are: 1, 3, 6, 9.
+
+- Since `8 < _`, that blank must be `9`.
+- Then `_ < 2` means that blank must be `1`.
+- Remaining numbers are `3` and `6`.
+- Since `2 < _ > _`, the larger remaining number goes first: `6 > 3`.
+
+So the completed sequence is:
+
+Answer: 745891263",745891263,1,easy,stop
+inequality_en_easy_0037,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 8 > 2 < 4 > _ ? 7 > 1 < _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",82437165,,"Given positions:
+
+8 > 2 < 4 > _ ? 7 > 1 < _ > _
+
+Missing numbers are 3, 5, and 6.
+
+- Since `4 > _`, the blank after 4 must be less than 4. The only missing number less than 4 is `3`.
+- Then the remaining numbers are 5 and 6.
+- The last inequality is `_ > _`, so those must be `6 > 5`.
+
+So the completed sequence is:
+
+Answer: 82437165",82437165,1,easy,stop
+inequality_en_easy_0038,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 5 < _ < 8 > 4 < 7 ? 2 > _ < _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",568472139,,"The missing numbers are `{1, 3, 6, 9}`.
+
+- `5 < _ < 8` means the second position must be between 5 and 8. Only `6` fits.
+- `2 > _` means the seventh position must be less than 2. Only `1` fits.
+- The remaining numbers are `3` and `9`, and they must satisfy `_ < _`, so they go as `3 < 9`.
+
+Thus the completed sequence is:
+
+Answer: 568472139",568472139,1,easy,stop
+inequality_en_easy_0039,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 2 < 6 > 4 > 1 < 7 > 5 < _ > _ < 9
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",264175839,,"Missing numbers are 3 and 8.
+
+Since the puzzle has `5 < _`, the first blank must be greater than 5, so it must be 8.  
+The remaining blank is 3, and it satisfies `_ < 9`.
+
+Answer: 264175839",264175839,1,easy,stop
+inequality_en_easy_0040,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 16.
+
+Each number from 1 to 16 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: g > c > b < f > 3 > 1 < 8 > 5 < d > _ > 7 > 4 < 9 > _ > _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 16 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+- Values 10 and above are written as single letters: a=10, b=11, c=12, ... (so 'a' means 10, and '_ > c' means the blank is greater than 12)
+
+Provide your answer as 16 single characters in order with no spaces, using digits for 1-9 and letters for 10 and up (a=10, b=11, ...).
+
+Example format:
+Answer: 123456789abcdefg",gcbf3185da74962e,,"The missing numbers are {2, 6, a, e}.
+
+- Since `d > _ > 7`, the blank must be greater than 7 and less than 13, so it must be `a`.
+- Remaining: {2, 6, e}
+- For `9 > _ > _ < _`, the first blank must be less than 9 and greater than the next blank.
+  - If it were 2, nothing remaining is smaller, so it must be 6.
+  - Then the middle blank is 2, and the last is e.
+
+Answer: gcbf3185da74962e",318574962,0,easy,stop
+inequality_en_easy_0041,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 2 < 4 > 1 ? 6 > _ > _ < _ < _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",241653789,,"The fixed numbers are:
+
+2 < 4 > 1 ? 6
+
+Remaining numbers: 3, 5, 7, 8, 9
+
+After 6, the constraints are:
+
+6 > _ > _ < _ < _ < _
+
+Since the first blank must be less than 6, it can only be 3 or 5. But it must also be greater than the next blank, so it must be 5, followed by 3.
+
+Then the remaining numbers 7, 8, 9 must be in increasing order.
+
+Answer: 241653789",241653789,1,easy,stop
+inequality_en_easy_0042,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 6 > 1 < 5 ? 8 > 4 < _ > _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",61584732,,"The fixed numbers are:
+
+6 > 1 < 5 ? 8 > 4 < _ > _ > _
+
+Numbers already used: 1, 4, 5, 6, 8  
+Remaining numbers: 2, 3, 7
+
+Since the sixth position must satisfy:
+
+4 < _
+
+and then:
+
+_ > _ > _
+
+the sixth position must be the largest remaining number, 7.
+
+Then the last two remaining numbers must be in decreasing order:
+
+3 > 2
+
+So the completed sequence is:
+
+6 1 5 8 4 7 3 2
+
+Answer: 61584732",61584732,1,easy,stop
+inequality_en_easy_0043,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 16.
+
+Each number from 1 to 16 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 6 > 2 < d < f < _ > 8 > 7 < b > 3 < 5 > 1 < c > a < _ > _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 16 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+- Values 10 and above are written as single letters: a=10, b=11, c=12, ... (so 'a' means 10, and '_ > c' means the blank is greater than 12)
+
+Provide your answer as 16 single characters in order with no spaces, using digits for 1-9 and letters for 10 and up (a=10, b=11, ...).
+
+Example format:
+Answer: 123456789abcdefg",62dfg87b351cae49,,"The fixed values use all numbers except **4, 9, e(14), g(16)**.
+
+- Since **f(15) < _**, that blank must be **g(16)**.
+- Since **a(10) < _**, the next blank must be **e(14)**.
+- The remaining blanks must satisfy **_ < _**, so they are **4 < 9**.
+
+Answer: 62dfg87b351cae49",628735149,0,easy,stop
+inequality_en_easy_0044,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 5 < 9 > 3 < _ > _ > _ > _ > _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",593876421,,"The remaining numbers are 1, 2, 4, 6, 7, and 8.
+
+Since the blanks follow:
+
+3 < _ > _ > _ > _ > _ > _
+
+the six blanks must be in strictly decreasing order after the first blank. The only decreasing arrangement of the remaining numbers is:
+
+8 > 7 > 6 > 4 > 2 > 1
+
+So the completed sequence is:
+
+5 < 9 > 3 < 8 > 7 > 6 > 4 > 2 > 1
+
+Answer: 593876421",593876421,1,easy,stop
+inequality_en_easy_0045,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 2 < 9 > 7 > 4 < 6 > _ < 5 > 1 < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",297463518,,"The missing numbers are 3 and 8.
+
+- The blank after 6 must satisfy `6 > _ < 5`, so it must be less than both 6 and 5. Only 3 works.
+- The last blank must satisfy `1 < _`, so the remaining number 8 works.
+
+Answer: 297463518",297463518,1,easy,stop
+inequality_en_easy_0046,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 16.
+
+Each number from 1 to 16 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: d > 6 < g > 3 > 1 < 7 > 4 > _ < 8 < f > a < e > b < _ > _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 16 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+- Values 10 and above are written as single letters: a=10, b=11, c=12, ... (so 'a' means 10, and '_ > c' means the blank is greater than 12)
+
+Provide your answer as 16 single characters in order with no spaces, using digits for 1-9 and letters for 10 and up (a=10, b=11, ...).
+
+Example format:
+Answer: 123456789abcdefg",d6g317428faebc59,,"Missing values are: 2, 5, 9, c.
+
+- Since `4 > _ < 8`, the blank must be less than 4, so it must be `2`.
+- Since `b < _`, the next blank must be greater than 11, so it must be `c`.
+- Then `c > _ < _` leaves `5` and `9`, and the inequality requires `5 < 9`.
+
+Answer: d6g317428faebc59",631742859,0,easy,stop
+inequality_en_easy_0047,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 9 > 1 ? 2 < 5 > _ > _ < 8 > _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",912543867,,"The missing numbers are 3, 4, 6, and 7.
+
+From `5 > _ > _`, the first blank must be less than 5 and greater than the second blank. The only possible pair is `4 > 3`.
+
+Then the remaining blanks are 6 and 7, and `_ < _` means they must be `6 < 7`.
+
+Answer: 912543867",912543867,1,easy,stop
+inequality_en_easy_0048,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 5 > _ < 3 < 7 > 1 < 6 < _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",52371684,,"Missing numbers are 2, 4, and 8.
+
+- The first blank must be less than both 5 and 3, so it must be 2.
+- The second blank must be greater than 6, so it must be 8.
+- The final blank is the remaining number, 4, and 8 > 4 works.
+
+Answer: 52371684",52371684,1,easy,stop
+inequality_en_easy_0049,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 16.
+
+Each number from 1 to 16 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 6 < e < _ > 9 < a > 4 > 3 < 8 > 7 < b < f > 1 < c > _ > _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 16 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+- Values 10 and above are written as single letters: a=10, b=11, c=12, ... (so 'a' means 10, and '_ > c' means the blank is greater than 12)
+
+Provide your answer as 16 single characters in order with no spaces, using digits for 1-9 and letters for 10 and up (a=10, b=11, ...).
+
+Example format:
+Answer: 123456789abcdefg",6eg9a4387bf1c52d,,"The blanks are at positions 3, 14, 15, and 16.
+
+- Since `e = 14` and `e < _`, the third position must be greater than 14. The only available value greater than 14 is `g = 16`, because `f = 15` is already used.
+- Remaining missing values are `2, 5, d(13)`.
+- The ending is `c > _ > _ < _`, i.e. `12 > pos14 > pos15 < pos16`.
+- So pos14 must be less than 12, meaning it is either 2 or 5. It cannot be 2 because then nothing remaining is smaller than it. Thus pos14 = 5.
+- Then pos15 = 2, and pos16 = d(13).
+
+In letter notation: `6eg9a4387bf1c52d`
+
+Answer: 6 14 16 9 10 4 3 8 7 11 15 1 12 5 2 13",1125213,0,easy,stop
+inequality_en_easy_0050,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 7 > 4 < 5 > 2 < 8 ? 1 < _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",74528163,,"The given numbers are:
+
+7, 4, 5, 2, 8, 1, _, _
+
+The missing numbers from 1 to 8 are **3** and **6**.
+
+The last inequalities are:
+
+1 < _ > _
+
+So the first blank must be greater than 1 and also greater than the second blank. Therefore:
+
+- first blank = 6
+- second blank = 3
+
+This gives:
+
+7 > 4 < 5 > 2 < 8 > 1 < 6 > 3
+
+Answer: 74528163",74528163,1,easy,stop
+inequality_en_easy_0051,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 16.
+
+Each number from 1 to 16 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 6 < e > 7 < _ > b > 3 > _ < 4 < 9 > 5 < d < _ > _ > _ < f > 1
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 16 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+- Values 10 and above are written as single letters: a=10, b=11, c=12, ... (so 'a' means 10, and '_ > c' means the blank is greater than 12)
+
+Provide your answer as 16 single characters in order with no spaces, using digits for 1-9 and letters for 10 and up (a=10, b=11, ...).
+
+Example format:
+Answer: 123456789abcdefg",6e7cb32495dga8f1,,"The fixed values use: 1, 3, 4, 5, 6, 7, 9, b(11), d(13), e(14), f(15).
+
+Missing values are: 2, 8, a(10), c(12), g(16).
+
+- `3 > _ < 4` forces that blank to be `2`.
+- `7 < _ > b` means the blank must be greater than 11, so it is `c` or `g`.
+- `d < _` means the next blank must be greater than 13, so it must be `g`; therefore the earlier `7 < _ > b` blank is `c`.
+- The remaining values are `8` and `a`, and `_ > _ < f` forces them as `a > 8 < f`.
+
+Answer: 6e7cb32495dga8f1",32495,0,easy,stop
+inequality_en_easy_0052,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 6 < 7 < 9 > 1 < 3 < _ > _ > _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",679138542,,"The given numbers are:
+
+6 < 7 < 9 > 1 < 3 < _ > _ > _ > _
+
+The missing numbers are {2, 4, 5, 8}.
+
+Since the last four positions must satisfy:
+
+3 < _ > _ > _ > _
+
+the four missing numbers must be placed in strictly decreasing order after the 3, with the first one greater than 3.
+
+So they must be:
+
+8 > 5 > 4 > 2
+
+Thus the completed sequence is:
+
+6 < 7 < 9 > 1 < 3 < 8 > 5 > 4 > 2
+
+Answer: 679138542",679138542,1,easy,stop
+inequality_en_easy_0053,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 6 > 1 < 3 < 7 < 9 > 5 < _ ? _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",613795842,,"The given numbers are: 6, 1, 3, 7, 9, 5, so the missing numbers are 2, 4, and 8.
+
+From `5 < _`, the next blank must be greater than 5. Among 2, 4, 8, only 8 works.
+
+Then we have `_ > _` with remaining numbers 2 and 4, so this must be `4 > 2`.
+
+Thus the completed sequence is:
+
+Answer: 613795842",613795842,1,easy,stop
+inequality_en_easy_0054,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 4 > _ > _ < 7 > 3 < 8 ? _ > _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",421738965,,"The missing numbers are {1, 2, 5, 6, 9}.
+
+From `4 > _ > _`, the two blanks must be less than 4 and descending, so they are `2 > 1`.
+
+Remaining numbers are {5, 6, 9}.  
+From `_ > _ > _`, they must be descending: `9 > 6 > 5`.
+
+The `?` between 8 and 9 can be `<`, so it is valid.
+
+Answer: 421738965",421738965,1,easy,stop
+inequality_en_easy_0055,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 8 > 1 < 9 > 6 ? _ > _ > 4 > _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",819675423,,"The missing numbers are 2, 3, 5, and 7.
+
+From the chain:
+
+- `_ > _ > 4` means the second blank must be greater than 4, so it must be 5 or 7.
+- The first blank must be greater than that second blank, so the only possibility is `7 > 5 > 4`.
+- The remaining numbers are 2 and 3.
+- Since `4 > _ < _`, the last two must be `2 < 3`.
+
+So the completed sequence is:
+
+Answer: 819675423",819675423,1,easy,stop
+inequality_en_easy_0056,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 6 > _ > _ > _ < 4 > 1 < _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",65324178,,"The blanks must use the remaining numbers: 2, 3, 5, 7, 8.
+
+From `6 > _ > _ > _`, the three blanks after 6 must be in decreasing order and all less than 6. The only possible set is `5, 3, 2`, giving:
+
+`6 > 5 > 3 > 2 < 4`
+
+The remaining numbers are `7` and `8`, and they must satisfy:
+
+`1 < _ < _`
+
+So they must be `7, 8`.
+
+Answer: 65324178",65324178,1,easy,stop
+inequality_en_easy_0057,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 4 ? 3 < 8 > _ < _ < 5 < _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",43812576,,"Positions: `4 ? 3 < 8 > _ < _ < 5 < _ > _`
+
+Used numbers: 3, 4, 5, 8  
+Remaining: 1, 2, 6, 7
+
+Since the blanks after 8 must satisfy:
+
+`8 > _ < _ < 5`
+
+the two blanks before 5 must both be less than 5, so they must be `1` and `2` in increasing order:
+
+`8 > 1 < 2 < 5`
+
+Remaining numbers are `6` and `7`, and the end must satisfy:
+
+`5 < _ > _`
+
+So the only valid order is:
+
+`5 < 7 > 6`
+
+Thus the full sequence is:
+
+Answer: 43812576",43812576,1,easy,stop
+inequality_en_easy_0058,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 5 < 7 < _ ? _ < 2 < 8 > 3 < _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",579128364,,Answer: 579128364,579128364,1,easy,stop
+inequality_en_easy_0059,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 4 < _ > 6 > 3 < 8 > 2 > _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",47638215,,"The missing numbers are 1, 5, and 7.
+
+- The second position must be greater than both 4 and 6, so it must be 7.
+- The seventh position must be less than 2, so it must be 1.
+- The last remaining number is 5.
+
+Answer: 47638215",47638215,1,easy,stop
+inequality_en_easy_0060,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 2 < 5 ? 3 < 6 > 4 < _ > _ < 8
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",25364718,,"The missing numbers are 1 and 7.
+
+We need:
+
+- \(4 < \_\), so the first blank must be greater than 4 → it must be 7.
+- Then \(7 > \_\), so the second blank is 1.
+- Finally \(1 < 8\), which works.
+
+So the completed sequence is:
+
+Answer: 25364718",25364718,1,easy,stop
+inequality_en_easy_0061,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 4 < 5 ? 3 < _ > 7 > 2 < 8 > _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",453972816,,"The blanks must use the remaining digits: 1, 6, and 9.
+
+- The blank after `3 < _ > 7` must be greater than both 3 and 7, so it must be `9`.
+- Remaining digits are 1 and 6.
+- For `8 > _ < _`, the first blank must be smaller than the second, so it is `1 < 6`.
+
+Thus the completed sequence is:
+
+Answer: 453972816",453972816,1,easy,stop
+inequality_en_easy_0062,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 1 < 4 < 6 ? 7 > 5 < _ > _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",14675823,,"The fixed numbers are 1, 4, 6, 7, and 5, so the missing numbers are 2, 3, and 8.
+
+From `5 < _`, the first blank must be greater than 5. The only missing number greater than 5 is 8.
+
+Then the remaining blanks must satisfy `8 > _ < _`, using 2 and 3. Since the last inequality is `<`, they must be `2 < 3`.
+
+Answer: 14675823",14675823,1,easy,stop
+inequality_en_easy_0063,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 2 > _ < 8 > 4 < 6 < _ > _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",21846753,,"Positions:
+
+- `2 > _` means the blank must be less than 2, so it is `1`.
+- Remaining numbers are `3, 5, 7`.
+- `6 < _` means that blank must be greater than 6, so it is `7`.
+- Then `_ > _` with remaining `3, 5` means they must be `5 > 3`.
+
+So the completed sequence is:
+
+Answer: 21846753",21846753,1,easy,stop
+inequality_en_easy_0064,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 4 < 7 > 3 > 1 < 8 > 5 > _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",47318526,,"The used numbers are 4, 7, 3, 1, 8, and 5, so the missing numbers are 2 and 6.
+
+The last part is:
+
+5 > _ < _
+
+The first blank must be less than 5, so it must be 2. Then the second blank is 6, and 2 < 6 is satisfied.
+
+Answer: 47318526",47318526,1,easy,stop
+inequality_en_easy_0065,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 3 < _ > 8 ? 6 > _ < 2 < 5 > _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",398612547,,"Given positions:
+
+3 < _ > 8 ? 6 > _ < 2 < 5 > _ < _
+
+Missing numbers are: 1, 4, 7, 9.
+
+- The blank between 3 and 8 must be greater than 8, so it is 9.
+- The blank between 6 and 2 must be less than 2, so it is 1.
+- The blank after 5 must be less than 5, leaving 4.
+- The final blank is then 7.
+
+So the completed sequence is:
+
+Answer: 398612547",398612547,1,easy,stop
+inequality_en_easy_0066,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 2 < 8 > _ < 3 < 7 > 5 < _ < _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",281375694,,"The blanks must use the missing digits: 1, 4, 6, 9.
+
+- The third position must be less than 3, and 2 is already used, so it is 1.
+- The last three blanks must satisfy: 5 < _ < _ > _
+- Remaining digits are 4, 6, 9.
+- This forces the seventh position to be 6 and the eighth to be 9, leaving 4 for the last position.
+
+Answer: 281375694",281375694,1,easy,stop
+inequality_en_easy_0067,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 3 < 6 > 1 < 5 < _ ? 7 > _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",36158724,,"The missing numbers are 2, 4, and 8.
+
+Since `5 < _`, that blank must be greater than 5, so it must be `8`.
+
+Then the remaining blanks are 2 and 4:
+
+`7 > _ < _`
+
+The last inequality requires the second-to-last blank to be smaller than the last blank, so they must be `2 < 4`.
+
+Answer: 36158724",36158724,1,easy,stop
+inequality_en_easy_0068,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 5 > 1 < 3 > _ < 6 < 8 < _ > _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",513268974,,"Positions 1–9:
+
+`5 > 1 < 3 > _ < 6 < 8 < _ > _ > _`
+
+Missing numbers are `{2, 4, 7, 9}`.
+
+- The 4th position must be less than 3, so it must be `2`.
+- The 7th position must be greater than 8, so it must be `9`.
+- The last two remaining numbers are `4` and `7`, and they must satisfy `9 > _ > _`, so they go as `7 > 4`.
+
+Thus the completed sequence is:
+
+Answer: 513268974",513268974,1,easy,stop
+inequality_en_easy_0069,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 4 < 7 < 9 > 5 < 6 > 1 ? 3 < _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",479561382,,"The given numbers use: 1, 3, 4, 5, 6, 7, 9.  
+So the missing numbers are 2 and 8.
+
+The last constraints are:
+
+3 < _ > _
+
+So the first blank must be greater than 3 and also greater than the second blank.  
+Thus it must be 8, leaving 2 for the final blank.
+
+Answer: 479561382",479561382,1,easy,stop
+inequality_en_easy_0070,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 3 < 7 > 1 < 4 < _ < 6 > _ < _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",371456289,,"The given positions are:
+
+3 < 7 > 1 < 4 < _ < 6 > _ < _ < _
+
+Missing numbers are: 2, 5, 8, 9.
+
+- Since `4 < _ < 6`, the blank must be `5`.
+- Then `6 > _`, and the remaining numbers are 2, 8, 9, so that blank must be `2`.
+- Finally, `_ < _` with remaining 8 and 9 gives `8 < 9`.
+
+So the completed sequence is:
+
+3 < 7 > 1 < 4 < 5 < 6 > 2 < 8 < 9
+
+Answer: 371456289",371456289,1,easy,stop
+inequality_en_easy_0071,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 9 ? 3 < 8 > 5 > 4 < 6 > 1 < _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",938546172,,"Missing numbers are 2 and 7.
+
+The last constraints are:
+
+- `1 < _` so the 8th number must be greater than 1
+- `_ > _` so the 8th number must be greater than the 9th
+
+Using 2 and 7, the only order that works is `7 > 2`.
+
+So the completed sequence is:
+
+Answer: 938546172",938546172,1,easy,stop
+inequality_en_easy_0072,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 8 > 5 > 2 < 6 > 3 > _ < _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",85263174,,"The remaining numbers are 1, 4, and 7.
+
+From `3 > _`, the next blank must be less than 3, so it must be 1.
+
+Then the last two blanks are 4 and 7, with `_ > _`, so they must be `7 > 4`.
+
+Answer: 85263174",85263174,1,easy,stop
+inequality_en_easy_0073,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 1 < 7 > 2 < 8 < _ > _ < _ < _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",172893456,,"The given sequence is:
+
+1 < 7 > 2 < 8 < _ > _ < _ < _ < _
+
+Remaining numbers are 3, 4, 5, 6, 9.
+
+Since the 5th number must be greater than 8, it must be 9:
+
+1 < 7 > 2 < 8 < 9 > _ < _ < _ < _
+
+The remaining blanks must be in increasing order after the 6th position:
+
+3 < 4 < 5 < 6
+
+So the completed sequence is:
+
+1 < 7 > 2 < 8 < 9 > 3 < 4 < 5 < 6
+
+Answer: 172893456",172893456,1,easy,stop
+inequality_en_easy_0074,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 16.
+
+Each number from 1 to 16 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: c > 2 < 5 < f > 6 > _ < 8 < 9 < e > 3 < a > _ < g > 4 < _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 16 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+- Values 10 and above are written as single letters: a=10, b=11, c=12, ... (so 'a' means 10, and '_ > c' means the blank is greater than 12)
+
+Provide your answer as 16 single characters in order with no spaces, using digits for 1-9 and letters for 10 and up (a=10, b=11, ...).
+
+Example format:
+Answer: 123456789abcdefg",c25f6189e3a7g4db,,Answer: c25f6189e3a7g4db,256189374,0,easy,stop
+inequality_en_easy_0075,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 2 < 4 < 7 < _ > 5 > 1 < _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",24785163,,"Missing numbers are 3, 6, and 8.
+
+Since `7 < _`, the blank after 7 must be greater than 7, so it is 8.
+
+Remaining numbers are 3 and 6. The last part is `1 < _ > _`, so the middle blank must be greater than the final blank. Therefore it must be `6 > 3`.
+
+Answer: 24785163",24785163,1,easy,stop
+inequality_en_easy_0076,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 7 > 2 < 8 > 4 > _ ? _ > _ < 9 > 3
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",728416593,,"The given numbers use: 7, 2, 8, 4, 9, 3.  
+So the blanks must be filled with the remaining numbers: 1, 5, 6.
+
+Puzzle:
+
+7 > 2 < 8 > 4 > _ ? _ > _ < 9 > 3
+
+Since `4 > _`, the first blank must be less than 4.  
+Only `1` works, so:
+
+7 > 2 < 8 > 4 > 1 ? _ > _ < 9 > 3
+
+Remaining numbers are 5 and 6.  
+Since `_ > _`, they must be `6 > 5`.
+
+So the completed sequence is:
+
+7 > 2 < 8 > 4 > 1 < 6 > 5 < 9 > 3
+
+Answer: 728416593",728416593,1,easy,stop
+inequality_en_easy_0077,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 8 > 5 > _ > _ < _ > _ ? 1 < 3
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",85427613,,"Given numbers fixed: `8, 5, 1, 3`, so the blanks must be `{2, 4, 6, 7}`.
+
+Puzzle:
+
+`8 > 5 > _ > _ < _ > _ ? 1 < 3`
+
+- The first blank must be less than 5, so it can only be `2` or `4`.
+- It must also be greater than the second blank.
+- If the first blank were `2`, there would be no remaining number smaller than it.
+- So the first blank is `4`, and the second blank is `2`.
+- The remaining blanks are `6` and `7`, with `_ > _`, so they must be `7 > 6`.
+
+Thus the completed sequence is:
+
+Answer: 85427613",85427613,1,easy,stop
+inequality_en_easy_0078,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 1 < 6 < _ > 8 > 3 < 5 > _ < _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",169835247,,"The missing numbers are 2, 4, 7, and 9.
+
+- Since `6 < _ > 8`, the blank must be greater than 8, so it must be `9`.
+- The remaining blanks must satisfy `5 > _ < _ < _` using 2, 4, 7.
+- They must be in increasing order after the first blank, so they are `2 < 4 < 7`.
+
+Answer: 169835247",169835247,1,easy,stop
+inequality_en_easy_0079,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 5 < _ > 2 > _ ? 3 < 9 > 7 < _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",562139784,,"The given numbers are:
+
+5, 2, 3, 9, 7
+
+So the missing numbers are:
+
+1, 4, 6, 8
+
+Puzzle positions:
+
+5 < _ > 2 > _ ? 3 < 9 > 7 < _ > _
+
+- The first blank must be greater than 5, so it can be 6 or 8.
+- The blank after 2 must be less than 2, so it must be 1.
+- The blank after 7 must be greater than 7, so it must be 8.
+- Therefore the first blank cannot be 8, so it must be 6.
+- The final remaining number is 4.
+
+Completed puzzle:
+
+5 < 6 > 2 > 1 < 3 < 9 > 7 < 8 > 4
+
+Answer: 562139784",562139784,1,easy,stop
+inequality_en_easy_0080,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 5 > 3 > 1 < 4 < _ > _ > _ < 7
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",53148627,,"Missing numbers are 2, 6, and 8.
+
+The blanks must satisfy:
+
+4 < _ > _ > _ < 7
+
+So the three blanks must be in decreasing order after the first blank. The only way to arrange 2, 6, and 8 as:
+
+_ > _ > _
+
+is:
+
+8 > 6 > 2
+
+Thus the completed sequence is:
+
+5 > 3 > 1 < 4 < 8 > 6 > 2 < 7
+
+Answer: 53148627",53148627,1,easy,stop
+inequality_en_easy_0081,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 2 < 6 < 8 > 3 > _ < _ < _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",26831457,,"The given numbers use 2, 6, 8, and 3, so the remaining numbers are 1, 4, 5, and 7.
+
+From `3 > _`, the next blank must be less than 3. The only remaining number less than 3 is 1.
+
+Then the remaining blanks must satisfy `_ < _ < _`, so the remaining numbers 4, 5, and 7 go in increasing order.
+
+Answer: 26831457",26831457,1,easy,stop
+inequality_en_easy_0082,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 2 ? 4 < 7 > _ < 5 > 1 < _ > _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",247351986,,"The fixed numbers are:
+
+2 ? 4 < 7 > _ < 5 > 1 < _ > _ > _
+
+Unused numbers are: 3, 6, 8, 9.
+
+- The blank between 7 and 5 must satisfy: 7 > _ < 5, so it must be less than 5. The only unused number less than 5 is 3.
+- The last three blanks must satisfy: 1 < _ > _ > _, using 6, 8, 9. They must be in descending order after the first blank, so they are 9, 8, 6.
+
+Thus the completed sequence is:
+
+2 4 7 3 5 1 9 8 6
+
+Answer: 247351986",247351986,1,easy,stop
+inequality_en_easy_0083,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 16.
+
+Each number from 1 to 16 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 9 < g > 7 < f > 2 < c > 3 < d > 6 < _ > b > 4 > _ < _ > _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 16 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+- Values 10 and above are written as single letters: a=10, b=11, c=12, ... (so 'a' means 10, and '_ > c' means the blank is greater than 12)
+
+Provide your answer as 16 single characters in order with no spaces, using digits for 1-9 and letters for 10 and up (a=10, b=11, ...).
+
+Example format:
+Answer: 123456789abcdefg",9g7f2c3d6eb41a85,,"Given numbers leave the blanks as `{1, 5, 8, 10, 14}`.
+
+- The blank in `6 < _ > b` must be greater than 11, so it is `14` (`e`).
+- The blank in `4 > _` must be less than 4, so it is `1`.
+- The remaining blanks must satisfy `_ < _ > _ > _`, specifically `1 < _ > _ > _`, using `{5, 8, 10}`. Thus they must be `10, 8, 5`.
+
+In character notation: `9g7f2c3d6eb41a85`
+
+Answer: 9 16 7 15 2 12 3 13 6 14 11 4 1 10 8 5",1411411085,0,easy,stop
+inequality_en_easy_0084,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 2 < 7 < 8 > 3 < 4 > _ ? 5 < _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",278341596,,"The given numbers are fixed:
+
+2 < 7 < 8 > 3 < 4 > _ ? 5 < _ > _
+
+Missing numbers are: 1, 6, 9.
+
+- Since `4 > _`, the blank after 4 must be less than 4. Only `1` works.
+- Then we have `5 < _ > _`, with remaining numbers `6` and `9`.
+- The middle blank must be greater than both 5 and the last blank, so it must be `9`, leaving `6` for the final blank.
+
+Answer: 278341596",278341596,1,easy,stop
+inequality_en_easy_0085,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 6 ? 2 < 5 > _ > _ < _ < _ > 3
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",62541783,,"Given fixed values: `6 ? 2 < 5 > _ > _ < _ < _ > 3`
+
+Remaining numbers are `{1, 4, 7, 8}`.
+
+- Since `5 > position 4`, position 4 must be less than 5: either `1` or `4`.
+- Also position 4 `> position 5`, so position 4 cannot be `1`. Thus position 4 is `4`, and position 5 is `1`.
+- Then remaining numbers `{7, 8}` go into positions 6 and 7 with `position 6 < position 7`, so they are `7, 8`.
+
+Completed sequence: `6 2 5 4 1 7 8 3`
+
+Answer: 62541783",62541783,1,easy,stop
+inequality_en_easy_0086,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 16.
+
+Each number from 1 to 16 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: c > 1 < 6 < g > 8 > 5 > 2 < 9 < _ < b > 7 < _ < _ > d > _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 16 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+- Values 10 and above are written as single letters: a=10, b=11, c=12, ... (so 'a' means 10, and '_ > c' means the blank is greater than 12)
+
+Provide your answer as 16 single characters in order with no spaces, using digits for 1-9 and letters for 10 and up (a=10, b=11, ...).
+
+Example format:
+Answer: 123456789abcdefg",c16g8529ab7efd34,,"The fixed entries use: 12(c), 1, 6, 16(g), 8, 5, 2, 9, 11(b), 7, 13(d).
+
+Missing numbers are: 3, 4, 10(a), 14(e), 15(f).
+
+From the middle:
+
+- `9 < _ < b(11)` forces the blank to be `10(a)`.
+- Then remaining blanks are `{3,4,14,15}`.
+- `7 < _ < _ > d(13)` means the two blanks before `d` must be greater than 7, so they must be `14(e)` and `15(f)`, in increasing order: `e < f`.
+- Finally `d(13) > _ < _` leaves `{3,4}`, and the last inequality requires `3 < 4`.
+
+So the sequence is encoded as: `c16g8529ab7efd34`
+
+Answer: 12 1 6 16 8 5 2 9 10 11 7 14 15 13 3 4",151334,0,easy,stop
+inequality_en_easy_0087,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 2 < _ < 5 > _ < 8 > 4 < _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",23518476,,"Positions:
+
+2 < _ < 5 > _ < 8 > 4 < _ > _
+
+- The second position must be between 2 and 5, so it is **3**.
+- The fourth position must be less than 5 and 8, so it is **1**.
+- Remaining numbers are 6 and 7. Since the seventh position must be greater than the eighth, they are **7** and **6**.
+
+Answer: 23518476",23518476,1,easy,stop
+inequality_en_easy_0088,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: _ < _ < 3 < 8 > _ < _ < _ > 5
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",12384675,,"The first two blanks must be less than 3 and increasing, so they are 1 and 2:
+
+1 < 2 < 3
+
+The remaining numbers are 4, 6, and 7 for the three blanks after 8. They must satisfy:
+
+8 > _ < _ < _ > 5
+
+So they go in increasing order as 4 < 6 < 7, and 7 > 5.
+
+Thus the full sequence is:
+
+1 < 2 < 3 < 8 > 4 < 6 < 7 > 5
+
+Answer: 12384675",12384675,1,easy,stop
+inequality_en_easy_0089,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 6 > 4 > 3 ? 8 > _ < _ < _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",64381257,,"The given numbers are fixed:
+
+6 > 4 > 3 ? 8 > _ < _ < _ < _
+
+Remaining numbers to place are: 1, 2, 5, 7.
+
+Since the blanks must satisfy:
+
+_ < _ < _ < _
+
+they must be in increasing order:
+
+1 < 2 < 5 < 7
+
+So the full sequence is:
+
+6 4 3 8 1 2 5 7
+
+Answer: 64381257",64381257,1,easy,stop
+inequality_en_easy_0090,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 1 < 5 > 2 ? 6 > 3 < 7 > _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",15263748,,"The missing numbers are 4 and 8.
+
+The last inequalities are:
+
+- \(7 > \_\)
+- \(\_ < \_\)
+
+So the 7th number must be less than 7, and also less than the 8th number.  
+Only \(4, 8\) remain, so the only valid order is:
+
+\(7 > 4 < 8\)
+
+Answer: 15263748",15263748,1,easy,stop
+inequality_en_easy_0091,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 6 > 4 < _ > 2 < _ > 7 > _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",64528713,,"Remaining numbers are: 1, 3, 5, 8.
+
+Puzzle positions:
+
+6 > 4 < _ > 2 < _ > 7 > _ < _
+
+- The 5th position must be greater than 7, so it must be 8.
+- The 3rd position must be greater than 4, so from the remaining numbers it must be 5.
+- The last two blanks are 1 and 3, and since the 7th position is less than the 8th, they must be 1 < 3.
+
+So the completed sequence is:
+
+6 > 4 < 5 > 2 < 8 > 7 > 1 < 3
+
+Answer: 64528713",64528713,1,easy,stop
+inequality_en_easy_0092,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 8 > 4 < 7 > 5 > _ < _ < _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",84751236,,"The given numbers are:
+
+8 > 4 < 7 > 5 > _ < _ < _ < _
+
+Numbers already used: 8, 4, 7, 5  
+Remaining numbers: 1, 2, 3, 6
+
+The last four positions must satisfy:
+
+5 > position 5 < position 6 < position 7 < position 8
+
+Since positions 5 through 8 are increasing, the remaining numbers must be placed in ascending order:
+
+1 < 2 < 3 < 6
+
+So the completed sequence is:
+
+8 > 4 < 7 > 5 > 1 < 2 < 3 < 6
+
+Answer: 84751236",84751236,1,easy,stop
+inequality_en_easy_0093,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 2 < 6 > 3 > _ ? _ > 7 > _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",26318745,,"Positions 4, 5, 7, and 8 must be filled using the remaining numbers: 1, 4, 5, 8.
+
+- Since `3 > _`, position 4 must be less than 3, so it must be `1`.
+- Since `_ > 7`, position 5 must be greater than 7, so it must be `8`.
+- Remaining numbers are `4` and `5`.
+- Since `_ < _` at the end, positions 7 and 8 must be `4 < 5`.
+
+So the completed sequence is:
+
+Answer: 26318745",26318745,1,easy,stop
+inequality_en_easy_0094,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 8 > 1 < 5 > 4 < 7 > 3 < _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",81547362,,"Missing numbers are 2 and 6.  
+The last inequalities are `3 < _ > _`, so the 7th number must be greater than both 3 and the 8th number. Therefore, the 7th number is 6 and the 8th number is 2.
+
+Answer: 81547362",81547362,1,easy,stop
+inequality_en_easy_0095,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 2 > _ < 8 > 5 ? 4 < _ < _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",21854673,,"Position 2 must be less than 2, so it is **1**.
+
+Remaining numbers are **3, 6, 7** for the last three blanks:
+
+- `4 < _ < _ > _`
+- The only way to have two increasing numbers after 4 is `6 < 7`
+- So the final blank is **3**
+
+Thus the completed sequence is:
+
+Answer: 21854673",21854673,1,easy,stop
+inequality_en_easy_0096,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 6 > 2 < 3 < 5 > _ > _ < _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",62354178,,"Unused numbers are 1, 4, 7, and 8.
+
+The remaining pattern is:
+
+5 > _ > _ < _ < _
+
+- The first blank must be less than 5 and greater than the second blank.
+- From the unused numbers, only 4 can work as the first blank, because 1 has nothing smaller available.
+- So the next two blanks are 4 and 1.
+- The last two remaining numbers are 7 and 8, and they must satisfy `<`, so they are 7 and 8.
+
+Answer: 62354178",62354178,1,easy,stop
+inequality_en_easy_0097,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 3 < 4 > 1 < 8 > 6 < _ > _ < _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",34186725,,"The used numbers are 3, 4, 1, 8, and 6, so the remaining numbers are 2, 5, and 7.
+
+The final inequalities are:
+
+6 < _ > _ < _
+
+Since the first blank must be greater than 6, it must be 7.
+
+Now the remaining numbers are 2 and 5, and they must satisfy:
+
+7 > _ < _
+
+So the middle blank must be 2 and the last blank must be 5.
+
+Answer: 34186725",34186725,1,easy,stop
+inequality_en_easy_0098,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 8.
+
+Each number from 1 to 8 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 3 > _ < 2 < 6 ? 8 > 4 < _ > _
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 8 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 8 digits (no spaces).
+
+Example format:
+Answer: 12345678",31268475,,"The blanks must use the remaining numbers: 1, 5, and 7.
+
+- From `3 > _ < 2`, the blank must be less than both 3 and 2, so it must be `1`.
+- Remaining numbers are 5 and 7.
+- From `4 < _ > _`, the first blank must be greater than 4 and greater than the last blank, so it must be `7`, leaving `5`.
+
+Thus the completed sequence is:
+
+Answer: 31268475",31268475,1,easy,stop
+inequality_en_easy_0099,"Solve this inequality puzzle. Fill in the blanks with numbers from 1 to 9.
+
+Each number from 1 to 9 must be used exactly once.
+The inequality symbols (< or >) between positions must be satisfied.
+
+Puzzle: 9 ? 4 > 1 < 3 < 8 > _ < _ < _ > 5
+
+Rules:
+- '_' represents an empty position to fill
+- '<' means the left number is smaller than the right number
+- '>' means the left number is larger than the right number
+- Each number 1 to 9 appears exactly once
+- '?' means the inequality is unknown (could be < or >)
+
+Provide your answer as a sequence of 9 digits (no spaces).
+
+Example format:
+Answer: 123456789",941382675,,"The given numbers are 9, 4, 1, 3, 8, and 5, so the missing numbers are:
+
+2, 6, 7
+
+The blank positions must satisfy:
+
+8 > _ < _ < _ > 5
+
+So the three blanks must be in increasing order, and the last one must be greater than 5:
+
+2 < 6 < 7, and 7 > 5
+
+Thus the completed sequence is:
+
+9 4 1 3 8 2 6 7 5
+
+Answer: 941382675",941382675,1,easy,stop

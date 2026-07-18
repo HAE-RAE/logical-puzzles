@@ -1,0 +1,5605 @@
+id,question,answer,thinking_content,resps,filtered_resps,exact_match,difficulty,finish_reason
+cipher_en_medium_0000,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 5648: STATUS CRITICAL. COORDINATES SET TO 174.72 | SECTOR 37D1. ENCRYPTION SEED IS DETERMINED AS GOLF. TARGET TERMINAL IS OFFLINE.
+-------------------------------
+
+Ciphertext: 'OEPYXXTALKCSYOVHZZTDYHSV'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - RRDUS -> XFOZY
+  - NBWU -> TPHZ
+
+Enter the decrypted plaintext (uppercase, no spaces).",IQETRJIVFWRNSAKCTLIYSTHQ,,"## Solution
+
+**Step 1: Find the keyword.**
+The log contains ""ENCRYPTION SEED IS DETERMINED AS GOLF"" — the label **SEED** gives keyword **GOLF**.
+
+**Step 2: Verify with examples (Vigenère, key GOLF = 6,14,11,5).**
+- Decrypt XFOZY: X−G=R, F−O=R, O−L=D, Z−F=U, Y−G=S → **RRDUS** ✓
+- Decrypt TPHZ: T−G=N, P−O=B, H−L=W, Z−F=U → **NBWU** ✓
+
+The keyword and method are confirmed.
+
+**Step 3: Decrypt the ciphertext** OEPYXXTALKCSYOVHZZTDYHSV by subtracting GOLF:
+
+| C | val | key | plain |
+|---|---|---|---|
+|O|14|6|I|
+|E|4|14|Q|
+|P|15|11|E|
+|Y|24|5|T|
+|X|23|6|R|
+|X|23|14|J|
+|T|19|11|I|
+|A|0|5|V|
+|L|11|6|F|
+|K|10|14|W|
+|C|2|11|R|
+|S|18|5|N|
+|Y|24|6|S|
+|O|14|14|A|
+|V|21|11|K|
+|H|7|5|C|
+|Z|25|6|T|
+|Z|25|14|L|
+|T|19|11|I|
+|D|3|5|Y|
+|Y|24|6|S|
+|H|7|14|T|
+|S|18|11|H|
+|V|21|5|Q|
+
+Result: **IQETRJIVFWRNSAKCTLIYSTHQ**
+
+Answer: IQETRJIVFWRNSAKCTLIYSTHQ",IQETRJIVFWRNSAKCTLIYSTHQ,1,medium,stop
+cipher_en_medium_0001,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 29.26 | SECTOR 83DD. TARGET DATABASE IS READY. SYSTEM REPORT ID 6695: STATUS LOCKED. ENCRYPTION AUTH CODE IS DETERMINED AS BRAVO.
+-------------------------------
+
+Ciphertext: 'ZJEBYCWECHLUMVDZSVKFUVYP'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - MUCLG -> NLCGU
+  - KKNTYV -> LBNOMW
+
+Enter the decrypted plaintext (uppercase, no spaces).",YSEGKBFEHTKDMAPYBVPRTEYU,,"## Reasoning
+
+**Step 1 – Find the keyword.**
+The log says ""ENCRYPTION AUTH CODE IS DETERMINED AS **BRAVO**."" Testing against the sample pairs confirms the keyword is **BRAVO** (A=0, B=1, ...).
+
+Check: `MUCLG` + `BRAVO`:
+- M(12)+B(1)=N, U(20)+R(17)=L, C(2)+A(0)=C, L(11)+V(21)=G, G(6)+O(14)=U → **NLCGU** ✓
+
+Check: `KKNTYV` + `BRAVOB`:
+- K+B=L, K+R=B, N+A=N, T+V=O, Y+O=M, V+B=W → **LBNOMW** ✓
+
+So encryption **adds** the keyword; decryption must **subtract** it.
+
+**Step 2 – Decrypt the ciphertext.**
+Ciphertext: `ZJEBYCWECHLUMVDZSVKFUVYP`
+Key stream: `BRAVOBRAVOBRAVOBRAVOBRAV`
+
+| C | Z | J | E | B | Y | C | W | E | C | H | L | U | M | V | D | Z | S | V | K | F | U | V | Y | P |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| K | B | R | A | V | O | B | R | A | V | O | B | R | A | V | O | B | R | A | V | O | B | R | A | V |
+| P | Y | S | E | G | K | B | F | E | H | T | K | D | M | A | P | Y | B | V | P | R | T | E | Y | U |
+
+Result: **YSEGKBFEHTKDMAPYBVPRTEYU**
+
+Answer: YSEGKBFEHTKDMAPYBVPRTEYU",YSEGKBFEHTKDMAPYBVPRTEYU,1,medium,stop
+cipher_en_medium_0002,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 107.18 | SECTOR D899. ENCRYPTION VECTOR IS DETERMINED AS DELTA. SYSTEM REPORT ID 3082: STATUS CRITICAL. TARGET CORE IS READY.
+-------------------------------
+
+Ciphertext: 'VVPBVMMOVKTGHZHIKQXZBSPL'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - TGUOBH -> WKFHBK
+  - HCTKH -> KGEDH
+
+Enter the decrypted plaintext (uppercase, no spaces).",SREIVJIDCKQCWGHFGFEZYOES,,"## Decryption
+
+**Step 1: Find the keyword**
+
+Scanning the mission log for the labels, I find ""ENCRYPTION **VECTOR** IS DETERMINED AS DELTA."" The keyword associated with the VECTOR label is **DELTA**.
+
+**Verifying with the examples** (encryption = plaintext + key, using A=0):
+- TGUOBH + DELTAD → W K F H B K ✓ (T+D=W, G+E=K, U+L=F, O+T=H, B+A=B, H+D=K)
+- HCTKH + DELTA → K G E D H ✓
+
+Keyword **DELTA** confirmed.
+
+**Step 2: Reverse Vigenère (subtract key)**
+
+Ciphertext: `VVPBVMMOVKTGHZHIKQXZBSPL`
+Key stream: `DELTADELTADELTADELTADELT`
+
+| C | val | key | plain |
+|---|-----|-----|-------|
+|V|21|3|S|
+|V|21|4|R|
+|P|15|11|E|
+|B|1|19|I|
+|V|21|0|V|
+|M|12|3|J|
+|M|12|4|I|
+|O|14|11|D|
+|V|21|19|C|
+|K|10|0|K|
+|T|19|3|Q|
+|G|6|4|C|
+|H|7|11|W|
+|Z|25|19|G|
+|H|7|0|H|
+|I|8|3|F|
+|K|10|4|G|
+|Q|16|11|F|
+|X|23|19|E|
+|Z|25|0|Z|
+|B|1|3|Y|
+|S|18|4|O|
+|P|15|11|E|
+|L|11|19|S|
+
+Result: **SREIVJIDCKQCWGHFGFEZYOES**
+
+Answer: SREIVJIDCKQCWGHFGFEZYOES",SREIVJIDCKQCWGHFGFEZYOES,1,medium,stop
+cipher_en_medium_0003,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 173.94 | SECTOR 2F89. TARGET DATABASE IS STANDBY. SYSTEM REPORT ID 7839: STATUS STABLE. ENCRYPTION SEED IS DETERMINED AS CHARLIE.
+-------------------------------
+
+Ciphertext: 'HDEFMUNNANHKSRFEQUEWJGO'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - IYSGO -> KFSXZ
+  - EKLWHA -> GRLNSI
+
+Enter the decrypted plaintext (uppercase, no spaces).",FWEOBMJLTNQZKNDXQDTOFEH,,"## Solution
+
+**Step 1 – Find the keyword.**
+The log says: ""ENCRYPTION SEED IS DETERMINED AS **CHARLIE**."" The word tied to the label **SEED** is **CHARLIE**.
+
+**Step 2 – Verify with examples (Vigenère add).**
+- IYSGO + CHARLIE → I(8)+C(2)=K, Y+H=F, S+A=S, G+R=X, O+L=Z → KFSXZ ✓
+- EKLWHA + CHARLIE → G,R,L,N,S,I → GRLNSI ✓
+
+Keyword **CHARLIE** confirmed.
+
+**Step 3 – Decrypt (subtract keyword).**
+
+Keyword letters: C=2, H=7, A=0, R=17, L=11, I=8, E=4 (repeating)
+
+| Cipher | Key | Plain |
+|--------|-----|-------|
+| H(7)−C(2) | | F |
+| D(3)−H(7) | | W |
+| E(4)−A(0) | | E |
+| F(5)−R(17) | | O |
+| M(12)−L(11) | | B |
+| U(20)−I(8) | | M |
+| N(13)−E(4) | | J |
+| N(13)−C(2) | | L |
+| A(0)−H(7) | | T |
+| N(13)−A(0) | | N |
+| H(7)−R(17) | | Q |
+| K(10)−L(11) | | Z |
+| S(18)−I(8) | | K |
+| R(17)−E(4) | | N |
+| F(5)−C(2) | | D |
+| E(4)−H(7) | | X |
+| Q(16)−A(0) | | Q |
+| U(20)−R(17) | | D |
+| E(4)−L(11) | | T |
+| W(22)−I(8) | | O |
+| J(9)−E(4) | | F |
+| G(6)−C(2) | | E |
+| O(14)−H(7) | | H |
+
+Result: **FWEOBMJLTNQZKNDXQDTOFEH**
+
+Answer: FWEOBMJLTNQZKNDXQDTOFEH",FWEOBMJLTNQZKNDXQDTOFEH,1,medium,stop
+cipher_en_medium_0004,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 5542: STATUS CRITICAL. COORDINATES SET TO 175.39 | SECTOR E4D5. ENCRYPTION PRIMARY KEY IS DETERMINED AS ECHO. TARGET GRID IS OFFLINE.
+-------------------------------
+
+Ciphertext: 'TTEHCALIBICUCUIKWSTH'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - IAWVT -> MCDJX
+  - OTCJTD -> SVJXXF
+
+Enter the decrypted plaintext (uppercase, no spaces).",PRXTYYEUXGVGYSBWSQMT,,"## Analysis
+
+**Step 1 – Find the keyword.**
+The mission log says: *""ENCRYPTION PRIMARY KEY IS DETERMINED AS ECHO.""* The keyword tied to the PRIMARY KEY label is **ECHO**.
+
+**Step 2 – Confirm the cipher with the examples.**
+Keyword ECHO = (E=4, C=2, H=7, O=14).
+
+Check `IAWVT → MCDJX`:
+- I(8)+4=12=M ✓
+- A(0)+2=2=C ✓
+- W(22)+7=29→3=D ✓
+- V(21)+14=35→9=J ✓
+- T(19)+4=23=X ✓
+
+So encryption is standard Vigenère: **cipher = plain + key**. Decryption is **plain = cipher − key**.
+
+**Step 3 – Decrypt `TTEHCALIBICUCUIKWSTH` with key ECHO (repeating).**
+
+| C | val | key | −key | P |
+|---|----|----|----|---|
+|T|19|E(4)|15|P|
+|T|19|C(2)|17|R|
+|E|4|H(7)|23|X|
+|H|7|O(14)|19|T|
+|C|2|E(4)|24|Y|
+|A|0|C(2)|24|Y|
+|L|11|H(7)|4|E|
+|I|8|O(14)|20|U|
+|B|1|E(4)|23|X|
+|I|8|C(2)|6|G|
+|C|2|H(7)|21|V|
+|U|20|O(14)|6|G|
+|C|2|E(4)|24|Y|
+|U|20|C(2)|18|S|
+|I|8|H(7)|1|B|
+|K|10|O(14)|22|W|
+|W|22|E(4)|18|S|
+|S|18|C(2)|16|Q|
+|T|19|H(7)|12|M|
+|H|7|O(14)|19|T|
+
+**Verification (re-encrypt):** P+E=T, R+C=T, X+H=E, T+O=H … ✓ consistent.
+
+Result: **PRXTYYEUXGVGYSBWSQMT**
+
+Answer: PRXTYYEUXGVGYSBWSQMT",PRXTYYEUXGVGYSBWSQMT,1,medium,stop
+cipher_en_medium_0005,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION VECTOR IS DETERMINED AS GOLF. COORDINATES SET TO 4.25 | SECTOR 45F0. TARGET GRID IS READY. SYSTEM REPORT ID 9714: STATUS CRITICAL.
+-------------------------------
+
+Ciphertext: 'JSHQKZORJYWXONTOMHSAPLEC'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - MWVEL -> SKGJR
+  - DWACB -> JKLHH
+
+Enter the decrypted plaintext (uppercase, no spaces).",DEWLELDMDKLSIZIJGTHVJXTX,,"## Solution
+
+**Step 1 – Find the keyword.**
+The log says ""ENCRYPTION **VECTOR** IS DETERMINED AS GOLF."" The keyword follows the VECTOR label → **GOLF**.
+
+The examples confirm this. Check MWVEL → SKGJR with GOLF:
+- M(12)+G(6)=S, W(22)+O(14)=K, V(21)+L(11)=G, E(4)+F(5)=J, L(11)+G(6)=R → **SKGJR** ✓
+
+So encryption = plaintext + keyword. To decrypt: **ciphertext − keyword**.
+
+**Step 2 – Decrypt the ciphertext** `JSHQKZORJYWXONTOMHSAPLEC` with repeating key `GOLF`:
+
+| C | key | C−key | P |
+|---|----|------|---|
+|J(9)|G(6)|3|D|
+|S(18)|O(14)|4|E|
+|H(7)|L(11)|22|W|
+|Q(16)|F(5)|11|L|
+|K(10)|G(6)|4|E|
+|Z(25)|O(14)|11|L|
+|O(14)|L(11)|3|D|
+|R(17)|F(5)|12|M|
+|J(9)|G(6)|3|D|
+|Y(24)|O(14)|10|K|
+|W(22)|L(11)|11|L|
+|X(23)|F(5)|18|S|
+|O(14)|G(6)|8|I|
+|N(13)|O(14)|25|Z|
+|T(19)|L(11)|8|I|
+|O(14)|F(5)|9|J|
+|M(12)|G(6)|6|G|
+|H(7)|O(14)|19|T|
+|S(18)|L(11)|7|H|
+|A(0)|F(5)|21|V|
+|P(15)|G(6)|9|J|
+|L(11)|O(14)|23|X|
+|E(4)|L(11)|19|T|
+|C(2)|F(5)|23|X|
+
+**Verification (re‑encrypt):** D+G=J, E+O=S, W+L=H, L+F=Q … ✓ matches the ciphertext.
+
+**Decrypted plaintext:** `DEWLELDMDKLSIZIJGTHVJXTX`
+
+Answer: DEWLELDMDKLSIZIJGTHVJXTX",DEWLELDMDKLSIZIJGTHVJXTX,1,medium,stop
+cipher_en_medium_0006,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 2947: STATUS CRITICAL. ENCRYPTION VECTOR IS DETERMINED AS FOXTROT. TARGET CORE IS OFFLINE. COORDINATES SET TO 155.16 | SECTOR 5EA9.
+-------------------------------
+
+Ciphertext: 'CCZBGWQPVVBQRRDAIIARHT'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - FMQOL -> KANHC
+  - LUVKSM -> QISDJA
+
+Enter the decrypted plaintext (uppercase, no spaces).",XOCIPIXKHYIZDYYMLPJDOO,,"## Solution
+
+**Step 1 – Find the keyword.**
+The log contains ""...ENCRYPTION **VECTOR** IS DETERMINED AS FOXTROT..."" Using the labeling rule, the keyword tied to the VECTOR label is **FOXTROT**.
+
+**Verify with the examples (encryption = plaintext + key):**
+- FMQOL + FOXTR = (5,12,16,14,11)+(5,14,23,19,17) = K,A,N,H,C = **KANHC** ✓
+- LUVKSM + FOXTRO = (11,20,21,10,18,12)+(5,14,23,19,17,14) = Q,I,S,D,J,A = **QISDJA** ✓
+
+Keyword **FOXTROT** confirmed.
+
+**Step 2 – Decrypt (subtract the key, mod 26).**
+
+Key stream: F O X T R O T F O X T R O T F O X T R O T F 
+= 5,14,23,19,17,14,19,5,14,23,19,17,14,19,5,14,23,19,17,14,19,5
+
+| C | C | Z | B | G | W | Q | P | V | V | B | Q | R | R | D | A | I | I | A | R | H | T |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| X | O | C | I | P | I | X | K | H | Y | I | Z | D | Y | Y | M | L | P | J | D | O | O |
+
+Result:
+
+**XOCIPIXKHYIZDYYMLPJDOO**
+
+Answer: XOCIPIXKHYIZDYYMLPJDOO",XOCIPIXKHYIZDYYMLPJDOO,1,medium,stop
+cipher_en_medium_0007,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION VECTOR IS DETERMINED AS GOLF. TARGET SATELLITE IS OFFLINE. SYSTEM REPORT ID 8209: STATUS LOCKED. COORDINATES SET TO 69.40 | SECTOR 1B7B.
+-------------------------------
+
+Ciphertext: 'BPQBJZZFKEHIZOOMSECZEW'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - SFFEQ -> YTQJW
+  - UCJG -> AQUL
+
+Enter the decrypted plaintext (uppercase, no spaces).",VBFWDLOAEQWDTADHMQRUYI,,"## Reasoning
+
+**Step 1 – Find the keyword.**
+The log says *""ENCRYPTION VECTOR IS DETERMINED AS GOLF.""* The label **VECTOR** points to the keyword. Testing against the examples confirms it:
+
+- Encrypt `SFFEQ` with `GOLF`: S+6=Y, F+14=T, F+11=Q, E+5=J, Q+6=W → `YTQJW` ✓
+- Encrypt `UCJG` with `GOLF`: U+6=A, C+14=Q, J+11=U, G+5=L → `AQUL` ✓
+
+So the keyword is **GOLF** (values 6, 14, 11, 5), and encryption = plaintext + key.
+
+**Step 2 – Decrypt (subtract the key).**
+
+Ciphertext: `BPQBJZZFKEHIZOOMSECZEW`
+Key stream: `GOLFGOLFGOLFGOLFGOLFGO`
+
+| C | val | key | −key | P |
+|---|-----|-----|------|---|
+|B|1|6|21|V|
+|P|15|14|1|B|
+|Q|16|11|5|F|
+|B|1|5|22|W|
+|J|9|6|3|D|
+|Z|25|14|11|L|
+|Z|25|11|14|O|
+|F|5|5|0|A|
+|K|10|6|4|E|
+|E|4|14|16|Q|
+|H|7|11|22|W|
+|I|8|5|3|D|
+|Z|25|6|19|T|
+|O|14|14|0|A|
+|O|14|11|3|D|
+|M|12|5|7|H|
+|S|18|6|12|M|
+|E|4|14|16|Q|
+|C|2|11|17|R|
+|Z|25|5|20|U|
+|E|4|6|24|Y|
+|W|22|14|8|I|
+
+Result: **VBFWDLOAEQWDTADHMQRUYI**
+
+(Verification: V+6=B, B+14=P, F+11=Q, W+5=B … reproduces the ciphertext.)
+
+Answer: VBFWDLOAEQWDTADHMQRUYI",VBFWDLOAEQWDTADHMQRUYI,1,medium,stop
+cipher_en_medium_0008,"--- [RECOVERED MISSION LOG] ---
+TARGET DATABASE IS READY. COORDINATES SET TO 152.81 | SECTOR 731E. ENCRYPTION VECTOR IS DETERMINED AS BRAVO. SYSTEM REPORT ID 385: STATUS STABLE.
+-------------------------------
+
+Ciphertext: 'BBHYZORUNTXAQCCDAVEBMKW'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - GGYHV -> HXYCJ
+  - NABZ -> ORBU
+
+Enter the decrypted plaintext (uppercase, no spaces).",AKHDLNAUSFWJQHOCJVJNLTW,,"## Step 1: Extract the keyword
+
+In the mission log, the label **VECTOR** appears: *""ENCRYPTION VECTOR IS DETERMINED AS BRAVO.""* The keyword value is **BRAVO**.
+
+## Step 2: Verify with examples
+
+Encryption rule: cipher = plaintext + key (mod 26). So key = cipher − plaintext.
+
+**GGYHV → HXYCJ:**
+- H−G = 1 → B
+- X−G = 17 → R
+- Y−Y = 0 → A
+- C−H = −5 → 21 → V
+- J−V = −12 → 14 → O
+
+Key = **BRAVO** ✓ (confirmed by second example too).
+
+## Step 3: Decrypt (plaintext = cipher − key)
+
+Key BRAVO = (1,17,0,21,14) repeating.
+
+| C | val | key | plain |
+|---|-----|-----|-------|
+|B|1|1|A|
+|B|1|17|K|
+|H|7|0|H|
+|Y|24|21|D|
+|Z|25|14|L|
+|O|14|1|N|
+|R|17|17|A|
+|U|20|0|U|
+|N|13|21|S|
+|T|19|14|F|
+|X|23|1|W|
+|A|0|17|J|
+|Q|16|0|Q|
+|C|2|21|H|
+|C|2|14|O|
+|D|3|1|C|
+|A|0|17|J|
+|V|21|0|V|
+|E|4|21|J|
+|B|1|14|N|
+|M|12|1|L|
+|K|10|17|T|
+|W|22|0|W|
+
+Result: **AKHDLNAUSFWJQHOCJVJNLTW**
+
+Answer: AKHDLNAUSFWJQHOCJVJNLTW",AKHDLNAUSFWJQHOCJVJNLTW,1,medium,stop
+cipher_en_medium_0009,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 2844: STATUS CRITICAL. TARGET GRID IS OFFLINE. ENCRYPTION AUTH CODE IS DETERMINED AS HOTEL. COORDINATES SET TO 102.94 | SECTOR B202.
+-------------------------------
+
+Ciphertext: 'MXYCVXGDJMZDFQHJWOUKIR'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - UYXGZU -> BMQKKB
+  - OXYRB -> VLRVM
+
+Enter the decrypted plaintext (uppercase, no spaces).",FJFYKQSKFBSPMMWCIVQZBD,,"## Solution
+
+**Step 1: Find the keyword**
+
+The log contains: ""ENCRYPTION AUTH CODE IS DETERMINED AS **HOTEL**""
+
+The word after ""AUTH CODE"" is the keyword: **HOTEL**
+
+**Step 2: Verify the method with an example**
+
+Encryption = plaintext + key (mod 26). Check UYXGZU → BMQKKB with key HOTEL:
+- U(20)+H(7)=1→B ✓
+- Y(24)+O(14)=12→M ✓
+- X(23)+T(19)=16→Q ✓
+- G(6)+E(4)=10→K ✓
+- Z(25)+L(11)=10→K ✓
+- U(20)+H(7)=1→B ✓
+
+Confirmed. To decrypt: **cipher − key (mod 26)**.
+
+**Step 3: Decrypt the ciphertext**
+
+Ciphertext: `MXYCVXGDJMZDFQHJWOUKIR`
+Key: `HOTELHOTELHOTELHOTELHO`
+
+| C | M | X | Y | C | V | X | G | D | J | M | Z | D | F | Q | H | J | W | O | U | K | I | R |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| K | H | O | T | E | L | H | O | T | E | L | H | O | T | E | L | H | O | T | E | L | H | O |
+| P | F | J | F | Y | K | Q | S | K | F | B | S | P | M | M | W | C | I | V | Q | Z | B | D |
+
+Result: `FJFYKQSKFBSPMMWCIVQZBD`
+
+Answer: FJFYKQSKFBSPMMWCIVQZBD",FJFYKQSKFBSPMMWCIVQZBD,1,medium,stop
+cipher_en_medium_0010,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 2311: STATUS SYNCING. COORDINATES SET TO 24.7 | SECTOR CB62. TARGET TERMINAL IS OFFLINE. ENCRYPTION VECTOR IS DETERMINED AS CHARLIE.
+-------------------------------
+
+Ciphertext: 'QNEDQYCNTSNXHEIBOMDPOVQ'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - TUVTTZ -> VBVKEH
+  - AQMGA -> CXMXL
+
+Enter the decrypted plaintext (uppercase, no spaces).",OGEMFQYLMSWMZAGUOVSHKTJ,,"## Analysis
+
+**Step 1 — Find the keyword.**
+The mission log contains the label **VECTOR**: *""ENCRYPTION VECTOR IS DETERMINED AS CHARLIE.""* Per the rule, the keyword is **CHARLIE**.
+
+**Step 2 — Verify with the examples (Vigenère = add key).**
+- `TUVTTZ` + `CHARLIE`: T+C=V, U+H=B, V+A=V, T+R=K, T+L=E, Z+I=H → `VBVKEH` ✓
+- `AQMGA` + `CHARLIE`: A+C=C, Q+H=X, M+A=M, G+R=X, A+L=L → `CXMXL` ✓
+
+The keyword **CHARLIE** and the ""add"" encryption are confirmed.
+
+**Step 3 — Decrypt (subtract the key).**
+
+```
+Cipher: Q N E D Q Y C N T S N X H E I B O M D P O V Q
+Key:    C H A R L I E C H A R L I E C H A R L I E C H
+Plain:  O G E M F Q Y L M S W M Z A G U O V S H K T J
+```
+
+Working each letter (mod 26):
+
+- Q−C=O, N−H=G, E−A=E, D−R=M, Q−L=F, Y−I=Q, C−E=Y
+- N−C=L, T−H=M, S−A=S, N−R=W, X−L=M, H−I=Z, E−E=A
+- I−C=G, B−H=U, O−A=O, M−R=V, D−L=S, P−I=H, O−E=K, V−C=T, Q−H=J
+
+**Result:** `OGEMFQYLMSWMZAGUOVSHKTJ`
+
+Answer: OGEMFQYLMSWMZAGUOVSHKTJ",OGEMFQYLMSWMZAGUOVSHKTJ,1,medium,stop
+cipher_en_medium_0011,"--- [RECOVERED MISSION LOG] ---
+TARGET DATABASE IS READY. ENCRYPTION VECTOR IS DETERMINED AS ALPHA. COORDINATES SET TO 137.93 | SECTOR 4E78. SYSTEM REPORT ID 8734: STATUS STABLE.
+-------------------------------
+
+Ciphertext: 'PBYOQOLEPMNUSJFGAWXPMLRM'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - PQJZK -> PBYGK
+  - YIGTOB -> YTVAOB
+
+Enter the decrypted plaintext (uppercase, no spaces).",PQJHQOAPIMNJDCFGPHQPMACF,,"## Reasoning
+
+**Step 1 — Find the keyword**
+
+The mission log contains the label **VECTOR**: *""ENCRYPTION VECTOR IS DETERMINED AS ALPHA.""* The relevant seed word is **ALPHA**.
+
+**Verify with the provided examples** (Vigenère, cipher = plain + key, A=0):
+- Key = A L P H A → shifts 0,11,15,7,0
+- PQJZK: P+0=P, Q+11=B, J+15=Y, Z+7=G, K+0=K → **PBYGK** ✓
+- YIGTOB: Y+0=Y, I+11=T, G+15=V, T+7=A, O+0=O, B+0=B → **YTVAOB** ✓
+
+Both match, confirming the keyword is **ALPHA**.
+
+**Step 2 — Decrypt (plain = cipher − key)**
+
+Ciphertext in groups of 5 with key A(0) L(11) P(15) H(7) A(0):
+
+| Cipher | −Key | Plain |
+|--------|------|-------|
+| PBYOQ  | 0,11,15,7,0 | PQJHQ |
+| OLEPM  | 0,11,15,7,0 | OAPIM |
+| NUSJF  | 0,11,15,7,0 | NJDCF |
+| GAWXP  | 0,11,15,7,0 | GPHQP |
+| MLRM   | 0,11,15,7   | MACF  |
+
+Concatenated: **PQJHQOAPIMNJDCFGPHQPMACF**
+
+Answer: PQJHQOAPIMNJDCFGPHQPMACF",PQJHQOAPIMNJDCFGPHQPMACF,1,medium,stop
+cipher_en_medium_0012,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 5.16 | SECTOR F209. SYSTEM REPORT ID 7886: STATUS STABLE. ENCRYPTION SEED IS DETERMINED AS FOXTROT. TARGET CORE IS STANDBY.
+-------------------------------
+
+Ciphertext: 'QRKFKRVIVLMTJTAKBWZGHTJY'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - GFUKNY -> LTRDEM
+  - ABAG -> FPXZ
+
+Enter the decrypted plaintext (uppercase, no spaces).",LDNMTDCDHOTCVAVWEDISOOVB,,"## Step 1: Extract the keyword
+
+The mission log contains the label **SEED**:
+> ""ENCRYPTION **SEED** IS DETERMINED AS FOXTROT""
+
+The keyword is **FOXTROT** (confirmed by the examples below).
+
+## Step 2: Verify with examples
+
+Vigenère encryption = plaintext + key (A=0…Z=25):
+- GFUKNY + FOXTRO → L,T,R,D,E,M = **LTRDEM** ✓
+- ABAG + FOXT → F,P,X,Z = **FPXZ** ✓
+
+Keyword **FOXTROT** confirmed.
+
+## Step 3: Decrypt (subtract key)
+
+Ciphertext: `Q R K F K R V I V L M T J T A K B W Z G H T J Y`
+Key:        `F O X T R O T F O X T R O T F O X T R O T F O X`
+
+| C | −Key | Plain |
+|---|------|-------|
+|Q(16)−F(5)|=11|L|
+|R(17)−O(14)|=3|D|
+|K(10)−X(23)|=13|N|
+|F(5)−T(19)|=12|M|
+|K(10)−R(17)|=19|T|
+|R(17)−O(14)|=3|D|
+|V(21)−T(19)|=2|C|
+|I(8)−F(5)|=3|D|
+|V(21)−O(14)|=7|H|
+|L(11)−X(23)|=14|O|
+|M(12)−T(19)|=19|T|
+|T(19)−R(17)|=2|C|
+|J(9)−O(14)|=21|V|
+|T(19)−T(19)|=0|A|
+|A(0)−F(5)|=21|V|
+|K(10)−O(14)|=22|W|
+|B(1)−X(23)|=4|E|
+|W(22)−T(19)|=3|D|
+|Z(25)−R(17)|=8|I|
+|G(6)−O(14)|=18|S|
+|H(7)−T(19)|=14|O|
+|T(19)−F(5)|=14|O|
+|J(9)−O(14)|=21|V|
+|Y(24)−X(23)|=1|B|
+
+## Step 4: Verify
+
+Re-encrypting the result reproduces the ciphertext exactly (`QRKFKRVIVLMTJTAKBWZGHTJY`) ✓
+
+Answer: LDNMTDCDHOTCVAVWEDISOOVB",LDNMTDCDHOTCVAVWEDISOOVB,1,medium,stop
+cipher_en_medium_0013,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 174.31 | SECTOR 712A. ENCRYPTION PRIMARY KEY IS DETERMINED AS ALPHA. SYSTEM REPORT ID 2859: STATUS SYNCING. TARGET SATELLITE IS OFFLINE.
+-------------------------------
+
+Ciphertext: 'SXJLMJIWOLHXJMPLPCEQ'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - MAAJ -> MLPQ
+  - VOWF -> VZLM
+
+Enter the decrypted plaintext (uppercase, no spaces).",SMUEMJXHHLHMUFPLENXQ,,"## Solution
+
+**Step 1 — Find the keyword.**
+The mission log contains the label ""PRIMARY KEY,"" and the keyword is **ALPHA**.
+
+I can verify this using the provided examples (which use the same keyword). Comparing plaintext → ciphertext letter shifts:
+- MAAJ → MLPQ gives shifts 0, 11, 15, 7 → A, L, P, H
+- VOWF → VZLM gives shifts 0, 11, 15, 7 → A, L, P, H
+
+This matches the repeating key **ALPHA** (A=0, L=11, P=15, H=7, A=0).
+
+**Step 2 — Reverse the Vigenère.**
+Since encryption *adds* the key, decryption *subtracts* it (mod 26):
+
+| C | S | X | J | L | M | J | I | W | O | L | H | X | J | M | P | L | P | C | E | Q |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| K | A | L | P | H | A | A | L | P | H | A | A | L | P | H | A | A | L | P | H | A |
+| P | S | M | U | E | M | J | X | H | H | L | H | M | U | F | P | L | E | N | X | Q |
+
+**Verification (re-encrypt):** S+A=S, M+L=X, U+P=J, E+H=L, M+A=M … all match the ciphertext. ✓
+
+Decrypted result: **SMUEMJXHHLHMUFPLENXQ**
+
+Answer: SMUEMJXHHLHMUFPLENXQ",SMUEMJXHHLHMUFPLENXQ,1,medium,stop
+cipher_en_medium_0014,"--- [RECOVERED MISSION LOG] ---
+TARGET TERMINAL IS READY. SYSTEM REPORT ID 1150: STATUS CRITICAL. COORDINATES SET TO 143.21 | SECTOR D69F. ENCRYPTION VECTOR IS DETERMINED AS BRAVO.
+-------------------------------
+
+Ciphertext: 'YNQWUEHPNKAFIVVKFYUJ'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - TAQE -> URQZ
+  - OFPYW -> PWPTK
+
+Enter the decrypted plaintext (uppercase, no spaces).",XWQBGDQPSWZOIAHJOYZV,,"## Solution
+
+**Step 1 — Find the keyword.**
+The mission log ends with ""ENCRYPTION VECTOR IS DETERMINED AS BRAVO."" The keyword follows the label **VECTOR** ... = **BRAVO**.
+
+**Step 2 — Verify against examples (encryption = plaintext + key).**
+- TAQE → URQZ: T+**B**=U, A+**R**=R, Q+**A**=Q, E+**V**=Z ✓ (key = BRAV…)
+- OFPYW → PWPTK: O+B=P, F+R=W, P+A=P, Y+V=T, W+O=K ✓
+
+Keyword confirmed: **BRAVO** (B=1, R=17, A=0, V=21, O=14).
+
+**Step 3 — Decrypt (plaintext = cipher − key).**
+
+| C | # | key | −key | plain |
+|---|---|-----|------|-------|
+|Y|24|1|23|X|
+|N|13|17|22|W|
+|Q|16|0|16|Q|
+|W|22|21|1|B|
+|U|20|14|6|G|
+|E|4|1|3|D|
+|H|7|17|16|Q|
+|P|15|0|15|P|
+|N|13|21|18|S|
+|K|10|14|22|W|
+|A|0|1|25|Z|
+|F|5|17|14|O|
+|I|8|0|8|I|
+|V|21|21|0|A|
+|V|21|14|7|H|
+|K|10|1|9|J|
+|F|5|17|14|O|
+|Y|24|0|24|Y|
+|U|20|21|25|Z|
+|J|9|14|21|V|
+
+Result: **XWQBGDQPSWZOIAHJOYZV**
+
+Answer: XWQBGDQPSWZOIAHJOYZV",XWQBGDQPSWZOIAHJOYZV,1,medium,stop
+cipher_en_medium_0015,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 5478: STATUS STABLE. TARGET CORE IS STANDBY. ENCRYPTION AUTH CODE IS DETERMINED AS CHARLIE. COORDINATES SET TO 57.60 | SECTOR C919.
+-------------------------------
+
+Ciphertext: 'UJJQTVPWKPVBAOJUOFTSO'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - KFAIX -> MMAZI
+  - EFEW -> GMEN
+
+Enter the decrypted plaintext (uppercase, no spaces).",SCJZINLUDPEQSKHNOOIKK,,"## Solution
+
+**Step 1: Find the keyword.**
+The mission log contains: ""ENCRYPTION AUTH CODE IS DETERMINED AS **CHARLIE**."" Using the label **AUTH CODE**, the keyword is **CHARLIE**.
+
+**Step 2: Verify with examples (Vigenère = plaintext + key).**
+- KFAIX + CHARL: K+C=M, F+H=M, A+A=A, I+R=Z, X+L=I → MMAZI ✓
+- EFEW + CHAR: E+C=G, F+H=M, E+A=E, W+R=N → GMEN ✓
+
+Encryption confirmed as addition, so decryption = **cipher − key**.
+
+**Step 3: Decrypt** `UJJQTVPWKPVBAOJUOFTSO` with key CHARLIE (2,7,0,17,11,8,4):
+
+| C | key | plain |
+|---|-----|-------|
+|U(20)|C(2)|S|
+|J(9)|H(7)|C|
+|J(9)|A(0)|J|
+|Q(16)|R(17)|Z|
+|T(19)|L(11)|I|
+|V(21)|I(8)|N|
+|P(15)|E(4)|L|
+|W(22)|C(2)|U|
+|K(10)|H(7)|D|
+|P(15)|A(0)|P|
+|V(21)|R(17)|E|
+|B(1)|L(11)|Q|
+|A(0)|I(8)|S|
+|O(14)|E(4)|K|
+|J(9)|C(2)|H|
+|U(20)|H(7)|N|
+|O(14)|A(0)|O|
+|F(5)|R(17)|O|
+|T(19)|L(11)|I|
+|S(18)|I(8)|K|
+|O(14)|E(4)|K|
+
+Result: **SCJZINLUDPEQSKHNOOIKK**
+
+Answer: SCJZINLUDPEQSKHNOOIKK",SCJZINLUDPEQSKHNOOIKK,1,medium,stop
+cipher_en_medium_0016,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION SEED IS DETERMINED AS HOTEL. TARGET DATABASE IS BREACHED. SYSTEM REPORT ID 5089: STATUS LOCKED. COORDINATES SET TO 115.59 | SECTOR 92B8.
+-------------------------------
+
+Ciphertext: 'OPTPOHBLVAUOGYZPWFPOO'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - CHZL -> JVSP
+  - CRVCU -> JFOGF
+
+Enter the decrypted plaintext (uppercase, no spaces).",HBALDANSRPNANUOIIMLDH,,"## Step 1: Identify the keyword
+
+The mission log contains the label **SEED**:
+> ""ENCRYPTION SEED IS DETERMINED AS **HOTEL**""
+
+Testing against the provided examples confirms the keyword is **HOTEL**:
+- CHZL → JVSP: C+H=J, H+O=V, Z+T=S, L+E=P ✓
+- CRVCU → JFOGF: uses key H,O,T,E,L ✓
+
+## Step 2: Decrypt (reverse Vigenère = subtract keyword)
+
+Ciphertext: `OPTPOHBLVAUOGYZPWFPOO`
+Key stream: `HOTELHOTELHOTELHOTELH`
+
+| C | O | P | T | P | O | H | B | L | V | A | U | O | G | Y | Z | P | W | F | P | O | O |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| K | H | O | T | E | L | H | O | T | E | L | H | O | T | E | L | H | O | T | E | L | H |
+| P | H | B | A | L | D | A | N | S | R | P | N | A | N | U | O | I | I | M | L | D | H |
+
+Computation (each = cipher − key, mod 26):
+- O−H=H, P−O=B, T−T=A, P−E=L, O−L=D, H−H=A, B−O=N, L−T=S, V−E=R, A−L=P, U−H=N, O−O=A, G−T=N, Y−E=U, Z−L=O, P−H=I, W−O=I, F−T=M, P−E=L, O−L=D, O−H=H
+
+**Verification** (re-encrypting): H+H=O, B+O=P, A+T=T … reproduces the ciphertext exactly ✓
+
+## Result
+
+The Vigenère decryption with keyword HOTEL yields:
+
+Answer: HBALDANSRPNANUOIIMLDH",HBALDANSRPNANUOIIMLDH,1,medium,stop
+cipher_en_medium_0017,"--- [RECOVERED MISSION LOG] ---
+TARGET DATABASE IS STANDBY. ENCRYPTION AUTH CODE IS DETERMINED AS BRAVO. SYSTEM REPORT ID 8835: STATUS OVERLOADED. COORDINATES SET TO 36.13 | SECTOR 9E51.
+-------------------------------
+
+Ciphertext: 'RSCSACJOREEEQPUBQBKTY'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - AYCFG -> BPCAU
+  - WTAK -> XKAF
+
+Enter the decrypted plaintext (uppercase, no spaces).",QBCXMBSOWQDNQUGAZBPFX,,"## Solution
+
+**Step 1 — Find the keyword.**
+The log contains the label ""AUTH CODE"": *""ENCRYPTION AUTH CODE IS DETERMINED AS BRAVO.""* The operative keyword is **BRAVO**.
+
+**Step 2 — Verify with examples (Vigenère, add).**
+- AYCFG + BRAVO: A+B=B, Y+R=P, C+A=C, F+V=A, G+O=U → **BPCAU** ✓
+- WTAK + BRAV: W+B=X, T+R=K, A+A=A, K+V=F → **XKAF** ✓
+
+So encryption = plaintext + key (A=0). To decrypt: **cipher − key**.
+
+**Step 3 — Decrypt the ciphertext** `RSCSACJOREEEQPUBQBKTY` with key `BRAVO` (1,17,0,21,14):
+
+| C | R | S | C | S | A | C | J | O | R | E | E | E | Q | P | U | B | Q | B | K | T | Y |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| K | B | R | A | V | O | B | R | A | V | O | B | R | A | V | O | B | R | A | V | O | B |
+| P | Q | B | C | X | M | B | S | O | W | Q | D | N | Q | U | G | A | Z | B | P | F | X |
+
+Reading the plaintext letters:
+
+**QBCXMBSOWQDNQUGAZBPFX**
+
+Answer: QBCXMBSOWQDNQUGAZBPFX",QBCXMBSOWQDNQUGAZBPFX,1,medium,stop
+cipher_en_medium_0018,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION VECTOR IS DETERMINED AS CHARLIE. COORDINATES SET TO 50.12 | SECTOR E388. TARGET SATELLITE IS READY. SYSTEM REPORT ID 8993: STATUS STABLE.
+-------------------------------
+
+Ciphertext: 'NNADTLPDGNSTEYXOPIWDCY'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - WXGNDA -> YEGEOI
+  - SZMEN -> UGMVY
+
+Enter the decrypted plaintext (uppercase, no spaces).",LGAMIDLBZNBIWUVHPRLVYW,,"## Step 1: Find the keyword
+
+The label **VECTOR** appears in the log: ""ENCRYPTION VECTOR IS DETERMINED AS CHARLIE.""
+
+Testing against the examples confirms the keyword is **CHARLIE**:
+- `WXGNDA → YEGEOI`: Y−W=2(C), E−X=7(H), G−G=0(A), N−D=17(R)... = C H A R L I ✓
+- `SZMEN → UGMVY`: U−S=2(C), G−Z=7(H), M−M=0(A)... = C H A R L ✓
+
+Encryption = plaintext + keyword (mod 26).
+
+## Step 2: Decrypt (subtract keyword)
+
+Keyword values: C=2, H=7, A=0, R=17, L=11, I=8, E=4 (repeating).
+
+| Cipher | Val | Key | Plain |
+|--------|-----|-----|-------|
+| N | 13 | 2 | L |
+| N | 13 | 7 | G |
+| A | 0 | 0 | A |
+| D | 3 | 17 | M |
+| T | 19 | 11 | I |
+| L | 11 | 8 | D |
+| P | 15 | 4 | L |
+| D | 3 | 2 | B |
+| G | 6 | 7 | Z |
+| N | 13 | 0 | N |
+| S | 18 | 17 | B |
+| T | 19 | 11 | I |
+| E | 4 | 8 | W |
+| Y | 24 | 4 | U |
+| X | 23 | 2 | V |
+| O | 14 | 7 | H |
+| P | 15 | 0 | P |
+| I | 8 | 17 | R |
+| W | 22 | 11 | L |
+| D | 3 | 8 | V |
+| C | 2 | 4 | Y |
+| Y | 24 | 2 | W |
+
+Result: **LGAMIDLBZNBIWUVHPRLVYW**
+
+Answer: LGAMIDLBZNBIWUVHPRLVYW",LGAMIDLBZNBIWUVHPRLVYW,1,medium,stop
+cipher_en_medium_0019,"--- [RECOVERED MISSION LOG] ---
+TARGET DATABASE IS STANDBY. COORDINATES SET TO 22.47 | SECTOR C72C. ENCRYPTION PRIMARY KEY IS DETERMINED AS DELTA. SYSTEM REPORT ID 9326: STATUS SYNCING.
+-------------------------------
+
+Ciphertext: 'NNHHWOOGCPATTUPTQBNO'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - SDYAXK -> VHJTXN
+  - HXXUH -> KBINH
+
+Enter the decrypted plaintext (uppercase, no spaces).",KJWOWLKVJPXPIBPQMQUO,,"## Solution
+
+**Step 1: Find the keyword.**
+The mission log contains: ""ENCRYPTION PRIMARY KEY IS DETERMINED AS **DELTA**."" The word tied to the ""PRIMARY KEY"" label is **DELTA**.
+
+**Verify with examples** (Vigenère add, A=0):
+- S(18)+D(3)=V(21) ✓, D(3)+E(4)=H(7) ✓, Y(24)+L(11)=J(9) ✓, A(0)+T(19)=T ✓, X(23)+A(0)=X ✓, K(10)+D(3)=N ✓ → gives VHJTXN ✓
+
+Keyword **DELTA** confirmed.
+
+**Step 2: Decrypt (subtract keyword).**
+
+Key stream: D E L T A repeating.
+
+| C | val | key | P |
+|---|-----|-----|---|
+|N|13|D(3)|K|
+|N|13|E(4)|J|
+|H|7|L(11)|W|
+|H|7|T(19)|O|
+|W|22|A(0)|W|
+|O|14|D(3)|L|
+|O|14|E(4)|K|
+|G|6|L(11)|V|
+|C|2|T(19)|J|
+|P|15|A(0)|P|
+|A|0|D(3)|X|
+|T|19|E(4)|P|
+|T|19|L(11)|I|
+|U|20|T(19)|B|
+|P|15|A(0)|P|
+|T|19|D(3)|Q|
+|Q|16|E(4)|M|
+|B|1|L(11)|Q|
+|N|13|T(19)|U|
+|O|14|A(0)|O|
+
+Result: **KJWOWLKVJPXPIBPQMQUO**
+
+Answer: KJWOWLKVJPXPIBPQMQUO",KJWOWLKVJPXPIBPQMQUO,1,medium,stop
+cipher_en_medium_0020,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION SEED IS DETERMINED AS ECHO. TARGET DATABASE IS OFFLINE. COORDINATES SET TO 8.45 | SECTOR 86AB. SYSTEM REPORT ID 9637: STATUS SYNCING.
+-------------------------------
+
+Ciphertext: 'NUTEIPBJKVNBFDOVUEOKJ'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - EUDD -> IWKR
+  - CEBGXV -> GGIUBX
+
+Enter the decrypted plaintext (uppercase, no spaces).",JSMQENUVGTGNBBHHQCHWF,,"## Solution
+
+**Step 1 — Find the keyword.**
+The log contains ""...ENCRYPTION **SEED** IS DETERMINED AS **ECHO**."" The keyword tied to the SEED label is **ECHO**.
+
+**Verify with the examples (Vigenère = plaintext + keyword):**
+- EUDD + ECHO → I(4+4)W(20+2)K(3+7)R(3+14) = IWKR ✓
+- CEBGXV + ECHOEC → G G I U B X ✓
+
+Keyword **ECHO** confirmed.
+
+**Step 2 — Decrypt (subtract keyword, A=0).**
+
+Keystream: E C H O repeating (4,2,7,14).
+
+| C | val | −key | plain |
+|---|-----|------|-------|
+| N | 13 | −4 | J |
+| U | 20 | −2 | S |
+| T | 19 | −7 | M |
+| E | 4 | −14 | Q |
+| I | 8 | −4 | E |
+| P | 15 | −2 | N |
+| B | 1 | −7 | U |
+| J | 9 | −14 | V |
+| K | 10 | −4 | G |
+| V | 21 | −2 | T |
+| N | 13 | −7 | G |
+| B | 1 | −14 | N |
+| F | 5 | −4 | B |
+| D | 3 | −2 | B |
+| O | 14 | −7 | H |
+| V | 21 | −14 | H |
+| U | 20 | −4 | Q |
+| E | 4 | −2 | C |
+| O | 14 | −7 | H |
+| K | 10 | −14 | W |
+| J | 9 | −4 | F |
+
+(The example plaintexts EUDD and CEBGXV are themselves non-words, so the recovered plaintext here is likewise a raw string.)
+
+Answer: JSMQENUVGTGNBBHHQCHWF",JSMQENUVGTGNBBHHQCHWF,1,medium,stop
+cipher_en_medium_0021,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 6433: STATUS STABLE. ENCRYPTION SEED IS DETERMINED AS INDIA. TARGET GRID IS STANDBY. COORDINATES SET TO 112.39 | SECTOR A5EA.
+-------------------------------
+
+Ciphertext: 'LHWPVABVXPTHBPQCHEKIN'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - DMMYB -> LZPGB
+  - JZYDO -> RMBLO
+
+Enter the decrypted plaintext (uppercase, no spaces).",DUTHVSOSPPLUYHQUUBCIF,,"## Reasoning
+
+**Step 1 – Find the keyword.**
+The log says: ""ENCRYPTION SEED IS DETERMINED AS INDIA."" Following the rule, the keyword is the word associated with the **SEED** label → **INDIA**.
+
+**Step 2 – Verify with examples (Vigenère add).**
+- DMMYB + INDIA: D+I=L, M+N=Z, M+D=P, Y+I=G, B+A=B → **LZPGB** ✓
+- JZYDO + INDIA: J+I=R, Z+N=M, Y+D=B, D+I=L, O+A=O → **RMBLO** ✓
+
+Keyword **INDIA** confirmed.
+
+**Step 3 – Decrypt (subtract keyword).**
+Ciphertext: `LHWPVABVXPTHBPQCHEKIN`
+Keystream: `INDIA INDIA INDIA INDIA I`
+
+| C | K | P |
+|---|---|---|
+| L−I | 11−8=3 | D |
+| H−N | 7−13→20 | U |
+| W−D | 19 | T |
+| P−I | 7 | H |
+| V−A | 21 | V |
+| A−I | →18 | S |
+| B−N | →14 | O |
+| V−D | 18 | S |
+| X−I | 15 | P |
+| P−A | 15 | P |
+| T−I | 11 | L |
+| H−N | →20 | U |
+| B−D | →24 | Y |
+| P−I | 7 | H |
+| Q−A | 16 | Q |
+| C−I | →20 | U |
+| H−N | →20 | U |
+| E−D | 1 | B |
+| K−I | 2 | C |
+| I−A | 8 | I |
+| N−I | 5 | F |
+
+Result: **DUTHVSOSPPLUYHQUUBCIF**
+
+Answer: DUTHVSOSPPLUYHQUUBCIF",DUTHVSOSPPLUYHQUUBCIF,1,medium,stop
+cipher_en_medium_0022,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 4680: STATUS SYNCING. ENCRYPTION SEED IS DETERMINED AS ALPHA. TARGET CORE IS READY. COORDINATES SET TO 15.30 | SECTOR 664B.
+-------------------------------
+
+Ciphertext: 'THZXSHIAETVJHTGQQZGB'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - EQUG -> EBJN
+  - KVDOD -> KGSVD
+
+Enter the decrypted plaintext (uppercase, no spaces).",TWKQSHXLXTVYSMGQFKZB,,"## Reasoning
+
+**Step 1 — Find the keyword.**
+The mission log contains: *""ENCRYPTION SEED IS DETERMINED AS ALPHA.""* The label **SEED** points to the keyword, which resolves to **ALPHA**.
+
+**Step 2 — Verify with the examples (encryption = plaintext + key, A=0…):**
+- EQUG + ALPH → E, Q+L=B, U+P=J, G+H=N = **EBJN** ✓
+- KVDOD + ALPHA → K, V+L=G, D+P=S, O+H=V, D+A=D = **KGSVD** ✓
+
+Keyword **ALPHA** confirmed.
+
+**Step 3 — Decrypt (subtract key, repeating ALPHA):**
+
+| C | T | H | Z | X | S | H | I | A | E | T | V | J | H | T | G | Q | Q | Z | G | B |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| K | A | L | P | H | A | A | L | P | H | A | A | L | P | H | A | A | L | P | H | A |
+| P | T | W | K | Q | S | H | X | L | X | T | V | Y | S | M | G | Q | F | K | Z | B |
+
+Result: **TWKQSHXLXTVYSMGQFKZB**
+
+Answer: TWKQSHXLXTVYSMGQFKZB",TWKQSHXLXTVYSMGQFKZB,1,medium,stop
+cipher_en_medium_0023,"--- [RECOVERED MISSION LOG] ---
+TARGET DATABASE IS STANDBY. SYSTEM REPORT ID 4452: STATUS OVERLOADED. ENCRYPTION PRIMARY KEY IS DETERMINED AS DELTA. COORDINATES SET TO 53.45 | SECTOR E91A.
+-------------------------------
+
+Ciphertext: 'VTUPGBXDPBYWDHAILOWE'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - YFNUZM -> BJYNZP
+  - DRLX -> GVWQ
+
+Enter the decrypted plaintext (uppercase, no spaces).",SPJWGYTSWBVSSOAFHDDE,,"## Reasoning
+
+**Step 1 — Find the keyword.**
+The log states: ""ENCRYPTION PRIMARY KEY IS DETERMINED AS DELTA."" The word designated by the **PRIMARY KEY** label is **DELTA**.
+
+**Step 2 — Verify with examples.**
+Encryption = plaintext + keyword (mod 26), key = DELTA = (3,4,11,19,0).
+
+- YFNUZM + DELTAD = Y+3=B, F+4=J, N+11=Y, U+19=N, Z+0=Z, M+3=P → **BJYNZP** ✓
+- DRLX + DELT = D+3=G, R+4=V, L+11=W, X+19=Q → **GVWQ** ✓
+
+Keyword DELTA confirmed; encryption **adds** the key.
+
+**Step 3 — Decrypt (subtract the key).**
+
+Ciphertext: V T U P G B X D P B Y W D H A I L O W E
+Key stream: D E L T A D E L T A D E L T A D E L T A (3,4,11,19,0…)
+
+| C | val | key | plain |
+|---|----|----|----|
+|V|21|3|18=S|
+|T|19|4|15=P|
+|U|20|11|9=J|
+|P|15|19|22=W|
+|G|6|0|6=G|
+|B|1|3|24=Y|
+|X|23|4|19=T|
+|D|3|11|18=S|
+|P|15|19|22=W|
+|B|1|0|1=B|
+|Y|24|3|21=V|
+|W|22|4|18=S|
+|D|3|11|18=S|
+|H|7|19|14=O|
+|A|0|0|0=A|
+|I|8|3|5=F|
+|L|11|4|7=H|
+|O|14|11|3=D|
+|W|22|19|3=D|
+|E|4|0|4=E|
+
+Result: **SPJWGYTSWBVSSOAFHDDE**
+
+Answer: SPJWGYTSWBVSSOAFHDDE",SPJWGYTSWBVSSOAFHDDE,1,medium,stop
+cipher_en_medium_0024,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 896: STATUS CRITICAL. COORDINATES SET TO 133.79 | SECTOR CFCD. ENCRYPTION PRIMARY KEY IS DETERMINED AS DELTA. TARGET TERMINAL IS BREACHED.
+-------------------------------
+
+Ciphertext: 'KAADNLJDZCPVCLSBIDJNKSZE'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - WJTI -> ZNEB
+  - CAZLER -> FEKEEU
+
+Enter the decrypted plaintext (uppercase, no spaces).",HWPKNIFSGCMRRSSYESQNHOOL,,"## Solution
+
+**Step 1: Find the keyword**
+
+The mission log contains ""ENCRYPTION PRIMARY KEY IS DETERMINED AS **DELTA**"". The keyword associated with the ""PRIMARY KEY"" label is **DELTA**.
+
+**Step 2: Verify with examples**
+
+Encryption adds the key (plaintext + key). Check WJTI → ZNEB with key D(3)E(4)L(11)T(19):
+- W(22)+3=25=Z ✓, J(9)+4=13=N ✓, T(19)+11=30=4=E ✓, I(8)+19=27=1=B ✓
+
+Confirmed: keyword = DELTA, algorithm = Vigenère addition.
+
+**Step 3: Decrypt (subtract key)**
+
+Key stream: D(3) E(4) L(11) T(19) A(0) repeating.
+
+| C | val | −key | plain |
+|---|-----|------|-------|
+|K|10|−3|H|
+|A|0|−4|W|
+|A|0|−11|P|
+|D|3|−19|K|
+|N|13|−0|N|
+|L|11|−3|I|
+|J|9|−4|F|
+|D|3|−11|S|
+|Z|25|−19|G|
+|C|2|−0|C|
+|P|15|−3|M|
+|V|21|−4|R|
+|C|2|−11|R|
+|L|11|−19|S|
+|S|18|−0|S|
+|B|1|−3|Y|
+|I|8|−4|E|
+|D|3|−11|S|
+|J|9|−19|Q|
+|N|13|−0|N|
+|K|10|−3|H|
+|S|18|−4|O|
+|Z|25|−11|O|
+|E|4|−19|L|
+
+Result: **HWPKNIFSGCMRRSSYESQNHOOL**
+
+Answer: HWPKNIFSGCMRRSSYESQNHOOL",HWPKNIFSGCMRRSSYESQNHOOL,1,medium,stop
+cipher_en_medium_0025,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 126.89 | SECTOR A923. SYSTEM REPORT ID 5821: STATUS OVERLOADED. TARGET TERMINAL IS STANDBY. ENCRYPTION SEED IS DETERMINED AS INDIA.
+-------------------------------
+
+Ciphertext: 'AOZMKCSMBHRHMXRPODZQR'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - SHGTDI -> AUJBDQ
+  - JXRLG -> RKUTG
+
+Enter the decrypted plaintext (uppercase, no spaces).",SBWEKUFJTHJUJPRHBARQJ,,"## Solution
+
+**Step 1: Find the keyword**
+From the mission log: ""ENCRYPTION SEED IS DETERMINED AS **INDIA**."" The word after ""SEED"" is **INDIA**.
+
+**Step 2: Verify with examples**
+Vigenère encryption adds the key (mod 26). Testing SHGTDI → AUJBDQ:
+- S(18)+I(8)=A ✓, H(7)+N(13)=U ✓, G(6)+D(3)=J ✓, T(19)+I(8)=B ✓, D(3)+A(0)=D ✓, I(8)+I(8)=Q ✓
+
+Confirmed: keyword = INDIA, encryption = add.
+
+**Step 3: Decrypt (subtract key)**
+Ciphertext: A O Z M K C S M B H R H M X R P O D Z Q R
+Key (INDIA): I N D I A I N D I A I N D I A I N D I A I
+
+| C | key | C−key | P |
+|---|---|---|---|
+|A(0)|I(8)|18|S|
+|O(14)|N(13)|1|B|
+|Z(25)|D(3)|22|W|
+|M(12)|I(8)|4|E|
+|K(10)|A(0)|10|K|
+|C(2)|I(8)|20|U|
+|S(18)|N(13)|5|F|
+|M(12)|D(3)|9|J|
+|B(1)|I(8)|19|T|
+|H(7)|A(0)|7|H|
+|R(17)|I(8)|9|J|
+|H(7)|N(13)|20|U|
+|M(12)|D(3)|9|J|
+|X(23)|I(8)|15|P|
+|R(17)|A(0)|17|R|
+|P(15)|I(8)|7|H|
+|O(14)|N(13)|1|B|
+|D(3)|D(3)|0|A|
+|Z(25)|I(8)|17|R|
+|Q(16)|A(0)|16|Q|
+|R(17)|I(8)|9|J|
+
+Result: **SBWEKUFJTHJUJPRHBARQJ**
+
+Answer: SBWEKUFJTHJUJPRHBARQJ",SBWEKUFJTHJUJPRHBARQJ,1,medium,stop
+cipher_en_medium_0026,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 2188: STATUS LOCKED. ENCRYPTION SEED IS DETERMINED AS ALPHA. TARGET SATELLITE IS READY. COORDINATES SET TO 142.66 | SECTOR 4D51.
+-------------------------------
+
+Ciphertext: 'LDSCQLDQGLDTOTESBNEAAGM'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - LPPWDH -> LAEDDH
+  - UOJWSB -> UZYDSB
+
+Enter the decrypted plaintext (uppercase, no spaces).",LSDVQLSBZLDIZMESQYXAAVX,,"## Solution
+
+**Step 1 – Find the keyword.**
+The log says: *""ENCRYPTION SEED IS DETERMINED AS ALPHA.""* The label **SEED** points us to the keyword, and the examples confirm it. Testing the examples:
+
+- `LPPWDH` → `LAEDDH`: taking cipher − plain gives `0,11,15,7,0` = **A,L,P,H,A**
+- `UOJWSB` → `UZYDSB`: gives the same `A,L,P,H,A`
+
+So the keyword is **ALPHA** (values 0, 11, 15, 7, 0), and encryption is *plain + key = cipher*.
+
+**Step 2 – Reverse the Vigenère (plain = cipher − key).**
+
+Keyword ALPHA repeats over the 23-letter ciphertext:
+
+```
+C : L D S C Q L D Q G L D T O T E S B N E A A G M
+K : A L P H A A L P H A A L P H A A L P H A A L P
+```
+
+| C | val | key | plain |
+|---|----|-----|-------|
+|L|11|0|L|
+|D|3|11|S|
+|S|18|15|D|
+|C|2|7|V|
+|Q|16|0|Q|
+|L|11|0|L|
+|D|3|11|S|
+|Q|16|15|B|
+|G|6|7|Z|
+|L|11|0|L|
+|D|3|0|D|
+|T|19|11|I|
+|O|14|15|Z|
+|T|19|7|M|
+|E|4|0|E|
+|S|18|0|S|
+|B|1|11|Q|
+|N|13|15|Y|
+|E|4|7|X|
+|A|0|0|A|
+|A|0|0|A|
+|G|6|11|V|
+|M|12|15|X|
+
+Reading down the plaintext column gives:
+
+**LSDVQLSBZLDIZMESQYXAAVX**
+
+Answer: LSDVQLSBZLDIZMESQYXAAVX",LSDVQLSBZLDIZMESQYXAAVX,1,medium,stop
+cipher_en_medium_0027,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 180.50 | SECTOR 4416. ENCRYPTION VECTOR IS DETERMINED AS ECHO. TARGET SATELLITE IS READY. SYSTEM REPORT ID 6876: STATUS OVERLOADED.
+-------------------------------
+
+Ciphertext: 'SNSBCNUPQRDXJJYIBOXGDQEF'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - UPZHIW -> YRGVMY
+  - BOZKGY -> FQGYKA
+
+Enter the decrypted plaintext (uppercase, no spaces).",OLLNYLNBMPWJFHRUXMQSZOXR,,"## Solving the cipher
+
+**Step 1 — Find the keyword.**
+The mission log contains the label **VECTOR**: *""ENCRYPTION VECTOR IS DETERMINED AS ECHO.""* The keyword is **ECHO**.
+
+**Step 2 — Verify with the examples (encrypt = plaintext + key).**
+Key ECHO = (4, 2, 7, 14).
+
+- U P Z H I W + E C H O E C → Y R G V M Y ✓
+- B O Z K G Y + E C H O E C → F Q G Y K A ✓
+
+The keyword **ECHO** is confirmed.
+
+**Step 3 — Decrypt (plaintext = cipher − key).**
+
+```
+Cipher: S N S B C N U P Q R D X J J Y I B O X G D Q E F
+Key:    E C H O E C H O E C H O E C H O E C H O E C H O
+```
+
+| C | −K | Plain |
+|---|----|-------|
+|S 18|−4|O|
+|N 13|−2|L|
+|S 18|−7|L|
+|B 1|−14|N|
+|C 2|−4|Y|
+|N 13|−2|L|
+|U 20|−7|N|
+|P 15|−14|B|
+|Q 16|−4|M|
+|R 17|−2|P|
+|D 3|−7|W|
+|X 23|−14|J|
+|J 9|−4|F|
+|J 9|−2|H|
+|Y 24|−7|R|
+|I 8|−14|U|
+|B 1|−4|X|
+|O 14|−2|M|
+|X 23|−7|Q|
+|G 6|−14|S|
+|D 3|−4|Z|
+|Q 16|−2|O|
+|E 4|−7|X|
+|F 5|−14|R|
+
+Result: **OLLNYLNBMPWJFHRUXMQSZOXR**
+
+Answer: OLLNYLNBMPWJFHRUXMQSZOXR",OLLNYLNBMPWJFHRUXMQSZOXR,1,medium,stop
+cipher_en_medium_0028,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 86.46 | SECTOR 6145. SYSTEM REPORT ID 4736: STATUS OVERLOADED. ENCRYPTION VECTOR IS DETERMINED AS ECHO. TARGET TERMINAL IS READY.
+-------------------------------
+
+Ciphertext: 'BSAOMNGCUZEIRTWRZHBEJASO'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - AUDLOT -> EWKZSV
+  - VUXV -> ZWEJ
+
+Enter the decrypted plaintext (uppercase, no spaces).",XQTAILZOQXXUNRPDVFUQFYLA,,"## Solution
+
+**Step 1 — Find the keyword.**
+The log contains ""ENCRYPTION VECTOR IS DETERMINED AS ECHO."" The label ""VECTOR"" identifies the keyword as **ECHO**.
+
+**Step 2 — Verify with examples.**
+Vigenère encryption = plaintext + key (mod 26), key = ECHO:
+- A(0)+E(4)=E, U(20)+C(2)=W, D(3)+H(7)=K, L+O=Z, O+E=S, T+C=V → **EWKZSV** ✓
+- V+E=Z, U+C=W, X+H=E, V+O=J → **ZWEJ** ✓
+
+Confirmed: key = ECHO, encryption adds the key.
+
+**Step 3 — Decrypt (subtract the key).**
+
+Ciphertext: B S A O M N G C U Z E I R T W R Z H B E J A S O
+Key (ECHO): 4 2 7 14 repeating.
+
+| C | val | key | plain |
+|---|----|----|----|
+|B|1|4|X|
+|S|18|2|Q|
+|A|0|7|T|
+|O|14|14|A|
+|M|12|4|I|
+|N|13|2|L|
+|G|6|7|Z|
+|C|2|14|O|
+|U|20|4|Q|
+|Z|25|2|X|
+|E|4|7|X|
+|I|8|14|U|
+|R|17|4|N|
+|T|19|2|R|
+|W|22|7|P|
+|R|17|14|D|
+|Z|25|4|V|
+|H|7|2|F|
+|B|1|7|U|
+|E|4|14|Q|
+|J|9|4|F|
+|A|0|2|Y|
+|S|18|7|L|
+|O|14|14|A|
+
+Result: **XQTAILZOQXXUNRPDVFUQFYLA**
+
+Answer: XQTAILZOQXXUNRPDVFUQFYLA",XQTAILZOQXXUNRPDVFUQFYLA,1,medium,stop
+cipher_en_medium_0029,"--- [RECOVERED MISSION LOG] ---
+TARGET GRID IS STANDBY. COORDINATES SET TO 123.6 | SECTOR 9143. ENCRYPTION PRIMARY KEY IS DETERMINED AS INDIA. SYSTEM REPORT ID 1641: STATUS SYNCING.
+-------------------------------
+
+Ciphertext: 'TZPQKOXFARBTTMJYELMJZJ'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - CHBIL -> KUEQL
+  - XJFT -> FWIB
+
+Enter the decrypted plaintext (uppercase, no spaces).",LMMIKGKCSRTGQEJQRIEJRW,,"## Solution
+
+**Step 1 — Find the keyword.**
+The mission log says: *""ENCRYPTION PRIMARY KEY IS DETERMINED AS INDIA.""* The keyword is **INDIA**.
+
+**Step 2 — Verify with examples (Vigenère, key added, A=0).**
+- CHBIL + INDIA: C+I=K, H+N=U, B+D=E, I+I=Q, L+A=L → KUEQL ✓
+- Decryption is therefore: plaintext = cipher − key (mod 26).
+
+**Step 3 — Decrypt the ciphertext.**
+
+Ciphertext: `TZPQKOXFARBTTMJYELMJZJ`
+Key (INDIA repeated): `INDIAINDIAINDIAINDIAIN`
+
+| C | key | P |
+|---|-----|---|
+|T−I|8|L|
+|Z−N|13|M|
+|P−D|3|M|
+|Q−I|8|I|
+|K−A|0|K|
+|O−I|8|G|
+|X−N|13|K|
+|F−D|3|C|
+|A−I|8|S|
+|R−A|0|R|
+|B−I|8|T|
+|T−N|13|G|
+|T−D|3|Q|
+|M−I|8|E|
+|J−A|0|J|
+|Y−I|8|Q|
+|E−N|13|R|
+|L−D|3|I|
+|M−I|8|E|
+|J−A|0|J|
+|Z−I|8|R|
+|J−N|13|W|
+
+Result: **LMMIKGKCSRTGQEJQRIEJRW**
+
+Answer: LMMIKGKCSRTGQEJQRIEJRW",LMMIKGKCSRTGQEJQRIEJRW,1,medium,stop
+cipher_en_medium_0030,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 155.84 | SECTOR 4070. ENCRYPTION AUTH CODE IS DETERMINED AS CHARLIE. SYSTEM REPORT ID 3154: STATUS LOCKED. TARGET TERMINAL IS STANDBY.
+-------------------------------
+
+Ciphertext: 'IFUCKGATXIXNXTSPROBD'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - XVKLZ -> ZCKCK
+  - XWMB -> ZDMS
+
+Enter the decrypted plaintext (uppercase, no spaces).",GYULZYWRQIGCPPQIRXQV,,"## Solution
+
+**Step 1: Find the keyword.**
+The mission log contains ""AUTH CODE IS DETERMINED AS CHARLIE."" The label 'AUTH CODE' points to the keyword **CHARLIE**.
+
+**Step 2: Verify with examples.**
+Vigenère encryption adds the key (A=0…):
+- XVKLZ → ZCKCK: X(23)+C(2)=Z, V(21)+H(7)=C, K+A=K, L(11)+R(17)=C, Z(25)+L(11)=K ✓
+- XWMB → ZDMS: X+C=Z, W+H=D, M+A=M, B(1)+R(17)=S ✓
+
+Keyword **CHARLIE** confirmed, encryption = plaintext + key.
+
+**Step 3: Decrypt (subtract the key).**
+
+Ciphertext: I F U C K G A T X I X N X T S P R O B D
+Key stream:  C H A R L I E C H A R L I E C H A R L I
+
+| C | val | key | P |
+|---|-----|-----|---|
+| I=8 | -2 | 6 | G |
+| F=5 | -7 | 24 | Y |
+| U=20 | -0 | 20 | U |
+| C=2 | -17 | 11 | L |
+| K=10 | -11 | 25 | Z |
+| G=6 | -8 | 24 | Y |
+| A=0 | -4 | 22 | W |
+| T=19 | -2 | 17 | R |
+| X=23 | -7 | 16 | Q |
+| I=8 | -0 | 8 | I |
+| X=23 | -17 | 6 | G |
+| N=13 | -11 | 2 | C |
+| X=23 | -8 | 15 | P |
+| T=19 | -4 | 15 | P |
+| S=18 | -2 | 16 | Q |
+| P=15 | -7 | 8 | I |
+| R=17 | -0 | 17 | R |
+| O=14 | -17 | 23 | X |
+| B=1 | -11 | 16 | Q |
+| D=3 | -8 | 21 | V |
+
+(The example plaintexts like XVKLZ are also random strings, so a random-looking result is expected.)
+
+Result: **GYULZYWRQIGCPPQIRXQV**
+
+Answer: GYULZYWRQIGCPPQIRXQV",GYULZYWRQIGCPPQIRXQV,1,medium,stop
+cipher_en_medium_0031,"--- [RECOVERED MISSION LOG] ---
+TARGET DATABASE IS BREACHED. SYSTEM REPORT ID 7536: STATUS SYNCING. COORDINATES SET TO 12.32 | SECTOR 3555. ENCRYPTION VECTOR IS DETERMINED AS HOTEL.
+-------------------------------
+
+Ciphertext: 'KXVZBDWEKGAQOOVVEHBV'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - WUJKGX -> DICORE
+  - QPQKOR -> XDJOZY
+
+Enter the decrypted plaintext (uppercase, no spaces).",DJCVQWILGVTCVKKOQOXK,,"## Reasoning
+
+**Step 1 — Find the keyword.**
+The log contains ""ENCRYPTION VECTOR IS DETERMINED AS HOTEL."" Following the label rule, the keyword after **VECTOR** is **HOTEL**.
+
+**Step 2 — Determine the Vigenère direction using the examples.**
+Testing `WUJKGX -> DICORE` with key HOTEL:
+- Using plain = cipher + key: W(22)+H(7)=D(3), U+O=I, J+T=C, K+E=O, G+L=R, X+H=E → **DICORE** ✓
+
+Confirmed with second example `QPQKOR -> XDJOZY`:
+- Q+H=X, P+O=D, Q+T=J, K+E=O, O+L=Z, R+H=Y → **XDJOZY** ✓
+
+So decryption is: **plaintext = ciphertext + key (mod 26)**, key = HOTEL (7,14,19,4,11).
+
+**Step 3 — Decrypt the target.**
+
+| C | +key | Plain |
+|---|------|-------|
+|K(10)+7|17|R|
+|X(23)+14|11|L|
+|V(21)+19|14|O|
+|Z(25)+4|3|D|
+|B(1)+11|12|M|
+|D(3)+7|10|K|
+|W(22)+14|10|K|
+|E(4)+19|23|X|
+|K(10)+4|14|O|
+|G(6)+11|17|R|
+|A(0)+7|7|H|
+|Q(16)+14|4|E|
+|O(14)+19|7|H|
+|O(14)+4|18|S|
+|V(21)+11|6|G|
+|V(21)+7|2|C|
+|E(4)+14|18|S|
+|H(7)+19|0|A|
+|B(1)+4|5|F|
+|V(21)+11|6|G|
+
+Result: **RLODMKKXORHEHSGCSAFG**
+
+(The example plaintexts like DICORE/XDJOZY are also non-dictionary strings, so a code-like output is expected.)
+
+Answer: RLODMKKXORHEHSGCSAFG",RLODMKKXORHEHSGCSAFG,0,medium,stop
+cipher_en_medium_0032,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION AUTH CODE IS DETERMINED AS FOXTROT. TARGET TERMINAL IS OFFLINE. COORDINATES SET TO 137.73 | SECTOR D475. SYSTEM REPORT ID 5520: STATUS LOCKED.
+-------------------------------
+
+Ciphertext: 'VUOXUPIJYISXUGAFESTDVZ'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - BYTN -> GMQG
+  - MRWK -> RFTD
+
+Enter the decrypted plaintext (uppercase, no spaces).",QGREDBPEKLZGGNVRHZCPCU,,"## Solution
+
+**Step 1 — Find the keyword.**
+The mission log line ""ENCRYPTION AUTH CODE IS DETERMINED AS **FOXTROT**"" gives the keyword via the ""AUTH CODE"" label. 
+
+**Verification with examples** (encryption = plaintext + key, A=0):
+- BYTN + FOXT → (B+F)=G, (Y+O)=M, (T+X)=Q, (N+T)=G → **GMQG** ✓
+- MRWK + FOXT → (M+F)=R, (R+O)=F, (W+X)=T, (K+T)=D → **RFTD** ✓
+
+So the keyword is **FOXTROT**.
+
+**Step 2 — Decrypt (plaintext = cipher − key mod 26):**
+
+```
+Cipher: V U O X U P I J Y I S X U G A F E S T D V Z
+Key:    F O X T R O T F O X T R O T F O X T R O T F
+Plain:  Q G R E D B P E K L Z G G N V R H Z C P C U
+```
+
+Working each subtraction mod 26:
+- V−F=Q, U−O=G, O−X=R, X−T=E, U−R=D, P−O=B, I−T=P, J−F=E, Y−O=K, I−X=L, S−T=Z, X−R=G, U−O=G, G−T=N, A−F=V, F−O=R, E−X=H, S−T=Z, T−R=C, D−O=P, V−T=C, Z−F=U
+
+**Result:** QGREDBPEKLZGGNVRHZCPCU
+
+Answer: QGREDBPEKLZGGNVRHZCPCU",QGREDBPEKLZGGNVRHZCPCU,1,medium,stop
+cipher_en_medium_0033,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 4413: STATUS OVERLOADED. COORDINATES SET TO 39.81 | SECTOR 43F7. TARGET CORE IS STANDBY. ENCRYPTION PRIMARY KEY IS DETERMINED AS DELTA.
+-------------------------------
+
+Ciphertext: 'ZTOTGXLHQWHTOFCCNYCWNL'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - ASAK -> DWLD
+  - NMETJ -> QQPMJ
+
+Enter the decrypted plaintext (uppercase, no spaces).",WPDAGUHWXWEPDMCZJNJWKH,,"Using keyword **DELTA** (after ""PRIMARY KEY"").
+
+Verify with example ASAK→DWLD: A+3=D, S+4=W, A+11=L, K+19=D ✓
+
+Decrypt (subtract key 3,4,11,19,0):
+
+Z→W, T→P, O→D, T→A, G→G, X→U, L→H, H→W, Q→X, W→W, H→E, T→P, O→D, F→M, C→C, C→Z, N→J, Y→N, C→J, W→W, N→K, L→H
+
+Answer: WPDAGUHWXWEPDMCZJNJWKH",WPDAGUHWXWEPDMCZJNJWKH,1,medium,stop
+cipher_en_medium_0034,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 9953: STATUS CRITICAL. TARGET TERMINAL IS READY. ENCRYPTION AUTH CODE IS DETERMINED AS ALPHA. COORDINATES SET TO 99.76 | SECTOR 77C0.
+-------------------------------
+
+Ciphertext: 'PVKKYZLAGFTHJXCGRRVKMK'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - HMKR -> HXZY
+  - TUUZXL -> TFJGXL
+
+Enter the decrypted plaintext (uppercase, no spaces).",PKVDYZALZFTWUQCGGCOKMZ,,"## Solution
+
+**Step 1: Find the keyword.**
+The mission log contains ""AUTH CODE IS DETERMINED AS ALPHA."" The label **AUTH CODE** points to the keyword **ALPHA**.
+
+**Verify with examples** (encryption = plaintext + key):
+- HMKR + ALPHA(A) → H, M+L=X, K+P=Z, R+H=Y = HXZY ✓
+- TUUZXL → T, U+L=F, U+P=J, Z+H=G, X+A=X, L+A=L = TFJGXL ✓
+
+Keyword **ALPHA** = (0, 11, 15, 7, 0) confirmed.
+
+**Step 2: Decrypt (plaintext = ciphertext − key).**
+
+| C | # | key | P |
+|---|---|-----|---|
+| P |15|A 0 |P|
+| V |21|L 11|K|
+| K |10|P 15|V|
+| K |10|H 7 |D|
+| Y |24|A 0 |Y|
+| Z |25|A 0 |Z|
+| L |11|L 11|A|
+| A |0 |P 15|L|
+| G |6 |H 7 |Z|
+| F |5 |A 0 |F|
+| T |19|A 0 |T|
+| H |7 |L 11|W|
+| J |9 |P 15|U|
+| X |23|H 7 |Q|
+| C |2 |A 0 |C|
+| G |6 |A 0 |G|
+| R |17|L 11|G|
+| R |17|P 15|C|
+| V |21|H 7 |O|
+| K |10|A 0 |K|
+| M |12|A 0 |M|
+| K |10|L 11|Z|
+
+Result: **PKVDYZALZFTWUQCGGCOKMZ**
+
+Answer: PKVDYZALZFTWUQCGGCOKMZ",PKVDYZALZFTWUQCGGCOKMZ,1,medium,stop
+cipher_en_medium_0035,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 143.93 | SECTOR 2E71. SYSTEM REPORT ID 3658: STATUS SYNCING. ENCRYPTION SEED IS DETERMINED AS GOLF. TARGET CORE IS OFFLINE.
+-------------------------------
+
+Ciphertext: 'CJMTQJQUKTMDKEXCYDESGQ'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - DVFGG -> JJQLM
+  - FFIISA -> LTTNYO
+
+Enter the decrypted plaintext (uppercase, no spaces).",WVBOKVFPEFBYEQMXSPTNAC,,"## Solution
+
+**Step 1 — Find the keyword.**
+The mission log states: ""ENCRYPTION SEED IS DETERMINED AS GOLF."" Following the rule that the keyword follows a label like 'SEED', the keyword is **GOLF**.
+
+**Verification with examples (encryption = plaintext + key):**
+- DVFGG + GOLFG:
+ - D(3)+G(6)=J, V(21)+O(14)=J, F(5)+L(11)=Q, G(6)+F(5)=L, G(6)+G(6)=M → **JJQLM** ✓
+- FFIISA + GOLFGO:
+ - F+G=L, F+O=T, I+L=T, I+F=N, S+G=Y, A+O=O → **LTTNYO** ✓
+
+Keyword **GOLF** confirmed.
+
+**Step 2 — Decrypt (subtract the key).**
+
+Ciphertext: C J M T Q J Q U K T M D K E X C Y D E S G Q
+Key (GOLF repeated): G O L F G O L F G O L F G O L F G O L F G O
+
+| C | J | M | T | Q | J | Q | U | K | T | M | D | K | E | X | C | Y | D | E | S | G | Q |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| −G | −O | −L | −F | −G | −O | −L | −F | −G | −O | −L | −F | −G | −O | −L | −F | −G | −O | −L | −F | −G | −O |
+| W | V | B | O | K | V | F | P | E | F | B | Y | E | Q | M | X | S | P | T | N | A | C |
+
+Result: **WVBOKVFPEFBYEQMXSPTNAC**
+
+Answer: WVBOKVFPEFBYEQMXSPTNAC",WVBOKVFPEFBYEQMXSPTNAC,1,medium,stop
+cipher_en_medium_0036,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 5641: STATUS CRITICAL. ENCRYPTION PRIMARY KEY IS DETERMINED AS HOTEL. COORDINATES SET TO 179.28 | SECTOR DA4E. TARGET CORE IS BREACHED.
+-------------------------------
+
+Ciphertext: 'XUJKZAFGFUFTGWWVSMUM'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - EOQVFQ -> LCJZQX
+  - DDBDE -> KRUHP
+
+Enter the decrypted plaintext (uppercase, no spaces).",QGQGOTRNBJYFNSLOETQB,,"## Solution
+
+**Step 1 — Find the keyword.**
+The log says ""ENCRYPTION PRIMARY KEY IS DETERMINED AS **HOTEL**."" Since the word after ""PRIMARY KEY"" is the keyword, the key is **HOTEL**.
+
+**Step 2 — Verify with examples.**
+Encryption = plaintext + key (mod 26). Testing EOQVFQ → LCJZQX with HOTEL (7,14,19,4,11):
+- E(4)+H(7)=L, O(14)+O(14)=C, Q(16)+T(19)=J, V(21)+E(4)=Z, F(5)+L(11)=Q, Q(16)+H(7)=X ✓
+
+Confirmed keyword = HOTEL.
+
+**Step 3 — Decrypt by subtracting the key.**
+
+Ciphertext: X U J K Z A F G F U F T G W W V S M U M
+Key: H O T E L H O T E L H O T E L H O T E L
+
+| C | key | C−key | plain |
+|---|-----|-------|-------|
+|X23|7|16|Q|
+|U20|14|6|G|
+|J9|19|16|Q|
+|K10|4|6|G|
+|Z25|11|14|O|
+|A0|7|19|T|
+|F5|14|17|R|
+|G6|19|13|N|
+|F5|4|1|B|
+|U20|11|9|J|
+|F5|7|24|Y|
+|T19|14|5|F|
+|G6|19|13|N|
+|W22|4|18|S|
+|W22|11|11|L|
+|V21|7|14|O|
+|S18|14|4|E|
+|M12|19|19|T|
+|U20|4|16|Q|
+|M12|11|1|B|
+
+Result: **QGQGOTRNBJYFNSLOETQB**
+
+Answer: QGQGOTRNBJYFNSLOETQB",QGQGOTRNBJYFNSLOETQB,1,medium,stop
+cipher_en_medium_0037,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 120.48 | SECTOR 82C5. TARGET DATABASE IS READY. ENCRYPTION VECTOR IS DETERMINED AS INDIA. SYSTEM REPORT ID 6642: STATUS CRITICAL.
+-------------------------------
+
+Ciphertext: 'SVOVZMYGKOZBUQFBGENY'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - HKEEFM -> PXHMFU
+  - TQMK -> BDPS
+
+Enter the decrypted plaintext (uppercase, no spaces).",KILNZELDCORORIFTTBFY,,"## Step 1: Extract the keyword
+
+The mission log states: ""ENCRYPTION **VECTOR** IS DETERMINED AS INDIA."" The keyword associated with the VECTOR label is **INDIA**.
+
+## Step 2: Verify keyword with examples
+
+Deriving the key from example `HKEEFM -> PXHMFU` (key = cipher − plaintext):
+- P−H = 8 = I, X−K = 13 = N, H−E = 3 = D, M−E = 8 = I, F−F = 0 = A, U−M = 8 = I → **INDIA** ✓
+
+Checking `TQMK -> BDPS` (encrypt = plaintext + key):
+- T+I = B, Q+N = D, M+D = P, K+I = S → BDPS ✓
+
+Keyword **INDIA** confirmed. To decrypt: plaintext = cipher − key.
+
+## Step 3: Decrypt
+
+```
+Cipher: S  V  O  V  Z  M  Y  G  K  O  Z  B  U  Q  F  B  G  E  N  Y
+Key:    I  N  D  I  A  I  N  D  I  A  I  N  D  I  A  I  N  D  I  A
+```
+
+| C | K | C−K |
+|---|---|-----|
+|S18|I8|10 K|
+|V21|N13|8 I|
+|O14|D3|11 L|
+|V21|I8|13 N|
+|Z25|A0|25 Z|
+|M12|I8|4 E|
+|Y24|N13|11 L|
+|G6|D3|3 D|
+|K10|I8|2 C|
+|O14|A0|14 O|
+|Z25|I8|17 R|
+|B1|N13|14 O|
+|U20|D3|17 R|
+|Q16|I8|8 I|
+|F5|A0|5 F|
+|B1|I8|19 T|
+|G6|N13|19 T|
+|E4|D3|1 B|
+|N13|I8|5 F|
+|Y24|A0|24 Y|
+
+Result: **KILNZELDCORORIFTTBFY**
+
+Answer: KILNZELDCORORIFTTBFY",KILNZELDCORORIFTTBFY,1,medium,stop
+cipher_en_medium_0038,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 7101: STATUS CRITICAL. ENCRYPTION SEED IS DETERMINED AS DELTA. COORDINATES SET TO 119.18 | SECTOR AECE. TARGET CORE IS BREACHED.
+-------------------------------
+
+Ciphertext: 'IHTWNZJWMTSYACQLDNSOHFXW'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - QNLLEC -> TRWEEF
+  - ANDYWA -> DRORWD
+
+Enter the decrypted plaintext (uppercase, no spaces).",FDIDNWFLTTPUPJQIZCZOEBMD,,"## Solution
+
+**Step 1 — Find the keyword.**
+The guide says the keyword follows a label like `SEED`. In the log:
+> ENCRYPTION **SEED** IS DETERMINED AS **DELTA**
+
+The keyword is **DELTA**.
+
+**Step 2 — Confirm with the examples.**
+Checking `QNLLEC -> TRWEEF` (encrypt = plaintext + key):
+- Q(16)+D(3)=T, N(13)+E(4)=R, L(11)+L(11)=W, L(11)+T(19)=E, E(4)+A(0)=E, C(2)+D(3)=F → TRWEEF ✓
+
+So encryption is **cipher = plain + key**, meaning **decrypt = cipher − key**.
+
+**Step 3 — Decrypt the ciphertext with key DELTA (D=3,E=4,L=11,T=19,A=0).**
+
+| C | val | key | plain |
+|---|-----|-----|-------|
+| I | 8  | 3  | F |
+| H | 7  | 4  | D |
+| T | 19 | 11 | I |
+| W | 22 | 19 | D |
+| N | 13 | 0  | N |
+| Z | 25 | 3  | W |
+| J | 9  | 4  | F |
+| W | 22 | 11 | L |
+| M | 12 | 19 | T |
+| T | 19 | 0  | T |
+| S | 18 | 3  | P |
+| Y | 24 | 4  | U |
+| A | 0  | 11 | P |
+| C | 2  | 19 | J |
+| Q | 16 | 0  | Q |
+| L | 11 | 3  | I |
+| D | 3  | 4  | Z |
+| N | 13 | 11 | C |
+| S | 18 | 19 | Z |
+| O | 14 | 0  | O |
+| H | 7  | 3  | E |
+| F | 5  | 4  | B |
+| X | 23 | 11 | M |
+| W | 22 | 19 | D |
+
+Result: **FDIDNWFLTTPUPJQIZCZOEBMD**
+
+(As with the sample plaintexts QNLLEC and ANDYWA, the output is a random-looking string, which is expected.)
+
+Answer: FDIDNWFLTTPUPJQIZCZOEBMD",FDIDNWFLTTPUPJQIZCZOEBMD,1,medium,stop
+cipher_en_medium_0039,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 3536: STATUS SYNCING. ENCRYPTION VECTOR IS DETERMINED AS ALPHA. TARGET DATABASE IS READY. COORDINATES SET TO 154.17 | SECTOR ACE7.
+-------------------------------
+
+Ciphertext: 'IMDLEQXVWQDWWAXRGAMN'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - LDUDT -> LOJKT
+  - ZCPVTV -> ZNECTV
+
+Enter the decrypted plaintext (uppercase, no spaces).",IBOEEQMGPQDLHTXRVLFN,,"## Step 1: Find the keyword
+
+The mission log contains: ""ENCRYPTION **VECTOR** IS DETERMINED AS **ALPHA**.""
+
+Checking against the labels rule ('VECTOR'), and confirming with the provided examples:
+
+**Example 1:** LDUDT → LOJKT (plaintext → ciphertext), so key = cipher − plain:
+- L−L=0(A), O−D=11(L), J−U=15(P), K−D=7(H), T−T=0(A) → **ALPHA**
+
+**Example 2:** ZCPVTV → ZNECTV:
+- A, L, P, H, A, A → **ALPHA** ✓
+
+Keyword = **ALPHA** (0, 11, 15, 7, 0).
+
+## Step 2: Decrypt with Vigenère (plain = cipher − key)
+
+Ciphertext: I M D L E Q X V W Q D W W A X R G A M N
+
+| C | val | key | plain |
+|---|-----|-----|-------|
+| I | 8 | 0 | I |
+| M | 12 | 11 | B |
+| D | 3 | 15 | O |
+| L | 11 | 7 | E |
+| E | 4 | 0 | E |
+| Q | 16 | 0 | Q |
+| X | 23 | 11 | M |
+| V | 21 | 15 | G |
+| W | 22 | 7 | P |
+| Q | 16 | 0 | Q |
+| D | 3 | 0 | D |
+| W | 22 | 11 | L |
+| W | 22 | 15 | H |
+| A | 0 | 7 | T |
+| X | 23 | 0 | X |
+| R | 17 | 0 | R |
+| G | 6 | 11 | V |
+| A | 0 | 15 | L |
+| M | 12 | 7 | F |
+| N | 13 | 0 | N |
+
+(The example plaintexts like ""LDUDT"" are also non-lexical strings, confirming the output need not be an English word.)
+
+Result: **IBOEEQMGPQDLHTXRVLFN**
+
+Answer: IBOEEQMGPQDLHTXRVLFN",IBOEEQMGPQDLHTXRVLFN,1,medium,stop
+cipher_en_medium_0040,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 143.89 | SECTOR F09F. SYSTEM REPORT ID 8252: STATUS OVERLOADED. ENCRYPTION AUTH CODE IS DETERMINED AS FOXTROT. TARGET GRID IS STANDBY.
+-------------------------------
+
+Ciphertext: 'UCSPSZHZAAYXNILJSJAJ'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - HDOQTC -> MRLJKQ
+  - GCXV -> LQUO
+
+Enter the decrypted plaintext (uppercase, no spaces).",POVWBLOUMDFGZPGVVQJV,,"## Reasoning
+
+**Step 1 — Find the keyword.**
+The mission log contains the label ""AUTH CODE"": *""ENCRYPTION AUTH CODE IS DETERMINED AS FOXTROT.""* The keyword is **FOXTROT**.
+
+**Step 2 — Confirm with examples (Vigenère, key added, A=0).**
+- HDOQTC + FOXTRO → M R L J K Q ✓ (H+F=M, D+O=R, O+X=L, Q+T=J, T+R=K, C+O=Q)
+- GCXV + FOXT → L Q U O ✓
+
+This confirms encryption is *plaintext + keyword = ciphertext*, so **decryption = ciphertext − keyword**.
+
+**Step 3 — Decrypt 'UCSPSZHZAAYXNILJSJAJ' with key FOXTROT repeating.**
+
+| C | U | C | S | P | S | Z | H | Z | A | A | Y | X | N | I | L | J | S | J | A | J |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| K | F | O | X | T | R | O | T | F | O | X | T | R | O | T | F | O | X | T | R | O |
+| P | P | O | V | W | B | L | O | U | M | D | F | G | Z | P | G | V | V | Q | J | V |
+
+Performing each subtraction mod 26 gives:
+
+**POVWBLOUMDFGZPGVVQJV**
+
+Answer: POVWBLOUMDFGZPGVVQJV",POVWBLOUMDFGZPGVVQJV,1,medium,stop
+cipher_en_medium_0041,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 961: STATUS SYNCING. TARGET SATELLITE IS BREACHED. ENCRYPTION SEED IS DETERMINED AS FOXTROT. COORDINATES SET TO 151.54 | SECTOR 4D7D.
+-------------------------------
+
+Ciphertext: 'JZTGCWNVVITRMLGUWAAJJ'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - LOGY -> QCDR
+  - GSKJCW -> LGHCTK
+
+Enter the decrypted plaintext (uppercase, no spaces).",ELWNLIUQHLAAYSBGZHJVQ,,"## Solution
+
+**Step 1: Find the keyword.**
+The mission log contains ""...ENCRYPTION SEED IS DETERMINED AS **FOXTROT**."" The label **SEED** points to the keyword. Testing against the provided examples confirms the keyword is **FOXTROT**:
+
+- LOGY → QCDR: L(11)+F(5)=Q, O(14)+O(14)=C, G(6)+X(23)=D, Y(24)+T(19)=R ✓
+- GSKJCW → LGHCTK: G+F=L, S+O=G, K+X=H, J+T=C, C+R=T, W+O=K ✓
+
+**Step 2: Reverse the Vigenère (subtract the keyword).**
+
+Ciphertext: `J Z T G C W N V V I T R M L G U W A A J J`
+Key (FOXTROT): `5 14 23 19 17 14 19` repeating → `5 14 23 19 17 14 19 5 14 23 19 17 14 19 5 14 23 19 17 14 19`
+
+| C | val | key | plain |
+|---|----|----|----|
+|J|9|5|E|
+|Z|25|14|L|
+|T|19|23|W|
+|G|6|19|N|
+|C|2|17|L|
+|W|22|14|I|
+|N|13|19|U|
+|V|21|5|Q|
+|V|21|14|H|
+|I|8|23|L|
+|T|19|19|A|
+|R|17|17|A|
+|M|12|14|Y|
+|L|11|19|S|
+|G|6|5|B|
+|U|20|14|G|
+|W|22|23|Z|
+|A|0|19|H|
+|A|0|17|J|
+|J|9|14|V|
+|J|9|19|Q|
+
+Verification with example: QCDR → Q(16)-5=L, C(2)-14=O, D(3)-23=G, R(17)-19=Y = LOGY ✓
+
+The decrypted string is:
+
+**ELWNLIUQHLAAYSBGZHJVQ**
+
+Answer: ELWNLIUQHLAAYSBGZHJVQ",ELWNLIUQHLAAYSBGZHJVQ,1,medium,stop
+cipher_en_medium_0042,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 454: STATUS SYNCING. ENCRYPTION VECTOR IS DETERMINED AS DELTA. TARGET CORE IS BREACHED. COORDINATES SET TO 55.49 | SECTOR AC0F.
+-------------------------------
+
+Ciphertext: 'XAPLKFIXUFPUUNWAUBOF'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - OQDXQA -> RUOQQD
+  - OMEW -> RQPP
+
+Enter the decrypted plaintext (uppercase, no spaces).",UWESKCEMBFMQJUWXQQVF,,"## Reasoning
+
+**Step 1 — Find the keyword.**
+The mission log contains the label **VECTOR**: *""ENCRYPTION VECTOR IS DETERMINED AS DELTA.""* The keyword is **DELTA** (confirmed below).
+
+**Step 2 — Verify with examples (they use the same keyword).**
+Encryption adds the key: cipher = plain + key.
+
+- OQDXQA → RUOQQD: R−O=3(D), U−Q=4(E), O−D=11(L), Q−X=19(T), Q−Q=0(A), D−A=3(D) → **DELTA**(D) ✓
+- OMEW → RQPP: R−O=3(D), Q−M=4(E), P−E=11(L), P−W=19(T) → **DELT** ✓
+
+So the keyword is **DELTA**.
+
+**Step 3 — Decrypt (plain = cipher − key).**
+Key stream (DELTA repeating): D E L T A D E L T A D E L T A D E L T A
+
+| C | X | A | P | L | K | F | I | X | U | F | P | U | U | N | W | A | U | B | O | F |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| K | D | E | L | T | A | D | E | L | T | A | D | E | L | T | A | D | E | L | T | A |
+| P | U | W | E | S | K | C | E | M | B | F | M | Q | J | U | W | X | Q | Q | V | F |
+
+Result: **UWESKCEMBFMQJUWXQQVF**
+
+(Consistent with the examples' plaintexts also being non-words.)
+
+Answer: UWESKCEMBFMQJUWXQQVF",UWESKCEMBFMQJUWXQQVF,1,medium,stop
+cipher_en_medium_0043,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 4.66 | SECTOR 4E24. ENCRYPTION PRIMARY KEY IS DETERMINED AS CHARLIE. SYSTEM REPORT ID 837: STATUS OVERLOADED. TARGET CORE IS READY.
+-------------------------------
+
+Ciphertext: 'NGPNBGHHESIOLUDJEHPRZMOH'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - JEMQ -> LLMH
+  - AQSO -> CXSF
+
+Enter the decrypted plaintext (uppercase, no spaces).",LZPWQYDFXSRDDQBCEQEJVKHH,,"## Solution
+
+**Step 1 — Find the keyword.**
+The mission log says: *""ENCRYPTION PRIMARY KEY IS DETERMINED AS CHARLIE.""* The word tied to the ""PRIMARY KEY"" label is **CHARLIE**.
+
+**Step 2 — Confirm direction with examples.**
+- JEMQ → LLMH: J(9)+C(2)=11=L, E(4)+H(7)=11=L, M(12)+A(0)=12=M, Q(16)+R(17)=7=H ✓
+- AQSO → CXSF: matches CHARLIE ✓
+
+So encryption **adds** the key; decryption **subtracts** it.
+
+**Step 3 — Decrypt (subtract key CHARLIE).**
+
+```
+Cipher: N  G  P  N  B  G  H  H  E  S  I  O  L  U  D  J  E  H  P  R  Z  M  O  H
+Key:    C  H  A  R  L  I  E  C  H  A  R  L  I  E  C  H  A  R  L  I  E  C  H  A
+```
+
+| C | K | P-K |
+|---|---|-----|
+|13-2|→|11 L|
+|6-7|→|25 Z|
+|15-0|→|15 P|
+|13-17|→|22 W|
+|1-11|→|16 Q|
+|6-8|→|24 Y|
+|7-4|→|3 D|
+|7-2|→|5 F|
+|4-7|→|23 X|
+|18-0|→|18 S|
+|8-17|→|17 R|
+|14-11|→|3 D|
+|11-8|→|3 D|
+|20-4|→|16 Q|
+|3-2|→|1 B|
+|9-7|→|2 C|
+|4-0|→|4 E|
+|7-17|→|16 Q|
+|15-11|→|4 E|
+|17-8|→|9 J|
+|25-4|→|21 V|
+|12-2|→|10 K|
+|14-7|→|7 H|
+|7-0|→|7 H|
+
+**Decrypted string:** LZPWQYDFXSRDDQBCEQEJVKHH
+
+Answer: LZPWQYDFXSRDDQBCEQEJVKHH",LZPWQYDFXSRDDQBCEQEJVKHH,1,medium,stop
+cipher_en_medium_0044,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION VECTOR IS DETERMINED AS DELTA. TARGET CORE IS OFFLINE. SYSTEM REPORT ID 9544: STATUS SYNCING. COORDINATES SET TO 40.37 | SECTOR 9B7C.
+-------------------------------
+
+Ciphertext: 'LIMXBOVQHGYFANCYXAGZDUKN'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - OGBZID -> RKMSIG
+  - FUEWGA -> IYPPGD
+
+Enter the decrypted plaintext (uppercase, no spaces).",IEBEBLRFOGVBPUCVTPNZAQZU,,"## Reasoning
+
+**Step 1 — Find the keyword.**
+The log contains ""...VECTOR IS DETERMINED AS DELTA."" Testing against the sample pairs confirms the keyword.
+
+Using OGBZID → RKMSIG (encryption is C = P + K):
+- R−O = 3 → D
+- K−G = 4 → E
+- M−B = 11 → L
+- S−Z = −7 = 19 → T
+- I−I = 0 → A
+- G−D = 3 → D
+
+Key = **DELTA** (repeats). Confirmed by FUEWGA → IYPPGD (same D E L T A D pattern).
+
+**Step 2 — Decrypt (P = C − K) with key DELTA.**
+
+| C | val | −key | letter |
+|---|-----|------|--------|
+|L|11|−3|I|
+|I|8|−4|E|
+|M|12|−11|B|
+|X|23|−19|E|
+|B|1|−0|B|
+|O|14|−3|L|
+|V|21|−4|R|
+|Q|16|−11|F|
+|H|7|−19|O|
+|G|6|−0|G|
+|Y|24|−3|V|
+|F|5|−4|B|
+|A|0|−11|P|
+|N|13|−19|U|
+|C|2|−0|C|
+|Y|24|−3|V|
+|X|23|−4|T|
+|A|0|−11|P|
+|G|6|−19|N|
+|Z|25|−0|Z|
+|D|3|−3|A|
+|U|20|−4|Q|
+|K|10|−11|Z|
+|N|13|−19|U|
+
+Decrypted string: **IEBEBLRFOGVBPUCVTPNZAQZU**
+
+Answer: IEBEBLRFOGVBPUCVTPNZAQZU",IEBEBLRFOGVBPUCVTPNZAQZU,1,medium,stop
+cipher_en_medium_0045,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION AUTH CODE IS DETERMINED AS INDIA. SYSTEM REPORT ID 656: STATUS LOCKED. COORDINATES SET TO 40.13 | SECTOR AA58. TARGET CORE IS STANDBY.
+-------------------------------
+
+Ciphertext: 'MUWCVAIUONJQDARUBHRL'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - VPNFP -> DCQNP
+  - YGQCIF -> GTTKIN
+
+Enter the decrypted plaintext (uppercase, no spaces).",EHTUVSVRGNBDASRMOEJL,,"## Solution
+
+**Step 1 — Find the keyword.**
+The mission log contains the label ""AUTH CODE,"" and the encryption authorization is given as **INDIA**. 
+
+I verify this against the provided examples (encryption = plaintext + key):
+- VPNFP + INDIA: V+I=D, P+N=C, N+D=Q, F+I=N, P+A=P → **DCQNP** ✓
+- YGQCIF + INDIAI: Y+I=G, G+N=T, Q+D=T, C+I=K, I+A=I, F+I=N → **GTTKIN** ✓
+
+Keyword confirmed: **INDIA** (I=8, N=13, D=3, I=8, A=0).
+
+**Step 2 — Reverse Vigenère (subtract keyword) on the ciphertext.**
+
+Ciphertext: `MUWCVAIUONJQDARUBHRL`
+
+| C | val | key | plain |
+|---|-----|-----|-------|
+| M | 12 | I(8) | E |
+| U | 20 | N(13)| H |
+| W | 22 | D(3) | T |
+| C | 2  | I(8) | U |
+| V | 21 | A(0) | V |
+| A | 0  | I(8) | S |
+| I | 8  | N(13)| V |
+| U | 20 | D(3) | R |
+| O | 14 | I(8) | G |
+| N | 13 | A(0) | N |
+| J | 9  | I(8) | B |
+| Q | 16 | N(13)| D |
+| D | 3  | D(3) | A |
+| A | 0  | I(8) | S |
+| R | 17 | A(0) | R |
+| U | 20 | I(8) | M |
+| B | 1  | N(13)| O |
+| H | 7  | D(3) | E |
+| R | 17 | I(8) | J |
+| L | 11 | A(0) | L |
+
+Result: **EHTUVSVRGNBDASRMOEJL**
+
+Answer: EHTUVSVRGNBDASRMOEJL",EHTUVSVRGNBDASRMOEJL,1,medium,stop
+cipher_en_medium_0046,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 4842: STATUS LOCKED. ENCRYPTION PRIMARY KEY IS DETERMINED AS GOLF. COORDINATES SET TO 53.33 | SECTOR 8423. TARGET GRID IS OFFLINE.
+-------------------------------
+
+Ciphertext: 'OGPZUXZLJYOUSHTSURYJJN'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - VGLPWR -> BUWUCF
+  - ZWYKN -> FKJPT
+
+Enter the decrypted plaintext (uppercase, no spaces).",ISEUOJOGDKDPMTINODNEDZ,,"## Solution
+
+**Step 1 — Find the keyword.**
+The mission log contains the label **PRIMARY KEY**, and the keyword associated with it is **GOLF**.
+
+**Step 2 — Verify with the examples (Vigenère, encrypt = plaintext + key).**
+- VGLPWR + GOLF → B U W U C F ✓ (V+G=B, G+O=U, L+L=W, P+F=U, W+G=C, R+O=F)
+- ZWYKN + GOLF → F K J P T ✓
+
+So encryption adds the key; **decryption subtracts the key.**
+
+**Step 3 — Decrypt `OGPZUXZLJYOUSHTSURYJJN` with key GOLF (A=0…):**
+
+| C | O | G | P | Z | U | X | Z | L | J | Y | O | U | S | H | T | S | U | R | Y | J | J | N |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| K | G | O | L | F | G | O | L | F | G | O | L | F | G | O | L | F | G | O | L | F | G | O |
+| P | I | S | E | U | O | J | O | G | D | K | D | P | M | T | I | N | O | D | N | E | D | Z |
+
+This yields:
+
+**ISEUOJOGDKDPMTINODNEDZ**
+
+Answer: ISEUOJOGDKDPMTINODNEDZ",ISEUOJOGDKDPMTINODNEDZ,1,medium,stop
+cipher_en_medium_0047,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 135.66 | SECTOR FEE6. SYSTEM REPORT ID 2570: STATUS LOCKED. TARGET GRID IS STANDBY. ENCRYPTION AUTH CODE IS DETERMINED AS CHARLIE.
+-------------------------------
+
+Ciphertext: 'DBYQHJTFHCAZWRSMBXTW'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - IRBKK -> KYBBV
+  - LIVHV -> NPVYG
+
+Enter the decrypted plaintext (uppercase, no spaces).",BUYZWBPDACJOONQFBGIO,,"## Solution
+
+**Step 1: Find the keyword**
+
+Looking at the mission log for labels: ""ENCRYPTION AUTH CODE IS DETERMINED AS CHARLIE."" The keyword after the AUTH CODE label is **CHARLIE**.
+
+**Step 2: Verify with examples**
+
+Encryption = plaintext + key (mod 26), key = CHARLIE (C=2, H=7, A=0, R=17, L=11, I=8, E=4)
+
+- IRBKK: I(8)+C(2)=K, R(17)+H(7)=Y, B(1)+A(0)=B, K(10)+R(17)=B, K(10)+L(11)=V → KYBBV ✓
+- LIVHV: L+C=N, I+H=P, V+A=V, H+R=Y, V+L=G → NPVYG ✓
+
+Confirmed: keyword CHARLIE, encryption adds the key.
+
+**Step 3: Decrypt (subtract key)**
+
+Ciphertext: D B Y Q H J T F H C A Z W R S M B X T W
+Key:        C H A R L I E C H A R L I E C H A R L I
+
+| C | −Key | P |
+|---|------|---|
+| D(3)−2 | 1 | B |
+| B(1)−7 | 20 | U |
+| Y(24)−0 | 24 | Y |
+| Q(16)−17 | 25 | Z |
+| H(7)−11 | 22 | W |
+| J(9)−8 | 1 | B |
+| T(19)−4 | 15 | P |
+| F(5)−2 | 3 | D |
+| H(7)−7 | 0 | A |
+| C(2)−0 | 2 | C |
+| A(0)−17 | 9 | J |
+| Z(25)−11 | 14 | O |
+| W(22)−8 | 14 | O |
+| R(17)−4 | 13 | N |
+| S(18)−2 | 16 | Q |
+| M(12)−7 | 5 | F |
+| B(1)−0 | 1 | B |
+| X(23)−17 | 6 | G |
+| T(19)−11 | 8 | I |
+| W(22)−8 | 14 | O |
+
+Result: **BUYZWBPDACJOONQFBGIO**
+
+Answer: BUYZWBPDACJOONQFBGIO",BUYZWBPDACJOONQFBGIO,1,medium,stop
+cipher_en_medium_0048,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION PRIMARY KEY IS DETERMINED AS INDIA. SYSTEM REPORT ID 4981: STATUS SYNCING. TARGET SATELLITE IS READY. COORDINATES SET TO 166.27 | SECTOR 4726.
+-------------------------------
+
+Ciphertext: 'MEXSAVZWNHZUCUXBAENYF'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - WLCC -> EYFK
+  - BBBR -> JOEZ
+
+Enter the decrypted plaintext (uppercase, no spaces).",ERUKANMTFHRHZMXTNBFYX,,"## Solution
+
+**Step 1: Find the keyword.**
+The mission log says ""PRIMARY KEY IS DETERMINED AS **INDIA**."" The keyword is **INDIA**.
+
+**Verify with examples (encrypt = plaintext + key):**
+- WLCC: W(22)+I(8)=E, L(11)+N(13)=Y, C(2)+D(3)=F, C(2)+I(8)=K → EYFK ✓
+- BBBR: B(1)+I(8)=J, B(1)+N(13)=O, B(1)+D(3)=E, R(17)+I(8)=Z → JOEZ ✓
+
+Keyword INDIA confirmed.
+
+**Step 2: Decrypt (subtract key INDIA = 8,13,3,8,0).**
+
+| C | val | key | plain |
+|---|---|---|---|
+|M|12|8|E|
+|E|4|13|R|
+|X|23|3|U|
+|S|18|8|K|
+|A|0|0|A|
+|V|21|8|N|
+|Z|25|13|M|
+|W|22|3|T|
+|N|13|8|F|
+|H|7|0|H|
+|Z|25|8|R|
+|U|20|13|H|
+|C|2|3|Z|
+|U|20|8|M|
+|X|23|0|X|
+|B|1|8|T|
+|A|0|13|N|
+|E|4|3|B|
+|N|13|8|F|
+|Y|24|0|Y|
+|F|5|8|X|
+
+Result: **ERUKANMTFHRHZMXTNBFYX**
+
+Answer: ERUKANMTFHRHZMXTNBFYX",ERUKANMTFHRHZMXTNBFYX,1,medium,stop
+cipher_en_medium_0049,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 46.82 | SECTOR 3BE7. ENCRYPTION SEED IS DETERMINED AS FOXTROT. SYSTEM REPORT ID 6451: STATUS CRITICAL. TARGET GRID IS STANDBY.
+-------------------------------
+
+Ciphertext: 'IFURHRSETNYWVNTSLSZNPG'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - VKHSY -> AYELP
+  - VQVC -> AESV
+
+Enter the decrypted plaintext (uppercase, no spaces).",DRXYQDZZFQFFHUOEOZIZWB,,"## Solving the Cipher
+
+**Step 1 – Find the keyword.**
+The mission log contains the label **SEED**: *""ENCRYPTION SEED IS DETERMINED AS FOXTROT.""* The keyword is **FOXTROT**.
+
+**Step 2 – Determine the operation from the examples.**
+Testing the examples (left = ciphertext, right = plaintext) with FOXTROT:
+
+- VKHSY → V+F=A, K+O=Y, H+X=E, S+T=L, Y+R=P → **AYELP** ✓
+- VQVC → V+F=A, Q+O=E, V+X=S, C+T=V → **AESV** ✓
+
+So decryption = **ciphertext + key (mod 26)** with FOXTROT.
+
+**Step 3 – Decrypt the ciphertext** `IFURHRSETNYWVNTSLSZNPG`
+
+Key = F(5) O(14) X(23) T(19) R(17) O(14) T(19), repeating:
+
+| C | +Key | Plain |
+|---|------|-------|
+| I(8)+F(5) | 13 | N |
+| F(5)+O(14) | 19 | T |
+| U(20)+X(23) | 17 | R |
+| R(17)+T(19) | 10 | K |
+| H(7)+R(17) | 24 | Y |
+| R(17)+O(14) | 5 | F |
+| S(18)+T(19) | 11 | L |
+| E(4)+F(5) | 9 | J |
+| T(19)+O(14) | 7 | H |
+| N(13)+X(23) | 10 | K |
+| Y(24)+T(19) | 17 | R |
+| W(22)+R(17) | 13 | N |
+| V(21)+O(14) | 9 | J |
+| N(13)+T(19) | 6 | G |
+| T(19)+F(5) | 24 | Y |
+| S(18)+O(14) | 6 | G |
+| L(11)+X(23) | 8 | I |
+| S(18)+T(19) | 11 | L |
+| Z(25)+R(17) | 16 | Q |
+| N(13)+O(14) | 1 | B |
+| P(15)+T(19) | 8 | I |
+| G(6)+F(5) | 11 | L |
+
+Result: **NTRKYFLJHKRNJGYGILQBIL**
+
+Answer: NTRKYFLJHKRNJGYGILQBIL",NTRKYFLJHKRNJGYGILQBIL,0,medium,stop
+cipher_en_medium_0050,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 120.44 | SECTOR 1F5E. SYSTEM REPORT ID 2711: STATUS STABLE. ENCRYPTION SEED IS DETERMINED AS CHARLIE. TARGET DATABASE IS OFFLINE.
+-------------------------------
+
+Ciphertext: 'EWXGVWKMNLXFNGPTBUKB'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - LYUIES -> NFUZPA
+  - GNLUQ -> IULLB
+
+Enter the decrypted plaintext (uppercase, no spaces).",CPXPKOGKGLGUFCNMBDZT,,"## Solution
+
+**Step 1 — Find the keyword.**
+The mission log contains the label **SEED**: *""ENCRYPTION SEED IS DETERMINED AS CHARLIE.""* The keyword is **CHARLIE**.
+
+**Step 2 — Verify with examples (Vigenère, add key).**
+- LYUIES + CHARLI → NFUZPA ✓
+- GNLUQ + CHARL → IULLB ✓
+
+Confirmed keyword = CHARLIE.
+
+**Step 3 — Decrypt the ciphertext (subtract key).**
+
+```
+Cipher:  E  W  X  G  V  W  K  M  N  L  X  F  N  G  P  T  B  U  K  B
+Key:     C  H  A  R  L  I  E  C  H  A  R  L  I  E  C  H  A  R  L  I
+```
+
+Subtracting (mod 26):
+
+- E−C = C
+- W−H = P
+- X−A = X
+- G−R = P
+- V−L = K
+- W−I = O
+- K−E = G
+- M−C = K
+- N−H = G
+- L−A = L
+- X−R = G
+- F−L = U
+- N−I = F
+- G−E = C
+- P−C = N
+- T−H = M
+- B−A = B
+- U−R = D
+- K−L = Z
+- B−I = T
+
+**Result:** CPXPKOGKGLGUFCNMBDZT
+
+(Re-encrypting confirms it reproduces the original ciphertext.)
+
+Answer: CPXPKOGKGLGUFCNMBDZT",CPXPKOGKGLGUFCNMBDZT,1,medium,stop
+cipher_en_medium_0051,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 8.83 | SECTOR 346B. ENCRYPTION AUTH CODE IS DETERMINED AS INDIA. TARGET TERMINAL IS READY. SYSTEM REPORT ID 5506: STATUS SYNCING.
+-------------------------------
+
+Ciphertext: 'SOXXHLOUKUMXWKWWHGTBFP'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - HABMP -> PNEUP
+  - GTTYAO -> OGWGAW
+
+Enter the decrypted plaintext (uppercase, no spaces).",KBUPHDBRCUEKTCWOUDLBXC,,"## Solution
+
+**Step 1 — Find the keyword.**
+The log line says: ""ENCRYPTION AUTH CODE IS DETERMINED AS **INDIA**.""
+The keyword after the AUTH CODE label is **INDIA** = (8, 13, 3, 8, 0).
+
+**Step 2 — Verify with examples.**
+Encryption = plaintext + key:
+- HABMP: H+I=P, A+N=N, B+D=E, M+I=U, P+A=P → **PNEUP** ✓
+- GTTYAO: G+I=O, T+N=G, T+D=W, Y+I=G, A+A=A, O+I=W → **OGWGAW** ✓
+
+Keyword INDIA confirmed.
+
+**Step 3 — Decrypt (cipher − key).**
+
+| C | val | key | plain |
+|---|----|----|----|
+|S|18|8|K|
+|O|14|13|B|
+|X|23|3|U|
+|X|23|8|P|
+|H|7|0|H|
+|L|11|8|D|
+|O|14|13|B|
+|U|20|3|R|
+|K|10|8|C|
+|U|20|0|U|
+|M|12|8|E|
+|X|23|13|K|
+|W|22|3|T|
+|K|10|8|C|
+|W|22|0|W|
+|W|22|8|O|
+|H|7|13|U|
+|G|6|3|D|
+|T|19|8|L|
+|B|1|0|B|
+|F|5|8|X|
+|P|15|13|C|
+
+**Check:** re-encrypting KBUP… gives back SOXX… ✓
+
+Answer: KBUPHDBRCUEKTCWOUDLBXC",KBUPHDBRCUEKTCWOUDLBXC,1,medium,stop
+cipher_en_medium_0052,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION AUTH CODE IS DETERMINED AS INDIA. SYSTEM REPORT ID 448: STATUS LOCKED. COORDINATES SET TO 71.16 | SECTOR 18FE. TARGET CORE IS STANDBY.
+-------------------------------
+
+Ciphertext: 'YTXTBHEDBISUUVNMWFMFUWLR'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - GZULP -> OMXTP
+  - SCNNMA -> APQVMI
+
+Enter the decrypted plaintext (uppercase, no spaces).",QGULBZRATIKHRNNEJCEFMJIJ,,"## Reasoning
+
+**Step 1 — Find the keyword.**
+The log contains the label **""AUTH CODE""**: *""ENCRYPTION AUTH CODE IS DETERMINED AS INDIA.""* The keyword is **INDIA**.
+
+I confirm this with the sample pairs (they use the same keyword):
+- G→O: O−G = 8 = I
+- Z→M: M−Z = 13 = N
+- U→X: X−U = 3 = D
+- L→T: T−L = 8 = I
+- P→P: 0 = A → **INDIA** ✓
+
+So encryption is *cipher = plain + key*; decryption is *plain = cipher − key*.
+
+**Step 2 — Reverse the Vigenère.**
+Key stream (I=8, N=13, D=3, I=8, A=0) repeated under the ciphertext:
+
+| C | # | k | plain |
+|---|---|---|-------|
+|Y|24|8|Q|
+|T|19|13|G|
+|X|23|3|U|
+|T|19|8|L|
+|B|1|0|B|
+|H|7|8|Z|
+|E|4|13|R|
+|D|3|3|A|
+|B|1|8|T|
+|I|8|0|I|
+|S|18|8|K|
+|U|20|13|H|
+|U|20|3|R|
+|V|21|8|N|
+|N|13|0|N|
+|M|12|8|E|
+|W|22|13|J|
+|F|5|3|C|
+|M|12|8|E|
+|F|5|0|F|
+|U|20|8|M|
+|W|22|13|J|
+|L|11|3|I|
+|R|17|8|J|
+
+Reading down: **QGULBZRATIKHRNNEJCEFMJIJ**
+
+Answer: QGULBZRATIKHRNNEJCEFMJIJ",QGULBZRATIKHRNNEJCEFMJIJ,1,medium,stop
+cipher_en_medium_0053,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION SEED IS DETERMINED AS BRAVO. COORDINATES SET TO 174.18 | SECTOR A61A. SYSTEM REPORT ID 5405: STATUS CRITICAL. TARGET DATABASE IS READY.
+-------------------------------
+
+Ciphertext: 'FBLYQXZTWWDKKKTSQNTCQZJ'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - BZQX -> CQQS
+  - XXCCG -> YOCXU
+
+Enter the decrypted plaintext (uppercase, no spaces).",EKLDCWITBICTKPFRZNYOPIJ,,"## Solution
+
+**Step 1: Find the keyword**
+
+The mission log contains ""ENCRYPTION SEED IS DETERMINED AS BRAVO."" The word after ""SEED"" (and its associated context) is **BRAVO**.
+
+**Step 2: Verify with examples**
+
+Encryption = plaintext + key. Check BZQX → CQQS:
+- B+B=C, Z+R=Q, Q+A=Q, X+V=S ✓
+
+So decryption = ciphertext − key.
+
+**Step 3: Decrypt** (key BRAVO repeating)
+
+```
+Cipher: F  B  L  Y  Q  X  Z  T  W  W  D  K  K  K  T  S  Q  N  T  C  Q  Z  J
+Key:    B  R  A  V  O  B  R  A  V  O  B  R  A  V  O  B  R  A  V  O  B  R  A
+Plain:  E  K  L  D  C  W  I  T  B  I  C  T  K  P  F  R  Z  N  Y  O  P  I  J
+```
+
+Calculations:
+- F−B=E, B−R=K, L−A=L, Y−V=D, Q−O=C, X−B=W, Z−R=I, T−A=T, W−V=B, W−O=I, D−B=C, K−R=T, K−A=K, K−V=P, T−O=F, S−B=R, Q−R=Z, N−A=N, T−V=Y, C−O=O, Q−B=P, Z−R=I, J−A=J
+
+Result: **EKLDCWITBICTKPFRZNYOPIJ**
+
+Answer: EKLDCWITBICTKPFRZNYOPIJ",EKLDCWITBICTKPFRZNYOPIJ,1,medium,stop
+cipher_en_medium_0054,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION PRIMARY KEY IS DETERMINED AS ECHO. TARGET SATELLITE IS READY. SYSTEM REPORT ID 1124: STATUS OVERLOADED. COORDINATES SET TO 78.44 | SECTOR 2DC0.
+-------------------------------
+
+Ciphertext: 'NYFMTKOWGZDBWTKUCESOU'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - QOOBNO -> UQVPRQ
+  - FDYX -> JFFL
+
+Enter the decrypted plaintext (uppercase, no spaces).",JWYYPIHICXWNSRDGYCLAQ,,"## Solution
+
+**Step 1 — Find the keyword.**
+The mission log contains the label ""PRIMARY KEY … ECHO"". The keyword is **ECHO**.
+
+I confirm this with the sample pairs (encryption = plaintext + key):
+- Q(16)+E(4)=U ✓, O(14)+C(2)=Q ✓ … ""QOOBNO"" → ""UQVPRQ"" ✓
+- F(5)+E(4)=J ✓, D(3)+C(2)=F ✓, Y(24)+H(7)=F ✓, X(23)+O(14)=L ✓
+
+So encryption adds the key; decryption **subtracts** the key.
+
+**Step 2 — Decrypt ""NYFMTKOWGZDBWTKUCESOU"" with key ECHO (repeating).**
+
+| C | key | C−key |
+|---|---|---|
+| N13−E4 | | J |
+| Y24−C2 | | W |
+| F5−H7 | | Y |
+| M12−O14 | | Y |
+| T19−E4 | | P |
+| K10−C2 | | I |
+| O14−H7 | | H |
+| W22−O14 | | I |
+| G6−E4 | | C |
+| Z25−C2 | | X |
+| D3−H7 | | W |
+| B1−O14 | | N |
+| W22−E4 | | S |
+| T19−C2 | | R |
+| K10−H7 | | D |
+| U20−O14 | | G |
+| C2−E4 | | Y |
+| E4−C2 | | C |
+| S18−H7 | | L |
+| O14−O14 | | A |
+| U20−E4 | | Q |
+
+Result: **JWYYPIHICXWNSRDGYCLAQ**
+
+Answer: JWYYPIHICXWNSRDGYCLAQ",JWYYPIHICXWNSRDGYCLAQ,1,medium,stop
+cipher_en_medium_0055,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 4903: STATUS OVERLOADED. COORDINATES SET TO 44.60 | SECTOR CF84. ENCRYPTION AUTH CODE IS DETERMINED AS ECHO. TARGET CORE IS READY.
+-------------------------------
+
+Ciphertext: 'CRXSFEPKKPUBRRCRLBIKNQK'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - DTOV -> HVVJ
+  - TBSBT -> XDZPX
+
+Enter the decrypted plaintext (uppercase, no spaces).",YPQEBCIWGNNNNPVDHZBWJOD,,"## Reasoning
+
+**Step 1 — Find the keyword.**
+The log contains the label **AUTH CODE**: ""...ENCRYPTION AUTH CODE IS DETERMINED AS **ECHO**."" The keyword is **ECHO**.
+
+I can confirm this using the sample pairs (encryption = plaintext + key, A=0):
+- DTOV → HVVJ: D+E=H, T+C=V, O+H=V, V+O=J ✓
+- TBSBT → XDZPX: T+E=X, B+C=D, S+H=Z, B+O=P, T+E=X ✓
+
+So the key = **ECHO** (E=4, C=2, H=7, O=14), and encryption **adds** the key. To decrypt, **subtract** the key.
+
+**Step 2 — Decrypt the ciphertext** `CRXSFEPKKPUBRRCRLBIKNQK`:
+
+| C | key | plain |
+|---|-----|-------|
+|C(2)|E(4)|24 Y|
+|R(17)|C(2)|15 P|
+|X(23)|H(7)|16 Q|
+|S(18)|O(14)|4 E|
+|F(5)|E(4)|1 B|
+|E(4)|C(2)|2 C|
+|P(15)|H(7)|8 I|
+|K(10)|O(14)|22 W|
+|K(10)|E(4)|6 G|
+|P(15)|C(2)|13 N|
+|U(20)|H(7)|13 N|
+|B(1)|O(14)|13 N|
+|R(17)|E(4)|13 N|
+|R(17)|C(2)|15 P|
+|C(2)|H(7)|21 V|
+|R(17)|O(14)|3 D|
+|L(11)|E(4)|7 H|
+|B(1)|C(2)|25 Z|
+|I(8)|H(7)|1 B|
+|K(10)|O(14)|22 W|
+|N(13)|E(4)|9 J|
+|Q(16)|C(2)|14 O|
+|K(10)|H(7)|3 D|
+
+This yields **YPQEBCIWGNNNNPVDHZBWJOD** (like the sample plaintexts DTOV/TBSBT, it's a code string).
+
+Answer: YPQEBCIWGNNNNPVDHZBWJOD",YPQEBCIWGNNNNPVDHZBWJOD,1,medium,stop
+cipher_en_medium_0056,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 8890: STATUS SYNCING. ENCRYPTION VECTOR IS DETERMINED AS CHARLIE. TARGET TERMINAL IS BREACHED. COORDINATES SET TO 32.67 | SECTOR B88E.
+-------------------------------
+
+Ciphertext: 'WTPRTSWRCRRTCQQXIPBLBBMT'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - GLMA -> ISMR
+  - GPFA -> IWFR
+
+Enter the decrypted plaintext (uppercase, no spaces).",UMPAIKSPVRAIUMOQIYQDXZFT,,"## Solution
+
+**Step 1: Find the keyword.**
+The log says: *""ENCRYPTION VECTOR IS DETERMINED AS CHARLIE.""*
+The word associated with the label **VECTOR** is **CHARLIE**.
+
+**Verify with examples** (Vigenère, encrypt = plaintext + key):
+- GLMA: G+C=I, L+H=S, M+A=M, A+R=R → **ISMR** ✓
+- GPFA: G+C=I, P+H=W, F+A=F, A+R=R → **IWFR** ✓
+
+Keyword **CHARLIE** confirmed.
+
+**Step 2: Decrypt** (subtract keyword, key = C H A R L I E = 2 7 0 17 11 8 4):
+
+| C | Key | P |
+|---|-----|---|
+|W(22)-2|→|U|
+|T(19)-7|→|M|
+|P(15)-0|→|P|
+|R(17)-17|→|A|
+|T(19)-11|→|I|
+|S(18)-8|→|K|
+|W(22)-4|→|S|
+|R(17)-2|→|P|
+|C(2)-7|→|V|
+|R(17)-0|→|R|
+|R(17)-17|→|A|
+|T(19)-11|→|I|
+|C(2)-8|→|U|
+|Q(16)-4|→|M|
+|Q(16)-2|→|O|
+|X(23)-7|→|Q|
+|I(8)-0|→|I|
+|P(15)-17|→|Y|
+|B(1)-11|→|Q|
+|L(11)-8|→|D|
+|B(1)-4|→|X|
+|B(1)-2|→|Z|
+|M(12)-7|→|F|
+|T(19)-0|→|T|
+
+Result: **UMPAIKSPVRAIUMOQIYQDXZFT**
+
+Answer: UMPAIKSPVRAIUMOQIYQDXZFT",UMPAIKSPVRAIUMOQIYQDXZFT,1,medium,stop
+cipher_en_medium_0057,"--- [RECOVERED MISSION LOG] ---
+TARGET CORE IS BREACHED. COORDINATES SET TO 47.76 | SECTOR 7E0A. ENCRYPTION AUTH CODE IS DETERMINED AS ALPHA. SYSTEM REPORT ID 3770: STATUS STABLE.
+-------------------------------
+
+Ciphertext: 'AFUGYFNSYWJOBSAMPBCA'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - SIPWD -> STEDD
+  - YQZR -> YBOY
+
+Enter the decrypted plaintext (uppercase, no spaces).",AUFZYFCDRWJDMLAMEMVA,,"## Reasoning
+
+**Step 1 – Find the keyword.**
+The log contains ""AUTH CODE IS DETERMINED AS **ALPHA**."" Among the recognized labels ('AUTH CODE'), the keyword resolves to **ALPHA**.
+
+**Step 2 – Verify with the examples.**
+Encryption defined as cipher = plaintext + key (A=0…). Decryption = cipher − key.
+
+- STEDD − ALPHA: S-0=S, T-11=I, E-15=P, D-7=W, D-0=D → **SIPWD** ✓
+- YBOY − ALPH: Y-0=Y, B-11=Q, O-15=Z, Y-7=R → **YQZR** ✓
+
+Both match, confirming keyword **ALPHA** and subtraction for decryption.
+
+**Step 3 – Decrypt the ciphertext.**
+Key ALPHA = (0, 11, 15, 7, 0) repeating.
+
+| C | # | −key | P |
+|---|---|------|---|
+|A|0|0|A|
+|F|5|11|U|
+|U|20|15|F|
+|G|6|7|Z|
+|Y|24|0|Y|
+|F|5|0|F|
+|N|13|11|C|
+|S|18|15|D|
+|Y|24|7|R|
+|W|22|0|W|
+|J|9|0|J|
+|O|14|11|D|
+|B|1|15|M|
+|S|18|7|L|
+|A|0|0|A|
+|M|12|0|M|
+|P|15|11|E|
+|B|1|15|M|
+|C|2|7|V|
+|A|0|0|A|
+
+Result: **AUFZYFCDRWJDMLAMEMVA**
+
+Answer: AUFZYFCDRWJDMLAMEMVA",AUFZYFCDRWJDMLAMEMVA,1,medium,stop
+cipher_en_medium_0058,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 97.43 | SECTOR 83D9. SYSTEM REPORT ID 4265: STATUS STABLE. ENCRYPTION SEED IS DETERMINED AS ALPHA. TARGET TERMINAL IS STANDBY.
+-------------------------------
+
+Ciphertext: 'TJNNDKXHEKDEAEYUOBTZ'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - MFTQMA -> MQIXMA
+  - JFDO -> JQSV
+
+Enter the decrypted plaintext (uppercase, no spaces).",TYYGDKMSXKDTLXYUDMMZ,,"## Reasoning
+
+**Step 1 — Find the keyword.**
+The mission log contains the label **SEED**: *""ENCRYPTION SEED IS DETERMINED AS ALPHA.""* The keyword is **ALPHA**.
+
+**Step 2 — Verify with the examples.**
+Vigenère encryption: cipher = plain + key (A=0…Z=25).
+
+- MFTQMA → MQIXMA: differences = 0,11,15,7,0,0 → A,L,P,H,A,(A) ✓ = ALPHA
+- JFDO → JQSV: differences = 0,11,15,7 → A,L,P,H ✓ = ALPHA
+
+Confirmed: keyword = **ALPHA** (key values 0,11,15,7,0).
+
+**Step 3 — Decrypt (plain = cipher − key mod 26).**
+
+| Cipher | Val | Key | Result |
+|--------|-----|-----|--------|
+| T | 19 | 0 | T |
+| J | 9 | 11 | Y |
+| N | 13 | 15 | Y |
+| N | 13 | 7 | G |
+| D | 3 | 0 | D |
+| K | 10 | 0 | K |
+| X | 23 | 11 | M |
+| H | 7 | 15 | S |
+| E | 4 | 7 | X |
+| K | 10 | 0 | K |
+| D | 3 | 0 | D |
+| E | 4 | 11 | T |
+| A | 0 | 15 | L |
+| E | 4 | 7 | X |
+| Y | 24 | 0 | Y |
+| U | 20 | 0 | U |
+| O | 14 | 11 | D |
+| B | 1 | 15 | M |
+| T | 19 | 7 | M |
+| Z | 25 | 0 | Z |
+
+**Step 4 — Check.** Re-encrypting the result with ALPHA reproduces `TJNNDKXHEKDEAEYUOBTZ` exactly. ✓
+
+Decrypted plaintext: **TYYGDKMSXKDTLXYUDMMZ**
+
+Answer: TYYGDKMSXKDTLXYUDMMZ",TYYGDKMSXKDTLXYUDMMZ,1,medium,stop
+cipher_en_medium_0059,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 1566: STATUS LOCKED. COORDINATES SET TO 146.52 | SECTOR 17E8. ENCRYPTION PRIMARY KEY IS DETERMINED AS FOXTROT. TARGET TERMINAL IS STANDBY.
+-------------------------------
+
+Ciphertext: 'OJTFFZPMRJRGJHNTSUZXEOT'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - HSLSZ -> MGILQ
+  - RXUTXV -> WLRMOJ
+
+Enter the decrypted plaintext (uppercase, no spaces).",JVWMOLWHDMYPVOIFVBIJLJF,,"## Solution
+
+**Step 1 — Find the keyword.**
+The mission log says: *""ENCRYPTION PRIMARY KEY IS DETERMINED AS FOXTROT.""* The word tied to the ""PRIMARY KEY"" label is **FOXTROT**.
+
+**Step 2 — Verify the keyword with the examples.**
+Vigenère encryption adds the key (A=0, B=1…):
+- HSLSZ + FOXTR → H(7)+F(5)=M, S+O=G, L+X=I, S+T=L, Z+R=Q → MGILQ ✓
+- RXUTXV + FOXTRO → W,L,R,M,O,J → WLRMOJ ✓
+
+Keyword **FOXTROT** confirmed.
+
+**Step 3 — Decrypt by subtracting the key.**
+
+Key values: F=5, O=14, X=23, T=19, R=17, O=14, T=19
+
+| C | O J T F F Z P M R J R G J H N T S U Z X E O T |
+|---|---|
+| K | F O X T R O T F O X T R O T F O X T R O T F O |
+| P | J V W M O L W H D M Y P V O I F V B I J L J F |
+
+Working each subtraction mod 26 gives:
+
+**JVWMOLWHDMYPVOIFVBIJLJF**
+
+Answer: JVWMOLWHDMYPVOIFVBIJLJF",JVWMOLWHDMYPVOIFVBIJLJF,1,medium,stop
+cipher_en_medium_0060,"--- [RECOVERED MISSION LOG] ---
+TARGET DATABASE IS STANDBY. COORDINATES SET TO 76.37 | SECTOR 7FF8. SYSTEM REPORT ID 1604: STATUS LOCKED. ENCRYPTION SEED IS DETERMINED AS INDIA.
+-------------------------------
+
+Ciphertext: 'HCRLDJXWCLZPVEKCVTEWHPA'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - HPEZ -> PCHH
+  - PDSZXH -> XQVHXP
+
+Enter the decrypted plaintext (uppercase, no spaces).",ZPODDBKTULRCSWKUIQWWZCX,,"## Solution
+
+**Step 1 — Find the keyword.**
+The mission log says: *""ENCRYPTION SEED IS DETERMINED AS INDIA.""* Using the rule that the word tied to a **SEED** label is the keyword, the keyword is **INDIA**.
+
+**Step 2 — Verify with the examples (encryption = plaintext + key, A=0):**
+- HPEZ: H+I=P, P+N=C, E+D=H, Z+I=H → **PCHH** ✓
+- PDSZXH: P+I=X, D+N=Q, S+D=V, Z+I=H, X+A=X, H+I=P → **XQVHXP** ✓
+
+Keyword **INDIA** is confirmed.
+
+**Step 3 — Decrypt (plaintext = cipher − key):**
+
+Key stream: I N D I A repeated (8,13,3,8,0…)
+
+```
+Cipher: H C R L D J X W C L Z P V E K C V T E W H P A
+Key:    I N D I A I N D I A I N D I A I N D I A I N D
+Plain:  Z P O D D B K T U L R C S W K U I Q W W Z C X
+```
+
+Working each subtraction mod 26 gives:
+
+**ZPODDBKTULRCSWKUIQWWZCX**
+
+Answer: ZPODDBKTULRCSWKUIQWWZCX",ZPODDBKTULRCSWKUIQWWZCX,1,medium,stop
+cipher_en_medium_0061,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 8745: STATUS OVERLOADED. COORDINATES SET TO 161.23 | SECTOR 792F. ENCRYPTION SEED IS DETERMINED AS HOTEL. TARGET CORE IS READY.
+-------------------------------
+
+Ciphertext: 'TDNNGIPKYQHQINJAEIZMH'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - EADNQY -> LOWRBF
+  - XTSHZV -> EHLLKC
+
+Enter the decrypted plaintext (uppercase, no spaces).",MPUJVBBRUFACPJYTQPVBA,,"## Reasoning
+
+**Step 1 – Find the keyword.**
+The log says: *""ENCRYPTION SEED IS DETERMINED AS HOTEL.""* The SEED value is **HOTEL**.
+
+**Step 2 – Confirm with the examples.**
+Encryption is defined as *plaintext + keyword* (mod 26).
+
+Check `EADNQY → LOWRBF` with key HOTEL:
+- E(4)+H(7)=L, A(0)+O(14)=O, D(3)+T(19)=W, N(13)+E(4)=R, Q(16)+L(11)=B, Y(24)+H(7)=F → **LOWRBF** ✓
+
+Check `XTSHZV → EHLLKC`:
+- key recovered = H,O,T,E,L,H → **HOTEL** ✓
+
+So decryption = **ciphertext − keyword** (mod 26).
+
+**Step 3 – Decrypt the ciphertext** `TDNNGIPKYQHQINJAEIZMH` with key `HOTELHOTEL...`:
+
+| C | key | P |
+|---|-----|---|
+|T(19)|H(7)|M|
+|D(3)|O(14)|P|
+|N(13)|T(19)|U|
+|N(13)|E(4)|J|
+|G(6)|L(11)|V|
+|I(8)|H(7)|B|
+|P(15)|O(14)|B|
+|K(10)|T(19)|R|
+|Y(24)|E(4)|U|
+|Q(16)|L(11)|F|
+|H(7)|H(7)|A|
+|Q(16)|O(14)|C|
+|I(8)|T(19)|P|
+|N(13)|E(4)|J|
+|J(9)|L(11)|Y|
+|A(0)|H(7)|T|
+|E(4)|O(14)|Q|
+|I(8)|T(19)|P|
+|Z(25)|E(4)|V|
+|M(12)|L(11)|B|
+|H(7)|H(7)|A|
+
+Result: **MPUJVBBRUFACPJYTQPVBA**
+
+Answer: MPUJVBBRUFACPJYTQPVBA",MPUJVBBRUFACPJYTQPVBA,1,medium,stop
+cipher_en_medium_0062,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 86.12 | SECTOR E0CB. TARGET DATABASE IS OFFLINE. ENCRYPTION AUTH CODE IS DETERMINED AS ALPHA. SYSTEM REPORT ID 1727: STATUS CRITICAL.
+-------------------------------
+
+Ciphertext: 'ZEGCFQJAUPAISCBFYHKW'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - FUZWYG -> FFODYG
+  - OXWPKZ -> OILWKZ
+
+Enter the decrypted plaintext (uppercase, no spaces).",ZTRVFQYLNPAXDVBFNSDW,,"## Solution
+
+**Step 1 – Find the keyword.**
+The mission log contains the label ""AUTH CODE,"" and the encryption guide says the word after such a label is the keyword. Here that gives **ALPHA**.
+
+**Step 2 – Verify with examples.**
+Using ALPHA (A=0, L=11, P=15, H=7, A=0) and decrypting (plaintext = cipher − key):
+
+- FFODYG → F, (5−11)=U, (14−15)=Z, (3−7)=W, Y, G = **FUZWYG** ✓
+
+This confirms the keyword and that decryption = subtract the keyword.
+
+**Step 3 – Decrypt the ciphertext.**
+
+Cipher: Z E G C F Q J A U P A I S C B F Y H K W
+Key:    A L P H A A L P H A A L P H A A L P H A
+
+| C | val | key | plain |
+|---|-----|-----|-------|
+| Z | 25 | 0 | Z |
+| E | 4 | 11 | T |
+| G | 6 | 15 | R |
+| C | 2 | 7 | V |
+| F | 5 | 0 | F |
+| Q | 16 | 0 | Q |
+| J | 9 | 11 | Y |
+| A | 0 | 15 | L |
+| U | 20 | 7 | N |
+| P | 15 | 0 | P |
+| A | 0 | 0 | A |
+| I | 8 | 11 | X |
+| S | 18 | 15 | D |
+| C | 2 | 7 | V |
+| B | 1 | 0 | B |
+| F | 5 | 0 | F |
+| Y | 24 | 11 | N |
+| H | 7 | 15 | S |
+| K | 10 | 7 | D |
+| W | 22 | 0 | W |
+
+Result: **ZTRVFQYLNPAXDVBFNSDW**
+
+Answer: ZTRVFQYLNPAXDVBFNSDW",ZTRVFQYLNPAXDVBFNSDW,1,medium,stop
+cipher_en_medium_0063,"--- [RECOVERED MISSION LOG] ---
+TARGET DATABASE IS OFFLINE. ENCRYPTION SEED IS DETERMINED AS ALPHA. SYSTEM REPORT ID 7998: STATUS SYNCING. COORDINATES SET TO 17.78 | SECTOR A631.
+-------------------------------
+
+Ciphertext: 'WQCQUKYZJBHWUMBJPCJPSLPR'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - MIYB -> MTNI
+  - MDRNRR -> MOGURR
+
+Enter the decrypted plaintext (uppercase, no spaces).",WFNJUKNKCBHLFFBJENCPSAAK,,"## Solution
+
+**Step 1 – Find the keyword.**
+The log contains ""ENCRYPTION SEED IS DETERMINED AS **ALPHA**."" The label 'SEED' points to the keyword **ALPHA**.
+
+**Step 2 – Verify with examples (Vigenère, subtract key to decrypt).**
+- MTNI with key ALPH → M(12-0)=M, T(19-11)=I, N(13-15)=Y, I(8-7)=B → **MIYB** ✓
+- MOGURR with key ALPHAA → M, O-L=D, G-P=R, U-H=N, R-A=R, R-A=R → **MDRNRR** ✓
+
+Keyword **ALPHA** confirmed.
+
+**Step 3 – Decrypt the target.**
+Ciphertext: `WQCQUKYZJBHWUMBJPCJPSLPR`
+Key stream: `ALPHAALPHAALPHAALPHAALPH`
+
+Subtracting (cipher − key mod 26):
+
+| W-A | Q-L | C-P | Q-H | U-A | K-A | Y-L | Z-P | J-H | B-A | H-A | W-L |
+|W|F|N|J|U|K|N|K|C|B|H|L|
+
+| U-P | M-H | B-A | J-A | P-L | C-P | J-H | P-A | S-A | L-L | P-P | R-H |
+|F|F|B|J|E|N|C|P|S|A|A|K|
+
+Result: **WFNJUKNKCBHLFFBJENCPSAAK**
+
+Answer: WFNJUKNKCBHLFFBJENCPSAAK",WFNJUKNKCBHLFFBJENCPSAAK,1,medium,stop
+cipher_en_medium_0064,"--- [RECOVERED MISSION LOG] ---
+TARGET GRID IS OFFLINE. ENCRYPTION VECTOR IS DETERMINED AS BRAVO. SYSTEM REPORT ID 7976: STATUS LOCKED. COORDINATES SET TO 119.7 | SECTOR 4BDB.
+-------------------------------
+
+Ciphertext: 'NOGNCVIBNMEVURMZPQPJCHO'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - ORZN -> PIZI
+  - OTBJXG -> PKBELH
+
+Enter the decrypted plaintext (uppercase, no spaces).",MXGSOURBSYDEUWYYYQUVBQO,,"## Solution
+
+**Step 1 – Extract the keyword.**
+The rule says to take the word immediately after a label like ""VECTOR."" In the log:
+
+> ""ENCRYPTION VECTOR IS DETERMINED AS **BRAVO**""
+
+The keyword is **BRAVO** (values: B=1, R=17, A=0, V=21, O=14).
+
+**Step 2 – Verify against the examples.**
+Encryption = plaintext + key, so decryption = ciphertext − key.
+
+- PIZI: P−B=O, I−R=R, Z−A=Z, I−V=N → **ORZN** ✓
+- PKBELH: P−B=O, K−R=T, B−A=B, E−V=J, L−O=X, H−B=G → **OTBJXG** ✓
+
+Keyword **BRAVO** confirmed.
+
+**Step 3 – Decrypt the ciphertext** `NOGNCVIBNMEVURMZPQPJCHO` (subtract BRAVO, mod 26):
+
+| C | N O G N C | V I B N M | E V U R M | Z P Q P J | C H O |
+|---|-----------|-----------|-----------|-----------|-------|
+| K | B R A V O | B R A V O | B R A V O | B R A V O | B R A |
+| P | M X G S O | U R B S Y | D E U W Y | Y Y Q U V | B Q O |
+
+Result: **MXGSOURBSYDEUWYYYQUVBQO**
+
+Answer: MXGSOURBSYDEUWYYYQUVBQO",MXGSOURBSYDEUWYYYQUVBQO,1,medium,stop
+cipher_en_medium_0065,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 145.52 | SECTOR DDEC. SYSTEM REPORT ID 8060: STATUS STABLE. ENCRYPTION SEED IS DETERMINED AS BRAVO. TARGET DATABASE IS STANDBY.
+-------------------------------
+
+Ciphertext: 'YBMQMEWWRZUNYLJZVYPORSZZ'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - CMYCY -> DDYXM
+  - RYRW -> SPRR
+
+Enter the decrypted plaintext (uppercase, no spaces).",XKMVYDFWWLTWYQVYEYUAQBZE,,"## Reasoning
+
+**Step 1 – Find the keyword.**
+The mission log contains ""ENCRYPTION SEED IS DETERMINED AS BRAVO."" The label 'SEED' points us to the keyword. Testing against the examples confirms it:
+
+- Example: CMYCY → DDYXM
+  - C(+1)=D, M(+17)=D, Y(+0)=Y, C(+21)=X, Y(+14)=M → shifts {1,17,0,21,14} = **B,R,A,V,O**
+- Example: RYRW → SPRR ✓ (R+B=S, Y+R=P, R+A=R, W+V=R)
+
+Keyword = **BRAVO** (shifts 1,17,0,21,14).
+
+**Step 2 – Decrypt (subtract keyword).**
+
+Cipher: `YBMQMEWWRZUNYLJZVYPORSZZ`
+
+| C | shift | P |
+|---|-------|---|
+| Y | 1 | X |
+| B | 17 | K |
+| M | 0 | M |
+| Q | 21 | V |
+| M | 14 | Y |
+| E | 1 | D |
+| W | 17 | F |
+| W | 0 | W |
+| R | 21 | W |
+| Z | 14 | L |
+| U | 1 | T |
+| N | 17 | W |
+| Y | 0 | Y |
+| L | 21 | Q |
+| J | 14 | V |
+| Z | 1 | Y |
+| V | 17 | E |
+| Y | 0 | Y |
+| P | 21 | U |
+| O | 14 | A |
+| R | 1 | Q |
+| S | 17 | B |
+| Z | 0 | Z |
+
+Result: **XKMVYDFWWLTWYQVYEYUAQBZ**
+
+Answer: XKMVYDFWWLTWYQVYEYUAQBZ",XKMVYDFWWLTWYQVYEYUAQBZ,0,medium,stop
+cipher_en_medium_0066,"--- [RECOVERED MISSION LOG] ---
+TARGET GRID IS OFFLINE. SYSTEM REPORT ID 7828: STATUS CRITICAL. COORDINATES SET TO 127.77 | SECTOR E493. ENCRYPTION SEED IS DETERMINED AS DELTA.
+-------------------------------
+
+Ciphertext: 'MSMFLQFRMQESOAJREYKTZY'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - QKBFY -> TOMYY
+  - RBGL -> UFRE
+
+Enter the decrypted plaintext (uppercase, no spaces).",JOBMLNBGTQBODHJOANRTWU,,"## Solution
+
+**Step 1 – Find the keyword.**
+The mission log states: *""ENCRYPTION SEED IS DETERMINED AS DELTA.""* The label is **SEED**, and the encryption seed value is **DELTA**.
+
+**Step 2 – Confirm the operation using the examples.**
+Using DELTA = (D=3, E=4, L=11, T=19, A=0):
+
+- Q+D=T, K+E=O, B+L=M, F+T=Y, Y+A=Y → **QKBFY → TOMYY** ✓
+- R+D=U, B+E=F, G+L=R, L+T=E → **RBGL → UFRE** ✓
+
+So encryption is **plaintext + key** (left = plaintext, right = ciphertext). Therefore decryption is **ciphertext − key**.
+
+**Step 3 – Decrypt the ciphertext.**
+Cipher: `M S M F L Q F R M Q E S O A J R E Y K T Z Y`
+Key:    `D E L T A D E L T A D E L T A D E L T A D E`
+
+| C | −K | Plain |
+|---|----|-------|
+|M(12)|−3|J|
+|S(18)|−4|O|
+|M(12)|−11|B|
+|F(5)|−19|M|
+|L(11)|−0|L|
+|Q(16)|−3|N|
+|F(5)|−4|B|
+|R(17)|−11|G|
+|M(12)|−19|T|
+|Q(16)|−0|Q|
+|E(4)|−3|B|
+|S(18)|−4|O|
+|O(14)|−11|D|
+|A(0)|−19|H|
+|J(9)|−0|J|
+|R(17)|−3|O|
+|E(4)|−4|A|
+|Y(24)|−11|N|
+|K(10)|−19|R|
+|T(19)|−0|T|
+|Z(25)|−3|W|
+|Y(24)|−4|U|
+
+Result: **JOBMLNBGTQBODHJOANRTWU**
+
+(As with the examples—whose plaintexts QKBFY/RBGL are also non-dictionary strings—the recovered plaintext is a raw letter sequence.)
+
+Answer: JOBMLNBGTQBODHJOANRTWU",JOBMLNBGTQBODHJOANRTWU,1,medium,stop
+cipher_en_medium_0067,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 9884: STATUS LOCKED. ENCRYPTION VECTOR IS DETERMINED AS DELTA. TARGET CORE IS BREACHED. COORDINATES SET TO 59.76 | SECTOR D6AC.
+-------------------------------
+
+Ciphertext: 'DWFAHFIIHZQZBTWQHAELRS'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - THAQC -> WLLJC
+  - SVHD -> VZSW
+
+Enter the decrypted plaintext (uppercase, no spaces).",ASUHHCEXOZNVQAWNDPLLOO,,"## Analysis
+
+**Step 1 — Find the keyword.**
+The log contains: ""ENCRYPTION VECTOR IS DETERMINED AS **DELTA**."" The keyword tied to the VECTOR label is **DELTA**.
+
+**Verify with examples (encryption = plaintext + key):**
+- THAQC + DELTA → W L L J C ✓ (T+D=W, H+E=L, A+L=L, Q+T=J, C+A=C)
+- SVHD + DELT → V Z S W ✓
+
+Confirmed keyword = **DELTA**.
+
+**Step 2 — Decrypt (cipher − key):**
+
+Ciphertext: `D W F A H F I I H Z Q Z B T W Q H A E L R S`
+Key (DELTA…): `D E L T A D E L T A D E L T A D E L T A D E`
+
+| C | K | C−K | P |
+|---|---|-----|---|
+|D|D|0|A|
+|W|E|18|S|
+|F|L|20|U|
+|A|T|7|H|
+|H|A|7|H|
+|F|D|2|C|
+|I|E|4|E|
+|I|L|23|X|
+|H|T|14|O|
+|Z|A|25|Z|
+|Q|D|13|N|
+|Z|E|21|V|
+|B|L|16|Q|
+|T|T|0|A|
+|W|A|22|W|
+|Q|D|13|N|
+|H|E|3|D|
+|A|L|15|P|
+|E|T|11|L|
+|L|A|11|L|
+|R|D|14|O|
+|S|E|14|O|
+
+Result: **ASUHHCEXOZNVQAWNDPLLOO**
+
+Answer: ASUHHCEXOZNVQAWNDPLLOO",ASUHHCEXOZNVQAWNDPLLOO,1,medium,stop
+cipher_en_medium_0068,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION SEED IS DETERMINED AS CHARLIE. SYSTEM REPORT ID 9992: STATUS STABLE. COORDINATES SET TO 74.44 | SECTOR 7A5F. TARGET GRID IS STANDBY.
+-------------------------------
+
+Ciphertext: 'OJNHSSJJAFRXCDGEGIIW'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - SNLLYW -> UULCJE
+  - WABS -> YHBJ
+
+Enter the decrypted plaintext (uppercase, no spaces).",MCNQHKFHTFAMUZEXGRXO,,"## Solution
+
+**Step 1 — Find the keyword.**
+The mission log states: ""ENCRYPTION **SEED** IS DETERMINED AS **CHARLIE**."" Following the rule about the SEED label, the keyword is **CHARLIE**.
+
+**Step 2 — Verify with examples (encryption = plaintext + key):**
+- SNLLYW + CHARLIE: S+C=U, N+H=U, L+A=L, L+R=C, Y+L=J, W+I=E → **UULCJE** ✓
+- WABS + CHARLIE: W+C=Y, A+H=H, B+A=B, S+R=J → **YHBJ** ✓
+
+So decryption = ciphertext − key.
+
+**Step 3 — Decrypt 'OJNHSSJJAFRXCDGEGIIW' with key CHARLIE:**
+
+| C | O | J | N | H | S | S | J | J | A | F | R | X | C | D | G | E | G | I | I | W |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| K | C | H | A | R | L | I | E | C | H | A | R | L | I | E | C | H | A | R | L | I |
+| P | M | C | N | Q | H | K | F | H | T | F | A | M | U | Z | E | X | G | R | X | O |
+
+Result: **MCNQHKFHTFAMUZEXGRXO**
+
+Answer: MCNQHKFHTFAMUZEXGRXO",MCNQHKFHTFAMUZEXGRXO,1,medium,stop
+cipher_en_medium_0069,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION VECTOR IS DETERMINED AS CHARLIE. COORDINATES SET TO 101.98 | SECTOR 6824. TARGET DATABASE IS READY. SYSTEM REPORT ID 5552: STATUS STABLE.
+-------------------------------
+
+Ciphertext: 'JAUAAWUAANQUYSNQNTFZKO'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - WHNMT -> YONDE
+  - TXURXJ -> VEUIIR
+
+Enter the decrypted plaintext (uppercase, no spaces).",HTUJPOQYTNZJQOLJNCURGM,,"## Solution
+
+**Step 1 — Find the keyword.**
+The log says *""ENCRYPTION VECTOR IS DETERMINED AS CHARLIE.""* The word associated with the **VECTOR** label is **CHARLIE**.
+
+**Step 2 — Verify with the examples.**
+Testing the relationship C = P + K (standard Vigenère) on the examples:
+
+- WHNMT → YONDE: Y−W=2(C), O−H=7(H), N−N=0(A), D−M=17(R), E−T=11(L) → **CHARL**
+- TXURXJ → VEUIIR: V−T=2(C), E−X=7(H), U−U=0(A), I−R=17(R), I−X=11(L), R−J=8(I) → **CHARLI**
+
+Both confirm the keyword **CHARLIE**, and the left side is plaintext, right side ciphertext (C = P + K).
+
+**Step 3 — Decrypt (P = C − K) using key CHARLIE.**
+
+Key values: C=2, H=7, A=0, R=17, L=11, I=8, E=4
+
+```
+J A U A A W U A A N Q U Y S N Q N T F Z K O
+C H A R L I E C H A R L I E C H A R L I E C
+--------------------------------------------
+H T U J P O Q Y T N Z J Q O L J N C U R G M
+```
+
+Detailed subtraction:
+- J−C=H, A−H=T, U−A=U, A−R=J, A−L=P, W−I=O, U−E=Q
+- A−C=Y, A−H=T, N−A=N, Q−R=Z, U−L=J, Y−I=Q, S−E=O
+- N−C=L, Q−H=J, N−A=N, T−R=C, F−L=U, Z−I=R, K−E=G, O−C=M
+
+Result: **HTUJPOQYTNZJQOLJNCURGM**
+
+(Consistent with the examples, whose plaintexts are also random letter strings.)
+
+Answer: HTUJPOQYTNZJQOLJNCURGM",HTUJPOQYTNZJQOLJNCURGM,1,medium,stop
+cipher_en_medium_0070,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 107.16 | SECTOR A0D2. ENCRYPTION VECTOR IS DETERMINED AS CHARLIE. SYSTEM REPORT ID 7752: STATUS OVERLOADED. TARGET GRID IS STANDBY.
+-------------------------------
+
+Ciphertext: 'QBPHKGXRMVUQEGEHWAITAJ'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - PFYTK -> RMYKV
+  - XMUPNS -> ZTUGYA
+
+Enter the decrypted plaintext (uppercase, no spaces).",OUPQZYTPFVDFWCCAWJXLWH,,"## Solving the Cipher
+
+**Step 1: Find the keyword.**
+The mission log says ""ENCRYPTION **VECTOR** IS DETERMINED AS **CHARLIE**."" The keyword is **CHARLIE**.
+
+**Verifying with the examples:**
+- PFYTK + CHARL → R(15+2), M(5+7), Y(24+0), K(19+17), V(10+11) = RMYKV ✓
+- XMUPNS + CHARLI → ZTUGYA ✓
+
+Confirmed: keyword = **CHARLIE**, algorithm = Vigenère (add key to encrypt).
+
+**Step 2: Decrypt** by subtracting the key (mod 26).
+
+Key (CHARLIE = 2,7,0,17,11,8,4) repeated over the ciphertext:
+
+| C | Key | Sub | P |
+|---|-----|-----|---|
+|Q16|C2|14|O|
+|B1|H7|20|U|
+|P15|A0|15|P|
+|H7|R17|16|Q|
+|K10|L11|25|Z|
+|G6|I8|24|Y|
+|X23|E4|19|T|
+|R17|C2|15|P|
+|M12|H7|5|F|
+|V21|A0|21|V|
+|U20|R17|3|D|
+|Q16|L11|5|F|
+|E4|I8|22|W|
+|G6|E4|2|C|
+|E4|C2|2|C|
+|H7|H7|0|A|
+|W22|A0|22|W|
+|A0|R17|9|J|
+|I8|L11|23|X|
+|T19|I8|11|L|
+|A0|E4|22|W|
+|J9|C2|7|H|
+
+**Result:** OUPQZYTPFVDFWCCAWJXLWH
+
+Answer: OUPQZYTPFVDFWCCAWJXLWH",OUPQZYTPFVDFWCCAWJXLWH,1,medium,stop
+cipher_en_medium_0071,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION PRIMARY KEY IS DETERMINED AS FOXTROT. SYSTEM REPORT ID 4427: STATUS SYNCING. TARGET GRID IS STANDBY. COORDINATES SET TO 174.58 | SECTOR AD52.
+-------------------------------
+
+Ciphertext: 'CVYPLGMFJFCJRNKBCDQKD'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - SBSUO -> XPPNF
+  - QKIG -> VYFZ
+
+Enter the decrypted plaintext (uppercase, no spaces).",XHBWUSTAVIJSDUFNFKZWK,,"## Reasoning
+
+**Step 1 — Find the keyword.**
+The log says: ""ENCRYPTION PRIMARY KEY IS DETERMINED AS **FOXTROT**."" Using the rule that the keyword follows the label, and confirming with the examples, the keyword is **FOXTROT**.
+
+**Verification with examples (Vigenère add, A=0):**
+- SBSUO + FOXTR = X,P,P,N,F ✓ (S+F=X, B+O=P, S+X=P, U+T=N, O+R=F)
+- QKIG + FOXT = V,Y,F,Z ✓ (Q+F=V, K+O=Y, I+X=F, G+T=Z)
+
+Keyword FOXTROT confirmed.
+
+**Step 2 — Decrypt (subtract key, mod 26).**
+
+Key stream: F(5) O(14) X(23) T(19) R(17) O(14) T(19), repeating.
+
+| C | 2−5=X |
+| V | 21−14=H |
+| Y | 24−23=B |
+| P | 15−19=W |
+| L | 11−17=U |
+| G | 6−14=S |
+| M | 12−19=T |
+| F | 5−5=A |
+| J | 9−14=V |
+| F | 5−23=I |
+| C | 2−19=J |
+| J | 9−17=S |
+| R | 17−14=D |
+| N | 13−19=U |
+| K | 10−5=F |
+| B | 1−14=N |
+| C | 2−23=F |
+| D | 3−19=K |
+| Q | 16−17=Z |
+| K | 10−14=W |
+| D | 3−19=K |
+
+Result: **XHBWUSTAVIJSDUFNFKZWK**
+
+Answer: XHBWUSTAVIJSDUFNFKZWK",XHBWUSTAVIJSDUFNFKZWK,1,medium,stop
+cipher_en_medium_0072,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION PRIMARY KEY IS DETERMINED AS CHARLIE. TARGET SATELLITE IS BREACHED. SYSTEM REPORT ID 5165: STATUS CRITICAL. COORDINATES SET TO 40.8 | SECTOR BC06.
+-------------------------------
+
+Ciphertext: 'OLRWWHSFHKVQODBCIVVAQN'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - RJTBK -> TQTSV
+  - OQJWOX -> QXJNZF
+
+Enter the decrypted plaintext (uppercase, no spaces).",MERFLZODAKEFGZZVIEKSML,,"## Solution
+
+**Step 1 — Find the keyword.**
+The mission log contains ""PRIMARY KEY ... CHARLIE."" The keyword is **CHARLIE**.
+
+**Step 2 — Verify with examples (encryption = plaintext + key):**
+- RJTBK + CHARL → TQTSV ✓ (R+C=T, J+H=Q, T+A=T, B+R=S, K+L=V)
+- OQJWOX + CHARLI → QXJNZF ✓
+
+Confirmed: Vigenère addition with key CHARLIE.
+
+**Step 3 — Decrypt (plaintext = cipher − key):**
+
+Ciphertext: `O L R W W H S F H K V Q O D B C I V V A Q N`
+Key:        `C H A R L I E C H A R L I E C H A R L I E C`
+
+| C | −K | P |
+|---|----|---|
+|O(14)|C(2)|M|
+|L(11)|H(7)|E|
+|R(17)|A(0)|R|
+|W(22)|R(17)|F|
+|W(22)|L(11)|L|
+|H(7)|I(8)|Z|
+|S(18)|E(4)|O|
+|F(5)|C(2)|D|
+|H(7)|H(7)|A|
+|K(10)|A(0)|K|
+|V(21)|R(17)|E|
+|Q(16)|L(11)|F|
+|O(14)|I(8)|G|
+|D(3)|E(4)|Z|
+|B(1)|C(2)|Z|
+|C(2)|H(7)|V|
+|I(8)|A(0)|I|
+|V(21)|R(17)|E|
+|V(21)|L(11)|K|
+|A(0)|I(8)|S|
+|Q(16)|E(4)|M|
+|N(13)|C(2)|L|
+
+Result: **MERFLZODAKEFGZZVIEKSML**
+
+(As the sample plaintexts show, the underlying text is a random-looking string.)
+
+Answer: MERFLZODAKEFGZZVIEKSML",MERFLZODAKEFGZZVIEKSML,1,medium,stop
+cipher_en_medium_0073,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 8476: STATUS SYNCING. COORDINATES SET TO 167.86 | SECTOR 4048. ENCRYPTION PRIMARY KEY IS DETERMINED AS HOTEL. TARGET TERMINAL IS BREACHED.
+-------------------------------
+
+Ciphertext: 'PQBIUQPKZASOMZTDDQXUEEP'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - VFIKQ -> CTBOB
+  - PFMCML -> WTFGXS
+
+Enter the decrypted plaintext (uppercase, no spaces).",ICIEJJBRVPLATVIWPXTJXQW,,"## Solution
+
+**Step 1 — Find the keyword.**
+The mission log says: ""ENCRYPTION PRIMARY KEY IS DETERMINED AS **HOTEL**.""
+So the keyword is **HOTEL**.
+
+**Step 2 — Confirm the operation with the examples.**
+Using A=0…Z=25, checking `VFIKQ -> CTBOB`:
+- C−V = 2−21 = 7 = H
+- T−F = 19−5 = 14 = O
+- B−I = 1−8 = 19 = T
+- O−K = 14−10 = 4 = E
+- B−Q = 1−16 = 11 = L → **HOTEL** ✓
+
+So encryption is standard Vigenère (cipher = plain + key), and decryption is **plain = cipher − key**.
+
+**Step 3 — Decrypt the target.**
+
+Cipher: `P Q B I U Q P K Z A S O M Z T D D Q X U E E P`
+Key (HOTEL repeating): 7,14,19,4,11 …
+
+| C | val | key | plain |
+|---|----|----|-----|
+|P|15|7|I|
+|Q|16|14|C|
+|B|1|19|I|
+|I|8|4|E|
+|U|20|11|J|
+|Q|16|7|J|
+|P|15|14|B|
+|K|10|19|R|
+|Z|25|4|V|
+|A|0|11|P|
+|S|18|7|L|
+|O|14|14|A|
+|M|12|19|T|
+|Z|25|4|V|
+|T|19|11|I|
+|D|3|7|W|
+|D|3|14|P|
+|Q|16|19|X|
+|X|23|4|T|
+|U|20|11|J|
+|E|4|7|X|
+|E|4|14|Q|
+|P|15|19|W|
+
+Result: **ICIEJJBRVPLATVIWPXTJXQW**
+
+(As the example plaintexts show, the recovered plaintext is a random-looking key string, not a dictionary word.)
+
+Answer: ICIEJJBRVPLATVIWPXTJXQW",ICIEJJBRVPLATVIWPXTJXQW,1,medium,stop
+cipher_en_medium_0074,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 29.88 | SECTOR 223A. SYSTEM REPORT ID 2335: STATUS STABLE. ENCRYPTION AUTH CODE IS DETERMINED AS DELTA. TARGET SATELLITE IS READY.
+-------------------------------
+
+Ciphertext: 'MUMKDIQEUYHRSWXEOQDMVGFO'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - VQEBWL -> YUPUWO
+  - UDMEUP -> XHXXUS
+
+Enter the decrypted plaintext (uppercase, no spaces).",JQBRDFMTBYENHDXBKFKMSCUV,,"## Solution
+
+**Step 1 — Find the keyword.**
+In the mission log, the label ""ENCRYPTION AUTH CODE IS DETERMINED AS **DELTA**."" The keyword is **DELTA**.
+
+**Step 2 — Verify with examples.**
+Encryption = plaintext + keyword (mod 26):
+- VQEBWL + DELTA: V+D=Y, Q+E=U, E+L=P, B+T=U, W+A=W, L+D=O → YUPUWO ✓
+- UDMEUP + DELTA → XHXXUS ✓
+
+So decryption = ciphertext − keyword.
+
+**Step 3 — Decrypt.**
+
+```
+Cipher: M U M K D I Q E U Y H R S W X E O Q D M V G F O
+Key:    D E L T A D E L T A D E L T A D E L T A D E L T
+Plain:  J Q B R D F M T B Y E N H D X B K F K M S C U V
+```
+
+Working (mod 26):
+- M−D=J, U−E=Q, M−L=B, K−T=R, D−A=D, I−D=F
+- Q−E=M, E−L=T, U−T=B, Y−A=Y, H−D=E, R−E=N
+- S−L=H, W−T=D, X−A=X, E−D=B, O−E=K, Q−L=F
+- D−T=K, M−A=M, V−D=S, G−E=C, F−L=U, O−T=V
+
+Answer: JQBRDFMTBYENHDXBKFKMSCUV",JQBRDFMTBYENHDXBKFKMSCUV,1,medium,stop
+cipher_en_medium_0075,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 1506: STATUS CRITICAL. ENCRYPTION AUTH CODE IS DETERMINED AS BRAVO. COORDINATES SET TO 34.72 | SECTOR BC5C. TARGET GRID IS STANDBY.
+-------------------------------
+
+Ciphertext: 'RPHFNVDWMCZAVOSXBQYR'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - ZNAIB -> AEADP
+  - QMQA -> RDQV
+
+Enter the decrypted plaintext (uppercase, no spaces).",QYHKZUMWROYJVTEWKQDD,,"## Solution
+
+**Step 1 — Find the keyword.**
+The mission log contains the label ""AUTH CODE"": *""ENCRYPTION AUTH CODE IS DETERMINED AS BRAVO.""* → keyword = **BRAVO**.
+
+**Step 2 — Verify with the examples.**
+Using A=0…Z=25 and *cipher = plain + key* (as the guide states):
+- ZNAIB + BRAVO → Z+B=A, N+R=E, A+A=A, I+V=D, B+O=P → **AEADP** ✓
+- QMQA + BRAVO → Q+B=R, M+R=D, Q+A=Q, A+V=V → **RDQV** ✓
+
+So encryption adds the key, and decryption **subtracts** the key.
+
+**Step 3 — Decrypt the ciphertext** `RPHFNVDWMCZAVOSXBQYR` (subtract BRAVO):
+
+| C | val | key | plain |
+|---|-----|-----|-------|
+| R | 17 | B(1) | Q |
+| P | 15 | R(17) | Y |
+| H | 7  | A(0) | H |
+| F | 5  | V(21) | K |
+| N | 13 | O(14) | Z |
+| V | 21 | B(1) | U |
+| D | 3  | R(17) | M |
+| W | 22 | A(0) | W |
+| M | 12 | V(21) | R |
+| C | 2  | O(14) | O |
+| Z | 25 | B(1) | Y |
+| A | 0  | R(17) | J |
+| V | 21 | A(0) | V |
+| O | 14 | V(21) | T |
+| S | 18 | O(14) | E |
+| X | 23 | B(1) | W |
+| B | 1  | R(17) | K |
+| Q | 16 | A(0) | Q |
+| Y | 24 | V(21) | D |
+| R | 17 | O(14) | D |
+
+Result: **QYHKZUMWROYJVTEWKQDD**
+
+Answer: QYHKZUMWROYJVTEWKQDD",QYHKZUMWROYJVTEWKQDD,1,medium,stop
+cipher_en_medium_0076,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 6458: STATUS OVERLOADED. COORDINATES SET TO 99.1 | SECTOR 7AB1. TARGET SATELLITE IS OFFLINE. ENCRYPTION PRIMARY KEY IS DETERMINED AS ECHO.
+-------------------------------
+
+Ciphertext: 'YGMFMFEMGSIKQJQIHKJCFDY'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - SAJOEW -> WCQCIY
+  - MIHSVW -> QKOGZY
+
+Enter the decrypted plaintext (uppercase, no spaces).",UEFRIDXYCQBWMHJUDICOBBR,,"## Decoding Process
+
+**Step 1 — Find the keyword.**
+From the mission log: ""ENCRYPTION PRIMARY KEY IS DETERMINED AS ECHO."" So the keyword is **ECHO**.
+
+**Step 2 — Verify with examples.**
+Encrypting SAJOEW with ECHO (add): S+E=W, A+C=C, J+H=Q, O+O=C, E+E=I, W+C=Y → WCQCIY ✓
+
+**Step 3 — Decrypt (subtract keyword).**
+
+```
+Cipher: Y G M F M F E M G S I K Q J Q I H K J C F D Y
+Key:    E C H O E C H O E C H O E C H O E C H O E C H
+```
+
+- Y−E = U
+- G−C = E
+- M−H = F
+- F−O = R
+- M−E = I
+- F−C = D
+- E−H = X
+- M−O = Y
+- G−E = C
+- S−C = Q
+- I−H = B
+- K−O = W
+- Q−E = M
+- J−C = H
+- Q−H = J
+- I−O = U
+- H−E = D
+- K−C = I
+- J−H = C
+- C−O = O
+- F−E = B
+- D−C = B
+- Y−H = R
+
+Result: **UEFRIDXYCQBWMHJUDICOBBR**
+
+Answer: UEFRIDXYCQBWMHJUDICOBBR",UEFRIDXYCQBWMHJUDICOBBR,1,medium,stop
+cipher_en_medium_0077,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION AUTH CODE IS DETERMINED AS FOXTROT. TARGET CORE IS STANDBY. COORDINATES SET TO 71.35 | SECTOR B9D5. SYSTEM REPORT ID 9991: STATUS STABLE.
+-------------------------------
+
+Ciphertext: 'BQHEAWMQUSNXKXBGGIBISS'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - FZFYBL -> KNCRSZ
+  - PBFTU -> UPCML
+
+Enter the decrypted plaintext (uppercase, no spaces).",WCKLJITLGVUGWEWSJPKUZN,,"## Solution
+
+**Step 1 — Find the keyword.**
+The mission log contains the label ""AUTH CODE,"" and the guide says the keyword follows such a label:
+> ""ENCRYPTION AUTH CODE IS DETERMINED AS **FOXTROT**.""
+
+So the keyword is **FOXTROT**.
+
+**Step 2 — Verify with the examples.**
+Vigenère encryption = plaintext + keyword (mod 26). Key FOXTROT = (5,14,23,19,17,14,19).
+
+- FZFYBL + FOXTRO = KNCRSZ ✓
+- PBFTU + FOXTR = UPCML ✓
+
+The keyword FOXTROT is confirmed.
+
+**Step 3 — Decrypt (subtract the key).**
+
+```
+Cipher: B  Q  H  E  A  W  M  Q  U  S  N  X  K  X  B  G  G  I  B  I  S  S
+Key:    F  O  X  T  R  O  T  F  O  X  T  R  O  T  F  O  X  T  R  O  T  F
+Plain:  W  C  K  L  J  I  T  L  G  V  U  G  W  E  W  S  J  P  K  U  Z  N
+```
+
+**Step 4 — Check by re-encrypting.**
+W+F=B, C+O=Q, K+X=H, L+T=E … → BQHEAWMQUSNXKXBGGIBISS ✓ (matches ciphertext exactly).
+
+Answer: WCKLJITLGVUGWEWSJPKUZN",WCKLJITLGVUGWEWSJPKUZN,1,medium,stop
+cipher_en_medium_0078,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 412: STATUS OVERLOADED. COORDINATES SET TO 131.69 | SECTOR C4B3. TARGET DATABASE IS BREACHED. ENCRYPTION SEED IS DETERMINED AS ECHO.
+-------------------------------
+
+Ciphertext: 'ZMTMDZPGXCAEZFIUGGPQ'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - QEICNV -> UGPQRX
+  - HPTBFK -> LRAPJM
+
+Enter the decrypted plaintext (uppercase, no spaces).",VKMYZXISTATQVDBGCEIC,,"## Reasoning
+
+**Step 1 — Find the keyword.**
+The log says ""ENCRYPTION SEED IS DETERMINED AS **ECHO**."" The word after the label ""SEED"" is the keyword: **ECHO** (E=4, C=2, H=7, O=14).
+
+**Step 2 — Verify with the examples.**
+Encryption adds the keyword. Testing QEICNV → UGPQRX:
+- Q(16)+E(4)=20=U ✓
+- E(4)+C(2)=6=G ✓
+- I(8)+H(7)=15=P ✓
+- C(2)+O(14)=16=Q ✓
+- N(13)+E(4)=17=R ✓
+- V(21)+C(2)=23=X ✓
+
+Keyword **ECHO** confirmed.
+
+**Step 3 — Decrypt (subtract keyword).**
+
+| C | val | key | plain |
+|---|-----|-----|-------|
+| Z 25 | -4 | V |
+| M 12 | -2 | K |
+| T 19 | -7 | M |
+| M 12 | -14 | Y |
+| D 3 | -4 | Z |
+| Z 25 | -2 | X |
+| P 15 | -7 | I |
+| G 6 | -14 | S |
+| X 23 | -4 | T |
+| C 2 | -2 | A |
+| A 0 | -7 | T |
+| E 4 | -14 | Q |
+| Z 25 | -4 | V |
+| F 5 | -2 | D |
+| I 8 | -7 | B |
+| U 20 | -14 | G |
+| G 6 | -4 | C |
+| G 6 | -2 | E |
+| P 15 | -7 | I |
+| Q 16 | -14 | C |
+
+Result: **VKMYZXISTATQVDBGCEIC**
+
+Answer: VKMYZXISTATQVDBGCEIC",VKMYZXISTATQVDBGCEIC,1,medium,stop
+cipher_en_medium_0079,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 97.14 | SECTOR 75AE. TARGET CORE IS OFFLINE. SYSTEM REPORT ID 7041: STATUS STABLE. ENCRYPTION AUTH CODE IS DETERMINED AS ECHO.
+-------------------------------
+
+Ciphertext: 'WZZTGGQPHYYMNFZHJADZBJ'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - WRBEC -> ATISG
+  - KJJMO -> OLQAS
+
+Enter the decrypted plaintext (uppercase, no spaces).",SXSFCEJBDWRYJDSTFYWLXH,,"## Solution
+
+**Step 1 — Find the keyword.**
+The mission log contains the label **AUTH CODE**: *""ENCRYPTION AUTH CODE IS DETERMINED AS ECHO.""* The keyword is **ECHO**.
+
+**Step 2 — Confirm the operation with the examples.**
+Testing the examples (treating left = plaintext, right = ciphertext, standard Vigenère C = P + K):
+
+- WRBEC + ECHO → A T I S G ✓  (W+E=A, R+C=T, B+H=I, E+O=S, C+E=G)
+- KJJMO + ECHO → O L Q A S ✓
+
+So encryption adds ECHO, and **decryption subtracts ECHO** (P = C − K).
+
+**Step 3 — Decrypt the ciphertext.**
+Key ECHO = 4,2,7,14 repeating.
+
+| C | W | Z | Z | T | G | G | Q | P | H | Y | Y | M | N | F | Z | H | J | A | D | Z | B | J |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| K | E | C | H | O | E | C | H | O | E | C | H | O | E | C | H | O | E | C | H | O | E | C |
+| P | S | X | S | F | C | E | J | B | D | W | R | Y | J | D | S | T | F | Y | W | L | X | H |
+
+Subtracting (mod 26) yields:
+
+**SXSFCEJBDWRYJDSTFYWLXH**
+
+Answer: SXSFCEJBDWRYJDSTFYWLXH",SXSFCEJBDWRYJDSTFYWLXH,1,medium,stop
+cipher_en_medium_0080,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 105.7 | SECTOR 4963. SYSTEM REPORT ID 9312: STATUS LOCKED. TARGET GRID IS STANDBY. ENCRYPTION AUTH CODE IS DETERMINED AS BRAVO.
+-------------------------------
+
+Ciphertext: 'AQLTENWKIWERCPLILOZQRHK'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - LHJWYM -> MYJRMN
+  - IGVDYQ -> JXVYMR
+
+Enter the decrypted plaintext (uppercase, no spaces).",ZZLYQMFKNIDACUXHUOECQQK,,"## Reasoning
+
+**Step 1 – Find the keyword.**
+The mission log contains the label ""AUTH CODE"": *""ENCRYPTION AUTH CODE IS DETERMINED AS BRAVO.""* The operative keyword is **BRAVO**.
+
+**Step 2 – Verify with examples.**
+Vigenère adds the keyword (A=0…) to plaintext. Key BRAVO = 1,17,0,21,14.
+- LHJWYM → M,Y,J,R,M,N: L(11)+1=M, H(7)+17=Y, J(9)+0=J, W(22)+21=R, Y(24)+14=M, M(12)+1=N ✓
+- IGVDYQ → J,X,V,Y,M,R: I+1=J, G+17=X, V+0=V, D+21=Y, Y+14=M, Q+1=R ✓
+
+Keyword **BRAVO** and ""add"" encryption are confirmed.
+
+**Step 3 – Decrypt (subtract keyword).**
+
+Ciphertext: `A Q L T E N W K I W E R C P L I L O Z Q R H K`
+Key stream: `1 17 0 21 14 1 17 0 21 14 1 17 0 21 14 1 17 0 21 14 1 17 0`
+
+| C | val | key | plain |
+|---|-----|-----|-------|
+|A|0|1|Z|
+|Q|16|17|Z|
+|L|11|0|L|
+|T|19|21|Y|
+|E|4|14|Q|
+|N|13|1|M|
+|W|22|17|F|
+|K|10|0|K|
+|I|8|21|N|
+|W|22|14|I|
+|E|4|1|D|
+|R|17|17|A|
+|C|2|0|C|
+|P|15|21|U|
+|L|11|14|X|
+|I|8|1|H|
+|L|11|17|U|
+|O|14|0|O|
+|Z|25|21|E|
+|Q|16|14|C|
+|R|17|1|Q|
+|H|7|17|Q|
+|K|10|0|K|
+
+Result: **ZZLYQMFKNIDACUXHUOECQQK**
+
+Answer: ZZLYQMFKNIDACUXHUOECQQK",ZZLYQMFKNIDACUXHUOECQQK,1,medium,stop
+cipher_en_medium_0081,"--- [RECOVERED MISSION LOG] ---
+TARGET TERMINAL IS OFFLINE. SYSTEM REPORT ID 4998: STATUS CRITICAL. COORDINATES SET TO 40.3 | SECTOR EEDF. ENCRYPTION VECTOR IS DETERMINED AS GOLF.
+-------------------------------
+
+Ciphertext: 'GLJWWAINRTWRKTWMNNLGSF'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - JVKQ -> PJVV
+  - AURV -> GICA
+
+Enter the decrypted plaintext (uppercase, no spaces).",AXYRQMXILFLMEFLHHZABMR,,"## Reasoning
+
+**Step 1: Find the keyword.**
+The mission log contains the label ""ENCRYPTION VECTOR IS DETERMINED AS GOLF."" The keyword value here is **GOLF**.
+
+**Step 2: Determine decryption direction from examples.**
+The examples were encrypted with the same keyword. Testing JVKQ → PJVV:
+- P − J = G, J − V = O, V − K = L, V − Q = F → **GOLF** ✓
+- AURV → GICA: G − A = G, I − U = O, C − R = L, A − V = F → **GOLF** ✓
+
+So decryption = **cipher + key (mod 26)** with key GOLF.
+
+**Step 3: Decrypt the ciphertext** `GLJWWAINRTWRKTWMNNLGSF` with repeating key `GOLF`:
+
+| C | G | L | J | W | W | A | I | N | R | T | W | R | K | T | W | M | N | N | L | G | S | F |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| K | G | O | L | F | G | O | L | F | G | O | L | F | G | O | L | F | G | O | L | F | G | O |
+| P | M | Z | U | B | C | O | T | S | X | H | H | W | Q | H | H | R | T | B | W | L | Y | T |
+
+Result: **MZUBCOTSXHHWQHHRTBWLYT**
+
+Answer: MZUBCOTSXHHWQHHRTBWLYT",MZUBCOTSXHHWQHHRTBWLYT,0,medium,stop
+cipher_en_medium_0082,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 9243: STATUS CRITICAL. COORDINATES SET TO 105.64 | SECTOR 57EA. ENCRYPTION VECTOR IS DETERMINED AS FOXTROT. TARGET CORE IS BREACHED.
+-------------------------------
+
+Ciphertext: 'NEKBXHNBAAZNCUSYCHYHIKV'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - CNNBVX -> HBKUML
+  - XABHTX -> COYAKL
+
+Enter the decrypted plaintext (uppercase, no spaces).",IQNIGTUWMDGWOBNKFOHTPFH,,"## Solution
+
+**Step 1 — Find the keyword.**
+In the mission log, the label ""ENCRYPTION VECTOR IS DETERMINED AS **FOXTROT**."" — the word after ""VECTOR"" is the keyword: **FOXTROT**.
+
+**Step 2 — Verify with examples (encryption = plaintext + key).**
+Using FOXTROT (F=5, O=14, X=23, T=19, R=17, O=14, T=19):
+- C+F=H, N+O=B, N+X=K, B+T=U, V+R=M, X+O=L → CNNBVX → HBKUML ✓
+
+So encryption adds the key; decryption subtracts it.
+
+**Step 3 — Decrypt (plaintext = ciphertext − key).**
+
+Ciphertext: N E K B X H N B A A Z N C U S Y C H Y H I K V
+Key repeat: F O X T R O T F O X T R O T F O X T R O T F O
+
+| C | K | P |
+|---|---|---|
+|N13−F5|→8|I|
+|E4−O14|→16|Q|
+|K10−X23|→13|N|
+|B1−T19|→8|I|
+|X23−R17|→6|G|
+|H7−O14|→19|T|
+|N13−T19|→20|U|
+|B1−F5|→22|W|
+|A0−O14|→12|M|
+|A0−X23|→3|D|
+|Z25−T19|→6|G|
+|N13−R17|→22|W|
+|C2−O14|→14|O|
+|U20−T19|→1|B|
+|S18−F5|→13|N|
+|Y24−O14|→10|K|
+|C2−X23|→5|F|
+|H7−T19|→14|O|
+|Y24−R17|→7|H|
+|H7−O14|→19|T|
+|I8−T19|→15|P|
+|K10−F5|→5|F|
+|V21−O14|→7|H|
+
+Result: **IQNIGTUWMDGWOBNKFOHTPFH**
+
+Answer: IQNIGTUWMDGWOBNKFOHTPFH",IQNIGTUWMDGWOBNKFOHTPFH,1,medium,stop
+cipher_en_medium_0083,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 3325: STATUS LOCKED. COORDINATES SET TO 65.13 | SECTOR 4C6C. TARGET SATELLITE IS OFFLINE. ENCRYPTION VECTOR IS DETERMINED AS INDIA.
+-------------------------------
+
+Ciphertext: 'BPHZHACLPKWGTRNMWAAMHW'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - EDHH -> MQKP
+  - FAHW -> NNKE
+
+Enter the decrypted plaintext (uppercase, no spaces).",TCERHSPIHKOTQJNEJXSMZJ,,"## Solution
+
+**Step 1 – Find the keyword.**
+The mission log contains the label **VECTOR**: *""ENCRYPTION VECTOR IS DETERMINED AS INDIA.""* The keyword is **INDIA**.
+
+**Verification with the examples (encryption = plaintext + key):**
+- EDHH + INDI → (4+8, 3+13, 7+3, 7+8) = M,Q,K,P = **MQKP** ✓
+- FAHW + INDI → (5+8, 0+13, 7+3, 22+8) = N,N,K,E = **NNKE** ✓
+
+Keyword **INDIA** confirmed.
+
+**Step 2 – Decrypt (plaintext = cipher − key, mod 26).**
+
+Ciphertext: `B P H Z H A C L P K W G T R N M W A A M H W`
+Key stream: `I N D I A I N D I A I N D I A I N D I A I N`
+
+| C | val | key | P |
+|---|---|---|---|
+|B|1|8|T|
+|P|15|13|C|
+|H|7|3|E|
+|Z|25|8|R|
+|H|7|0|H|
+|A|0|8|S|
+|C|2|13|P|
+|L|11|3|I|
+|P|15|8|H|
+|K|10|0|K|
+|W|22|8|O|
+|G|6|13|T|
+|T|19|3|Q|
+|R|17|8|J|
+|N|13|0|N|
+|M|12|8|E|
+|W|22|13|J|
+|A|0|3|X|
+|A|0|8|S|
+|M|12|0|M|
+|H|7|8|Z|
+|W|22|13|J|
+
+Reading down: **TCERHSPIHKOTQJNEJXSMZJ**
+
+Answer: TCERHSPIHKOTQJNEJXSMZJ",TCERHSPIHKOTQJNEJXSMZJ,1,medium,stop
+cipher_en_medium_0084,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 511: STATUS SYNCING. COORDINATES SET TO 146.81 | SECTOR AE05. TARGET TERMINAL IS BREACHED. ENCRYPTION SEED IS DETERMINED AS HOTEL.
+-------------------------------
+
+Ciphertext: 'NBFTHRGQLOMGYQIEUHIH'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - VWQBWP -> CKJFHW
+  - BJNM -> IXGQ
+
+Enter the decrypted plaintext (uppercase, no spaces).",GNMPWKSXHDFSFMXXGOEW,,"Verifying the key: the log says ""SEED IS DETERMINED AS HOTEL"", so keyword = **HOTEL**.
+
+Check with example VWQBWP → CKJFHW using encryption = plaintext + key:
+- V(21)+H(7)=C ✓, W+O=K ✓, Q+T=J ✓, B+E=F ✓, W+L=H ✓, P+H=W ✓
+
+So decryption = cipher − key (repeating HOTEL).
+
+Decrypting NBFTHRGQLOMGYQIEUHIH:
+
+| C | key | result |
+|---|-----|--------|
+|N13|H7|G|
+|B1|O14|N|
+|F5|T19|M|
+|T19|E4|P|
+|H7|L11|W|
+|R17|H7|K|
+|G6|O14|S|
+|Q16|T19|X|
+|L11|E4|H|
+|O14|L11|D|
+|M12|H7|F|
+|G6|O14|S|
+|Y24|T19|F|
+|Q16|E4|M|
+|I8|L11|X|
+|E4|H7|X|
+|U20|O14|G|
+|H7|T19|O|
+|I8|E4|E|
+|H7|L11|W|
+
+Result: GNMPWKSXHDFSFMXXGOEW
+
+Answer: GNMPWKSXHDFSFMXXGOEW",GNMPWKSXHDFSFMXXGOEW,1,medium,stop
+cipher_en_medium_0085,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION PRIMARY KEY IS DETERMINED AS HOTEL. SYSTEM REPORT ID 5032: STATUS STABLE. TARGET GRID IS OFFLINE. COORDINATES SET TO 135.67 | SECTOR A922.
+-------------------------------
+
+Ciphertext: 'RZWVOTHZAWPMBQGQQGBNMORN'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - PRXNFQ -> WFQRQX
+  - BSNAE -> IGGEP
+
+Enter the decrypted plaintext (uppercase, no spaces).",KLDRDMTGWLIYIMVJCNXCFAYJ,,"## Solution
+
+**Step 1: Find the keyword**
+
+The mission log contains: ""ENCRYPTION PRIMARY KEY IS DETERMINED AS **HOTEL**""
+
+The label ""PRIMARY KEY"" points to the keyword: **HOTEL** (7, 14, 19, 4, 11).
+
+**Step 2: Verify with examples**
+
+Testing PRXNFQ → WFQRQX (plaintext → ciphertext):
+- W−P = 22−15 = 7 = H
+- F−R = 5−17 = 14 = O
+- Q−X = 16−23 = 19 = T
+- R−N = 17−13 = 4 = E
+- Q−F = 16−5 = 11 = L
+
+Keyword = HOTEL ✓ (encryption **adds** the key).
+
+**Step 3: Decrypt (subtract key)**
+
+Ciphertext: RZWVOTHZAWPMBQGQQGBNMORN
+Key stream: HOTELHOTELHOTELHOTELHOTE
+
+| C | key | C−key | P |
+|---|---|---|---|
+|R|H|17−7=10|K|
+|Z|O|25−14=11|L|
+|W|T|22−19=3|D|
+|V|E|21−4=17|R|
+|O|L|14−11=3|D|
+|T|H|19−7=12|M|
+|H|O|7−14→19|T|
+|Z|T|25−19=6|G|
+|A|E|0−4→22|W|
+|W|L|22−11=11|L|
+|P|H|15−7=8|I|
+|M|O|12−14→24|Y|
+|B|T|1−19→8|I|
+|Q|E|16−4=12|M|
+|G|L|6−11→21|V|
+|Q|H|16−7=9|J|
+|Q|O|16−14=2|C|
+|G|T|6−19→13|N|
+|B|E|1−4→23|X|
+|N|L|13−11=2|C|
+|M|H|12−7=5|F|
+|O|O|14−14=0|A|
+|R|T|17−19→24|Y|
+|N|E|13−4=9|J|
+
+Result: **KLDRDMTGWLIYIMVJCNXCFAYJ**
+
+Answer: KLDRDMTGWLIYIMVJCNXCFAYJ",KLDRDMTGWLIYIMVJCNXCFAYJ,1,medium,stop
+cipher_en_medium_0086,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION SEED IS DETERMINED AS GOLF. TARGET SATELLITE IS BREACHED. COORDINATES SET TO 151.50 | SECTOR 606C. SYSTEM REPORT ID 9037: STATUS SYNCING.
+-------------------------------
+
+Ciphertext: 'UPHYEXCKFCRASFPPULSL'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - VLNQ -> BZYV
+  - PNXV -> VBIA
+
+Enter the decrypted plaintext (uppercase, no spaces).",OBWTYJRFZOGVMREKOXHG,,"## Solution
+
+**Step 1 — Find the keyword.**
+The log states: ""ENCRYPTION **SEED** IS DETERMINED AS **GOLF**."" The seed/keyword is **GOLF**.
+
+**Step 2 — Verify with examples (Vigenère addition, A=0).**
+- VLNQ + GOLF: V(21)+6=1=B, L(11)+14=25=Z, N(13)+11=24=Y, Q(16)+5=21=V → **BZYV** ✓
+- PNXV + GOLF: P+6=V, N+14=B, X+11=I, V+5=A → **VBIA** ✓
+
+Confirmed: encryption = plaintext + keyword. So decryption = ciphertext − keyword.
+
+**Step 3 — Decrypt `UPHYEXCKFCRASFPPULSL` with key GOLF.**
+
+| C | val | key | −key | P |
+|---|-----|-----|------|---|
+|U|20|G6|14|O|
+|P|15|O14|1|B|
+|H|7|L11|22|W|
+|Y|24|F5|19|T|
+|E|4|G6|24|Y|
+|X|23|O14|9|J|
+|C|2|L11|17|R|
+|K|10|F5|5|F|
+|F|5|G6|25|Z|
+|C|2|O14|14|O|
+|R|17|L11|6|G|
+|A|0|F5|21|V|
+|S|18|G6|12|M|
+|F|5|O14|17|R|
+|P|15|L11|4|E|
+|P|15|F5|10|K|
+|U|20|G6|14|O|
+|L|11|O14|23|X|
+|S|18|L11|7|H|
+|L|11|F5|6|G|
+
+Result: **OBWTYJRFZOGVMREKOXHG**
+
+Answer: OBWTYJRFZOGVMREKOXHG",OBWTYJRFZOGVMREKOXHG,1,medium,stop
+cipher_en_medium_0087,"--- [RECOVERED MISSION LOG] ---
+TARGET DATABASE IS STANDBY. SYSTEM REPORT ID 7008: STATUS SYNCING. ENCRYPTION PRIMARY KEY IS DETERMINED AS INDIA. COORDINATES SET TO 110.50 | SECTOR 19F3.
+-------------------------------
+
+Ciphertext: 'EMBUSOTRNZHEWISFDHBJ'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - OCQLK -> WPTTK
+  - JZXBOT -> RMAJOB
+
+Enter the decrypted plaintext (uppercase, no spaces).",WZYMSGGOFZZRTASXQETJ,,"## Solution
+
+**Step 1 — Find the keyword.**
+The mission log states: ""ENCRYPTION PRIMARY KEY IS DETERMINED AS **INDIA**.""
+The keyword is **INDIA**.
+
+**Step 2 — Verify with the examples (direction of Vigenère).**
+Using encryption = plaintext + key, so decryption = cipher − key:
+
+- WPTTK − INDIA → OCQLK ✓ (W−I=O, P−N=C, T−D=Q, T−I=L, K−A=K)
+- RMAJOB − INDIAI → JZXBOT ✓ (R−I=J, M−N=Z, A−D=X, J−I=B, O−A=O, B−I=T)
+
+Both confirm key = INDIA and decryption = (cipher − key). (The plaintexts are intentionally random-looking, as the examples show.)
+
+**Step 3 — Decrypt the ciphertext** `EMBUSOTRNZHEWISFDHBJ` with repeating key INDIA:
+
+| C | E | M | B | U | S | O | T | R | N | Z | H | E | W | I | S | F | D | H | B | J |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| K | I | N | D | I | A | I | N | D | I | A | I | N | D | I | A | I | N | D | I | A |
+| P | W | Z | Y | M | S | G | G | O | F | Z | Z | R | T | A | S | X | Q | E | T | J |
+
+Computation (mod 26): 4−8=W, 12−13=Z, 1−3=Y, 20−8=M, 18−0=S, 14−8=G, 19−13=G, 17−3=O, 13−8=F, 25−0=Z, 7−8=Z, 4−13=R, 22−3=T, 8−8=A, 18−0=S, 5−8=X, 3−13=Q, 7−3=E, 1−8=T, 9−0=J.
+
+**Result:** `WZYMSGGOFZZRTASXQETJ`
+
+Answer: WZYMSGGOFZZRTASXQETJ",WZYMSGGOFZZRTASXQETJ,1,medium,stop
+cipher_en_medium_0088,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION SEED IS DETERMINED AS CHARLIE. TARGET SATELLITE IS STANDBY. COORDINATES SET TO 0.11 | SECTOR 1FD2. SYSTEM REPORT ID 3568: STATUS SYNCING.
+-------------------------------
+
+Ciphertext: 'BAWRSJJLELSMZALLNTWDLFJ'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - LCEG -> NJEX
+  - ODUAS -> QKURD
+
+Enter the decrypted plaintext (uppercase, no spaces).",ZTWAHBFJXLBBRWJENCLVHDC,,"## Solution
+
+**Step 1 – Find the keyword.**
+The mission log says *""ENCRYPTION SEED IS DETERMINED AS CHARLIE.""* The value tied to the **SEED** label is **CHARLIE**.
+
+I verify with the examples (Vigenère addition, A=0):
+- LCEG → NJEX: shifts +2,+7,+0,+17 = C,H,A,R ✓
+- ODUAS → QKURD: shifts +2,+7,+0,+17,+11 = C,H,A,R,L ✓
+
+Keyword = **CHARLIE**.
+
+**Step 2 – Decrypt (subtract the key).**
+
+```
+Cipher: B  A  W  R  S  J  J  L  E  L  S  M  Z  A  L  L  N  T  W  D  L  F  J
+Key:    C  H  A  R  L  I  E  C  H  A  R  L  I  E  C  H  A  R  L  I  E  C  H
+Plain:  Z  T  W  A  H  B  F  J  X  L  B  B  R  W  J  E  N  C  L  V  H  D  C
+```
+
+Computation (each = cipher − key mod 26):
+- B−C=Z, A−H=T, W−A=W, R−R=A, S−L=H, J−I=B, J−E=F, L−C=J, E−H=X, L−A=L, S−R=B, M−L=B, Z−I=R, A−E=W, L−C=J, L−H=E, N−A=N, T−R=C, W−L=L, D−I=V, L−E=H, F−C=D, J−H=C
+
+Result: **ZTWAHBFJXLBBRWJENCLVHDC**
+
+Answer: ZTWAHBFJXLBBRWJENCLVHDC",ZTWAHBFJXLBBRWJENCLVHDC,1,medium,stop
+cipher_en_medium_0089,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 822: STATUS OVERLOADED. COORDINATES SET TO 81.63 | SECTOR 2D26. ENCRYPTION PRIMARY KEY IS DETERMINED AS FOXTROT. TARGET SATELLITE IS OFFLINE.
+-------------------------------
+
+Ciphertext: 'XDVLIKIGTLQMZFIRHHYAXBSW'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - CYWDEB -> HMTWVP
+  - FXVKLJ -> KLSDCX
+
+Enter the decrypted plaintext (uppercase, no spaces).",SPYSRWPBFOXVLMDDKOHMEWEZ,,"## Solution
+
+**Step 1: Find the keyword.**
+From the mission log, the label ""PRIMARY KEY IS DETERMINED AS **FOXTROT**"" gives the keyword: **FOXTROT**.
+
+**Step 2: Verify with examples.**
+Using Vigenère (cipher = plaintext + key), keyword FOXTROT = (5,14,23,19,17,14,19):
+- CYWDEB + FOXTRO → C+F=H, Y+O=M, W+X=T, D+T=W, E+R=V, B+O=P = **HMTWVP** ✓
+
+So to decrypt: plaintext = cipher − key.
+
+**Step 3: Decrypt XDVLIKIGTLQMZFIRHHYAXBSW.**
+
+| Cipher | Key | Plain |
+|---|---|---|
+| X(23) | F(5) | S |
+| D(3) | O(14) | P |
+| V(21) | X(23) | Y |
+| L(11) | T(19) | S |
+| I(8) | R(17) | R |
+| K(10) | O(14) | W |
+| I(8) | T(19) | P |
+| G(6) | F(5) | B |
+| T(19) | O(14) | F |
+| L(11) | X(23) | O |
+| Q(16) | T(19) | X |
+| M(12) | R(17) | V |
+| Z(25) | O(14) | L |
+| F(5) | T(19) | M |
+| I(8) | F(5) | D |
+| R(17) | O(14) | D |
+| H(7) | X(23) | K |
+| H(7) | T(19) | O |
+| Y(24) | R(17) | H |
+| A(0) | O(14) | M |
+| X(23) | T(19) | E |
+| B(1) | F(5) | W |
+| S(18) | O(14) | E |
+| W(22) | X(23) | Z |
+
+Result: **SPYSRWPBFOXVLMDDKOHMEWEZ**
+
+Answer: SPYSRWPBFOXVLMDDKOHMEWEZ",SPYSRWPBFOXVLMDDKOHMEWEZ,1,medium,stop
+cipher_en_medium_0090,"--- [RECOVERED MISSION LOG] ---
+TARGET CORE IS STANDBY. COORDINATES SET TO 178.5 | SECTOR 1D0F. SYSTEM REPORT ID 1155: STATUS CRITICAL. ENCRYPTION VECTOR IS DETERMINED AS BRAVO.
+-------------------------------
+
+Ciphertext: 'OHGBTNGKTKERNUXALERHVAMY'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - GNOZ -> HEOU
+  - XSLQD -> YJLLR
+
+Enter the decrypted plaintext (uppercase, no spaces).",NQGGFMPKYWDANZJZUEWTUJMD,,"## Solution
+
+**Step 1 — Find the keyword.**
+The label ""VECTOR"" appears in the log: *""ENCRYPTION VECTOR IS DETERMINED AS BRAVO.""* The keyword is **BRAVO**.
+
+**Verification with examples** (encryption = plaintext + keyword, A=0):
+- GNOZ + BRAV → (6+1)(13+17)(14+0)(25+21) = H E O U ✓
+- XSLQD + BRAVO → YJLLR ✓
+
+So the keyword **BRAVO** (1,17,0,21,14) is confirmed.
+
+**Step 2 — Decrypt (plaintext = ciphertext − keyword):**
+
+| C | O | H | G | B | T | N | G | K | T | K | E | R | N | U | X | A | L | E | R | H | V | A | M | Y |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| K | B | R | A | V | O | B | R | A | V | O | B | R | A | V | O | B | R | A | V | O | B | R | A | V |
+| P | N | Q | G | G | F | M | P | K | Y | W | D | A | N | Z | J | Z | U | E | W | T | U | J | M | D |
+
+Result: **NQGGFMPKYWDANZJZUEWTUJMD**
+
+Answer: NQGGFMPKYWDANZJZUEWTUJMD",NQGGFMPKYWDANZJZUEWTUJMD,1,medium,stop
+cipher_en_medium_0091,"--- [RECOVERED MISSION LOG] ---
+TARGET GRID IS READY. ENCRYPTION VECTOR IS DETERMINED AS DELTA. COORDINATES SET TO 19.62 | SECTOR E503. SYSTEM REPORT ID 3906: STATUS STABLE.
+-------------------------------
+
+Ciphertext: 'GFWCRQLBFWQMPJZPLHLU'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - POVXLF -> SSGQLI
+  - PRTQMW -> SVEJMZ
+
+Enter the decrypted plaintext (uppercase, no spaces).",DBLJRNHQMWNIEQZMHWSU,,"Keyword: after ""VECTOR"" → **DELTA** (D=3, E=4, L=11, T=19, A=0).
+
+Decrypting by subtracting the repeating key from the ciphertext:
+
+- G(6)-3=D
+- F(5)-4=B
+- W(22)-11=L
+- C(2)-19=J
+- R(17)-0=R
+- Q(16)-3=N
+- L(11)-4=H
+- B(1)-11=Q
+- F(5)-19=M
+- W(22)-0=W
+- Q(16)-3=N
+- M(12)-4=I
+- P(15)-11=E
+- J(9)-19=Q
+- Z(25)-0=Z
+- P(15)-3=M
+- L(11)-4=H
+- H(7)-11=W
+- L(11)-19=S
+- U(20)-0=U
+
+Answer: DBLJRNHQMWNIEQZMHWSU",DBLJRNHQMWNIEQZMHWSU,1,medium,stop
+cipher_en_medium_0092,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION PRIMARY KEY IS DETERMINED AS ALPHA. COORDINATES SET TO 99.60 | SECTOR 3C6F. SYSTEM REPORT ID 7645: STATUS SYNCING. TARGET GRID IS OFFLINE.
+-------------------------------
+
+Ciphertext: 'HYVLCEPEKPYCFEXOCBIHSO'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - ZWHXN -> ZHWEN
+  - BJALL -> BUPSL
+
+Enter the decrypted plaintext (uppercase, no spaces).",HNGECEEPDPYRQXXORMBHSD,,"## Reasoning
+
+**Step 1 — Find the keyword.**
+The log says: *""ENCRYPTION PRIMARY KEY IS DETERMINED AS ALPHA.""*
+The keyword tied to the ""PRIMARY KEY"" label is **ALPHA**.
+
+**Step 2 — Verify with the examples.**
+Encryption is *ciphertext = plaintext + key* (letters mod 26), key = ALPHA = (0, 11, 15, 7, 0).
+
+- ZWHXN → Z(+0)=Z, W(+11)=H, H(+15)=W, X(+7)=E, N(+0)=N → **ZHWEN** ✓
+- BJALL → B(+0)=B, J(+11)=U, A(+15)=P, L(+7)=S, L(+0)=L → **BUPSL** ✓
+
+Both confirm the keyword **ALPHA** and standard additive Vigenère.
+
+**Step 3 — Decrypt (subtract the key).**
+
+Ciphertext: `HYVLC EPEKP YCFEX OCBIH SO`
+Key stream (ALPHA repeating): `ALPHA ALPHA ALPHA ALPHA AL`
+
+| C | H | Y | V | L | C | E | P | E | K | P | Y | C | F | E | X | O | C | B | I | H | S | O |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| K | A | L | P | H | A | A | L | P | H | A | A | L | P | H | A | A | L | P | H | A | A | L |
+| P | H | N | G | E | C | E | E | P | D | P | Y | R | Q | X | X | O | R | M | B | H | S | D |
+
+Result: **HNGECEEPDPYRQXXORMBHSD**
+
+(As with the sample plaintexts ZWHXN and BJALL, the recovered plaintext is a random string, not an English word.)
+
+Answer: HNGECEEPDPYRQXXORMBHSD",HNGECEEPDPYRQXXORMBHSD,1,medium,stop
+cipher_en_medium_0093,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 8215: STATUS LOCKED. COORDINATES SET TO 90.21 | SECTOR F077. TARGET GRID IS BREACHED. ENCRYPTION PRIMARY KEY IS DETERMINED AS CHARLIE.
+-------------------------------
+
+Ciphertext: 'NGJWZEERZVAMBLUFVBSOE'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - WLHQSJ -> YSHHDR
+  - FBUU -> HIUL
+
+Enter the decrypted plaintext (uppercase, no spaces).",LZJFOWAPSVJBTHSYVKHGA,,"## Solution
+
+**Step 1: Find the keyword.**
+The mission log states: ""ENCRYPTION PRIMARY KEY IS DETERMINED AS CHARLIE."" The keyword is **CHARLIE**.
+
+**Step 2: Verify with examples (encryption = plaintext + key).**
+- WLHQSJ + CHARLIE: W+C=Y, L+H=S, H+A=H, Q+R=H, S+L=D, J+I=R → YSHHDR ✓
+- FBUU + CHAR: F+C=H, B+H=I, U+A=U, U+R=L → HIUL ✓
+
+Confirmed: keyword CHARLIE, and to **decrypt** we subtract the key.
+
+**Step 3: Decrypt NGJWZEERZVAMBLUFVBSOE**
+
+Key repeated: C H A R L I E C H A R L I E C H A R L I E
+(2,7,0,17,11,8,4,...)
+
+| C | Key | C−Key | P |
+|---|-----|-------|---|
+|N13|2|11|L|
+|G6|7|25|Z|
+|J9|0|9|J|
+|W22|17|5|F|
+|Z25|11|14|O|
+|E4|8|22|W|
+|E4|4|0|A|
+|R17|2|15|P|
+|Z25|7|18|S|
+|V21|0|21|V|
+|A0|17|9|J|
+|M12|11|1|B|
+|B1|8|19|T|
+|L11|4|7|H|
+|U20|2|18|S|
+|F5|7|24|Y|
+|V21|0|21|V|
+|B1|17|10|K|
+|S18|11|7|H|
+|O14|8|6|G|
+|E4|4|0|A|
+
+Result: **LZJFOWAPSVJBTHSYVKHGA**
+
+Answer: LZJFOWAPSVJBTHSYVKHGA",LZJFOWAPSVJBTHSYVKHGA,1,medium,stop
+cipher_en_medium_0094,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 36.93 | SECTOR B8C6. TARGET TERMINAL IS READY. ENCRYPTION VECTOR IS DETERMINED AS BRAVO. SYSTEM REPORT ID 1190: STATUS LOCKED.
+-------------------------------
+
+Ciphertext: 'LIMPZRAKRHCSRPIFLDSIR'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - SFPOG -> TWPJU
+  - AYHGBX -> BPHBPY
+
+Enter the decrypted plaintext (uppercase, no spaces).",KRMULQJKWTBBRUUEUDXUQ,,"## Solution
+
+**Step 1 — Find the keyword.**
+The log contains the label **VECTOR**: *""ENCRYPTION VECTOR IS DETERMINED AS BRAVO.""* → keyword = **BRAVO**.
+
+**Verify with examples** (Vigenère: cipher = plain + key):
+- SFPOG → TWPJU: differences = (1,17,0,21,14) = B,R,A,V,O ✓
+- AYHGBX → BPHBPY: differences = (1,17,0,21,14,1) = B,R,A,V,O,B ✓
+
+Keyword confirmed: **BRAVO** (1,17,0,21,14).
+
+**Step 2 — Decrypt (subtract keyword, mod 26).**
+
+Ciphertext: `L I M P Z R A K R H C S R P I F L D S I R`
+Key stream: `B R A V O B R A V O B R A V O B R A V O B`
+
+| C | val | key | plain |
+|---|----|----|----|
+|L|11|1|K|
+|I|8|17|R|
+|M|12|0|M|
+|P|15|21|U|
+|Z|25|14|L|
+|R|17|1|Q|
+|A|0|17|J|
+|K|10|0|K|
+|R|17|21|W|
+|H|7|14|T|
+|C|2|1|B|
+|S|18|17|B|
+|R|17|0|R|
+|P|15|21|U|
+|I|8|14|U|
+|F|5|1|E|
+|L|11|17|U|
+|D|3|0|D|
+|S|18|21|X|
+|I|8|14|U|
+|R|17|1|Q|
+
+Result: **KRMULQJKWTBBRUUEUDXUQ**
+
+Answer: KRMULQJKWTBBRUUEUDXUQ",KRMULQJKWTBBRUUEUDXUQ,1,medium,stop
+cipher_en_medium_0095,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 126.96 | SECTOR BF95. TARGET SATELLITE IS STANDBY. SYSTEM REPORT ID 4909: STATUS OVERLOADED. ENCRYPTION SEED IS DETERMINED AS CHARLIE.
+-------------------------------
+
+Ciphertext: 'KMGMLMCVZCTCEKQZDSHSI'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - YEKIHO -> ALKZSW
+  - NTRUT -> PARLE
+
+Enter the decrypted plaintext (uppercase, no spaces).",IFGVAEYTSCCRWGOSDBWKE,,"## Solution
+
+**Step 1 — Find the keyword.**
+The mission log contains ""ENCRYPTION SEED IS DETERMINED AS CHARLIE."" The label **SEED** points to the keyword, which I confirm using the examples.
+
+**Verify keyword = CHARLIE** (C=2,H=7,A=0,R=17,L=11,I=8,E=4), encryption adds the key:
+- YEKIHO → Y(24)+C=C, E+H=L, K+A=K, I+R=Z, H+L=S, O+I=W → **ALKZSW** ✓
+- NTRUT → N+C=P, T+H=A, R+A=R, U+R=L, T+L=E → **PARLE** ✓
+
+Keyword **CHARLIE** confirmed.
+
+**Step 2 — Decrypt (subtract key mod 26).**
+
+```
+Cipher: K  M  G  M  L  M  C  V  Z  C  T  C  E  K  Q  Z  D  S  H  S  I
+Key:    C  H  A  R  L  I  E  C  H  A  R  L  I  E  C  H  A  R  L  I  E
+Plain:  I  F  G  V  A  E  Y  T  S  C  C  R  W  G  O  S  D  B  W  K  E
+```
+
+Computations:
+- K−C=I, M−H=F, G−A=G, M−R=V, L−L=A, M−I=E, C−E=Y
+- V−C=T, Z−H=S, C−A=C, T−R=C, C−L=R, E−I=W, K−E=G
+- Q−C=O, Z−H=S, D−A=D, S−R=B, H−L=W, S−I=K, I−E=E
+
+**Result:** IFGVAEYTSCCRWGOSDBWKE
+
+Answer: IFGVAEYTSCCRWGOSDBWKE",IFGVAEYTSCCRWGOSDBWKE,1,medium,stop
+cipher_en_medium_0096,"--- [RECOVERED MISSION LOG] ---
+TARGET TERMINAL IS OFFLINE. SYSTEM REPORT ID 4623: STATUS SYNCING. ENCRYPTION SEED IS DETERMINED AS DELTA. COORDINATES SET TO 87.65 | SECTOR 4C6C.
+-------------------------------
+
+Ciphertext: 'VHFYVCMHKPHXJVMSOYES'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - YFMMVQ -> BJXFVT
+  - PYHIK -> SCSBK
+
+Enter the decrypted plaintext (uppercase, no spaces).",SDUFVZIWRPETYCMPKNLS,,"## Solution
+
+**Step 1 — Find the keyword.**
+The mission log says: *""ENCRYPTION SEED IS DETERMINED AS DELTA.""* The label **SEED** points to the keyword value **DELTA**.
+
+**Step 2 — Confirm with the examples.**
+Vigenère here means: ciphertext = plaintext + key (A=0). So decryption = ciphertext − key.
+
+Check example `YFMMVQ -> BJXFVT` (plaintext YFMMVQ, ciphertext BJXFVT):
+- Decrypt BJXFVT with DELTA: B−D=Y, J−E=F, X−L=M, F−T=M, V−A=V, T−D=Q → **YFMMVQ** ✓
+
+Check `PYHIK -> SCSBK`:
+- Encrypt PYHIK + DELTA: P+D=S, Y+E=C, H+L=S, I+T=B, K+A=K → **SCSBK** ✓
+
+Keyword **DELTA** and standard Vigenère confirmed.
+
+**Step 3 — Decrypt the target.**
+Ciphertext: `VHFYVCMHKPHXJVMSOYES`, key `DELTA` repeated:
+
+| C | key | C−key |
+|---|-----|-------|
+|V(21)|D(3)|S|
+|H(7)|E(4)|D|
+|F(5)|L(11)|U|
+|Y(24)|T(19)|F|
+|V(21)|A(0)|V|
+|C(2)|D(3)|Z|
+|M(12)|E(4)|I|
+|H(7)|L(11)|W|
+|K(10)|T(19)|R|
+|P(15)|A(0)|P|
+|H(7)|D(3)|E|
+|X(23)|E(4)|T|
+|J(9)|L(11)|Y|
+|V(21)|T(19)|C|
+|M(12)|A(0)|M|
+|S(18)|D(3)|P|
+|O(14)|E(4)|K|
+|Y(24)|L(11)|N|
+|E(4)|T(19)|L|
+|S(18)|A(0)|S|
+
+Result: **SDUFVZIWRPETYCMPKNLS**
+
+Answer: SDUFVZIWRPETYCMPKNLS",SDUFVZIWRPETYCMPKNLS,1,medium,stop
+cipher_en_medium_0097,"--- [RECOVERED MISSION LOG] ---
+TARGET GRID IS OFFLINE. SYSTEM REPORT ID 5153: STATUS LOCKED. ENCRYPTION VECTOR IS DETERMINED AS HOTEL. COORDINATES SET TO 14.51 | SECTOR C6FD.
+-------------------------------
+
+Ciphertext: 'DIAYUTOJNFPZYDSYNUXJAV'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - HIEVNC -> OWXZYJ
+  - DZNZJ -> KNGDU
+
+Enter the decrypted plaintext (uppercase, no spaces).",WUHUJMAQJUILFZHRZBTYTH,,"## Step 1: Find the keyword
+
+The mission log contains the label **VECTOR**: *""ENCRYPTION VECTOR IS DETERMINED AS HOTEL""*. The keyword is **HOTEL**.
+
+**Verification with examples** (encryption = plaintext + key mod 26):
+- HIEVNC + HOTEL... = O,W,X,Z,Y,J ✓ (7+7=14=O, 8+14=22=W, 4+19=23=X, 21+4=25=Z, 13+11=24=Y, 2+7=9=J)
+- DZNZJ + HOTEL = K,N,G,D,U ✓
+
+Keyword confirmed: **HOTEL**
+
+## Step 2: Decrypt (plaintext = ciphertext − key mod 26)
+
+Ciphertext: `DIAYUTOJNFPZYDSYNUXJAV`
+Key stream: `HOTELHOTELHOTELHOTELHO`
+
+| C | val | key | −key | letter |
+|---|-----|-----|------|--------|
+|D|3|7|22|W|
+|I|8|14|20|U|
+|A|0|19|7|H|
+|Y|24|4|20|U|
+|U|20|11|9|J|
+|T|19|7|12|M|
+|O|14|14|0|A|
+|J|9|19|16|Q|
+|N|13|4|9|J|
+|F|5|11|20|U|
+|P|15|7|8|I|
+|Z|25|14|11|L|
+|Y|24|19|5|F|
+|D|3|4|25|Z|
+|S|18|11|7|H|
+|Y|24|7|17|R|
+|N|13|14|25|Z|
+|U|20|19|1|B|
+|X|23|4|19|T|
+|J|9|11|24|Y|
+|A|0|7|19|T|
+|V|21|14|7|H|
+
+## Result
+
+The decrypted plaintext is:
+
+**WUHUJMAQJUILFZHRZBTYTH**
+
+Answer: WUHUJMAQJUILFZHRZBTYTH",WUHUJMAQJUILFZHRZBTYTH,1,medium,stop
+cipher_en_medium_0098,"--- [RECOVERED MISSION LOG] ---
+TARGET DATABASE IS OFFLINE. COORDINATES SET TO 48.88 | SECTOR 6170. ENCRYPTION VECTOR IS DETERMINED AS INDIA. SYSTEM REPORT ID 6900: STATUS LOCKED.
+-------------------------------
+
+Ciphertext: 'DWSAPPUZJUEGQULRGXQZMSA'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - ATPOMF -> IGSWMN
+  - XKQIW -> FXTQW
+
+Enter the decrypted plaintext (uppercase, no spaces).",VJPSPHHWBUWTNMLJTUIZEFX,,"## Reasoning
+
+**Step 1 – Find the keyword.**
+The log contains the label ""VECTOR"": *""ENCRYPTION VECTOR IS DETERMINED AS INDIA.""* The keyword derived from this is **INDIA**.
+
+**Verify with examples (Vigenère, cipher = plain + key):**
+- ATPOMF + INDIA → I,G,S,W,M,N ✓ (0+8=I, 19+13=G, 15+3=S, 14+8=W, 12+0=M, 5+8=N)
+- XKQIW + INDIA → F,X,T,Q,W ✓
+
+Keyword **INDIA** = (8,13,3,8,0) confirmed.
+
+**Step 2 – Decrypt (subtract key mod 26).**
+
+Ciphertext: D W S A P P U Z J U E G Q U L R G X Q Z M S A
+
+| C | # | key | P |
+|---|---|-----|---|
+|D|3|8|V|
+|W|22|13|J|
+|S|18|3|P|
+|A|0|8|S|
+|P|15|0|P|
+|P|15|8|H|
+|U|20|13|H|
+|Z|25|3|W|
+|J|9|8|B|
+|U|20|0|U|
+|E|4|8|W|
+|G|6|13|T|
+|Q|16|3|N|
+|U|20|8|M|
+|L|11|0|L|
+|R|17|8|J|
+|G|6|13|T|
+|X|23|3|U|
+|Q|16|8|I|
+|Z|25|0|Z|
+|M|12|8|E|
+|S|18|13|F|
+|A|0|3|X|
+
+Result: **VJPSPHHWBUWTNMLJTUIZEFX**
+
+Answer: VJPSPHHWBUWTNMLJTUIZEFX",VJPSPHHWBUWTNMLJTUIZEFX,1,medium,stop
+cipher_en_medium_0099,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 102.68 | SECTOR 1639. SYSTEM REPORT ID 1167: STATUS STABLE. ENCRYPTION AUTH CODE IS DETERMINED AS ALPHA. TARGET GRID IS STANDBY.
+-------------------------------
+
+Ciphertext: 'FGEWZNBBVXKTSKZZNDKQRDNH'
+
+Encryption guide:
+1. The encryption keyword is hidden in the mission log. The word immediately after labels such as 'PRIMARY KEY', 'AUTH CODE', 'SEED', or 'VECTOR' is the keyword.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - ZAAUU -> ZLPBU
+  - ESCOK -> EDRVK
+
+Enter the decrypted plaintext (uppercase, no spaces).",FVPPZNQMOXKIDDZZCODQRSYA,,"## Solution
+
+**Step 1: Find the keyword**
+
+In the mission log, the label ""AUTH CODE"" is followed by ""ALPHA"":
+> ENCRYPTION AUTH CODE IS DETERMINED AS **ALPHA**
+
+**Verification with examples** (Vigenère, subtract key to decrypt):
+- ZLPBU with key ALPHA → Z-A=Z, L-L=A, P-P=A, B-H=U, U-A=U → **ZAAUU** ✓
+- ESCOK confirms the same key.
+
+So the keyword is **ALPHA** = (0, 11, 15, 7, 0).
+
+**Step 2: Decrypt (cipher − key, mod 26)**
+
+```
+Cipher: F  G  E  W  Z  N  B  B  V  X  K  T  S  K  Z  Z  N  D  K  Q  R  D  N  H
+Key:    A  L  P  H  A  A  L  P  H  A  A  L  P  H  A  A  L  P  H  A  A  L  P  H
+Plain:  F  V  P  P  Z  N  Q  M  O  X  K  I  D  D  Z  Z  C  O  D  Q  R  S  Y  A
+```
+
+Result: **FVPPZNQMOXKIDDZZCODQRSYA**
+
+Answer: FVPPZNQMOXKIDDZZCODQRSYA",FVPPZNQMOXKIDDZZCODQRSYA,1,medium,stop

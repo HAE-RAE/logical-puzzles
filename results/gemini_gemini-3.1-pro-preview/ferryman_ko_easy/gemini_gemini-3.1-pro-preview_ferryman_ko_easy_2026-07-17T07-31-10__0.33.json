@@ -1,0 +1,32 @@
+{
+  "metadata": {
+    "task": "ferryman_ko_easy",
+    "model": "gemini/gemini-3.1-pro-preview",
+    "timestamp": "2026-07-17T07-31-10",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "temperature": 1.0,
+      "max_tokens": 32768,
+      "reasoning_effort": "medium"
+    },
+    "gen_kwargs_cli": "temperature=1.0,max_tokens=32768,reasoning_effort=medium"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.33,
+      "correct_count": 33,
+      "total_count": 100,
+      "avg_latency_ms": 73800.61282157898,
+      "finish_reason_counts": {
+        "stop": 100
+      }
+    },
+    "by_difficulty": {
+      "easy": {
+        "total": 100,
+        "correct": 33,
+        "accuracy": 0.33
+      }
+    }
+  }
+}

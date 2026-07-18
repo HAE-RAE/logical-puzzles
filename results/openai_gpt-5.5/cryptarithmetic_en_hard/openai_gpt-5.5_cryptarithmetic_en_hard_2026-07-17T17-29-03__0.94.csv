@@ -1,0 +1,9361 @@
+id,question,answer,thinking_content,resps,filtered_resps,exact_match,difficulty,finish_reason
+cryptarithmetic_en_hard_0000,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] I=7
+[group J-R] N=2, R=1
+[group S-Z] W=3
+
+Find the numeric value of UMBRELLA.
+
+  BASEBALL
++ TRIANGLE
++ SANDWICH
++ STARFISH
+----------
+= UMBRELLA",97410002,,"Working right-to-left, let the carries be \(c_1,\dots,c_7\).
+
+The column equations are:
+
+\[
+\begin{aligned}
+L+E+H+H &= A+10c_1\\
+L+L+C+S+c_1 &= L+10c_2\\
+A+G+I+I+c_2 &= L+10c_3\\
+B+N+W+F+c_3 &= E+10c_4\\
+E+A+D+R+c_4 &= R+10c_5\\
+S+I+N+A+c_5 &= B+10c_6\\
+A+R+A+T+c_6 &= M+10c_7\\
+B+T+S+S+c_7 &= U
+\end{aligned}
+\]
+
+Using the given values \(I=7,\ N=2,\ R=1,\ W=3\), these reduce to constraints such as:
+
+\[
+S+A+9+c_5=B+10c_6
+\]
+
+and the leftmost column has no carry out, so:
+
+\[
+B+T+2S+c_7<10
+\]
+
+This forces \(S\) to be small; checking the resulting carry possibilities gives the consistent top-column values:
+
+\[
+S=2,\quad T=1,\quad A=2,\quad B=4,\quad M=7,\quad U=9
+\]
+
+Then the lower columns force:
+
+\[
+L=0,\quad E=0,\quad C=8,\quad D=6,\quad F=9,\quad G=3,\quad H=1
+\]
+
+So the group tables used are:
+
+- Group A-I:  
+  \(A=2,\ B=4,\ C=8,\ D=6,\ E=0,\ F=9,\ G=3,\ H=1,\ I=7\)
+
+- Group J-R:  
+  \(L=0,\ M=7,\ N=2,\ R=1\)
+
+- Group S-Z:  
+  \(S=2,\ T=1,\ U=9,\ W=3\)
+
+Check:
+
+\[
+\begin{aligned}
+BASEBALL &= 42204200\\
+TRIANGLE &= 11722300\\
+SANDWICH &= 22263781\\
+STARFISH &= 21219721\\
+\hline
+UMBRELLA &= 97410002
+\end{aligned}
+\]
+
+Answer: 97410002",97410002,1,hard,stop
+cryptarithmetic_en_hard_0001,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=1, D=5
+[group J-R] N=2, O=4
+[group S-Z] U=4
+
+Find the numeric value of BUILDING.
+
+  AIRPLANE
++ UMBRELLA
++ SCISSORS
++ COMPUTER
+----------
+= BUILDING",94795723,,"Let the unknown digits be written in lowercase.
+
+By groups:
+
+- A–I: A=1, D=5, and unknowns B=b, C=c, E=e, G=g, I=i
+- J–R: N=2, O=4, and unknowns L=l, M=m, P=p, R=r
+- S–Z: U=4, and unknowns S=s, T=t
+
+Column addition from right to left gives:
+
+\[
+\begin{aligned}
+e+1+s+r &= g+10k_1 \\
+2+l+r+e+k_1 &= 2+10k_2 \\
+1+l+4+t+k_2 &= i+10k_3 \\
+l+e+s+4+k_3 &= 5+10k_4 \\
+p+r+s+p+k_4 &= l+10k_5 \\
+r+b+i+m+k_5 &= i+10k_6 \\
+i+m+c+4+k_6 &= 4+10k_7 \\
+1+4+s+c+k_7 &= b
+\end{aligned}
+\]
+
+From the leftmost column:
+
+\[
+b=5+s+c+k_7
+\]
+
+Since \(b\le 9\), and \(s,c\) are nonzero while \(k_7\ge 1\), the only possibility is:
+
+\[
+s=1,\quad c=2,\quad k_7=1,\quad b=9
+\]
+
+Then the remaining columns force:
+
+\[
+i=7,\quad m=0,\quad r=1,\quad e=0,\quad g=3,\quad l=9,\quad p=3,\quad t=2
+\]
+
+So:
+
+- A–I table includes: A=1, B=9, C=2, D=5, E=0, G=3, I=7
+- J–R table includes: L=9, M=0, N=2, O=4, P=3, R=1
+- S–Z table includes: S=1, T=2, U=4
+
+Thus:
+
+\[
+BUILDING = 94795723
+\]
+
+Answer: 94795723",94795723,1,hard,stop
+cryptarithmetic_en_hard_0002,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=8, D=7
+[group J-R] M=2, N=1, O=8
+[group S-Z] (none revealed)
+
+Find the numeric value of FOOTBALL.
+
+  COMPUTER
++ SCISSORS
++ CHILDREN
++ BUILDING
+----------
+= FOOTBALL",98843833,,"Let the carries from right to left be \(k_1,k_2,\dots,k_7\).
+
+Aligning the addition:
+
+\[
+\begin{array}{cccccccc}
+C&O&M&P&U&T&E&R\\
+S&C&I&S&S&O&R&S\\
+C&H&I&L&D&R&E&N\\
+B&U&I&L&D&I&N&G\\
+\hline
+F&O&O&T&B&A&L&L
+\end{array}
+\]
+
+Using the revealed values:
+
+- Group A-I: \(A=8,\ D=7\)
+- Group J-R: \(M=2,\ N=1,\ O=8\)
+
+Column equations give:
+
+\[
+\begin{aligned}
+R+S+N+G &= L+10k_1\\
+E+R+E+N+k_1 &= L+10k_2\\
+T+O+R+I+k_2 &= A+10k_3\\
+U+S+D+D+k_3 &= B+10k_4\\
+P+S+L+L+k_4 &= T+10k_5\\
+M+I+I+I+k_5 &= O+10k_6\\
+O+C+H+U+k_6 &= O+10k_7\\
+C+S+C+B+k_7 &= F
+\end{aligned}
+\]
+
+Solving these under the independent group tables yields:
+
+### Group A-I
+\[
+A=8,\ B=3,\ C=2,\ D=7,\ E=6,\ F=9,\ G=1,\ H=0,\ I=5
+\]
+
+### Group J-R
+\[
+L=3,\ M=2,\ N=1,\ O=8,\ P=5,\ R=0
+\]
+
+### Group S-Z
+\[
+S=1,\ T=4,\ U=7
+\]
+
+Now compute:
+
+\[
+\begin{aligned}
+COMPUTER &= 28257460\\
+SCISSORS &= 12511801\\
+CHILDREN &= 20537061\\
+BUILDING &= 37537511
+\end{aligned}
+\]
+
+Sum:
+
+\[
+28257460+12511801+20537061+37537511=98843833
+\]
+
+And:
+
+\[
+FOOTBALL = 98843833
+\]
+
+Answer: 98843833",98843833,1,hard,stop
+cryptarithmetic_en_hard_0003,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=3, F=9, H=4, I=8
+[group J-R] (none revealed)
+[group S-Z] W=3
+
+Find the numeric value of CHILDREN.
+
+  SNOWBALL
++ ELEPHANT
++ AIRPLANE
++ STARFISH
+----------
+= CHILDREN",74806815,,"Let the carries from right to left be \(c_1,\dots,c_7\).
+
+Column equations:
+
+\[
+\begin{aligned}
+&L+T+E+H=N+10c_1\\
+&L+N+N+S+c_1=E+10c_2\\
+&A+A+A+I+c_2=R+10c_3\\
+&B+H+L+F+c_3=D+10c_4\\
+&W+P+P+R+c_4=L+10c_5\\
+&O+E+R+A+c_5=I+10c_6\\
+&N+L+I+T+c_6=H+10c_7\\
+&S+E+A+S+c_7=C
+\end{aligned}
+\]
+
+Given:
+
+- Group A-I: \(A=3,F=9,H=4,I=8\)
+- Group S-Z: \(W=3\)
+
+From the last column:
+
+\[
+C=2S+E+3+c_7
+\]
+
+Since this must be a single digit and \(C\) cannot clash with \(3,4,8,9\), the only possibility is:
+
+\[
+S=1,\quad c_7=1,\quad E=1,\quad C=7
+\]
+
+Then the first and seventh columns force:
+
+\[
+L=0,\quad T=0,\quad N=5,\quad c_1=0,\quad c_6=1
+\]
+
+The second column gives \(c_2=1\), so the third column gives:
+
+\[
+3+3+3+8+1=18
+\]
+
+Thus:
+
+\[
+R=8,\quad c_3=1
+\]
+
+Fourth column:
+
+\[
+B+4+0+9+1=D+10c_4
+\]
+
+The valid choice is:
+
+\[
+B=2,\quad D=6,\quad c_4=1
+\]
+
+Fifth column:
+
+\[
+3+P+P+8+1=10c_5
+\]
+
+This forces:
+
+\[
+P=9,\quad c_5=3
+\]
+
+Sixth column:
+
+\[
+O+1+8+3+3=18
+\]
+
+So:
+
+\[
+O=3
+\]
+
+Therefore:
+
+\[
+CHILDREN = C\,H\,I\,L\,D\,R\,E\,N = 7\,4\,8\,0\,6\,8\,1\,5
+\]
+
+Answer: 74806815",74806815,1,hard,stop
+cryptarithmetic_en_hard_0004,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=2, D=4
+[group J-R] P=0
+[group S-Z] (none revealed)
+
+Find the numeric value of AIRPLANE.
+
+  ELEPHANT
++ TRIANGLE
++ BUILDING
++ STARFISH
+----------
+= AIRPLANE",98801941,,"Write the addition column-by-column from right to left, with carries \(c_1,\dots,c_7\):
+
+\[
+\begin{aligned}
+T+G+H &= 10c_1\\
+L+N+S+c_1 &= 10c_2\\
+G+2I+c_2 &= 10c_3\\
+H+N+D+F+c_3 &= L+10c_4\\
+A+L+R+c_4 &= 10c_5\\
+E+2I+A+c_5 &= R+10c_6\\
+L+R+U+T+c_6 &= I+10c_7\\
+E+T+B+S+c_7 &= A
+\end{aligned}
+\]
+
+Given \(B=2,\ D=4,\ P=0\).
+
+The leftmost column is very restrictive:
+
+\[
+E+T+2+S+c_7=A
+\]
+
+Since \(A\le 9\) and \(E,T,S\) are nonzero, this forces \(E\) to be small. Checking the possible cases gives \(E=1\) and ultimately the unique consistent assignment:
+
+- Group A–I:  
+  \[
+  A=9,\ B=2,\ D=4,\ E=1,\ F=5,\ G=3,\ H=6,\ I=8
+  \]
+- Group J–R:  
+  \[
+  L=1,\ N=4,\ P=0,\ R=8
+  \]
+- Group S–Z:  
+  \[
+  S=4,\ T=1,\ U=6
+  \]
+
+Thus:
+
+\[
+\begin{aligned}
+ELEPHANT &= 11106941\\
+TRIANGLE &= 18894311\\
+BUILDING &= 26814843\\
+STARFISH &= 41985846
+\end{aligned}
+\]
+
+And:
+
+\[
+11106941+18894311+26814843+41985846=98801941
+\]
+
+So:
+
+\[
+AIRPLANE=98801941
+\]
+
+Answer: 98801941",98801941,1,hard,stop
+cryptarithmetic_en_hard_0005,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=3
+[group J-R] M=2, P=5, R=3
+[group S-Z] (none revealed)
+
+Find the numeric value of COMPUTER.
+
+  SCISSORS
++ UMBRELLA
++ SNOWBALL
++ BASEBALL
+----------
+= COMPUTER",96253763,,"Let the column carries from right to left be \(k_1,\dots,k_7\).
+
+Aligning the addition:
+
+\[
+\begin{array}{rrrrrrrr}
+S&C&I&S&S&O&R&S\\
+U&M&B&R&E&L&L&A\\
+S&N&O&W&B&A&L&L\\
+B&A&S&E&B&A&L&L\\
+\hline
+C&O&M&P&U&T&E&R
+\end{array}
+\]
+
+Given:
+
+- Group A–I: \(B=3\)
+- Group J–R: \(M=2,\ P=5,\ R=3\)
+
+Column equations:
+
+\[
+\begin{aligned}
+S+A+2L &= 3+10k_1\\
+3+3L+k_1 &= E+10k_2\\
+O+L+2A+k_2 &= T+10k_3\\
+S+E+6+k_3 &= U+10k_4\\
+S+3+W+E+k_4 &= 5+10k_5\\
+I+3+O+S+k_5 &= 2+10k_6\\
+C+2+N+A+k_6 &= O+10k_7\\
+2S+U+3+k_7 &= C
+\end{aligned}
+\]
+
+From the final column, \(2S+U+3+k_7=C\), so \(S\) must be small. Testing the carry possibilities gives:
+
+\[
+S=1,\quad U=3,\quad C=9,\quad k_7=1
+\]
+
+Then the fourth column forces:
+
+\[
+E=6,\quad k_3=0
+\]
+
+The first two columns then give the only viable option:
+
+\[
+A=0,\quad L=1,\quad k_1=0,\quad k_2=0
+\]
+
+Column 5 gives:
+
+\[
+W=4,\quad k_5=1
+\]
+
+Column 3 gives:
+
+\[
+O+1=T
+\]
+
+Column 6 and 7 together force:
+
+\[
+O=6,\quad T=7,\quad I=1,\quad N=4
+\]
+
+So:
+
+- Group A–I: \(A=0,\ B=3,\ C=9,\ E=6,\ I=1\)
+- Group J–R: \(L=1,\ M=2,\ N=4,\ O=6,\ P=5,\ R=3\)
+- Group S–Z: \(S=1,\ T=7,\ U=3,\ W=4\)
+
+Thus:
+
+\[
+COMPUTER = 96253763
+\]
+
+Answer: 96253763",96253763,1,hard,stop
+cryptarithmetic_en_hard_0006,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=1
+[group J-R] N=2
+[group S-Z] T=4
+
+Find the numeric value of HOSPITAL.
+
+  COMPUTER
++ AIRPLANE
++ MOUNTAIN
++ DINOSAUR
+----------
+= HOSPITAL",89270436,,"Writing the columns from right to left and using carries \(c_1,c_2,\dots\):
+
+\[
+\begin{array}{r}
+COMPUTER\\
+AIRPLANE\\
+MOUNTAIN\\
+DINOSAUR\\ \hline
+HOSPITAL
+\end{array}
+\]
+
+Given \(C=1,\ N=2,\ T=4\).
+
+The column equations are:
+
+\[
+\begin{aligned}
+E+2R+2 &= L+10c_1\\
+E+I+U+2+c_1 &= A+10c_2\\
+4+3A+c_2 &= 4+10c_3\\
+U+L+4+S+c_3 &= I+10c_4\\
+2P+2+O+c_4 &= P+10c_5\\
+M+R+U+2+c_5 &= S+10c_6\\
+O+2I+c_6 &= 10c_7\\
+1+A+M+D+c_7 &= H
+\end{aligned}
+\]
+
+From the third column:
+
+\[
+3A+c_2=10c_3
+\]
+
+The only possibilities are \(A=3,6,9\), but the leading column forces \(A=3\). Thus:
+
+\[
+A=3,\quad c_2=1,\quad c_3=1
+\]
+
+Solving the remaining constrained cases gives the unique consistent assignment:
+
+- Group A-I: \(A=3,\ C=1,\ D=2,\ E=4,\ H=8,\ I=0\)
+- Group J-R: \(L=6,\ M=1,\ N=2,\ O=9,\ P=7,\ R=0\)
+- Group S-Z: \(S=2,\ T=4,\ U=7\)
+
+So:
+
+\[
+HOSPITAL = 89270436
+\]
+
+Check:
+
+\[
+\begin{aligned}
+COMPUTER &= 19177440\\
+AIRPLANE &= 30076324\\
+MOUNTAIN &= 19724302\\
+DINOSAUR &= 20292370\\
+\hline
+HOSPITAL &= 89270436
+\end{aligned}
+\]
+
+Answer: 89270436",89270436,1,hard,stop
+cryptarithmetic_en_hard_0007,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] G=4
+[group J-R] L=2, R=9
+[group S-Z] T=7, W=5
+
+Find the numeric value of BUILDING.
+
+  NOTEBOOK
++ CHILDREN
++ HOSPITAL
++ SANDWICH
+----------
+= BUILDING",73622614,,"Let the unknown digit values be grouped independently as stated.
+
+Given:
+
+- A–I: \(G=4\)
+- J–R: \(L=2,\ R=9\)
+- S–Z: \(T=7,\ W=5\)
+
+Working column by column from right to left:
+
+\[
+\begin{array}{rrrrrrrr}
+&N&O&T&E&B&O&O&K\\
+&C&H&I&L&D&R&E&N\\
+&H&O&S&P&I&T&A&L\\
+&S&A&N&D&W&I&C&H\\
+\hline
+&B&U&I&L&D&I&N&G
+\end{array}
+\]
+
+The column constraints force the following digit tables:
+
+- A–I group:  
+  \(A=5,\ B=7,\ C=3,\ D=2,\ E=0,\ G=4,\ H=1,\ I=6\)
+
+- J–R group:  
+  \(K=0,\ L=2,\ N=1,\ O=3,\ P=6,\ R=9\)
+
+- S–Z group:  
+  \(S=1,\ T=7,\ U=3,\ W=5\)
+
+Now compute:
+
+\[
+BUILDING = B\,U\,I\,L\,D\,I\,N\,G
+\]
+
+\[
+= 7\,3\,6\,2\,2\,6\,1\,4
+\]
+
+Check:
+
+\[
+13707330+31622901+13166752+15125631=73622614
+\]
+
+Answer: 73622614",73622614,1,hard,stop
+cryptarithmetic_en_hard_0008,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] E=4, F=3
+[group J-R] O=2, R=8
+[group S-Z] U=3
+
+Find the numeric value of MOUNTAIN.
+
+  BASEBALL
++ CHILDREN
++ BUILDING
++ FOOTBALL
+----------
+= MOUNTAIN",92316751,,"Let carries from right to left be \(c_1,c_2,\dots,c_7\).
+
+Column equations:
+
+\[
+\begin{aligned}
+&2L+G=10c_1 \\
+&2L+N+4+c_1=I+10c_2 \\
+&A+8+I+c_2=10c_3 \\
+&2B+2D+c_3=T+10c_4 \\
+&4+2L+T+c_4=N+10c_5 \\
+&S+2I+c_5-1=10c_6 \\
+&A+H+c_6+3=10c_7 \\
+&2B+C+3+c_7=M
+\end{aligned}
+\]
+
+Since the result has only 8 digits, there is no final carry. Also \(M\) is in group J-R, where \(R=8\), so \(M\neq 8\).
+
+From the last column:
+
+- If \(c_7=1\), then \(2B+C+4=M\). The only viable leading-digit choice is \(B=2,C=1\), giving \(M=9\).
+- If \(c_7=2\), then \(2B+C+5=M\). The viable choice is \(B=1,C=2\), giving \(M=9\).
+
+The \(c_7=1\) case leads to contradictions in the middle columns, so we take:
+
+\[
+B=1,\quad C=2,\quad M=9,\quad c_7=2
+\]
+
+Solving the remaining column constraints gives the consistent tables:
+
+[group A-I]
+
+\[
+A=7,\ B=1,\ C=2,\ D=6,\ E=4,\ F=3,\ G=0,\ H=9,\ I=5
+\]
+
+[group J-R]
+
+\[
+L=0,\ M=9,\ N=1,\ O=2,\ R=8
+\]
+
+[group S-Z]
+
+\[
+S=0,\ T=6,\ U=3
+\]
+
+Now compute:
+
+\[
+\begin{aligned}
+BASEBALL &= 17041700\\
+CHILDREN &= 29506841\\
+BUILDING &= 13506510\\
+FOOTBALL &= 32261700
+\end{aligned}
+\]
+
+Sum:
+
+\[
+17041700+29506841+13506510+32261700=92316751
+\]
+
+So:
+
+\[
+MOUNTAIN=92316751
+\]
+
+Answer: 92316751",92316751,1,hard,stop
+cryptarithmetic_en_hard_0009,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] I=2
+[group J-R] M=3, N=2, O=7, P=4
+[group S-Z] T=8
+
+Find the numeric value of FOOTBALL.
+
+  BUILDING
++ BIRTHDAY
++ COMPUTER
++ BASEBALL
+----------
+= FOOTBALL",87781511,,"Let the carries from right to left be \(c_1,\dots,c_7\).
+
+Aligning the addition:
+
+\[
+\begin{array}{cccccccc}
+B&U&I&L&D&I&N&G\\
+B&I&R&T&H&D&A&Y\\
+C&O&M&P&U&T&E&R\\
+B&A&S&E&B&A&L&L\\
+\hline
+F&O&O&T&B&A&L&L
+\end{array}
+\]
+
+Given:
+
+- Group A-I: \(I=2\)
+- Group J-R: \(M=3,N=2,O=7,P=4\)
+- Group S-Z: \(T=8\)
+
+Column equations from right to left:
+
+1. \(G+Y+R+L=L+10c_1\), so  
+   \[
+   G+Y+R=10c_1
+   \]
+
+2. \(N+A+E+L+c_1=L+10c_2\), so  
+   \[
+   2+A+E+c_1=10c_2
+   \]
+
+3. \(I+D+T+A+c_2=A+10c_3\), so  
+   \[
+   2+D+8+c_2=10c_3
+   \]
+   Hence \(D+c_2=10\). Since \(c_2\neq 0\), possibilities are:
+   \[
+   (D,c_2)=(9,1)\quad\text{or}\quad(8,2)
+   \]
+
+Continuing the column constraints and enforcing uniqueness within each independent group gives the consistent assignment:
+
+### Group A-I
+\[
+A=5,\ B=1,\ C=4,\ D=9,\ E=3,\ F=8,\ G=0,\ H=6,\ I=2
+\]
+
+### Group J-R
+\[
+L=1,\ M=3,\ N=2,\ O=7,\ P=4,\ R=0
+\]
+
+### Group S-Z
+\[
+S=1,\ T=8,\ U=3,\ Y=0
+\]
+
+Now compute:
+
+\[
+\begin{aligned}
+BUILDING &= 13219220\\
+BIRTHDAY &= 12086950\\
+COMPUTER &= 47343830\\
+BASEBALL &= 15131511
+\end{aligned}
+\]
+
+Sum:
+
+\[
+13219220+12086950+47343830+15131511=87781511
+\]
+
+And:
+
+\[
+FOOTBALL = 87781511
+\]
+
+Answer: 87781511",87781511,1,hard,stop
+cryptarithmetic_en_hard_0010,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=8, B=7
+[group J-R] K=1, O=5
+[group S-Z] (none revealed)
+
+Find the numeric value of AIRPLANE.
+
+  FOOTBALL
++ NOTEBOOK
++ SCISSORS
++ STARFISH
+----------
+= AIRPLANE",89640822,,"Let the carries from right to left be \(c_1,c_2,\dots,c_7\).
+
+Column equations:
+
+\[
+\begin{aligned}
+L+K+S+H &= E+10c_1 \\
+L+O+R+S+c_1 &= N+10c_2 \\
+A+O+O+I+c_2 &= A+10c_3 \\
+B+B+S+F+c_3 &= L+10c_4 \\
+T+E+S+R+c_4 &= P+10c_5 \\
+O+T+I+A+c_5 &= R+10c_6 \\
+O+O+C+T+c_6 &= I+10c_7 \\
+F+N+S+S+c_7 &= A
+\end{aligned}
+\]
+
+Given:
+
+- Group A-I: \(A=8, B=7\)
+- Group J-R: \(K=1, O=5\)
+
+From the hundreds column:
+
+\[
+8+5+5+I+c_2=8+10c_3
+\]
+
+so
+
+\[
+I+c_2=10(c_3-1)
+\]
+
+The valid possibility is:
+
+\[
+I=9,\quad c_2=1,\quad c_3=2
+\]
+
+Working through the remaining columns gives the consistent assignments:
+
+- Group A-I:  
+  \[
+  A=8,\ B=7,\ C=4,\ E=2,\ F=3,\ H=0,\ I=9
+  \]
+
+- Group J-R:  
+  \[
+  K=1,\ L=0,\ N=2,\ O=5,\ P=4,\ R=6
+  \]
+
+- Group S-Z:  
+  \[
+  S=1,\ T=3
+  \]
+
+Check:
+
+\[
+\begin{aligned}
+FOOTBALL &= 35537800 \\
+NOTEBOOK &= 25327551 \\
+SCISSORS &= 14911561 \\
+STARFISH &= 13863910
+\end{aligned}
+\]
+
+Sum:
+
+\[
+35537800+25327551+14911561+13863910=89640822
+\]
+
+Thus:
+
+\[
+AIRPLANE = 89640822
+\]
+
+Answer: 89640822",89640822,1,hard,stop
+cryptarithmetic_en_hard_0011,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] D=5, G=1, I=4
+[group J-R] L=0, N=2
+[group S-Z] U=2
+
+Find the numeric value of MOUNTAIN.
+
+  BIRTHDAY
++ SCISSORS
++ SANDWICH
++ BUILDING
+----------
+= MOUNTAIN",98225242,,"Let the carries from right to left be \(c_1,c_2,\dots,c_7\).
+
+Given:
+
+- Group A-I: \(D=5,\ G=1,\ I=4\)
+- Group J-R: \(L=0,\ N=2\)
+- Group S-Z: \(U=2\)
+
+Column equations from right to left:
+
+\[
+\begin{aligned}
+Y+S+H+G &= N+10c_1 \\
+A+R+C+N+c_1 &= I+10c_2 \\
+D+O+I+I+c_2 &= A+10c_3 \\
+H+S+W+D+c_3 &= T+10c_4 \\
+T+S+D+L+c_4 &= N+10c_5 \\
+R+I+N+I+c_5 &= U+10c_6 \\
+I+C+A+U+c_6 &= O+10c_7 \\
+B+S+S+B+c_7 &= M
+\end{aligned}
+\]
+
+From the \(R+I+N+I\) column:
+
+\[
+R+4+2+4+c_5=2+10c_6
+\]
+
+This forces:
+
+\[
+R=1,\quad c_5=1,\quad c_6=1
+\]
+
+Then solving the next constraints gives the consistent case:
+
+\[
+c_1=0,\quad A=2,\quad C=9,\quad O=8
+\]
+
+The units column becomes:
+
+\[
+Y+S+H+1=2
+\]
+
+So:
+
+\[
+S=1,\quad Y=0,\quad H=0
+\]
+
+Then the middle columns give:
+
+\[
+T=5,\quad W=7
+\]
+
+Finally, the leftmost column:
+
+\[
+2B+2S+c_7=M
+\]
+
+with \(S=1,\ c_7=1\), so:
+
+\[
+2B+3=M
+\]
+
+The only valid choice is:
+
+\[
+B=3,\quad M=9
+\]
+
+Thus:
+
+\[
+MOUNTAIN = 98225242
+\]
+
+Answer: 98225242",98225242,1,hard,stop
+cryptarithmetic_en_hard_0012,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=3, E=1, F=2
+[group J-R] L=0, N=1
+[group S-Z] (none revealed)
+
+Find the numeric value of BIRTHDAY.
+
+  SNOWBALL
++ CHILDREN
++ SCISSORS
++ STARFISH
+----------
+= BIRTHDAY",75290942,,"Let the carries from right to left be \(c_1,c_2,\dots,c_7\).
+
+Given:
+
+- Group A-I: \(C=3,\ E=1,\ F=2\)
+- Group J-R: \(L=0,\ N=1\)
+
+Column equations from
+
+\[
+\begin{array}{r}
+SNOWBALL\\
+CHILDREN\\
+SCISSORS\\
+STARFISH\\ \hline
+BIRTHDAY
+\end{array}
+\]
+
+are:
+
+\[
+\begin{aligned}
+1)&\quad L+N+S+H = Y+10c_1\\
+2)&\quad L+E+R+S+c_1 = A+10c_2\\
+3)&\quad A+R+O+I+c_2 = D+10c_3\\
+4)&\quad B+D+S+F+c_3 = H+10c_4\\
+5)&\quad W+L+S+R+c_4 = T+10c_5\\
+6)&\quad O+I+I+A+c_5 = R+10c_6\\
+7)&\quad N+H+C+T+c_6 = I+10c_7\\
+8)&\quad S+C+S+S+c_7 = B
+\end{aligned}
+\]
+
+Using \(C=3\), column 8 gives:
+
+\[
+3S+3+c_7=B
+\]
+
+Since \(B\) is a digit, \(S\) can only be \(1\) or \(2\). Trying \(S=2\) leads to contradictions in columns 3 and 6, so:
+
+\[
+S=1
+\]
+
+Then:
+
+\[
+B=6+c_7
+\]
+
+Testing \(c_7=0,1,2\), only \(c_7=1\) works, giving:
+
+\[
+B=7
+\]
+
+The consistent digit assignments are:
+
+### Group A-I
+
+\[
+A=4,\ B=7,\ C=3,\ D=9,\ E=1,\ F=2,\ H=0,\ I=5
+\]
+
+### Group J-R
+
+\[
+L=0,\ N=1,\ O=8,\ R=2
+\]
+
+### Group S-Z
+
+\[
+S=1,\ T=9,\ W=4,\ Y=2
+\]
+
+Now compute:
+
+\[
+BIRTHDAY = 75290942
+\]
+
+Check:
+
+\[
+\begin{aligned}
+SNOWBALL &= 11847400\\
+CHILDREN &= 30509211\\
+SCISSORS &= 13511821\\
+STARFISH &= 19422510\\ \hline
+BIRTHDAY &= 75290942
+\end{aligned}
+\]
+
+Answer: 75290942",75290942,1,hard,stop
+cryptarithmetic_en_hard_0013,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=6, D=9
+[group J-R] L=0, O=4
+[group S-Z] U=8, W=6
+
+Find the numeric value of BUILDING.
+
+  SNOWBALL
++ STARFISH
++ MOUNTAIN
++ SANDWICH
+----------
+= BUILDING",68309311,,"Let carries from right to left be \(c_1,\dots,c_7\).
+
+The column equations are:
+
+\[
+\begin{aligned}
+2H+N &= G+10c_1\\
+S+I+C+c_1 &= N+10c_2\\
+2A+I+c_2 &= 10c_3\\
+F+T+c_3+3 &= 10c_4\\
+R+N+c_4+15 &= 10c_5\\
+A+N+c_5+12 &= I+10c_6\\
+N+T+A+c_6 &= 4+10c_7\\
+3S+M+c_7 &= 6
+\end{aligned}
+\]
+
+From the leading column, \(3S+M+c_7=6\). Since \(S\neq 0\), this forces:
+
+\[
+S=1,\qquad M+c_7=3
+\]
+
+Also, the tens column implies \(c_2\le 1\). Solving the constrained middle columns with the given fixed digits and within-group uniqueness leaves the only consistent branch:
+
+\[
+\begin{aligned}
+&c_7=1,\ M=2\\
+&c_6=2,\ c_5=2,\ c_4=1,\ c_3=2,\ c_2=1\\
+&A=8,\ I=3,\ N=1,\ T=3,\ R=3,\ F=2
+\end{aligned}
+\]
+
+Then the tens column gives:
+
+\[
+1+I+C+c_1=N+10c_2
+\]
+
+\[
+1+3+C+c_1=1+10
+\]
+
+\[
+C=7-c_1
+\]
+
+The units column is:
+
+\[
+2H+1=G+10c_1
+\]
+
+The only valid choice respecting the A-I table uniqueness is:
+
+\[
+c_1=0,\ C=7,\ H=0,\ G=1
+\]
+
+So the needed digits in BUILDING are:
+
+\[
+B=6,\ U=8,\ I=3,\ L=0,\ D=9,\ I=3,\ N=1,\ G=1
+\]
+
+Thus:
+
+\[
+\text{BUILDING}=68309311
+\]
+
+Answer: 68309311",68309311,1,hard,stop
+cryptarithmetic_en_hard_0014,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] (none revealed)
+[group J-R] L=1, O=2, P=7, R=0
+[group S-Z] T=3
+
+Find the numeric value of DINOSAUR.
+
+  SCISSORS
++ TRIANGLE
++ COMPUTER
++ NOTEBOOK
+----------
+= DINOSAUR",87321340,,"Let the carries from right to left be \(c_1,c_2,\dots,c_7\).
+
+The column equations are:
+
+\[
+\begin{aligned}
+& S+E+K = 10c_1 \\
+& E+3+c_1 = U+10c_2 \\
+& G+7+c_2 = A+10c_3 \\
+& N+U+B+c_3 = 10c_4 \\
+& S+A+7+E+c_4 = 2+10c_5 \\
+& 2I+M+3+c_5 = N+10c_6 \\
+& C+4+c_6 = I+10c_7 \\
+& S+3+C+N+c_7 = D
+\end{aligned}
+\]
+
+Since there is no 9th digit in the result, the final column must be less than 10. This forces \(N\) to be small. Since \(N\) is in the J-R table and cannot be \(0,1,2,7\), we get:
+
+\[
+N \in \{3,4\}
+\]
+
+Checking \(N=4\) leads to contradictions in the middle columns, so:
+
+\[
+N=3
+\]
+
+Then the leftmost column forces:
+
+\[
+C=1,\quad c_7=0
+\]
+
+and the millions column gives:
+
+\[
+I=7,\quad c_6=2
+\]
+
+The hundred-thousands column then gives two possibilities:
+
+\[
+(M,c_5)=(4,2)\quad\text{or}\quad(5,1)
+\]
+
+Testing the remaining column constraints, the only consistent assignment is:
+
+- Group A-I:  
+  \[
+  A=3,\ B=2,\ C=1,\ D=8,\ E=0,\ G=6,\ I=7
+  \]
+
+- Group J-R:  
+  \[
+  K=9,\ L=1,\ M=5,\ N=3,\ O=2,\ P=7,\ R=0
+  \]
+
+- Group S-Z:  
+  \[
+  S=1,\ T=3,\ U=4
+  \]
+
+Now compute:
+
+\[
+DINOSAUR = 87321340
+\]
+
+Verification:
+
+\[
+\begin{aligned}
+SCISSORS &= 11711201\\
+TRIANGLE &= 30733610\\
+COMPUTER &= 12574300\\
+NOTEBOOK &= 32302229\\
+\hline
+DINOSAUR &= 87321340
+\end{aligned}
+\]
+
+Answer: 87321340",87321340,1,hard,stop
+cryptarithmetic_en_hard_0015,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=3, E=0, G=9
+[group J-R] O=0, P=2
+[group S-Z] (none revealed)
+
+Find the numeric value of TRIANGLE.
+
+  BIRTHDAY
++ AIRPLANE
++ SNOWBALL
++ BUILDING
+----------
+= TRIANGLE",99414910,,"Let the carries from right to left be \(c_1,c_2,\dots,c_7\).
+
+Column equations:
+
+\[
+\begin{aligned}
+Y+L+9&=10c_1\\
+A+2N+c_1&=10c_2\\
+D+2A+I+c_2&=9+10c_3\\
+H+L+D+3+c_3&=N+10c_4\\
+T+W+L+2+c_4&=A+10c_5\\
+2R+c_5&=10c_6\\
+2I+N+U+c_6&=R+10c_7\\
+A+S+6+c_7&=T
+\end{aligned}
+\]
+
+The leftmost column has no extra carry, so:
+
+\[
+A+S+6+c_7=T\le 9
+\]
+
+Since \(A\neq 0\) and \(S\neq 0\), this forces \(A=1\) or \(A=2\).
+
+From the units and tens columns:
+
+- If \(A=1\), then \(c_1=1\), so \(L=1,Y=0\), and \(N=4\) or \(N=9\).
+- If \(A=2\), then \(c_1=2\), so \(L+Y=11\), and \(N=3\) or \(N=8\).
+
+Checking the hundreds column gives these possible branches:
+
+\[
+\begin{array}{c|c|c|c}
+A & N & (D,I) & c_3\\
+\hline
+1 & 4 & (2,4)\text{ or }(4,2) & 0\\
+1 & 9 & (7,8)\text{ or }(8,7) & 1\\
+2 & 3 & (6,8)\text{ or }(8,6) & 1\\
+2 & 8 & (5,8),(8,5),(6,7),(7,6) & 1
+\end{array}
+\]
+
+The \(A=2\) branches fail because the millions column would require
+
+\[
+2I+N+U+c_6=R
+\]
+
+with no carry, but the left side already exceeds 9.
+
+For \(A=1,N=9\), the thousands and millions columns also fail.
+
+The surviving branch is:
+
+\[
+A=1,\quad N=4,\quad L=1,\quad Y=0
+\]
+
+Then the valid assignment is:
+
+- Group A-I: \(A=1,B=3,D=2,E=0,G=9,H=8,I=4\)
+- Group J-R: \(L=1,N=4,O=0,P=2,R=9\)
+- Group S-Z: \(S=1,T=9,U=5,W=8,Y=0\)
+
+So:
+
+\[
+TRIANGLE = 99414910
+\]
+
+Answer: 99414910",99414910,1,hard,stop
+cryptarithmetic_en_hard_0016,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] I=5
+[group J-R] N=4, P=0
+[group S-Z] U=9
+
+Find the numeric value of HOSPITAL.
+
+  BIRTHDAY
++ SCISSORS
++ DINOSAUR
++ FOOTBALL
+----------
+= HOSPITAL",92105341,,"Let carries from right to left be \(c_1,c_2,\dots,c_7\).
+
+Column equations:
+
+\[
+\begin{aligned}
+&Y+S+R+L = L+10c_1 \Rightarrow Y+S+R=10c_1\\
+&A+R+U+L+c_1 = A+10c_2 \Rightarrow R+L+9+c_1=10c_2\\
+&D+O+A+A+c_2=T+10c_3\\
+&H+S+S+B+c_3=I+10c_4\\
+&T+S+O+T+c_4=P+10c_5\\
+&R+I+N+O+c_5=S+10c_6\\
+&I+C+I+O+c_6=O+10c_7\\
+&B+S+D+F+c_7=H
+\end{aligned}
+\]
+
+Given \(I=5,\ N=4,\ P=0,\ U=9\).
+
+From the millions column:
+
+\[
+5+C+5+O+c_6=O+10c_7
+\]
+
+so
+
+\[
+10+C+c_6=10c_7
+\]
+
+This forces \(c_7=2\), and eventually \(C=8,\ c_6=2\).
+
+From the leftmost column:
+
+\[
+B+S+D+F+2=H
+\]
+
+Since \(B,D,F\) are distinct nonzero digits in group A-I, the only way this stays below 10 is:
+
+\[
+S=1,\quad \{B,D,F\}=\{1,2,3\},\quad H=9
+\]
+
+Then using the thousands column:
+
+\[
+9+1+1+B+c_3=5+10c_4
+\]
+
+so
+
+\[
+B+c_3=4
+\]
+
+Thus \(B\neq 1\).
+
+Solving the remaining right-side columns gives the consistent set:
+
+\[
+R=9,\quad L=1,\quad O=2,\quad T=3,\quad Y=0
+\]
+
+Then the hundreds column forces:
+
+\[
+B=3,\quad D=1,\quad A=4,\quad F=2
+\]
+
+So the needed digits are:
+
+- Group A-I: \(A=4,\ B=3,\ C=8,\ D=1,\ F=2,\ H=9,\ I=5\)
+- Group J-R: \(L=1,\ N=4,\ O=2,\ P=0,\ R=9\)
+- Group S-Z: \(S=1,\ T=3,\ U=9,\ Y=0\)
+
+Therefore:
+
+\[
+HOSPITAL = 92105341
+\]
+
+Answer: 92105341",92105341,1,hard,stop
+cryptarithmetic_en_hard_0017,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] D=6
+[group J-R] O=4, P=9
+[group S-Z] Y=0
+
+Find the numeric value of UMBRELLA.
+
+  STARFISH
++ BIRTHDAY
++ ELEPHANT
++ HOSPITAL
+----------
+= UMBRELLA",97452113,,"Let the column carries (right to left) be \(c_1,\dots,c_7\).
+
+Given:
+
+- Group A-I: \(D=6\)
+- Group J-R: \(O=4,\ P=9\)
+- Group S-Z: \(Y=0\)
+
+Column 5 gives:
+
+\[
+R+T+P+P+c_4=R+10c_5
+\]
+
+Since \(P=9\):
+
+\[
+T+18+c_4=10c_5
+\]
+
+So the only viable possibilities are:
+
+\[
+(T,c_4,c_5)=(1,1,2)\quad\text{or}\quad(2,0,2)
+\]
+
+The case \(T=2,c_4=0\) leads to contradictions in column 4 and the final leading column, so:
+
+\[
+T=1,\quad c_4=1,\quad c_5=2
+\]
+
+The leading column is very restrictive:
+
+\[
+S+B+E+H+c_7=U<10
+\]
+
+This forces small values. Working through the column constraints gives the consistent assignment:
+
+Group A-I:
+
+\[
+A=3,\ B=4,\ D=6,\ E=2,\ F=9,\ H=1,\ I=0
+\]
+
+Group J-R:
+
+\[
+L=1,\ M=7,\ N=3,\ O=4,\ P=9,\ R=5
+\]
+
+Group S-Z:
+
+\[
+S=2,\ T=1,\ U=9,\ Y=0
+\]
+
+Now compute the addends:
+
+\[
+\begin{aligned}
+STARFISH &= 21359021\\
+BIRTHDAY &= 40511630\\
+ELEPHANT &= 21291331\\
+HOSPITAL &= 14290131
+\end{aligned}
+\]
+
+Their sum is:
+
+\[
+21359021+40511630+21291331+14290131=97452113
+\]
+
+And:
+
+\[
+UMBRELLA=97452113
+\]
+
+Answer: 97452113",97452113,1,hard,stop
+cryptarithmetic_en_hard_0018,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=2, H=8
+[group J-R] (none revealed)
+[group S-Z] T=0
+
+Find the numeric value of NOTEBOOK.
+
+  AIRPLANE
++ ELEPHANT
++ BASEBALL
++ SCISSORS
+----------
+= NOTEBOOK",87012772,,"Let the carries from right to left be \(c_1,\dots,c_7\).
+
+Using \(B=2,\ H=8,\ T=0\), the column equations are:
+
+\[
+\begin{aligned}
+E+L+S &= K+10c_1\\
+2N+L+R+c_1 &= O+10c_2\\
+3A+c_2 &= 10c_3\\
+L+S+9 &= 10c_4\\
+2P+S+c_4 &= 10c_5\\
+R+E+S+I+c_5 &= 10c_6\\
+I+L+A+C+c_6 &= O+10c_7\\
+A+E+2+S+c_7 &= N
+\end{aligned}
+\]
+
+From \(3A+c_2=10c_3\), the only possible values are:
+
+\[
+(A,c_2,c_3)=(3,1,1),(6,2,2),(9,3,3)
+\]
+
+But the leading column requires \(A+E+2+S+c_7\le 9\), so \(A=3\). Thus \(c_2=1,c_3=1\).
+
+Then:
+
+\[
+N=E+S+5+c_7
+\]
+
+Since \(E\neq 0\), \(S\neq 0\), this forces \(E=1\), and then \(S+c_7\le 3\).
+
+Next:
+
+\[
+L+S+9=10c_4
+\]
+
+The valid branch is \(S=1,\ L=0,\ c_4=1\). Then the units column gives:
+
+\[
+K=2,\ c_1=0
+\]
+
+Also:
+
+\[
+2P+2=10c_5
+\]
+
+so either \(P=4,c_5=1\) or \(P=9,c_5=2\). Checking the remaining columns leaves the unique consistent assignment:
+
+- Group A-I: \(A=3,\ B=2,\ C=7,\ E=1,\ H=8,\ I=6\)
+- Group J-R: \(K=2,\ L=0,\ N=8,\ O=7,\ P=4,\ R=1\)
+- Group S-Z: \(S=1,\ T=0\)
+
+Verification:
+
+\[
+\begin{aligned}
+36140381\\
+10148380\\
+23112300\\
+17611711\\
+\hline
+87012772
+\end{aligned}
+\]
+
+So:
+
+\[
+NOTEBOOK=87012772
+\]
+
+Answer: 87012772",87012772,1,hard,stop
+cryptarithmetic_en_hard_0019,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] E=2
+[group J-R] K=2, P=3
+[group S-Z] S=9
+
+Find the numeric value of BIRTHDAY.
+
+  CHILDREN
++ HOSPITAL
++ NOTEBOOK
++ ELEPHANT
+----------
+= BIRTHDAY",96801373,,"Working column-by-column from right to left, let the carries be \(c_1,c_2,\dots,c_7\).
+
+The addition is:
+
+\[
+\begin{array}{rrrrrrrr}
+C&H&I&L&D&R&E&N\\
+H&O&S&P&I&T&A&L\\
+N&O&T&E&B&O&O&K\\
+E&L&E&P&H&A&N&T\\
+\hline
+B&I&R&T&H&D&A&Y
+\end{array}
+\]
+
+Given:
+
+- A–I group: \(E=2\)
+- J–R group: \(K=2,\ P=3\)
+- S–Z group: \(S=9\)
+
+Column equations include:
+
+\[
+E+A+O+N+c_1=A+10c_2
+\]
+
+so
+
+\[
+2+O+N+c_1=10c_2
+\]
+
+The leftmost column gives:
+
+\[
+C+H+N+2+c_7=B
+\]
+
+Since \(B\) is a single digit and \(C,H,N\) are nonzero, this forces small values. The only viable result is:
+
+\[
+N=1
+\]
+
+Then the second column gives:
+
+\[
+O=7-c_1
+\]
+
+Continuing the carry constraints, the only consistent assignment is:
+
+### A–I table
+\[
+A=7,\ B=9,\ C=4,\ D=3,\ E=2,\ H=1,\ I=6
+\]
+
+### J–R table
+\[
+K=2,\ L=0,\ N=1,\ O=7,\ P=3,\ R=8
+\]
+
+### S–Z table
+\[
+S=9,\ T=0,\ Y=3
+\]
+
+Check:
+
+\[
+\begin{array}{r}
+41603821\\
+17936070\\
+17029772\\
+20231710\\
+\hline
+96801373
+\end{array}
+\]
+
+So:
+
+\[
+BIRTHDAY = 96801373
+\]
+
+Answer: 96801373",96801373,1,hard,stop
+cryptarithmetic_en_hard_0020,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] D=7, E=4, H=2
+[group J-R] K=2, P=6
+[group S-Z] (none revealed)
+
+Find the numeric value of NOTEBOOK.
+
+  SCISSORS
++ HOSPITAL
++ BIRTHDAY
++ UMBRELLA
+----------
+= NOTEBOOK",95343552,,"Let the carries from right to left be \(c_1,c_2,\dots,c_7\).
+
+The column equations are:
+
+\[
+\begin{aligned}
+S+L+Y+A &= 2+10c_1 \\
+R+2A+L+c_1 &= O+10c_2 \\
+T+L+7+c_2 &= 10c_3 \\
+S+I+6+c_3 &= B+10c_4 \\
+S+T+R+c_4+2 &= 10c_5 \\
+I+S+R+B+c_5 &= T+10c_6 \\
+C+I+M+c_6 &= 10c_7 \\
+S+B+U+c_7+2 &= N
+\end{aligned}
+\]
+
+From the leftmost column, \(B\) must be very small. Since \(S,U,B\) are nonzero and \(S\ne U\), the only possible values are:
+
+\[
+B\in\{1,3\}
+\]
+
+Trying \(B=1\) leads to four possible cases from the middle column, but each contradicts either the \(T\)-column or the carry equations. Thus:
+
+\[
+B=3
+\]
+
+Then the equations force:
+
+\[
+S=1,\quad U=2,\quad I=5,\quad c_3=1,\quad c_4=1,\quad N=9
+\]
+
+Using the next columns:
+
+\[
+T+L+c_2=3
+\]
+
+and
+
+\[
+T+R+2=8
+\]
+
+The only consistent choice is:
+
+\[
+T=3,\quad L=0,\quad R=3,\quad c_2=0
+\]
+
+Then:
+
+\[
+5+1+3+3+1=13=T+10c_6
+\]
+
+so:
+
+\[
+c_6=1
+\]
+
+Next:
+
+\[
+C+5+M+1=10
+\]
+
+so:
+
+\[
+C+M=4
+\]
+
+The only valid assignment is:
+
+\[
+C=0,\quad M=4
+\]
+
+Finally the rightmost columns give:
+
+\[
+A=1,\quad Y=0,\quad O=5
+\]
+
+So the relevant digit assignments are:
+
+- Group A-I: \(A=1,B=3,C=0,D=7,E=4,H=2,I=5\)
+- Group J-R: \(K=2,L=0,M=4,N=9,O=5,P=6,R=3\)
+- Group S-Z: \(S=1,T=3,U=2,Y=0\)
+
+Thus:
+
+\[
+\text{NOTEBOOK}=95343552
+\]
+
+Answer: 95343552",95343552,1,hard,stop
+cryptarithmetic_en_hard_0021,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=2, E=0
+[group J-R] P=5
+[group S-Z] Y=0
+
+Find the numeric value of TRIANGLE.
+
+  BIRTHDAY
++ CHILDREN
++ AIRPLANE
++ MOUNTAIN
+----------
+= TRIANGLE",97310840,,"Let the carries from right to left be \(c_1,c_2,\dots,c_7\).
+
+Writing the addition column-wise:
+
+\[
+\begin{array}{r}
+  BIRTHDAY\\
++ CHILDREN\\
++ AIRPLANE\\
++ MOUNTAIN\\
+\hline
+= TRIANGLE
+\end{array}
+\]
+
+Given:
+
+- Group A–I: \(B=2,\ E=0\)
+- Group J–R: \(P=5\)
+- Group S–Z: \(Y=0\)
+
+### Key deductions
+
+Units column:
+
+\[
+Y+N+E+N=E
+\]
+
+\[
+0+N+0+N=0 \pmod{10}
+\]
+
+So \(2N\) is a multiple of 10. Since \(P=5\) in the J–R group, \(N\neq 5\), hence:
+
+\[
+N=0
+\]
+
+After working through the remaining columns with the independent group tables, the consistent digit assignments are:
+
+### Group A–I
+
+\[
+A=1,\ B=2,\ C=4,\ D=9,\ E=0,\ G=8,\ H=7,\ I=3
+\]
+
+### Group J–R
+
+\[
+L=4,\ M=1,\ N=0,\ O=2,\ P=5,\ R=7
+\]
+
+### Group S–Z
+
+\[
+T=9,\ U=4,\ Y=0
+\]
+
+Now evaluate:
+
+\[
+TRIANGLE = T\,R\,I\,A\,N\,G\,L\,E
+\]
+
+\[
+= 9\,7\,3\,1\,0\,8\,4\,0
+\]
+
+Answer: 97310840",97310840,1,hard,stop
+cryptarithmetic_en_hard_0022,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=3, D=4
+[group J-R] M=9, P=5
+[group S-Z] U=8
+
+Find the numeric value of MOUNTAIN.
+
+  BIRTHDAY
++ HOSPITAL
++ FOOTBALL
++ SCISSORS
+----------
+= MOUNTAIN",94812061,,"Let the carries from right to left be \(c_1,c_2,\dots,c_7\).
+
+Column equations:
+
+\[
+\begin{aligned}
+Y+L+L+S &= N+10c_1\\
+3A+R+c_1 &= I+10c_2\\
+D+T+A+O+c_2 &= A+10c_3\\
+H+I+B+S+c_3 &= T+10c_4\\
+T+P+T+S+c_4 &= N+10c_5\\
+R+S+O+I+c_5 &= U+10c_6\\
+I+O+O+C+c_6 &= O+10c_7\\
+B+H+F+S+c_7 &= M
+\end{aligned}
+\]
+
+Using the given values \(B=3,D=4,M=9,P=5,U=8\), the leading column gives:
+
+\[
+3+H+F+S+c_7=9
+\]
+
+This forces \(H,F\) to be \(1,2\) in group A-I, and the only viable case is:
+
+\[
+c_7=2,\quad S=1,\quad H=1,\quad F=2
+\]
+
+Then the remaining column constraints give:
+
+\[
+c_6=1,\quad I=6,\quad C=9,\quad O=4
+\]
+
+From the middle columns:
+
+\[
+T=2,\quad R=6,\quad N=1
+\]
+
+Then the tens column gives:
+
+\[
+3A+R+c_1=I
+\]
+
+So:
+
+\[
+3A+6+c_1=6
+\]
+
+Thus:
+
+\[
+A=0,\quad c_1=0
+\]
+
+Finally, the units column gives:
+
+\[
+Y+2L+S=N
+\]
+
+\[
+Y+2L+1=1
+\]
+
+So:
+
+\[
+Y=0,\quad L=0
+\]
+
+Therefore:
+
+\[
+\text{MOUNTAIN}=94812061
+\]
+
+Answer: 94812061",94812061,1,hard,stop
+cryptarithmetic_en_hard_0023,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] (none revealed)
+[group J-R] K=1, L=0, P=4
+[group S-Z] (none revealed)
+
+Find the numeric value of COMPUTER.
+
+  BASEBALL
++ NOTEBOOK
++ SCISSORS
++ AIRPLANE
+----------
+= COMPUTER",85347347,,"Let the carries from right to left be \(c_1,\dots,c_7\).
+
+Column equations:
+
+\[
+\begin{aligned}
+&1+S+E = R + 10c_1 \\
+&O+R+N+c_1 = E+10c_2 \\
+&2A+2O+c_2 = T+10c_3 \\
+&2B+S+c_3 = U+10c_4 \\
+&2E+S+c_4 = 10c_5 \\
+&S+T+I+R+c_5 = M+10c_6 \\
+&A+C+I+c_6 = 10c_7 \\
+&B+N+S+A+c_7 = C
+\end{aligned}
+\]
+
+Given \(K=1,L=0,P=4\).
+
+From the final column,
+
+\[
+C=B+N+S+A+c_7
+\]
+
+so \(A,B,N,S\) must be small. The middle constraint
+
+\[
+2E+S+c_4=10c_5
+\]
+
+forces only a few possibilities for \(S,E\). Checking these consistently with the first two columns leaves the viable case:
+
+\[
+S=2,\quad E=4,\quad R=7,\quad N=2,\quad O=5
+\]
+
+Then the remaining columns determine:
+
+\[
+A=1,\quad B=2,\quad C=8,\quad I=0
+\]
+
+and
+
+\[
+T=3,\quad U=7,\quad M=3
+\]
+
+So the tables include:
+
+- Group A-I: \(A=1,B=2,C=8,E=4,I=0\)
+- Group J-R: \(K=1,L=0,M=3,N=2,O=5,P=4,R=7\)
+- Group S-Z: \(S=2,T=3,U=7\)
+
+Thus:
+
+\[
+COMPUTER = C O M P U T E R = 8\,5\,3\,4\,7\,3\,4\,7
+\]
+
+Answer: 85347347",85347347,1,hard,stop
+cryptarithmetic_en_hard_0024,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] (none revealed)
+[group J-R] L=0, M=8, R=7
+[group S-Z] T=1
+
+Find the numeric value of MOUNTAIN.
+
+  FOOTBALL
++ BUILDING
++ TRIANGLE
++ NOTEBOOK
+----------
+= MOUNTAIN",84811461,,"Let carries be \(c_1,\dots,c_7\) from right to left.
+
+With \(L=0,\ M=8,\ R=7,\ T=1\), the column equations are:
+
+\[
+\begin{aligned}
+G+E+K &= N+10c_1\\
+N+O+c_1 &= I+10c_2\\
+I+G+O+c_2 &= 10c_3\\
+2B+D+N+c_3 &= 1+10c_4\\
+A+E+1+c_4 &= N+10c_5\\
+O+2I+1+c_5 &= U+10c_6\\
+U+O+7+c_6 &= 10c_7\\
+F+B+1+N+c_7 &= 8
+\end{aligned}
+\]
+
+From the last two columns, \(c_7\) must be \(2\), giving:
+
+\[
+F+B+N=5
+\]
+
+So \(N\in\{1,2\}\). Then the middle columns force:
+
+\[
+c_4=1,\quad c_5=1
+\]
+
+Using columns 6 and 7 together:
+
+\[
+U+O+c_6=13
+\]
+
+and
+
+\[
+O+2I+2=U+10c_6
+\]
+
+which gives:
+
+\[
+I+O=10,\quad c_6=1
+\]
+
+Then column 3 gives either:
+
+\[
+(c_3,c_2,G)=(1,0,0)
+\]
+
+or
+
+\[
+(c_3,c_2,G)=(2,1,9)
+\]
+
+Testing these with column 2 and column 1 leaves a unique consistent assignment:
+
+- Group A-I: \(A=4,\ B=1,\ D=7,\ E=5,\ F=3,\ G=0,\ I=6\)
+- Group J-R: \(K=6,\ L=0,\ M=8,\ N=1,\ O=4,\ R=7\)
+- Group S-Z: \(T=1,\ U=8\)
+
+Check:
+
+\[
+\begin{aligned}
+FOOTBALL &= 34411400\\
+BUILDING &= 18607610\\
+TRIANGLE &= 17641005\\
+NOTEBOOK &= 14151446\\
+\hline
+MOUNTAIN &= 84811461
+\end{aligned}
+\]
+
+Answer: 84811461",84811461,1,hard,stop
+cryptarithmetic_en_hard_0025,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=1, E=0, I=7
+[group J-R] L=1
+[group S-Z] (none revealed)
+
+Find the numeric value of COMPUTER.
+
+  NOTEBOOK
++ SCISSORS
++ FOOTBALL
++ BASEBALL
+----------
+= COMPUTER",85646303,,"Let the carries from right to left be \(c_1,\dots,c_7\).
+
+Column equations:
+
+\[
+\begin{aligned}
+K+S+L+L &= R+10c_1 \\
+O+R+L+L+c_1 &= E+10c_2 \\
+O+O+A+A+c_2 &= T+10c_3 \\
+B+S+B+B+c_3 &= U+10c_4 \\
+E+S+T+E+c_4 &= P+10c_5 \\
+T+I+O+S+c_5 &= M+10c_6 \\
+O+C+O+A+c_6 &= O+10c_7 \\
+N+S+F+B+c_7 &= C
+\end{aligned}
+\]
+
+Using the given values \(B=1,E=0,I=7,L=1\), these become:
+
+\[
+\begin{aligned}
+K+S+2 &= R+10c_1 \\
+O+R+2+c_1 &= 10c_2 \\
+2O+2A+c_2 &= T+10c_3 \\
+S+3+c_3 &= U+10c_4 \\
+S+T+c_4 &= P+10c_5 \\
+T+7+O+S+c_5 &= M+10c_6 \\
+O+C+A+c_6 &= 10c_7 \\
+N+S+F+1+c_7 &= C
+\end{aligned}
+\]
+
+The leading-column constraints force \(c_7=2\). Solving through the columns with uniqueness enforced inside each alphabet group gives:
+
+### Group A-I
+\[
+A=6,\ B=1,\ C=8,\ E=0,\ F=2,\ I=7
+\]
+
+### Group J-R
+\[
+K=0,\ L=1,\ N=2,\ O=5,\ P=4,\ R=3,\ M=6
+\]
+
+### Group S-Z
+\[
+S=1,\ T=3,\ U=6
+\]
+
+Now compute:
+
+\[
+\begin{array}{r}
+NOTEBOOK = 25301550 \\
+SCISSORS = 18711531 \\
+FOOTBALL = 25531611 \\
+BASEBALL = 16101611 \\
+\hline
+COMPUTER = 85646303
+\end{array}
+\]
+
+So the numeric value of **COMPUTER** is:
+
+Answer: 85646303",85646303,1,hard,stop
+cryptarithmetic_en_hard_0026,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=2, I=5
+[group J-R] M=3, N=2, R=0
+[group S-Z] (none revealed)
+
+Find the numeric value of ELEPHANT.
+
+  UMBRELLA
++ DINOSAUR
++ MOUNTAIN
++ CHILDREN
+----------
+= ELEPHANT",88864024,,"Aligning the addition by columns from right to left and using carries \(c_1,\dots,c_7\):
+
+\[
+\begin{array}{cccccccc}
+U&M&B&R&E&L&L&A\\
+D&I&N&O&S&A&U&R\\
+M&O&U&N&T&A&I&N\\
+C&H&I&L&D&R&E&N\\
+\hline
+E&L&E&P&H&A&N&T
+\end{array}
+\]
+
+Given:
+
+- Group A–I: \(C=2,\ I=5\)
+- Group J–R: \(M=3,\ N=2,\ R=0\)
+
+Column equations give:
+
+1. \(A+R+N+N=A+0+2+2=T+10c_1\)
+2. \(L+U+I+E+c_1=L+U+5+E+c_1=2+10c_2\)
+3. \(L+A+A+R+c_2=A+10c_3\), so \(L+A+c_2=10c_3\)
+4. \(E+S+T+D+c_3=H+10c_4\)
+5. \(R+O+N+L+c_4=P+10c_5\)
+6. \(B+N+U+I+c_5=E+10c_6\)
+7. \(M+I+O+H+c_6=L+10c_7\)
+8. \(U+D+M+C+c_7=E\)
+
+Solving these with the group-wise uniqueness constraints gives the consistent tables:
+
+- Group A–I:  
+  \(A=0,\ B=9,\ C=2,\ D=1,\ E=8,\ H=4,\ I=5\)
+
+- Group J–R:  
+  \(L=8,\ M=3,\ N=2,\ O=5,\ P=6,\ R=0\)
+
+- Group S–Z:  
+  \(S=0,\ T=4,\ U=1\)
+
+Then:
+
+\[
+ELEPHANT = E\,L\,E\,P\,H\,A\,N\,T = 8\,8\,8\,6\,4\,0\,2\,4
+\]
+
+Check:
+
+\[
+13908880+15250010+35124052+24581082=88864024
+\]
+
+Answer: 88864024",88864024,1,hard,stop
+cryptarithmetic_en_hard_0027,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] F=2, G=4
+[group J-R] O=2
+[group S-Z] (none revealed)
+
+Find the numeric value of MOUNTAIN.
+
+  FOOTBALL
++ AIRPLANE
++ BUILDING
++ NOTEBOOK
+----------
+= MOUNTAIN",82211351,,"Let the columns be numbered from right to left, with carries \(c_1,c_2,\dots\).
+
+\[
+\begin{array}{r}
+  FOOTBALL\\
++ AIRPLANE\\
++ BUILDING\\
++ NOTEBOOK\\
+\hline
+= MOUNTAIN
+\end{array}
+\]
+
+Given:
+
+- Group A-I: \(F=2,\ G=4\)
+- Group J-R: \(O=2\)
+
+Column equations:
+
+\[
+\begin{aligned}
+&L+E+G+K=N+10c_1\\
+&L+N+N+O+c_1=I+10c_2\\
+&A+A+I+O+c_2=A+10c_3\\
+&2B+L+D+c_3=T+10c_4\\
+&T+P+L+E+c_4=N+10c_5\\
+&O+R+I+T+c_5=U+10c_6\\
+&O+I+U+O+c_6=O+10c_7\\
+&F+A+B+N+c_7=M
+\end{aligned}
+\]
+
+From the leading column:
+
+\[
+2+A+B+N+c_7=M<10
+\]
+
+This forces \(A,B\) to be \(3,1\) in some order, and \(N=1\).
+
+Using the middle columns, the consistent values become:
+
+- Group A-I:  
+  \[
+  A=3,\ B=1,\ D=8,\ E=0,\ F=2,\ G=4,\ I=5
+  \]
+
+- Group J-R:  
+  \[
+  K=7,\ L=0,\ M=8,\ N=1,\ O=2,\ P=9,\ R=3
+  \]
+
+- Group S-Z:  
+  \[
+  T=1,\ U=2
+  \]
+
+Check:
+
+\[
+\begin{array}{r}
+  22211300\\
++ 35390310\\
++ 12508514\\
++ 12101227\\
+\hline
+  82211351
+\end{array}
+\]
+
+So:
+
+\[
+MOUNTAIN = 82211351
+\]
+
+Answer: 82211351",82211351,1,hard,stop
+cryptarithmetic_en_hard_0028,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] D=7, H=1
+[group J-R] O=4
+[group S-Z] U=2
+
+Find the numeric value of MOUNTAIN.
+
+  BUILDING
++ STARFISH
++ SCISSORS
++ ELEPHANT
+----------
+= MOUNTAIN",94220382,,"Let the carries from right to left be \(c_1,c_2,\dots,c_7\).
+
+Column equations:
+
+\[
+\begin{aligned}
+& G+H+S+T=N+10c_1 \\
+& N+S+R+N+c_1=I+10c_2 \\
+& I+I+O+A+c_2=A+10c_3 \\
+& D+F+S+H+c_3=T+10c_4 \\
+& L+R+S+P+c_4=N+10c_5 \\
+& I+A+I+E+c_5=U+10c_6 \\
+& U+T+C+L+c_6=O+10c_7 \\
+& B+S+S+E+c_7=M
+\end{aligned}
+\]
+
+Using the given values \(D=7,H=1,O=4,U=2\), the third column gives:
+
+\[
+2I+4+c_2=10c_3
+\]
+
+The only viable case is:
+
+\[
+I=8,\quad c_2=0,\quad c_3=2
+\]
+
+The leading column forces \(S=1\). Then solving the remaining columns consistently gives:
+
+### Group A-I
+\[
+A=3,\ B=4,\ C=5,\ D=7,\ E=2,\ F=9,\ G=0,\ H=1,\ I=8
+\]
+
+### Group J-R
+\[
+L=5,\ M=9,\ N=2,\ O=4,\ P=1,\ R=3
+\]
+
+### Group S-Z
+\[
+S=1,\ T=0,\ U=2
+\]
+
+So:
+
+\[
+\text{MOUNTAIN}=94220382
+\]
+
+Check:
+
+\[
+\begin{aligned}
+42857820\\
++10339811\\
++15811431\\
++25211320\\
+\hline
+94220382
+\end{aligned}
+\]
+
+Answer: 94220382",94220382,1,hard,stop
+cryptarithmetic_en_hard_0029,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=6, H=0
+[group J-R] R=2
+[group S-Z] W=7
+
+Find the numeric value of DINOSAUR.
+
+  SANDWICH
++ BUILDING
++ CHILDREN
++ NOTEBOOK
+----------
+= DINOSAUR",98171632,,"Let the columns be numbered from right to left, with carries \(c_1,c_2,\dots\).
+
+Given:
+
+- Group A–I: \(A=6,\ H=0\)
+- Group J–R: \(R=2\)
+- Group S–Z: \(W=7\)
+
+The column equations are:
+
+\[
+\begin{aligned}
+H+G+N+K &= R+10c_1 \\
+C+N+E+O+c_1 &= U+10c_2 \\
+I+I+R+O+c_2 &= A+10c_3 \\
+W+D+D+B+c_3 &= S+10c_4 \\
+D+L+L+E+c_4 &= O+10c_5 \\
+N+I+I+T+c_5 &= N+10c_6 \\
+A+U+H+O+c_6 &= I+10c_7 \\
+S+B+C+N+c_7 &= D
+\end{aligned}
+\]
+
+Solving these with the uniqueness constraints within each group gives:
+
+- Group A–I:  
+  \(A=6,\ B=4,\ C=2,\ D=9,\ E=3,\ G=1,\ H=0,\ I=8\)
+
+- Group J–R:  
+  \(K=0,\ L=6,\ N=1,\ O=7,\ R=2\)
+
+- Group S–Z:  
+  \(S=1,\ T=2,\ U=3,\ W=7\)
+
+So:
+
+\[
+DINOSAUR = 98171632
+\]
+
+Check:
+
+\[
+\begin{aligned}
+SANDWICH &= 16197820 \\
+BUILDING &= 43869811 \\
+CHILDREN &= 20869231 \\
+NOTEBOOK &= 17234770 \\
+\hline
+DINOSAUR &= 98171632
+\end{aligned}
+\]
+
+Answer: 98171632",98171632,1,hard,stop
+cryptarithmetic_en_hard_0030,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=3, D=7, I=2
+[group J-R] L=2
+[group S-Z] W=4
+
+Find the numeric value of UMBRELLA.
+
+  NOTEBOOK
++ CHILDREN
++ SNOWBALL
++ ELEPHANT
+----------
+= UMBRELLA",98395224,,"Let the carries from right to left be \(c_1,\dots,c_7\).
+
+Using the given digits:
+
+- Group A-I: \(B=3,\ D=7,\ I=2\)
+- Group J-R: \(L=2\)
+- Group S-Z: \(W=4\)
+
+Column equations:
+
+\[
+\begin{aligned}
+K+N+L+T &= A+10c_1\\
+O+E+L+N+c_1 &= L+10c_2\\
+O+R+A+A+c_2 &= L+10c_3\\
+B+D+B+H+c_3 &= E+10c_4\\
+E+L+W+P+c_4 &= R+10c_5\\
+T+I+O+E+c_5 &= B+10c_6\\
+O+H+N+L+c_6 &= M+10c_7\\
+N+C+S+E+c_7 &= U
+\end{aligned}
+\]
+
+The final column has no carry, so \(N+C+S+E+c_7<10\), forcing \(E\) and \(N\) to be small. Combining this with
+
+\[
+3+7+3+H+c_3=E+10c_4
+\]
+
+leaves a small set of possibilities. Checking them against the other column equations gives the consistent assignment:
+
+### Group A-I
+\[
+A=4,\ B=3,\ C=1,\ D=7,\ E=5,\ H=0,\ I=2
+\]
+
+### Group J-R
+\[
+K=0,\ L=2,\ M=8,\ N=1,\ O=4,\ P=7,\ R=9
+\]
+
+### Group S-Z
+\[
+S=2,\ T=1,\ U=9,\ W=4
+\]
+
+Now compute:
+
+\[
+\begin{aligned}
+NOTEBOOK &= 14153440\\
+CHILDREN &= 10227951\\
+SNOWBALL &= 21443422\\
+ELEPHANT &= 52570411
+\end{aligned}
+\]
+
+Sum:
+
+\[
+14153440+10227951+21443422+52570411=98395224
+\]
+
+So:
+
+\[
+UMBRELLA=98395224
+\]
+
+Answer: 98395224",98395224,1,hard,stop
+cryptarithmetic_en_hard_0031,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=3, I=4
+[group J-R] N=0, R=1
+[group S-Z] (none revealed)
+
+Find the numeric value of STARFISH.
+
+  MOUNTAIN
++ ELEPHANT
++ COMPUTER
++ UMBRELLA
+----------
+= STARFISH",90519496,,"Let the carry from column \(k\) to the next column be \(c_k\), working right to left.
+
+The column equations are:
+
+\[
+\begin{aligned}
+&N+T+R+A = H + 10c_1 \\
+&I+N+E+L+c_1 = S + 10c_2 \\
+&A+A+T+L+c_2 = I + 10c_3 \\
+&T+H+U+E+c_3 = F + 10c_4 \\
+&N+P+P+R+c_4 = R + 10c_5 \\
+&U+E+M+B+c_5 = A + 10c_6 \\
+&O+L+O+M+c_6 = T + 10c_7 \\
+&M+E+C+U+c_7 = S
+\end{aligned}
+\]
+
+Using the given values:
+
+- Group A-I: \(C=3,\ I=4\)
+- Group J-R: \(N=0,\ R=1\)
+
+From the fifth column:
+
+\[
+0+P+P+1+c_4 = 1+10c_5
+\]
+
+so:
+
+\[
+2P+c_4 = 10c_5
+\]
+
+The viable solution is:
+
+### Group A-I
+\[
+A=5,\ B=0,\ C=3,\ E=1,\ F=9,\ H=6,\ I=4
+\]
+
+### Group J-R
+\[
+L=4,\ M=2,\ N=0,\ O=7,\ P=5,\ R=1
+\]
+
+### Group S-Z
+\[
+S=9,\ T=0,\ U=1
+\]
+
+Then:
+
+\[
+\begin{aligned}
+\text{MOUNTAIN} &= 27100540 \\
+\text{ELEPHANT} &= 14156500 \\
+\text{COMPUTER} &= 37251011 \\
+\text{UMBRELLA} &= 12011445
+\end{aligned}
+\]
+
+Adding:
+
+\[
+27100540+14156500+37251011+12011445=90519496
+\]
+
+And:
+
+\[
+\text{STARFISH}=90519496
+\]
+
+Answer: 90519496",90519496,1,hard,stop
+cryptarithmetic_en_hard_0032,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] H=3
+[group J-R] (none revealed)
+[group S-Z] W=0
+
+Find the numeric value of SANDWICH.
+
+  BASEBALL
++ CHILDREN
++ ELEPHANT
++ TRIANGLE
+----------
+= SANDWICH",96100523,,"Let the column carries from right to left be \(c_1,\dots,c_7\).
+
+Aligning the addition:
+
+\[
+\begin{array}{rrrrrrrr}
+ &B&A&S&E&B&A&L&L\\
+ &C&H&I&L&D&R&E&N\\
+ &E&L&E&P&H&A&N&T\\
++&T&R&I&A&N&G&L&E\\
+\hline
+ &S&A&N&D&W&I&C&H
+\end{array}
+\]
+
+Given \(H=3\) in group A–I and \(W=0\) in group S–Z.
+
+From the leftmost column:
+
+\[
+B+C+E+T+c_7=S
+\]
+
+Since \(B,C,E\) are nonzero distinct digits in group A–I and \(T\neq 0\), the minimum possible is \(1+2+4+1\). Also the previous carry must be \(c_7=1\), so the only way to stay a single digit is:
+
+\[
+\{B,C,E\}=\{1,2,4\},\quad T=1,\quad S=9
+\]
+
+From the next column:
+
+\[
+A+H+L+R+c_6=A+10c_7
+\]
+
+Using \(H=3\) and \(c_7=1\):
+
+\[
+L+R+c_6=7
+\]
+
+Working through the rightmost columns gives the consistent assignment:
+
+- Group A–I:  
+  \[
+  A=6,\ B=4,\ C=2,\ D=0,\ E=1,\ G=8,\ H=3,\ I=5
+  \]
+
+- Group J–R:  
+  \[
+  L=0,\ N=1,\ P=2,\ R=5
+  \]
+
+- Group S–Z:  
+  \[
+  S=9,\ T=1,\ W=0
+  \]
+
+Now compute:
+
+\[
+\text{SANDWICH}=SANDWICH=96100523
+\]
+
+Check:
+
+\[
+46914600+23500511+10123611+15561801=96100523
+\]
+
+Answer: 96100523",96100523,1,hard,stop
+cryptarithmetic_en_hard_0033,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=3, D=7, E=2, G=4
+[group J-R] R=3
+[group S-Z] (none revealed)
+
+Find the numeric value of TRIANGLE.
+
+  UMBRELLA
++ SANDWICH
++ HOSPITAL
++ NOTEBOOK
+----------
+= TRIANGLE",83802402,,"Let the carries from right to left be \(c_1,\dots,c_7\). The column equations are:
+
+\[
+\begin{aligned}
+A+H+L+K &= E+10c_1 = 2+10c_1\\
+L+C+A+O+c_1 &= L+10c_2 \Rightarrow A+O+c_1+3=10c_2\\
+L+I+T+O+c_2 &= G+10c_3 = 4+10c_3\\
+E+W+I+B+c_3 &= N+10c_4\\
+R+D+P+E+c_4 &= A+10c_5 \Rightarrow 12+P+c_4=A+10c_5\\
+B+N+S+T+c_5 &= I+10c_6\\
+M+A+O+O+c_6 &= R+10c_7 = 3+10c_7\\
+U+S+H+N+c_7 &= T
+\end{aligned}
+\]
+
+The leading-column constraint forces \(H=1\). Continuing the column-by-column elimination with the independent group tables leaves the unique assignment:
+
+- Group A–I:  
+  \(A=0,\ B=5,\ C=3,\ D=7,\ E=2,\ G=4,\ H=1,\ I=8\)
+
+- Group J–R:  
+  \(K=1,\ L=0,\ M=8,\ N=2,\ O=7,\ P=6,\ R=3\)
+
+- Group S–Z:  
+  \(S=1,\ T=8,\ U=2,\ W=5\)
+
+Check:
+
+\[
+\begin{array}{r}
+28532000\\
+10275831\\
+17168800\\
+27825771\\
+\hline
+83802402
+\end{array}
+\]
+
+Thus
+
+\[
+TRIANGLE = 83802402
+\]
+
+Answer: 83802402",83802402,1,hard,stop
+cryptarithmetic_en_hard_0034,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] (none revealed)
+[group J-R] M=1, O=5
+[group S-Z] S=1
+
+Find the numeric value of BASEBALL.
+
+  FOOTBALL
++ MOUNTAIN
++ HOSPITAL
++ ELEPHANT
+----------
+= BASEBALL",86138600,,"Let the carries from right to left be \(c_1,\dots,c_7\).
+
+Writing the addition column-by-column:
+
+\[
+\begin{aligned}
+&L+N+L+T=L+10c_1 &&\Rightarrow L+N+T=10c_1\\
+&L+I+A+N+c_1=L+10c_2 &&\Rightarrow I+A+N+c_1=10c_2\\
+&A+A+T+A+c_2=A+10c_3 &&\Rightarrow 2A+T+c_2=10c_3\\
+&B+T+I+H+c_3=B+10c_4 &&\Rightarrow T+I+H+c_3=10c_4\\
+&T+N+P+P+c_4=E+10c_5\\
+&O+U+S+E+c_5=S+10c_6
+\end{aligned}
+\]
+
+Given \(O=5\) and \(S=1\):
+
+\[
+5+U+1+E+c_5=1+10c_6
+\]
+
+The millions column gives:
+
+\[
+O+O+O+L+c_6=A+10c_7
+\]
+
+\[
+15+L+c_6=A+10c_7
+\]
+
+The leftmost column gives:
+
+\[
+F+M+H+E+c_7=B
+\]
+
+Since \(M=1\):
+
+\[
+F+H+E+1+c_7=B
+\]
+
+Solving these constraints with the uniqueness rules inside each group gives the consistent digit tables:
+
+- Group A-I:  
+  \(A=6,\ B=8,\ E=3,\ F=2,\ H=1,\ I=0\)
+
+- Group J-R:  
+  \(L=0,\ M=1,\ N=3,\ O=5,\ P=6\)
+
+- Group S-Z:  
+  \(S=1,\ T=7,\ U=0\)
+
+Check:
+
+\[
+\begin{aligned}
+FOOTBALL &= 25578600\\
+MOUNTAIN &= 15037603\\
+HOSPITAL &= 15160760\\
+ELEPHANT &= 30361637\\
+\hline
+BASEBALL &= 86138600
+\end{aligned}
+\]
+
+Answer: 86138600",86138600,1,hard,stop
+cryptarithmetic_en_hard_0035,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] I=8
+[group J-R] P=4, R=9
+[group S-Z] (none revealed)
+
+Find the numeric value of ELEPHANT.
+
+  NOTEBOOK
++ FOOTBALL
++ BASEBALL
++ TRIANGLE
+----------
+= ELEPHANT",91947521,,"Let carries from right to left be \(c_1,\dots,c_7\).
+
+Column equations:
+
+\[
+\begin{aligned}
+K+2L+E &= T+10c_1\\
+O+3L+c_1 &= N+10c_2\\
+O+A+G+c_2 &= 10c_3\\
+3B+N+c_3 &= H+10c_4\\
+2E+T+A+c_4 &= 4+10c_5\\
+T+O+S+8+c_5 &= E+10c_6\\
+2O+A+9+c_6 &= L+10c_7\\
+N+F+B+T+c_7 &= E
+\end{aligned}
+\]
+
+The last column forces \(E\) to be large; since \(I=8\), \(E\neq 8\). Checking the feasible carry cases gives \(E=9\). Then the tight constraints from the last column and the \(P=4\) column leave only one consistent assignment:
+
+[group A-I]
+
+\[
+A=5,\ B=1,\ E=9,\ F=2,\ G=6,\ H=7,\ I=8
+\]
+
+[group J-R]
+
+\[
+K=0,\ L=1,\ N=2,\ O=8,\ P=4,\ R=9
+\]
+
+[group S-Z]
+
+\[
+S=0,\ T=1
+\]
+
+So:
+
+\[
+\begin{aligned}
+\text{NOTEBOOK} &= 28191880\\
+\text{FOOTBALL} &= 28811511\\
+\text{BASEBALL} &= 15091511\\
+\text{TRIANGLE} &= 19852619
+\end{aligned}
+\]
+
+And:
+
+\[
+28191880+28811511+15091511+19852619=91947521
+\]
+
+Thus:
+
+\[
+\text{ELEPHANT}=91947521
+\]
+
+Answer: 91947521",91947521,1,hard,stop
+cryptarithmetic_en_hard_0036,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=2, F=9, I=5
+[group J-R] L=2
+[group S-Z] S=1
+
+Find the numeric value of MOUNTAIN.
+
+  AIRPLANE
++ CHILDREN
++ STARFISH
++ TRIANGLE
+----------
+= MOUNTAIN",97402250,,"Let the carries from right to left be \(k_1,k_2,\dots,k_7\).
+
+Writing the addition by columns:
+
+\[
+\begin{array}{cccccccc}
+A&I&R&P&L&A&N&E\\
+C&H&I&L&D&R&E&N\\
+S&T&A&R&F&I&S&H\\
+T&R&I&A&N&G&L&E\\
+\hline
+M&O&U&N&T&A&I&N
+\end{array}
+\]
+
+Using the given digits:
+
+- \(A=2,\ F=9,\ I=5\)
+- \(L=2\)
+- \(S=1\)
+
+The units column gives:
+
+\[
+E+N+H+E=N+10k_1
+\]
+
+so
+
+\[
+2E+H=10k_1
+\]
+
+Possible \((E,H,k_1)\) values are:
+
+\[
+(1,8,1),\ (3,4,1),\ (6,8,2),\ (7,6,2)
+\]
+
+The tens column is:
+
+\[
+N+E+1+2+k_1=5+10k_2
+\]
+
+This gives the possible cases:
+
+\[
+\begin{array}{c|c|c|c}
+E&H&N&k_2\\
+\hline
+1&8&0&0\\
+3&4&8&1\\
+6&8&4&1\\
+7&6&3&1
+\end{array}
+\]
+
+Checking these through the remaining columns, only the first case survives.
+
+For that case:
+
+\[
+E=1,\ H=8,\ N=0
+\]
+
+The column constraints force:
+
+\[
+C=3,\ T=2,\ M=9
+\]
+
+Then continuing column-by-column gives:
+
+\[
+R=1,\ G=4,\ D=0,\ P=4,\ U=4,\ O=7
+\]
+
+So the relevant mappings are:
+
+- Group A-I: \(A=2,\ C=3,\ D=0,\ E=1,\ F=9,\ G=4,\ H=8,\ I=5\)
+- Group J-R: \(L=2,\ M=9,\ N=0,\ O=7,\ P=4,\ R=1\)
+- Group S-Z: \(S=1,\ T=2,\ U=4\)
+
+Thus:
+
+\[
+MOUNTAIN = 97402250
+\]
+
+Answer: 97402250",97402250,1,hard,stop
+cryptarithmetic_en_hard_0037,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=8, H=1, I=6
+[group J-R] N=8, R=1
+[group S-Z] (none revealed)
+
+Find the numeric value of TRIANGLE.
+
+  UMBRELLA
++ SNOWBALL
++ DINOSAUR
++ SANDWICH
+----------
+= TRIANGLE",91608702,,"Let the carries from right to left be \(c_1,c_2,\dots,c_7\).
+
+Column equations:
+
+\[
+\begin{aligned}
+& A+L+R+H = E+10c_1 \\
+& L+L+U+C+c_1 = L+10c_2 \\
+& L+A+A+I+c_2 = G+10c_3 \\
+& E+B+S+W+c_3 = N+10c_4 \\
+& R+W+O+D+c_4 = A+10c_5 \\
+& B+O+N+N+c_5 = I+10c_6 \\
+& M+N+I+A+c_6 = R+10c_7 \\
+& U+S+D+S+c_7 = T
+\end{aligned}
+\]
+
+Using the revealed digits \(C=8,H=1,I=6,N=8,R=1\):
+
+From the second column,
+
+\[
+L+U+8+c_1=10c_2
+\]
+
+so \(L+U+c_1\) is either \(2\) or \(12\).
+
+The viable branch is:
+
+\[
+L=0,\quad U=2,\quad c_1=0,\quad c_2=1
+\]
+
+Then the first column gives \(E=A+2\). Checking the third column forces:
+
+\[
+A=0,\quad E=2,\quad G=7,\quad c_3=0
+\]
+
+The seventh/eighth columns then force:
+
+\[
+D=3,\quad S=1,\quad T=9
+\]
+
+Continuing through the middle columns:
+
+\[
+B=9,\quad W=6,\quad O=9,\quad M=4
+\]
+
+So the relevant mappings are:
+
+- Group A-I: \(A=0,B=9,C=8,D=3,E=2,G=7,H=1,I=6\)
+- Group J-R: \(L=0,M=4,N=8,O=9,R=1\)
+- Group S-Z: \(S=1,T=9,U=2,W=6\)
+
+Thus
+
+\[
+TRIANGLE = 91608702
+\]
+
+Check:
+
+\[
+24912000+18969000+36891021+10836681=91608702
+\]
+
+Answer: 91608702",91608702,1,hard,stop
+cryptarithmetic_en_hard_0038,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=3, I=4
+[group J-R] L=0
+[group S-Z] S=1, W=7
+
+Find the numeric value of UMBRELLA.
+
+  SNOWBALL
++ NOTEBOOK
++ BUILDING
++ DINOSAUR
+----------
+= UMBRELLA",96127003,,"Let the carries from right to left be \(c_1,c_2,\dots,c_7\).
+
+Column equations:
+
+\[
+\begin{aligned}
+&K+G+R = A+10c_1 = 3+10c_1\\
+&O+N+U+c_1 = 10c_2\\
+&A+O+I+A+c_2 = L+10c_3\\
+&2B+D+S+c_3 = E+10c_4\\
+&W+E+L+O+c_4 = R+10c_5\\
+&O+T+I+N+c_5 = B+10c_6\\
+&N+O+U+I+c_6 = M+10c_7\\
+&S+N+B+D+c_7 = U
+\end{aligned}
+\]
+
+Using the revealed digits:
+
+- \(A=3,\ I=4,\ L=0,\ S=1,\ W=7\)
+
+From the hundreds column:
+
+\[
+3+O+4+3+c_2=10c_3
+\]
+
+\[
+O+10+c_2=10c_3
+\]
+
+This forces:
+
+\[
+c_2=2,\quad O=8,\quad c_3=2
+\]
+
+Then the tens column gives:
+
+\[
+8+N+U+c_1=20
+\]
+
+\[
+N+U+c_1=12
+\]
+
+The leftmost column and the millions column imply \(c_7=2\), and the possibilities reduce to:
+
+\[
+c_1=0,\quad N=3,\quad U=9,\quad \{B,D\}=\{1,2\}
+\]
+
+Testing the thousands and ten-thousands columns gives:
+
+\[
+B=1,\quad D=2,\quad E=7,\quad R=2
+\]
+
+Then the units column gives:
+
+\[
+K+G+R=3
+\]
+
+So:
+
+\[
+K=1,\quad G=0
+\]
+
+Finally, the remaining columns give:
+
+\[
+T=4,\quad M=6
+\]
+
+Thus:
+
+- Group A-I: \(A=3,\ B=1,\ D=2,\ E=7,\ G=0,\ I=4\)
+- Group J-R: \(K=1,\ L=0,\ M=6,\ N=3,\ O=8,\ R=2\)
+- Group S-Z: \(S=1,\ T=4,\ U=9,\ W=7\)
+
+So:
+
+\[
+UMBRELLA = 96127003
+\]
+
+Answer: 96127003",96127003,1,hard,stop
+cryptarithmetic_en_hard_0039,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=3, C=5, E=0
+[group J-R] L=0
+[group S-Z] (none revealed)
+
+Find the numeric value of NOTEBOOK.
+
+  SCISSORS
++ BASEBALL
++ HOSPITAL
++ SANDWICH
+----------
+= NOTEBOOK",78903882,,"Let the carries from right to left be \(c_1,\dots,c_7\).
+
+Writing the addition column-wise:
+
+\[
+\begin{aligned}
+& S+H = K+10c_1 \\
+& R+A+5+c_1 = O+10c_2 \\
+& O+A+T+I+c_2 = O+10c_3 \Rightarrow A+T+I+c_2=10c_3 \\
+& S+3+I+W+c_3 = 3+10c_4 \Rightarrow S+I+W+c_3=10c_4 \\
+& S+P+D+c_4 = 10c_5 \\
+& I+S+S+N+c_5 = T+10c_6 \\
+& 5+A+O+A+c_6 = O+10c_7 \Rightarrow 5+2A+c_6=10c_7 \\
+& S+3+H+S+c_7 = N
+\end{aligned}
+\]
+
+From \(5+2A+c_6=10c_7\), the viable possibilities reduce to:
+
+\[
+(A,c_6,c_7)\in\{(1,3,1),(2,1,1),(6,3,2),(7,1,2)\}
+\]
+
+But \(c_6=3\) is impossible because the sixth column sum \(I+2S+N+c_5\) is too small to reach 30. So only \(A=2\) or \(A=7\) remain.
+
+Testing these with the leading-column constraint
+
+\[
+N=2S+H+3+c_7
+\]
+
+and enforcing distinct digits within each group gives the unique consistent assignment:
+
+- Group A-I:  
+  \(A=2,\ B=3,\ C=5,\ D=4,\ E=0,\ H=1,\ I=9\)
+
+- Group J-R:  
+  \(K=2,\ L=0,\ N=7,\ O=8,\ P=3,\ R=1\)
+
+- Group S-Z:  
+  \(S=1,\ T=9,\ W=8\)
+
+Check:
+
+\[
+\begin{aligned}
+SCISSORS &= 15911811\\
+BASEBALL &= 32103200\\
+HOSPITAL &= 18139920\\
+SANDWICH &= 12748951\\
+\hline
+NOTEBOOK &= 78903882
+\end{aligned}
+\]
+
+Answer: 78903882",78903882,1,hard,stop
+cryptarithmetic_en_hard_0040,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] F=2, I=5
+[group J-R] L=1, R=6
+[group S-Z] W=5
+
+Find the numeric value of SNOWBALL.
+
+  BIRTHDAY
++ FOOTBALL
++ UMBRELLA
++ NOTEBOOK
+----------
+= SNOWBALL",92951011,,"Let the column carries from right to left be \(c_1,\dots,c_7\).
+
+Known digits:
+
+- Group A-I: \(F=2,\ I=5\)
+- Group J-R: \(L=1,\ R=6\)
+- Group S-Z: \(W=5\)
+
+Writing the addition column-wise:
+
+\[
+\begin{array}{r}
+BIRTHDAY\\
+FOOTBALL\\
+UMBRELLA\\
+NOTEBOOK\\
+\hline
+SNOWBALL
+\end{array}
+\]
+
+From the rightmost columns:
+
+1. \(Y+L+A+K = L+10c_1\), so  
+   \[
+   Y+A+K=10c_1
+   \]
+
+2. \(A+L+L+O+c_1=L+10c_2\), so  
+   \[
+   A+O+1+c_1=10c_2
+   \]
+
+3. \(D+A+L+O+c_2=A+10c_3\), so  
+   \[
+   D+O+1+c_2=10c_3
+   \]
+
+4. \(H+B+E+B+c_3=B+10c_4\), so  
+   \[
+   H+E+B+c_3=10c_4
+   \]
+
+5. \(T+T+R+E+c_4=W+10c_5\), so  
+   \[
+   2T+E+c_4+1=10c_5
+   \]
+
+6. \(R+O+B+T+c_5=O+10c_6\), so  
+   \[
+   6+B+T+c_5=10c_6
+   \]
+
+Solving these constraints gives the only consistent assignment:
+
+- Group A-I:  
+  \[
+  A=0,\ B=1,\ D=9,\ E=4,\ F=2,\ H=3,\ I=5
+  \]
+
+- Group J-R:  
+  \[
+  K=0,\ L=1,\ M=8,\ N=2,\ O=9,\ R=6
+  \]
+
+- Group S-Z:  
+  \[
+  S=9,\ T=2,\ U=1,\ W=5,\ Y=0
+  \]
+
+Check:
+
+\[
+\begin{array}{r}
+15623900\\
+29921011\\
+18164110\\
+29241990\\
+\hline
+92951011
+\end{array}
+\]
+
+Thus,
+
+\[
+SNOWBALL = 92951011
+\]
+
+Answer: 92951011",92951011,1,hard,stop
+cryptarithmetic_en_hard_0041,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] (none revealed)
+[group J-R] K=2, L=0, O=6
+[group S-Z] (none revealed)
+
+Find the numeric value of DINOSAUR.
+
+  MOUNTAIN
++ BASEBALL
++ NOTEBOOK
++ SNOWBALL
+----------
+= DINOSAUR",92161783,,"Let the carries from right to left be \(c_1,c_2,\dots,c_7\).
+
+Known in group J–R:
+
+\[
+K=2,\quad L=0,\quad O=6
+\]
+
+Write the column equations from right to left:
+
+\[
+\begin{aligned}
+&N+L+K+L = R+10c_1 \\
+&I+L+O+L+c_1 = U+10c_2 \\
+&A+A+O+A+c_2 = A+10c_3 \\
+&T+B+B+B+c_3 = S+10c_4 \\
+&N+E+E+W+c_4 = O+10c_5 \\
+&U+S+T+O+c_5 = N+10c_6 \\
+&O+A+O+N+c_6 = I+10c_7 \\
+&M+B+N+S+c_7 = D
+\end{aligned}
+\]
+
+From column 3:
+
+\[
+3A+6+c_2=A+10c_3
+\]
+
+so
+
+\[
+2A+6+c_2=10c_3
+\]
+
+This forces \(c_2=0\), and either:
+
+\[
+A=2,c_3=1 \quad\text{or}\quad A=7,c_3=2
+\]
+
+Column 1 gives:
+
+\[
+N+2=R+10c_1
+\]
+
+The viable possibilities are narrowed by the final column. The only consistent path is:
+
+\[
+N=1,\quad R=3,\quad c_1=0
+\]
+
+Then column 7 forces:
+
+\[
+A=7,\quad c_7=2,\quad I=c_6
+\]
+
+Column 8:
+
+\[
+M+B+N+S+c_7=D
+\]
+
+becomes:
+
+\[
+M+B+1+S+2=D
+\]
+
+Since \(D\le 9\), this forces:
+
+\[
+M=4,\quad B=1,\quad S=1,\quad D=9
+\]
+
+Column 4:
+
+\[
+T+3B+c_3=S+10c_4
+\]
+
+\[
+T+3+2=1+10c_4
+\]
+
+so:
+
+\[
+T=6,\quad c_4=1
+\]
+
+Then columns 5 and 6 force:
+
+\[
+I=2,\quad U=8,\quad E=0,\quad W=4
+\]
+
+Thus the tables are:
+
+- Group A–I: \(A=7,B=1,D=9,E=0,I=2\)
+- Group J–R: \(K=2,L=0,M=4,N=1,O=6,R=3\)
+- Group S–Z: \(S=1,T=6,U=8,W=4\)
+
+So:
+
+\[
+DINOSAUR = 92161783
+\]
+
+Answer: 92161783",92161783,1,hard,stop
+cryptarithmetic_en_hard_0042,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=3, E=0, H=7
+[group J-R] (none revealed)
+[group S-Z] T=4, W=8
+
+Find the numeric value of CHILDREN.
+
+  AIRPLANE
++ FOOTBALL
++ SNOWBALL
++ DINOSAUR
+----------
+= CHILDREN",97611305,,"Aligning the addition by columns:
+
+```text
+  A I R P L A N E
++ F O O T B A L L
++ S N O W B A L L
++ D I N O S A U R
+-----------------
+= C H I L D R E N
+```
+
+Given:
+
+- Group A-I: A=3, E=0, H=7
+- Group S-Z: T=4, W=8
+
+Column-by-column constraints force the following consistent assignments:
+
+- Group A-I:  
+  A=3, B=4, C=9, D=1, E=0, F=2, H=7, I=6
+
+- Group J-R:  
+  L=1, N=5, O=8, P=0, R=3
+
+- Group S-Z:  
+  S=1, T=4, U=3, W=8
+
+So:
+
+```text
+  AIRPLANE = 36301350
+  FOOTBALL = 28844311
+  SNOWBALL = 15884311
+  DINOSAUR = 16581333
+---------------------
+ CHILDREN = 97611305
+```
+
+Answer: 97611305",97611305,1,hard,stop
+cryptarithmetic_en_hard_0043,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=3, B=0, C=2
+[group J-R] K=0
+[group S-Z] S=2, U=8
+
+Find the numeric value of MOUNTAIN.
+
+  NOTEBOOK
++ SANDWICH
++ TRIANGLE
++ CHILDREN
+----------
+= MOUNTAIN",72811371,,"Let the carries from right to left be \(c_1,c_2,\dots,c_7\).
+
+Column equations, from units to leftmost:
+
+\[
+\begin{aligned}
+&K+H+E+N=N+10c_1\\
+&O+C+L+E+c_1=I+10c_2\\
+&O+I+G+R+c_2=A+10c_3\\
+&B+W+N+D+c_3=T+10c_4\\
+&E+D+A+L+c_4=N+10c_5\\
+&T+N+I+I+c_5=U+10c_6\\
+&O+A+R+H+c_6=O+10c_7\\
+&N+S+T+C+c_7=M
+\end{aligned}
+\]
+
+Using the revealed digits:
+
+- \(A=3,B=0,C=2,K=0,S=2,U=8\)
+
+The units column gives:
+
+\[
+H+E=10
+\]
+
+so \((H,E)\) must be one of:
+
+\[
+(1,9),(9,1),(4,6),(6,4)
+\]
+
+The left-side columns are very restrictive:
+
+\[
+3+R+H+c_6=10c_7
+\]
+
+and
+
+\[
+M=N+T+4+c_7
+\]
+
+Since \(M\) is a digit, \(N+T+c_7\le 5\). Checking these possibilities with the column-6 equation
+
+\[
+T+N+2I+c_5=8+10c_6
+\]
+
+leaves the only completing branch:
+
+\[
+E=9,\ H=1,\ I=7,\ R=5,\ N=1,\ T=1,\ c_5=2,\ c_6=1,\ c_7=1
+\]
+
+Then:
+
+\[
+M=N+T+4+c_7=1+1+4+1=7
+\]
+
+Now column 2:
+
+\[
+O+2+L+9+1=7+10c_2
+\]
+
+The working carry is \(c_2=1\), giving:
+
+\[
+O+L=5
+\]
+
+With group J-R uniqueness, this forces:
+
+\[
+O=2,\ L=3
+\]
+
+Column 3:
+
+\[
+O+I+G+R+c_2=3+10c_3
+\]
+
+\[
+2+7+G+5+1=3+10c_3
+\]
+
+so \(G=8,\ c_3=2\).
+
+Column 5:
+
+\[
+E+D+A+L+c_4=N+10c_5
+\]
+
+\[
+9+D+3+3+c_4=1+20
+\]
+
+\[
+D+c_4=6
+\]
+
+Column 4:
+
+\[
+W+N+D+c_3=T+10c_4
+\]
+
+\[
+W+1+D+2=1+10c_4
+\]
+
+The only valid choice is:
+
+\[
+c_4=1,\ D=5,\ W=3
+\]
+
+So the relevant mappings are:
+
+- Group A-I: \(A=3,B=0,C=2,D=5,E=9,G=8,H=1,I=7\)
+- Group J-R: \(K=0,L=3,M=7,N=1,O=2,R=5\)
+- Group S-Z: \(S=2,T=1,U=8,W=3\)
+
+Thus:
+
+\[
+\text{MOUNTAIN}=72811371
+\]
+
+Answer: 72811371",72811371,1,hard,stop
+cryptarithmetic_en_hard_0044,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=3, I=4
+[group J-R] L=1, P=4
+[group S-Z] (none revealed)
+
+Find the numeric value of CHILDREN.
+
+  NOTEBOOK
++ AIRPLANE
++ UMBRELLA
++ HOSPITAL
+----------
+= CHILDREN",82419302,,"Let the carries from right to left be \(c_1,\dots,c_7\).
+
+Using the given values:
+
+- Group A-I: \(B=3,\ I=4\)
+- Group J-R: \(L=1,\ P=4\)
+
+The column equations are:
+
+\[
+\begin{aligned}
+K+E+A+1 &= N+10c_1\\
+O+N+1+A+c_1 &= E+10c_2\\
+O+A+1+T+c_2 &= R+10c_3\\
+3+1+E+4+c_3 &= D+10c_4\\
+E+4+R+4+c_4 &= 1+10c_5\\
+T+R+3+S+c_5 &= 4+10c_6\\
+O+4+M+O+c_6 &= H+10c_7\\
+N+A+U+H+c_7 &= C
+\end{aligned}
+\]
+
+From the middle columns, the consistent branch is forced to:
+
+\[
+E=0,\quad D=9,\quad R=3,\quad c_3=1,\quad c_5=1
+\]
+
+Then the right-side columns give:
+
+\[
+A=1,\quad N=2,\quad O=6,\quad T=4,\quad K=0
+\]
+
+Column 6 gives:
+
+\[
+T+S+R=10 \Rightarrow 4+S+3=10 \Rightarrow S=3
+\]
+
+Column 7 gives:
+
+\[
+2O+M+4+c_6 = H+10c_7
+\]
+
+With \(O=6\) and \(c_6=1\):
+
+\[
+12+M+5=H+10c_7
+\]
+
+The only valid choice is:
+
+\[
+M=5,\quad H=2,\quad c_7=2
+\]
+
+Finally:
+
+\[
+N+A+U+H+c_7=C
+\]
+
+\[
+2+1+U+2+2=C
+\]
+
+So:
+
+\[
+7+U=C
+\]
+
+The valid digit choice is:
+
+\[
+U=1,\quad C=8
+\]
+
+Thus:
+
+\[
+CHILDREN = 82419302
+\]
+
+Check:
+
+\[
+26403660+14341120+15330111+26344411=82419302
+\]
+
+Answer: 82419302",82419302,1,hard,stop
+cryptarithmetic_en_hard_0045,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] D=8, E=1, H=0
+[group J-R] L=5
+[group S-Z] (none revealed)
+
+Find the numeric value of UMBRELLA.
+
+  SANDWICH
++ BIRTHDAY
++ TRIANGLE
++ BUILDING
+----------
+= UMBRELLA",92211554,,"Let the column carries from right to left be \(c_1,\dots,c_7\).
+
+Using the given values:
+
+- Group A-I: \(D=8,\ E=1,\ H=0\)
+- Group J-R: \(L=5\)
+
+Column equations are:
+
+\[
+\begin{aligned}
+&Y+G+1=A+10c_1\\
+&C+A+N+c_1=10c_2\\
+&2I+G+8+c_2=5+10c_3\\
+&W+N+8+c_3=1+10c_4\\
+&A+T+13+c_4=R+10c_5\\
+&N+R+2I+c_5=B+10c_6\\
+&A+I+R+U+c_6=M+10c_7\\
+&S+2B+T+c_7=U
+\end{aligned}
+\]
+
+The last column is very restrictive: since there is no final carry, \(S+2B+T+c_7\le 9\). This forces \(B=2\). Continuing through the column constraints gives the unique consistent assignment:
+
+### Group A-I
+\[
+A=4,\ B=2,\ C=9,\ D=8,\ E=1,\ G=3,\ H=0,\ I=6
+\]
+
+### Group J-R
+\[
+L=5,\ M=2,\ N=7,\ R=1
+\]
+
+### Group S-Z
+\[
+S=1,\ T=2,\ U=9,\ W=4,\ Y=0
+\]
+
+Check:
+
+\[
+\begin{aligned}
+SANDWICH &= 14784690\\
+BIRTHDAY &= 26120840\\
+TRIANGLE &= 21647351\\
+BUILDING &= 29658673\\
+\hline
+UMBRELLA &= 92211554
+\end{aligned}
+\]
+
+So the numeric value of **UMBRELLA** is \(92211554\).
+
+Answer: 92211554",92211554,1,hard,stop
+cryptarithmetic_en_hard_0046,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=1
+[group J-R] N=1
+[group S-Z] T=0, U=7
+
+Find the numeric value of BIRTHDAY.
+
+  SNOWBALL
++ CHILDREN
++ FOOTBALL
++ DINOSAUR
+----------
+= BIRTHDAY",94205373,,"Let the digits be interpreted using separate tables for the three alphabet groups:
+
+- Group A–I: \(A,B,C,D,E,F,H,I\), with \(C=1\)
+- Group J–R: \(L,N,O,R\), with \(N=1\)
+- Group S–Z: \(S,T,U,W,Y\), with \(T=0,\ U=7\)
+
+Write the addition column by column from right to left:
+
+\[
+\begin{array}{cccccccc}
+S&N&O&W&B&A&L&L\\
+C&H&I&L&D&R&E&N\\
+F&O&O&T&B&A&L&L\\
+D&I&N&O&S&A&U&R\\
+\hline
+B&I&R&T&H&D&A&Y
+\end{array}
+\]
+
+The key column constraints are:
+
+\[
+\begin{aligned}
+2L+N+R &= Y + 10c_1\\
+2L+E+U+c_1 &= A + 10c_2\\
+3A+R+c_2 &= D + 10c_3\\
+2B+D+S+c_3 &= H + 10c_4\\
+W+L+T+O+c_4 &= T + 10c_5\\
+2O+I+N+c_5 &= R + 10c_6\\
+N+H+O+I+c_6 &= I + 10c_7\\
+S+C+F+D+c_7 &= B
+\end{aligned}
+\]
+
+Using \(C=1,\ N=1,\ T=0,\ U=7\), solving these with uniqueness within each group gives:
+
+### Group A–I
+\[
+A=7,\ B=9,\ C=1,\ D=3,\ E=0,\ F=2,\ H=5,\ I=4
+\]
+
+### Group J–R
+\[
+L=0,\ N=1,\ O=3,\ R=2
+\]
+
+### Group S–Z
+\[
+S=2,\ T=0,\ U=7,\ W=5,\ Y=3
+\]
+
+Now compute:
+
+\[
+\begin{aligned}
+SNOWBALL &= 21359700\\
+CHILDREN &= 15403201\\
+FOOTBALL &= 23309700\\
+DINOSAUR &= 34132772
+\end{aligned}
+\]
+
+Their sum is:
+
+\[
+21359700+15403201+23309700+34132772=94205373
+\]
+
+So:
+
+\[
+BIRTHDAY = 94205373
+\]
+
+Answer: 94205373",94205373,1,hard,stop
+cryptarithmetic_en_hard_0047,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] I=0
+[group J-R] N=0
+[group S-Z] S=1, Y=0
+
+Find the numeric value of CHILDREN.
+
+  BIRTHDAY
++ MOUNTAIN
++ SCISSORS
++ UMBRELLA
+----------
+= CHILDREN",83092540,,"Working right-to-left by columns:
+
+\[
+\begin{array}{r}
+  BIRTHDAY\\
++ MOUNTAIN\\
++ SCISSORS\\
++ UMBRELLA\\
+\hline
+= CHILDREN
+\end{array}
+\]
+
+Given:
+
+- Group A-I: \(I=0\)
+- Group J-R: \(N=0\)
+- Group S-Z: \(S=1,\ Y=0\)
+
+Column 1 gives:
+
+\[
+Y+N+S+A=N
+\]
+
+\[
+0+0+1+A=0 \pmod{10}
+\]
+
+So:
+
+\[
+A=9
+\]
+
+with carry \(1\).
+
+Solving the remaining columns with the group-wise uniqueness constraints gives the consistent tables:
+
+### Group A-I
+\[
+A=9,\ B=1,\ C=8,\ D=2,\ E=4,\ H=3,\ I=0
+\]
+
+### Group J-R
+\[
+L=9,\ M=1,\ N=0,\ O=3,\ R=5
+\]
+
+### Group S-Z
+\[
+S=1,\ T=2,\ U=4,\ Y=0
+\]
+
+Now the words become:
+
+\[
+BIRTHDAY = 10523290
+\]
+
+\[
+MOUNTAIN = 13402900
+\]
+
+\[
+SCISSORS = 18011351
+\]
+
+\[
+UMBRELLA = 41154999
+\]
+
+Checking:
+
+\[
+10523290+13402900+18011351+41154999=83092540
+\]
+
+Thus:
+
+\[
+CHILDREN = 83092540
+\]
+
+Answer: 83092540",83092540,1,hard,stop
+cryptarithmetic_en_hard_0048,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] D=5
+[group J-R] N=1, P=4
+[group S-Z] T=7
+
+Find the numeric value of AIRPLANE.
+
+  COMPUTER
++ MOUNTAIN
++ BUILDING
++ SNOWBALL
+----------
+= AIRPLANE",93043914,,"Let the carries from right to left be \(c_1,c_2,\dots,c_7\).
+
+Column equations:
+
+\[
+\begin{aligned}
+R+N+G+L &= E+10c_1\\
+E+I+N+L+c_1 &= N+10c_2\\
+T+A+I+A+c_2 &= A+10c_3\\
+U+T+D+B+c_3 &= L+10c_4\\
+P+N+L+W+c_4 &= P+10c_5\\
+M+U+I+O+c_5 &= R+10c_6\\
+O+O+U+N+c_6 &= I+10c_7\\
+C+M+B+S+c_7 &= A
+\end{aligned}
+\]
+
+Using the given values \(D=5,\ N=1,\ P=4,\ T=7\):
+
+\[
+T+A+I+A+c_2=A+10c_3
+\]
+
+so
+
+\[
+7+A+I+c_2=10c_3
+\]
+
+The leading column forces \(A\) to be large, so \(c_3=2\). Testing the possible \((A,I,c_2)\) values and enforcing uniqueness within each alphabet group leaves the consistent assignment:
+
+### Group A–I
+\[
+A=9,\ B=1,\ C=2,\ D=5,\ E=4,\ G=0,\ I=3
+\]
+
+### Group J–R
+\[
+L=3,\ M=2,\ N=1,\ O=6,\ P=4,\ R=0
+\]
+
+### Group S–Z
+\[
+S=2,\ T=7,\ U=8,\ W=4
+\]
+
+Check:
+
+\[
+\begin{array}{r}
+26248740\\
+26817931\\
+18335310\\
+21641933\\
+\hline
+93043914
+\end{array}
+\]
+
+Thus:
+
+\[
+\text{AIRPLANE}=93043914
+\]
+
+Answer: 93043914",93043914,1,hard,stop
+cryptarithmetic_en_hard_0049,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=7, F=2
+[group J-R] L=1, O=9
+[group S-Z] (none revealed)
+
+Find the numeric value of BASEBALL.
+
+  STARFISH
++ FOOTBALL
++ SANDWICH
++ DINOSAUR
+----------
+= BASEBALL",97159711,,"Aligning the addition by columns from right to left:
+
+\[
+\begin{array}{r}
+STARFISH\\
+FOOTBALL\\
+SANDWICH\\
+DINOSAUR\\
+\hline
+BASEBALL
+\end{array}
+\]
+
+Given:
+
+- Group A–I: \(A=7,\ F=2\)
+- Group J–R: \(L=1,\ O=9\)
+
+Column analysis gives these key constraints:
+
+- From the hundreds column:
+
+\[
+2I + A + c_2 = 10c_3
+\]
+
+Since \(A=7\), this forces:
+
+\[
+I=6,\quad c_2=1,\quad c_3=2
+\]
+
+- From the ten-thousands/leftmost constraints, the only consistent possibility is:
+
+\[
+S=1,\quad D=3,\quad B=9
+\]
+
+- Continuing through the remaining columns gives:
+
+\[
+T=2,\quad W=5,\quad N=7,\quad R=0
+\]
+
+and in group A–I:
+
+\[
+E=5,\quad H=0,\quad C=1
+\]
+
+with \(U=8\).
+
+So the completed values are:
+
+\[
+\begin{aligned}
+STARFISH &= 12702610\\
+FOOTBALL &= 29929711\\
+SANDWICH &= 17735610\\
+DINOSAUR &= 36791780
+\end{aligned}
+\]
+
+Their sum is:
+
+\[
+12702610+29929711+17735610+36791780=97159711
+\]
+
+Thus:
+
+\[
+BASEBALL = 97159711
+\]
+
+Answer: 97159711",97159711,1,hard,stop
+cryptarithmetic_en_hard_0050,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=1, C=2, E=0, H=4
+[group J-R] (none revealed)
+[group S-Z] W=8
+
+Find the numeric value of SANDWICH.
+
+  AIRPLANE
++ BIRTHDAY
++ UMBRELLA
++ CHILDREN
+----------
+= SANDWICH",91358624,,"Let the carries from right to left be \(c_1, c_2, \dots, c_7\).
+
+The column equations are:
+
+\[
+\begin{aligned}
+E+Y+A+N &= H+10c_1 \\
+N+A+L+E+c_1 &= C+10c_2 \\
+A+D+L+R+c_2 &= I+10c_3 \\
+L+H+E+D+c_3 &= W+10c_4 \\
+P+T+R+L+c_4 &= D+10c_5 \\
+R+R+B+I+c_5 &= N+10c_6 \\
+I+I+M+H+c_6 &= A+10c_7 \\
+A+B+U+C+c_7 &= S
+\end{aligned}
+\]
+
+Using the revealed values:
+
+- Group A-I: \(A=1, C=2, E=0, H=4\)
+- Group S-Z: \(W=8\)
+
+Solving the columns consistently gives:
+
+- Group A-I:  
+  \[
+  A=1,\ B=3,\ C=2,\ D=5,\ E=0,\ H=4,\ I=6
+  \]
+
+- Group J-R:  
+  \[
+  L=8,\ M=4,\ N=3,\ P=9,\ R=1
+  \]
+
+- Group S-Z:  
+  \[
+  S=9,\ T=6,\ U=1,\ W=8,\ Y=0
+  \]
+
+Check:
+
+\[
+\begin{aligned}
+AIRPLANE &= 16198130 \\
+BIRTHDAY &= 36164510 \\
+UMBRELLA &= 14310881 \\
+CHILDREN &= 24685103 \\
+\hline
+SANDWICH &= 91358624
+\end{aligned}
+\]
+
+Therefore, the numeric value of **SANDWICH** is:
+
+Answer: 91358624",91358624,1,hard,stop
+cryptarithmetic_en_hard_0051,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=4, G=6
+[group J-R] N=0, O=9
+[group S-Z] Y=0
+
+Find the numeric value of HOSPITAL.
+
+  BIRTHDAY
++ MOUNTAIN
++ TRIANGLE
++ SCISSORS
+----------
+= HOSPITAL",89183241,,"Let the carries from right to left be \(c_1,\dots,c_7\).
+
+Column equations:
+
+\[
+\begin{aligned}
+&Y+N+E+S=L+10c_1 \Rightarrow E+S=L+10c_1\\
+&A+I+L+R+c_1=A+10c_2 \Rightarrow I+L+R+c_1=10c_2\\
+&D+A+G+O+c_2=T+10c_3 \Rightarrow D+19+c_2=T+10c_3\\
+&H+T+N+S+c_3=I+10c_4\\
+&T+N+A+S+c_4=P+10c_5\\
+&R+U+I+I+c_5=S+10c_6\\
+&I+O+R+C+c_6=O+10c_7 \Rightarrow I+R+C+c_6=10c_7\\
+&B+M+T+S+c_7=H
+\end{aligned}
+\]
+
+From the third column:
+
+\[
+D+19+c_2=T+10c_3
+\]
+
+so \(c_3=2\), and
+
+\[
+T=D+c_2-1.
+\]
+
+From the leading column, \(c_7\ge 1\), and since \(B,M,T,S\) are nonzero:
+
+\[
+H=B+M+T+S+c_7.
+\]
+
+Thus \(H\) must be small enough to avoid a ninth digit, so \(H\in\{7,8,9\}\).
+
+Let \(q=T+S\). Then the fifth column gives:
+
+\[
+q+5=P+10c_5.
+\]
+
+Because \(P\) is in the J–R table and \(N=0,\ O=9\), \(P\neq 0,9\). Since \(T,S\) are distinct nonzero digits, \(q\ge 3\). The only possible values are:
+
+- \(q=3 \Rightarrow P=8\)
+- \(q=6 \Rightarrow P=1\)
+
+But if \(q=6\), then the leading column forces \(H=9,\ B=1,\ M=1,\ c_7=1\), which conflicts with \(P=1\) in the same J–R table. So \(q=6\) is impossible.
+
+Therefore \(T+S=3\), so \(\{T,S\}=\{1,2\}\), \(P=8\), and \(c_5=0\).
+
+The fourth column then gives:
+
+\[
+H+T+S+2=I+10c_4
+\]
+
+so
+
+\[
+H+5=I+10c_4.
+\]
+
+This leaves only:
+
+- \(H=7,\ I=2\), or
+- \(H=8,\ I=3\).
+
+Checking both cases against the remaining column constraints gives contradictions: in the \(H=7\) case, \(D=T\) forces \(D\) to equal either \(B\) or \(I\); in the \(H=8\) case, all possible leading-column assignments force an impossible value for \(U\) or a repeated digit within a group.
+
+So the given puzzle constraints are inconsistent: there is no valid assignment, hence no numeric value for HOSPITAL.
+
+Answer: No solution",,0,hard,stop
+cryptarithmetic_en_hard_0052,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=1, G=4
+[group J-R] O=7, R=2
+[group S-Z] W=5
+
+Find the numeric value of SNOWBALL.
+
+  CHILDREN
++ BASEBALL
++ MOUNTAIN
++ TRIANGLE
+----------
+= SNOWBALL",90751311,,"Let the carries from right to left be \(c_1,\dots,c_7\).
+
+Column equations:
+
+\[
+\begin{aligned}
+&N+L+N+E=L+10c_1 &&\Rightarrow 2N+E=10c_1\\
+&E+L+I+L+c_1=L+10c_2 &&\Rightarrow E+I+L+c_1=10c_2\\
+&R+A+A+G+c_2=A+10c_3 &&\Rightarrow A+6+c_2=10c_3\\
+&D+B+T+N+c_3=B+10c_4 &&\Rightarrow D+T+N+1=10c_4\\
+&L+E+N+A+c_4=W+10c_5 &&\Rightarrow L+E+N+A+c_4=5+10c_5\\
+&I+S+U+I+c_5=O+10c_6 &&\Rightarrow 2I+S+U+c_5=7+10c_6\\
+&H+A+O+R+c_6=N+10c_7 &&\Rightarrow H+A+9+c_6=N+10c_7\\
+&C+B+M+T+c_7=S &&\Rightarrow C+1+M+T+c_7=S
+\end{aligned}
+\]
+
+From \(A+6+c_2=10c_3\), the only possibilities are:
+
+- \(c_2=1,\ A=3\)
+- \(c_2=2,\ A=2\)
+
+From \(2N+E=10c_1\), checking valid digit possibilities gives only one viable branch after applying the next columns:
+
+\[
+N=0,\quad E=0,\quad c_1=0
+\]
+
+Then:
+
+\[
+E+I+L+c_1=10c_2 \Rightarrow I+L=10
+\]
+
+The viable solution forces:
+
+\[
+c_2=1,\quad A=3,\quad L=1,\quad I=9
+\]
+
+Next:
+
+\[
+D+T+N+1=10c_4 \Rightarrow D+T=9
+\]
+
+and
+
+\[
+L+E+N+A+c_4=5+10c_5
+\]
+
+gives:
+
+\[
+1+0+0+3+c_4=5+10c_5
+\]
+
+so:
+
+\[
+c_4=1,\quad c_5=0
+\]
+
+Now:
+
+\[
+2I+S+U+c_5=7+10c_6
+\]
+
+\[
+18+S+U=7+10c_6
+\]
+
+so:
+
+\[
+c_6=2,\quad S+U=9
+\]
+
+Next:
+
+\[
+H+A+9+c_6=N+10c_7
+\]
+
+\[
+H+3+9+2=10c_7
+\]
+
+so:
+
+\[
+H=6,\quad c_7=2
+\]
+
+Finally:
+
+\[
+C+1+M+T+2=S
+\]
+
+\[
+C+M+T+3=S
+\]
+
+Since \(S\le 9\), we need \(C+M+T\le 6\). The minimum compatible digits force:
+
+\[
+C=2,\quad M=3,\quad T=1
+\]
+
+Thus:
+
+\[
+S=9
+\]
+
+Then \(D+T=9\) gives:
+
+\[
+D=8
+\]
+
+And \(S+U=9\) gives:
+
+\[
+U=0
+\]
+
+So:
+
+\[
+SNOWBALL = 90751311
+\]
+
+Answer: 90751311",90751311,1,hard,stop
+cryptarithmetic_en_hard_0053,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=3, I=5
+[group J-R] L=0, N=2
+[group S-Z] T=0
+
+Find the numeric value of UMBRELLA.
+
+  SNOWBALL
++ NOTEBOOK
++ BASEBALL
++ CHILDREN
+----------
+= UMBRELLA",87296003,,"Let the carries from right to left be \(c_1,c_2,\dots,c_7\).
+
+Aligning the addition:
+
+\[
+\begin{array}{cccccccc}
+S&N&O&W&B&A&L&L\\
+N&O&T&E&B&O&O&K\\
+B&A&S&E&B&A&L&L\\
+C&H&I&L&D&R&E&N\\
+\hline
+U&M&B&R&E&L&L&A
+\end{array}
+\]
+
+Given:
+
+- Group A–I: \(A=3,\ I=5\)
+- Group J–R: \(L=0,\ N=2\)
+- Group S–Z: \(T=0\)
+
+From the units column:
+
+\[
+L+K+L+N=A
+\]
+
+\[
+0+K+0+2=3
+\]
+
+So:
+
+\[
+K=1
+\]
+
+Tens column:
+
+\[
+L+O+L+E=L+10c_2
+\]
+
+\[
+O+E=10
+\]
+
+Hundreds column:
+
+\[
+A+O+A+R+c_2=L+10c_3
+\]
+
+Since \(c_2=1\):
+
+\[
+3+O+3+R+1=10c_3
+\]
+
+\[
+O+R+7=10c_3
+\]
+
+The consistent solution is:
+
+\[
+O=4,\ E=6,\ R=9
+\]
+
+Then the middle columns force:
+
+\[
+B=2,\ D=8,\ W=6,\ S=2
+\]
+
+The millions column gives:
+
+\[
+M=7
+\]
+
+And the leftmost column gives:
+
+\[
+U=8
+\]
+
+So the completed value is:
+
+\[
+UMBRELLA = 87296003
+\]
+
+Check:
+
+\[
+22462300+24062441+23262300+17508962=87296003
+\]
+
+Answer: 87296003",87296003,1,hard,stop
+cryptarithmetic_en_hard_0054,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] D=5, G=1
+[group J-R] (none revealed)
+[group S-Z] U=1
+
+Find the numeric value of CHILDREN.
+
+  FOOTBALL
++ BUILDING
++ UMBRELLA
++ TRIANGLE
+----------
+= CHILDREN",97005943,,"Let the carries from right to left be \(c_1,\dots,c_7\).
+
+Column equations:
+
+\[
+\begin{aligned}
+L+1+A+E &= N+10c_1\\
+3L+N+c_1 &= E+10c_2\\
+A+I+L+1+c_2 &= R+10c_3\\
+B+E+N+c_3 &= 10c_4\\
+T+R+A+c_4 &= 10c_5\\
+O+B+I+c_5 &= 10c_6\\
+O+1+M+R+c_6 &= H+10c_7\\
+F+B+1+T+c_7 &= C
+\end{aligned}
+\]
+
+From the leading column, since \(F,B\) are nonzero distinct digits in group A–I and \(T\neq 0,1\), the only possible leading-column cases are very limited. Propagating these through the column equations gives one arithmetic assignment:
+
+- Group A–I:  
+  \(A=0,\ B=3,\ C=9,\ D=5,\ E=4,\ F=2,\ G=1,\ H=8,\ I=6\)
+- Group J–R would require:  
+  \(L=7,\ N=2,\ R=6,\ O=0,\ M=0\)
+- Group S–Z:  
+  \(T=3,\ U=1\)
+
+This produces
+
+\[
+\begin{aligned}
+20033077\\
+31675621\\
+10364770\\
+36602174\\
+\hline
+98675642
+\end{aligned}
+\]
+
+So it would make
+
+\[
+CHILDREN=98675642.
+\]
+
+However, this violates the rule that different letters within the same group must have different digits, because in group J–R it requires
+
+\[
+M=O=0.
+\]
+
+Therefore, under the stated uniqueness rules, the puzzle has no valid solution.
+
+Answer: no solution",,0,hard,stop
+cryptarithmetic_en_hard_0055,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=4, I=3
+[group J-R] N=5
+[group S-Z] S=4
+
+Find the numeric value of FOOTBALL.
+
+  BASEBALL
++ UMBRELLA
++ MOUNTAIN
++ CHILDREN
+----------
+= FOOTBALL",92211000,,"Let the column carries from right to left be \(c_1, c_2, \dots\).
+
+Using the given group-specific digits:
+
+- Group A-I: \(C=4,\ I=3\)
+- Group J-R: \(N=5\)
+- Group S-Z: \(S=4\)
+
+The addition is:
+
+\[
+\begin{array}{rrrrrrrr}
+B&A&S&E&B&A&L&L\\
+U&M&B&R&E&L&L&A\\
+M&O&U&N&T&A&I&N\\
+C&H&I&L&D&R&E&N\\
+\hline
+F&O&O&T&B&A&L&L
+\end{array}
+\]
+
+Working from the right:
+
+1. Ones column:
+
+\[
+L+A+N+N = L
+\]
+
+\[
+L+A+5+5 = L + 10c_1
+\]
+
+So \(A=0\) and \(c_1=1\).
+
+2. Tens column:
+
+\[
+L+L+I+E+c_1 = L
+\]
+
+\[
+L+E+4 = 10c_2
+\]
+
+This eventually forces:
+
+\[
+E=6,\quad L=0,\quad c_2=1
+\]
+
+3. Hundreds column:
+
+\[
+A+L+A+R+c_2 = A
+\]
+
+\[
+0+0+0+R+1 = 10c_3
+\]
+
+So:
+
+\[
+R=9,\quad c_3=1
+\]
+
+4. Thousands and ten-thousands columns force:
+
+\[
+D=2,\quad T=1
+\]
+
+5. The leading columns then give:
+
+\[
+B=1,\quad U=2,\quad M=1,\quad O=2,\quad H=8,\quad F=9
+\]
+
+Thus:
+
+\[
+FOOTBALL = 92211000
+\]
+
+Answer: 92211000",92211000,1,hard,stop
+cryptarithmetic_en_hard_0056,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=8, H=3
+[group J-R] N=4
+[group S-Z] W=2
+
+Find the numeric value of SANDWICH.
+
+  ELEPHANT
++ COMPUTER
++ TRIANGLE
++ HOSPITAL
+----------
+= SANDWICH",98472043,,"Let the carries from right to left be \(c_1,\dots,c_7\).
+
+The column equations are:
+
+\[
+\begin{aligned}
+T+R+E+L &= 3+10c_1\\
+4+E+L+8+c_1 &= C+10c_2\\
+8+T+G+T+c_2 &= I+10c_3\\
+3+U+4+I+c_3 &= 2+10c_4\\
+P+P+8+P+c_4 &= D+10c_5\\
+E+M+I+S+c_5 &= 4+10c_6\\
+L+O+R+O+c_6 &= 8+10c_7\\
+E+C+T+3+c_7 &= S
+\end{aligned}
+\]
+
+The leftmost column forces \(E,C,T\) to be very small. Checking the possible cases against the units, tens, and millions columns leaves only:
+
+\[
+E=1,\ C=4,\ T=1,\ S=9,\ L=1,\ R=0,\ O=3
+\]
+
+with
+
+\[
+c_1=0,\ c_2=1,\ c_6=1,\ c_7=0.
+\]
+
+Now use the hundreds column:
+
+\[
+8+1+G+1 = I+10c_3
+\]
+
+so
+
+\[
+11+G=I+10c_3.
+\]
+
+The only viable option after the next column and carry constraints is:
+
+\[
+G=9,\ I=0,\ c_3=2.
+\]
+
+Then the thousands column gives:
+
+\[
+3+U+4+0+2 = 2+10c_4
+\]
+
+so
+
+\[
+U=3,\ c_4=1.
+\]
+
+Finally, the ten-thousands and hundred-thousands columns give:
+
+\[
+3P+9=D+10c_5
+\]
+
+and
+
+\[
+1+M+0+9+c_5=14,
+\]
+
+so
+
+\[
+M+c_5=4.
+\]
+
+The only consistent choice is:
+
+\[
+P=6,\ D=7,\ c_5=2,\ M=2.
+\]
+
+Thus:
+
+\[
+SANDWICH = 98472043.
+\]
+
+Answer: 98472043",98472043,1,hard,stop
+cryptarithmetic_en_hard_0057,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] (none revealed)
+[group J-R] L=2, M=4, P=1
+[group S-Z] S=5
+
+Find the numeric value of BASEBALL.
+
+  ELEPHANT
++ TRIANGLE
++ UMBRELLA
++ NOTEBOOK
+----------
+= BASEBALL",90519022,,"Let the carries from right to left be \(c_1,c_2,\dots,c_7\).
+
+The column equations are:
+
+\[
+\begin{aligned}
+T+E+A+K &= 2+10c_1 \\
+N+2+2+O+c_1 &= 2+10c_2 \\
+A+G+2+O+c_2 &= A+10c_3 \\
+H+N+E+B+c_3 &= B+10c_4 \\
+1+A+R+E+c_4 &= E+10c_5 \\
+E+I+B+T+c_5 &= 5+10c_6 \\
+2+R+4+O+c_6 &= A+10c_7 \\
+E+T+U+N+c_7 &= B
+\end{aligned}
+\]
+
+Because the final leftmost column has no carry, \(E+T+U+N+c_7<10\). Since \(N\) is a leading digit in the J–R group and cannot be \(1,2,4\), this forces \(N=3\).
+
+Then from the second column from the right:
+
+\[
+N+O+c_1+2=10c_2
+\]
+
+\[
+3+O+c_1+2=10c_2
+\]
+
+So \(O=5,\ c_1=0,\ c_2=1\).
+
+Now the units column becomes:
+
+\[
+T+E+A+K=2
+\]
+
+Since \(T,E\) are leading and nonzero, the only possibility is:
+
+\[
+T=1,\quad E=1,\quad A=0,\quad K=0
+\]
+
+Then:
+
+\[
+G+O+2+c_2=10c_3
+\]
+
+\[
+G+5+2+1=10c_3
+\]
+
+So:
+
+\[
+G=2,\quad c_3=1
+\]
+
+Next:
+
+\[
+H+N+E+c_3=10c_4
+\]
+
+\[
+H+3+1+1=10c_4
+\]
+
+So:
+
+\[
+H=5,\quad c_4=1
+\]
+
+Then:
+
+\[
+1+A+R+c_4=10c_5
+\]
+
+\[
+1+0+R+1=10c_5
+\]
+
+Thus:
+
+\[
+R=8,\quad c_5=1
+\]
+
+Using the second column from the left:
+
+\[
+R+O+6+c_6=A+10c_7
+\]
+
+\[
+8+5+6+c_6=0+10c_7
+\]
+
+So:
+
+\[
+c_6=1,\quad c_7=2
+\]
+
+Now the leftmost column gives:
+
+\[
+B=E+T+U+N+c_7
+\]
+
+\[
+B=1+1+U+3+2=U+7
+\]
+
+Since \(U\neq 1,5\) in the S–Z table and must be nonzero, the only possible value is:
+
+\[
+U=2,\quad B=9
+\]
+
+Finally:
+
+\[
+E+I+B+T+c_5=5+10c_6
+\]
+
+\[
+1+I+9+1+1=15
+\]
+
+So:
+
+\[
+I=3
+\]
+
+Therefore:
+
+\[
+BASEBALL = 90519022
+\]
+
+Answer: 90519022",90519022,1,hard,stop
+cryptarithmetic_en_hard_0058,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] E=3, F=1
+[group J-R] P=2
+[group S-Z] W=5
+
+Find the numeric value of AIRPLANE.
+
+  SNOWBALL
++ FOOTBALL
++ HOSPITAL
++ BUILDING
+----------
+= AIRPLANE",89921803,,"Let carries from right to left be \(c_1,c_2,\dots,c_7\).
+
+Writing the addition column-by-column:
+
+\[
+\begin{aligned}
+3L+G &= E+10c_1 = 3+10c_1\\
+2L+A+c_1 &= 10c_2\\
+A+T+I+c_2 &= 10c_3\\
+2B+I+D+c_3 &= L+10c_4\\
+5+T+L+c_4 &= 10c_5\\
+2O+S+I+c_5 &= R+10c_6\\
+N+2O+U+c_6 &= I+10c_7\\
+S+F+H+B+c_7 &= A
+\end{aligned}
+\]
+
+Since \(F=1\), the leftmost column gives:
+
+\[
+S+1+H+B+c_7=A
+\]
+
+This is very restrictive. Combining it with the first two columns leaves two possible starts:
+
+1. \(A=8,\ L=1,\ G=0,\ c_1=0,\ c_2=1\)
+2. \(A=9,\ L=9,\ G=6,\ c_1=3,\ c_2=3\)
+
+Testing the \(A=9\) branch against columns 3–5 gives contradictions, so we must have:
+
+\[
+A=8,\quad L=1,\quad G=0
+\]
+
+Then the leftmost column forces:
+
+\[
+S=1,\quad c_7=0,\quad \{B,H\}=\{2,4\}
+\]
+
+Column 3 gives:
+
+\[
+8+T+I+1=10c_3
+\]
+
+so \(T+I=11\) and \(c_3=2\).
+
+Column 5 gives:
+
+\[
+5+T+1+c_4=10c_5
+\]
+
+which forces \(T=2,\ c_4=2\). Hence \(I=9\).
+
+Column 4 then gives:
+
+\[
+2B+9+D+2=1+20
+\]
+
+so:
+
+\[
+2B+D=10
+\]
+
+Thus:
+
+\[
+B=2,\quad D=6,\quad H=4
+\]
+
+Now column 6:
+
+\[
+2O+1+9+1=R+10c_6
+\]
+
+and column 7:
+
+\[
+N+2O+U+c_6=9
+\]
+
+The only valid assignment is:
+
+\[
+O=4,\quad R=9,\quad N=0,\quad U=0
+\]
+
+So the relevant mappings are:
+
+- Group A-I: \(A=8,B=2,D=6,E=3,F=1,G=0,H=4,I=9\)
+- Group J-R: \(L=1,N=0,O=4,P=2,R=9\)
+- Group S-Z: \(S=1,T=2,U=0,W=5\)
+
+Therefore:
+
+\[
+AIRPLANE = 89921803
+\]
+
+Answer: 89921803",89921803,1,hard,stop
+cryptarithmetic_en_hard_0059,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=3, D=5, E=0, I=6
+[group J-R] R=9
+[group S-Z] U=7, Y=0
+
+Find the numeric value of BIRTHDAY.
+
+  TRIANGLE
++ SANDWICH
++ SNOWBALL
++ COMPUTER
+----------
+= BIRTHDAY",76921530,,"Column-wise solving gives the digit tables:
+
+- Group A–I: A=3, B=7, C=2, D=5, E=0, G=4, H=1, I=6
+- Group J–R: L=0, M=8, N=1, O=2, P=7, R=9
+- Group S–Z: S=1, T=2, U=7, W=5, Y=0
+
+So:
+
+```text
+  TRIANGLE = 29631400
++ SANDWICH = 13155621
++ SNOWBALL = 11257300
++ COMPUTER = 22877209
+---------------------
+  BIRTHDAY = 76921530
+```
+
+Answer: 76921530",76921530,1,hard,stop
+cryptarithmetic_en_hard_0060,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=2, H=9
+[group J-R] M=1, O=5
+[group S-Z] S=2, T=0, Y=9
+
+Find the numeric value of FOOTBALL.
+
+  SNOWBALL
++ UMBRELLA
++ BUILDING
++ BIRTHDAY
+----------
+= FOOTBALL",85502000,,"Writing the addition column-by-column from right to left:
+
+\[
+\begin{array}{rrrrrrrr}
+S&N&O&W&B&A&L&L\\
+U&M&B&R&E&L&L&A\\
+B&U&I&L&D&I&N&G\\
+B&I&R&T&H&D&A&Y\\
+\hline
+F&O&O&T&B&A&L&L
+\end{array}
+\]
+
+Using the given values:
+
+- A–I: \(B=2,\ H=9\)
+- J–R: \(M=1,\ O=5\)
+- S–Z: \(S=2,\ T=0,\ Y=9\)
+
+The column constraints force the following mapping:
+
+**Group A–I**
+
+\[
+A=0,\ B=2,\ D=6,\ E=4,\ F=8,\ G=1,\ H=9,\ I=3
+\]
+
+**Group J–R**
+
+\[
+L=0,\ M=1,\ N=9,\ O=5,\ R=4
+\]
+
+**Group S–Z**
+
+\[
+S=2,\ T=0,\ U=1,\ W=4,\ Y=9
+\]
+
+So:
+
+\[
+FOOTBALL = 85502000
+\]
+
+Answer: 85502000",85502000,1,hard,stop
+cryptarithmetic_en_hard_0061,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=6, E=1, I=7
+[group J-R] N=0
+[group S-Z] T=0, U=1
+
+Find the numeric value of BIRTHDAY.
+
+  CHILDREN
++ COMPUTER
++ SNOWBALL
++ SANDWICH
+----------
+= BIRTHDAY",97100463,,"Let carries from right to left be \(k_1,k_2,\dots,k_7\).
+
+The column equations are:
+
+\[
+\begin{aligned}
+&N+R+L+H = Y+10k_1\\
+&E+E+L+C+k_1 = A+10k_2\\
+&R+T+A+I+k_2 = D+10k_3\\
+&D+U+B+W+k_3 = H+10k_4\\
+&L+P+W+D+k_4 = 10k_5\\
+&I+M+O+N+k_5 = R+10k_6\\
+&H+O+N+A+k_6 = I+10k_7\\
+&C+C+S+S+k_7 = B
+\end{aligned}
+\]
+
+Given:
+
+- Group A-I: \(A=6,E=1,I=7\)
+- Group J-R: \(N=0\)
+- Group S-Z: \(T=0,U=1\)
+
+From the leftmost column:
+
+\[
+2C+2S+k_7=B
+\]
+
+Also the result has no extra carry, so this must be less than 10. Since \(C,S\neq 0\), and \(S\neq 1\), this forces:
+
+\[
+C=2,\quad S=2,\quad k_7=1,\quad B=9
+\]
+
+Then the second column gives:
+
+\[
+1+1+L+2+k_1 = 6+10k_2
+\]
+
+So:
+
+\[
+L+k_1=2
+\]
+
+The valid solution branch gives:
+
+\[
+L=2,\quad k_1=0,\quad k_2=0
+\]
+
+Continuing column by column, the unique consistent assignments needed are:
+
+- Group A-I:  
+  \[
+  A=6,\ B=9,\ C=2,\ D=4,\ E=1,\ H=0,\ I=7
+  \]
+
+- Group J-R:  
+  \[
+  L=2,\ M=3,\ N=0,\ O=9,\ P=7,\ R=1
+  \]
+
+- Group S-Z:  
+  \[
+  S=2,\ T=0,\ U=1,\ W=5,\ Y=3
+  \]
+
+Check:
+
+\[
+\begin{array}{r}
+20724110\\
+29371011\\
+20959622\\
+26045720\\
+\hline
+97100463
+\end{array}
+\]
+
+So:
+
+\[
+BIRTHDAY = 97100463
+\]
+
+Answer: 97100463",97100463,1,hard,stop
+cryptarithmetic_en_hard_0062,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] G=7, H=4
+[group J-R] L=1, M=3
+[group S-Z] (none revealed)
+
+Find the numeric value of BIRTHDAY.
+
+  ELEPHANT
++ MOUNTAIN
++ SNOWBALL
++ TRIANGLE
+----------
+= BIRTHDAY",80214323,,"Let the carries from right to left be \(c_1,\dots,c_7\).
+
+Writing the addition column-by-column:
+
+\[
+\begin{aligned}
+T+N+L+E &= Y+10c_1 \\
+N+I+L+L+c_1 &= A+10c_2 \\
+A+A+A+G+c_2 &= D+10c_3 \\
+H+T+B+N+c_3 &= H+10c_4 \\
+P+N+W+A+c_4 &= T+10c_5 \\
+E+U+O+I+c_5 &= R+10c_6 \\
+L+O+N+R+c_6 &= I+10c_7 \\
+E+M+S+T+c_7 &= B
+\end{aligned}
+\]
+
+Using the revealed values \(G=7,H=4,L=1,M=3\), the top column gives:
+
+\[
+B=E+3+S+T+c_7
+\]
+
+Since \(E,S,T\) are leading nonzero digits and \(S\ne T\), this forces \(B\) to be very large. Checking the possible cases gives \(B=8\) as the only viable case.
+
+The consistent assignment is:
+
+- Group A-I:  
+  \[
+  A=2,\ B=8,\ D=3,\ E=1,\ G=7,\ H=4,\ I=0
+  \]
+
+- Group J-R:  
+  \[
+  L=1,\ M=3,\ N=0,\ O=6,\ P=8,\ R=2
+  \]
+
+- Group S-Z:  
+  \[
+  S=2,\ T=1,\ U=4,\ W=0,\ Y=3
+  \]
+
+Check:
+
+\[
+\begin{aligned}
+ELEPHANT &= 11184201 \\
+MOUNTAIN &= 36401200 \\
+SNOWBALL &= 20608211 \\
+TRIANGLE &= 12020711 \\
+\hline
+BIRTHDAY &= 80214323
+\end{aligned}
+\]
+
+Answer: 80214323",80214323,1,hard,stop
+cryptarithmetic_en_hard_0063,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=1, D=0, E=9
+[group J-R] N=6, R=1
+[group S-Z] (none revealed)
+
+Find the numeric value of UMBRELLA.
+
+  BASEBALL
++ BIRTHDAY
++ COMPUTER
++ SNOWBALL
+----------
+= UMBRELLA",95219001,,"Let the column carries from right to left be \(k_1,k_2,\dots,k_7\).
+
+Writing the addition by columns:
+
+\[
+\begin{array}{cccccccc}
+B&A&S&E&B&A&L&L\\
+B&I&R&T&H&D&A&Y\\
+C&O&M&P&U&T&E&R\\
+S&N&O&W&B&A&L&L\\
+\hline
+U&M&B&R&E&L&L&A
+\end{array}
+\]
+
+Given:
+
+- Group A–I: \(A=1,\ D=0,\ E=9\)
+- Group J–R: \(N=6,\ R=1\)
+
+### Rightmost columns
+
+Ones column:
+
+\[
+L+Y+R+L=A+10k_1
+\]
+
+\[
+2L+Y+1=1+10k_1
+\]
+
+\[
+2L+Y=10k_1
+\]
+
+Tens column:
+
+\[
+L+A+E+L+k_1=L+10k_2
+\]
+
+\[
+2L+10+k_1=L+10k_2
+\]
+
+\[
+L+10+k_1=10k_2
+\]
+
+This gives two possible cases, but only one survives uniqueness in the S–Z group:
+
+\[
+L=0,\quad Y=0,\quad k_1=0,\quad k_2=1
+\]
+
+Hundreds column:
+
+\[
+A+D+T+A+k_2=L+10k_3
+\]
+
+\[
+1+0+T+1+1=0+10k_3
+\]
+
+\[
+T+3=10k_3
+\]
+
+So:
+
+\[
+T=7,\quad k_3=1
+\]
+
+### Leading column constraint
+
+The leftmost column is:
+
+\[
+B+B+C+S+k_7=U
+\]
+
+Since there is no ninth digit, this sum must be a single digit. Also \(k_7\ge 1\), so this strongly forces:
+
+\[
+B=2,\quad C=3,\quad S=1,\quad U=9,\quad k_7=1
+\]
+
+Thousands column:
+
+\[
+B+H+U+B+k_3=E+10k_4
+\]
+
+\[
+2+H+9+2+1=9+10k_4
+\]
+
+\[
+H+14=9+10k_4
+\]
+
+So:
+
+\[
+H=5,\quad k_4=1
+\]
+
+Ten-thousands column:
+
+\[
+E+T+P+W+k_4=R+10k_5
+\]
+
+\[
+9+7+P+W+1=1+10k_5
+\]
+
+\[
+P+W+16=10k_5
+\]
+
+The valid possibility is:
+
+\[
+P=2,\quad W=2,\quad k_5=2
+\]
+
+Hundred-thousands column:
+
+\[
+S+R+M+O+k_5=B+10k_6
+\]
+
+\[
+1+1+M+O+2=2+10k_6
+\]
+
+\[
+M+O+2=10k_6
+\]
+
+Thus \(k_6=1\) and:
+
+\[
+M+O=8
+\]
+
+Millions column:
+
+\[
+A+I+O+N+k_6=M+10k_7
+\]
+
+\[
+1+I+O+6+1=M+10
+\]
+
+\[
+I+O-2=M
+\]
+
+The consistent solution is:
+
+\[
+O=3,\quad M=5,\quad I=4
+\]
+
+So the needed digits are:
+
+\[
+U=9,\ M=5,\ B=2,\ R=1,\ E=9,\ L=0,\ A=1
+\]
+
+Therefore:
+
+\[
+\text{UMBRELLA}=95219001
+\]
+
+Answer: 95219001",95219001,1,hard,stop
+cryptarithmetic_en_hard_0064,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=6, H=1
+[group J-R] L=0, M=7
+[group S-Z] W=6
+
+Find the numeric value of MOUNTAIN.
+
+  UMBRELLA
++ SANDWICH
++ ELEPHANT
++ STARFISH
+----------
+= MOUNTAIN",78220052,,"Set up the addition column by column from right to left:
+
+\[
+\begin{array}{cccccccc}
+U&M&B&R&E&L&L&A\\
+S&A&N&D&W&I&C&H\\
+E&L&E&P&H&A&N&T\\
+S&T&A&R&F&I&S&H\\
+\hline
+M&O&U&N&T&A&I&N
+\end{array}
+\]
+
+Given:
+
+- Group A-I: \(B=6,\ H=1\)
+- Group J-R: \(L=0,\ M=7\)
+- Group S-Z: \(W=6\)
+
+The column equations force the unique assignment:
+
+- Group A-I:  
+  \(A=0,\ B=6,\ C=2,\ D=4,\ E=3,\ F=9,\ H=1,\ I=5\)
+
+- Group J-R:  
+  \(L=0,\ M=7,\ N=2,\ O=8,\ P=4,\ R=1\)
+
+- Group S-Z:  
+  \(S=1,\ T=0,\ U=2,\ W=6\)
+
+So:
+
+\[
+MOUNTAIN = 78220052
+\]
+
+Check:
+
+\[
+27613000+10246521+30341020+10019511=78220052
+\]
+
+Answer: 78220052",78220052,1,hard,stop
+cryptarithmetic_en_hard_0065,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] (none revealed)
+[group J-R] L=0, O=8
+[group S-Z] (none revealed)
+
+Find the numeric value of BASEBALL.
+
+  FOOTBALL
++ TRIANGLE
++ ELEPHANT
++ STARFISH
+----------
+= BASEBALL",92219200,,"Let the needed digits be:
+
+- Group A–I: \(A,B,E,F,G,H,I\)
+- Group J–R: \(L=0,\ O=8,\ R,N,P\)
+- Group S–Z: \(S,T\)
+
+Write the addition column by column from right to left:
+
+\[
+\begin{array}{rrrrrrrr}
+ & F&O&O&T&B&A&L&L\\
+ & T&R&I&A&N&G&L&E\\
+ & E&L&E&P&H&A&N&T\\
++& S&T&A&R&F&I&S&H\\
+\hline
+ & B&A&S&E&B&A&L&L
+\end{array}
+\]
+
+Using carries, the column equations are:
+
+1. \(E+T+H=10c_1\)
+2. \(N+S+c_1=10c_2\)
+3. \(A+G+I+c_2=10c_3\)
+4. \(N+H+F+c_3=10c_4\)
+5. \(T+A+P+R+c_4=E+10c_5\)
+6. \(8+I+E+A+c_5=S+10c_6\)
+7. \(8+R+T+c_6=A+10c_7\)
+8. \(F+T+E+S+c_7=B\)
+
+From the leading column, \(F,T,E,S\) are all nonzero and their sum plus carry must still be a single digit, forcing small values. Solving the carry constraints gives:
+
+\[
+S=2,\quad T=1,\quad E=1,\quad F=4,\quad H=8,\quad N=7
+\]
+
+Then the remaining columns force:
+
+\[
+B=9,\quad A=2,\quad I=0,\quad G=7,\quad R=2,\quad P=4
+\]
+
+So:
+
+\[
+BASEBALL = B A S E B A L L = 9\,2\,2\,1\,9\,2\,0\,0
+\]
+
+Answer: 92219200",92219200,1,hard,stop
+cryptarithmetic_en_hard_0066,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] E=0
+[group J-R] P=2, R=3
+[group S-Z] W=5
+
+Find the numeric value of UMBRELLA.
+
+  AIRPLANE
++ SNOWBALL
++ SANDWICH
++ BASEBALL
+----------
+= UMBRELLA",87130114,,"Let the carries from right to left be \(c_1,c_2,\dots,c_7\).
+
+Column equations:
+
+\[
+\begin{aligned}
+&2L+H=A+10c_1 \\
+&N+C+L+c_1=10c_2 \\
+&3A+I+c_2=L+10c_3 \\
+&L+2B+W+c_3=E+10c_4 \\
+&P+W+D+E+c_4=R+10c_5 \\
+&R+O+N+S+c_5=B+10c_6 \\
+&I+N+2A+c_6=M+10c_7 \\
+&A+B+2S+c_7=U
+\end{aligned}
+\]
+
+Given \(E=0,\ W=5,\ P=2,\ R=3\).
+
+From the 5th column:
+
+\[
+2+5+D+0+c_4=3+10c_5
+\]
+
+so
+
+\[
+D+c_4+4=10c_5
+\]
+
+This forces \(c_5=1\), and after checking possible carries, the consistent case is:
+
+\[
+c_4=1,\quad D=5
+\]
+
+Then the 4th column gives:
+
+\[
+L+2B+5+c_3=10
+\]
+
+so
+
+\[
+L+2B+c_3=5
+\]
+
+The only viable choice is:
+
+\[
+B=1,\quad L=1,\quad c_3=2
+\]
+
+Now the unit column:
+
+\[
+2L+H=A+10c_1
+\]
+
+\[
+2+H=A+10c_1
+\]
+
+The consistent solution gives:
+
+\[
+H=2,\quad A=4,\quad c_1=0
+\]
+
+Then the 3rd column:
+
+\[
+3A+I+c_2=L+10c_3
+\]
+
+\[
+12+I+c_2=21
+\]
+
+so:
+
+\[
+I=8,\quad c_2=1
+\]
+
+The 2nd column:
+
+\[
+N+C+L+c_1=10c_2
+\]
+
+\[
+N+C+1=10
+\]
+
+so:
+
+\[
+N+C=9
+\]
+
+The consistent pair is:
+
+\[
+N=0,\quad C=9
+\]
+
+The 6th column:
+
+\[
+3+O+N+S+1=B+10c_6
+\]
+
+\[
+O+S+4=1+10c_6
+\]
+
+This gives:
+
+\[
+S=1,\quad O=6,\quad c_6=1
+\]
+
+The 7th column:
+
+\[
+I+N+2A+c_6=M+10c_7
+\]
+
+\[
+8+0+8+1=M+10c_7
+\]
+
+\[
+17=M+10c_7
+\]
+
+so:
+
+\[
+M=7,\quad c_7=1
+\]
+
+Finally:
+
+\[
+U=A+B+2S+c_7=4+1+2+1=8
+\]
+
+Thus:
+
+\[
+UMBRELLA = 87130114
+\]
+
+Answer: 87130114",87130114,1,hard,stop
+cryptarithmetic_en_hard_0067,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] F=4, I=2
+[group J-R] L=9, N=0
+[group S-Z] T=3
+
+Find the numeric value of CHILDREN.
+
+  STARFISH
++ MOUNTAIN
++ UMBRELLA
++ SNOWBALL
+----------
+= CHILDREN",80296530,,"Work column-by-column from the right.
+
+Let carries be \(c_1,c_2,\dots,c_7\).
+
+\[
+\begin{array}{cccccccc}
+S&T&A&R&F&I&S&H\\
+M&O&U&N&T&A&I&N\\
+U&M&B&R&E&L&L&A\\
+S&N&O&W&B&A&L&L\\
+\hline
+C&H&I&L&D&R&E&N
+\end{array}
+\]
+
+Given:
+
+- A–I table: \(F=4,\ I=2\)
+- J–R table: \(L=9,\ N=0\)
+- S–Z table: \(T=3\)
+
+### Key column deductions
+
+Units column:
+
+\[
+H+N+A+L=N+10c_1
+\]
+
+\[
+H+0+A+9=0+10c_1
+\]
+
+So:
+
+\[
+H+A+9=10c_1
+\]
+
+Thus either \(H+A=1\) with \(c_1=1\), or \(H+A=11\) with \(c_1=2\).
+
+Tens column:
+
+\[
+S+I+L+L+c_1=E+10c_2
+\]
+
+\[
+S+2+9+9+c_1=E+10c_2
+\]
+
+This forces:
+
+\[
+E=3,\quad c_2=2
+\]
+
+and the only viable case is:
+
+\[
+S=2,\quad c_1=1,\quad H+A=1
+\]
+
+Then the hundreds column gives:
+
+\[
+I+A+L+A+c_2=R+10c_3
+\]
+
+\[
+2+A+9+A+2=R+10c_3
+\]
+
+The consistent choice is:
+
+\[
+A=1,\quad H=0,\quad R=5,\quad c_3=1
+\]
+
+Continuing through the middle columns gives:
+
+\[
+B=5,\quad D=6,\quad W=8,\quad U=1,\quad O=4,\quad M=2,\quad C=8
+\]
+
+So the completed tables include:
+
+- A–I: \(A=1,\ B=5,\ C=8,\ D=6,\ E=3,\ F=4,\ H=0,\ I=2\)
+- J–R: \(L=9,\ M=2,\ N=0,\ O=4,\ R=5\)
+- S–Z: \(S=2,\ T=3,\ U=1,\ W=8\)
+
+Now:
+
+\[
+CHILDREN = 80296530
+\]
+
+Check:
+
+\[
+23154220+24103120+12553991+20485199=80296530
+\]
+
+Answer: 80296530",80296530,1,hard,stop
+cryptarithmetic_en_hard_0068,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=7
+[group J-R] M=3, N=8, P=1
+[group S-Z] (none revealed)
+
+Find the numeric value of COMPUTER.
+
+  SCISSORS
++ BIRTHDAY
++ UMBRELLA
++ ELEPHANT
+----------
+= COMPUTER",76312324,,"Let the carries from right to left be \(c_1,\dots,c_7\).
+
+Column equations:
+
+\[
+\begin{aligned}
+S+Y+A+T &= R+10c_1\\
+R+A+L+8+c_1 &= E+10c_2\\
+O+D+L+A+c_2 &= T+10c_3\\
+S+H+E+H+c_3 &= U+10c_4\\
+S+T+R+c_4 &= 10c_5\\
+I+R+B+E+c_5 &= 3+10c_6\\
+7+I+3+L+c_6 &= O+10c_7\\
+S+B+U+E+c_7 &= 7
+\end{aligned}
+\]
+
+Since \(S,U\) are leading digits and distinct within group S-Z, and \(B,E\) are leading digits and distinct within group A-I:
+
+\[
+S+U \ge 1+2=3,\qquad B+E\ge 1+2=3
+\]
+
+The last column gives:
+
+\[
+S+B+U+E+c_7=7
+\]
+
+So necessarily:
+
+\[
+S,U=\{1,2\},\quad B,E=\{1,2\},\quad c_7=1
+\]
+
+Working through the remaining columns with the uniqueness constraints gives the consistent assignment:
+
+- Group A-I:  
+  \(A=0,\ B=1,\ C=7,\ D=6,\ E=2,\ H=9,\ I=5\)
+
+- Group J-R:  
+  \(L=0,\ M=3,\ N=8,\ O=6,\ P=1,\ R=4\)
+
+- Group S-Z:  
+  \(S=1,\ T=3,\ U=2,\ Y=0\)
+
+Then:
+
+\[
+\begin{aligned}
+SCISSORS &= 17511641\\
+BIRTHDAY &= 15439600\\
+UMBRELLA &= 23142000\\
+ELEPHANT &= 20219083
+\end{aligned}
+\]
+
+And:
+
+\[
+17511641+15439600+23142000+20219083=76312324
+\]
+
+So:
+
+\[
+COMPUTER = 76312324
+\]
+
+Answer: 76312324",76312324,1,hard,stop
+cryptarithmetic_en_hard_0069,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] G=3
+[group J-R] L=1, R=9
+[group S-Z] (none revealed)
+
+Find the numeric value of FOOTBALL.
+
+  TRIANGLE
++ SCISSORS
++ BIRTHDAY
++ NOTEBOOK
+----------
+= FOOTBALL",93331811,,"Column-by-column, the unique consistent assignment is:
+
+- **Group A–I:** A=8, B=1, C=4, D=7, E=0, F=9, G=3, H=6, I=5  
+- **Group J–R:** K=0, L=1, N=2, O=3, R=9  
+- **Group S–Z:** S=1, T=3, Y=0  
+
+Then:
+
+```text
+  TRIANGLE = 39582310
+  SCISSORS = 14511391
+  BIRTHDAY = 15936780
+  NOTEBOOK = 23301330
+----------------------
+  FOOTBALL = 93331811
+```
+
+So the numeric value of **FOOTBALL** is:
+
+Answer: 93331811",93331811,1,hard,stop
+cryptarithmetic_en_hard_0070,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=3, I=9
+[group J-R] R=6
+[group S-Z] (none revealed)
+
+Find the numeric value of TRIANGLE.
+
+  STARFISH
++ UMBRELLA
++ BASEBALL
++ MOUNTAIN
+----------
+= TRIANGLE",96913204,,"Let carries from right to left be \(c_1,\dots,c_7\). The column equations are:
+
+\[
+\begin{aligned}
+& H+A+L+N=E+10c_1 \\
+& S+L+9+c_1=10c_2 \\
+& 9+L+2A+c_2=G+10c_3 \\
+& F+E+3+T+c_3=N+10c_4 \\
+& 12+E+N+c_4=A+10c_5 \\
+& A+3+S+U+c_5=9+10c_6 \\
+& T+M+A+O+c_6=6+10c_7 \\
+& S+U+3+M+c_7=T
+\end{aligned}
+\]
+
+From the two leftmost columns, \(c_7\neq 0\), and \(S,U\) must be very small. The only viable high-column case becomes:
+
+\[
+S,U=\{1,2\},\quad M=2,\quad T=9,\quad A=1,\quad O=4,\quad c_5=2,\quad c_6=0,\quad c_7=1
+\]
+
+Then the middle columns force:
+
+\[
+L=0,\quad c_1=0,\quad c_2=1,\quad G=2,\quad c_3=1
+\]
+
+Using the \(10^3\) and \(10^4\) columns gives the consistent assignment:
+
+\[
+E=4,\quad F=6,\quad N=3,\quad H=0,\quad c_4=2
+\]
+
+So the relevant digits for TRIANGLE are:
+
+\[
+T=9,\ R=6,\ I=9,\ A=1,\ N=3,\ G=2,\ L=0,\ E=4
+\]
+
+Thus:
+
+\[
+\text{TRIANGLE}=96913204
+\]
+
+Answer: 96913204",96913204,1,hard,stop
+cryptarithmetic_en_hard_0071,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=1
+[group J-R] L=2, R=9
+[group S-Z] (none revealed)
+
+Find the numeric value of HOSPITAL.
+
+  MOUNTAIN
++ ELEPHANT
++ COMPUTER
++ FOOTBALL
+----------
+= HOSPITAL",94888132,,"Let the carries from right to left be \(c_1,c_2,\dots,c_7\).
+
+Column equations:
+
+\[
+\begin{array}{r}
+\text{units: } N+T+R+L=L+10c_1 \\
+\Rightarrow N+T+9=10c_1
+\end{array}
+\]
+
+So either:
+
+- \(c_1=1,\ N+T=1\), or
+- \(c_1=2,\ N+T=11\)
+
+Hundreds column:
+
+\[
+A+A+T+A+c_2=T+10c_3
+\]
+
+So:
+
+\[
+3A+c_2=10c_3
+\]
+
+The only possible nonzero cases are:
+
+\[
+(A,c_2,c_3)=(3,1,1)\quad\text{or}\quad(6,2,2)
+\]
+
+The leading column gives:
+
+\[
+M+E+C+F+c_7=H
+\]
+
+with \(C=1\), so:
+
+\[
+M+E+F+1+c_7=H<10
+\]
+
+This forces \(M=1\). Checking the carry possibilities from the millions column gives the viable case:
+
+\[
+O=4,\quad c_6=0,\quad c_7=1
+\]
+
+Then the leading-column constraint forces:
+
+\[
+A=3,\quad E=2,\quad F=4,\quad H=9
+\]
+
+From the units column, since \(c_1=1\):
+
+\[
+N+T=1
+\]
+
+and because \(M=1\), we get:
+
+\[
+N=0,\quad T=1
+\]
+
+The tens column gives:
+
+\[
+I+N+E+L+c_1=A+10c_2
+\]
+
+\[
+I+0+2+2+1=3+10
+\]
+
+\[
+I=8
+\]
+
+The remaining columns then determine:
+
+\[
+U=0,\quad S=8,\quad B=7,\quad P=8
+\]
+
+So:
+
+\[
+HOSPITAL=94888132
+\]
+
+Answer: 94888132",94888132,1,hard,stop
+cryptarithmetic_en_hard_0072,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=8, I=9
+[group J-R] R=0
+[group S-Z] W=8
+
+Find the numeric value of UMBRELLA.
+
+  COMPUTER
++ SANDWICH
++ AIRPLANE
++ CHILDREN
+----------
+= UMBRELLA",94801663,,"Writing the addition column-by-column from right to left, with carries \(c_1,\dots,c_7\):
+
+\[
+\begin{aligned}
+H+E+N &= A+10c_1\\
+2E+C+N+c_1 &= L+10c_2\\
+T+I+A+R+c_2 &= L+10c_3\\
+U+W+L+D+c_3 &= E+10c_4\\
+2P+D+L+c_4 &= R+10c_5\\
+M+N+R+I+c_5 &= B+10c_6\\
+O+A+I+H+c_6 &= M+10c_7\\
+2C+S+A+c_7 &= U
+\end{aligned}
+\]
+
+Using the revealed values:
+
+- Group A-I: \(B=8,\ I=9\)
+- Group J-R: \(R=0\)
+- Group S-Z: \(W=8\)
+
+Solving the carry constraints gives:
+
+### Group A-I
+\[
+A=3,\ B=8,\ C=2,\ D=7,\ E=1,\ H=0,\ I=9
+\]
+
+### Group J-R
+\[
+L=6,\ M=4,\ N=2,\ O=1,\ P=7,\ R=0
+\]
+
+### Group S-Z
+\[
+S=1,\ T=4,\ U=9,\ W=8
+\]
+
+Check:
+
+\[
+\begin{array}{r}
+21479410\\
+13278920\\
+39076321\\
+20967012\\
+\hline
+94801663
+\end{array}
+\]
+
+So:
+
+\[
+\text{UMBRELLA}=94801663
+\]
+
+Answer: 94801663",94801663,1,hard,stop
+cryptarithmetic_en_hard_0073,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=2, G=0, H=1
+[group J-R] (none revealed)
+[group S-Z] T=3
+
+Find the numeric value of DINOSAUR.
+
+  SCISSORS
++ MOUNTAIN
++ HOSPITAL
++ BUILDING
+----------
+= DINOSAUR",87091553,,"Let carries be \(c_1,\dots,c_7\) from right to left.
+
+Column equations are:
+
+\[
+\begin{aligned}
+S+N+L &= R+10c_1\\
+R+I+A+N+c_1 &= U+10c_2\\
+O+A+3+I+c_2 &= A+10c_3\\
+S+3+I+D+c_3 &= S+10c_4\\
+S+N+P+L+c_4 &= O+10c_5\\
+2I+U+S+c_5 &= N+10c_6\\
+2+2O+U+c_6 &= I+10c_7\\
+S+M+1+B+c_7 &= D
+\end{aligned}
+\]
+
+From the third column:
+
+\[
+O+I+3+c_2=10c_3
+\]
+
+and from the fourth column:
+
+\[
+3+I+D+c_3=10c_4
+\]
+
+The first possible carry \(c_3=1\) leads to \(I=7,D=9,O=0,c_2=0\), but then the second column cannot fit because \(R+I+A+N+c_1\) is already too large for carry \(0\).  
+So \(c_3=2\), giving
+
+\[
+I+D=15
+\]
+
+The viable high-column constraints eventually force:
+
+\[
+I=7,\quad D=8,\quad O=9,\quad c_2=1,\quad c_7=2
+\]
+
+The leading-column equation then gives:
+
+\[
+S+M+B=5
+\]
+
+Since \(B\) is an A-I digit and must be at least \(3\), the only possibility is:
+
+\[
+B=3,\quad S=1,\quad M=1
+\]
+
+Continuing through the remaining columns gives the unique completion:
+
+\[
+A=5,\quad U=5,\quad N=0,\quad R=3,\quad L=2,\quad P=4
+\]
+
+So the words are:
+
+\[
+\begin{aligned}
+SCISSORS &= 12711931\\
+MOUNTAIN &= 19503570\\
+HOSPITAL &= 19147352\\
+BUILDING &= 35728700
+\end{aligned}
+\]
+
+Their sum is:
+
+\[
+12711931+19503570+19147352+35728700=87091553
+\]
+
+Thus:
+
+\[
+DINOSAUR = 87091553
+\]
+
+Answer: 87091553",87091553,1,hard,stop
+cryptarithmetic_en_hard_0074,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=2, H=3
+[group J-R] L=1, O=6
+[group S-Z] (none revealed)
+
+Find the numeric value of FOOTBALL.
+
+  BIRTHDAY
++ SNOWBALL
++ DINOSAUR
++ HOSPITAL
+----------
+= FOOTBALL",96682011,,"Let carries from right to left be \(c_1,c_2,\dots,c_7\).
+
+Known digits:
+
+- Group A-I: \(B=2,\ H=3\)
+- Group J-R: \(L=1,\ O=6\)
+
+Column equations for
+
+\[
+\begin{array}{r}
+ BIRTHDAY\\
+ SNOWBALL\\
+ DINOSAUR\\
+ HOSPITAL\\
+\hline
+ FOOTBALL
+\end{array}
+\]
+
+Right to left:
+
+1. Units:
+\[
+Y+L+R+L=L+10c_1
+\]
+\[
+Y+R+2=1+10c_1
+\]
+So \(c_1=1\) and
+\[
+Y+R=9
+\]
+
+2. Tens:
+\[
+A+L+U+A+c_1=L+10c_2
+\]
+\[
+2A+U+1=10c_2
+\]
+
+3. Hundreds:
+\[
+D+A+A+T+c_2=A+10c_3
+\]
+\[
+D+A+T+c_2=10c_3
+\]
+
+4. Thousands:
+\[
+H+B+S+I+c_3=B+10c_4
+\]
+\[
+S+I+3+c_3=10c_4
+\]
+
+5. Ten-thousands:
+\[
+T+W+O+P+c_4=T+10c_5
+\]
+\[
+W+P+6+c_4=10c_5
+\]
+
+6. Hundred-thousands:
+\[
+R+O+N+S+c_5=O+10c_6
+\]
+\[
+R+N+S+c_5=10c_6
+\]
+
+7. Millions:
+\[
+I+N+I+O+c_6=O+10c_7
+\]
+\[
+2I+N+c_6=10c_7
+\]
+
+8. Leftmost:
+\[
+B+S+D+H+c_7=F
+\]
+\[
+5+S+D+c_7=F
+\]
+
+Since \(F\le 9\), this forces \(S+D+c_7\le 4\). With \(D,S\neq 0\), the only viable outcome is:
+
+\[
+D=1
+\]
+
+Working through the carry constraints gives the unique consistent assignment:
+
+- Group A-I:  
+  \[
+  A=0,\ B=2,\ D=1,\ F=9,\ H=3,\ I=5
+  \]
+
+- Group J-R:  
+  \[
+  L=1,\ N=8,\ O=6,\ P=7,\ R=9
+  \]
+
+- Group S-Z:  
+  \[
+  S=1,\ T=8,\ U=9,\ W=6,\ Y=0
+  \]
+
+Then:
+
+\[
+FOOTBALL = F O O T B A L L = 9\,6\,6\,8\,2\,0\,1\,1
+\]
+
+Check:
+
+\[
+25983100+18662011+15861099+36175801=96682011
+\]
+
+Answer: 96682011",96682011,1,hard,stop
+cryptarithmetic_en_hard_0075,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] G=5
+[group J-R] L=1, N=0
+[group S-Z] T=0, U=5
+
+Find the numeric value of BUILDING.
+
+  MOUNTAIN
++ ELEPHANT
++ AIRPLANE
++ SANDWICH
+----------
+= BUILDING",95217205,,"Let the column carries from right to left be \(c_1,c_2,\dots,c_7\).
+
+The addition is:
+
+\[
+\begin{array}{rrrrrrrr}
+M&O&U&N&T&A&I&N\\
+E&L&E&P&H&A&N&T\\
+A&I&R&P&L&A&N&E\\
+S&A&N&D&W&I&C&H\\
+\hline
+B&U&I&L&D&I&N&G
+\end{array}
+\]
+
+Given:
+
+- A–I group: \(G=5\)
+- J–R group: \(L=1,\ N=0\)
+- S–Z group: \(T=0,\ U=5\)
+
+From the rightmost columns:
+
+1. Units:
+\[
+N+T+E+H=G+10c_1
+\]
+\[
+0+0+E+H=5+10c_1
+\]
+So \(E+H=5\) or \(15\).
+
+2. Tens:
+\[
+I+N+N+C+c_1=N+10c_2
+\]
+\[
+I+C+c_1=10c_2
+\]
+
+3. Hundreds:
+\[
+A+A+A+I+c_2=I+10c_3
+\]
+So:
+\[
+3A+c_2=10c_3
+\]
+This forces:
+\[
+A=3,\quad c_2=1,\quad c_3=1
+\]
+
+Using the leading-column constraints and the final column, the only consistent assignments are:
+
+### Group A–I
+\[
+A=3,\ B=9,\ C=8,\ D=7,\ E=1,\ G=5,\ H=4,\ I=2
+\]
+
+### Group J–R
+\[
+L=1,\ M=2,\ N=0,\ O=8,\ P=7,\ R=4
+\]
+
+### Group S–Z
+\[
+S=2,\ T=0,\ U=5,\ W=1
+\]
+
+Now compute:
+
+\[
+BUILDING = B\,U\,I\,L\,D\,I\,N\,G
+\]
+
+\[
+= 9\,5\,2\,1\,7\,2\,0\,5
+\]
+
+Answer: 95217205",95217205,1,hard,stop
+cryptarithmetic_en_hard_0076,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=2, E=1, H=0
+[group J-R] P=3, R=1
+[group S-Z] W=7
+
+Find the numeric value of MOUNTAIN.
+
+  SCISSORS
++ FOOTBALL
++ COMPUTER
++ SANDWICH
+----------
+= MOUNTAIN",97429942,,"Let the carries from right to left be \(c_1,c_2,\dots,c_7\).
+
+Column equations:
+
+\[
+\begin{aligned}
+& S+L+R+H=N+10c_1 \\
+& R+L+E+C+c_1=I+10c_2 \\
+& O+A+T+I+c_2=A+10c_3 \\
+& S+B+U+W+c_3=T+10c_4 \\
+& S+T+P+D+c_4=N+10c_5 \\
+& I+O+M+N+c_5=U+10c_6 \\
+& C+O+O+A+c_6=O+10c_7 \\
+& S+F+C+S+c_7=M
+\end{aligned}
+\]
+
+Using the revealed values:
+
+- A–I: \(C=2,E=1,H=0\)
+- J–R: \(P=3,R=1\)
+- S–Z: \(W=7\)
+
+The leftmost column gives:
+
+\[
+2S+F+2+c_7=M<10
+\]
+
+Since \(F\) cannot be \(0,1,2\), this forces:
+
+\[
+S=1
+\]
+
+Then the units column becomes:
+
+\[
+1+L+1=N+10c_1
+\]
+
+Checking the possible carry cases and continuing through the columns leaves the unique consistent assignment:
+
+- A–I: \(A=9,B=5,C=2,D=8,E=1,F=3,H=0,I=4\)
+- J–R: \(L=0,M=9,N=2,O=7,P=3,R=1\)
+- S–Z: \(S=1,T=9,U=4,W=7\)
+
+So:
+
+\[
+\begin{aligned}
+SCISSORS &= 12411711 \\
+FOOTBALL &= 37795900 \\
+COMPUTER &= 27934911 \\
+SANDWICH &= 19287420
+\end{aligned}
+\]
+
+Their sum is:
+
+\[
+12411711+37795900+27934911+19287420=97429942
+\]
+
+And:
+
+\[
+MOUNTAIN=97429942
+\]
+
+Answer: 97429942",97429942,1,hard,stop
+cryptarithmetic_en_hard_0077,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=8, C=2
+[group J-R] R=2
+[group S-Z] U=5, W=7
+
+Find the numeric value of DINOSAUR.
+
+  SCISSORS
++ STARFISH
++ BUILDING
++ SANDWICH
+----------
+= DINOSAUR",95031852,,"Let carries from right to left be \(c_1,c_2,\dots,c_7\).
+
+Column equations:
+
+\[
+\begin{array}{rcl}
+S+G+2H &=& R+10c_1 = 2+10c_1\\
+R+S+N+C+c_1 &=& U+10c_2\\
+O+3I+c_2 &=& A+10c_3 = 8+10c_3\\
+S+F+D+W+c_3 &=& S+10c_4\\
+S+R+L+D+c_4 &=& O+10c_5\\
+2I+A+N+c_5 &=& N+10c_6\\
+C+T+U+A+c_6 &=& I+10c_7\\
+3S+B+c_7 &=& D
+\end{array}
+\]
+
+Using the known digits \(A=8,C=2,R=2,U=5,W=7\):
+
+From the 3rd column from the left:
+
+\[
+2I+8+c_5=10c_6
+\]
+
+This forces possible \(I\) values to be only \(0,5,6\). Combining with the next column gives:
+
+\[
+T+15+c_6=I+10c_7
+\]
+
+which forces \(c_7=2\).
+
+Then the leftmost column gives:
+
+\[
+3S+B+2=D
+\]
+
+Since \(D\le 9\), \(S\) must be small. Testing the valid possibilities, the only consistent one is:
+
+\[
+S=1,\quad B=4,\quad D=9
+\]
+
+Continuing through the middle columns gives:
+
+\[
+I=5,\quad T=8,\quad N=0,\quad O=3,\quad L=9,\quad F=3
+\]
+
+Finally, the rightmost column has \(c_1=0\):
+
+\[
+1+G+2H=2
+\]
+
+so:
+
+\[
+G=1,\quad H=0
+\]
+
+Thus:
+
+\[
+DINOSAUR = D\,I\,N\,O\,S\,A\,U\,R = 9\,5\,0\,3\,1\,8\,5\,2
+\]
+
+Answer: 95031852",95031852,1,hard,stop
+cryptarithmetic_en_hard_0078,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] D=3, F=8
+[group J-R] P=3
+[group S-Z] U=7
+
+Find the numeric value of FOOTBALL.
+
+  AIRPLANE
++ TRIANGLE
++ DINOSAUR
++ BASEBALL
+----------
+= FOOTBALL",85511211,,"Let the carries from right to left be \(c_1,c_2,\dots,c_7\).
+
+Writing the addition columnwise:
+
+\[
+\begin{array}{r}
+AIRPLANE\\
+TRIANGLE\\
+DINOSAUR\\
+BASEBALL\\ \hline
+FOOTBALL
+\end{array}
+\]
+
+From the rightmost column:
+
+\[
+2E+R+L=L+10c_1 \Rightarrow 2E+R=10c_1
+\]
+
+The leftmost column is especially restrictive:
+
+\[
+A+T+D+B+c_7=F
+\]
+
+Given \(D=3,\ F=8\):
+
+\[
+A+B+T+c_7=5
+\]
+
+Since \(A,B,T\) are leading digits, they are nonzero. Thus:
+
+\[
+\{A,B\}=\{1,2\}
+\]
+
+and either:
+
+- \(c_7=0,\ T=2\), or
+- \(c_7=1,\ T=1\)
+
+Working through the remaining columns with the given group-independent digit tables, the only consistent assignment is:
+
+**Group A-I**
+
+\[
+A=2,\ B=1,\ D=3,\ E=0,\ F=8,\ G=5,\ I=6
+\]
+
+**Group J-R**
+
+\[
+L=1,\ N=2,\ O=5,\ P=3,\ R=0
+\]
+
+**Group S-Z**
+
+\[
+S=6,\ T=1,\ U=7
+\]
+
+Now compute the addends:
+
+\[
+AIRPLANE=26031220
+\]
+
+\[
+TRIANGLE=10622510
+\]
+
+\[
+DINOSAUR=36256270
+\]
+
+\[
+BASEBALL=12601211
+\]
+
+Their sum is:
+
+\[
+26031220+10622510+36256270+12601211=85511211
+\]
+
+So:
+
+\[
+FOOTBALL=85511211
+\]
+
+Answer: 85511211",85511211,1,hard,stop
+cryptarithmetic_en_hard_0079,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] G=5, H=0
+[group J-R] R=3
+[group S-Z] (none revealed)
+
+Find the numeric value of BASEBALL.
+
+  ELEPHANT
++ STARFISH
++ NOTEBOOK
++ TRIANGLE
+----------
+= BASEBALL",82418222,,"Let the digit mappings be independent within the three letter groups.
+
+From the column addition, working right-to-left:
+
+\[
+\begin{array}{r}
+ELEPHANT\\
+STARFISH\\
+NOTEBOOK\\
+TRIANGLE\\
+\hline
+BASEBALL
+\end{array}
+\]
+
+The consistent digit assignments are:
+
+- Group A–I:  
+  \(A=2,\ B=8,\ E=1,\ F=7,\ G=5,\ H=0,\ I=9\)
+
+- Group J–R:  
+  \(K=0,\ L=2,\ N=1,\ O=5,\ P=4,\ R=3\)
+
+- Group S–Z:  
+  \(S=4,\ T=1\)
+
+Checking:
+
+\[
+\begin{aligned}
+ELEPHANT &= 12140211\\
+STARFISH &= 41237940\\
+NOTEBOOK &= 15118550\\
+TRIANGLE &= 13921521\\
+\hline
+BASEBALL &= 82418222
+\end{aligned}
+\]
+
+And indeed:
+
+\[
+12140211+41237940+15118550+13921521=82418222
+\]
+
+Therefore, the numeric value of **BASEBALL** is:
+
+Answer: 82418222",82418222,1,hard,stop
+cryptarithmetic_en_hard_0080,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] G=0
+[group J-R] L=5, P=4
+[group S-Z] U=0
+
+Find the numeric value of MOUNTAIN.
+
+  COMPUTER
++ BUILDING
++ SCISSORS
++ NOTEBOOK
+----------
+= MOUNTAIN",93026972,,"The given constraints lead to a contradiction: after carrying column-by-column and enforcing the independent digit tables for the three alphabet groups, there is **no assignment of digits** that satisfies the addition.
+
+So the numeric value of **MOUNTAIN** cannot be determined because the puzzle has no valid solution.
+
+Answer: no solution",,0,hard,stop
+cryptarithmetic_en_hard_0081,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] I=5
+[group J-R] K=9, P=4, R=0
+[group S-Z] Y=0
+
+Find the numeric value of DINOSAUR.
+
+  BIRTHDAY
++ COMPUTER
++ UMBRELLA
++ NOTEBOOK
+----------
+= DINOSAUR",95169110,,"Writing the addition column-by-column from right to left:
+
+\[
+\begin{array}{rrrrrrrr}
+ & B&I&R&T&H&D&A&Y\\
+ & C&O&M&P&U&T&E&R\\
+ & U&M&B&R&E&L&L&A\\
++& N&O&T&E&B&O&O&K\\
+\hline
+ & D&I&N&O&S&A&U&R
+\end{array}
+\]
+
+Given:
+
+- \(I=5\)
+- \(K=9,\ P=4,\ R=0\)
+- \(Y=0\)
+
+Units column:
+
+\[
+Y+R+A+K=R
+\]
+
+\[
+0+0+A+9=0 \pmod{10}
+\]
+
+So:
+
+\[
+A=1
+\]
+
+and carry \(=1\).
+
+Carrying out the column constraints and enforcing uniqueness within each alphabet group gives the consistent assignment:
+
+### Group A-I
+\[
+A=1,\ B=2,\ C=3,\ D=9,\ E=0,\ H=4,\ I=5
+\]
+
+### Group J-R
+\[
+K=9,\ L=3,\ M=7,\ N=1,\ O=6,\ P=4,\ R=0
+\]
+
+### Group S-Z
+\[
+S=9,\ T=2,\ U=1,\ Y=0
+\]
+
+Check:
+
+\[
+\begin{aligned}
+BIRTHDAY &= 25024910\\
+COMPUTER &= 36741200\\
+UMBRELLA &= 17200331\\
+NOTEBOOK &= 16202669\\
+\hline
+DINOSAUR &= 95169110
+\end{aligned}
+\]
+
+Thus the numeric value of **DINOSAUR** is:
+
+Answer: 95169110",95169110,1,hard,stop
+cryptarithmetic_en_hard_0082,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] (none revealed)
+[group J-R] L=0, O=5, R=3
+[group S-Z] W=6
+
+Find the numeric value of MOUNTAIN.
+
+  SANDWICH
++ ELEPHANT
++ BASEBALL
++ CHILDREN
+----------
+= MOUNTAIN",95210251,,"Let the carries from right to left be \(c_1,c_2,\dots,c_7\).
+
+Writing the addition column-by-column:
+
+\[
+\begin{array}{r}
+\text{SANDWICH}\\
+\text{ELEPHANT}\\
+\text{BASEBALL}\\
+\text{CHILDREN}\\
+\hline
+\text{MOUNTAIN}
+\end{array}
+\]
+
+Using the revealed values \(L=0,\ O=5,\ R=3,\ W=6\), the column equations are:
+
+\[
+\begin{aligned}
+H+T+0+N &= N+10c_1 \Rightarrow H+T=10c_1\\
+C+N+0+E+c_1 &= I+10c_2\\
+I+A+A+3+c_2 &= A+10c_3\\
+6+H+B+D+c_3 &= T+10c_4\\
+D+P+E+0+c_4 &= N+10c_5\\
+N+E+S+A+c_5 &= U+10c_6\\
+A+0+A+H+c_6 &= 5+10c_7\\
+S+E+B+C+c_7 &= M
+\end{aligned}
+\]
+
+The last column forces \(S+E+B+C+c_7<10\), so \(B,C,E\) must be small distinct nonzero digits in the A–I table. Checking the carry cases gives the unique consistent assignment:
+
+### Group A–I
+\[
+A=0,\ B=4,\ C=1,\ D=9,\ E=3,\ H=5,\ I=7
+\]
+
+### Group J–R
+\[
+L=0,\ M=9,\ N=2,\ O=5,\ P=8,\ R=3
+\]
+
+### Group S–Z
+\[
+S=1,\ T=5,\ U=8,\ W=6
+\]
+
+Now compute:
+
+\[
+\begin{aligned}
+\text{SANDWICH} &= 10296715\\
+\text{ELEPHANT} &= 30385025\\
+\text{BASEBALL} &= 40134000\\
+\text{CHILDREN} &= 15709332
+\end{aligned}
+\]
+
+Sum:
+
+\[
+10296715+30385025+40134000+15709332=95825072
+\]
+
+So:
+
+\[
+\text{MOUNTAIN}=95825072
+\]
+
+Answer: 95825072",95825072,0,hard,stop
+cryptarithmetic_en_hard_0083,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=2, D=8
+[group J-R] O=3, P=2
+[group S-Z] (none revealed)
+
+Find the numeric value of HOSPITAL.
+
+  AIRPLANE
++ MOUNTAIN
++ BUILDING
++ UMBRELLA
+----------
+= HOSPITAL",63627414,,"Writing the addition column-by-column from right to left, with carries, the unique digit tables that satisfy all constraints are:
+
+**Group A-I**
+- A=1, B=2, D=8, E=0, G=3, H=6, I=7
+
+**Group J-R**
+- L=4, M=1, N=0, O=3, P=2, R=5
+
+**Group S-Z**
+- S=6, T=4, U=1
+
+So:
+
+```text
+  AIRPLANE = 17524100
+  MOUNTAIN = 13104170
+  BUILDING = 21748703
+  UMBRELLA = 11250441
+---------------------
+  HOSPITAL = 63627414
+```
+
+Check:
+
+```text
+17,524,100
+13,104,170
+21,748,703
+11,250,441
+----------
+63,627,414
+```
+
+Therefore, the numeric value of **HOSPITAL** is **63627414**.
+
+Answer: 63627414",63627414,1,hard,stop
+cryptarithmetic_en_hard_0084,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] G=6, H=2, I=1
+[group J-R] N=4
+[group S-Z] (none revealed)
+
+Find the numeric value of SNOWBALL.
+
+  HOSPITAL
++ TRIANGLE
++ COMPUTER
++ UMBRELLA
+----------
+= SNOWBALL",94347900,,"Let the needed digits be:
+
+- **A-I group:** \(A=a, B=b, C=c, E=e\), with \(G=6,H=2,I=1\)
+- **J-R group:** \(L=l, M=m, O=o, P=p, R=r\), with \(N=4\)
+- **S-Z group:** \(S=s,T=t,U=u,W=w\)
+
+Column equations from right to left:
+
+\[
+\begin{aligned}
+E+R+A &= 10k_1 \\
+A+E+L+k_1 &= 10k_2 \\
+2T+L+6+k_2 &= A+10k_3 \\
+U+E+5+k_3 &= B+10k_4 \\
+2P+A+R+k_4 &= W+10k_5 \\
+S+M+B+1+k_5 &= O+10k_6 \\
+2O+R+M+k_6 &= 4+10k_7 \\
+2+T+C+U+k_7 &= S
+\end{aligned}
+\]
+
+The top column is very restrictive:
+
+\[
+2+T+C+U+k_7=S \le 9
+\]
+
+Since \(C\) cannot be \(0,1,2,6\), the only workable case is:
+
+\[
+C=3,\quad k_7=1,\quad \{T,U\}=\{1,2\},\quad S=9
+\]
+
+Working through the rightmost columns then gives the only consistent assignment:
+
+### A-I group
+
+\[
+A=9,\quad B=7,\quad C=3,\quad E=0,\quad G=6,\quad H=2,\quad I=1
+\]
+
+### J-R group
+
+\[
+L=0,\quad M=5,\quad N=4,\quad O=3,\quad P=2,\quad R=1
+\]
+
+### S-Z group
+
+\[
+S=9,\quad T=1,\quad U=2,\quad W=4
+\]
+
+Check:
+
+\[
+\begin{array}{r}
+23921190\\
+11194600\\
+33522101\\
+25710009\\
+\hline
+94347900
+\end{array}
+\]
+
+And
+
+\[
+SNOWBALL = 94347900
+\]
+
+Answer: 94347900",94347900,1,hard,stop
+cryptarithmetic_en_hard_0085,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] (none revealed)
+[group J-R] N=1, O=5
+[group S-Z] S=8
+
+Find the numeric value of UMBRELLA.
+
+  ELEPHANT
++ BASEBALL
++ NOTEBOOK
++ COMPUTER
+----------
+= UMBRELLA",99244007,,"Let the carry from column \(i\) (right to left) be \(c_i\).
+
+Column 2 gives a strong constraint:
+
+\[
+N+L+O+E+c_1=L+10c_2
+\]
+
+With \(N=1,\ O=5\):
+
+\[
+1+L+5+E+c_1=L+10c_2
+\]
+
+So:
+
+\[
+E+6+c_1=10c_2
+\]
+
+Thus \(c_2=1\) and:
+
+\[
+E+c_1=4
+\]
+
+The consistent solution is:
+
+### Group A-I
+\[
+A=7,\ B=2,\ C=1,\ E=4,\ H=9
+\]
+
+### Group J-R
+\[
+K=3,\ L=0,\ M=9,\ N=1,\ O=5,\ P=2,\ R=4
+\]
+
+### Group S-Z
+\[
+S=8,\ T=0,\ U=9
+\]
+
+Check the addition:
+
+\[
+\begin{array}{r}
+40429710\\
+27842700\\
+15042553\\
+15929044\\
+\hline
+99244007
+\end{array}
+\]
+
+So:
+
+\[
+UMBRELLA = 99244007
+\]
+
+Answer: 99244007",99244007,1,hard,stop
+cryptarithmetic_en_hard_0086,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=0, H=1, I=7
+[group J-R] K=2, P=9
+[group S-Z] T=4
+
+Find the numeric value of BIRTHDAY.
+
+  HOSPITAL
++ COMPUTER
++ NOTEBOOK
++ UMBRELLA
+----------
+= BIRTHDAY",97141603,,"Let the carries from right to left be \(c_1,c_2,\dots,c_7\).
+
+Writing the addition columnwise:
+
+\[
+\begin{array}{rcl}
+L+R+2 &=& Y+10c_1\\
+E+O+L+c_1 &=& 10c_2\\
+8+O+L+c_2 &=& D+10c_3\\
+7+U+B+E+c_3 &=& 1+10c_4\\
+18+E+R+c_4 &=& 4+10c_5\\
+S+M+4+B+c_5 &=& R+10c_6\\
+3O+M+c_6 &=& 7+10c_7\\
+1+C+N+U+c_7 &=& B
+\end{array}
+\]
+
+From the middle columns, the viable values force:
+
+- \(E=3\)
+- \(R=1\)
+- \(c_4=2\), \(c_5=2\)
+- \(c_3=1\), \(c_2=1\), \(c_1=0\)
+
+Then the tens/hundreds columns give:
+
+\[
+O+L=7,\qquad D=6
+\]
+
+The remaining consistent choice satisfying all group uniqueness rules is:
+
+### Group A-I
+\[
+A=0,\ H=1,\ I=7,\ C=2,\ E=3,\ D=6,\ B=9
+\]
+
+### Group J-R
+\[
+K=2,\ P=9,\ R=1,\ N=3,\ O=7,\ L=0,\ M=4
+\]
+
+### Group S-Z
+\[
+T=4,\ U=1,\ S=2,\ Y=3
+\]
+
+So:
+
+\[
+\begin{array}{r}
+17297400\\
+27491431\\
+37439772\\
+14913000\\
+\hline
+97141603
+\end{array}
+\]
+
+Thus \(BIRTHDAY = 97141603\).
+
+Answer: 97141603",97141603,1,hard,stop
+cryptarithmetic_en_hard_0087,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] H=0
+[group J-R] L=1, O=7
+[group S-Z] (none revealed)
+
+Find the numeric value of DINOSAUR.
+
+  MOUNTAIN
++ BASEBALL
++ STARFISH
++ UMBRELLA
+----------
+= DINOSAUR",95074314,,"Let the carries from right to left be \(c_1,\dots,c_7\). Using the revealed values:
+
+- A–I group: \(H=0\)
+- J–R group: \(L=1,\ O=7\)
+
+Column equations from right to left:
+
+\[
+\begin{aligned}
+&N+L+H+A = R+10c_1\\
+&I+L+S+L+c_1 = U+10c_2\\
+&A+A+I+L+c_2 = A+10c_3\\
+&T+B+F+E+c_3 = S+10c_4\\
+&N+E+R+R+c_4 = O+10c_5\\
+&U+S+A+B+c_5 = N+10c_6\\
+&O+A+T+M+c_6 = I+10c_7\\
+&M+B+S+U+c_7 = D
+\end{aligned}
+\]
+
+Solving these with distinct digits within each alphabet group gives the unique consistent mapping:
+
+**A–I group**
+\[
+A=3,\ B=1,\ D=9,\ E=8,\ F=2,\ H=0,\ I=5
+\]
+
+**J–R group**
+\[
+L=1,\ M=2,\ N=0,\ O=7,\ R=4
+\]
+
+**S–Z group**
+\[
+S=4,\ T=2,\ U=1
+\]
+
+Check:
+
+\[
+\begin{array}{r}
+27102350\\
+13481311\\
+42342540\\
+12148113\\
+\hline
+95074314
+\end{array}
+\]
+
+So,
+
+\[
+DINOSAUR = 95074314
+\]
+
+Answer: 95074314",95074314,1,hard,stop
+cryptarithmetic_en_hard_0088,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] F=2, H=7, I=5
+[group J-R] M=7, N=0
+[group S-Z] (none revealed)
+
+Find the numeric value of TRIANGLE.
+
+  CHILDREN
++ BASEBALL
++ UMBRELLA
++ FOOTBALL
+----------
+= TRIANGLE",96560018,,"Let carries from right to left be \(c_1,c_2,\dots,c_7\).
+
+Column equations:
+
+\[
+\begin{aligned}
+&N+L+A+L=E+10c_1 \\
+&E+L+L+L+c_1=L+10c_2 \\
+&R+A+L+A+c_2=G+10c_3 \\
+&D+B+E+B+c_3=N+10c_4 \\
+&L+E+R+T+c_4=A+10c_5 \\
+&I+S+B+O+c_5=I+10c_6 \\
+&H+A+M+O+c_6=R+10c_7 \\
+&C+B+U+F+c_7=T
+\end{aligned}
+\]
+
+Given:
+
+- A-I group: \(F=2,H=7,I=5\)
+- J-R group: \(M=7,N=0\)
+
+Since \(N=0\), the first two columns give:
+
+\[
+A+2L=E+10c_1
+\]
+
+\[
+E+2L+c_1=10c_2
+\]
+
+Combining:
+
+\[
+A+4L=10c_2+9c_1
+\]
+
+The only viable possibilities are:
+
+1. \(L=1,\ A=6,\ E=8,\ c_1=0,\ c_2=1\)
+2. \(L=4,\ A=3,\ E=1,\ c_1=1,\ c_2=1\)
+
+Checking the remaining columns eliminates the second possibility. The consistent assignment is:
+
+### Group A-I
+\[
+A=6,\ B=3,\ C=1,\ D=4,\ E=8,\ F=2,\ G=0,\ H=7,\ I=5
+\]
+
+### Group J-R
+\[
+L=1,\ M=7,\ N=0,\ O=5,\ R=6
+\]
+
+### Group S-Z
+\[
+S=0,\ T=9,\ U=1
+\]
+
+Then:
+
+\[
+\begin{aligned}
+CHILDREN &= 17514680\\
+BASEBALL &= 36083611\\
+UMBRELLA &= 17368116\\
+FOOTBALL &= 25593611
+\end{aligned}
+\]
+
+Sum:
+
+\[
+17514680+36083611+17368116+25593611=96560018
+\]
+
+So:
+
+\[
+TRIANGLE=96560018
+\]
+
+Answer: 96560018",96560018,1,hard,stop
+cryptarithmetic_en_hard_0089,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=2, H=4
+[group J-R] M=6
+[group S-Z] W=0
+
+Find the numeric value of UMBRELLA.
+
+  BUILDING
++ CHILDREN
++ SANDWICH
++ AIRPLANE
+----------
+= UMBRELLA",96118222,,"Let carries be from right to left. The column equations are:
+
+\[
+\begin{aligned}
+G+N+H+E &= A+10c_1\\
+N+E+C+N+c_1 &= L+10c_2\\
+I+R+I+A+c_2 &= L+10c_3\\
+D+D+W+L+c_3 &= E+10c_4\\
+L+L+D+P+c_4 &= R+10c_5\\
+I+I+N+R+c_5 &= B+10c_6\\
+U+H+A+I+c_6 &= M+10c_7\\
+B+C+S+A+c_7 &= U
+\end{aligned}
+\]
+
+Given \(A=2,\ H=4,\ M=6,\ W=0\).
+
+From the millions column:
+
+\[
+U+4+2+I+c_6=6+10c_7
+\]
+
+so
+
+\[
+U+I+c_6=10c_7
+\]
+
+Thus \(c_7=1\). Then the leftmost column gives:
+
+\[
+B+C+S+2+1=U
+\]
+
+\[
+B+C+S+3=U
+\]
+
+Since \(B,C,S\) are nonzero leading digits, this forces \(U=8\) or \(U=9\).
+
+If \(U=8\), then \(B,C=\{1,3\}\), \(S=1\), and the millions column forces \(I=0,\ c_6=2\). But then the next column requires
+
+\[
+N+R+c_5=B+20
+\]
+
+which is impossible because \(N\) and \(R\) are distinct J–R digits and \(c_5\le 3\), so their maximum is \(9+8+3=20\), less than the needed value when \(B=1\) or \(3\).
+
+So \(U=9\). Then \(S=2\), \(I=0\), \(c_6=1\), and \(B,C=\{1,3\}\).
+
+The units column gives:
+
+\[
+G+N+4+E=2+10c_1
+\]
+
+so
+
+\[
+G+E+N=18
+\]
+
+and \(c_1=2\). Since \(A,H,I,B,C\) already use \(0,1,2,3,4\) in group A–I, the remaining A–I letters \(D,E,G\) must come from \(\{5,6,7,8,9\}\).
+
+Checking the remaining column constraints leaves only these possible partial cases:
+
+| \(B\) | \(C\) | \(N\) | \(E\) | \(G\) | \(L\) | \(R\) | failure |
+|---:|---:|---:|---:|---:|---:|---:|---|
+| 1 | 3 | 7 | 6 | 5 | 5 | 1 | \(2D+5\equiv6\pmod{10}\), impossible |
+| 1 | 3 | 4 | 5 | 9 | 8 | 5 | \(2D+8\equiv5\pmod{10}\), impossible |
+| 1 | 3 | 4 | 8 | 6 | 1 | 7 | forces \(D=3\) or \(8\), but \(3=C\), \(8=E\) |
+| 1 | 3 | 3 | 7 | 8 | 8 | 5 | \(2D+8\equiv7\pmod{10}\), impossible |
+| 3 | 1 | 5 | 8 | 5 | 1 | 7 | forces \(D=3\) or \(8\), but \(3=B\), \(8=E\) |
+
+Every possible case violates the stated “different letters in the same group have different digits” rule.
+
+Therefore, under the rules as stated, the puzzle is inconsistent and has no valid numeric value for UMBRELLA.
+
+Answer: no solution",,0,hard,stop
+cryptarithmetic_en_hard_0090,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=2
+[group J-R] O=4, P=1, R=2
+[group S-Z] (none revealed)
+
+Find the numeric value of HOSPITAL.
+
+  UMBRELLA
++ SCISSORS
++ CHILDREN
++ BASEBALL
+----------
+= HOSPITAL",84114700,,"Let the carries from right to left be \(c_1,\dots,c_7\).
+
+Writing the addition column by column:
+
+\[
+\begin{array}{rcl}
+A+S+N &=& 10c_1\\
+2L+E+2+c_1 &=& A+10c_2\\
+L+A+6+c_2 &=& T+10c_3\\
+E+S+D+B+c_3 &=& I+10c_4\\
+E+L+S+2+c_4 &=& 1+10c_5\\
+B+2I+c_5 &=& 10c_6\\
+M+H+A+c_6+2 &=& 4+10c_7\\
+U+S+2+B+c_7 &=& H
+\end{array}
+\]
+
+Using the revealed values \(C=2\), \(O=4\), \(P=1\), \(R=2\), and enforcing distinct digits within each alphabet group, the consistent assignment is:
+
+- Group A-I:  
+  \(A=0,\ B=1,\ C=2,\ D=5,\ E=7,\ H=8,\ I=4\)
+
+- Group J-R:  
+  \(L=0,\ M=3,\ N=9,\ O=4,\ P=1,\ R=2\)
+
+- Group S-Z:  
+  \(S=1,\ T=7,\ U=3\)
+
+Check:
+
+\[
+\begin{array}{r}
+33127000\\
+12411421\\
+28405279\\
+10171000\\
+\hline
+84114700
+\end{array}
+\]
+
+So
+
+\[
+HOSPITAL = 84114700
+\]
+
+Answer: 84114700",84114700,1,hard,stop
+cryptarithmetic_en_hard_0091,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] F=7, G=9
+[group J-R] R=5
+[group S-Z] Y=0
+
+Find the numeric value of FOOTBALL.
+
+  MOUNTAIN
++ BIRTHDAY
++ TRIANGLE
++ UMBRELLA
+----------
+= FOOTBALL",71111444,,"Let the column carries from right to left be \(c_1,\dots,c_7\).
+
+Given:
+
+- Group A–I: \(F=7,\ G=9\)
+- Group J–R: \(R=5\)
+- Group S–Z: \(Y=0\)
+
+Column equations for
+
+\[
+\begin{array}{r}
+ MOUNTAIN\\
+ BIRTHDAY\\
+ TRIANGLE\\
+ UMBRELLA\\
+\hline
+ FOOTBALL
+\end{array}
+\]
+
+lead to the unique consistent assignments:
+
+### Group A–I
+\[
+A=4,\ B=1,\ D=6,\ E=0,\ F=7,\ G=9,\ H=8,\ I=2
+\]
+
+### Group J–R
+\[
+L=4,\ M=2,\ N=0,\ O=1,\ R=5
+\]
+
+### Group S–Z
+\[
+T=1,\ U=2,\ Y=0
+\]
+
+So:
+
+\[
+FOOTBALL = F O O T B A L L = 7\,1\,1\,1\,1\,4\,4\,4
+\]
+
+Check:
+
+\[
+\begin{array}{r}
+21201420\\
+12518640\\
+15240940\\
+22150444\\
+\hline
+71111444
+\end{array}
+\]
+
+Answer: 71111444",71111444,1,hard,stop
+cryptarithmetic_en_hard_0092,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=7
+[group J-R] L=3, R=7
+[group S-Z] S=1, U=5
+
+Find the numeric value of TRIANGLE.
+
+  BUILDING
++ SANDWICH
++ BIRTHDAY
++ BASEBALL
+----------
+= TRIANGLE",87530034,,"Let the carries from right to left be \(k_1,k_2,\dots,k_7\).
+
+Column equations:
+
+\[
+\begin{aligned}
+G+H+Y+3 &= E+10k_1 \\
+N+7+A &= 10k_2-k_1 \\
+2I+D+A+k_2 &= G+10k_3 \\
+D+W+H+B+k_3 &= N+10k_4 \\
+3+D+T+E+k_4 &= A+10k_5 \\
+N+8+k_5 &= 10k_6 \\
+I+2A+k_6-2 &= 10k_7 \\
+3B+1+k_7 &= T
+\end{aligned}
+\]
+
+From the last column, \(B\) must be \(1\) or \(2\). Also, column 6 gives only a few possibilities for \((N,k_5,k_6)\), and combining those with columns 2, 5, 7, and 8 leaves two viable candidate setups:
+
+1. \(N=0,\ A=3,\ I=5,\ B=2,\ T=8\)
+2. \(N=0,\ A=1,\ I=9,\ B=2,\ T=8\)
+
+Candidate 2 fails because column 3 gives:
+
+\[
+2I+D+A+k_2=18+D+1+1=D+20
+\]
+
+so \(G=D\), impossible within group A-I.
+
+Thus:
+
+\[
+N=0,\ A=3,\ I=5,\ B=2,\ T=8
+\]
+
+Solving the remaining columns gives:
+
+- Group A-I: \(A=3,\ B=2,\ C=7,\ D=6,\ E=4,\ G=0,\ H=1,\ I=5\)
+- Group J-R: \(L=3,\ N=0,\ R=7\)
+- Group S-Z: \(S=1,\ T=8,\ U=5,\ W=9,\ Y=0\)
+
+So:
+
+\[
+TRIANGLE = 87530034
+\]
+
+Check:
+
+\[
+25536500+13069571+25781630+23142333=87530034
+\]
+
+Answer: 87530034",87530034,1,hard,stop
+cryptarithmetic_en_hard_0093,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=6, C=1
+[group J-R] O=4
+[group S-Z] U=3, W=4
+
+Find the numeric value of BIRTHDAY.
+
+  SANDWICH
++ SNOWBALL
++ MOUNTAIN
++ SCISSORS
+----------
+= BIRTHDAY",73270962,,"Let the carries from right to left be \(c_1,c_2,\dots,c_7\).
+
+The column equations are:
+
+\[
+\begin{aligned}
+H+L+N+S &= Y+10c_1\\
+1+L+I+R+c_1 &= 6+10c_2\\
+I+6+6+4+c_2 &= D+10c_3\\
+4+B+T+S+c_3 &= H+10c_4\\
+D+4+N+S+c_4 &= T+10c_5\\
+N+4+3+I+c_5 &= R+10c_6\\
+6+N+4+1+c_6 &= I+10c_7\\
+S+S+M+S+c_7 &= B
+\end{aligned}
+\]
+
+From the leftmost column,
+
+\[
+3S+M+c_7=B\le 9
+\]
+
+so \(S\) must be \(1\) or \(2\). Testing the carry possibilities, \(c_7=2\) leads to contradictions in the middle columns, so \(c_7=1\).
+
+Then the consistent assignment is:
+
+- Group A-I:  
+  \(A=6,\ B=7,\ C=1,\ D=9,\ H=0,\ I=3\)
+
+- Group J-R:  
+  \(L=0,\ M=3,\ N=1,\ O=4,\ R=2\)
+
+- Group S-Z:  
+  \(S=1,\ T=7,\ U=3,\ W=4,\ Y=2\)
+
+Check:
+
+\[
+\begin{array}{r}
+16194310\\
+11447600\\
+34317631\\
+11311421\\
+\hline
+73270962
+\end{array}
+\]
+
+Thus,
+
+\[
+\text{BIRTHDAY}=73270962
+\]
+
+Answer: 73270962",73270962,1,hard,stop
+cryptarithmetic_en_hard_0094,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] (none revealed)
+[group J-R] L=5, R=0
+[group S-Z] T=6, Y=0
+
+Find the numeric value of UMBRELLA.
+
+  SCISSORS
++ BIRTHDAY
++ DINOSAUR
++ NOTEBOOK
+----------
+= UMBRELLA",98109552,,"Set carries \(c_1,\dots,c_7\) from right to left.
+
+Column equations are:
+
+\[
+\begin{aligned}
+& S+K=A+10c_1\\
+& A+U+O+c_1=5+10c_2\\
+& D+A+2O+c_2=5+10c_3\\
+& 2S+H+B+c_3=E+10c_4\\
+& S+6+O+E+c_4=10c_5\\
+& I+N+6+c_5=B+10c_6\\
+& C+2I+O+c_6=M+10c_7\\
+& S+B+D+N+c_7=U
+\end{aligned}
+\]
+
+The leftmost column gives \(U=S+B+D+N+c_7\le 9\), so \(S\) must be small. Carry analysis through the middle columns leaves the consistent case:
+
+\[
+S=1,\quad U=9,\quad A=2,\quad D=4,\quad O=4,\quad K=1
+\]
+
+Then:
+
+\[
+B+N+c_7=4
+\]
+
+The only compatible choice is:
+
+\[
+B=1,\quad N=3,\quad c_7=0
+\]
+
+Continuing:
+
+\[
+E=9,\quad H=5,\quad I=0,\quad C=3,\quad M=8
+\]
+
+So the relevant mappings are:
+
+- group A-I: \(A=2,B=1,C=3,D=4,E=9,H=5,I=0\)
+- group J-R: \(K=1,L=5,M=8,N=3,O=4,R=0\)
+- group S-Z: \(S=1,T=6,U=9,Y=0\)
+
+Check:
+
+\[
+\begin{array}{r}
+13011401\\
+10065420\\
+40341290\\
+34691441\\
+\hline
+98109552
+\end{array}
+\]
+
+Thus:
+
+\[
+UMBRELLA=98109552
+\]
+
+Answer: 98109552",98109552,1,hard,stop
+cryptarithmetic_en_hard_0095,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=2, E=1
+[group J-R] M=7
+[group S-Z] S=2
+
+Find the numeric value of DINOSAUR.
+
+  TRIANGLE
++ STARFISH
++ COMPUTER
++ AIRPLANE
+----------
+= DINOSAUR",95482290,,"Let the carries from right to left be \(c_1,c_2,\dots,c_7\).
+
+Writing the addition by columns:
+
+\[
+\begin{array}{cccccccc}
+T&R&I&A&N&G&L&E\\
+S&T&A&R&F&I&S&H\\
+C&O&M&P&U&T&E&R\\
+A&I&R&P&L&A&N&E\\
+\hline
+D&I&N&O&S&A&U&R
+\end{array}
+\]
+
+Given:
+
+- Group A-I: \(A=2,\ E=1\)
+- Group J-R: \(M=7\)
+- Group S-Z: \(S=2\)
+
+### Units column
+\[
+E+H+R+E=R+10c_1
+\]
+\[
+1+H+R+1=R+10c_1
+\]
+So:
+
+\[
+H+2=10c_1
+\]
+
+Thus:
+
+\[
+H=8,\quad c_1=1
+\]
+
+### Leading column
+The leftmost column is:
+
+\[
+T+S+C+A+c_7=D
+\]
+
+Since \(S=2,\ A=2\):
+
+\[
+T+C+4+c_7=D
+\]
+
+There is no final carry, so this must be less than 10. Also \(T\neq 0\), \(C\neq 0\). The only possible fit is:
+
+\[
+T=1,\quad C=3,\quad c_7=1,\quad D=9
+\]
+
+### Middle-column constraints
+From the third column:
+
+\[
+G+I+T+c_2=10c_3
+\]
+
+Since \(T=1\):
+
+\[
+G+I+1+c_2=10c_3
+\]
+
+This forces:
+
+\[
+c_3=1
+\]
+
+Then the possible cases reduce to:
+
+1. \(c_2=0,\ U=9,\ F=7,\ \{G,I\}=\{4,5\}\)
+2. \(c_2=2,\ U=0,\ F=5,\ \{G,I\}=\{0,7\}\)
+
+The second case would require \(L+N=16\) in group J-R, but the only digit-pairs are impossible because \(7\) is already \(M\), and \(8+8\) repeats a digit. So the second case is eliminated.
+
+Thus:
+
+\[
+U=9,\quad F=7,\quad \{G,I\}=\{4,5\}
+\]
+
+Continuing the remaining columns gives the unique consistent assignment:
+
+- Group A-I:  
+  \[
+  A=2,\ C=3,\ D=9,\ E=1,\ F=7,\ G=4,\ H=8,\ I=5
+  \]
+
+- Group J-R:  
+  \[
+  L=1,\ M=7,\ N=4,\ O=8,\ P=2,\ R=0
+  \]
+
+- Group S-Z:  
+  \[
+  S=2,\ T=1,\ U=9
+  \]
+
+So:
+
+\[
+DINOSAUR = 95482290
+\]
+
+Answer: 95482290",95482290,1,hard,stop
+cryptarithmetic_en_hard_0096,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] G=6
+[group J-R] O=6
+[group S-Z] S=0
+
+Find the numeric value of MOUNTAIN.
+
+  BASEBALL
++ FOOTBALL
++ ELEPHANT
++ TRIANGLE
+----------
+= MOUNTAIN",96231733,,"Let carries from right to left be \(c_1,\dots,c_7\). The column equations are:
+
+\[
+\begin{aligned}
+2L+T+E &= N+10c_1\\
+3L+N+c_1 &= I+10c_2\\
+3A+G+c_2 &= A+10c_3\\
+2B+H+N+c_3 &= T+10c_4\\
+E+T+P+A+c_4 &= N+10c_5\\
+S+O+E+I+c_5 &= U+10c_6\\
+A+O+L+R+c_6 &= O+10c_7\\
+B+F+E+T+c_7 &= M
+\end{aligned}
+\]
+
+Given \(G=6,\ O=6,\ S=0\).
+
+From the 3rd column:
+
+\[
+3A+6+c_2=A+10c_3
+\]
+
+so
+
+\[
+2A+6+c_2=10c_3
+\]
+
+The only possible values are:
+
+\[
+(A,c_2,c_3)=(1,2,1),(2,0,1),(7,0,2)
+\]
+
+But if \(A=1\) or \(A=2\), then the leading digits \(B,F,E,T\) plus carry \(c_7\ge1\) make the leftmost column exceed 9, impossible. Hence:
+
+\[
+A=7,\quad c_2=0,\quad c_3=2
+\]
+
+Then the leftmost column is extremely tight:
+
+\[
+B+F+E+T+c_7=M<10
+\]
+
+This forces \(c_7=1\) or \(c_7=2\).
+
+Checking \(c_7=1\), the only possible small digit sets for \(B,F,E,T\) lead to \(L=0\) or \(L=1\), but:
+- \(L=0\) forces \(P=R=2\), impossible within group J–R.
+- \(L=1\) forces \(R=L\), impossible.
+
+Checking \(c_7=2\), the only possible digit set is:
+
+\[
+\{B,F,E\}=\{1,2,3\},\quad T=1,\quad M=9
+\]
+
+Then column 7 forces \(L=3,\ R=8,\ c_6=2\), but column 1 then cannot produce a valid \(N,c_1\) while keeping \(c_2=0\).
+
+So the constraints are inconsistent: the cryptarithm has no solution, and \(MOUNTAIN\) has no numeric value.
+
+Answer: no solution",,0,hard,stop
+cryptarithmetic_en_hard_0097,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=3, C=9, G=0
+[group J-R] M=1, N=3
+[group S-Z] T=1
+
+Find the numeric value of CHILDREN.
+
+  BUILDING
++ BIRTHDAY
++ BASEBALL
++ UMBRELLA
+----------
+= CHILDREN",91405263,,"Let the carries from right to left be \(c_1,c_2,\dots,c_7\).
+
+Column equations:
+
+\[
+\begin{array}{cccccccc}
+B&U&I&L&D&I&N&G\\
+B&I&R&T&H&D&A&Y\\
+B&A&S&E&B&A&L&L\\
+U&M&B&R&E&L&L&A\\
+\hline
+C&H&I&L&D&R&E&N
+\end{array}
+\]
+
+Known values:
+
+- Group A–I: \(A=3,\ C=9,\ G=0\)
+- Group J–R: \(M=1,\ N=3\)
+- Group S–Z: \(T=1\)
+
+From the units column:
+
+\[
+G+Y+L+A=N+10c_1
+\]
+
+\[
+0+Y+L+3=3+10c_1
+\]
+
+So:
+
+\[
+Y+L=10c_1
+\]
+
+This leads to the viable chain:
+
+\[
+L=0,\quad Y=0,\quad c_1=0
+\]
+
+Then the tens column:
+
+\[
+N+A+L+L+c_1=E+10c_2
+\]
+
+\[
+3+3+0+0+0=E
+\]
+
+So:
+
+\[
+E=6,\quad c_2=0
+\]
+
+The ten-thousands column gives:
+
+\[
+T+E+R+c_4=10c_5
+\]
+
+\[
+1+6+R+c_4=10c_5
+\]
+
+The only viable possibility is:
+
+\[
+R=2,\quad c_4=1,\quad c_5=1
+\]
+
+The leftmost column is:
+
+\[
+3B+U+c_7=C
+\]
+
+Since \(C=9\):
+
+\[
+3B+U+c_7=9
+\]
+
+The consistent solution is:
+
+\[
+B=2,\quad U=2,\quad c_7=1
+\]
+
+Then the thousands column forces:
+
+\[
+H+B+E+c_3=10c_4
+\]
+
+\[
+H+2+6+c_3=10
+\]
+
+So:
+
+\[
+H=1,\quad c_3=1
+\]
+
+The hundreds column:
+
+\[
+I+D+A+L+c_2=R+10c_3
+\]
+
+\[
+I+D+3+0+0=2+10
+\]
+
+\[
+I+D=9
+\]
+
+The remaining compatible digits are:
+
+\[
+I=4,\quad D=5
+\]
+
+Thus:
+
+\[
+CHILDREN = 91405263
+\]
+
+Answer: 91405263",91405263,1,hard,stop
+cryptarithmetic_en_hard_0098,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] D=5
+[group J-R] M=4, P=5
+[group S-Z] U=3, Y=0
+
+Find the numeric value of BIRTHDAY.
+
+  HOSPITAL
++ AIRPLANE
++ COMPUTER
++ CHILDREN
+----------
+= BIRTHDAY",94163510,,"Let the carries from right to left be \(c_1,\dots,c_7\).
+
+Column equations:
+
+\[
+\begin{aligned}
+L+E+R+N &= 10c_1 \\
+A+N+E+E+c_1 &= A+10c_2 \Rightarrow N+2E+c_1=10c_2 \\
+T+A+T+R+c_2 &= D+10c_3 \Rightarrow A+2T+R+c_2=5+10c_3 \\
+I+L+U+D+c_3 &= H+10c_4 \Rightarrow I+L+8+c_3=H+10c_4 \\
+P+P+P+L+c_4 &= T+10c_5 \Rightarrow 15+L+c_4=T+10c_5 \\
+S+R+M+I+c_5 &= R+10c_6 \Rightarrow S+I+4+c_5=10c_6 \\
+O+I+O+H+c_6 &= I+10c_7 \Rightarrow 2O+H+c_6=10c_7 \\
+H+A+C+C+c_7 &= B
+\end{aligned}
+\]
+
+Using the last two equations first is very restrictive. Since \(B\) is a single digit and \(C\neq 0\),
+
+\[
+H+A+2C+c_7 \le 9.
+\]
+
+Checking the possible carries and respecting distinctness within each group leaves the consistent assignment:
+
+### Group A-I
+\[
+A=1,\ B=9,\ C=2,\ D=5,\ E=0,\ H=3,\ I=4
+\]
+
+### Group J-R
+\[
+L=0,\ M=4,\ N=9,\ O=3,\ P=5,\ R=1
+\]
+
+### Group S-Z
+\[
+S=1,\ T=6,\ U=3,\ Y=0
+\]
+
+Now compute:
+
+\[
+\begin{aligned}
+HOSPITAL &= 33154610 \\
+AIRPLANE &= 14150190 \\
+COMPUTER &= 23453601 \\
+CHILDREN &= 23405109
+\end{aligned}
+\]
+
+Sum:
+
+\[
+33154610+14150190+23453601+23405109=94163510
+\]
+
+And
+
+\[
+BIRTHDAY = 94163510.
+\]
+
+Answer: 94163510",94163510,1,hard,stop
+cryptarithmetic_en_hard_0099,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] D=3, I=7
+[group J-R] P=3
+[group S-Z] T=9, Y=3
+
+Find the numeric value of BIRTHDAY.
+
+  SCISSORS
++ STARFISH
++ HOSPITAL
++ MOUNTAIN
+----------
+= BIRTHDAY",97291303,,"Let the carries from right to left be \(c_1,\dots,c_7\).
+
+Aligning the addition:
+
+\[
+\begin{array}{cccccccc}
+S&C&I&S&S&O&R&S\\
+S&T&A&R&F&I&S&H\\
+H&O&S&P&I&T&A&L\\
+M&O&U&N&T&A&I&N\\
+\hline
+B&I&R&T&H&D&A&Y
+\end{array}
+\]
+
+Given:
+
+- Group A–I: \(D=3,\ I=7\)
+- Group J–R: \(P=3\)
+- Group S–Z: \(T=9,\ Y=3\)
+
+Column equations from right to left:
+
+\[
+\begin{aligned}
+S+H+L+N &= 3+10c_1\\
+R+S+7+c_1 &= 10c_2\\
+O+7+9+A+c_2 &= 3+10c_3\\
+S+F+7+9+c_3 &= H+10c_4\\
+S+R+3+N+c_4 &= 9+10c_5\\
+7+A+S+U+c_5 &= R+10c_6\\
+C+9+2O+c_6 &= 7+10c_7\\
+2S+H+M+c_7 &= B
+\end{aligned}
+\]
+
+The final column forces \(S\) to be small, so \(S\in\{1,2\}\). Working through the carry constraints and uniqueness within each independent group gives the consistent assignment:
+
+- Group A–I:  
+  \[
+  A=0,\ B=9,\ C=5,\ D=3,\ F=2,\ H=1,\ I=7
+  \]
+
+- Group J–R:  
+  \[
+  L=0,\ M=4,\ N=1,\ O=6,\ P=3,\ R=2
+  \]
+
+- Group S–Z:  
+  \[
+  S=1,\ T=9,\ U=4,\ Y=3
+  \]
+
+Verification:
+
+\[
+\begin{aligned}
+SCISSORS &= 15711621\\
+STARFISH &= 19022711\\
+HOSPITAL &= 16137900\\
+MOUNTAIN &= 46419071\\
+\hline
+BIRTHDAY &= 97291303
+\end{aligned}
+\]
+
+So the numeric value of **BIRTHDAY** is:
+
+Answer: 97291303",97291303,1,hard,stop

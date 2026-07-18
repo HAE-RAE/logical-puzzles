@@ -1,0 +1,32 @@
+{
+  "metadata": {
+    "task": "yacht_dice_en_medium",
+    "model": "anthropic/claude-opus-4-8",
+    "timestamp": "2026-07-17T14-28-52",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "max_tokens": 32768,
+      "reasoning_effort": "medium"
+    },
+    "gen_kwargs_cli": "max_tokens=32768,reasoning_effort=medium"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.57,
+      "correct_count": 57,
+      "total_count": 100,
+      "avg_latency_ms": 178753.49794387817,
+      "finish_reason_counts": {
+        "stop": 99,
+        "length": 1
+      }
+    },
+    "by_difficulty": {
+      "medium": {
+        "total": 100,
+        "correct": 57,
+        "accuracy": 0.57
+      }
+    }
+  }
+}

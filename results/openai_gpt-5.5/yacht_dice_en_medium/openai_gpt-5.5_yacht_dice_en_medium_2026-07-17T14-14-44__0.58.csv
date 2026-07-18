@@ -1,0 +1,4926 @@
+id,question,answer,thinking_content,resps,filtered_resps,exact_match,difficulty,finish_reason
+yacht_dice_en_medium_0000,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [4, 2, 5, 2, 6]
+Round 2: [1, 5, 5, 3, 5]
+Round 3: [2, 6, 5, 1, 6]
+Round 4: [6, 6, 6, 6, 4]
+Round 5: [3, 6, 5, 3, 6]
+Round 6: [3, 4, 4, 5, 4]
+Round 7: [5, 5, 6, 1, 5]
+Round 8: [5, 6, 6, 6, 4]
+Round 9: [2, 4, 5, 4, 6]
+Round 10: [3, 5, 5, 5, 3]
+Round 11: [2, 2, 1, 5, 6]
+Round 12: [3, 1, 6, 3, 2]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 2, 5. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",21,,"An optimal scoring assignment is:
+
+- Round 1 → Small Straight = 30  
+- Round 2 → Fives = 15  
+- Round 3 → Aces = 1  
+- Round 4 → Four-of-a-Kind = 28  
+- Round 5 → Threes = 6  
+- Round 6 → Fours = 12  
+- Round 7 → Three-of-a-Kind = 22  
+- Round 8 → Sixes = 18  
+- Round 9 → Large Straight = 0  
+- Round 10 → Full House = 25  
+- Round 11 → Twos = 4  
+- Round 12 → Yacht = 0  
+
+Upper subtotal is 56, so no upper bonus applies. Total score is 161.
+
+Requested spotcheck sum for rounds 2 and 5:  
+15 + 6 = 21
+
+Answer: 21",21,1,medium,stop
+yacht_dice_en_medium_0001,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [1, 6, 6, 4, 6]
+Round 2: [1, 4, 3, 3, 5]
+Round 3: [6, 2, 1, 6, 6]
+Round 4: [1, 6, 6, 6, 2]
+Round 5: [6, 3, 1, 3, 3]
+Round 6: [4, 1, 1, 5, 3]
+Round 7: [2, 6, 2, 6, 2]
+Round 8: [6, 6, 2, 6, 6]
+Round 9: [5, 1, 5, 6, 3]
+Round 10: [2, 2, 3, 6, 2]
+Round 11: [1, 1, 5, 3, 3]
+Round 12: [6, 6, 6, 1, 3]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 8, 10. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",32,,"An optimal full assignment is:
+
+- Round 1 → Three-of-a-Kind = 23  
+- Round 2 → Fours = 4  
+- Round 3 → Sixes = 18  
+- Round 4 → Small Straight = 0  
+- Round 5 → Threes = 9  
+- Round 6 → Large Straight = 0  
+- Round 7 → Full House = 25  
+- Round 8 → Four-of-a-Kind = 26  
+- Round 9 → Fives = 10  
+- Round 10 → Twos = 6  
+- Round 11 → Aces = 2  
+- Round 12 → Yacht = 0  
+
+Upper section sum is 49, so no bonus is earned. This gives the optimal total of 123.
+
+The requested spotcheck sum is for rounds 8 and 10:
+
+- Round 8: 26  
+- Round 10: 6  
+
+Answer: 32",32,1,medium,stop
+yacht_dice_en_medium_0002,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [2, 2, 5, 4, 2]
+Round 2: [2, 2, 5, 6, 4]
+Round 3: [6, 4, 6, 5, 1]
+Round 4: [6, 6, 1, 2, 3]
+Round 5: [5, 5, 6, 5, 2]
+Round 6: [1, 3, 5, 4, 6]
+Round 7: [5, 3, 6, 1, 6]
+Round 8: [2, 4, 6, 2, 3]
+Round 9: [6, 2, 4, 2, 5]
+Round 10: [5, 3, 6, 5, 6]
+Round 11: [4, 1, 5, 1, 5]
+Round 12: [5, 1, 5, 1, 6]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 2, 7. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",16,,"The upper-section bonus is impossible here: even the best possible upper scores sum to at most 42, below 63.
+
+One optimal assignment is:
+
+- Round 1 → Twos = 6  
+- Round 2 → Fours = 4  
+- Round 3 → Sixes = 12  
+- Round 4 → Threes = 3  
+- Round 5 → Three-of-a-Kind = 23  
+- Round 6 → Small Straight = 30  
+- Round 11 → Fives = 10  
+- Round 12 → Aces = 2  
+- Rounds 7, 8, 9, 10 → zero-scoring categories
+
+This gives total score \(6+4+12+3+23+30+10+2=90\), which is optimal.
+
+For the requested spotcheck rounds:
+
+- Round 2 score = 4  
+- Round 7 score = 0  
+
+Partial sum = \(4+0=4\).
+
+Answer: 4",4,0,medium,stop
+yacht_dice_en_medium_0003,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [6, 1, 4, 1, 5]
+Round 2: [1, 3, 6, 6, 6]
+Round 3: [3, 3, 2, 6, 3]
+Round 4: [6, 1, 2, 6, 1]
+Round 5: [3, 3, 5, 3, 3]
+Round 6: [5, 4, 4, 3, 2]
+Round 7: [6, 5, 6, 6, 5]
+Round 8: [6, 5, 5, 5, 4]
+Round 9: [2, 4, 4, 4, 5]
+Round 10: [1, 1, 2, 6, 6]
+Round 11: [3, 6, 5, 4, 6]
+Round 12: [5, 5, 3, 4, 3]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 1, 3. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",11,,"The upper-section maximum is only \(61\), so the +35 bonus cannot be reached.
+
+One optimal assignment is:
+
+- Round 1 → Aces = 2  
+- Round 2 → Sixes = 18  
+- Round 3 → Threes = 9  
+- Round 4 → Large Straight = 0  
+- Round 5 → Four-of-a-Kind = 17  
+- Round 6 → Small Straight = 30  
+- Round 7 → Full House = 25  
+- Round 8 → Three-of-a-Kind = 25  
+- Round 9 → Fours = 12  
+- Round 10 → Twos = 2  
+- Round 11 → Yacht = 0  
+- Round 12 → Fives = 10  
+
+Total score is \(150\), with no upper bonus.
+
+Requested partial sum for rounds 1 and 3:
+
+\[
+2 + 9 = 11
+\]
+
+Answer: 11",11,1,medium,stop
+yacht_dice_en_medium_0004,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [6, 6, 5, 3, 3]
+Round 2: [2, 1, 1, 3, 2]
+Round 3: [1, 1, 5, 4, 4]
+Round 4: [5, 4, 5, 2, 3]
+Round 5: [5, 3, 5, 4, 1]
+Round 6: [4, 3, 6, 4, 5]
+Round 7: [1, 1, 6, 1, 3]
+Round 8: [5, 5, 6, 5, 5]
+Round 9: [3, 2, 3, 5, 6]
+Round 10: [3, 2, 2, 1, 1]
+Round 11: [5, 5, 2, 2, 5]
+Round 12: [4, 4, 4, 4, 2]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 3, 9. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",8,,"The upper-section bonus is impossible, since even the best possible upper scores sum to only:
+
+Aces 3 + Twos 4 + Threes 6 + Fours 16 + Fives 20 + Sixes 12 = 61 < 63.
+
+One optimal assignment is:
+
+- Round 3 → Aces = 2
+- Round 9 → Threes = 6
+
+So the requested partial sum is:
+
+2 + 6 = 8
+
+Answer: 8",8,1,medium,stop
+yacht_dice_en_medium_0005,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [1, 2, 4, 6, 4]
+Round 2: [1, 4, 6, 5, 3]
+Round 3: [1, 4, 2, 2, 5]
+Round 4: [2, 6, 5, 2, 5]
+Round 5: [5, 2, 1, 3, 2]
+Round 6: [4, 3, 3, 5, 1]
+Round 7: [4, 2, 4, 5, 2]
+Round 8: [2, 4, 1, 5, 5]
+Round 9: [1, 6, 6, 1, 4]
+Round 10: [5, 2, 5, 2, 2]
+Round 11: [5, 4, 6, 4, 3]
+Round 12: [2, 3, 6, 4, 6]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 5, 10. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",25,,"An optimal total can be achieved with this assignment:
+
+- Round 1 → Fours = 8  
+- Round 2 → Small Straight = 30  
+- Round 3 → Four-of-a-Kind = 0  
+- Round 4 → Large Straight = 0  
+- Round 5 → Twos = 4  
+- Round 6 → Threes = 6  
+- Round 7 → Yacht = 0  
+- Round 8 → Fives = 10  
+- Round 9 → Aces = 2  
+- Round 10 → Full House = 25  
+- Round 11 → Three-of-a-Kind = 0  
+- Round 12 → Sixes = 12  
+
+Upper section sum is 42, so no bonus is earned. The full optimal total is 97.
+
+Requested spotcheck rounds:
+
+- Round 5: 4  
+- Round 10: 25  
+
+Sum = 29
+
+Answer: 29",29,0,medium,stop
+yacht_dice_en_medium_0006,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [2, 5, 3, 1, 6]
+Round 2: [2, 6, 3, 1, 2]
+Round 3: [2, 5, 6, 6, 6]
+Round 4: [4, 6, 2, 4, 1]
+Round 5: [4, 3, 4, 1, 2]
+Round 6: [3, 1, 3, 4, 3]
+Round 7: [6, 6, 1, 4, 2]
+Round 8: [1, 1, 4, 1, 4]
+Round 9: [2, 5, 1, 5, 2]
+Round 10: [5, 2, 4, 2, 2]
+Round 11: [1, 3, 3, 3, 3]
+Round 12: [6, 1, 6, 1, 5]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 3, 6. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",34,,"No upper bonus is possible, since even the maximum achievable upper-section sum is below 63.
+
+An optimal assignment uses:
+- Round 3 → Three-of-a-Kind = 25
+- Round 6 → Threes = 9
+
+Requested partial sum: 25 + 9 = 34
+
+Answer: 34",34,1,medium,stop
+yacht_dice_en_medium_0007,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [2, 3, 2, 2, 2]
+Round 2: [6, 3, 3, 4, 5]
+Round 3: [3, 6, 4, 4, 4]
+Round 4: [3, 2, 3, 3, 2]
+Round 5: [4, 4, 1, 4, 4]
+Round 6: [2, 1, 5, 1, 3]
+Round 7: [5, 4, 2, 3, 4]
+Round 8: [3, 5, 3, 2, 2]
+Round 9: [3, 6, 1, 1, 1]
+Round 10: [6, 5, 3, 2, 6]
+Round 11: [5, 3, 3, 5, 3]
+Round 12: [5, 2, 1, 5, 2]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 2, 3. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",51,,"The upper-section bonus is impossible: even taking the best possible score in each upper category gives at most  
+Aces 3 + Twos 8 + Threes 9 + Fours 16 + Fives 10 + Sixes 12 = 58, which is below 63.
+
+An optimal full assignment is:
+
+| Round | Dice | Category | Score |
+|---:|---|---|---:|
+| 1 | [2,3,2,2,2] | Twos | 8 |
+| 2 | [6,3,3,4,5] | Small Straight | 30 |
+| 3 | [3,6,4,4,4] | Three-of-a-Kind | 21 |
+| 4 | [3,2,3,3,2] | Full House | 25 |
+| 5 | [4,4,1,4,4] | Four-of-a-Kind | 17 |
+| 6 | [2,1,5,1,3] | Large Straight | 0 |
+| 7 | [5,4,2,3,4] | Fours | 8 |
+| 8 | [3,5,3,2,2] | Yacht | 0 |
+| 9 | [3,6,1,1,1] | Aces | 3 |
+| 10 | [6,5,3,2,6] | Sixes | 12 |
+| 11 | [5,3,3,5,3] | Threes | 9 |
+| 12 | [5,2,1,5,2] | Fives | 10 |
+
+This totals 143, and in every optimal assignment the spotchecked rounds score:
+
+- Round 2: 30
+- Round 3: 21
+
+Partial sum = 30 + 21 = 51.
+
+Answer: 51",51,1,medium,stop
+yacht_dice_en_medium_0008,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [6, 1, 4, 6, 2]
+Round 2: [5, 2, 5, 4, 5]
+Round 3: [1, 5, 3, 1, 3]
+Round 4: [4, 2, 4, 4, 2]
+Round 5: [5, 2, 1, 4, 3]
+Round 6: [3, 6, 6, 5, 2]
+Round 7: [6, 5, 2, 5, 1]
+Round 8: [2, 5, 4, 6, 5]
+Round 9: [5, 2, 3, 1, 3]
+Round 10: [6, 3, 3, 1, 5]
+Round 11: [3, 6, 6, 4, 5]
+Round 12: [2, 4, 4, 4, 4]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 6, 11. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",42,,"An optimal assignment is:
+
+- Round 1: Yacht = 0  
+- Round 2: Three-of-a-Kind = 21  
+- Round 3: Aces = 2  
+- Round 4: Full House = 25  
+- Round 5: Large Straight = 40  
+- Round 6: Sixes = 12  
+- Round 7: Fives = 10  
+- Round 8: Fours = 4  
+- Round 9: Twos = 2  
+- Round 10: Threes = 6  
+- Round 11: Small Straight = 30  
+- Round 12: Four-of-a-Kind = 18  
+
+The upper section sum is only 36, so there is no bonus.  
+Requested spotcheck rounds: Round 6 + Round 11 = 12 + 30 = 42.
+
+Answer: 42",42,1,medium,stop
+yacht_dice_en_medium_0009,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [2, 2, 6, 3, 4]
+Round 2: [6, 2, 5, 2, 2]
+Round 3: [1, 1, 5, 3, 6]
+Round 4: [3, 6, 2, 2, 6]
+Round 5: [4, 5, 4, 3, 1]
+Round 6: [2, 4, 5, 5, 3]
+Round 7: [6, 4, 1, 6, 1]
+Round 8: [4, 6, 3, 3, 6]
+Round 9: [4, 6, 5, 3, 3]
+Round 10: [5, 5, 2, 3, 2]
+Round 11: [3, 2, 5, 3, 2]
+Round 12: [1, 1, 2, 1, 1]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 4, 6. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",34,,"One optimal total-scoring assignment is:
+
+- R1 → Twos = 4  
+- R2 → Three-of-a-Kind = 17  
+- R3 → Aces = 2  
+- R4 → Sixes = 12  
+- R5 → Fours = 8  
+- R6 → Fives = 10  
+- R8 → Threes = 6  
+- R9 → Small Straight = 30  
+- R12 → Four-of-a-Kind = 6  
+- Remaining three rounds → zero-score categories
+
+Upper sum is 42, so no upper bonus. Total is 95, which is optimal.
+
+Requested partial sum for rounds 4 and 6: 12 + 10 = 22.
+
+Answer: 22",22,0,medium,stop
+yacht_dice_en_medium_0010,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [1, 1, 2, 5, 3]
+Round 2: [3, 6, 2, 1, 6]
+Round 3: [4, 4, 4, 4, 2]
+Round 4: [6, 2, 5, 2, 2]
+Round 5: [1, 1, 2, 2, 5]
+Round 6: [1, 6, 1, 4, 1]
+Round 7: [3, 3, 2, 2, 2]
+Round 8: [4, 6, 4, 1, 6]
+Round 9: [1, 5, 6, 3, 3]
+Round 10: [3, 1, 4, 3, 2]
+Round 11: [4, 6, 5, 6, 5]
+Round 12: [2, 5, 1, 3, 5]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 4, 11. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",17,,"The upper-section bonus is impossible here: even the best possible upper-category choices sum to only 53, below the 63 needed for +35.
+
+One optimal assignment is:
+
+- Round 3 → Four-of-a-Kind = 18
+- Round 4 → Three-of-a-Kind = 17
+- Round 5 → Twos = 4
+- Round 6 → Aces = 3
+- Round 7 → Full House = 25
+- Round 8 → Fours = 8
+- Round 9 → Threes = 6
+- Round 10 → Small Straight = 30
+- Round 11 → Sixes = 12
+- Round 12 → Fives = 10
+- Rounds 1 and 2 → Large Straight / Yacht = 0
+
+Total score for this optimal assignment is 133.
+
+Requested partial sum for rounds 4 and 11:
+
+17 + 12 = 29
+
+Answer: 29",29,0,medium,stop
+yacht_dice_en_medium_0011,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [4, 3, 3, 1, 4]
+Round 2: [3, 1, 2, 6, 3]
+Round 3: [1, 1, 3, 3, 1]
+Round 4: [6, 4, 6, 3, 1]
+Round 5: [4, 3, 2, 4, 3]
+Round 6: [1, 4, 5, 2, 3]
+Round 7: [4, 6, 6, 6, 6]
+Round 8: [3, 5, 6, 1, 5]
+Round 9: [4, 1, 1, 1, 3]
+Round 10: [4, 4, 2, 4, 3]
+Round 11: [1, 3, 1, 6, 1]
+Round 12: [1, 2, 1, 1, 1]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 7, 8. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",38,,"An optimal full assignment is:
+
+- Round 1 → Fours = 8  
+- Round 2 → Twos = 2  
+- Round 3 → Full House = 25  
+- Round 4 → Sixes = 12  
+- Round 5 → Threes = 6  
+- Round 6 → Large Straight = 40  
+- Round 7 → Four-of-a-Kind = 28  
+- Round 8 → Fives = 10  
+- Round 9 → Small Straight = 0  
+- Round 10 → Three-of-a-Kind = 17  
+- Round 11 → Yacht = 0  
+- Round 12 → Aces = 4  
+
+Upper total is 42, so no upper bonus. The full optimal total is 152.
+
+Spotcheck requested: rounds 7 and 8 score \(28 + 10 = 38\).
+
+Answer: 38",38,1,medium,stop
+yacht_dice_en_medium_0012,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [4, 1, 6, 3, 3]
+Round 2: [3, 6, 6, 1, 5]
+Round 3: [4, 2, 3, 5, 6]
+Round 4: [6, 6, 6, 5, 1]
+Round 5: [5, 1, 1, 1, 1]
+Round 6: [2, 6, 2, 6, 6]
+Round 7: [6, 6, 3, 6, 6]
+Round 8: [2, 1, 3, 2, 5]
+Round 9: [3, 6, 2, 5, 4]
+Round 10: [6, 4, 1, 3, 4]
+Round 11: [3, 1, 2, 3, 6]
+Round 12: [1, 1, 5, 3, 2]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 4, 6. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",49,,"The upper-section bonus is impossible here: even the maximum possible upper-section score is only 51, below the 63 needed.
+
+An optimal full assignment is:
+
+- Round 3 → Large Straight = 40  
+- Round 9 → Small Straight = 30  
+- Round 4 → Three-of-a-Kind = 24  
+- Round 7 → Four-of-a-Kind = 27  
+- Round 6 → Full House = 25  
+- One unused/low-value round → Yacht = 0  
+- Remaining rounds fill the upper section optimally.
+
+For the requested spotcheck:
+
+- Round 4 score = 24  
+- Round 6 score = 25  
+
+Partial sum = 24 + 25 = 49
+
+Answer: 49",49,1,medium,stop
+yacht_dice_en_medium_0013,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [5, 3, 4, 2, 5]
+Round 2: [1, 4, 2, 2, 2]
+Round 3: [2, 6, 3, 3, 3]
+Round 4: [3, 5, 1, 1, 3]
+Round 5: [5, 4, 2, 4, 2]
+Round 6: [4, 6, 5, 4, 6]
+Round 7: [3, 3, 1, 5, 4]
+Round 8: [4, 5, 5, 2, 3]
+Round 9: [4, 6, 3, 6, 4]
+Round 10: [2, 1, 4, 1, 2]
+Round 11: [5, 5, 6, 5, 2]
+Round 12: [6, 3, 5, 4, 6]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 8, 10. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",32,,"One optimal assignment is:
+
+- R1 → Fives = 10  
+- R2 → Twos = 6  
+- R3 → Threes = 9  
+- R4 → Full House = 0  
+- R5 → Fours = 8  
+- R6 → Sixes = 12  
+- R7 → Large Straight = 0  
+- R8 → Small Straight = 30  
+- R9 → Yacht = 0  
+- R10 → Aces = 2  
+- R11 → Three-of-a-Kind = 23  
+- R12 → Four-of-a-Kind = 0  
+
+Upper sum = 47, so no upper bonus.  
+Total = 100, which is optimal.
+
+Requested spotcheck sum for rounds 8 and 10:  
+R8 + R10 = 30 + 2 = 32
+
+Answer: 32",32,1,medium,stop
+yacht_dice_en_medium_0014,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [5, 2, 6, 4, 2]
+Round 2: [3, 2, 6, 6, 4]
+Round 3: [5, 4, 3, 3, 3]
+Round 4: [6, 3, 2, 3, 3]
+Round 5: [1, 1, 1, 5, 1]
+Round 6: [2, 2, 2, 2, 1]
+Round 7: [2, 1, 2, 3, 2]
+Round 8: [3, 5, 5, 2, 6]
+Round 9: [2, 4, 5, 5, 5]
+Round 10: [3, 5, 4, 2, 1]
+Round 11: [6, 1, 2, 3, 3]
+Round 12: [2, 4, 3, 4, 3]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 6, 12. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",17,,"An optimal full-score assignment is:
+
+- Round 2 → Sixes = 12  
+- Round 3 → Three-of-a-Kind = 18  
+- Round 4 → Threes = 9  
+- Round 5 → Aces = 4  
+- Round 6 → Four-of-a-Kind = 9  
+- Round 7 → Twos = 6  
+- Round 9 → Fives = 15  
+- Round 10 → Large Straight = 40  
+- Round 12 → Fours = 8  
+- Remaining rounds/categories score 0
+
+The upper section total is \(4+6+9+8+15+12=54\), so no upper bonus is earned.
+
+The requested spotcheck is rounds 6 and 12:
+
+\[
+9 + 8 = 17
+\]
+
+Answer: 17",17,1,medium,stop
+yacht_dice_en_medium_0015,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [5, 3, 4, 6, 5]
+Round 2: [2, 5, 5, 5, 5]
+Round 3: [5, 1, 5, 6, 5]
+Round 4: [1, 3, 1, 1, 4]
+Round 5: [2, 3, 6, 1, 5]
+Round 6: [3, 5, 3, 3, 4]
+Round 7: [3, 1, 5, 3, 3]
+Round 8: [2, 6, 2, 3, 3]
+Round 9: [1, 1, 3, 5, 3]
+Round 10: [2, 3, 3, 6, 3]
+Round 11: [2, 6, 6, 2, 3]
+Round 12: [6, 5, 6, 6, 2]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 4, 5. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",3,,"The upper-section bonus is impossible: even taking the best possible score in each upper category gives only  
+Aces 3 + Twos 4 + Threes 9 + Fours 4 + Fives 20 + Sixes 18 = 58 < 63.
+
+An optimal full assignment has:
+- Round 1 → Small Straight = 30
+- Round 2 → Four-of-a-Kind = 22
+- Round 12 → Three-of-a-Kind = 25
+- Upper section maximized with 47 points, e.g.:
+  - Round 4 → Aces = 3
+  - Round 8 → Twos = 4
+  - Round 10 → Threes = 9
+  - Round 6 → Fours = 4
+  - Round 3 → Fives = 15
+  - Round 11 → Sixes = 12
+
+The remaining rounds, including Round 5, score 0 in unused zero-value categories.
+
+Requested partial sum for rounds 4 and 5: 3 + 0 = 3.
+
+Answer: 3",3,1,medium,stop
+yacht_dice_en_medium_0016,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [5, 4, 3, 4, 3]
+Round 2: [3, 5, 6, 3, 3]
+Round 3: [2, 5, 2, 5, 5]
+Round 4: [1, 4, 6, 3, 3]
+Round 5: [4, 6, 5, 5, 2]
+Round 6: [3, 4, 4, 4, 1]
+Round 7: [3, 4, 6, 4, 4]
+Round 8: [2, 2, 4, 6, 4]
+Round 9: [4, 3, 4, 4, 3]
+Round 10: [5, 4, 2, 1, 2]
+Round 11: [1, 4, 5, 1, 1]
+Round 12: [2, 6, 1, 2, 5]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 5, 7. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",21,,"An optimal assignment can be made by noting that the upper-section bonus is impossible: even the best upper-section choices sum to only 49, below 63.
+
+One optimal scoring assignment is:
+
+- Round 2 → Threes = 9
+- Round 3 → Fives = 15
+- Round 5 → Sixes = 6
+- Round 6 → Fours = 12
+- Round 7 → Three-of-a-Kind = 21
+- Round 8 → Twos = 4
+- Round 9 → Full House = 25
+- Round 11 → Aces = 3
+
+The remaining rounds/categories score 0. This gives total score 95, which is optimal.
+
+Requested spotcheck: rounds 5 and 7 score 6 + 21 = 27.
+
+Answer: 27",27,0,medium,stop
+yacht_dice_en_medium_0017,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [3, 5, 3, 2, 5]
+Round 2: [5, 1, 1, 1, 3]
+Round 3: [2, 6, 3, 3, 2]
+Round 4: [1, 2, 2, 4, 6]
+Round 5: [4, 2, 4, 4, 1]
+Round 6: [4, 1, 1, 2, 2]
+Round 7: [3, 6, 5, 2, 4]
+Round 8: [1, 5, 2, 5, 1]
+Round 9: [2, 3, 3, 5, 5]
+Round 10: [3, 4, 5, 2, 6]
+Round 11: [6, 3, 3, 5, 3]
+Round 12: [4, 1, 5, 1, 4]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 10, 11. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",60,,"An optimal assignment is:
+
+- Round 1 → Threes = 6  
+- Round 2 → Aces = 3  
+- Round 3 → Sixes = 6  
+- Round 4 → Four-of-a-Kind = 0  
+- Round 5 → Fours = 12  
+- Round 6 → Twos = 4  
+- Round 7 → Small Straight = 30  
+- Round 8 → Fives = 10  
+- Round 9 → Full House = 0  
+- Round 10 → Large Straight = 40  
+- Round 11 → Three-of-a-Kind = 20  
+- Round 12 → Yacht = 0  
+
+Upper total is 41, so no upper bonus. Total score is 131.
+
+Requested spotcheck sum for rounds 10 and 11: 40 + 20 = 60.
+
+Answer: 60",60,1,medium,stop
+yacht_dice_en_medium_0018,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [4, 3, 2, 2, 6]
+Round 2: [1, 2, 5, 2, 2]
+Round 3: [2, 1, 1, 1, 6]
+Round 4: [2, 1, 4, 4, 3]
+Round 5: [1, 4, 4, 4, 5]
+Round 6: [2, 5, 1, 2, 1]
+Round 7: [3, 4, 3, 4, 2]
+Round 8: [6, 4, 2, 2, 1]
+Round 9: [1, 3, 3, 2, 3]
+Round 10: [5, 1, 3, 3, 3]
+Round 11: [5, 3, 2, 4, 6]
+Round 12: [5, 4, 4, 1, 4]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 6, 12. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",17,,"There are multiple optimal assignments with the same maximum total score, but they give different sums for rounds 6 and 12.
+
+For example, one optimal assignment is:
+
+- Round 11 → Large Straight = 40  
+- Round 4 → Small Straight = 30  
+- Round 12 → Three-of-a-Kind = 18  
+- Round 5 → Fours = 12  
+- Round 2 → Twos = 6  
+- Round 9 → Threes = 9  
+- Round 3 → Aces = 3  
+- Round 6 → Fives = 5  
+- Round 1 → Sixes = 6  
+
+This gives the optimal total of 129, and rounds 6 + 12 score:
+
+5 + 18 = 23
+
+Answer: 23",23,0,medium,stop
+yacht_dice_en_medium_0019,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [1, 1, 2, 1, 3]
+Round 2: [1, 6, 6, 2, 5]
+Round 3: [1, 1, 4, 5, 3]
+Round 4: [5, 6, 1, 6, 4]
+Round 5: [1, 1, 6, 1, 1]
+Round 6: [2, 5, 3, 2, 1]
+Round 7: [2, 3, 6, 4, 6]
+Round 8: [4, 6, 6, 5, 1]
+Round 9: [4, 4, 2, 4, 6]
+Round 10: [3, 3, 6, 5, 3]
+Round 11: [5, 3, 5, 3, 1]
+Round 12: [5, 1, 6, 4, 4]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 1, 6. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",7,,"No upper bonus is possible: even the best possible upper-section choices sum to only 51, below 63.
+
+An optimal scoring assignment is:
+
+- Round 1 → Aces = 3
+- Round 2 → Sixes = 12
+- Round 3 → zero category = 0
+- Round 4 → zero category = 0
+- Round 5 → Four-of-a-Kind = 10
+- Round 6 → Twos = 4
+- Round 7 → zero category = 0
+- Round 8 → zero category = 0
+- Round 9 → Three-of-a-Kind = 20
+- Round 10 → Threes = 9
+- Round 11 → Fives = 10
+- Round 12 → Fours = 8
+
+This gives the optimal total of 76. The requested spotcheck sum is for rounds 1 and 6:
+
+- Round 1 score = 3
+- Round 6 score = 4
+
+Sum = 7
+
+Answer: 7",7,1,medium,stop
+yacht_dice_en_medium_0020,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [1, 5, 4, 4, 5]
+Round 2: [1, 6, 5, 6, 2]
+Round 3: [1, 6, 1, 3, 1]
+Round 4: [3, 5, 5, 3, 4]
+Round 5: [5, 6, 6, 6, 2]
+Round 6: [1, 3, 2, 5, 5]
+Round 7: [4, 4, 5, 1, 1]
+Round 8: [3, 5, 2, 6, 2]
+Round 9: [1, 1, 1, 4, 2]
+Round 10: [4, 3, 2, 6, 3]
+Round 11: [2, 2, 1, 4, 6]
+Round 12: [2, 6, 1, 1, 6]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 1, 6. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",18,,"An optimal total is achieved by assigning Round 5 to Three-of-a-Kind for 25 points, then taking the best possible upper-section scores without the bonus.
+
+One optimal assignment is:
+
+- R1 → Full House = 0  
+- R2 → Sixes = 12  
+- R3 → Aces = 3  
+- R4 → Fives = 10  
+- R5 → Three-of-a-Kind = 25  
+- R6 → Small Straight = 0  
+- R7 → Fours = 8  
+- R8 → Twos = 4  
+- R9 → Yacht = 0  
+- R10 → Threes = 6  
+- R11 → Large Straight = 0  
+- R12 → Four-of-a-Kind = 0  
+
+Rounds 1 and 6 score 0 + 0.
+
+Answer: 0",0,0,medium,stop
+yacht_dice_en_medium_0021,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [2, 2, 2, 6, 2]
+Round 2: [5, 1, 1, 6, 6]
+Round 3: [2, 3, 2, 2, 2]
+Round 4: [1, 2, 2, 2, 3]
+Round 5: [1, 2, 2, 4, 6]
+Round 6: [2, 4, 3, 2, 1]
+Round 7: [3, 3, 2, 3, 6]
+Round 8: [3, 3, 3, 6, 3]
+Round 9: [5, 6, 4, 3, 4]
+Round 10: [2, 2, 5, 5, 5]
+Round 11: [2, 1, 3, 2, 5]
+Round 12: [3, 5, 1, 5, 5]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 3, 5. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",8,,"An optimal total-scoring assignment is:
+
+- Round 1 → Four-of-a-Kind = 14  
+- Round 2 → Sixes = 12  
+- Round 3 → Twos = 8  
+- Round 4 → Large Straight = 0  
+- Round 5 → Aces = 1  
+- Round 6 → Small Straight = 30  
+- Round 7 → Three-of-a-Kind = 17  
+- Round 8 → Threes = 12  
+- Round 9 → Fours = 8  
+- Round 10 → Full House = 25  
+- Round 11 → Yacht = 0  
+- Round 12 → Fives = 15  
+
+Upper section sum is \(1+8+12+8+15+12=56\), so no bonus is earned. This gives an optimal full total of 142.
+
+Requested spotcheck rounds:
+
+- Round 3 score = 8  
+- Round 5 score = 1  
+
+Partial sum: \(8+1=9\)
+
+Answer: 9",9,0,medium,stop
+yacht_dice_en_medium_0022,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [6, 6, 1, 6, 6]
+Round 2: [4, 5, 3, 6, 6]
+Round 3: [6, 2, 6, 2, 3]
+Round 4: [4, 3, 6, 1, 4]
+Round 5: [1, 1, 5, 3, 5]
+Round 6: [4, 5, 1, 4, 4]
+Round 7: [6, 6, 5, 5, 6]
+Round 8: [4, 5, 2, 1, 2]
+Round 9: [4, 3, 5, 5, 2]
+Round 10: [1, 5, 2, 1, 4]
+Round 11: [1, 6, 5, 1, 1]
+Round 12: [3, 5, 5, 5, 3]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 7, 12. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",53,,"An optimal assignment is:
+
+- Round 1 → Four-of-a-Kind = 25  
+- Round 2 → Small Straight = 30  
+- Round 3 → Sixes = 12  
+- Round 4 → Threes = 3  
+- Round 5 → Fives = 10  
+- Round 6 → Fours = 12  
+- Round 7 → Three-of-a-Kind = 28  
+- Round 8 → Twos = 4  
+- Round 9 → Large Straight = 0  
+- Round 10 → Yacht = 0  
+- Round 11 → Aces = 3  
+- Round 12 → Full House = 25  
+
+Upper section sum is 44, so no bonus.
+
+Requested spotcheck sum for rounds 7 and 12:  
+28 + 25 = 53
+
+Answer: 53",53,1,medium,stop
+yacht_dice_en_medium_0023,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [2, 6, 1, 3, 1]
+Round 2: [4, 5, 4, 6, 6]
+Round 3: [4, 1, 3, 2, 3]
+Round 4: [6, 3, 4, 5, 1]
+Round 5: [5, 4, 3, 1, 3]
+Round 6: [4, 4, 3, 3, 1]
+Round 7: [2, 3, 4, 2, 2]
+Round 8: [1, 1, 5, 4, 3]
+Round 9: [5, 3, 5, 5, 3]
+Round 10: [4, 5, 5, 1, 1]
+Round 11: [1, 2, 4, 2, 1]
+Round 12: [3, 3, 2, 4, 5]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 8, 9. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",25,,"An optimal total score is 110. One optimal assignment includes:
+
+- Round 8 → Aces = 2
+- Round 9 → Full House = 25
+
+Requested partial sum for rounds 8 and 9:
+
+2 + 25 = 27
+
+Answer: 27",27,0,medium,stop
+yacht_dice_en_medium_0024,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [4, 1, 6, 6, 1]
+Round 2: [1, 3, 3, 3, 3]
+Round 3: [4, 6, 5, 1, 3]
+Round 4: [4, 1, 6, 3, 5]
+Round 5: [3, 6, 2, 2, 4]
+Round 6: [2, 4, 2, 4, 2]
+Round 7: [5, 4, 5, 5, 5]
+Round 8: [1, 1, 6, 5, 6]
+Round 9: [1, 1, 4, 4, 6]
+Round 10: [5, 3, 6, 3, 3]
+Round 11: [2, 3, 3, 3, 3]
+Round 12: [2, 2, 6, 2, 2]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 7, 9. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",28,,"The upper-section bonus is not attainable: even the maximum possible upper total is
+
+- Aces 2
+- Twos 8
+- Threes 12
+- Fours 8
+- Fives 20
+- Sixes 12
+
+for a maximum of 62, below the 63 needed for +35.
+
+One optimal full assignment is:
+
+- Round 1 → Sixes = 12
+- Round 2 → Threes = 12
+- Round 3 → Small Straight = 30
+- Round 4 → Large Straight = 0
+- Round 5 → Yacht = 0
+- Round 6 → Full House = 25
+- Round 7 → Fives = 20
+- Round 8 → Aces = 2
+- Round 9 → Fours = 8
+- Round 10 → Three-of-a-Kind = 20
+- Round 11 → Four-of-a-Kind = 14
+- Round 12 → Twos = 8
+
+Total score is 151, with no upper bonus.
+
+Requested spotcheck sum for rounds 7 and 9:
+
+- Round 7 = 20
+- Round 9 = 8
+
+Answer: 28",28,1,medium,stop
+yacht_dice_en_medium_0025,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [5, 4, 5, 5, 4]
+Round 2: [6, 6, 1, 5, 6]
+Round 3: [5, 6, 1, 3, 1]
+Round 4: [6, 1, 4, 4, 5]
+Round 5: [1, 3, 3, 6, 4]
+Round 6: [5, 2, 2, 2, 4]
+Round 7: [3, 3, 1, 6, 2]
+Round 8: [4, 5, 2, 3, 3]
+Round 9: [1, 4, 3, 6, 2]
+Round 10: [5, 5, 5, 2, 3]
+Round 11: [4, 4, 4, 5, 2]
+Round 12: [6, 4, 3, 4, 4]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 1, 8. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",31,,"The upper-section maximum is only \(59\), so the +35 bonus is unattainable.
+
+One optimal total-scoring assignment is:
+
+- Round 1 → Full House = 25  
+- Round 2 → Sixes = 18  
+- Round 3 → Aces = 2  
+- Round 4 → Large Straight = 0  
+- Round 5 → Threes = 6  
+- Round 6 → Twos = 6  
+- Round 7 → Yacht = 0  
+- Round 8 → Small Straight = 30  
+- Round 9 → Four-of-a-Kind = 0  
+- Round 10 → Fives = 15  
+- Round 11 → Fours = 12  
+- Round 12 → Three-of-a-Kind = 21  
+
+This gives the optimal full total \(135\). The requested spotcheck sum for rounds 1 and 8 is:
+
+\[
+25 + 30 = 55
+\]
+
+Answer: 55",55,0,medium,stop
+yacht_dice_en_medium_0026,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [6, 2, 4, 4, 4]
+Round 2: [5, 4, 1, 5, 4]
+Round 3: [4, 6, 1, 6, 2]
+Round 4: [1, 5, 3, 6, 2]
+Round 5: [6, 2, 3, 6, 6]
+Round 6: [2, 5, 2, 2, 1]
+Round 7: [5, 3, 3, 3, 3]
+Round 8: [3, 3, 5, 1, 1]
+Round 9: [1, 6, 4, 4, 1]
+Round 10: [6, 5, 5, 1, 3]
+Round 11: [1, 5, 6, 3, 6]
+Round 12: [4, 5, 1, 5, 3]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 9, 10. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",2,,"An optimal total score is achieved with, for example:
+
+- R1 → Fours = 12  
+- R3 → Sixes = 12  
+- R5 → Three-of-a-Kind = 23  
+- R6 → Twos = 6  
+- R7 → Four-of-a-Kind = 17  
+- R8 → Threes = 6  
+- R9 → Aces = 2  
+- R10 → Fives = 10  
+
+Upper subtotal is 48, so no +35 bonus. Total = 88.
+
+Requested spotcheck sum for rounds 9 and 10:
+
+- R9 = 2  
+- R10 = 10  
+
+Sum = 12
+
+Answer: 12",12,0,medium,stop
+yacht_dice_en_medium_0027,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [5, 3, 6, 6, 6]
+Round 2: [6, 5, 2, 4, 4]
+Round 3: [6, 6, 6, 4, 1]
+Round 4: [5, 2, 2, 6, 4]
+Round 5: [1, 2, 4, 1, 6]
+Round 6: [2, 5, 1, 2, 4]
+Round 7: [1, 2, 5, 2, 5]
+Round 8: [3, 5, 6, 5, 6]
+Round 9: [6, 1, 2, 3, 5]
+Round 10: [3, 5, 3, 1, 3]
+Round 11: [5, 4, 4, 4, 3]
+Round 12: [6, 4, 5, 4, 4]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 5, 8. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",2,,"An optimal assignment can score the upper section at its maximum of 55, so the +35 bonus is not reached.
+
+One optimal assignment includes:
+- Round 1 → Three-of-a-Kind = 26
+- Round 3 → Sixes = 18
+- Round 4 → Twos = 4
+- Round 5 → Aces = 2
+- Round 8 → Fives = 10
+- Round 10 → Threes = 9
+- Round 11 → Fours = 12
+
+Requested partial sum for rounds 5 and 8:
+
+Round 5 score + Round 8 score = 2 + 10 = 12
+
+Answer: 12",12,0,medium,stop
+yacht_dice_en_medium_0028,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [4, 4, 1, 4, 4]
+Round 2: [6, 3, 3, 1, 1]
+Round 3: [1, 2, 3, 1, 1]
+Round 4: [3, 3, 5, 4, 5]
+Round 5: [2, 6, 3, 3, 2]
+Round 6: [4, 6, 3, 4, 2]
+Round 7: [2, 3, 3, 3, 3]
+Round 8: [3, 4, 2, 3, 1]
+Round 9: [5, 2, 5, 5, 2]
+Round 10: [6, 1, 6, 5, 5]
+Round 11: [2, 1, 4, 1, 4]
+Round 12: [3, 3, 3, 1, 5]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 1, 6. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",17,,"An optimal total score is obtained with this assignment (upper bonus is impossible here since the maximum upper-section sum is only 62):
+
+- Round 1 → Four-of-a-Kind = 17  
+- Round 3 → Aces = 3  
+- Round 4 → Fives = 10  
+- Round 5 → Twos = 4  
+- Round 6 → Fours = 8  
+- Round 7 → Threes = 12  
+- Round 8 → Small Straight = 30  
+- Round 9 → Full House = 25  
+- Round 10 → Sixes = 12  
+- Round 12 → Three-of-a-Kind = 15  
+- Remaining rounds/categories score 0.
+
+Total score = 136.
+
+Requested partial sum for rounds 1 and 6:  
+17 + 8 = 25
+
+Answer: 25",25,0,medium,stop
+yacht_dice_en_medium_0029,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [6, 6, 4, 6, 6]
+Round 2: [3, 1, 6, 6, 1]
+Round 3: [4, 6, 4, 1, 1]
+Round 4: [3, 2, 2, 1, 6]
+Round 5: [6, 6, 6, 4, 4]
+Round 6: [6, 2, 1, 1, 1]
+Round 7: [4, 5, 2, 2, 2]
+Round 8: [5, 6, 4, 5, 3]
+Round 9: [4, 5, 1, 1, 2]
+Round 10: [1, 5, 5, 1, 1]
+Round 11: [5, 1, 1, 1, 4]
+Round 12: [6, 1, 5, 6, 6]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 2, 8. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",33,,"The upper-section bonus is impossible, since even the best possible upper scores sum to only:
+
+3 + 6 + 3 + 8 + 10 + 24 = 54 < 63.
+
+One optimal assignment is:
+
+- Round 1 → Four-of-a-Kind = 28  
+- Round 2 → Threes = 3  
+- Round 3 → Fours = 8  
+- Round 4 → Yacht = 0  
+- Round 5 → Three-of-a-Kind = 26  
+- Round 6 → Aces = 3  
+- Round 7 → Twos = 6  
+- Round 8 → Small Straight = 30  
+- Round 9 → Fives = 5  
+- Round 10 → Full House = 25  
+- Round 11 → Large Straight = 0  
+- Round 12 → Sixes = 18  
+
+This gives an optimal total of 152.
+
+Requested spotcheck sum for rounds 2 and 8:
+
+3 + 30 = 33
+
+Answer: 33",33,1,medium,stop
+yacht_dice_en_medium_0030,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [4, 5, 5, 4, 5]
+Round 2: [4, 2, 5, 3, 4]
+Round 3: [5, 1, 3, 5, 4]
+Round 4: [1, 2, 5, 2, 2]
+Round 5: [5, 3, 5, 5, 5]
+Round 6: [3, 5, 3, 3, 3]
+Round 7: [5, 5, 5, 6, 6]
+Round 8: [4, 6, 3, 2, 3]
+Round 9: [1, 6, 2, 1, 5]
+Round 10: [1, 2, 6, 1, 6]
+Round 11: [1, 6, 4, 6, 5]
+Round 12: [1, 3, 2, 3, 5]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 8, 10. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",16,,"One optimal assignment is:
+
+- Round 1 → Full House = 25  
+- Round 2 → Small Straight = 30  
+- Round 3 → Fives = 10  
+- Round 4 → Twos = 6  
+- Round 5 → Four-of-a-Kind = 23  
+- Round 6 → Threes = 12  
+- Round 7 → Three-of-a-Kind = 27  
+- Round 8 → Fours = 4  
+- Round 9 → Aces = 2  
+- Round 10 → Sixes = 12  
+- Round 11 → Large Straight = 0  
+- Round 12 → Yacht = 0  
+
+Upper section sum is 46, so no bonus applies.
+
+Requested spotcheck sum for rounds 8 and 10:  
+Round 8 = 4, Round 10 = 12, so sum = 16.
+
+Answer: 16",16,1,medium,stop
+yacht_dice_en_medium_0031,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [3, 5, 3, 3, 3]
+Round 2: [6, 2, 2, 2, 4]
+Round 3: [2, 2, 4, 2, 3]
+Round 4: [6, 2, 6, 6, 6]
+Round 5: [6, 6, 4, 3, 6]
+Round 6: [1, 1, 5, 5, 5]
+Round 7: [6, 1, 2, 2, 4]
+Round 8: [5, 3, 5, 4, 2]
+Round 9: [3, 2, 1, 5, 1]
+Round 10: [5, 2, 6, 2, 1]
+Round 11: [5, 2, 4, 4, 1]
+Round 12: [1, 4, 2, 1, 6]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 8, 12. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",32,,"An optimal total can be achieved by taking the upper bonus:
+
+- Upper section:
+  - R12 as Aces = 2
+  - R2 as Twos = 6
+  - R1 as Threes = 12
+  - R11 as Fours = 8
+  - R6 as Fives = 15
+  - R4 as Sixes = 24  
+  Upper sum = 67, so bonus +35 applies.
+
+- Key lower scores:
+  - R8 as Small Straight = 30
+  - R5 as Three-of-a-Kind = 25
+
+This gives total 67 + 35 + 30 + 25 = 157, with remaining categories scoring 0.
+
+Requested rounds:
+- Round 8 = 30
+- Round 12 = 2
+
+Answer: 32",32,1,medium,stop
+yacht_dice_en_medium_0032,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [1, 1, 4, 6, 1]
+Round 2: [1, 1, 2, 4, 1]
+Round 3: [3, 4, 2, 2, 2]
+Round 4: [4, 6, 4, 6, 6]
+Round 5: [6, 2, 6, 3, 5]
+Round 6: [6, 1, 1, 2, 4]
+Round 7: [2, 2, 1, 4, 5]
+Round 8: [2, 6, 4, 5, 4]
+Round 9: [3, 6, 1, 5, 1]
+Round 10: [5, 3, 1, 4, 2]
+Round 11: [3, 4, 3, 4, 5]
+Round 12: [3, 6, 3, 3, 6]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 8, 10. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",48,,"An optimal assignment is:
+
+- Round 1 → Aces = 3  
+- Round 3 → Twos = 6  
+- Round 4 → Three-of-a-Kind = 26  
+- Round 5 → Sixes = 12  
+- Round 7 → Fives = 5  
+- Round 8 → Fours = 8  
+- Round 10 → Large Straight = 40  
+- Round 11 → Threes = 6  
+- Round 12 → Full House = 25  
+- Remaining rounds → zero-score categories
+
+The upper section sum is \(3+6+6+8+5+12=40\), so no upper bonus.
+
+Requested spotcheck sum for rounds 8 and 10:
+
+\[
+8 + 40 = 48
+\]
+
+Answer: 48",48,1,medium,stop
+yacht_dice_en_medium_0033,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [4, 3, 1, 5, 6]
+Round 2: [3, 2, 1, 4, 6]
+Round 3: [1, 6, 4, 6, 4]
+Round 4: [1, 2, 1, 6, 2]
+Round 5: [2, 3, 6, 3, 6]
+Round 6: [2, 6, 2, 4, 6]
+Round 7: [2, 5, 1, 2, 4]
+Round 8: [4, 4, 5, 4, 5]
+Round 9: [2, 5, 5, 5, 2]
+Round 10: [1, 1, 5, 6, 6]
+Round 11: [4, 4, 4, 4, 2]
+Round 12: [5, 1, 1, 4, 1]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 3, 8. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",30,,"The upper-section bonus is impossible: even the best possible distinct upper scores sum to only \(56 < 63\), so no +35 bonus can be earned.
+
+An optimal full assignment is:
+
+- Round 1 → Small Straight = 30
+- Round 2 → Large Straight = 0
+- Round 3 → Fours = 8
+- Round 4 → Twos = 4
+- Round 5 → Threes = 6
+- Round 6 → Sixes = 12
+- Round 7 → Fives = 5
+- Round 8 → Three-of-a-Kind = 22
+- Round 9 → Full House = 25
+- Round 10 → Yacht = 0
+- Round 11 → Four-of-a-Kind = 18
+- Round 12 → Aces = 3
+
+Total score: \(30+8+4+6+12+5+22+25+18+3 = 133\).
+
+The requested spotcheck sum is for rounds 3 and 8:
+
+\[
+8 + 22 = 30
+\]
+
+Answer: 30",30,1,medium,stop
+yacht_dice_en_medium_0034,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [4, 1, 4, 2, 4]
+Round 2: [2, 2, 3, 5, 5]
+Round 3: [5, 3, 3, 5, 5]
+Round 4: [1, 6, 1, 4, 1]
+Round 5: [2, 2, 5, 4, 1]
+Round 6: [1, 1, 2, 2, 1]
+Round 7: [2, 3, 6, 2, 6]
+Round 8: [1, 1, 2, 6, 5]
+Round 9: [4, 1, 4, 3, 1]
+Round 10: [5, 6, 6, 2, 4]
+Round 11: [3, 5, 6, 3, 3]
+Round 12: [1, 6, 4, 6, 5]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 3, 7. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",21,,"One optimal total score is 96. For example:
+
+- Round 1 → Fours = 12  
+- Round 2 → Fives = 10  
+- Round 3 → Three-of-a-Kind = 21  
+- Round 4 → Aces = 3  
+- Round 5 → Twos = 4  
+- Round 6 → Full House = 25  
+- Round 7 → Sixes = 12  
+- Round 11 → Threes = 9  
+- Remaining rounds → zero-score categories  
+
+Upper subtotal is 50, so no bonus. Total = 96.
+
+Requested partial sum for rounds 3 and 7: 21 + 12 = 33.
+
+Answer: 33",33,0,medium,stop
+yacht_dice_en_medium_0035,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [3, 4, 3, 3, 6]
+Round 2: [4, 5, 4, 1, 2]
+Round 3: [3, 5, 3, 1, 6]
+Round 4: [5, 5, 3, 3, 2]
+Round 5: [4, 4, 4, 6, 1]
+Round 6: [3, 4, 6, 4, 6]
+Round 7: [6, 6, 3, 1, 4]
+Round 8: [1, 4, 2, 6, 3]
+Round 9: [5, 2, 2, 4, 4]
+Round 10: [3, 6, 4, 6, 6]
+Round 11: [2, 2, 2, 1, 1]
+Round 12: [4, 6, 6, 4, 4]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 6, 12. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",24,,"Upper bonus is impossible: even the maximum possible upper-section category scores sum to less than 63.
+
+An optimal assignment uses:
+- Round 8 → Small Straight = 30
+- Round 11 → Full House = 25
+- Round 12 → Three-of-a-Kind = 24
+- Upper section optimally includes:
+  - Round 1 → Threes = 9
+  - Round 4 → Fives = 10
+  - Round 5 → Fours = 12
+  - Round 9 → Twos = 4
+  - Round 10 → Sixes = 18
+  - One of Rounds 2/3/7 → Aces = 1
+
+Thus:
+- Round 6 is assigned to a zero-score category = 0
+- Round 12 scores 24
+
+Answer: 24",24,1,medium,stop
+yacht_dice_en_medium_0036,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [5, 3, 4, 5, 2]
+Round 2: [4, 3, 4, 1, 3]
+Round 3: [4, 4, 1, 4, 1]
+Round 4: [4, 4, 4, 3, 5]
+Round 5: [3, 1, 6, 6, 1]
+Round 6: [3, 3, 3, 5, 3]
+Round 7: [2, 4, 2, 3, 2]
+Round 8: [1, 5, 2, 5, 1]
+Round 9: [6, 6, 4, 3, 4]
+Round 10: [6, 2, 6, 2, 6]
+Round 11: [1, 3, 2, 1, 4]
+Round 12: [2, 2, 2, 2, 4]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 1, 10. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",28,,"The upper-section bonus is impossible here: even the maximum face scores sum to  
+\(2+8+12+12+10+18=62<63\).
+
+One optimal assignment with total score 144 is:
+
+- R1 → Small Straight = 30
+- R2 → Threes = 6
+- R3 → Full House = 25
+- R4 → Fours = 12
+- R5 → Aces = 2
+- R6 → Four-of-a-Kind = 17
+- R7 → Large Straight = 0
+- R8 → Fives = 10
+- R9 → Sixes = 12
+- R10 → Three-of-a-Kind = 22
+- R11 → Yacht = 0
+- R12 → Twos = 8
+
+Requested spotcheck sum for rounds 1 and 10:
+
+\(30+22=52\)
+
+Answer: 52",52,0,medium,stop
+yacht_dice_en_medium_0037,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [4, 6, 4, 4, 5]
+Round 2: [5, 2, 5, 5, 1]
+Round 3: [2, 6, 1, 5, 4]
+Round 4: [4, 1, 3, 2, 2]
+Round 5: [3, 3, 6, 2, 1]
+Round 6: [3, 2, 3, 4, 5]
+Round 7: [1, 5, 6, 6, 6]
+Round 8: [4, 1, 1, 6, 4]
+Round 9: [2, 1, 1, 2, 3]
+Round 10: [1, 4, 1, 5, 4]
+Round 11: [1, 2, 5, 1, 1]
+Round 12: [5, 6, 6, 3, 6]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 2, 12. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",41,,"In an optimal assignment, Round 12 must be used for Three-of-a-Kind for 26 points, and Round 2 is best used for Fives for 15 points.
+
+Requested partial sum for rounds 2 and 12: 15 + 26 = 41
+
+Answer: 41",41,1,medium,stop
+yacht_dice_en_medium_0038,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [4, 4, 2, 4, 1]
+Round 2: [5, 4, 3, 5, 5]
+Round 3: [5, 5, 1, 5, 4]
+Round 4: [6, 4, 3, 3, 2]
+Round 5: [3, 6, 2, 2, 5]
+Round 6: [1, 2, 4, 1, 1]
+Round 7: [1, 5, 1, 3, 1]
+Round 8: [2, 5, 5, 6, 4]
+Round 9: [4, 4, 6, 3, 5]
+Round 10: [2, 2, 3, 3, 1]
+Round 11: [1, 4, 1, 1, 5]
+Round 12: [3, 1, 1, 1, 1]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 2, 11. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",22,,"One optimal full-score assignment is:
+
+- Round 1 → Fours = 12  
+- Round 2 → Three-of-a-Kind = 22  
+- Round 3 → Fives = 15  
+- Round 4 → Sixes = 6  
+- Round 5 → Twos = 4  
+- Round 9 → Small Straight = 30  
+- Round 10 → Threes = 6  
+- Round 11 → Aces = 3  
+- Round 12 → Four-of-a-Kind = 7  
+
+The remaining rounds take the zero-scoring categories. Upper total is 46, so no bonus. Total is 105, optimal.
+
+Requested partial sum for rounds 2 and 11: 22 + 3 = 25.
+
+Answer: 25",25,0,medium,stop
+yacht_dice_en_medium_0039,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [5, 6, 1, 5, 1]
+Round 2: [1, 1, 4, 4, 5]
+Round 3: [4, 3, 5, 1, 6]
+Round 4: [3, 2, 3, 5, 4]
+Round 5: [3, 4, 2, 2, 2]
+Round 6: [4, 1, 1, 3, 1]
+Round 7: [6, 6, 2, 3, 6]
+Round 8: [5, 4, 1, 1, 3]
+Round 9: [2, 4, 4, 2, 2]
+Round 10: [2, 3, 2, 6, 5]
+Round 11: [3, 1, 3, 3, 3]
+Round 12: [6, 1, 1, 1, 5]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 3, 7. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",48,,"An optimal total-scoring assignment is:
+
+- Round 1 → Fives = 10  
+- Round 2 → Fours = 8  
+- Round 3 → Small Straight = 30  
+- Round 4 → Threes = 6  
+- Round 5 → Twos = 6  
+- Round 6 → Aces = 3  
+- Round 7 → Sixes = 18  
+- Round 8 → Yacht = 0  
+- Round 9 → Full House = 25  
+- Round 10 → Large Straight = 0  
+- Round 11 → Four-of-a-Kind = 13  
+- Round 12 → Three-of-a-Kind = 14  
+
+Upper section sum is 51, so no upper bonus is earned.
+
+Requested spotcheck sum for rounds 3 and 7:
+
+30 + 18 = 48
+
+Answer: 48",48,1,medium,stop
+yacht_dice_en_medium_0040,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [5, 6, 4, 2, 5]
+Round 2: [3, 3, 3, 3, 3]
+Round 3: [6, 6, 5, 6, 6]
+Round 4: [2, 2, 3, 6, 2]
+Round 5: [4, 6, 4, 5, 6]
+Round 6: [3, 5, 6, 3, 4]
+Round 7: [6, 1, 6, 3, 1]
+Round 8: [1, 1, 1, 3, 1]
+Round 9: [6, 5, 5, 6, 5]
+Round 10: [6, 6, 5, 3, 1]
+Round 11: [3, 2, 3, 5, 5]
+Round 12: [2, 3, 3, 4, 4]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 2, 8. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",54,,"An optimal full assignment is:
+
+- Round 1 → Fives = 10  
+- Round 2 → Yacht = 50  
+- Round 3 → Four-of-a-Kind = 29  
+- Round 4 → Three-of-a-Kind = 15  
+- Round 5 → Fours = 8  
+- Round 6 → Small Straight = 30  
+- Round 7 → Sixes = 12  
+- Round 8 → Aces = 4  
+- Round 9 → Full House = 25  
+- Round 10 → Large Straight = 0  
+- Round 11 → Threes = 6  
+- Round 12 → Twos = 2  
+
+Upper section sum is \(4+2+6+8+10+12=42\), so no upper bonus is awarded.
+
+The requested spotcheck sum is for rounds 2 and 8:
+
+\[
+50 + 4 = 54
+\]
+
+Answer: 54",54,1,medium,stop
+yacht_dice_en_medium_0041,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [5, 3, 4, 2, 3]
+Round 2: [1, 4, 3, 3, 1]
+Round 3: [6, 6, 5, 6, 6]
+Round 4: [5, 6, 6, 6, 4]
+Round 5: [4, 5, 1, 1, 6]
+Round 6: [3, 3, 1, 1, 4]
+Round 7: [3, 6, 3, 3, 5]
+Round 8: [3, 5, 6, 1, 5]
+Round 9: [3, 5, 4, 3, 4]
+Round 10: [6, 2, 4, 1, 4]
+Round 11: [4, 6, 2, 2, 1]
+Round 12: [6, 6, 5, 5, 4]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 9, 11. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",4,,"An optimal assignment is:
+
+- Round 1 → Small Straight = 30  
+- Round 2 → Aces = 2  
+- Round 3 → Four-of-a-Kind = 29  
+- Round 4 → Three-of-a-Kind = 27  
+- Round 5 → Full House = 0  
+- Round 6 → Large Straight = 0  
+- Round 7 → Threes = 9  
+- Round 8 → Fives = 10  
+- Round 9 → Fours = 8  
+- Round 10 → Yacht = 0  
+- Round 11 → Twos = 4  
+- Round 12 → Sixes = 12  
+
+Upper-section sum is 45, so no bonus.
+
+Requested partial sum for rounds 9 and 11:  
+8 + 4 = 12
+
+Answer: 12",12,0,medium,stop
+yacht_dice_en_medium_0042,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [4, 4, 4, 3, 4]
+Round 2: [2, 2, 1, 4, 4]
+Round 3: [1, 1, 6, 6, 3]
+Round 4: [1, 5, 5, 2, 5]
+Round 5: [1, 3, 3, 3, 2]
+Round 6: [6, 3, 1, 3, 2]
+Round 7: [3, 1, 5, 3, 3]
+Round 8: [2, 5, 5, 5, 2]
+Round 9: [5, 5, 5, 6, 4]
+Round 10: [1, 6, 6, 1, 3]
+Round 11: [4, 3, 3, 2, 3]
+Round 12: [2, 1, 3, 3, 6]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 4, 11. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",24,,"No straight or yacht categories score positively for any round, and the upper-section bonus is impossible (even the best upper total is below 63).
+
+One optimal full assignment is:
+
+- Round 1 → Four-of-a-Kind = 19  
+- Round 2 → Fours = 8  
+- Round 3 → Aces = 2  
+- Round 4 → Fives = 15  
+- Round 5 → Twos = 2  
+- Round 6 → Small Straight = 0  
+- Round 7 → Large Straight = 0  
+- Round 8 → Full House = 25  
+- Round 9 → Three-of-a-Kind = 25  
+- Round 10 → Sixes = 12  
+- Round 11 → Threes = 9  
+- Round 12 → Yacht = 0  
+
+This totals 117, with no upper bonus.
+
+Requested partial sum for rounds 4 and 11:
+
+15 + 9 = 24
+
+Answer: 24",24,1,medium,stop
+yacht_dice_en_medium_0043,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [5, 2, 2, 1, 1]
+Round 2: [3, 4, 6, 3, 3]
+Round 3: [1, 3, 5, 1, 2]
+Round 4: [2, 6, 2, 3, 1]
+Round 5: [3, 1, 2, 1, 3]
+Round 6: [1, 3, 1, 5, 2]
+Round 7: [1, 6, 4, 4, 6]
+Round 8: [2, 6, 5, 4, 6]
+Round 9: [2, 2, 1, 1, 1]
+Round 10: [5, 4, 6, 1, 3]
+Round 11: [4, 6, 5, 4, 4]
+Round 12: [5, 5, 6, 5, 1]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 3, 9. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",25,,"The upper-section bonus is impossible, since even the best possible upper scores sum to only 55, below 63.
+
+One optimal assignment is:
+
+- Round 1 → Twos = 4  
+- Round 2 → Threes = 9  
+- Round 3 → Aces = 2  
+- Round 4 → Large Straight = 0  
+- Round 5 → Four-of-a-Kind = 0  
+- Round 6 → Yacht = 0  
+- Round 7 → Fours = 8  
+- Round 8 → Sixes = 12  
+- Round 9 → Full House = 25  
+- Round 10 → Small Straight = 30  
+- Round 11 → Three-of-a-Kind = 23  
+- Round 12 → Fives = 15  
+
+This gives total score 128, which is optimal.
+
+Requested spotcheck: rounds 3 and 9 score \(2 + 25 = 27\).
+
+Answer: 27",27,0,medium,stop
+yacht_dice_en_medium_0044,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [2, 4, 5, 2, 3]
+Round 2: [3, 6, 3, 3, 3]
+Round 3: [6, 3, 5, 1, 4]
+Round 4: [6, 6, 2, 6, 1]
+Round 5: [2, 1, 1, 6, 2]
+Round 6: [1, 4, 4, 6, 6]
+Round 7: [2, 2, 3, 5, 4]
+Round 8: [5, 3, 3, 4, 3]
+Round 9: [2, 4, 4, 3, 2]
+Round 10: [1, 1, 5, 5, 1]
+Round 11: [4, 1, 4, 4, 4]
+Round 12: [6, 5, 4, 6, 3]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 3, 7. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",30,,"The upper-section bonus is impossible here: even the best distinct assignment to Aces–Sixes reaches only 62, below 63.
+
+One optimal full assignment is:
+
+- Round 1 → Fives = 5  
+- Round 2 → Four-of-a-Kind = 18  
+- Round 3 → Large Straight = 0  
+- Round 4 → Three-of-a-Kind = 21  
+- Round 5 → Aces = 2  
+- Round 6 → Sixes = 12  
+- Round 7 → Yacht = 0  
+- Round 8 → Threes = 9  
+- Round 9 → Twos = 4  
+- Round 10 → Full House = 25  
+- Round 11 → Fours = 16  
+- Round 12 → Small Straight = 30  
+
+Total = 142, with no upper bonus.
+
+Requested spotcheck: rounds 3 and 7 score 0 + 0 = 0.
+
+Answer: 0",0,0,medium,stop
+yacht_dice_en_medium_0045,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [6, 2, 3, 6, 4]
+Round 2: [5, 5, 4, 1, 5]
+Round 3: [4, 4, 4, 6, 3]
+Round 4: [6, 5, 4, 3, 2]
+Round 5: [1, 1, 6, 4, 4]
+Round 6: [5, 3, 3, 3, 2]
+Round 7: [6, 1, 6, 5, 2]
+Round 8: [6, 1, 1, 1, 4]
+Round 9: [4, 5, 1, 2, 1]
+Round 10: [5, 3, 1, 4, 4]
+Round 11: [3, 5, 3, 1, 1]
+Round 12: [5, 6, 5, 6, 5]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 7, 9. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",12,,"One optimal total-scoring assignment is:
+
+- Round 2 → Fives = 15  
+- Round 3 → Three-of-a-Kind = 21  
+- Round 4 → Large Straight = 40  
+- Round 5 → Fours = 8  
+- Round 6 → Threes = 9  
+- Round 7 → Sixes = 12  
+- Round 8 → Aces = 3  
+- Round 9 → Twos = 2  
+- Round 12 → Full House = 25  
+- Remaining rounds → zero-score categories
+
+Upper section sum is \(15+8+9+12+3+2=49\), so no upper bonus.
+
+Total score is \(135\), which is optimal.
+
+Requested partial sum for rounds 7 and 9:
+
+\[
+12 + 2 = 14
+\]
+
+Answer: 14",14,0,medium,stop
+yacht_dice_en_medium_0046,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [1, 4, 5, 1, 1]
+Round 2: [6, 4, 6, 4, 6]
+Round 3: [3, 2, 1, 3, 3]
+Round 4: [5, 2, 4, 1, 3]
+Round 5: [1, 2, 6, 2, 1]
+Round 6: [2, 3, 1, 2, 1]
+Round 7: [1, 3, 5, 1, 3]
+Round 8: [3, 3, 4, 6, 6]
+Round 9: [1, 5, 4, 6, 5]
+Round 10: [2, 1, 6, 3, 5]
+Round 11: [5, 5, 2, 2, 6]
+Round 12: [4, 4, 4, 5, 3]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 9, 11. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",14,,"An optimal full assignment can be:
+
+- Round 1 → Aces = 3  
+- Round 2 → Full House = 25  
+- Round 3 → Threes = 9  
+- Round 4 → Large Straight = 40  
+- Round 5 → Twos = 4  
+- Round 8 → Sixes = 12  
+- Round 9 → Fours = 4  
+- Round 11 → Fives = 10  
+- Round 12 → Three-of-a-Kind = 20  
+- Remaining rounds/categories score 0
+
+The upper section total is \(3+4+9+4+10+12=42\), so no bonus is earned.
+
+Requested spotcheck sum for rounds 9 and 11:
+
+\[
+4 + 10 = 14
+\]
+
+Answer: 14",14,1,medium,stop
+yacht_dice_en_medium_0047,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [2, 5, 2, 1, 6]
+Round 2: [6, 6, 2, 3, 6]
+Round 3: [4, 3, 2, 1, 3]
+Round 4: [6, 3, 4, 2, 6]
+Round 5: [1, 2, 6, 3, 5]
+Round 6: [6, 3, 4, 1, 3]
+Round 7: [2, 2, 5, 3, 4]
+Round 8: [5, 1, 5, 1, 4]
+Round 9: [5, 6, 1, 5, 6]
+Round 10: [1, 5, 3, 4, 5]
+Round 11: [1, 2, 2, 2, 3]
+Round 12: [1, 1, 3, 5, 3]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 9, 12. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",12,,"An optimal total score is 93. One optimal assignment is:
+
+- Round 2 → Three-of-a-Kind = 23  
+- Round 3 → Small Straight = 30  
+- Round 6 → Threes = 6  
+- Round 7 → Fours = 4  
+- Round 8 → Fives = 10  
+- Round 9 → Sixes = 12  
+- Round 11 → Twos = 6  
+- Round 12 → Aces = 2  
+- Remaining rounds → zero-score categories
+
+Upper-section sum is 40, so no bonus.
+
+For the requested spotcheck rounds:
+
+- Round 9 score = 12  
+- Round 12 score = 2  
+
+Partial sum = 14
+
+Answer: 14",14,0,medium,stop
+yacht_dice_en_medium_0048,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [1, 5, 5, 5, 5]
+Round 2: [5, 5, 6, 3, 5]
+Round 3: [6, 2, 4, 3, 1]
+Round 4: [5, 2, 6, 6, 3]
+Round 5: [4, 3, 1, 3, 1]
+Round 6: [1, 4, 2, 4, 1]
+Round 7: [1, 6, 4, 2, 6]
+Round 8: [6, 6, 2, 2, 5]
+Round 9: [2, 2, 2, 3, 2]
+Round 10: [6, 5, 5, 6, 2]
+Round 11: [2, 2, 3, 6, 1]
+Round 12: [6, 4, 2, 2, 5]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 6, 8. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",20,,"An optimal total score is 120. The upper bonus is impossible because the maximum attainable upper-section sum is below 63.
+
+One optimal assignment is:
+
+- Round 1 → Four-of-a-Kind = 21  
+- Round 2 → Three-of-a-Kind = 24  
+- Round 3 → Small Straight = 30  
+- Round 5 → Threes = 6  
+- Round 6 → Fours = 8  
+- Round 8 → Sixes = 12  
+- Round 9 → Twos = 8  
+- Round 10 → Fives = 10  
+- Round 7 → Aces = 1  
+- Remaining rounds → zero-score categories
+
+For the requested rounds:
+
+- Round 6 score = 8  
+- Round 8 score = 12  
+
+Sum = 20
+
+Answer: 20",20,1,medium,stop
+yacht_dice_en_medium_0049,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [1, 4, 2, 4, 4]
+Round 2: [3, 1, 5, 6, 4]
+Round 3: [3, 1, 4, 4, 4]
+Round 4: [4, 4, 4, 5, 4]
+Round 5: [3, 1, 5, 1, 5]
+Round 6: [6, 2, 4, 6, 6]
+Round 7: [6, 2, 2, 2, 3]
+Round 8: [1, 5, 5, 3, 5]
+Round 9: [5, 3, 6, 5, 3]
+Round 10: [6, 6, 4, 1, 3]
+Round 11: [2, 5, 3, 6, 1]
+Round 12: [3, 4, 5, 4, 6]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 6, 8. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",33,,"The only way to reach the upper-section bonus is to score the maximum possible in every upper category:
+
+- Aces: Round 5 = 2
+- Twos: Round 7 = 6
+- Threes: Round 9 = 6
+- Fours: Round 4 = 16
+- Fives: Round 8 = 15
+- Sixes: Round 6 = 18
+
+Upper total = 63, earning the +35 bonus.
+
+If the bonus is not earned, the upper section is at most 62, and even with the best possible lower-section scores, the total cannot beat the bonus assignment. So this assignment is optimal.
+
+Requested rounds:
+- Round 6 scores 18
+- Round 8 scores 15
+
+Partial sum = 18 + 15 = 33
+
+Answer: 33",33,1,medium,stop
+yacht_dice_en_medium_0050,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [2, 2, 2, 1, 2]
+Round 2: [6, 5, 6, 2, 6]
+Round 3: [2, 5, 2, 6, 3]
+Round 4: [1, 3, 4, 6, 5]
+Round 5: [3, 6, 6, 1, 4]
+Round 6: [2, 3, 3, 2, 5]
+Round 7: [1, 5, 4, 2, 1]
+Round 8: [2, 1, 2, 4, 2]
+Round 9: [6, 2, 5, 3, 3]
+Round 10: [5, 5, 5, 1, 1]
+Round 11: [5, 5, 5, 2, 1]
+Round 12: [2, 1, 3, 3, 5]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 4, 11. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",45,,"An optimal total-score assignment is:
+
+- Round 1 → Four-of-a-Kind = 9  
+- Round 2 → Three-of-a-Kind = 25  
+- Round 3 → Large Straight = 0  
+- Round 4 → Small Straight = 30  
+- Round 5 → Sixes = 12  
+- Round 6 → Threes = 6  
+- Round 7 → Fours = 4  
+- Round 8 → Twos = 6  
+- Round 9 → Yacht = 0  
+- Round 10 → Full House = 25  
+- Round 11 → Fives = 15  
+- Round 12 → Aces = 1  
+
+Upper section sum is only 44, so no upper bonus is earned.
+
+The requested spotcheck rounds are 4 and 11:
+
+- Round 4 score = 30  
+- Round 11 score = 15  
+
+Partial sum = 30 + 15 = 45
+
+Answer: 45",45,1,medium,stop
+yacht_dice_en_medium_0051,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [5, 2, 1, 5, 2]
+Round 2: [1, 5, 1, 4, 3]
+Round 3: [3, 3, 3, 2, 5]
+Round 4: [5, 3, 4, 3, 3]
+Round 5: [3, 3, 2, 1, 3]
+Round 6: [3, 3, 3, 4, 6]
+Round 7: [3, 3, 2, 3, 3]
+Round 8: [1, 2, 2, 5, 2]
+Round 9: [5, 3, 1, 4, 6]
+Round 10: [2, 5, 5, 6, 4]
+Round 11: [5, 4, 4, 2, 2]
+Round 12: [4, 3, 1, 4, 4]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 4, 5. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",0,,"An optimal assignment can achieve total 108, for example:
+
+- Round 4 → Threes = 9
+- Round 5 → Large Straight = 0
+
+So the requested spotcheck sum for rounds 4 and 5 is:
+
+Answer: 9",9,0,medium,stop
+yacht_dice_en_medium_0052,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [4, 5, 2, 4, 6]
+Round 2: [4, 4, 2, 5, 5]
+Round 3: [1, 6, 3, 6, 4]
+Round 4: [5, 6, 3, 3, 6]
+Round 5: [6, 4, 4, 2, 2]
+Round 6: [3, 5, 2, 6, 5]
+Round 7: [3, 6, 4, 4, 1]
+Round 8: [1, 3, 6, 1, 6]
+Round 9: [6, 1, 4, 3, 4]
+Round 10: [3, 6, 3, 4, 6]
+Round 11: [3, 2, 2, 6, 6]
+Round 12: [5, 6, 6, 5, 5]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 7, 8. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",2,,"The upper-section bonus is unreachable: even using the best possible upper scores, the upper total is at most 47, below 63.
+
+The best use of Round 12 is Three-of-a-Kind for 27 points. Then the maximum upper-section total from the other rounds is:
+
+- Aces: Round 8 = 2
+- Twos: Round 5 = 4
+- Threes: Round 4 = 6
+- Fours: Round 7 = 8
+- Fives: Round 2 = 10
+- Sixes: Round 3 = 12
+
+Upper total = 42, plus Round 12 Three-of-a-Kind = 27, for optimal total 69.
+
+For the requested rounds:
+- Round 7 scores 8
+- Round 8 scores 2
+
+Sum = 10.
+
+Answer: 10",10,0,medium,stop
+yacht_dice_en_medium_0053,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [4, 2, 4, 4, 2]
+Round 2: [6, 5, 1, 2, 1]
+Round 3: [4, 4, 6, 1, 3]
+Round 4: [2, 5, 3, 1, 1]
+Round 5: [4, 3, 6, 6, 5]
+Round 6: [3, 4, 5, 6, 5]
+Round 7: [1, 4, 6, 5, 1]
+Round 8: [4, 6, 3, 3, 1]
+Round 9: [6, 2, 5, 3, 4]
+Round 10: [5, 6, 3, 3, 3]
+Round 11: [3, 3, 4, 1, 2]
+Round 12: [1, 6, 1, 1, 1]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 1, 2. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",27,,"An optimal full assignment is:
+
+- Round 1 → Full House = 25  
+- Round 2 → Twos = 2  
+- Round 3 → Fours = 8  
+- Round 4 → Yacht = 0  
+- Round 5 → Sixes = 12  
+- Round 6 → Fives = 10  
+- Round 7 → Aces = 2  
+- Round 8 → Threes = 6  
+- Round 9 → Large Straight = 40  
+- Round 10 → Three-of-a-Kind = 20  
+- Round 11 → Small Straight = 30  
+- Round 12 → Four-of-a-Kind = 10  
+
+The upper-section sum is only 40, so no +35 bonus applies. This totals 165, which is optimal.
+
+Requested partial sum for rounds 1 and 2:  
+25 + 2 = 27
+
+Answer: 27",27,1,medium,stop
+yacht_dice_en_medium_0054,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [4, 4, 1, 3, 4]
+Round 2: [2, 2, 2, 2, 2]
+Round 3: [2, 6, 2, 2, 2]
+Round 4: [6, 3, 3, 6, 3]
+Round 5: [6, 3, 2, 1, 4]
+Round 6: [4, 6, 2, 4, 3]
+Round 7: [3, 6, 1, 5, 6]
+Round 8: [5, 1, 1, 4, 3]
+Round 9: [1, 3, 4, 4, 6]
+Round 10: [4, 6, 6, 2, 2]
+Round 11: [4, 6, 3, 6, 6]
+Round 12: [5, 2, 5, 3, 2]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 5, 8. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",32,,"An optimal assignment is:
+
+- R1 → Fours = 12  
+- R2 → Yacht = 50  
+- R3 → Four-of-a-Kind = 14  
+- R4 → Full House = 25  
+- R5 → Small Straight = 30  
+- R6 → Threes = 3  
+- R7 → Sixes = 12  
+- R8 → Aces = 2  
+- R9 → Large Straight = 0  
+- R10 → Twos = 4  
+- R11 → Three-of-a-Kind = 25  
+- R12 → Fives = 10  
+
+Upper section total is only 43, so no +35 bonus applies.
+
+Requested spotcheck sum for rounds 5 and 8:
+
+- Round 5 = 30  
+- Round 8 = 2  
+
+30 + 2 = 32
+
+Answer: 32",32,1,medium,stop
+yacht_dice_en_medium_0055,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [2, 1, 6, 5, 1]
+Round 2: [4, 3, 5, 5, 5]
+Round 3: [5, 5, 5, 6, 5]
+Round 4: [2, 4, 1, 2, 3]
+Round 5: [4, 2, 4, 3, 2]
+Round 6: [2, 5, 4, 6, 5]
+Round 7: [3, 6, 5, 4, 6]
+Round 8: [6, 3, 3, 3, 1]
+Round 9: [6, 3, 2, 6, 2]
+Round 10: [5, 5, 2, 5, 5]
+Round 11: [4, 2, 4, 2, 2]
+Round 12: [4, 5, 2, 5, 6]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 2, 6. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",22,,"The upper-section bonus is impossible here: even taking the best possible score in each upper category gives only 57, below the 63 needed for the +35 bonus.
+
+An optimal assignment must use:
+- Round 3 as Four-of-a-Kind for 26
+- Round 2 as Three-of-a-Kind for 22
+- Round 10 as Fives for 20
+- Round 11 as Full House for 25
+- One of Rounds 4 or 7 as Small Straight for 30
+
+In any optimal assignment, Round 6 is assigned to a zero-scoring category such as Large Straight or Yacht.
+
+So the requested spotcheck sum is:
+
+- Round 2: 22
+- Round 6: 0
+
+Answer: 22",22,1,medium,stop
+yacht_dice_en_medium_0056,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [6, 3, 4, 5, 6]
+Round 2: [5, 3, 3, 1, 5]
+Round 3: [3, 4, 3, 2, 4]
+Round 4: [2, 2, 5, 1, 4]
+Round 5: [2, 1, 5, 2, 6]
+Round 6: [6, 1, 4, 5, 2]
+Round 7: [2, 2, 6, 3, 4]
+Round 8: [2, 2, 3, 3, 2]
+Round 9: [5, 4, 3, 4, 2]
+Round 10: [3, 5, 2, 6, 3]
+Round 11: [4, 5, 4, 2, 2]
+Round 12: [4, 2, 5, 3, 4]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 7, 10. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",10,,"An optimal assignment can score:
+
+- Round 1 → Sixes = 12  
+- Round 2 → Fives = 10  
+- Round 3 → Four-of-a-Kind = 0  
+- Round 4 → Aces = 1  
+- Round 5 → Large Straight = 0  
+- Round 6 → Yacht = 0  
+- Round 7 → Twos = 4  
+- Round 8 → Full House = 25  
+- Round 9 → Small Straight = 30  
+- Round 10 → Threes = 6  
+- Round 11 → Fours = 8  
+- Round 12 → Three-of-a-Kind = 0  
+
+Upper sum is \(1+4+6+8+10+12=41\), so no upper bonus.  
+Total is \(96\), which is optimal.
+
+Requested partial sum for rounds 7 and 10: \(4+6=10\).
+
+Answer: 10",10,1,medium,stop
+yacht_dice_en_medium_0057,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [6, 5, 2, 6, 4]
+Round 2: [1, 3, 1, 3, 5]
+Round 3: [6, 4, 6, 6, 5]
+Round 4: [3, 1, 5, 3, 4]
+Round 5: [2, 6, 4, 4, 2]
+Round 6: [1, 6, 3, 5, 5]
+Round 7: [4, 6, 5, 2, 3]
+Round 8: [6, 6, 4, 4, 6]
+Round 9: [6, 1, 6, 4, 2]
+Round 10: [4, 3, 5, 2, 2]
+Round 11: [3, 6, 3, 6, 3]
+Round 12: [4, 2, 2, 5, 4]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 3, 8. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",45,,"An optimal full assignment is:
+
+- Round 3 → Three-of-a-Kind = 27
+- Round 7 → Large Straight = 40
+- Round 8 → Sixes = 18
+- Round 10 → Small Straight = 30
+- Round 11 → Full House = 25
+- Upper categories: Aces 2, Twos 4, Threes 6, Fours 8, Fives 10, Sixes 18, for upper sum 48, so no bonus.
+
+The optimal total is 170, and the requested spotcheck sum for rounds 3 and 8 is:
+
+27 + 18 = 45
+
+Answer: 45",45,1,medium,stop
+yacht_dice_en_medium_0058,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [1, 5, 4, 5, 2]
+Round 2: [1, 6, 1, 5, 1]
+Round 3: [5, 6, 6, 6, 6]
+Round 4: [3, 2, 1, 4, 5]
+Round 5: [3, 5, 6, 5, 5]
+Round 6: [4, 5, 5, 1, 2]
+Round 7: [3, 4, 4, 4, 3]
+Round 8: [3, 5, 1, 6, 2]
+Round 9: [1, 3, 5, 2, 5]
+Round 10: [1, 5, 4, 5, 4]
+Round 11: [6, 4, 6, 3, 3]
+Round 12: [5, 2, 4, 5, 4]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 8, 11. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",15,,"One optimal total-scoring assignment is:
+
+- Round 1 → Twos = 2  
+- Round 2 → Aces = 3  
+- Round 3 → Four-of-a-Kind = 29  
+- Round 4 → Large Straight = 40  
+- Round 5 → Three-of-a-Kind = 24  
+- Round 6 → Small Straight = 0  
+- Round 7 → Full House = 25  
+- Round 8 → Threes = 3  
+- Round 9 → Fives = 10  
+- Round 10 → Fours = 8  
+- Round 11 → Sixes = 12  
+- Round 12 → Yacht = 0  
+
+Upper section sum is below 63, so there is no +35 bonus.
+
+The requested spotcheck sum is for rounds 8 and 11:
+
+- Round 8 score = 3  
+- Round 11 score = 12  
+
+Sum = 15
+
+Answer: 15",15,1,medium,stop
+yacht_dice_en_medium_0059,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [6, 6, 1, 1, 6]
+Round 2: [5, 6, 4, 6, 3]
+Round 3: [1, 1, 4, 2, 6]
+Round 4: [2, 3, 4, 3, 1]
+Round 5: [4, 6, 5, 5, 2]
+Round 6: [6, 6, 2, 3, 2]
+Round 7: [1, 5, 1, 1, 1]
+Round 8: [5, 1, 4, 5, 5]
+Round 9: [1, 5, 3, 6, 2]
+Round 10: [4, 2, 1, 4, 6]
+Round 11: [3, 4, 3, 3, 6]
+Round 12: [2, 4, 4, 1, 4]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 8, 9. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",20,,"An optimal assignment can use the two non-scoring categories as dumps, since no round has a Yacht or Large Straight.
+
+One optimal assignment is:
+
+- Round 1 → Full House = 25
+- Round 2 → Sixes = 12
+- Round 3 → Aces = 2
+- Round 4 → Small Straight = 30
+- Round 5 → Fives = 10
+- Round 6 → Twos = 4
+- Round 7 → Four-of-a-Kind = 9
+- Round 8 → Three-of-a-Kind = 20
+- Round 9 → Yacht = 0
+- Round 10 → Large Straight = 0
+- Round 11 → Threes = 9
+- Round 12 → Fours = 12
+
+The upper-section bonus is not reachable here: even the best possible upper scores sum to only 62, below 63.
+
+For the requested spotcheck rounds:
+
+- Round 8 score = 20
+- Round 9 score = 0
+
+Answer: 20",20,1,medium,stop
+yacht_dice_en_medium_0060,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [4, 6, 6, 3, 6]
+Round 2: [2, 3, 3, 6, 5]
+Round 3: [4, 4, 1, 6, 4]
+Round 4: [5, 6, 1, 1, 1]
+Round 5: [5, 5, 5, 1, 3]
+Round 6: [4, 4, 1, 6, 4]
+Round 7: [3, 1, 5, 6, 6]
+Round 8: [1, 3, 5, 2, 6]
+Round 9: [6, 4, 5, 5, 2]
+Round 10: [1, 4, 5, 3, 4]
+Round 11: [2, 2, 2, 1, 2]
+Round 12: [1, 2, 1, 1, 6]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 5, 10. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",15,,"No upper bonus is possible: the maximum upper-section score is  
+3 + 8 + 6 + 12 + 15 + 18 = 62, which is below 63.
+
+One optimal full assignment is:
+
+- Round 1 → Sixes = 18  
+- Round 2 → Threes = 6  
+- Round 3 → Three-of-a-Kind = 19  
+- Round 4 → Aces = 3  
+- Round 5 → Fives = 15  
+- Round 6 → Fours = 12  
+- Round 11 → Four-of-a-Kind = 9  
+- Round 8 → Twos = 2  
+- Remaining rounds → zero-score categories
+
+This gives the optimal total of 84.
+
+Requested spotcheck rounds:
+
+- Round 5 score = 15  
+- Round 10 score = 0  
+
+Sum = 15
+
+Answer: 15",15,1,medium,stop
+yacht_dice_en_medium_0061,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [6, 2, 3, 3, 1]
+Round 2: [5, 5, 3, 5, 3]
+Round 3: [4, 6, 4, 3, 3]
+Round 4: [6, 5, 5, 1, 3]
+Round 5: [3, 5, 5, 2, 1]
+Round 6: [1, 2, 5, 4, 1]
+Round 7: [3, 3, 6, 5, 5]
+Round 8: [6, 6, 6, 5, 2]
+Round 9: [6, 2, 3, 2, 2]
+Round 10: [5, 3, 5, 5, 1]
+Round 11: [1, 5, 1, 5, 6]
+Round 12: [2, 3, 6, 3, 5]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 6, 7. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",2,,"The maximum total score is 94, but the optimal assignment is not unique, so the requested spotcheck sum for rounds 6 and 7 is not uniquely determined.
+
+One valid optimal assignment is:
+- Round 2 → Full House = 25
+- Round 3 → Fours = 8
+- Round 6 → Aces = 2
+- Round 7 → Fives = 10
+- Round 8 → Sixes = 18
+- Round 9 → Twos = 6
+- Round 10 → Three-of-a-Kind = 19
+- Round 12 → Threes = 6
+- Remaining rounds → zero-score categories
+
+This totals 94, and rounds 6 + 7 score `2 + 10 = 12`.
+
+Answer: 12",12,0,medium,stop
+yacht_dice_en_medium_0062,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [2, 3, 5, 2, 2]
+Round 2: [1, 6, 3, 5, 6]
+Round 3: [5, 3, 5, 6, 1]
+Round 4: [5, 6, 6, 1, 3]
+Round 5: [2, 4, 6, 3, 6]
+Round 6: [4, 2, 1, 5, 6]
+Round 7: [4, 5, 5, 5, 6]
+Round 8: [1, 1, 4, 6, 2]
+Round 9: [6, 3, 4, 4, 4]
+Round 10: [4, 4, 1, 1, 4]
+Round 11: [5, 1, 4, 2, 3]
+Round 12: [5, 4, 1, 1, 3]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 3, 11. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",50,,"The upper-section bonus is impossible here: even the best possible upper scores sum to only 50, below the 63 needed for +35.
+
+An optimal full assignment includes:
+
+- Round 11 → Large Straight = 40
+- Round 10 → Full House = 25
+- Round 7 → Three-of-a-Kind = 25
+- Round 3 → Fives = 10
+
+The requested spotcheck sum is for rounds 3 and 11:
+
+- Round 3: 10
+- Round 11: 40
+
+Sum = 50
+
+Answer: 50",50,1,medium,stop
+yacht_dice_en_medium_0063,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [4, 6, 2, 1, 6]
+Round 2: [3, 6, 3, 6, 6]
+Round 3: [3, 4, 6, 3, 6]
+Round 4: [5, 4, 1, 3, 4]
+Round 5: [1, 3, 3, 6, 1]
+Round 6: [6, 2, 6, 1, 5]
+Round 7: [5, 5, 1, 3, 5]
+Round 8: [3, 6, 6, 2, 4]
+Round 9: [3, 5, 2, 1, 2]
+Round 10: [4, 4, 1, 1, 5]
+Round 11: [5, 5, 2, 2, 6]
+Round 12: [6, 2, 1, 6, 6]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 8, 9. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",4,,"One optimal assignment is:
+
+- Round 2 → Full House = 25  
+- Round 12 → Three-of-a-Kind = 21  
+- Round 10 → Aces = 2  
+- Round 9 → Twos = 4  
+- Round 5 → Threes = 6  
+- Round 4 → Fours = 8  
+- Round 7 → Fives = 15  
+- Round 8 → Sixes = 12  
+
+Upper subtotal = 47, so no +35 bonus.  
+Total = 25 + 21 + 47 = 93, which is optimal.
+
+Requested spotcheck: rounds 8 and 9 score 12 + 4 = 16.
+
+Answer: 16",16,0,medium,stop
+yacht_dice_en_medium_0064,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [6, 3, 4, 6, 2]
+Round 2: [2, 3, 2, 2, 2]
+Round 3: [2, 3, 6, 5, 3]
+Round 4: [5, 5, 2, 2, 1]
+Round 5: [3, 5, 1, 3, 6]
+Round 6: [4, 6, 5, 4, 5]
+Round 7: [6, 2, 2, 1, 2]
+Round 8: [1, 5, 2, 5, 3]
+Round 9: [5, 6, 6, 3, 5]
+Round 10: [1, 1, 3, 3, 1]
+Round 11: [1, 2, 2, 2, 4]
+Round 12: [2, 6, 3, 3, 3]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 9, 10. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",25,,"The upper-section bonus is impossible here: even the best possible upper-section sum is below 63, so no +35 bonus can be earned.
+
+One optimal full assignment is:
+
+- Round 2 → Four-of-a-Kind = 11  
+- Round 3 → Threes = 6  
+- Round 4 → Fives = 10  
+- Round 5 → Aces = 1  
+- Round 6 → Fours = 8  
+- Round 7 → Twos = 6  
+- Round 9 → Sixes = 12  
+- Round 10 → Full House = 25  
+- Round 12 → Three-of-a-Kind = 17  
+- Remaining rounds → zero-score categories
+
+This gives total score \(96\), which is optimal.
+
+Requested spotcheck sum for rounds 9 and 10:
+
+\[
+12 + 25 = 37
+\]
+
+Answer: 37",37,0,medium,stop
+yacht_dice_en_medium_0065,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [2, 2, 4, 1, 2]
+Round 2: [2, 1, 3, 4, 1]
+Round 3: [6, 1, 3, 6, 3]
+Round 4: [3, 5, 1, 3, 2]
+Round 5: [6, 2, 3, 4, 4]
+Round 6: [3, 2, 5, 5, 4]
+Round 7: [5, 6, 2, 4, 5]
+Round 8: [1, 2, 4, 3, 3]
+Round 9: [6, 5, 1, 3, 1]
+Round 10: [2, 4, 4, 5, 2]
+Round 11: [1, 2, 2, 1, 2]
+Round 12: [5, 2, 2, 4, 2]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 1, 4. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",12,,"An optimal assignment can achieve the upper-section maximum of 44, so no upper bonus is possible since 44 < 63.
+
+One optimal assignment is:
+
+- Round 1 → Twos = 6
+- Round 2 → Small Straight = 30
+- Round 3 → Sixes = 12
+- Round 4 → Threes = 6
+- Round 6 → Fives = 10
+- Round 9 → Aces = 2
+- Round 10 → Fours = 8
+- Round 11 → Full House = 25
+- Round 12 → Three-of-a-Kind = 15
+
+The remaining rounds can take zero-scoring categories.
+
+Requested partial sum for rounds 1 and 4:
+
+6 + 6 = 12
+
+Answer: 12",12,1,medium,stop
+yacht_dice_en_medium_0066,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [6, 1, 6, 6, 6]
+Round 2: [2, 6, 4, 4, 2]
+Round 3: [4, 6, 6, 3, 5]
+Round 4: [2, 6, 2, 4, 1]
+Round 5: [4, 1, 3, 5, 2]
+Round 6: [6, 4, 1, 2, 2]
+Round 7: [4, 2, 2, 6, 4]
+Round 8: [4, 1, 1, 5, 2]
+Round 9: [6, 5, 3, 6, 1]
+Round 10: [2, 6, 3, 6, 1]
+Round 11: [1, 5, 1, 2, 1]
+Round 12: [1, 1, 5, 1, 2]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 6, 7. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",8,,"One optimal assignment is:
+
+- Round 1 → Four-of-a-Kind = 25  
+- Round 2 → Full House = 0  
+- Round 3 → Small Straight = 30  
+- Round 4 → Yacht = 0  
+- Round 5 → Large Straight = 40  
+- Round 6 → Twos = 4  
+- Round 7 → Fours = 8  
+- Round 8 → Fives = 5  
+- Round 9 → Threes = 3  
+- Round 10 → Sixes = 12  
+- Round 11 → Three-of-a-Kind = 10  
+- Round 12 → Aces = 3  
+
+Upper section sum is \(3+4+3+8+5+12=35\), so no bonus.
+
+The requested spotcheck sum for rounds 6 and 7 is:
+
+\[
+4 + 8 = 12
+\]
+
+Answer: 12",12,0,medium,stop
+yacht_dice_en_medium_0067,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [4, 4, 4, 6, 6]
+Round 2: [2, 1, 5, 2, 2]
+Round 3: [5, 5, 6, 2, 5]
+Round 4: [4, 1, 6, 1, 1]
+Round 5: [4, 5, 4, 2, 3]
+Round 6: [4, 6, 3, 3, 5]
+Round 7: [4, 3, 3, 3, 3]
+Round 8: [1, 1, 1, 1, 6]
+Round 9: [5, 1, 5, 2, 4]
+Round 10: [3, 1, 6, 4, 1]
+Round 11: [4, 3, 5, 5, 5]
+Round 12: [2, 2, 5, 6, 4]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 3, 7. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",35,,"An optimal full assignment is:
+
+- Round 1 → Full House = 25  
+- Round 2 → Twos = 6  
+- Round 3 → Three-of-a-Kind = 23  
+- Round 4 → Aces = 3  
+- Round 5 → Fours = 8  
+- Round 6 → Small Straight = 30  
+- Round 7 → Threes = 12  
+- Round 8 → Four-of-a-Kind = 10  
+- Round 9 → Large Straight = 0  
+- Round 10 → Sixes = 6  
+- Round 11 → Fives = 15  
+- Round 12 → Yacht = 0  
+
+Upper section sum is 50, so no +35 bonus applies. The full optimal total is 138.
+
+Requested spotcheck sum for rounds 3 and 7:
+
+- Round 3: 23  
+- Round 7: 12  
+
+23 + 12 = 35
+
+Answer: 35",35,1,medium,stop
+yacht_dice_en_medium_0068,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [4, 6, 4, 3, 4]
+Round 2: [3, 4, 3, 6, 1]
+Round 3: [3, 6, 2, 2, 4]
+Round 4: [2, 4, 2, 2, 4]
+Round 5: [6, 2, 2, 1, 2]
+Round 6: [5, 5, 4, 5, 2]
+Round 7: [3, 2, 1, 5, 2]
+Round 8: [4, 6, 6, 6, 3]
+Round 9: [1, 6, 6, 3, 4]
+Round 10: [1, 5, 2, 5, 4]
+Round 11: [2, 3, 3, 5, 5]
+Round 12: [5, 5, 5, 3, 3]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 8, 12. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",39,,"No upper bonus is possible: even the best distinct upper-section choices sum to only 58, below 63.
+
+One optimal assignment with total score 104 is:
+
+- R1 → Fours = 12  
+- R2 → Threes = 6  
+- R3 → zero category = 0  
+- R4 → Full House = 25  
+- R5 → Twos = 6  
+- R6 → Fives = 15  
+- R7 → Aces = 1  
+- R8 → Sixes = 18  
+- R9 → zero category = 0  
+- R10 → zero category = 0  
+- R11 → zero category = 0  
+- R12 → Three-of-a-Kind = 21  
+
+Requested spotcheck rounds: R8 + R12 = 18 + 21 = 39.
+
+Answer: 39",39,1,medium,stop
+yacht_dice_en_medium_0069,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [3, 2, 2, 5, 4]
+Round 2: [5, 2, 4, 1, 2]
+Round 3: [1, 3, 4, 1, 5]
+Round 4: [2, 4, 3, 6, 1]
+Round 5: [6, 4, 4, 2, 4]
+Round 6: [6, 4, 4, 4, 6]
+Round 7: [6, 6, 6, 3, 6]
+Round 8: [1, 1, 3, 4, 2]
+Round 9: [2, 5, 5, 1, 5]
+Round 10: [1, 5, 4, 1, 1]
+Round 11: [5, 5, 3, 5, 4]
+Round 12: [6, 2, 6, 3, 1]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 2, 4. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",34,,"One optimal assignment is:
+
+- Round 1 → Large Straight = 0  
+- Round 2 → Twos = 4  
+- Round 3 → Threes = 3  
+- Round 4 → Small Straight = 30  
+- Round 5 → Fours = 12  
+- Round 6 → Full House = 25  
+- Round 7 → Four-of-a-Kind = 27  
+- Round 8 → Yacht = 0  
+- Round 9 → Fives = 15  
+- Round 10 → Aces = 3  
+- Round 11 → Three-of-a-Kind = 22  
+- Round 12 → Sixes = 12  
+
+Upper section sum is 49, so no bonus. Total score is 153.
+
+Requested spotcheck: Round 2 + Round 4 = 4 + 30 = 34.
+
+Answer: 34",34,1,medium,stop
+yacht_dice_en_medium_0070,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [6, 5, 1, 6, 3]
+Round 2: [2, 3, 2, 2, 2]
+Round 3: [2, 2, 2, 2, 5]
+Round 4: [1, 2, 6, 1, 3]
+Round 5: [2, 4, 4, 3, 3]
+Round 6: [5, 2, 3, 6, 6]
+Round 7: [2, 4, 1, 4, 4]
+Round 8: [1, 1, 1, 1, 3]
+Round 9: [3, 2, 2, 5, 5]
+Round 10: [5, 1, 5, 5, 3]
+Round 11: [1, 3, 5, 1, 5]
+Round 12: [2, 1, 5, 5, 4]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 2, 3. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",21,,"The upper-section bonus is impossible: even the best possible upper scores sum to only 57, below 63.
+
+An optimal assignment is:
+
+- Round 1 → Sixes = 12  
+- Round 2 → Twos = 8  
+- Round 3 → Four-of-a-Kind = 13  
+- Round 5 → Threes = 6  
+- Round 7 → Fours = 12  
+- Round 8 → Aces = 4  
+- Round 9 → Fives = 10  
+- Round 10 → Three-of-a-Kind = 19  
+- Remaining rounds/categories score 0
+
+Total score = 84.
+
+Requested spotcheck: rounds 2 and 3 score \(8 + 13 = 21\).
+
+Answer: 21",21,1,medium,stop
+yacht_dice_en_medium_0071,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [1, 2, 2, 1, 1]
+Round 2: [6, 3, 4, 3, 4]
+Round 3: [1, 5, 2, 2, 6]
+Round 4: [3, 4, 3, 4, 4]
+Round 5: [5, 5, 5, 5, 6]
+Round 6: [2, 3, 4, 5, 4]
+Round 7: [5, 6, 1, 1, 2]
+Round 8: [5, 4, 1, 2, 4]
+Round 9: [6, 1, 6, 2, 6]
+Round 10: [4, 3, 3, 5, 4]
+Round 11: [5, 1, 2, 5, 4]
+Round 12: [4, 1, 1, 3, 3]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 7, 12. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",2,,"An optimal full assignment (total 147, no upper bonus) is:
+
+- R1 → Full House = 25  
+- R2 → Yacht = 0  
+- R3 → Twos = 4  
+- R4 → Three-of-a-Kind = 18  
+- R5 → Four-of-a-Kind = 26  
+- R6 → Small Straight = 30  
+- R7 → Aces = 2  
+- R8 → Fours = 8  
+- R9 → Sixes = 18  
+- R10 → Large Straight = 0  
+- R11 → Fives = 10  
+- R12 → Threes = 6  
+
+Upper section sum is 48, so no +35 bonus. The requested spotcheck sum for rounds 7 and 12 is:
+
+2 + 6 = 8
+
+Answer: 8",8,0,medium,stop
+yacht_dice_en_medium_0072,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [2, 6, 3, 1, 2]
+Round 2: [5, 5, 6, 1, 4]
+Round 3: [3, 3, 2, 3, 3]
+Round 4: [2, 1, 3, 5, 5]
+Round 5: [5, 5, 3, 1, 3]
+Round 6: [4, 6, 6, 6, 6]
+Round 7: [6, 5, 1, 4, 5]
+Round 8: [4, 2, 1, 6, 5]
+Round 9: [5, 5, 6, 2, 2]
+Round 10: [3, 1, 5, 6, 5]
+Round 11: [4, 3, 1, 3, 3]
+Round 12: [4, 3, 3, 6, 4]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 9, 10. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",4,,"The upper-section bonus is impossible: even the best possible upper scores sum to  
+\(1+4+12+8+10+24=59<63\).
+
+An optimal total is achieved, for example, by:
+
+- Round 1 → Twos = 4  
+- Round 2 → Aces = 1  
+- Round 3 → Threes = 12  
+- Round 6 → Four-of-a-Kind = 28  
+- Round 9 → Fives = 10  
+- Round 10 → Sixes = 6  
+- Round 11 → Three-of-a-Kind = 14  
+- Round 12 → Fours = 8  
+- Remaining rounds → zero-score categories
+
+Total: \(4+1+12+28+10+6+14+8=83\), optimal.
+
+Requested spotcheck sum for rounds 9 and 10:
+
+\[
+10+6=16
+\]
+
+Answer: 16",16,0,medium,stop
+yacht_dice_en_medium_0073,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [5, 5, 5, 3, 5]
+Round 2: [4, 1, 3, 5, 6]
+Round 3: [1, 4, 2, 1, 5]
+Round 4: [2, 2, 3, 6, 5]
+Round 5: [6, 1, 1, 1, 2]
+Round 6: [1, 5, 5, 5, 4]
+Round 7: [2, 3, 3, 6, 2]
+Round 8: [5, 4, 3, 3, 4]
+Round 9: [3, 2, 1, 1, 3]
+Round 10: [1, 1, 1, 1, 6]
+Round 11: [2, 4, 4, 2, 2]
+Round 12: [6, 3, 1, 6, 6]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 1, 2. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",50,,"An optimal assignment is:
+
+- Round 1 → Four-of-a-Kind = 23  
+- Round 2 → Small Straight = 30  
+- Round 5 → Three-of-a-Kind = 11  
+- Round 6 → Fives = 15  
+- Round 7 → Twos = 4  
+- Round 8 → Fours = 8  
+- Round 9 → Threes = 6  
+- Round 10 → Aces = 4  
+- Round 11 → Full House = 25  
+- Round 12 → Sixes = 18  
+- Rounds 3 and 4 → Large Straight / Yacht = 0  
+
+The requested spotcheck sum is for rounds 1 and 2:
+
+23 + 30 = 53
+
+Answer: 53",53,0,medium,stop
+yacht_dice_en_medium_0074,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [2, 3, 2, 4, 1]
+Round 2: [5, 2, 6, 6, 4]
+Round 3: [2, 2, 5, 3, 2]
+Round 4: [5, 4, 1, 6, 4]
+Round 5: [5, 3, 3, 3, 6]
+Round 6: [2, 6, 4, 2, 1]
+Round 7: [2, 6, 6, 3, 3]
+Round 8: [3, 5, 5, 5, 5]
+Round 9: [1, 4, 1, 4, 5]
+Round 10: [4, 2, 3, 5, 3]
+Round 11: [5, 1, 4, 3, 4]
+Round 12: [5, 5, 3, 1, 3]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 7, 11. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",20,,"The upper-section bonus is impossible here: even the best possible upper-section choices sum to only 57, below 63.
+
+One optimal total-score assignment is:
+
+- Round 1 → Small Straight = 30  
+- Round 2 → Sixes = 12  
+- Round 3 → Twos = 6  
+- Round 4 → Fours = 8  
+- Round 5 → Three-of-a-Kind = 20  
+- Round 6 → Full House = 0  
+- Round 7 → Threes = 6  
+- Round 8 → Four-of-a-Kind = 23  
+- Round 9 → Aces = 2  
+- Round 10 → Large Straight = 0  
+- Round 11 → Yacht = 0  
+- Round 12 → Fives = 10  
+
+This gives the optimal full total of 117.
+
+Requested spotcheck sum for rounds 7 and 11:
+
+- Round 7 = 6  
+- Round 11 = 0  
+
+Answer: 6",6,0,medium,stop
+yacht_dice_en_medium_0075,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [4, 6, 3, 3, 6]
+Round 2: [2, 4, 6, 4, 4]
+Round 3: [4, 1, 6, 5, 4]
+Round 4: [5, 3, 2, 6, 3]
+Round 5: [1, 4, 1, 1, 6]
+Round 6: [1, 4, 4, 3, 4]
+Round 7: [1, 4, 3, 5, 4]
+Round 8: [2, 1, 5, 2, 5]
+Round 9: [3, 2, 2, 5, 5]
+Round 10: [6, 5, 2, 3, 2]
+Round 11: [1, 2, 6, 2, 2]
+Round 12: [3, 6, 5, 6, 2]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 3, 6. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",12,,"The upper-section bonus is impossible here: the maximum possible upper-section sum is only
+
+- Aces: 3
+- Twos: 6
+- Threes: 6
+- Fours: 12
+- Fives: 10
+- Sixes: 12
+
+for a total of 49, below 63.
+
+An optimal assignment uses Round 2 as Three-of-a-Kind for 20 points, while still achieving the maximum upper sum of 49. For example:
+
+- Round 2 → Three-of-a-Kind = 20
+- Round 5 → Aces = 3
+- Round 11 → Twos = 6
+- Round 4 → Threes = 6
+- Round 6 → Fours = 12
+- Round 8 → Fives = 10
+- Round 12 → Sixes = 12
+
+The remaining rounds go to zero-scoring lower categories.
+
+For the requested spotcheck rounds:
+
+- Round 3 scores 0
+- Round 6 scores 12
+
+Answer: 12",12,1,medium,stop
+yacht_dice_en_medium_0076,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [6, 5, 4, 5, 5]
+Round 2: [2, 4, 4, 1, 4]
+Round 3: [6, 3, 6, 6, 3]
+Round 4: [5, 6, 4, 3, 6]
+Round 5: [3, 2, 4, 2, 4]
+Round 6: [5, 2, 2, 4, 6]
+Round 7: [1, 2, 6, 6, 1]
+Round 8: [2, 6, 4, 2, 4]
+Round 9: [2, 4, 2, 6, 5]
+Round 10: [1, 5, 6, 6, 6]
+Round 11: [4, 5, 4, 3, 4]
+Round 12: [5, 2, 6, 6, 3]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 3, 6. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",29,,"The upper-section bonus is impossible here: even the theoretical best upper sum is only \(57 < 63\), so no +35 bonus can be earned.
+
+One optimal full assignment is:
+
+| Round | Category | Score |
+|---:|---|---:|
+| 1 | Fives | 15 |
+| 2 | Fours | 12 |
+| 3 | Full House | 25 |
+| 4 | Small Straight | 30 |
+| 5 | Threes | 3 |
+| 6 | Twos | 4 |
+| 7 | Aces | 2 |
+| 8 | Large Straight | 0 |
+| 9 | Four-of-a-Kind | 0 |
+| 10 | Sixes | 18 |
+| 11 | Three-of-a-Kind | 20 |
+| 12 | Yacht | 0 |
+
+This gives total \(129\), which is optimal.
+
+Requested spotcheck sum for rounds 3 and 6:
+
+\[
+25 + 4 = 29
+\]
+
+Answer: 29",29,1,medium,stop
+yacht_dice_en_medium_0077,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [3, 2, 6, 3, 5]
+Round 2: [1, 6, 6, 6, 4]
+Round 3: [1, 3, 5, 6, 3]
+Round 4: [3, 6, 6, 3, 4]
+Round 5: [2, 4, 3, 5, 3]
+Round 6: [3, 1, 6, 6, 2]
+Round 7: [1, 5, 3, 4, 4]
+Round 8: [2, 1, 4, 6, 6]
+Round 9: [3, 4, 2, 6, 5]
+Round 10: [2, 2, 1, 3, 4]
+Round 11: [3, 4, 2, 6, 5]
+Round 12: [2, 2, 2, 2, 1]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 3, 7. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",9,,"An optimal total is 138. One optimal assignment is:
+
+- R2 → Three-of-a-Kind = 23  
+- R12 → Four-of-a-Kind = 9  
+- R9 → Large Straight = 40  
+- R11 → Small Straight = 30  
+- R10 → Twos = 4  
+- R7 → Fours = 8  
+- R4 → Sixes = 12  
+- R6 → Aces = 1  
+- R3 → Threes = 6  
+- R5 → Fives = 5  
+- R1 → Full House = 0  
+- R8 → Yacht = 0  
+
+Requested spotcheck rounds:
+
+- Round 3 = 6  
+- Round 7 = 8  
+
+Sum = 14
+
+Answer: 14",14,0,medium,stop
+yacht_dice_en_medium_0078,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [3, 5, 1, 3, 5]
+Round 2: [3, 4, 6, 3, 3]
+Round 3: [1, 1, 3, 4, 5]
+Round 4: [6, 5, 4, 4, 6]
+Round 5: [1, 3, 3, 3, 3]
+Round 6: [2, 6, 2, 6, 6]
+Round 7: [3, 6, 6, 6, 3]
+Round 8: [2, 5, 5, 6, 6]
+Round 9: [2, 5, 6, 3, 3]
+Round 10: [1, 5, 5, 3, 1]
+Round 11: [3, 6, 1, 5, 5]
+Round 12: [4, 4, 3, 4, 1]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 1, 8. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",0,,"An optimal assignment is:
+
+| Round | Dice | Category | Score |
+|---:|---|---|---:|
+| 1 | [3,5,1,3,5] | Fives | 10 |
+| 2 | [3,4,6,3,3] | Threes | 9 |
+| 3 | [1,1,3,4,5] | Aces | 2 |
+| 4 | [6,5,4,4,6] | Sixes | 12 |
+| 5 | [1,3,3,3,3] | Four-of-a-Kind | 13 |
+| 6 | [2,6,2,6,6] | Full House | 25 |
+| 7 | [3,6,6,6,3] | Three-of-a-Kind | 24 |
+| 8 | [2,5,5,6,6] | Twos | 2 |
+| 9 | [2,5,6,3,3] | Small Straight | 0 |
+| 10 | [1,5,5,3,1] | Large Straight | 0 |
+| 11 | [3,6,1,5,5] | Yacht | 0 |
+| 12 | [4,4,3,4,1] | Fours | 12 |
+
+Upper score is \(47\), so no +35 bonus.
+
+Requested spotcheck sum for rounds 1 and 8:
+
+\[
+10 + 2 = 12
+\]
+
+Answer: 12",12,0,medium,stop
+yacht_dice_en_medium_0079,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [5, 6, 3, 5, 3]
+Round 2: [1, 6, 4, 2, 4]
+Round 3: [1, 2, 5, 2, 2]
+Round 4: [3, 3, 6, 5, 3]
+Round 5: [5, 6, 4, 5, 2]
+Round 6: [1, 2, 6, 4, 3]
+Round 7: [6, 6, 4, 6, 6]
+Round 8: [1, 2, 2, 6, 4]
+Round 9: [1, 4, 2, 1, 2]
+Round 10: [1, 1, 4, 4, 5]
+Round 11: [2, 2, 2, 5, 5]
+Round 12: [4, 3, 5, 2, 3]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 6, 12. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",30,,"The upper-section bonus is unattainable: even the best possible distinct upper assignments sum to only 59, below 63.
+
+One optimal full assignment is:
+
+- Round 1 → Fives = 10  
+- Round 2 → Fours = 8  
+- Round 3 → Twos = 6  
+- Round 4 → Three-of-a-Kind = 20  
+- Round 5 → Sixes = 6  
+- Round 6 → Small Straight = 30  
+- Round 7 → Four-of-a-Kind = 28  
+- Round 8 → Large Straight = 0  
+- Round 9 → Aces = 2  
+- Round 10 → Yacht = 0  
+- Round 11 → Full House = 25  
+- Round 12 → Threes = 6  
+
+Total score is 141, optimal.
+
+Requested spotcheck sum for rounds 6 and 12:
+
+30 + 6 = 36
+
+Answer: 36",36,0,medium,stop
+yacht_dice_en_medium_0080,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [2, 4, 3, 5, 6]
+Round 2: [1, 6, 4, 4, 1]
+Round 3: [5, 6, 5, 6, 1]
+Round 4: [3, 2, 3, 4, 5]
+Round 5: [1, 3, 1, 6, 1]
+Round 6: [4, 2, 5, 5, 1]
+Round 7: [2, 2, 2, 4, 5]
+Round 8: [4, 6, 6, 5, 4]
+Round 9: [5, 1, 4, 4, 5]
+Round 10: [4, 2, 5, 2, 6]
+Round 11: [6, 1, 5, 1, 2]
+Round 12: [4, 4, 6, 5, 4]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 9, 12. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",23,,"One optimal assignment is:
+
+- Round 1 → Large Straight = 40  
+- Round 4 → Small Straight = 30  
+- Round 12 → Three-of-a-Kind = 23  
+
+Upper section choices:
+
+- Round 11 → Aces = 2  
+- Round 7 → Twos = 6  
+- Round 5 → Threes = 3  
+- Round 2 → Fours = 8  
+- Round 9 → Fives = 10  
+- Round 3 → Sixes = 12  
+
+The upper bonus is not reachable here. The remaining rounds can be assigned to zero-scoring categories.
+
+Requested spotcheck rounds:
+
+- Round 9 scores 10  
+- Round 12 scores 23  
+
+Sum = 33
+
+Answer: 33",33,0,medium,stop
+yacht_dice_en_medium_0081,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [3, 4, 2, 4, 4]
+Round 2: [5, 2, 2, 3, 2]
+Round 3: [5, 4, 1, 4, 2]
+Round 4: [5, 1, 6, 6, 6]
+Round 5: [4, 1, 1, 1, 5]
+Round 6: [1, 3, 3, 1, 1]
+Round 7: [3, 5, 3, 2, 2]
+Round 8: [2, 6, 4, 6, 1]
+Round 9: [6, 4, 3, 2, 4]
+Round 10: [3, 6, 3, 1, 3]
+Round 11: [5, 1, 6, 4, 1]
+Round 12: [1, 2, 6, 3, 2]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 4, 6. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",49,,"An optimal full-score assignment is:
+
+- Round 1 → Fours = 12  
+- Round 2 → Twos = 6  
+- Round 3 → Fives = 5  
+- Round 4 → Three-of-a-Kind = 24  
+- Round 5 → Aces = 3  
+- Round 6 → Full House = 25  
+- Round 7 → Small Straight = 0  
+- Round 8 → Sixes = 12  
+- Round 9 → Large Straight = 0  
+- Round 10 → Threes = 9  
+- Round 11 → Four-of-a-Kind = 0  
+- Round 12 → Yacht = 0  
+
+Upper section total is 47, so no bonus applies. Total score is 96.
+
+Requested spotcheck sum for rounds 4 and 6:
+
+- Round 4 = 24  
+- Round 6 = 25  
+
+Sum = 49
+
+Answer: 49",49,1,medium,stop
+yacht_dice_en_medium_0082,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [6, 6, 3, 5, 6]
+Round 2: [1, 1, 1, 1, 2]
+Round 3: [1, 1, 3, 2, 6]
+Round 4: [6, 1, 1, 5, 3]
+Round 5: [2, 4, 2, 4, 4]
+Round 6: [4, 5, 5, 1, 5]
+Round 7: [1, 2, 1, 1, 4]
+Round 8: [5, 2, 3, 5, 3]
+Round 9: [3, 1, 2, 2, 2]
+Round 10: [1, 1, 4, 4, 1]
+Round 11: [4, 6, 2, 4, 5]
+Round 12: [5, 2, 5, 2, 5]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 5, 11. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",12,,"The upper-section bonus is impossible: the maximum possible upper sum is
+
+- Aces 4, Twos 6, Threes 6, Fours 12, Fives 15, Sixes 18 → total 61 < 63
+
+So no +35 bonus can be earned.
+
+An optimal full assignment is:
+
+- Round 1 → Sixes = 18
+- Round 2 → Four-of-a-Kind = 6
+- Round 5 → Fours = 12
+- Round 6 → Three-of-a-Kind = 20
+- Round 7 → Aces = 3
+- Round 8 → Threes = 6
+- Round 9 → Twos = 6
+- Round 10 → Full House = 25
+- Round 12 → Fives = 15
+- Rounds 3, 4, 11 → zero-score categories
+
+This gives the optimal total of 111.
+
+The requested spotcheck is rounds 5 and 11:
+
+- Round 5 score = 12
+- Round 11 score = 0
+
+Sum = 12
+
+Answer: 12",12,1,medium,stop
+yacht_dice_en_medium_0083,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [5, 5, 2, 5, 2]
+Round 2: [4, 5, 1, 5, 1]
+Round 3: [3, 3, 1, 3, 1]
+Round 4: [4, 6, 3, 3, 6]
+Round 5: [3, 5, 6, 5, 1]
+Round 6: [1, 1, 4, 2, 3]
+Round 7: [4, 1, 5, 6, 5]
+Round 8: [2, 4, 6, 6, 6]
+Round 9: [1, 1, 4, 1, 3]
+Round 10: [4, 5, 3, 1, 4]
+Round 11: [1, 4, 1, 6, 5]
+Round 12: [3, 4, 6, 3, 1]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 5, 10. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",8,,"The optimal total-score assignment can be:
+
+- Round 1 → Fives = 15  
+- Round 2 → Large Straight = 0  
+- Round 3 → Full House = 25  
+- Round 4 → Sixes = 12  
+- Round 5 → Yacht = 0  
+- Round 6 → Small Straight = 30  
+- Round 7 → Four-of-a-Kind = 0  
+- Round 8 → Three-of-a-Kind = 24  
+- Round 9 → Aces = 3  
+- Round 10 → Fours = 8  
+- Round 11 → Twos = 0  
+- Round 12 → Threes = 6  
+
+Upper section sum is 44, so no +35 bonus.
+
+Requested spotcheck rounds:
+
+- Round 5 score = 0  
+- Round 10 score = 8  
+
+Answer: 8",8,1,medium,stop
+yacht_dice_en_medium_0084,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [5, 3, 2, 1, 2]
+Round 2: [2, 2, 4, 1, 2]
+Round 3: [1, 3, 3, 3, 3]
+Round 4: [1, 2, 2, 2, 2]
+Round 5: [5, 2, 4, 1, 3]
+Round 6: [4, 1, 3, 2, 2]
+Round 7: [3, 1, 3, 1, 5]
+Round 8: [4, 1, 1, 4, 1]
+Round 9: [3, 3, 4, 6, 2]
+Round 10: [6, 6, 1, 6, 1]
+Round 11: [1, 4, 5, 5, 3]
+Round 12: [3, 6, 1, 1, 4]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 5, 6. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",70,,"An optimal assignment gives:
+
+- Round 5: Large Straight = 40
+- Round 6: Small Straight = 30
+
+So the requested spotcheck sum is:
+
+40 + 30 = 70
+
+Answer: 70",70,1,medium,stop
+yacht_dice_en_medium_0085,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [1, 5, 3, 6, 4]
+Round 2: [6, 1, 5, 1, 2]
+Round 3: [5, 2, 4, 5, 4]
+Round 4: [2, 2, 2, 5, 3]
+Round 5: [4, 1, 5, 3, 3]
+Round 6: [3, 4, 1, 1, 1]
+Round 7: [4, 2, 5, 2, 5]
+Round 8: [2, 2, 2, 2, 2]
+Round 9: [5, 1, 1, 1, 6]
+Round 10: [5, 2, 5, 2, 4]
+Round 11: [2, 1, 1, 5, 6]
+Round 12: [4, 4, 4, 6, 4]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 7, 9. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",14,,"One optimal full-score assignment is:
+
+- Round 1 → Small Straight = 30  
+- Round 2 → Sixes = 6  
+- Round 3 → Fours = 8  
+- Round 4 → Twos = 6  
+- Round 5 → Threes = 6  
+- Round 6 → Aces = 3  
+- Round 7 → Fives = 10  
+- Round 8 → Yacht = 50  
+- Round 9 → Three-of-a-Kind = 14  
+- Round 10 → Large Straight = 0  
+- Round 11 → Full House = 0  
+- Round 12 → Four-of-a-Kind = 22  
+
+Upper section sum is below 63, so no bonus applies.
+
+Requested spotcheck sum for rounds 7 and 9:
+
+- Round 7: 10  
+- Round 9: 14  
+
+Total = 24
+
+Answer: 24",24,0,medium,stop
+yacht_dice_en_medium_0086,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [3, 6, 6, 3, 1]
+Round 2: [5, 5, 1, 6, 5]
+Round 3: [6, 4, 1, 1, 1]
+Round 4: [5, 1, 4, 6, 1]
+Round 5: [5, 1, 2, 5, 5]
+Round 6: [1, 6, 5, 2, 1]
+Round 7: [4, 3, 3, 3, 5]
+Round 8: [4, 1, 1, 1, 1]
+Round 9: [3, 3, 5, 3, 6]
+Round 10: [1, 1, 1, 1, 1]
+Round 11: [5, 3, 2, 2, 6]
+Round 12: [3, 4, 3, 5, 4]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 1, 3. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",15,,"An optimal assignment is:
+
+- Round 1 → Sixes = 12  
+- Round 2 → Three-of-a-Kind = 22  
+- Round 3 → Aces = 3  
+- Round 4 → Full House = 0  
+- Round 5 → Fives = 15  
+- Round 6 → Small Straight = 0  
+- Round 7 → Threes = 9  
+- Round 8 → Four-of-a-Kind = 8  
+- Round 9 → Large Straight = 0  
+- Round 10 → Yacht = 50  
+- Round 11 → Twos = 4  
+- Round 12 → Fours = 8  
+
+Upper sum is 51, so no upper bonus applies. This is optimal, with total 131.
+
+Requested spotcheck sum for rounds 1 and 3:  
+12 + 3 = 15
+
+Answer: 15",15,1,medium,stop
+yacht_dice_en_medium_0087,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [3, 3, 6, 3, 1]
+Round 2: [4, 1, 3, 5, 5]
+Round 3: [3, 6, 4, 4, 4]
+Round 4: [2, 5, 3, 1, 2]
+Round 5: [5, 1, 1, 1, 1]
+Round 6: [5, 5, 4, 5, 5]
+Round 7: [2, 5, 5, 6, 4]
+Round 8: [2, 6, 3, 3, 5]
+Round 9: [3, 5, 6, 3, 3]
+Round 10: [5, 5, 2, 2, 4]
+Round 11: [5, 2, 1, 5, 1]
+Round 12: [5, 2, 2, 2, 2]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 3, 7. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",18,,"An optimal total score is achieved, for example, by assigning:
+
+- Round 1 → Threes = 9  
+- Round 3 → Fours = 12  
+- Round 5 → Aces = 4  
+- Round 6 → Four-of-a-Kind = 24  
+- Round 7 → Fives = 10  
+- Round 8 → Sixes = 6  
+- Round 9 → Three-of-a-Kind = 20  
+- Round 12 → Twos = 8  
+
+The remaining rounds score 0 in the unused lower categories.  
+Upper section sum is \(4+8+9+12+10+6=49\), so no bonus.
+
+Requested partial sum for rounds 3 and 7:
+
+\[
+12 + 10 = 22
+\]
+
+Answer: 22",22,0,medium,stop
+yacht_dice_en_medium_0088,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [6, 1, 4, 5, 1]
+Round 2: [3, 2, 2, 5, 3]
+Round 3: [4, 2, 2, 5, 5]
+Round 4: [2, 1, 5, 2, 4]
+Round 5: [5, 5, 5, 2, 6]
+Round 6: [6, 6, 5, 1, 6]
+Round 7: [3, 5, 3, 6, 3]
+Round 8: [6, 3, 6, 1, 2]
+Round 9: [2, 1, 1, 4, 3]
+Round 10: [3, 1, 3, 6, 6]
+Round 11: [4, 3, 6, 1, 6]
+Round 12: [1, 2, 6, 4, 6]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 8, 10. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",12,,"One optimal assignment is:
+
+- R1 → Aces = 2  
+- R2 → Twos = 4  
+- R3 → Fives = 10  
+- R4 → Fours = 4  
+- R5 → Three-of-a-Kind = 23  
+- R6 → Sixes = 18  
+- R7 → Threes = 9  
+- R8 → Full House = 0  
+- R9 → Small Straight = 30  
+- R10 → Yacht = 0  
+- R11 → Four-of-a-Kind = 0  
+- R12 → Large Straight = 0  
+
+The requested rounds are 8 and 10, scoring \(0 + 0 = 0\).
+
+Answer: 0",0,0,medium,stop
+yacht_dice_en_medium_0089,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [2, 6, 6, 6, 4]
+Round 2: [5, 3, 3, 3, 2]
+Round 3: [1, 6, 2, 1, 6]
+Round 4: [2, 4, 1, 2, 3]
+Round 5: [5, 4, 1, 5, 6]
+Round 6: [1, 2, 2, 1, 4]
+Round 7: [1, 5, 4, 1, 6]
+Round 8: [2, 5, 3, 6, 2]
+Round 9: [4, 4, 1, 4, 6]
+Round 10: [5, 5, 6, 1, 5]
+Round 11: [6, 1, 1, 5, 2]
+Round 12: [4, 4, 6, 4, 2]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 4, 6. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",34,,"An optimal scoring assignment is:
+
+- Round 1 → Sixes = 18  
+- Round 2 → Threes = 9  
+- Round 3 → Aces = 2  
+- Round 4 → Small Straight = 30  
+- Round 6 → Twos = 4  
+- Round 9 → Fours = 12  
+- Round 10 → Fives = 15  
+- Round 12 → Three-of-a-Kind = 20  
+
+The remaining rounds/categories score 0.  
+Upper section sum is only 60, so no +35 bonus is possible.
+
+Total score for this optimal assignment is 110.
+
+Requested spotcheck sum for rounds 4 and 6:
+
+- Round 4: 30  
+- Round 6: 4  
+
+30 + 4 = 34
+
+Answer: 34",34,1,medium,stop
+yacht_dice_en_medium_0090,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [6, 3, 5, 5, 5]
+Round 2: [5, 5, 5, 5, 6]
+Round 3: [4, 2, 4, 5, 3]
+Round 4: [6, 1, 5, 1, 6]
+Round 5: [1, 5, 5, 5, 4]
+Round 6: [4, 1, 5, 2, 5]
+Round 7: [5, 1, 6, 1, 3]
+Round 8: [6, 6, 6, 6, 6]
+Round 9: [5, 5, 5, 2, 4]
+Round 10: [2, 3, 2, 3, 2]
+Round 11: [3, 4, 3, 2, 2]
+Round 12: [6, 3, 3, 5, 2]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 10, 11. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",29,,"An optimal full assignment is:
+
+| Round | Dice | Category | Score |
+|---:|---|---|---:|
+| 1 | [6,3,5,5,5] | Three-of-a-Kind | 24 |
+| 2 | [5,5,5,5,6] | Four-of-a-Kind | 26 |
+| 3 | [4,2,4,5,3] | Small Straight | 30 |
+| 4 | [6,1,5,1,6] | Sixes | 12 |
+| 5 | [1,5,5,5,4] | Fives | 15 |
+| 6 | [4,1,5,2,5] | Fours | 4 |
+| 7 | [5,1,6,1,3] | Aces | 2 |
+| 8 | [6,6,6,6,6] | Yacht | 50 |
+| 9 | [5,5,5,2,4] | Large Straight | 0 |
+| 10 | [2,3,2,3,2] | Full House | 25 |
+| 11 | [3,4,3,2,2] | Twos | 4 |
+| 12 | [6,3,3,5,2] | Threes | 6 |
+
+Upper section sum is \(2+4+6+4+15+12=43\), so no upper bonus.
+
+The requested spotcheck sum is for rounds 10 and 11 only:
+
+\[
+25 + 4 = 29
+\]
+
+Answer: 29",29,1,medium,stop
+yacht_dice_en_medium_0091,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [2, 2, 5, 2, 4]
+Round 2: [3, 3, 5, 6, 4]
+Round 3: [4, 6, 4, 3, 6]
+Round 4: [3, 1, 6, 1, 3]
+Round 5: [1, 1, 1, 5, 4]
+Round 6: [5, 6, 4, 1, 6]
+Round 7: [4, 3, 4, 6, 4]
+Round 8: [1, 2, 1, 2, 5]
+Round 9: [1, 5, 6, 6, 5]
+Round 10: [4, 1, 1, 1, 1]
+Round 11: [6, 4, 4, 6, 1]
+Round 12: [1, 2, 4, 4, 2]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 5, 6. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",3,,"One optimal assignment (total score 104) is:
+
+- Round 1 → Twos = 6  
+- Round 2 → Small Straight = 30  
+- Round 3 → Fours = 8  
+- Round 4 → Threes = 6  
+- Round 5 → Aces = 3  
+- Round 6 → Sixes = 12  
+- Round 7 → Three-of-a-Kind = 21  
+- Round 8 → Full House = 0  
+- Round 9 → Fives = 10  
+- Round 10 → Four-of-a-Kind = 8  
+- Round 11 → Large Straight = 0  
+- Round 12 → Yacht = 0  
+
+Upper section sum is 45, so no bonus.
+
+Requested partial sum for rounds 5 and 6:  
+3 + 12 = 15
+
+Answer: 15",15,0,medium,stop
+yacht_dice_en_medium_0092,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [5, 5, 4, 2, 2]
+Round 2: [6, 3, 1, 6, 4]
+Round 3: [2, 2, 6, 3, 2]
+Round 4: [3, 6, 2, 2, 3]
+Round 5: [5, 3, 2, 2, 3]
+Round 6: [6, 6, 6, 5, 4]
+Round 7: [3, 2, 2, 2, 2]
+Round 8: [1, 5, 4, 5, 1]
+Round 9: [4, 2, 4, 3, 5]
+Round 10: [6, 4, 4, 1, 3]
+Round 11: [3, 4, 4, 4, 5]
+Round 12: [6, 1, 2, 2, 2]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 1, 11. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",22,,"An optimal assignment has:
+
+- Round 1 → Fives = 10
+- Round 11 → Fours = 12
+
+So the requested partial sum is:
+
+10 + 12 = 22
+
+Answer: 22",22,1,medium,stop
+yacht_dice_en_medium_0093,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [3, 1, 3, 6, 3]
+Round 2: [3, 2, 5, 6, 6]
+Round 3: [3, 2, 3, 3, 3]
+Round 4: [3, 2, 1, 1, 1]
+Round 5: [4, 4, 1, 6, 1]
+Round 6: [3, 3, 2, 1, 1]
+Round 7: [2, 2, 2, 6, 2]
+Round 8: [6, 1, 1, 4, 6]
+Round 9: [3, 1, 5, 2, 2]
+Round 10: [5, 2, 4, 5, 1]
+Round 11: [2, 5, 3, 3, 1]
+Round 12: [2, 3, 2, 3, 6]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 10, 12. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",10,,"One optimal assignment is:
+
+- Round 1 → Three-of-a-Kind = 16  
+- Round 2 → Sixes = 12  
+- Round 3 → Threes = 12  
+- Round 4 → Aces = 3  
+- Round 5 → Fours = 8  
+- Round 6 → Full House = 0  
+- Round 7 → Four-of-a-Kind = 14  
+- Round 8 → Small Straight = 0  
+- Round 9 → Large Straight = 0  
+- Round 10 → Fives = 10  
+- Round 11 → Yacht = 0  
+- Round 12 → Twos = 4  
+
+The requested spotcheck sum for rounds 10 and 12 is:
+
+10 + 4 = 14
+
+Answer: 14",14,0,medium,stop
+yacht_dice_en_medium_0094,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [5, 3, 3, 6, 1]
+Round 2: [2, 5, 6, 2, 1]
+Round 3: [3, 5, 2, 5, 3]
+Round 4: [1, 1, 3, 2, 2]
+Round 5: [3, 3, 5, 4, 3]
+Round 6: [3, 5, 6, 5, 5]
+Round 7: [1, 1, 1, 4, 6]
+Round 8: [3, 1, 3, 5, 2]
+Round 9: [4, 5, 2, 4, 3]
+Round 10: [1, 2, 1, 3, 1]
+Round 11: [4, 1, 4, 1, 4]
+Round 12: [6, 4, 4, 6, 1]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 6, 9. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",54,,"The upper-section bonus is impossible, since the maximum possible upper score is:
+
+3 + 4 + 9 + 12 + 15 + 12 = 55 < 63
+
+So we maximize only the category scores.
+
+Key optimal choices:
+- Round 9 is the only Small Straight, so assign Round 9 → Small Straight = 30.
+- Round 11 is the only Full House, so assign Round 11 → Full House = 25.
+- Round 6 is best used as Three-of-a-Kind = 24.
+
+An optimal assignment can then score the upper section for 42 points, giving a full optimal total of 121.
+
+The requested spotcheck is rounds 6 and 9 only:
+
+- Round 6: 24
+- Round 9: 30
+
+Sum = 54
+
+Answer: 54",54,1,medium,stop
+yacht_dice_en_medium_0095,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [1, 3, 3, 2, 5]
+Round 2: [5, 3, 4, 5, 3]
+Round 3: [5, 6, 2, 5, 5]
+Round 4: [4, 5, 3, 5, 5]
+Round 5: [6, 3, 2, 5, 2]
+Round 6: [4, 2, 4, 2, 5]
+Round 7: [4, 2, 3, 4, 1]
+Round 8: [3, 2, 5, 1, 4]
+Round 9: [2, 4, 4, 6, 4]
+Round 10: [4, 3, 5, 6, 5]
+Round 11: [6, 5, 1, 5, 6]
+Round 12: [6, 4, 4, 3, 6]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 1, 8. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",46,,"The upper-section bonus is impossible here, since the maximum possible upper total is:
+
+\(1+4+6+12+15+12=50 < 63\).
+
+An optimal total score is achieved by this assignment:
+
+- Round 1 → Threes = 6
+- Round 3 → Three-of-a-Kind = 23
+- Round 4 → Fives = 15
+- Round 5 → Twos = 4
+- Round 7 → Small Straight = 30
+- Round 8 → Large Straight = 40
+- Round 9 → Fours = 12
+- Round 11 → Aces = 1
+- Round 12 → Sixes = 12
+- Remaining rounds/categories score 0
+
+This gives the optimal full total of 143. The requested spotcheck sum for rounds 1 and 8 is:
+
+\(6 + 40 = 46\)
+
+Answer: 46",46,1,medium,stop
+yacht_dice_en_medium_0096,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [1, 1, 1, 2, 5]
+Round 2: [2, 4, 6, 2, 6]
+Round 3: [2, 4, 2, 3, 3]
+Round 4: [2, 1, 3, 6, 4]
+Round 5: [4, 4, 4, 4, 6]
+Round 6: [5, 5, 3, 1, 1]
+Round 7: [4, 6, 1, 4, 1]
+Round 8: [3, 3, 6, 1, 3]
+Round 9: [2, 2, 5, 1, 2]
+Round 10: [3, 3, 6, 6, 2]
+Round 11: [5, 5, 4, 6, 6]
+Round 12: [3, 1, 1, 6, 5]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 5, 7. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",30,,"The upper-section bonus is impossible here: even taking the best possible score for each upper category gives
+
+- Aces: 3
+- Twos: 6
+- Threes: 9
+- Fours: 16
+- Fives: 10
+- Sixes: 12
+
+Total upper maximum = 56, which is below 63, so no +35 bonus can be earned.
+
+Key category scores:
+
+- Small Straight: only Round 4 qualifies, for 30.
+- Four-of-a-Kind: only Round 5 qualifies, for 22.
+- Three-of-a-Kind: Rounds 1, 5, 8, 9 qualify, with best remaining choice being Round 8 for 16 if Round 5 is used for Four-of-a-Kind.
+
+An optimal assignment includes:
+
+- Round 4 → Small Straight = 30
+- Round 5 → Four-of-a-Kind = 22
+- Round 8 → Three-of-a-Kind = 16
+- Round 7 → Fours = 8
+
+The requested spotcheck sum is for rounds 5 and 7:
+
+22 + 8 = 30
+
+Answer: 30",30,1,medium,stop
+yacht_dice_en_medium_0097,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [4, 4, 1, 4, 4]
+Round 2: [4, 6, 2, 5, 4]
+Round 3: [2, 4, 1, 1, 3]
+Round 4: [2, 1, 1, 1, 4]
+Round 5: [6, 6, 2, 4, 1]
+Round 6: [5, 1, 2, 1, 3]
+Round 7: [6, 2, 5, 5, 4]
+Round 8: [2, 4, 5, 5, 1]
+Round 9: [3, 3, 2, 4, 4]
+Round 10: [5, 5, 2, 5, 5]
+Round 11: [4, 3, 6, 5, 3]
+Round 12: [1, 1, 1, 3, 2]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 6, 12. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",3,,"No upper bonus is possible: even the best individual upper scores sum to \(3+2+6+16+20+12=59<63\).
+
+One optimal assignment achieving the upper bound of 110 is:
+
+| Round | Category | Score |
+|---:|---|---:|
+| 1 | Three-of-a-Kind | 17 |
+| 2 | Fours | 8 |
+| 3 | Small Straight | 30 |
+| 4 | Aces | 3 |
+| 5 | Sixes | 12 |
+| 6 | Full House | 0 |
+| 7 | Fives | 10 |
+| 8 | Large Straight | 0 |
+| 9 | Threes | 6 |
+| 10 | Four-of-a-Kind | 22 |
+| 11 | Yacht | 0 |
+| 12 | Twos | 2 |
+
+The requested spotcheck sum for rounds 6 and 12 is:
+
+\[
+0+2=2
+\]
+
+Answer: 2",2,0,medium,stop
+yacht_dice_en_medium_0098,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [5, 6, 2, 3, 1]
+Round 2: [1, 2, 4, 3, 6]
+Round 3: [6, 1, 3, 5, 3]
+Round 4: [6, 6, 2, 5, 6]
+Round 5: [1, 4, 4, 4, 5]
+Round 6: [5, 5, 2, 6, 1]
+Round 7: [5, 2, 6, 5, 4]
+Round 8: [1, 5, 4, 5, 2]
+Round 9: [4, 5, 5, 3, 5]
+Round 10: [3, 5, 5, 6, 5]
+Round 11: [6, 6, 4, 4, 5]
+Round 12: [6, 6, 4, 6, 2]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 2, 3. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",36,,"An optimal assignment includes:
+
+- Round 2 → Small Straight = 30
+- Round 3 → Threes = 6
+
+So the requested spotcheck sum for rounds 2 and 3 is:
+
+30 + 6 = 36
+
+Answer: 36",36,1,medium,stop
+yacht_dice_en_medium_0099,"Given the following 12 rounds of dice results, find an optimal category assignment.
+
+Scoring rules (use these exact point values):
+- Full House: 25 points
+- Small Straight: 30 points
+- Large Straight: 40 points
+- Yacht: 50 points
+- Aces through Sixes: sum of dice showing that number
+- Three-of-a-Kind / Four-of-a-Kind: sum of all dice if the dice qualify
+- Upper section bonus: +35 when the sum of Aces through Sixes is 63 or more
+
+Round 1: [3, 4, 6, 2, 2]
+Round 2: [6, 3, 3, 1, 3]
+Round 3: [3, 3, 6, 3, 3]
+Round 4: [1, 4, 4, 5, 1]
+Round 5: [5, 5, 2, 5, 4]
+Round 6: [2, 4, 5, 6, 5]
+Round 7: [2, 3, 3, 2, 2]
+Round 8: [3, 3, 3, 6, 1]
+Round 9: [4, 4, 3, 4, 4]
+Round 10: [5, 4, 6, 5, 5]
+Round 11: [2, 1, 4, 2, 2]
+Round 12: [5, 2, 1, 2, 2]
+
+Compute the optimal assignment. If additional instructions below specify particular rounds, report only the requested partial sum—not the full 12-round total.
+
+IMPORTANT — Spotcheck grading (not the full 12-round total):
+First compute an optimal assignment that maximizes the usual total score over all 12 rounds (same rules and bonus as always). Using that optimal assignment, output ONLY the sum of the per-round scores for rounds 6, 7. Your final line must be exactly `Answer: <integer>` with that partial sum.
+",25,,"The optimal total score is 122, with (for example) this optimal assignment:
+
+- R3 → Four-of-a-Kind = 18  
+- R4 → Aces = 2  
+- R5 → Fives = 15  
+- R6 → Sixes = 6  
+- R7 → Full House = 25  
+- R8 → Threes = 9  
+- R9 → Fours = 16  
+- R10 → Three-of-a-Kind = 25  
+- R11 → Twos = 6  
+- Remaining rounds → zero-score categories
+
+For the requested rounds:
+
+- Round 6 = 6  
+- Round 7 = 25  
+
+Sum = 31
+
+Answer: 31",31,0,medium,stop

@@ -1,0 +1,32 @@
+{
+  "metadata": {
+    "task": "inequality_ko_hard",
+    "model": "anthropic/claude-opus-4-8",
+    "timestamp": "2026-07-17T13-08-54",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "max_tokens": 32768,
+      "reasoning_effort": "medium"
+    },
+    "gen_kwargs_cli": "max_tokens=32768,reasoning_effort=medium"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.87,
+      "correct_count": 87,
+      "total_count": 100,
+      "avg_latency_ms": 163021.27313137054,
+      "finish_reason_counts": {
+        "stop": 89,
+        "length": 11
+      }
+    },
+    "by_difficulty": {
+      "hard": {
+        "total": 100,
+        "correct": 87,
+        "accuracy": 0.87
+      }
+    }
+  }
+}

@@ -1,0 +1,7593 @@
+id,question,answer,thinking_content,resps,filtered_resps,exact_match,difficulty,finish_reason
+sudoku_en_hard_0000,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. 2 . 7 . . . 6 .
+7 . 4 8 9 . . . .
+8 . 6 . . . . . 7
+. 6 . . 3 7 . 8 9
+. . . 2 6 5 . . .
+1 3 . 9 4 . . 5 .
+3 . . . . . 8 . 6
+. . . . 8 2 5 . 3
+. 8 . . . 1 . 9 .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(5, 7), (7, 8), (4, 6), (7, 6), (5, 1), (9, 9)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",3 2 7 9 9 4,,"Solving the Sudoku step by step:
+
+Given puzzle:
+
+```text
+. 2 . 7 . . . 6 .
+7 . 4 8 9 . . . .
+8 . 6 . . . . . 7
+. 6 . . 3 7 . 8 9
+. . . 2 6 5 . . .
+1 3 . 9 4 . . 5 .
+3 . . . . . 8 . 6
+. . . . 8 2 5 . 3
+. 8 . . . 1 . 9 .
+```
+
+Key deductions:
+
+- In the top-left box, only `r1c3` can be `3`.
+- In the top-middle box, `r3c5 = 2`.
+- In the center box, `r6c6 = 8`, which leads to:
+  - `r6c9 = 2`
+  - `r6c3 = 7`
+  - `r6c7 = 6`
+- Column 5 then forces `r1c5 = 1`.
+- The top-middle box continues:
+  - `r1c6 = 4`
+  - `r3c6 = 3`
+  - `r2c6 = 6`
+  - `r3c4 = 5`
+- Row 1 resolves to:
+
+```text
+5 2 3 7 1 4 9 6 8
+```
+
+Continuing with singles and box/row/column eliminations:
+
+- Top-left box gives:
+  - `r2c2 = 1`
+  - `r3c2 = 9`
+- Row 2 gives `r2c9 = 5`.
+- Column 2 gives `r7c2 = 5`.
+- Row 7 gives:
+  - `r7c4 = 4`
+  - `r7c5 = 7`
+- Column 4 gives:
+  - `r4c4 = 1`
+  - `r8c4 = 6`
+- Column 5 gives `r9c5 = 5`.
+- Row 9 then resolves:
+
+```text
+6 8 2 3 5 1 7 9 4
+```
+
+This triggers further completions:
+
+- Column 3 resolves:
+  - `r4c3 = 5`
+  - `r7c3 = 1`
+  - `r8c3 = 9`
+  - `r5c3 = 8`
+- Row 7 becomes:
+
+```text
+3 5 1 4 7 9 8 2 6
+```
+
+- Row 8 becomes:
+
+```text
+4 7 9 6 8 2 5 1 3
+```
+
+- Row 5 resolves to:
+
+```text
+9 4 8 2 6 5 3 7 1
+```
+
+- Row 4 resolves to:
+
+```text
+2 6 5 1 3 7 4 8 9
+```
+
+Final completed Sudoku grid:
+
+```text
+5 2 3 7 1 4 9 6 8
+7 1 4 8 9 6 2 3 5
+8 9 6 5 2 3 1 4 7
+2 6 5 1 3 7 4 8 9
+9 4 8 2 6 5 3 7 1
+1 3 7 9 4 8 6 5 2
+3 5 1 4 7 9 8 2 6
+4 7 9 6 8 2 5 1 3
+6 8 2 3 5 1 7 9 4
+```
+
+Spotcheck values:
+
+- `(5, 7)` = `3`
+- `(7, 8)` = `2`
+- `(4, 6)` = `7`
+- `(7, 6)` = `9`
+- `(5, 1)` = `9`
+- `(9, 9)` = `4`
+
+Answer: 3 2 7 9 9 4",3 2 7 9 9 4,1,hard,stop
+sudoku_en_hard_0001,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+8 3 . . . . . 4 2
+. . 9 . . 1 . . .
+. 2 . 3 . . 7 . 6
+5 . . . 6 . 4 . .
+4 . 2 7 3 5 9 . 1
+. . 6 . 2 . . . 7
+6 . 1 . . 2 . 7 .
+. . . 9 . . 6 . .
+3 9 . . . . . 8 5
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(8, 5), (9, 6), (9, 3), (1, 7), (7, 6), (2, 6)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",7 6 7 1 2 1,,"Solving step by step:
+
+1. In row 5, the only missing digits are 6 and 8. Since column 8 can only take 6, we get:
+   - r5c8 = 6
+   - r5c2 = 8
+
+2. In the middle-left 3×3 box, placements force:
+   - r6c2 = 1
+   - r6c1 = 9
+   - r4c2 = 7
+   - r4c3 = 3
+
+3. Column 1 then forces:
+   - r3c1 = 1
+
+4. Row 4 becomes constrained:
+   - r4c8 = 2
+   - r4c9 = 8
+   - r4c4 = 1
+   - r4c6 = 9
+
+5. In the top-left box:
+   - r2c1 = 7
+   - r1c3 = 5
+   - r3c3 = 4
+   - r2c2 = 6
+
+6. Row 3 then gives:
+   - r3c6 = 8
+
+7. Column 3 forces:
+   - r9c3 = 7
+   - r8c3 = 8
+
+8. Row 1 resolves:
+   - r1c4 = 6
+   - r1c6 = 7
+   - r1c5 = 9
+   - r1c7 = 1
+
+9. Column 7 then gives:
+   - r9c7 = 2
+
+10. Row 9 and column/box constraints give:
+   - r9c5 = 1
+   - r3c5 = 5
+   - r3c8 = 9
+
+11. The top-middle box resolves row 2:
+   - r2c5 = 4
+   - r2c4 = 2
+
+12. Column 4 and column 6 force:
+   - r9c4 = 4
+   - r9c6 = 6
+   - r6c6 = 4
+   - r8c6 = 3
+
+13. Row 8 resolves:
+   - r8c8 = 1
+   - r8c9 = 4
+   - r8c5 = 7
+   - r8c2 = 5
+
+14. Column 2 and row 7 resolve:
+   - r7c2 = 4
+   - r7c5 = 8
+   - r7c4 = 5
+   - r7c9 = 9
+
+15. The remaining cells resolve:
+   - r6c4 = 8
+   - r6c7 = 5
+   - r6c8 = 3
+   - r2c7 = 8
+   - r2c9 = 3
+   - r2c8 = 5
+
+Completed Sudoku grid:
+
+8 3 5 6 9 7 1 4 2  
+7 6 9 2 4 1 8 5 3  
+1 2 4 3 5 8 7 9 6  
+5 7 3 1 6 9 4 2 8  
+4 8 2 7 3 5 9 6 1  
+9 1 6 8 2 4 5 3 7  
+6 4 1 5 8 2 3 7 9  
+2 5 8 9 7 3 6 1 4  
+3 9 7 4 1 6 2 8 5  
+
+Answer: 7 6 7 1 2 1",7 6 7 1 2 1,1,hard,stop
+sudoku_en_hard_0002,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+8 . 2 . . . . . 4
+5 . . . . 1 . 6 .
+. . . 4 . 9 . . 8
+9 5 . . 1 . . 7 3
+. . 1 7 . 6 9 . .
+3 7 . . 9 . . 8 2
+4 . . 1 . 2 . . .
+. 2 . 3 . . . . 9
+6 . . . . . 8 . 1
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(5, 2), (4, 4), (7, 9), (2, 9), (9, 4), (3, 3)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",8 2 6 7 9 3,,"Solving step by step:
+
+1. In row 5, the missing digits are {2,3,4,5,8}.  
+   - r5c1 must be 2  
+   - r5c9 must be 5  
+   - r5c8 must be 4  
+   - then r5c2 = 8 and r5c5 = 3  
+
+2. In the middle box rows 4–6, cols 4–6, the missing digits are {2,4,5,8}.  
+   - r6c4 = 5  
+   - r6c6 = 4  
+   - r4c6 = 8  
+   - r4c4 = 2  
+
+3. Row 6 then becomes:
+   - r6c3 = 6  
+   - r6c7 = 1  
+   So row 6 is: 3 7 6 5 9 4 1 8 2
+
+4. Row 4 then becomes:
+   - r4c3 = 4  
+   - r4c7 = 6  
+   So row 4 is: 9 5 4 2 1 8 6 7 3
+
+5. Column 4 now forces:
+   - r1c4 = 6  
+   - r2c4 = 8  
+   - r9c4 = 9  
+
+6. In the top-middle box, r1c6 is the only place for 3:
+   - r1c6 = 3  
+
+7. Column 6 then forces:
+   - r8c6 = 7  
+   - r9c6 = 5  
+
+8. Row 8 gives:
+   - r8c1 = 1  
+   - r8c3 = 8  
+
+9. Column 1 then forces:
+   - r3c1 = 7  
+
+10. In the top-left box:
+   - r3c3 = 3  
+
+11. Column 3 then forces:
+   - r2c3 = 9  
+   - r9c3 = 7  
+   - r7c3 = 5  
+
+12. Row 9 becomes:
+   - r9c5 = 4  
+   - r9c2 = 3  
+   - r9c8 = 2  
+   So row 9 is: 6 3 7 9 4 5 8 2 1
+
+13. Row 7 becomes:
+   - r7c8 = 3  
+   - r7c2 = 9  
+   - r7c7 = 7  
+   - r7c5 = 8  
+   So row 7 is: 4 9 5 1 8 2 7 3 6
+
+14. Column 2 forces:
+   - r1c2 = 1  
+   - r2c2 = 4  
+   - r3c2 = 6  
+
+15. Row 2 then completes:
+   - r2c7 = 3  
+   So row 2 is: 5 4 9 8 2 1 3 6 7
+
+16. Row 3 completes:
+   - r3c5 = 5  
+   - r3c7 = 2  
+   - r3c8 = 1  
+   So row 3 is: 7 6 3 4 5 9 2 1 8
+
+17. Column 5 and row 8 finish:
+   - r1c5 = 7  
+   - r8c5 = 6  
+   - r8c7 = 4  
+
+18. Finally row 1 completes:
+   - r1c7 = 5  
+   - r1c8 = 9  
+
+Completed Sudoku grid:
+
+8 1 2 6 7 3 5 9 4  
+5 4 9 8 2 1 3 6 7  
+7 6 3 4 5 9 2 1 8  
+9 5 4 2 1 8 6 7 3  
+2 8 1 7 3 6 9 4 5  
+3 7 6 5 9 4 1 8 2  
+4 9 5 1 8 2 7 3 6  
+1 2 8 3 6 7 4 5 9  
+6 3 7 9 4 5 8 2 1  
+
+Answer: 8 2 6 7 9 3",8 2 6 7 9 3,1,hard,stop
+sudoku_en_hard_0003,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . . . 4 5 . 1 2
+. 4 7 3 . . . . .
+. . 3 6 . . . 5 .
+. . 5 1 3 4 . . 6
+4 . . . . . . . 7
+2 . . 5 7 8 1 . .
+. 1 . . . 3 8 . .
+. . . . . 7 2 3 .
+3 9 . 8 5 . . . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(2, 3), (6, 8), (8, 6), (9, 8), (9, 3), (5, 3)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",7 4 7 7 2 1,,"Step-by-step solution highlights:
+
+1. In the top-left 3×3 box, the only place for 5 is r2c1, and the only place for 2 is r3c2.  
+   Then r3c1 becomes 1.
+
+2. Row 3 is forced:
+   - r3c6 = 9
+   - r3c5 = 8
+   - r3c9 = 4
+   - r3c7 = 7
+
+3. In the top-right 3×3 box, r1c7 = 3.
+
+4. Column 7 then forces r4c7 = 9.
+
+5. In the middle-right 3×3 box:
+   - r5c7 = 5
+   - r6c8 = 4
+   - r6c9 = 3  
+   This completes row 6 as:
+   2 6 9 5 7 8 1 4 3
+
+6. Column 2 and row 4 resolve:
+   - r1c2 = 8
+   - r4c2 = 7
+   - r4c1 = 8
+   - r4c8 = 2
+
+7. Row 5 gets:
+   - r5c8 = 8
+   - r5c2 = 3
+   - r5c3 = 1
+
+8. Column 1 forces r7c1 = 7, and then row 7 forces r7c9 = 5.
+
+9. The bottom-right 3×3 box resolves:
+   - r8c9 = 9
+   - r7c8 = 6
+   - r9c8 = 7
+   - r9c7 = 4
+
+10. Row 8 resolves completely:
+   6 5 8 4 1 7 2 3 9
+
+11. The remaining singles finish the grid.
+
+Completed Sudoku:
+
+9 8 6 7 4 5 3 1 2  
+5 4 7 3 2 1 6 9 8  
+1 2 3 6 8 9 7 5 4  
+8 7 5 1 3 4 9 2 6  
+4 3 1 9 6 2 5 8 7  
+2 6 9 5 7 8 1 4 3  
+7 1 4 2 9 3 8 6 5  
+6 5 8 4 1 7 2 3 9  
+3 9 2 8 5 6 4 7 1  
+
+Answer: 7 4 7 7 2 1",7 4 7 7 2 1,1,hard,stop
+sudoku_en_hard_0004,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+2 . . . 3 8 7 . 5
+. . 6 . . . . . 1
+. 5 . 9 1 . 8 . 3
+. . 1 . . . 9 5 .
+4 . . . . . . . 2
+. 7 5 . . . 4 . .
+3 . 2 . 4 5 . 7 .
+1 . . . . . 5 . .
+5 . 8 7 9 . . . 6
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(3, 9), (4, 5), (2, 2), (8, 8), (1, 3), (1, 5)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",3 8 3 8 9 3,,"Solved grid:
+
+```text
+2 1 9 6 3 8 7 4 5
+8 3 6 4 5 7 2 9 1
+7 5 4 9 1 2 8 6 3
+6 2 1 3 8 4 9 5 7
+4 8 3 5 7 9 6 1 2
+9 7 5 1 2 6 4 3 8
+3 6 2 8 4 5 1 7 9
+1 9 7 2 6 3 5 8 4
+5 4 8 7 9 1 3 2 6
+```
+
+Key reasoning highlights:
+
+- In the top-left box, row 3 column 1 must be `7`, and row 3 column 3 must be `4`; this then forces row 1 column 3 to be `9`.
+- In the top-right box, row 2 column 7 is the only possible place for `2`.
+- Column 3 then forces row 8 column 3 to be `7`, and row 5 column 3 to be `3`.
+- The middle-right box forces row 6 column 9 to be `8`, then row 4 column 9 to be `7`.
+- Column 9 then forces row 7 column 9 to be `9`, and row 8 column 9 to be `4`.
+- The lower-right box forces row 9 column 8 to be `2`, and row 8 column 8 to be `8`.
+- From there, rows and columns resolve cleanly by singles until the grid is complete.
+
+Requested coordinates:
+
+- (3, 9) = `3`
+- (4, 5) = `8`
+- (2, 2) = `3`
+- (8, 8) = `8`
+- (1, 3) = `9`
+- (1, 5) = `3`
+
+Answer: 3 8 3 8 9 3",3 8 3 8 9 3,1,hard,stop
+sudoku_en_hard_0005,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . . 1 4 5 . . 7
+6 . . . 3 . . . .
+. . 1 6 9 . 2 . .
+. 3 2 . . . . 7 9
+. 9 . 8 . 3 . 4 .
+4 1 . . . . 8 3 .
+. . 4 . 7 6 3 . .
+. . . . 8 . . . 5
+3 . . 4 5 1 . . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(2, 3), (6, 3), (1, 5), (8, 8), (6, 4), (2, 9)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",9 5 4 1 7 4,,"Solved grid:
+
+```text
+2 8 3 1 4 5 9 6 7
+6 7 9 2 3 8 1 5 4
+5 4 1 6 9 7 2 8 3
+8 3 2 5 1 4 6 7 9
+7 9 6 8 2 3 5 4 1
+4 1 5 7 6 9 8 3 2
+1 5 4 9 7 6 3 2 8
+9 6 7 3 8 2 4 1 5
+3 2 8 4 5 1 7 9 6
+```
+
+Key solving steps included:
+- In row 4, column 4 was forced to `5`, then row 4 column 6 became `4`, leading to row 4 column 1 = `8`.
+- In row 3, column 9 was the only place for `3` in its box; later row 3 column 2 = `4`, row 3 column 1 = `5`, row 3 column 8 = `8`, and row 3 column 6 = `7`.
+- The middle-right box forced row 5 column 7 = `5`, which then led to row 5 column 1 = `7` and row 5 column 3 = `6`.
+- Column and box eliminations then forced row 2 column 4 = `2`, row 2 column 6 = `8`, row 2 column 9 = `4`, and eventually row 2 completed as `6 7 9 2 3 8 1 5 4`.
+- The remaining rows and columns resolved cleanly by singles.
+
+Requested coordinates:
+- (2, 3) = `9`
+- (6, 3) = `5`
+- (1, 5) = `4`
+- (8, 8) = `1`
+- (6, 4) = `7`
+- (2, 9) = `4`
+
+Answer: 9 5 4 1 7 4",9 5 4 1 7 4,1,hard,stop
+sudoku_en_hard_0006,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . 5 2 7 1 . . 4
+. . . 3 4 . . . .
+4 . . . . 9 1 . .
+2 4 . 6 . 8 . 9 .
+. . 6 . . . 4 . .
+. 7 . 1 . 4 . 6 3
+. . 8 7 . . . . 1
+. . . . 1 3 . . .
+1 . . 8 6 5 2 . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(8, 6), (2, 1), (5, 8), (7, 5), (1, 5), (5, 2)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",3 7 1 9 7 8,,"The puzzle is **not uniquely solvable** as given. Following standard Sudoku deductions, we can reduce it substantially, but then it branches into at least two valid complete grids.
+
+Some key deductions:
+
+- In the top-middle box, the missing digits are `{6,8}`, so:
+  - r2c6 = 6
+  - r3c5 = 8
+- Column 6 then forces:
+  - r7c6 = 2
+  - r5c6 = 7
+- The bottom-middle box then forces:
+  - r7c5 = 9
+- In column 8, only r5c8 can be `1`, so:
+  - r5c8 = 1
+- Row/box interactions give:
+  - r4c5 = 3
+  - r4c3 = 1
+  - r6c5 = 2
+  - r5c5 = 5
+  - r5c9 = 2
+  - r6c1 = 5
+  - r6c7 = 8
+  - r9c3 = 4
+  - r3c3 = 3
+  - r2c2 = 1
+  - r7c8 = 4
+  - r4c7 = 7
+  - r4c9 = 5
+
+At that point the puzzle still has multiple valid completions.
+
+One valid completed grid is:
+
+```text
+9 3 5 2 7 1 6 8 4
+8 1 7 3 4 6 5 2 9
+4 2 3 5 8 9 1 7 6
+2 4 1 6 3 8 7 9 5
+3 8 6 9 5 7 4 1 2
+5 7 9 1 2 4 8 6 3
+6 5 8 7 9 2 3 4 1
+7 6 2 4 1 3 9 5 8
+1 9 4 8 6 5 2 3 7
+```
+
+Another valid completed grid is:
+
+```text
+8 9 5 2 7 1 6 3 4
+7 1 2 3 4 6 9 5 8
+4 6 3 5 8 9 1 2 7
+2 4 1 6 3 8 7 9 5
+3 8 6 9 5 7 4 1 2
+5 7 9 1 2 4 8 6 3
+6 5 8 7 9 2 3 4 1
+9 2 7 4 1 3 5 8 6
+1 3 4 8 6 5 2 7 9
+```
+
+For the requested coordinates:
+
+- (8, 6) = 3 in both
+- (2, 1) = 8 in the first solution, but 7 in the second
+- (5, 8) = 1 in both
+- (7, 5) = 9 in both
+- (1, 5) = 7 in both
+- (5, 2) = 8 in both
+
+So the spotcheck answer is **not uniquely determined** because `(2,1)` can be either `8` or `7`.
+
+Answer: 3 8/7 1 9 7 8",8 7 1 9 7 8,0,hard,stop
+sudoku_en_hard_0007,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . . 6 . . . 9 8
+. . . . 9 7 2 . .
+9 8 . . 2 5 3 6 .
+5 2 . 3 . . 8 . .
+. . . . . . . . .
+. . 4 . . 8 . 2 1
+. 7 9 5 1 . . 4 3
+. . 2 4 6 . . . .
+4 3 . . . 9 . . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(4, 4), (8, 7), (3, 6), (6, 3), (9, 8), (5, 2)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",3 9 5 4 5 9,,"Solving the puzzle gives the completed grid:
+
+```text
+2 1 5 | 6 3 4 | 7 9 8
+6 4 3 | 8 9 7 | 2 1 5
+9 8 7 | 1 2 5 | 3 6 4
+------+-------+------
+5 2 1 | 3 4 6 | 8 7 9
+7 9 8 | 2 5 1 | 4 3 6
+3 6 4 | 9 7 8 | 5 2 1
+------+-------+------
+8 7 9 | 5 1 2 | 6 4 3
+1 5 2 | 4 6 3 | 9 8 7
+4 3 6 | 7 8 9 | 1 5 2
+```
+
+The requested coordinates are:
+
+- (4, 4) = 3
+- (8, 7) = 9
+- (3, 6) = 5
+- (6, 3) = 4
+- (9, 8) = 5
+- (5, 2) = 9
+
+Answer: 3 9 5 4 5 9",3 9 5 4 5 9,1,hard,stop
+sudoku_en_hard_0008,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+1 . 8 . . 5 . . .
+2 5 3 . 7 . 6 . .
+. 9 . . 8 . . 2 .
+. 4 . . . . 2 8 .
+7 . . 8 . 2 . . 5
+. 2 6 . . . . 7 .
+. 7 . . 1 . . 6 .
+. . 1 . 2 . 7 5 4
+. . . 5 . . 8 . 1
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(4, 4), (9, 7), (1, 4), (5, 4), (1, 6), (6, 1)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",7 8 2 8 5 8,,"Solved grid:
+
+```text
+1 6 8 | 2 3 5 | 9 4 7
+2 5 3 | 4 7 9 | 6 1 8
+4 9 7 | 1 8 6 | 5 2 3
+------+-------+------
+3 4 5 | 7 9 1 | 2 8 6
+7 1 9 | 8 6 2 | 4 3 5
+8 2 6 | 3 5 4 | 1 7 9
+------+-------+------
+5 7 4 | 9 1 8 | 3 6 2
+9 8 1 | 6 2 3 | 7 5 4
+6 3 2 | 5 4 7 | 8 9 1
+```
+
+Key steps:
+- Row 1 column 2 was forced to be `6`.
+- In the top-left box, row 3 column 1 became `4`, and row 3 column 3 became `7`.
+- Column 8 forced row 2 column 8 to be `1`.
+- The top-right box then forced row 3 column 7 to be `5`, row 2 column 9 to be `8`, and row 3 column 9 to be `3`.
+- The bottom-right box forced row 9 column 8 to be `9`, leading to several completions in row 9.
+- Continuing with column and box eliminations completed the grid uniquely.
+
+Requested coordinates:
+- (4, 4) = `7`
+- (9, 7) = `8`
+- (1, 4) = `2`
+- (5, 4) = `8`
+- (1, 6) = `5`
+- (6, 1) = `8`
+
+Answer: 7 8 2 8 5 8",7 8 2 8 5 8,1,hard,stop
+sudoku_en_hard_0009,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. 1 4 . 3 . 6 . .
+2 6 8 . . . . 9 .
+. . . . 6 . . . 7
+. . . . . 5 9 . .
+3 9 2 6 . 7 4 5 1
+. . 5 3 . . . . .
+4 . . . 2 . . . .
+. 7 . . . . 2 6 9
+. . 6 . 7 . 5 3 .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(1, 1), (8, 5), (8, 1), (1, 3), (9, 9), (2, 9)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",7 5 8 4 4 5,,"Solving step by step:
+
+1. In row 5, the only missing digit is 8, so r5c5 = 8.
+2. In the bottom-right box, r7c9 must be 8, then r9c9 = 4, r7c8 = 1, and r7c7 = 7.
+3. Column 7 then forces r6c7 = 8.
+4. Row 6 then gives r6c2 = 4.
+5. Column 2 forces r9c2 = 2.
+6. In the top-left box, digit 7 can only go at r1c1, so r1c1 = 7.
+7. In the middle-right box, digit 3 can only go at r4c9, so r4c9 = 3.
+8. Column 9 then forces r2c9 = 5, r1c9 = 2, and r6c9 = 6.
+9. Row 1 becomes constrained: r1c8 = 8, r1c6 = 9, r1c4 = 5.
+10. Row 6 then resolves to r6c1 = 1, r6c5 = 9, r6c6 = 2, r6c8 = 7.
+11. Column 1 and row/box interactions force r4c1 = 6, r4c8 = 2, r3c8 = 4.
+12. Column 5 gives r8c5 = 5.
+13. Column 1 then resolves r8c1 = 8, r9c1 = 9, r3c1 = 5.
+14. The lower-left box resolves r7c2 = 5, r7c3 = 3, r8c3 = 1.
+15. Row 7 gives r7c4 = 9 and r7c6 = 6.
+16. Row 8 gives r8c4 = 4 and r8c6 = 3.
+17. Column 3 gives r3c3 = 9 and r4c3 = 7.
+18. Row 4 resolves r4c4 = 1 and r4c5 = 4.
+19. Column 5 gives r2c5 = 1.
+20. Row 2 resolves r2c7 = 3, r2c6 = 4, r2c4 = 7.
+21. Column 7 gives r3c7 = 1.
+22. Row 3 resolves r3c2 = 3, r3c6 = 8, r3c4 = 2.
+23. Column 6 gives r9c6 = 1, and row 9 gives r9c4 = 8.
+
+Completed Sudoku grid:
+
+7 1 4 5 3 9 6 8 2  
+2 6 8 7 1 4 3 9 5  
+5 3 9 2 6 8 1 4 7  
+6 8 7 1 4 5 9 2 3  
+3 9 2 6 8 7 4 5 1  
+1 4 5 3 9 2 8 7 6  
+4 5 3 9 2 6 7 1 8  
+8 7 1 4 5 3 2 6 9  
+9 2 6 8 7 1 5 3 4  
+
+Answer: 7 5 8 4 4 5",7 5 8 4 4 5,1,hard,stop
+sudoku_en_hard_0010,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. 6 7 . . . 4 9 1
+. . 9 . . . 5 . .
+5 . . . 4 9 . . 6
+. 7 5 . 2 . . 3 9
+. . . . . . . . .
+2 8 . . 1 . 6 5 .
+9 . . 5 7 . . . 4
+. . 1 . . . 7 . .
+7 5 2 . . . 9 6 .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(7, 9), (4, 7), (9, 7), (8, 2), (2, 8), (1, 4)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",4 1 9 4 8 2,,"Solving by candidates and hidden singles:
+
+- In column 2, only row 7 can be `3`, so `r7c2=3`.
+- In the bottom-left box, `r8c2=4`.
+- In the middle-left box, `r5c2=9`.
+- In the middle-right box, `r6c9=7`; then row 6 forces `r6c4=9`.
+- Column 5 forces `r8c5=9`.
+- Column 8 forces `r5c8=4`.
+- The middle-left box then gives `r6c3=4`, so row 6 completes with `r6c6=3`.
+- Column 9 forces `r8c9=5`, then the bottom-right box gives `r9c9=3`, and row 9 gives `r9c5=8`.
+- In the top-right box, only `r3c7` can be `3`, so `r3c7=3`.
+- Then row/column eliminations give `r3c3=8`, `r7c3=6`, `r5c3=3`.
+- The bottom-left box completes with `r8c1=8`; row 8 then gives `r8c8=2`, `r8c6=6`, `r8c4=3`.
+- The top-left box gives `r1c1=3`; row 1 then forces `r1c5=5`.
+- Column 5 gives `r5c5=6`, `r2c5=3`.
+- Column 1 gives `r5c1=1`, `r4c1=6`.
+
+Continuing the forced placements:
+
+- Bottom-middle box forces `r7c6=2`.
+- Row 1 completes with `r1c6=8`, `r1c4=2`.
+- Column 6 gives `r4c6=4`; row 4 then gives `r4c4=8`, `r4c7=1`.
+- Column 4 gives `r5c4=7`; row 5 gives `r5c6=5`.
+- Column 6 gives `r9c6=1`, `r2c6=7`.
+- Row 9 gives `r9c4=4`.
+- Column 4 gives `r3c4=1`, `r2c4=6`.
+- Row 3 gives `r3c2=2`, `r3c8=7`.
+- Row 2 gives `r2c2=1`, `r2c8=8`, `r2c9=2`.
+- Row 5 gives `r5c9=8`, `r5c7=2`.
+- Row 7 completes with `r7c7=8`, `r7c8=1`.
+
+Completed Sudoku grid:
+
+```text
+3 6 7 2 5 8 4 9 1
+4 1 9 6 3 7 5 8 2
+5 2 8 1 4 9 3 7 6
+6 7 5 8 2 4 1 3 9
+1 9 3 7 6 5 2 4 8
+2 8 4 9 1 3 6 5 7
+9 3 6 5 7 2 8 1 4
+8 4 1 3 9 6 7 2 5
+7 5 2 4 8 1 9 6 3
+```
+
+Requested coordinates:
+
+- `(7, 9) = 4`
+- `(4, 7) = 1`
+- `(9, 7) = 9`
+- `(8, 2) = 4`
+- `(2, 8) = 8`
+- `(1, 4) = 2`
+
+Answer: 4 1 9 4 8 2",4 1 9 4 8 2,1,hard,stop
+sudoku_en_hard_0011,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+6 3 . . . 9 2 . .
+. . . 2 8 7 . . 6
+. . 7 3 . 5 . . .
+3 . . . . . 9 1 2
+. 5 . . . . . 8 .
+2 9 1 . . . . . 4
+. . . 1 . 2 8 . .
+5 . . 6 9 4 . . .
+. . 2 8 . . . 4 9
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(6, 9), (2, 1), (7, 3), (2, 2), (4, 1), (4, 2)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",4 1 4 4 3 7,,"Solved grid:
+
+6 3 5 | 4 1 9 | 2 7 8  
+1 4 9 | 2 8 7 | 3 5 6  
+8 2 7 | 3 6 5 | 4 9 1  
+------+-------+------  
+3 7 8 | 5 4 6 | 9 1 2  
+4 5 6 | 9 2 1 | 7 8 3  
+2 9 1 | 7 3 8 | 5 6 4  
+------+-------+------  
+9 6 4 | 1 7 2 | 8 3 5  
+5 8 3 | 6 9 4 | 1 2 7  
+7 1 2 | 8 5 3 | 6 4 9  
+
+Key deductions included:
+- In the top-middle box, the missing digits forced r1c4 = 4, r1c5 = 1, and r3c5 = 6.
+- Column and box interactions then forced r5c4 = 9, r5c5 = 2, r4c5 = 4, r4c4 = 5, and r4c2 = 7.
+- Column 6 later forced r5c6 = 1, and row/column singles completed much of the grid.
+- The final lower rows resolved through column 8, column 9, and box constraints.
+
+Requested coordinates:
+- (6, 9) = 4
+- (2, 1) = 1
+- (7, 3) = 4
+- (2, 2) = 4
+- (4, 1) = 3
+- (4, 2) = 7
+
+Answer: 4 1 4 4 3 7",4 1 4 4 3 7,1,hard,stop
+sudoku_en_hard_0012,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+6 7 5 1 . . . 2 .
+8 . 4 9 . . . . 5
+. . . 6 . 5 . . .
+1 . . 2 . . 5 7 6
+. . . . . . . . .
+2 3 9 . . 6 . . 1
+. . . 3 . 2 . . .
+5 . . . . 4 2 . 3
+. 9 . . . 7 1 8 4
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(1, 3), (1, 9), (3, 4), (1, 8), (8, 1), (2, 2)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",5 9 6 2 5 1,,"Solving the puzzle step by step:
+
+1. In row 4, the missing digits are `{3,4,8,9}`.  
+   - Column 3 can only take `8`, so `r4c3 = 8`.  
+   - Then column 2 can only take `4`, so `r4c2 = 4`.
+
+2. In row 8, column 4 can only be `8`, so `r8c4 = 8`.
+
+3. In row 9, the missing digits are `{2,3,5,6}`.  
+   - Column 1 can only be `3`, so `r9c1 = 3`.  
+   - Column 4 can only be `5`, so `r9c4 = 5`.
+
+4. The bottom-left 3×3 box then forces `r9c3 = 2`, so `r9c5 = 6`.
+
+5. The middle-left 3×3 box forces:
+   - `r5c1 = 7`
+   - `r5c3 = 6`
+   - `r5c2 = 5`
+
+6. Row 5 then gives `r5c4 = 4`, and column 4 forces `r6c4 = 7`.
+
+7. The top-left 3×3 box forces:
+   - `r3c1 = 9`
+   - `r7c1 = 4`
+   - `r3c3 = 3`
+
+8. The bottom-left box continues:
+   - `r7c2 = 8`
+   - `r8c2 = 6`
+   - `r8c8 = 9`
+   - `r8c5 = 1`
+   - `r8c3 = 7`
+   - `r7c3 = 1`
+
+9. The bottom-middle box forces `r7c5 = 9`, which completes row 7:
+   - `r7c9 = 7`
+   - `r7c7 = 6`
+   - `r7c8 = 5`
+
+10. Column 8 forces `r6c8 = 4`, completing row 6:
+   - `r6c7 = 8`
+   - `r6c5 = 5`
+
+11. Row 4 completes:
+   - `r4c5 = 3`
+   - `r4c6 = 9`
+
+12. The middle-middle box forces:
+   - `r5c5 = 8`
+   - `r5c6 = 1`
+
+13. Row 5 completes:
+   - `r5c8 = 3`
+   - `r5c7 = 9`
+   - `r5c9 = 2`
+
+14. Column 5 forces `r1c5 = 4`.
+
+15. In the top-middle box:
+   - `r2c6 = 3`
+   - `r1c6 = 8`
+
+16. Row 1 completes:
+   - `r1c9 = 9`
+   - `r1c7 = 3`
+
+17. Column 9 forces `r3c9 = 8`.
+
+18. Column 7 gives:
+   - `r2c7 = 7`
+   - `r3c7 = 4`
+
+19. Row 2 completes:
+   - `r2c5 = 2`
+   - `r2c2 = 1`
+   - `r2c8 = 6`
+
+20. Finally, row 3 completes:
+   - `r3c2 = 2`
+   - `r3c5 = 7`
+   - `r3c8 = 1`
+
+Completed Sudoku grid:
+
+```text
+6 7 5 1 4 8 3 2 9
+8 1 4 9 2 3 7 6 5
+9 2 3 6 7 5 4 1 8
+1 4 8 2 3 9 5 7 6
+7 5 6 4 8 1 9 3 2
+2 3 9 7 5 6 8 4 1
+4 8 1 3 9 2 6 5 7
+5 6 7 8 1 4 2 9 3
+3 9 2 5 6 7 1 8 4
+```
+
+The requested coordinates are:
+
+- `(1, 3) = 5`
+- `(1, 9) = 9`
+- `(3, 4) = 6`
+- `(1, 8) = 2`
+- `(8, 1) = 5`
+- `(2, 2) = 1`
+
+Answer: 5 9 6 2 5 1",5 9 6 2 5 1,1,hard,stop
+sudoku_en_hard_0013,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+1 . . . . . . . 2
+4 . 5 1 . . . . .
+7 . 9 . 4 5 3 . .
+8 . . . . 9 4 2 .
+6 . . 5 2 4 . . 3
+. 5 4 8 . . . . 6
+. . 8 9 6 . 2 . 4
+. . . . . 1 7 . 9
+9 . . . . . . . 1
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(3, 3), (1, 2), (8, 4), (8, 5), (4, 5), (4, 1)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",9 8 3 8 7 8,,"Solved grid:
+
+```text
+1 8 3 7 9 6 5 4 2
+4 2 5 1 3 8 6 9 7
+7 6 9 2 4 5 3 1 8
+8 3 1 6 7 9 4 2 5
+6 9 7 5 2 4 1 8 3
+2 5 4 8 1 3 9 7 6
+3 1 8 9 6 7 2 5 4
+5 4 2 3 8 1 7 6 9
+9 7 6 4 5 2 8 3 1
+```
+
+Spotcheck values:
+
+- (3, 3) = 9
+- (1, 2) = 8
+- (8, 4) = 3
+- (8, 5) = 8
+- (4, 5) = 7
+- (4, 1) = 8
+
+Answer: 9 8 3 8 7 8",9 8 3 8 7 8,1,hard,stop
+sudoku_en_hard_0014,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+8 2 6 1 . 7 . . .
+. 3 . . . . 7 . 4
+4 1 7 . . . . . .
+2 6 4 . . . . . .
+. 7 9 . 3 . 4 6 .
+. . . . . . 9 7 1
+. . . . . . 2 8 5
+7 . 3 . . . . 4 .
+. . . 4 . 1 3 9 7
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(8, 1), (6, 5), (8, 7), (6, 7), (2, 1), (5, 5)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",7 2 1 9 9 3,,"Starting grid:
+
+```text
+8 2 6 1 . 7 . . .
+. 3 . . . . 7 . 4
+4 1 7 . . . . . .
+2 6 4 . . . . . .
+. 7 9 . 3 . 4 6 .
+. . . . . . 9 7 1
+. . . . . . 2 8 5
+7 . 3 . . . . 4 .
+. . . 4 . 1 3 9 7
+```
+
+Key solving steps:
+
+- Row 1 quickly resolves:
+  - r1c7 = 5, r1c8 = 3, r1c9 = 9, r1c5 = 4  
+  Row 1 becomes `8 2 6 1 4 7 5 3 9`.
+
+- In the top-left box, the missing digits are 5 and 9:
+  - r2c3 = 5, r2c1 = 9.
+
+- In the top-right box:
+  - r3c8 = 2, then r2c8 = 1.
+
+- Column 8 then has only one missing digit:
+  - r4c8 = 5.
+
+- In the middle-right box:
+  - r4c7 = 8, r4c9 = 3, r5c9 = 2.
+  - Row 4 then completes as `2 6 4 7 1 9 8 5 3`.
+
+- In the bottom-right box:
+  - r8c9 = 6, r8c7 = 1.
+  - This forces r3c7 = 6 and r3c9 = 8.
+
+- Column 1 then resolves:
+  - r7c1 = 6, r9c1 = 5, r5c1 = 1, r6c1 = 3.
+
+- Row 7 completes:
+  - r7c6 = 3, r7c4 = 9, r7c5 = 7, r7c2 = 4.
+  Row 7 is `6 4 1 9 7 3 2 8 5`.
+
+- Row 9 completes:
+  - r9c2 = 8, r9c3 = 2, r9c5 = 6.
+  Row 9 is `5 8 2 4 6 1 3 9 7`.
+
+- Column 2 then forces:
+  - r6c2 = 5, r8c2 = 9.
+
+- Row 6 resolves:
+  - r6c3 = 8, r6c5 = 2, r6c4 = 6, r6c6 = 4.
+  Row 6 is `3 5 8 6 2 4 9 7 1`.
+
+- Row 3 completes:
+  - r3c6 = 5, r3c4 = 3, r3c5 = 9.
+  Row 3 is `4 1 7 3 9 5 6 2 8`.
+
+- Row 2 completes:
+  - r2c5 = 8, r2c4 = 2, r2c6 = 6.
+  Row 2 is `9 3 5 2 8 6 7 1 4`.
+
+- Remaining rows finish:
+  - Row 5: `1 7 9 5 3 8 4 6 2`
+  - Row 8: `7 9 3 8 5 2 1 4 6`
+
+Completed Sudoku:
+
+```text
+8 2 6 1 4 7 5 3 9
+9 3 5 2 8 6 7 1 4
+4 1 7 3 9 5 6 2 8
+2 6 4 7 1 9 8 5 3
+1 7 9 5 3 8 4 6 2
+3 5 8 6 2 4 9 7 1
+6 4 1 9 7 3 2 8 5
+7 9 3 8 5 2 1 4 6
+5 8 2 4 6 1 3 9 7
+```
+
+Requested coordinates:
+
+- (8, 1) = 7
+- (6, 5) = 2
+- (8, 7) = 1
+- (6, 7) = 9
+- (2, 1) = 9
+- (5, 5) = 3
+
+Answer: 7 2 1 9 9 3",7 2 1 9 9 3,1,hard,stop
+sudoku_en_hard_0015,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+3 4 . . 6 . . 7 8
+. . . 9 8 . . 4 .
+. . 8 . . . . . 6
+6 . 7 . . 3 2 5 .
+. . . 6 . 9 . . .
+. 3 4 2 . . 6 . 7
+7 . . . . . 1 . .
+. 2 . . 9 6 . . .
+1 6 . . 3 . . 2 5
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(3, 1), (1, 6), (2, 9), (7, 7), (9, 2), (6, 1)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",9 1 2 1 6 8,,"Solving the Sudoku gives the completed grid:
+
+```text
+3 4 2 | 5 6 1 | 9 7 8
+5 1 6 | 9 8 7 | 3 4 2
+9 7 8 | 3 2 4 | 5 1 6
+------+-------+------
+6 9 7 | 8 4 3 | 2 5 1
+2 5 1 | 6 7 9 | 8 3 4
+8 3 4 | 2 1 5 | 6 9 7
+------+-------+------
+7 8 3 | 4 5 2 | 1 6 9
+4 2 5 | 1 9 6 | 7 8 3
+1 6 9 | 7 3 8 | 4 2 5
+```
+
+Spotcheck values:
+
+- (3, 1) = 9
+- (1, 6) = 1
+- (2, 9) = 2
+- (7, 7) = 1
+- (9, 2) = 6
+- (6, 1) = 8
+
+Answer: 9 1 2 1 6 8",9 1 2 1 6 8,1,hard,stop
+sudoku_en_hard_0016,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . 8 9 5 . . 6 3
+. . 4 . 2 . . . .
+6 . . . . 8 5 9 .
+. 7 . 8 9 . . . 2
+. . . 3 7 1 . . .
+8 . . . 6 2 . 3 .
+. 8 9 5 . . . . 7
+. . . . 3 . 8 . .
+2 3 . . 8 9 4 . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(8, 5), (5, 7), (4, 5), (3, 3), (2, 4), (2, 3)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",3 9 9 3 6 4,,"Step-by-step solution outline:
+
+1. In the top-right box, digit 2 can only go at r1c7, so:
+   - r1c7 = 2  
+   Then row 1 resolves:
+   - r1c2 = 1, r1c1 = 7, r1c6 = 4
+
+2. In the top-left box, after row 1 is fixed:
+   - r3c2 = 2
+   - r3c3 = 3
+
+3. In the top-middle box:
+   - r2c6 = 3
+   - r3c5 = 1
+   - r3c4 = 7
+   - r2c4 = 6
+   - r3c9 = 4
+
+4. Column 4 then resolves:
+   - r9c4 = 1
+   - r6c4 = 4
+   - r8c4 = 2
+
+5. Column 5 gives:
+   - r7c5 = 4  
+   Row 7 then resolves:
+   - r7c1 = 1
+   - r7c6 = 6
+   - r7c8 = 2
+   - r7c7 = 3
+
+6. Column 6 resolves:
+   - r4c6 = 5
+   - r8c6 = 7
+
+7. Row 4 reduces to two possibilities for r4c3/r4c7. The placement r4c7 = 1 leads to a contradiction in row 6, so:
+   - r4c7 = 6
+   - r4c3 = 1  
+   Then row 4 resolves:
+   - r4c1 = 3
+   - r4c8 = 4
+
+8. In the middle-left box:
+   - r6c3 = 5
+   - r6c2 = 9
+   - r6c9 = 1
+   - r6c7 = 7
+
+9. Column 7 and row 2 then resolve:
+   - r2c7 = 1
+   - r2c9 = 8
+   - r2c8 = 7
+
+10. Column 8 and row 9 resolve:
+   - r9c8 = 5
+   - r8c8 = 1
+   - r5c8 = 8
+   - r9c9 = 6
+   - r9c3 = 7
+
+11. Column 3 and the remaining rows finish:
+   - r8c3 = 6
+   - r5c3 = 2
+   - r5c9 = 5
+   - r8c9 = 9
+   - r5c1 = 4
+   - r5c2 = 6
+   - r2c2 = 5
+   - r2c1 = 9
+   - r8c2 = 4
+   - r8c1 = 5
+
+Completed grid:
+
+```text
+7 1 8 9 5 4 2 6 3
+9 5 4 6 2 3 1 7 8
+6 2 3 7 1 8 5 9 4
+3 7 1 8 9 5 6 4 2
+4 6 2 3 7 1 9 8 5
+8 9 5 4 6 2 7 3 1
+1 8 9 5 4 6 3 2 7
+5 4 6 2 3 7 8 1 9
+2 3 7 1 8 9 4 5 6
+```
+
+Spotcheck values:
+
+- (8, 5) = 3
+- (5, 7) = 9
+- (4, 5) = 9
+- (3, 3) = 3
+- (2, 4) = 6
+- (2, 3) = 4
+
+Answer: 3 9 9 3 6 4",3 9 9 3 6 4,1,hard,stop
+sudoku_en_hard_0017,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . 8 9 2 . . . .
+6 1 . . 7 8 5 . .
+. . 5 1 . . . 3 .
+3 4 . . 9 7 . . .
+. . 2 . . . 7 . .
+. . . 5 1 . . 4 3
+. 2 . . . 3 9 . .
+. . 3 7 5 . . 2 4
+. . . . 4 1 3 . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(9, 2), (2, 7), (3, 7), (3, 4), (9, 8), (5, 4)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",7 5 8 1 6 4,,"Step-by-step solution:
+
+1. In the top-left 3×3 box, the missing digits are `{2,3,7,9}`.  
+   - Row 1 can place `7` at c1 and `3` at c2.  
+   - Then row 3 gets `2` at c1 and `9` at c2.
+
+2. In the top-middle 3×3 box, the missing digits are `{4,5,6}`.  
+   - r3c5 must be `6`, r3c6 must be `4`, and r1c6 must be `5`.  
+   - Row 3 then completes with r3c7 = `8`, r3c9 = `7`.
+
+3. Column 5 now has only `{3,8}` missing.  
+   - r7c5 = `8`, r5c5 = `3`.
+
+4. In the bottom-middle 3×3 box, the missing digits are `{2,6,9}`.  
+   - r7c4 = `6`, r9c4 = `2`, r8c6 = `9`.
+
+5. Column 4 then forces:  
+   - r4c4 = `8`, r5c4 = `4`.
+
+6. The middle-middle 3×3 box then has `{2,6}` missing.  
+   - r5c6 = `6`, r6c6 = `2`.
+
+7. Column 7 resolves:  
+   - r6c7 = `6`, r8c7 = `1`, r1c7 = `4`, r4c7 = `2`.
+
+8. Row 8 completes:  
+   - r8c1 = `8`, r8c2 = `6`.
+
+9. Column 1 then forces:  
+   - r6c1 = `9`, r9c1 = `5`, r5c1 = `1`, r7c1 = `4`.
+
+10. Row 6 completes:  
+   - r6c3 = `7`, r6c2 = `8`.
+
+11. Column 2 resolves:  
+   - r5c2 = `5`, r9c2 = `7`.
+
+12. Row 5 completes:  
+   - r5c8 = `8`, r5c9 = `9`.
+
+13. Column 8 resolves:  
+   - r9c8 = `6`, r1c8 = `1`, r4c8 = `5`, r7c8 = `7`.
+
+14. Row 1 completes with r1c9 = `6`.
+
+15. Column 3 resolves:  
+   - r4c3 = `6`, r9c3 = `9`.
+
+16. Row 4 completes with r4c9 = `1`, and row 9 completes with r9c9 = `8`.
+
+Completed Sudoku grid:
+
+```text
+7 3 8 9 2 5 4 1 6
+6 1 4 3 7 8 5 9 2
+2 9 5 1 6 4 8 3 7
+3 4 6 8 9 7 2 5 1
+1 5 2 4 3 6 7 8 9
+9 8 7 5 1 2 6 4 3
+4 2 1 6 8 3 9 7 5
+8 6 3 7 5 9 1 2 4
+5 7 9 2 4 1 3 6 8
+```
+
+Answer: 7 5 8 1 6 4",7 5 8 1 6 4,1,hard,stop
+sudoku_en_hard_0018,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . . . 4 . . . .
+4 1 8 . 5 . . . .
+. 9 . 6 . 7 . 8 1
+. 3 5 . . . 9 4 8
+. 8 . . 7 . . 2 .
+1 6 2 . . . 7 5 .
+6 5 . 1 . 2 . 9 .
+. . . . 3 . 6 7 5
+. . . . 6 . . . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(8, 6), (4, 8), (1, 8), (7, 3), (4, 1), (4, 6)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",4 4 3 7 7 6,,"Solved grid:
+
+```text
+2 7 6 | 8 4 1 | 5 3 9
+4 1 8 | 3 5 9 | 2 6 7
+5 9 3 | 6 2 7 | 4 8 1
+------+-------+------
+7 3 5 | 2 1 6 | 9 4 8
+9 8 4 | 5 7 3 | 1 2 6
+1 6 2 | 4 9 8 | 7 5 3
+------+-------+------
+6 5 7 | 1 8 2 | 3 9 4
+8 2 1 | 9 3 4 | 6 7 5
+3 4 9 | 7 6 5 | 8 1 2
+```
+
+Key reasoning highlights:
+
+- In column 5, the only missing value after early placements was `9`, so `r6c5 = 9`.
+- The middle-left box forced `r4c1 = 7`, `r5c1 = 9`, and `r5c3 = 4`.
+- Row 4 then completed as `7 3 5 2 1 6 9 4 8`.
+- The middle-right box forced `r6c9 = 3`, then `r5c7 = 1` and `r5c9 = 6`.
+- Column 4 then resolved several values, leading to `r6c4 = 4`, `r8c4 = 9`, `r2c4 = 3`, and `r5c4 = 5`.
+- Row 2 completed as `4 1 8 3 5 9 2 6 7`.
+- The remaining rows and columns then resolved cleanly to the final grid above.
+
+Spotcheck values:
+
+- `(8, 6) = 4`
+- `(4, 8) = 4`
+- `(1, 8) = 3`
+- `(7, 3) = 7`
+- `(4, 1) = 7`
+- `(4, 6) = 6`
+
+Answer: 4 4 3 7 7 6",4 4 3 7 7 6,1,hard,stop
+sudoku_en_hard_0019,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . . 4 8 6 . . .
+. . . 2 . . . . 7
+. . 9 . 1 7 8 4 6
+. 6 . . 3 . 4 . 8
+. 7 . . . . . 9 .
+3 . 1 . 4 . . 6 .
+6 8 2 5 9 . 7 . .
+9 . . . . 4 . . .
+. . . 8 6 2 . . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(8, 7), (1, 4), (3, 1), (1, 3), (9, 8), (8, 8)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",6 4 5 7 5 8,,"Solved grid:
+
+```text
+1 3 7 | 4 8 6 | 5 2 9
+8 4 6 | 2 5 9 | 1 3 7
+5 2 9 | 3 1 7 | 8 4 6
+------+-------+------
+2 6 5 | 9 3 1 | 4 7 8
+4 7 8 | 6 2 5 | 3 9 1
+3 9 1 | 7 4 8 | 2 6 5
+------+-------+------
+6 8 2 | 5 9 3 | 7 1 4
+9 5 3 | 1 7 4 | 6 8 2
+7 1 4 | 8 6 2 | 9 5 3
+```
+
+Key solving steps included:
+- In the top-middle box, the only missing digit was `9`, so r2c6 = 9.
+- In the bottom-middle box, r8c4 = 1 and r7c6 = 3, which then completed row 7.
+- Column 4 forced r5c4 = 6, later helping complete the middle boxes.
+- The middle-right box forced r4c8 = 7, which allowed row 4 to resolve fully.
+- Row/column interactions then resolved rows 5, 8, 9, and finally row 1.
+
+Requested coordinates:
+- (8, 7) = 6
+- (1, 4) = 4
+- (3, 1) = 5
+- (1, 3) = 7
+- (9, 8) = 5
+- (8, 8) = 8
+
+Answer: 6 4 5 7 5 8",6 4 5 7 5 8,1,hard,stop
+sudoku_en_hard_0020,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+2 . . . 4 . . . .
+. . . 8 . 9 6 3 .
+. 3 6 1 . . . . 2
+. 5 . . . 2 . . 8
+. 4 9 3 . 5 7 2 .
+1 . . 9 . . . 5 .
+9 . . . . 1 2 8 .
+. 8 2 4 . 6 . . .
+. . . . 7 . . . 9
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(6, 4), (9, 1), (7, 1), (8, 1), (6, 8), (7, 7)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",9 3 9 7 5 2,,"Solved grid:
+
+```text
+2 9 8 | 6 4 3 | 1 7 5
+5 7 1 | 8 2 9 | 6 3 4
+4 3 6 | 1 5 7 | 8 9 2
+------+-------+------
+6 5 3 | 7 1 2 | 9 4 8
+8 4 9 | 3 6 5 | 7 2 1
+1 2 7 | 9 8 4 | 3 5 6
+------+-------+------
+9 6 4 | 5 3 1 | 2 8 7
+7 8 2 | 4 9 6 | 5 1 3
+3 1 5 | 2 7 8 | 4 6 9
+```
+
+Reasoning highlights:
+
+- In the top-middle box, the missing digits force `r3c6 = 7`, then `r1c6 = 3`, and `r1c4 = 6`.
+- Column 4 then resolves to place `r4c4 = 7`, `r7c4 = 5`, and `r9c4 = 2`.
+- Row 4 quickly completes as `6 5 3 7 1 2 9 4 8`.
+- Row 5 resolves with `r5c1 = 8`, `r5c5 = 6`, `r5c9 = 1`.
+- Column 5 then gives `r7c5 = 3`, `r8c5 = 9`, `r6c5 = 8`.
+- Row 6 completes as `1 2 7 9 8 4 3 5 6`.
+- The remaining rows and columns then resolve cleanly to the completed grid above.
+
+Spotcheck values:
+
+- `(6, 4)` = 9
+- `(9, 1)` = 3
+- `(7, 1)` = 9
+- `(8, 1)` = 7
+- `(6, 8)` = 5
+- `(7, 7)` = 2
+
+Answer: 9 3 9 7 5 2",9 3 9 7 5 2,1,hard,stop
+sudoku_en_hard_0021,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. 4 . . 7 3 1 5 .
+8 7 . 5 . . . . .
+. . 2 . . . 7 8 .
+. . . . 2 5 . 7 9
+. . . 7 . 9 . . .
+7 6 . 1 3 . . . .
+. 9 7 . . . 5 . .
+. . . . . 4 . 3 7
+. 5 4 3 9 . . 2 .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(5, 9), (4, 5), (1, 1), (9, 9), (8, 1), (1, 8)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",8 2 9 1 2 5,,"Solved grid:
+
+```text
+9 4 6 8 7 3 1 5 2
+8 7 3 5 1 2 4 9 6
+5 1 2 9 4 6 7 8 3
+1 3 8 4 2 5 6 7 9
+4 2 5 7 6 9 3 1 8
+7 6 9 1 3 8 2 4 5
+3 9 7 2 8 1 5 6 4
+2 8 1 6 5 4 9 3 7
+6 5 4 3 9 7 8 2 1
+```
+
+Key solving steps:
+
+- In the top-middle box, the only place for `8` was r1c4.
+- In row 6, r6c8 was forced to `4`, then the middle box forced r6c6 = `8`, r6c7 = `2`, and r6c9 = `5`.
+- Column 4 then forced r3c4 = `9`, r4c4 = `4`, and later r8c4 = `6`.
+- Row 5 gained r5c8 = `1`, then column/box reductions led to r5c9 = `8`, r5c2 = `2`, r5c1 = `4`, and r5c3 = `5`.
+- Column 7 and the right-middle box forced r4c7 = `6`, r9c7 = `8`, r8c7 = `9`, r5c7 = `3`, and r2c7 = `4`.
+- The remaining rows and columns then resolved cleanly to the completed grid above.
+
+Spotcheck values:
+
+- (5, 9) = 8
+- (4, 5) = 2
+- (1, 1) = 9
+- (9, 9) = 1
+- (8, 1) = 2
+- (1, 8) = 5
+
+Answer: 8 2 9 1 2 5",8 2 9 1 2 5,1,hard,stop
+sudoku_en_hard_0022,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. 7 . . . 5 . . .
+6 . . . . . 5 3 8
+. 8 5 . 6 2 1 4 .
+9 . . 1 7 . 4 . .
+. . . . 9 . . . .
+. . 6 . 8 4 . . 2
+. 3 8 6 1 . 7 5 .
+1 6 9 . . . . . 3
+. . . 3 . . . 1 .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(5, 8), (7, 1), (6, 4), (8, 3), (6, 9), (4, 5)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",7 2 5 9 2 7,,"Solving by standard Sudoku eliminations:
+
+1. In column 6, row 7 can only be 9, so r7c6 = 9.  
+   Then row 7 needs {2,4}; r7c9 = 4 and r7c1 = 2.
+
+2. In the top-left box, r3c1 can only be 3, so r3c1 = 3.  
+   In the top-middle box, digit 3 can only go at r1c5, so r1c5 = 3.
+
+3. In the middle-left box, digit 8 can only go at r5c1, so r5c1 = 8.  
+   Then column 1 forces r1c1 = 4.
+
+4. Continuing eliminations:
+   - r6c4 = 5
+   - r5c4 = 2
+   - r6c1 = 7
+   - r6c2 = 1
+   - r6c8 = 9
+   - r6c7 = 3
+
+5. In the middle-right box, r5c9 = 1.  
+   Then row 5 resolves to:
+   8 5 4 2 9 3 6 7 1
+
+6. Column and row eliminations then give:
+   - r4c2 = 2, r9c2 = 4
+   - r4c3 = 3, r4c6 = 6, r4c8 = 8, r4c9 = 5
+   - r8c8 = 2, r1c8 = 6
+
+7. Row 1 resolves:
+   4 7 1 8 3 5 2 6 9
+
+8. Further forced placements:
+   - r8c7 = 8, r9c7 = 9
+   - r8c6 = 7
+   - r2c6 = 1, r9c6 = 8
+   - r2c3 = 2, r2c5 = 4, r2c4 = 7
+   - r3c4 = 9, r8c4 = 4, r8c5 = 5
+   - r3c9 = 7
+   - r9c9 = 6
+   - r9c5 = 2, r9c3 = 7, r9c1 = 5
+
+Completed grid:
+
+```text
+4 7 1 8 3 5 2 6 9
+6 9 2 7 4 1 5 3 8
+3 8 5 9 6 2 1 4 7
+9 2 3 1 7 6 4 8 5
+8 5 4 2 9 3 6 7 1
+7 1 6 5 8 4 3 9 2
+2 3 8 6 1 9 7 5 4
+1 6 9 4 5 7 8 2 3
+5 4 7 3 2 8 9 1 6
+```
+
+Requested coordinates:
+
+- (5, 8) = 7
+- (7, 1) = 2
+- (6, 4) = 5
+- (8, 3) = 9
+- (6, 9) = 2
+- (4, 5) = 7
+
+Answer: 7 2 5 9 2 7",7 2 5 9 2 7,1,hard,stop
+sudoku_en_hard_0023,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . . 4 . . 7 3 .
+5 . 4 . . . 6 1 .
+. . . . 2 . . . .
+. . 2 5 9 4 . 8 .
+7 3 . 2 . 1 . 4 5
+. 4 . 7 3 8 1 . .
+. . . . 8 . . . .
+. 8 7 . . . 4 . 9
+. 2 6 . . 5 . . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(7, 1), (6, 6), (3, 7), (4, 8), (4, 7), (6, 2)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",4 8 5 8 3 4,,"Solving the Sudoku gives the completed grid:
+
+```text
+2 6 1 4 5 9 7 3 8
+5 9 4 8 7 3 6 1 2
+8 7 3 1 2 6 5 9 4
+6 1 2 5 9 4 3 8 7
+7 3 8 2 6 1 9 4 5
+9 4 5 7 3 8 1 2 6
+4 5 9 3 8 7 2 6 1
+3 8 7 6 1 2 4 5 9
+1 2 6 9 4 5 8 7 3
+```
+
+Key deductions included:
+
+- The center box was missing only `6`, so `r5c5 = 6`.
+- Row 5 then resolved to `7 3 8 2 6 1 9 4 5`.
+- In row 2, column/box constraints forced `r2c2 = 9`, `r2c6 = 3`, then `r2c4 = 8`, `r2c9 = 2`.
+- The top-right box then forced row 3 entries `r3c7 = 5`, `r3c8 = 9`, `r3c9 = 4`.
+- Column and box singles continued to resolve the rest of the grid uniquely.
+
+Requested coordinates:
+
+- `(7, 1) = 4`
+- `(6, 6) = 8`
+- `(3, 7) = 5`
+- `(4, 8) = 8`
+- `(4, 7) = 3`
+- `(6, 2) = 4`
+
+Answer: 4 8 5 8 3 4",4 8 5 8 3 4,1,hard,stop
+sudoku_en_hard_0024,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. 4 . . . . 3 2 9
+7 8 5 2 . . . . .
+. . 9 . 4 1 . . .
+. . . 1 . 3 . 5 4
+. . . 9 7 8 . . .
+1 2 . 5 . 4 . . .
+. . . 4 1 . 5 . .
+. . . . . 7 1 4 2
+4 1 2 . . . . 3 .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(9, 1), (8, 2), (5, 4), (9, 9), (8, 8), (1, 5)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",4 5 9 7 4 8,,"Solving the puzzle gives the completed grid:
+
+```text
+6 4 1 7 8 5 3 2 9
+7 8 5 2 3 9 4 6 1
+2 3 9 6 4 1 8 7 5
+9 7 8 1 2 3 6 5 4
+5 6 4 9 7 8 2 1 3
+1 2 3 5 6 4 7 9 8
+3 9 7 4 1 2 5 8 6
+8 5 6 3 9 7 1 4 2
+4 1 2 8 5 6 9 3 7
+```
+
+Key deductions included:
+
+- In the top-left box, `r1c1 = 6`, then `r1c3 = 1`, forcing `r3c2 = 3` and `r3c1 = 2`.
+- Row 1 then completed as `6 4 1 7 8 5 3 2 9`.
+- In the middle-left box, `r5c3 = 4`, and in the middle-right box, `r5c7 = 2`.
+- The top-middle box forced `r3c4 = 6`, then `r2c6 = 9`, `r2c5 = 3`.
+- Column and box eliminations eventually resolved rows 9, 5, 6, 7, 4, and 8.
+
+Spotcheck values:
+
+- `(9, 1) = 4`
+- `(8, 2) = 5`
+- `(5, 4) = 9`
+- `(9, 9) = 7`
+- `(8, 8) = 4`
+- `(1, 5) = 8`
+
+Answer: 4 5 9 7 4 8",4 5 9 7 4 8,1,hard,stop
+sudoku_en_hard_0025,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . . 2 7 . . . .
+4 9 . 6 1 . 7 . .
+8 . . 9 . . . 3 .
+. . . . 2 . 9 1 4
+. . 9 3 . 7 2 . .
+5 8 2 . 9 . . . .
+. 5 . . . 6 . . 7
+. . 3 . 8 9 . 6 1
+. . . . 3 2 . . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(6, 9), (3, 2), (9, 9), (7, 7), (1, 5), (8, 2)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",3 2 5 3 7 7,,"Solving step by step:
+
+1. In row 2, the only possible value for c3 is 5:
+   - Row 2 becomes: `4 9 5 6 1 . 7 . .`
+
+2. In row 7, c5 must be 4:
+   - Row 7 becomes: `. 5 . . 4 6 . . 7`
+
+3. Column 5 then forces:
+   - r3c5 = 5
+   - r5c5 = 6
+
+4. Row 3 now has c6 = 4:
+   - Row 3 becomes: `8 . . 9 5 4 . 3 .`
+
+5. Row 5 now has:
+   - r5c1 = 1
+   - r5c2 = 4
+
+6. Column 6 forces r6c6 = 1.
+   Row 6 then gives:
+   - r6c4 = 4
+   - r6c8 = 7
+   - r6c7 = 6
+   - r6c9 = 3
+
+7. Column 4 and box logic gives:
+   - r7c4 = 1
+   - r7c3 = 8
+   - r7c7 = 3
+   - r4c4 = 8
+   - r4c6 = 5
+
+8. In row 3, c7 must be 1.
+   Then column 3 gives r9c3 = 4.
+
+9. Column 8 forces r1c8 = 4.
+   Then the top-right box gives:
+   - r1c9 = 9
+   - r1c7 = 5
+
+10. Column 7 then completes:
+   - r8c7 = 4
+   - r9c7 = 8
+
+11. Row 8 gives r8c4 = 5.
+    Column 4 then gives r9c4 = 7.
+
+12. Column 9 and row 9 complete:
+   - r9c9 = 5
+   - r9c8 = 9
+   - r9c1 = 6
+   - r9c2 = 1
+
+13. Column 1 and row 1 complete:
+   - r1c1 = 3
+   - r1c2 = 6
+   - r1c6 = 8
+   - r1c3 = 1
+
+14. Column 6 gives r2c6 = 3.
+
+15. Column 1/row 4 complete:
+   - r4c1 = 7
+   - r4c2 = 3
+   - r4c3 = 6
+
+16. Row 3 completes:
+   - r3c3 = 7
+   - r3c2 = 2
+   - r3c9 = 6
+
+17. Remaining singles:
+   - r8c2 = 7
+   - r8c1 = 2
+   - r7c1 = 9
+   - r7c8 = 2
+   - r2c8 = 8
+   - r5c8 = 5
+   - r2c9 = 2
+   - r5c9 = 8
+
+Completed grid:
+
+```text
+3 6 1 2 7 8 5 4 9
+4 9 5 6 1 3 7 8 2
+8 2 7 9 5 4 1 3 6
+7 3 6 8 2 5 9 1 4
+1 4 9 3 6 7 2 5 8
+5 8 2 4 9 1 6 7 3
+9 5 8 1 4 6 3 2 7
+2 7 3 5 8 9 4 6 1
+6 1 4 7 3 2 8 9 5
+```
+
+Spotcheck values:
+
+- (6, 9) = 3
+- (3, 2) = 2
+- (9, 9) = 5
+- (7, 7) = 3
+- (1, 5) = 7
+- (8, 2) = 7
+
+Answer: 3 2 5 3 7 7",3 2 5 3 7 7,1,hard,stop
+sudoku_en_hard_0026,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+3 7 . . . 9 . . 6
+. . 5 . 8 . 7 3 .
+. 1 . . . . . 2 5
+1 . . . . . 5 9 3
+. . 3 . . . 4 . .
+7 4 8 . . . . . 2
+6 2 . . . . . 5 .
+. 8 1 . 5 . 2 . .
+5 . . 9 . . . 4 1
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(3, 2), (5, 2), (8, 3), (9, 3), (3, 4), (1, 8)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",1 5 1 7 4 8,,"Solved grid:
+
+```text
+3 7 4 5 2 9 1 8 6
+2 9 5 6 8 1 7 3 4
+8 1 6 4 3 7 9 2 5
+1 6 2 8 7 4 5 9 3
+9 5 3 2 1 6 4 7 8
+7 4 8 3 9 5 6 1 2
+6 2 9 1 4 8 3 5 7
+4 8 1 7 5 3 2 6 9
+5 3 7 9 6 2 8 4 1
+```
+
+Key reasoning highlights:
+
+- In row 1, column 8 could only be `8`, forcing row 1 column 7 to be `1`.
+- Column 2 then resolved several cells: row 9 column 2 was `3`, row 2 column 2 was `9`, and row 5 column 2 was `5`.
+- The top-left box then forced row 1 column 3 to be `4` and row 3 column 3 to be `6`.
+- Column 3 forced row 4 column 3 to be `2`, row 9 column 3 to be `7`, and row 7 column 3 to be `9`.
+- The lower and middle boxes then cascaded: row 9 column 7 became `8`, row 7 column 7 became `3`, and row 6 column 7 became `6`.
+- Column 5 and column 4 then completed most of the remaining grid, leading to the final solved board above.
+
+Requested coordinates:
+
+- `(3, 2)` = `1`
+- `(5, 2)` = `5`
+- `(8, 3)` = `1`
+- `(9, 3)` = `7`
+- `(3, 4)` = `4`
+- `(1, 8)` = `8`
+
+Answer: 1 5 1 7 4 8",1 5 1 7 4 8,1,hard,stop
+sudoku_en_hard_0027,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+8 2 6 . . 1 . . .
+4 3 . . . 7 . 2 .
+. . . . 8 . 4 . 1
+. 9 . 8 1 2 . . 3
+. . . . 6 . . . .
+1 . . 4 7 3 . 9 .
+2 . 9 . 3 . . . .
+. 7 . 6 . . . 1 8
+. . . 7 . . 2 6 9
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(9, 5), (4, 3), (2, 7), (4, 9), (8, 4), (3, 3)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",5 5 8 3 6 7,,"Solved grid:
+
+```text
+8 2 6 3 4 1 9 5 7
+4 3 1 5 9 7 8 2 6
+9 5 7 2 8 6 4 3 1
+6 9 5 8 1 2 7 4 3
+7 4 3 9 6 5 1 8 2
+1 8 2 4 7 3 6 9 5
+2 6 9 1 3 8 5 7 4
+5 7 4 6 2 9 3 1 8
+3 1 8 7 5 4 2 6 9
+```
+
+Key solving steps:
+
+- In the top-left box, row 3 column 2 is forced to `5`, leading to row 3 becoming:
+  `9 5 7 2 8 6 4 3 1`.
+- Column 2 then forces row 7 column 2 to `6`, row 5 column 2 to `4`, and row 9 column 2 to `1`.
+- In the middle-bottom box, row 7 column 4 is forced to `1`; then column 4 forces row 1 column 4 to `3`.
+- Box and column eliminations then resolve much of the lower-left and lower-middle sections:
+  - Row 9 column 3 = `8`
+  - Row 9 column 1 = `3`
+  - Row 8 column 1 = `5`
+  - Row 8 column 3 = `4`
+  - Row 8 completes as `5 7 4 6 2 9 3 1 8`
+- Row 4 resolves to:
+  `6 9 5 8 1 2 7 4 3`
+- Row 5 resolves to:
+  `7 4 3 9 6 5 1 8 2`
+- The remaining rows and columns then finish by singles:
+  - Row 2 = `4 3 1 5 9 7 8 2 6`
+  - Row 6 = `1 8 2 4 7 3 6 9 5`
+  - Row 7 = `2 6 9 1 3 8 5 7 4`
+  - Row 9 = `3 1 8 7 5 4 2 6 9`
+  - Row 1 = `8 2 6 3 4 1 9 5 7`
+
+Requested coordinates:
+
+- (9, 5) = `5`
+- (4, 3) = `5`
+- (2, 7) = `8`
+- (4, 9) = `3`
+- (8, 4) = `6`
+- (3, 3) = `7`
+
+Answer: 5 5 8 3 6 7",5 5 8 3 6 7,1,hard,stop
+sudoku_en_hard_0028,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . 6 . 7 9 . . .
+9 . 8 2 . . . 1 .
+. 5 2 . . 1 . . 8
+. . . . 2 . . 5 3
+7 . . 3 . 5 . . 1
+5 6 . . 8 . . . .
+2 . . 5 . . 9 8 .
+. 9 . . . 2 1 . 5
+. . . 4 9 . 3 . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(7, 5), (7, 7), (2, 8), (6, 8), (4, 8), (5, 8)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",1 9 1 7 5 4,,"Solved grid:
+
+```text
+1 4 6 8 7 9 5 3 2
+9 7 8 2 5 3 4 1 6
+3 5 2 6 4 1 7 9 8
+4 8 1 9 2 7 6 5 3
+7 2 9 3 6 5 8 4 1
+5 6 3 1 8 4 2 7 9
+2 3 7 5 1 6 9 8 4
+8 9 4 7 3 2 1 6 5
+6 1 5 4 9 8 3 2 7
+```
+
+Key solving steps:
+
+- In the top-left box, digit `7` could only go at r2c2.
+- In the top-middle box, r1c4 had to be `8`, and then r3c4 became `6`.
+- Column 4 then forced r8c4 = `7`, later r4c4 = `9`, and r6c4 = `1`.
+- In the lower-left box, r9c3 = `5`; later column 3 forced r8c3 = `4`, r5c3 = `9`, r4c3 = `1`, and r7c3 = `7`.
+- Column 5 forced r2c5 = `5`, and row 2 then resolved to `9 7 8 2 5 3 4 1 6`.
+- Column 9 forced r1c9 = `2`, r2c9 = `6`, r9c9 = `7`, and r6c9 = `9`.
+- Column 7 and row/box eliminations then gave r3c7 = `7`, r6c7 = `2`, r4c7 = `6`, and r5c7 = `8`.
+- The remaining singles completed the grid.
+
+Requested coordinates:
+
+- (7, 5) = `1`
+- (7, 7) = `9`
+- (2, 8) = `1`
+- (6, 8) = `7`
+- (4, 8) = `5`
+- (5, 8) = `4`
+
+Answer: 1 9 1 7 5 4",1 9 1 7 5 4,1,hard,stop
+sudoku_en_hard_0029,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . 4 7 3 . . 2 .
+. . 8 . 5 6 . . .
+. 9 3 . . . . . .
+2 . 1 6 4 . . . 3
+5 . . 9 . 3 . . 1
+9 . . . 1 8 6 . 4
+. . . . . . 9 3 .
+. . . 8 2 . 5 . .
+. 6 . . 9 7 8 . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(9, 3), (6, 6), (1, 3), (6, 2), (1, 4), (2, 7)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",5 8 4 3 7 3,,"Solved grid:
+
+```text
+6 5 4 | 7 3 9 | 1 2 8
+1 2 8 | 4 5 6 | 3 7 9
+7 9 3 | 1 8 2 | 4 6 5
+------+-------+------
+2 8 1 | 6 4 5 | 7 9 3
+5 4 6 | 9 7 3 | 2 8 1
+9 3 7 | 2 1 8 | 6 5 4
+------+-------+------
+8 1 2 | 5 6 4 | 9 3 7
+3 7 9 | 8 2 1 | 5 4 6
+4 6 5 | 3 9 7 | 8 1 2
+```
+
+Spotcheck values:
+
+- (9, 3) = 5
+- (6, 6) = 8
+- (1, 3) = 4
+- (6, 2) = 3
+- (1, 4) = 7
+- (2, 7) = 3
+
+Answer: 5 8 4 3 7 3",5 8 4 3 7 3,1,hard,stop
+sudoku_en_hard_0030,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. 3 . . 1 9 . . .
+. 6 5 . 7 2 . . .
+. . . . 8 5 . 7 .
+. 2 7 . . . 5 8 .
+6 5 . . 3 . . 4 9
+. 1 4 . . . 7 3 .
+. 4 . 8 5 . . . .
+. . . 7 2 . 4 9 .
+. . . 1 9 . . 6 .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(4, 2), (1, 6), (6, 2), (6, 6), (8, 2), (4, 8)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",2 9 1 8 8 8,,"I solved the Sudoku by using row, column, and 3×3 box constraints.
+
+Key deductions:
+
+- Row 2 had only one possible value for c8, so r2c8 = 1.
+- Column 8 then forced r1c8 = 5.
+- Row 3 forced r3c2 = 9.
+- Row 5 forced r5c4 = 2.
+- Row 6 forced r6c5 = 6 and r6c6 = 8.
+- Row 7 forced r7c8 = 2.
+- Row 8 forced r8c2 = 8.
+- Row 9 forced r9c2 = 7.
+
+Continuing with box and column eliminations:
+
+- In the middle box, r4c5 = 4, r4c6 = 1, r5c6 = 7, r4c4 = 9, and r6c4 = 5.
+- Row 4 then completed as 3 2 7 9 4 1 5 8 6.
+- Row 6 completed as 9 1 4 5 6 8 7 3 2.
+- The middle-left box forced r5c3 = 8, then row 5 completed as 6 5 8 2 3 7 1 4 9.
+- Column 3 forced r1c3 = 2 and r9c3 = 3.
+- Column 7 forced r7c7 = 3.
+- Row 7 then forced r7c6 = 6.
+- Column 6 forced r8c6 = 3 and r9c6 = 4.
+
+The completed Sudoku grid is:
+
+7 3 2 4 1 9 6 5 8  
+8 6 5 3 7 2 9 1 4  
+4 9 1 6 8 5 2 7 3  
+3 2 7 9 4 1 5 8 6  
+6 5 8 2 3 7 1 4 9  
+9 1 4 5 6 8 7 3 2  
+1 4 9 8 5 6 3 2 7  
+5 8 6 7 2 3 4 9 1  
+2 7 3 1 9 4 8 6 5  
+
+Spotcheck values:
+
+- (4, 2) = 2
+- (1, 6) = 9
+- (6, 2) = 1
+- (6, 6) = 8
+- (8, 2) = 8
+- (4, 8) = 8
+
+Answer: 2 9 1 8 8 8",2 9 1 8 8 8,1,hard,stop
+sudoku_en_hard_0031,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . 8 . 6 . . 3 9
+. . . . . 5 7 . .
+. 7 6 4 . 3 1 . .
+. . 2 . 3 . . 1 .
+4 6 . . . . . 7 2
+. 9 . . 2 . 6 . .
+. . 7 2 . 6 3 9 .
+. . 4 3 . . . . .
+9 3 . . 7 . 2 . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(4, 2), (1, 2), (6, 8), (2, 4), (6, 2), (3, 3)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",8 1 4 1 9 6,,"Solving the Sudoku gives the completed grid:
+
+```text
+5 1 8 | 7 6 2 | 4 3 9
+3 4 9 | 1 8 5 | 7 2 6
+2 7 6 | 4 9 3 | 1 5 8
+------+-------+------
+7 8 2 | 6 3 4 | 9 1 5
+4 6 3 | 9 5 1 | 8 7 2
+1 9 5 | 8 2 7 | 6 4 3
+------+-------+------
+8 5 7 | 2 4 6 | 3 9 1
+6 2 4 | 3 1 9 | 5 8 7
+9 3 1 | 5 7 8 | 2 6 4
+```
+
+Key deductions included:
+
+- In box 6, the only place for `3` was r6c9.
+- In column 6, the only place for `2` was r1c6.
+- In column 4, the only place for `6` was r4c4.
+- In column 5, the only place for `4` was r7c5.
+- In column 1, the only place for `6` was r8c1.
+- In box 1, r2c3 was forced to `9`, then r2c1 to `3`, and r3c1 to `2`.
+- Continuing these constraints led to the full solution above.
+
+Requested coordinates:
+
+- (4, 2) = 8
+- (1, 2) = 1
+- (6, 8) = 4
+- (2, 4) = 1
+- (6, 2) = 9
+- (3, 3) = 6
+
+Answer: 8 1 4 1 9 6",8 1 4 1 9 6,1,hard,stop
+sudoku_en_hard_0032,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+6 . 3 . . 4 . . 5
+. 9 . . 5 . 3 6 .
+. 5 . . . . . 8 .
+3 7 . 4 . 9 5 . .
+. . . 1 . 5 . . .
+. . 5 3 . 2 . 4 6
+. 4 . . . . . 9 .
+. 3 6 . 4 . . 2 .
+2 . . 9 . . 8 . 4
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(5, 4), (3, 5), (4, 7), (8, 6), (9, 4), (1, 8)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",1 2 5 8 9 7,,"Solved grid:
+
+```text
+6 2 3 8 9 4 1 7 5
+8 9 4 7 5 1 3 6 2
+7 5 1 6 2 3 4 8 9
+3 7 2 4 6 9 5 1 8
+4 6 9 1 8 5 2 3 7
+1 8 5 3 7 2 9 4 6
+5 4 8 2 1 7 6 9 3
+9 3 6 5 4 8 7 2 1
+2 1 7 9 3 6 8 5 4
+```
+
+Spotcheck values:
+
+- (5, 4) = 1
+- (3, 5) = 2
+- (4, 7) = 5
+- (8, 6) = 8
+- (9, 4) = 9
+- (1, 8) = 7
+
+Answer: 1 2 5 8 9 7",1 2 5 8 9 7,1,hard,stop
+sudoku_en_hard_0033,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . . . . . 8 5 9
+. 8 . 1 . 2 . . 7
+. . . . 8 5 6 . .
+7 . . . . . . 1 6
+. 2 8 6 . 1 5 7 .
+1 3 . . . . . . 8
+. . 3 5 9 . . . .
+4 . . 2 . 8 . 6 .
+8 1 2 . . . . . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(1, 9), (4, 7), (5, 8), (6, 8), (9, 7), (4, 9)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",9 3 7 9 9 6,,"Step-by-step solution highlights:
+
+1. In the lower-left box, the only place for 6 was r6c3, so r6c3 = 6.
+2. In the upper-middle box, 9 could only go at r3c4, so r3c4 = 9.
+3. In the upper-right box, 1 could only go at r3c9, so r3c9 = 1.
+4. In the lower-left box, r7c1 = 6 and r7c2 = 7, which forced r7c6 = 4.
+5. Column 2 then forced r3c2 = 4, r1c2 = 6, r4c2 = 5, and r8c2 = 9.
+6. Row 3 then forced r3c3 = 7.
+7. Row 4 and its box forced r4c3 = 4, r4c4 = 8, r4c6 = 9, and r4c7 = 3.
+8. The right-side boxes then gave r5c9 = 4, r9c9 = 5, r7c9 = 2, r7c7 = 1, and r7c8 = 8.
+9. Row 8 resolved as r8c9 = 3, r8c7 = 7, and r8c5 = 1.
+10. Row 6 resolved through column/box restrictions: r6c6 = 7, r6c4 = 4, r6c5 = 5, r6c8 = 9, and r6c7 = 2.
+11. The remaining singles completed the grid.
+
+Completed Sudoku grid:
+
+2 6 1 7 4 3 8 5 9  
+5 8 9 1 6 2 4 3 7  
+3 4 7 9 8 5 6 2 1  
+7 5 4 8 2 9 3 1 6  
+9 2 8 6 3 1 5 7 4  
+1 3 6 4 5 7 2 9 8  
+6 7 3 5 9 4 1 8 2  
+4 9 5 2 1 8 7 6 3  
+8 1 2 3 7 6 9 4 5  
+
+Answer: 9 3 7 9 9 6",9 3 7 9 9 6,1,hard,stop
+sudoku_en_hard_0034,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . 7 2 1 3 6 9 .
+. . . . . 4 8 . .
+6 . . 5 8 . . 1 .
+3 . . . . 6 7 5 .
+. . . . . . . . .
+. 8 5 1 . . . . 6
+. 7 . . 2 1 . . 9
+. . 1 4 . . . . .
+. 9 6 7 5 8 3 . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(5, 8), (4, 9), (7, 1), (9, 2), (4, 2), (1, 9)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",3 8 5 9 1 4,,"Solved grid:
+
+```text
+8 5 7 2 1 3 6 9 4
+1 2 3 6 9 4 8 7 5
+6 4 9 5 8 7 2 1 3
+3 1 2 9 4 6 7 5 8
+9 6 4 8 7 5 1 3 2
+7 8 5 1 3 2 9 4 6
+5 7 8 3 2 1 4 6 9
+2 3 1 4 6 9 5 8 7
+4 9 6 7 5 8 3 2 1
+```
+
+Key solving steps:
+
+- In row 1, the missing digits were `{4,5,8}`; only column 1 could be `8`, so `r1c1 = 8`.
+- In the middle-left box, only `r5c2` could be `6`, so `r5c2 = 6`.
+- In the bottom-middle box, `r8c6 = 9`, which forced `r3c6 = 7`, `r6c6 = 2`, and `r5c6 = 5`.
+- In the bottom-left box, only `r7c3` could be `8`; this led to `r7c4 = 3` and `r7c8 = 6`.
+- Column and box eliminations then gave `r8c5 = 6`, `r2c5 = 9`, `r4c5 = 4`.
+- Further singles followed: `r3c3 = 9`, `r4c3 = 2`, `r5c3 = 4`, then row 4 solved as `3 1 2 9 4 6 7 5 8`.
+- Continuing eliminations solved the remaining grid uniquely.
+
+Requested coordinates:
+
+- `(5, 8) = 3`
+- `(4, 9) = 8`
+- `(7, 1) = 5`
+- `(9, 2) = 9`
+- `(4, 2) = 1`
+- `(1, 9) = 4`
+
+Answer: 3 8 5 9 1 4",3 8 5 9 1 4,1,hard,stop
+sudoku_en_hard_0035,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. 1 8 . . 4 . 6 .
+. . 2 . . 7 . . 3
+7 . . . 8 . . . 4
+1 8 . . 9 . . 5 .
+. . 7 1 . 8 4 . .
+. 2 . . 5 . . 8 1
+5 . . . 1 . . . 9
+8 . . 2 . . 6 . .
+. 9 . 6 . . 1 3 .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(9, 8), (2, 1), (2, 7), (8, 2), (7, 6), (3, 6)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",3 9 8 3 3 1,,"Solved grid:
+
+```text
+3 1 8 9 2 4 5 6 7
+9 4 2 5 6 7 8 1 3
+7 6 5 3 8 1 9 2 4
+1 8 3 4 9 2 7 5 6
+6 5 7 1 3 8 4 9 2
+4 2 9 7 5 6 3 8 1
+5 7 6 8 1 3 2 4 9
+8 3 1 2 4 9 6 7 5
+2 9 4 6 7 5 1 3 8
+```
+
+Key reasoning highlights:
+
+- In the bottom-left box, `r9c3 = 4`, which then forced row 9 to complete as `2 9 4 6 7 5 1 3 8`.
+- In the bottom-middle box, the remaining placements forced `r7c6 = 3`, `r8c5 = 4`, `r8c6 = 9`, and `r7c4 = 8`.
+- Column 6 then resolved with `r6c6 = 6`, `r4c6 = 2`, and `r3c6 = 1`.
+- Column 1 resolved as `3,9,7,1,6,4,5,8,2`.
+- The middle rows and columns then cascaded to completion, producing the final solved grid above.
+
+Spotcheck values:
+
+- `(9, 8) = 3`
+- `(2, 1) = 9`
+- `(2, 7) = 8`
+- `(8, 2) = 3`
+- `(7, 6) = 3`
+- `(3, 6) = 1`
+
+Answer: 3 9 8 3 3 1",3 9 8 3 3 1,1,hard,stop
+sudoku_en_hard_0036,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. 6 . . . . . 4 .
+. 2 1 6 . . . . .
+3 5 . . 1 4 7 . 6
+6 . 9 . . . . 2 .
+. 7 4 . . . 3 5 .
+. 1 . . . . 9 . 8
+1 . 5 9 2 . . 8 3
+. . . . . 1 2 7 .
+. 9 . . . . . 1 .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(1, 3), (9, 5), (7, 7), (3, 8), (7, 8), (4, 6)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",7 6 6 9 8 5,,"Solving step by step:
+
+1. In the top-right box, row 3 already has only one place for 9:
+   - r3c8 = 9  
+   Then the box forces:
+   - r2c8 = 3
+   - r2c9 = 5
+   - r2c7 = 8
+   - r1c7 = 1
+   - r1c9 = 2
+
+2. Row 7 has missing digits {4,6,7}:
+   - r7c2 = 4
+   - r7c7 = 6
+   - r7c6 = 7
+
+3. Column 8 is then completed:
+   - r6c8 = 6
+
+4. In the middle-right box:
+   - r4c7 = 4
+   - r5c9 = 1
+   - r4c9 = 7
+
+5. Column 9 then gives:
+   - r9c9 = 4
+   - r8c9 = 9
+
+6. Bottom-right box gives:
+   - r9c7 = 5
+
+7. Bottom-left box resolves:
+   - r8c1 = 8
+   - r8c2 = 3
+   - r8c3 = 6
+
+8. Column 2 gives:
+   - r4c2 = 8  
+   Then row 4 gives:
+   - r4c4 = 1
+
+9. Row 2 resolves:
+   - r2c6 = 9
+   - r2c5 = 7
+   - r2c1 = 4
+
+10. Top-middle box forces:
+   - r3c4 = 2
+   - r3c3 = 8
+
+11. Top-left box then gives:
+   - r1c3 = 7
+   - r1c1 = 9
+
+12. Column 3 gives:
+   - r9c3 = 2
+   - r6c3 = 3
+
+13. Column 1 gives:
+   - r5c1 = 2
+   - r6c1 = 5
+
+14. Row/column reductions continue:
+   - r5c4 = 8
+   - r9c1 = 7
+   - r9c4 = 3
+   - r1c4 = 5
+   - r8c4 = 4
+   - r8c5 = 5
+   - r6c4 = 7
+   - r6c5 = 4
+   - r6c6 = 2
+
+15. Final column and row completions:
+   - r5c6 = 6
+   - r5c5 = 9
+   - r9c6 = 8
+   - r1c6 = 3
+   - r4c6 = 5
+   - r1c5 = 8
+   - r4c5 = 3
+   - r9c5 = 6
+
+Completed grid:
+
+```text
+9 6 7 5 8 3 1 4 2
+4 2 1 6 7 9 8 3 5
+3 5 8 2 1 4 7 9 6
+6 8 9 1 3 5 4 2 7
+2 7 4 8 9 6 3 5 1
+5 1 3 7 4 2 9 6 8
+1 4 5 9 2 7 6 8 3
+8 3 6 4 5 1 2 7 9
+7 9 2 3 6 8 5 1 4
+```
+
+Spotcheck values:
+
+- (1, 3) = 7
+- (9, 5) = 6
+- (7, 7) = 6
+- (3, 8) = 9
+- (7, 8) = 8
+- (4, 6) = 5
+
+Answer: 7 6 6 9 8 5",7 6 6 9 8 5,1,hard,stop
+sudoku_en_hard_0037,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. 6 . . . 7 3 1 .
+. . . . . 9 . . .
+4 . . 3 8 . 2 . 6
+6 1 . 5 . . 8 . .
+. 9 . 8 . 4 . 3 .
+. . 4 . . 3 . 2 9
+7 . 5 . 4 8 . . 3
+. . . 7 . . . . .
+. 4 8 9 . . . 5 .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(9, 8), (5, 6), (7, 4), (9, 4), (2, 2), (1, 6)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",5 4 1 9 8 7,,"Solved grid:
+
+```text
+2 6 9 4 5 7 3 1 8
+3 8 1 2 6 9 4 7 5
+4 5 7 3 8 1 2 9 6
+6 1 3 5 9 2 8 4 7
+5 9 2 8 7 4 6 3 1
+8 7 4 6 1 3 5 2 9
+7 2 5 1 4 8 9 6 3
+9 3 6 7 2 5 1 8 4
+1 4 8 9 3 6 7 5 2
+```
+
+Key solving steps included:
+
+- Row 4 had only one place for `2`, so `r4c6 = 2`.
+- In the bottom-left box, `r9c1 = 1`, then `r8c1 = 9`, `r8c3 = 6`.
+- Row 9 then resolved to `1 4 8 9 3 6 7 5 2`.
+- Column 1 forced `r2c1 = 3`, and column 3 forced `r4c3 = 3`.
+- A locked candidate in the top-right box forced `r7c8 = 6`, then row 7 solved as `7 2 5 1 4 8 9 6 3`.
+- The bottom-middle box forced `r8c6 = 5`, `r8c5 = 2`.
+- Column 6 then forced `r3c6 = 1`.
+- Column 5 forced `r1c5 = 5`, and then `r2c5 = 6`.
+- Continuing singles and box/column eliminations completed the grid above.
+
+Requested coordinates:
+
+- `(9, 8)` = `5`
+- `(5, 6)` = `4`
+- `(7, 4)` = `1`
+- `(9, 4)` = `9`
+- `(2, 2)` = `8`
+- `(1, 6)` = `7`
+
+Answer: 5 4 1 9 8 7",5 4 1 9 8 7,1,hard,stop
+sudoku_en_hard_0038,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . 1 . 9 . . 3 7
+9 6 5 . 3 . . . .
+. . 8 1 . . . . .
+. 9 6 8 . . 4 . 1
+8 . . . . . . . 6
+1 . 4 . . 9 3 7 .
+. . . . . 5 7 . .
+. . . . 8 . 2 1 4
+3 8 . . 4 . 5 . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(3, 1), (8, 2), (6, 8), (8, 9), (1, 4), (1, 6)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",7 5 7 4 5 6,,"Step-by-step solve summary:
+
+1. In the top-right 3×3 box, column/box interactions force:
+   - r2c9 = 2
+   - r2c8 = 4
+   - r2c4 = 7
+   - r2c6 = 8  
+   Row 2 becomes: `9 6 5 7 3 8 1 4 2`
+
+2. In column 7 and the top-right box:
+   - r3c7 = 6
+   - r1c7 = 8
+   - r2c7 = 1
+
+3. Column 9 then resolves:
+   - r9c9 = 9
+   - r3c9 = 5
+   - r7c9 = 3
+   - r3c8 = 9
+
+4. Working through the lower boxes:
+   - r9c4 = 2
+   - r9c3 = 7
+   - r9c6 = 1  
+   Row 9 becomes: `3 8 7 2 4 1 5 6 9`
+
+5. Column 3 and the lower-left box resolve:
+   - r8c3 = 9
+   - r7c3 = 2
+   - r5c3 = 3
+   - r8c2 = 5
+   - r8c1 = 6
+   - r7c1 = 4
+   - r7c2 = 1
+
+6. Row 7 completes:
+   - r7c5 = 6
+   - r7c4 = 9  
+   Row 7 becomes: `4 1 2 9 6 5 7 8 3`
+
+7. Row 8 completes:
+   - r8c4 = 3
+   - r8c6 = 7  
+   Row 8 becomes: `6 5 9 3 8 7 2 1 4`
+
+8. The remaining upper-left and middle cells resolve:
+   - r6c2 = 2
+   - r1c2 = 4
+   - r5c2 = 7
+   - r1c1 = 2
+   - r3c1 = 7
+   - r1c6 = 6
+   - r1c4 = 5
+   - r3c5 = 2
+   - r3c6 = 4
+
+9. Final middle rows complete:
+   - r5c6 = 2
+   - r4c6 = 3
+   - r5c8 = 5
+   - r5c4 = 4
+   - r5c5 = 1
+   - r4c8 = 2
+   - r6c5 = 5
+   - r4c5 = 7
+   - r4c1 = 5
+   - r6c4 = 6
+
+Completed Sudoku grid:
+
+```text
+2 4 1 5 9 6 8 3 7
+9 6 5 7 3 8 1 4 2
+7 3 8 1 2 4 6 9 5
+5 9 6 8 7 3 4 2 1
+8 7 3 4 1 2 9 5 6
+1 2 4 6 5 9 3 7 8
+4 1 2 9 6 5 7 8 3
+6 5 9 3 8 7 2 1 4
+3 8 7 2 4 1 5 6 9
+```
+
+Requested coordinates:
+
+- (3, 1) = 7
+- (8, 2) = 5
+- (6, 8) = 7
+- (8, 9) = 4
+- (1, 4) = 5
+- (1, 6) = 6
+
+Answer: 7 5 7 4 5 6",7 5 7 4 5 6,1,hard,stop
+sudoku_en_hard_0039,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . 5 . . 8 . 9 .
+. 1 6 . . 2 3 . .
+8 . . 6 1 . . 2 .
+6 . . . 8 . 9 . .
+. 9 . 1 . 6 . 5 .
+. . 4 . 9 . . . 1
+. 7 . . 6 3 . . 2
+. . 9 2 . . 7 4 .
+. 5 . 8 . . 6 . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(8, 9), (7, 2), (4, 6), (7, 1), (1, 6), (6, 4)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",8 7 5 4 8 3,,"Solved grid:
+
+```text
+2 4 5 7 3 8 1 9 6
+9 1 6 5 4 2 3 8 7
+8 3 7 6 1 9 4 2 5
+6 2 1 4 8 5 9 7 3
+7 9 3 1 2 6 8 5 4
+5 8 4 3 9 7 2 6 1
+4 7 8 9 6 3 5 1 2
+3 6 9 2 5 1 7 4 8
+1 5 2 8 7 4 6 3 9
+```
+
+Key solving steps:
+
+- In box 8, row 8 forced `r8c5 = 5` and `r8c6 = 1`.
+- Row 8 then forced `r8c1 = 3`, later `r8c2 = 6`, and `r8c9 = 8`.
+- Column 5 forced `r5c5 = 2`, then `r1c5 = 3`.
+- Column 1 forced `r6c1 = 5`; row 6 then gave `r6c6 = 7`, `r6c4 = 3`, `r6c7 = 2`, `r6c2 = 8`, `r6c8 = 6`.
+- Box 4 then gave `r5c3 = 3`, `r4c2 = 2`, `r4c3 = 1`.
+- Column/row eliminations solved row 1 as `2 4 5 7 3 8 1 9 6`.
+- The remaining singles completed the grid as shown above.
+
+Requested coordinates:
+
+- `(8, 9)` = `8`
+- `(7, 2)` = `7`
+- `(4, 6)` = `5`
+- `(7, 1)` = `4`
+- `(1, 6)` = `8`
+- `(6, 4)` = `3`
+
+Answer: 8 7 5 4 8 3",8 7 5 4 8 3,1,hard,stop
+sudoku_en_hard_0040,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . . . 1 . 7 . .
+9 1 . . 5 . . . 4
+3 . 7 . . . 2 1 .
+. . 8 2 . 1 . 9 .
+7 . 5 . . . 1 . 2
+. 4 . 7 . 5 8 . .
+. 6 4 . . . 3 . 8
+5 . . . 7 . . 6 1
+. . 3 . 6 . . . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(7, 4), (8, 8), (8, 6), (4, 6), (2, 5), (9, 1)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",5 6 3 1 5 8,,"Step-by-step highlights:
+
+- In row 2, column 7 must be **6**, then row 2 column 3 becomes **2**.
+- In the top-left box, row 1 column 3 must be **6**.
+- Column 3 then forces row 6 column 3 to be **1**.
+- In the middle-left box:
+  - r4c1 = **6**
+  - r4c2 = **3**
+  - r5c2 = **9**
+  - r6c1 = **2**
+- Row 4 completes as: **6 3 8 2 4 1 5 9 7**
+- Row 6 completes as: **2 4 1 7 9 5 8 3 6**
+- Bottom-left box resolves:
+  - r7c1 = **1**
+  - r9c1 = **8**
+  - r8c2 = **2**
+  - r9c2 = **7**
+- Column 5 forces:
+  - r3c5 = **8**
+  - r5c5 = **3**
+  - r7c5 = **2**
+- Row 1 then completes as: **4 8 6 9 1 2 7 5 3**
+- Row 2 completes as: **9 1 2 3 5 7 6 8 4**
+- The remaining rows resolve cleanly.
+
+Completed Sudoku grid:
+
+```text
+4 8 6 9 1 2 7 5 3
+9 1 2 3 5 7 6 8 4
+3 5 7 4 8 6 2 1 9
+6 3 8 2 4 1 5 9 7
+7 9 5 6 3 8 1 4 2
+2 4 1 7 9 5 8 3 6
+1 6 4 5 2 9 3 7 8
+5 2 9 8 7 3 4 6 1
+8 7 3 1 6 4 9 2 5
+```
+
+Requested coordinates:
+
+- (7, 4) = **5**
+- (8, 8) = **6**
+- (8, 6) = **3**
+- (4, 6) = **1**
+- (2, 5) = **5**
+- (9, 1) = **8**
+
+Answer: 5 6 3 1 5 8",5 6 3 1 5 8,1,hard,stop
+sudoku_en_hard_0041,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+8 . . . 2 . . 4 .
+. . . 3 8 6 . 7 .
+2 7 9 5 . . . . .
+. . . 6 3 . . 1 7
+. . 7 . . . 3 . .
+3 2 . . 9 1 . . .
+. . . . . 3 6 9 2
+. 9 . 1 7 5 . . .
+. 3 . . 6 . . . 1
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(2, 7), (2, 2), (4, 1), (1, 5), (9, 7), (6, 4)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",2 4 5 2 7 7,,"Solved grid:
+
+8 6 3 9 2 7 1 4 5  
+1 4 5 3 8 6 2 7 9  
+2 7 9 5 1 4 8 6 3  
+5 8 4 6 3 2 9 1 7  
+9 1 7 4 5 8 3 2 6  
+3 2 6 7 9 1 5 8 4  
+7 5 1 8 4 3 6 9 2  
+6 9 2 1 7 5 4 3 8  
+4 3 8 2 6 9 7 5 1  
+
+Spotcheck values:
+- (2, 7) = 2
+- (2, 2) = 4
+- (4, 1) = 5
+- (1, 5) = 2
+- (9, 7) = 7
+- (6, 4) = 7
+
+Answer: 2 4 5 2 7 7",2 4 5 2 7 7,1,hard,stop
+sudoku_en_hard_0042,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . 1 . . . . . 7
+5 8 3 . 4 2 . 1 .
+7 2 . . . 6 . . .
+4 . . . 2 . 5 . .
+. 9 2 . . . 7 8 .
+. . 6 . 8 . . . 1
+. . . 8 . . . 7 2
+. 4 . 2 7 . 3 9 6
+2 . . . . . 4 . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(7, 4), (8, 2), (8, 3), (6, 4), (1, 1), (5, 7)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",8 4 5 4 9 7,,"Solved grid:
+
+```text
+9 6 1 5 3 8 2 4 7
+5 8 3 7 4 2 6 1 9
+7 2 4 9 1 6 8 3 5
+4 7 8 1 2 9 5 6 3
+1 9 2 3 6 5 7 8 4
+3 5 6 4 8 7 9 2 1
+6 3 9 8 5 4 1 7 2
+8 4 5 2 7 1 3 9 6
+2 1 7 6 9 3 4 5 8
+```
+
+Key deductions included:
+- In row 2, the only possible value for c9 was 9, leading to c7 = 6 and c4 = 7.
+- In the top-right box, r3c7 = 8 and r1c7 = 2.
+- Column 7 then forced r6c7 = 9 and r7c7 = 1.
+- The middle-right box forced r4c9 = 3, r5c9 = 4, r4c8 = 6, and r6c8 = 2.
+- The top-left box forced r1c2 = 6, r1c1 = 9, and r3c3 = 4.
+- Continuing column and box eliminations completed the grid uniquely.
+
+Spotcheck values:
+- (7, 4) = 8
+- (8, 2) = 4
+- (8, 3) = 5
+- (6, 4) = 4
+- (1, 1) = 9
+- (5, 7) = 7
+
+Answer: 8 4 5 4 9 7",8 4 5 4 9 7,1,hard,stop
+sudoku_en_hard_0043,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+6 . 1 . . . . 9 8
+. . 3 5 . 6 4 . .
+7 2 . 8 . . . . 5
+. . . 1 . 8 6 . .
+5 . . . . . . . 1
+. . 9 4 . 5 . . .
+3 . . . . 1 . 4 7
+. . 8 7 . 4 2 . .
+4 7 . . . . 8 . 6
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(4, 2), (7, 9), (5, 8), (7, 8), (3, 6), (1, 2)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",3 7 8 4 9 5,,"I tried to solve the puzzle, but the givens force a contradiction, so the Sudoku as stated has **no valid solution**.
+
+Key forced steps:
+
+1. In the top-left 3×3 box, the missing digits are {4,5,8,9}.  
+   - r3c3 can only be 4, so **r3c3 = 4**.
+   - Then r1c2 can only be 5, so **r1c2 = 5**.
+
+2. In column 2, after r1c2 = 5, r3c2 = 2, and r9c2 = 7, row 7 column 2 is forced:
+   - **r7c2 = 6**.
+
+3. In the middle-left 3×3 box:
+   - r4c1 can only be 2, so **r4c1 = 2**.
+   - Then r4c3 can only be 7, so **r4c3 = 7**.
+   - Then r5c3 can only be 6, so **r5c3 = 6**.
+
+4. Now look at column 4. It contains:
+   - r2c4 = 5
+   - r3c4 = 8
+   - r4c4 = 1
+   - r6c4 = 4
+   - r8c4 = 7
+
+   So column 4 is missing {2,3,6,9}. It must contain a 6 somewhere.
+
+   But the empty cells in column 4 are r1c4, r5c4, r7c4, r9c4:
+   - r1 already has a 6 in c1
+   - r5 already has a 6 in c3
+   - r7 already has a 6 in c2
+   - r9 already has a 6 in c9
+
+   Therefore none of the open cells in column 4 can be 6, which is impossible.
+
+So the puzzle is inconsistent and cannot be completed under standard Sudoku rules.
+
+Answer: no valid solution",2 9 6 9 4 6,0,hard,stop
+sudoku_en_hard_0044,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . 7 . . . . . 9
+2 4 . . 5 6 . . .
+. . 3 . 4 2 . . .
+3 6 . . 1 9 7 . .
+. . 5 8 . 3 9 . .
+. . 4 5 2 . . 6 8
+. . . 1 3 . 5 . .
+. . . 2 9 . . 7 6
+5 . . . . . 4 . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(6, 8), (1, 9), (6, 3), (1, 4), (2, 1), (2, 5)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",6 9 4 3 2 5,,"Solved grid:
+
+```text
+6 5 7 3 8 1 2 4 9
+2 4 9 7 5 6 1 8 3
+1 8 3 9 4 2 6 5 7
+3 6 8 4 1 9 7 2 5
+7 2 5 8 6 3 9 1 4
+9 1 4 5 2 7 3 6 8
+8 7 6 1 3 4 5 9 2
+4 3 1 2 9 5 8 7 6
+5 9 2 6 7 8 4 3 1
+```
+
+Reasoning highlights:
+- In the middle box, r6c6 must be 7, forcing r5c5 = 6.
+- In the right-middle box, r6c7 must be 3; later r4c9 = 5, r4c8 = 2, and r4c3 = 8.
+- The top-middle box then forces r1c4 = 3, r1c5 = 8, r1c6 = 1.
+- Row 1 resolves to `6 5 7 3 8 1 2 4 9`.
+- Column and box eliminations continue to resolve the remaining rows uniquely.
+
+Spotcheck values:
+- (6, 8) = 6
+- (1, 9) = 9
+- (6, 3) = 4
+- (1, 4) = 3
+- (2, 1) = 2
+- (2, 5) = 5
+
+Answer: 6 9 4 3 2 5",6 9 4 3 2 5,1,hard,stop
+sudoku_en_hard_0045,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. 1 . . . 6 . 7 .
+. . 4 . . . . . 6
+. . 2 4 . . . 1 9
+1 . . 9 . 5 6 2 7
+7 . . . . . . . 5
+5 8 9 6 . 7 . . 1
+8 3 . . . 2 7 . .
+2 . . . . . 1 . .
+. 6 . 1 . . . 9 .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(1, 8), (5, 9), (3, 5), (4, 2), (4, 6), (7, 8)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",7 5 7 4 5 6,,"Solved grid:
+
+```text
+9 1 8 2 5 6 4 7 3
+3 7 4 8 1 9 2 5 6
+6 5 2 4 7 3 8 1 9
+1 4 3 9 8 5 6 2 7
+7 2 6 3 4 1 9 8 5
+5 8 9 6 2 7 3 4 1
+8 3 1 5 9 2 7 6 4
+2 9 5 7 6 4 1 3 8
+4 6 7 1 3 8 5 9 2
+```
+
+Spotcheck values:
+
+- (1, 8) = 7
+- (5, 9) = 5
+- (3, 5) = 7
+- (4, 2) = 4
+- (4, 6) = 5
+- (7, 8) = 6
+
+Answer: 7 5 7 4 5 6",7 5 7 4 5 6,1,hard,stop
+sudoku_en_hard_0046,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . . 8 6 2 . 4 .
+9 7 4 3 . 1 . . 8
+. . . . 4 9 . . .
+6 . . . . . 5 8 .
+. . . 2 7 6 . . .
+. 9 3 . . . . . 2
+. . . 6 9 . . . .
+7 . . 4 . 3 8 2 5
+. 4 . 5 2 8 . . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(2, 7), (6, 1), (1, 8), (5, 5), (8, 5), (9, 8)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",2 4 4 7 1 9,,"Solving the puzzle step by step:
+
+1. In row 2, the missing digits are {2,5,6}.  
+   - c5 can only be 5, so r2c5 = 5.  
+   - Then c8 can only be 6, so r2c8 = 6.  
+   - Then r2c7 = 2.
+
+2. The top-middle box is completed:
+   - r3c4 = 7.
+
+3. In row 8, the missing digits are {1,6,9}.  
+   - r8c5 = 1, then r8c2 = 6, r8c3 = 9.
+
+4. The bottom-middle box gives:
+   - r7c6 = 7.
+
+5. Column 6 then forces:
+   - r4c6 = 4, r6c6 = 5.
+
+6. The middle-middle box gives:
+   - r4c5 = 3, r6c5 = 8, r6c4 = 1.
+
+7. Row 6 becomes:
+   - r6c1 = 4, r6c8 = 7, r6c7 = 6.  
+   Row 6 is now: 493185672.
+
+8. In the top-right box, digit 5 can only go at r3c8:
+   - r3c8 = 5.
+
+9. Column 9 forces:
+   - r9c9 = 6.
+
+10. In the bottom-left box:
+   - r9c3 = 1, then r9c1 = 3.
+
+11. Row 9 then completes:
+   - r9c8 = 9, r9c7 = 7.  
+   Row 9 is now: 341528796.
+
+12. Column 3 gives:
+   - r1c3 = 5, r5c3 = 8, r7c3 = 2, r3c3 = 6, r4c3 = 7.
+
+13. Row 4 completes:
+   - r4c9 = 1, r4c2 = 2.  
+   Row 4 is now: 627934581.
+
+14. Column 9 gives:
+   - r3c9 = 3, r7c9 = 4, r5c9 = 9, r1c9 = 7.
+
+15. Row 1 gives:
+   - r1c7 = 9.
+
+16. Column 7 gives:
+   - r5c7 = 4, r7c7 = 3, r3c7 = 1.
+
+17. Row 5 and row 7 continue:
+   - r5c8 = 3, then r7c8 = 1.
+
+18. Row 3 completes:
+   - r3c2 = 8, r3c1 = 2.  
+   Row 3 is now: 286749153.
+
+19. Column 1 and column 2 finish the remaining cells:
+   - r1c1 = 1, r1c2 = 3  
+   - r5c1 = 5, r5c2 = 1  
+   - r7c1 = 8, r7c2 = 5
+
+The completed Sudoku grid is:
+
+135862947  
+974351268  
+286749153  
+627934581  
+518276439  
+493185672  
+852697314  
+769413825  
+341528796  
+
+The requested coordinates are:
+
+- (2, 7) = 2
+- (6, 1) = 4
+- (1, 8) = 4
+- (5, 5) = 7
+- (8, 5) = 1
+- (9, 8) = 9
+
+Answer: 2 4 4 7 1 9",2 4 4 7 1 9,1,hard,stop
+sudoku_en_hard_0047,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. 2 8 7 . 9 . . 6
+5 . . 8 . . 3 9 .
+. . . 6 5 . . . .
+. . . . . 6 2 . .
+2 8 5 . . . 1 6 3
+. . 3 5 . . . . .
+. . . . 7 4 . . .
+. 4 2 . . 3 . . 1
+6 . . 1 . 5 7 4 .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(1, 6), (9, 7), (5, 1), (2, 8), (9, 6), (4, 4)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",9 7 2 9 5 3,,"Solved grid:
+
+```text
+4 2 8 | 7 3 9 | 5 1 6
+5 1 6 | 8 4 2 | 3 9 7
+3 9 7 | 6 5 1 | 4 2 8
+------+-------+------
+9 7 4 | 3 1 6 | 2 8 5
+2 8 5 | 4 9 7 | 1 6 3
+1 6 3 | 5 2 8 | 9 7 4
+------+-------+------
+8 5 1 | 2 7 4 | 6 3 9
+7 4 2 | 9 6 3 | 8 5 1
+6 3 9 | 1 8 5 | 7 4 2
+```
+
+Spotcheck values:
+
+- (1, 6) = 9
+- (9, 7) = 7
+- (5, 1) = 2
+- (2, 8) = 9
+- (9, 6) = 5
+- (4, 4) = 3
+
+Answer: 9 7 2 9 5 3",9 7 2 9 5 3,1,hard,stop
+sudoku_en_hard_0048,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+6 5 . . . 3 . . 1
+. . . . 8 . 9 3 .
+. . 2 . . 7 6 5 .
+8 . . . . 9 . . 3
+. 9 . 1 3 4 . 6 .
+1 . . 8 . . . . 5
+. 8 4 5 . . 3 . .
+. 1 9 . 4 . . . .
+5 . . 3 . . . 8 4
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(5, 8), (9, 9), (6, 1), (7, 5), (1, 9), (5, 1)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",6 4 1 6 1 2,,"Solving the Sudoku gives the completed grid:
+
+```text
+6 5 8 9 2 3 7 4 1
+4 7 1 6 8 5 9 3 2
+9 3 2 4 1 7 6 5 8
+8 4 6 2 5 9 1 7 3
+2 9 5 1 3 4 8 6 7
+1 2 3 8 7 6 4 9 5
+7 8 4 5 6 2 3 1 9
+3 1 9 7 4 8 5 2 6
+5 6 7 3 9 1 2 8 4
+```
+
+Key solving steps included:
+- Hidden singles placed early: `r3c9=8`, `r8c6=8`, `r2c6=5`, `r4c5=5`.
+- Column 3 then forced `r1c3=8`, `r5c3=5`, and `r6c3=3`.
+- Further singles and box constraints gave `r6c8=9`, `r8c7=5`, `r7c9=9`, `r8c9=6`.
+- Row/column eliminations solved row 3 as `9 3 2 4 1 7 6 5 8`.
+- A contradiction check on the `{2,7}` pair in row 5 forced `r5c1=2`, hence `r5c9=7`.
+- The remaining rows and columns then resolved cleanly to the final grid above.
+
+Requested coordinates:
+- `(5,8) = 6`
+- `(9,9) = 4`
+- `(6,1) = 1`
+- `(7,5) = 6`
+- `(1,9) = 1`
+- `(5,1) = 2`
+
+Answer: 6 4 1 6 1 2",6 4 1 6 1 2,1,hard,stop
+sudoku_en_hard_0049,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+3 . . 7 2 . . . 9
+. . 8 . . . . 4 7
+. . 2 8 . . . . 5
+5 . . . 7 . . 8 6
+2 . . 9 . 6 . . 1
+8 6 . . 5 . . . 4
+7 . . . . 8 1 . .
+1 5 . . . . 6 . .
+9 . . . 1 5 . . 2
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(2, 3), (6, 2), (8, 3), (1, 7), (6, 1), (1, 9)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",8 6 3 8 8 9,,"Solved grid:
+
+```text
+3 1 5 7 2 4 8 6 9
+6 9 8 5 3 1 2 4 7
+4 7 2 8 6 9 3 1 5
+5 3 1 4 7 2 9 8 6
+2 4 7 9 8 6 5 3 1
+8 6 9 1 5 3 7 2 4
+7 2 4 6 9 8 1 5 3
+1 5 3 2 4 7 6 9 8
+9 8 6 3 1 5 4 7 2
+```
+
+Reasoning highlights:
+
+- Row 1 quickly gives `r1c7 = 8`, then the top-left box forces `r1c2 = 1`, `r2c2 = 9`, `r3c2 = 7`, and `r1c3 = 5`.
+- Row 2 then resolves as `6 9 8 5 3 1 2 4 7`.
+- The top-middle box forces `r3c6 = 9`, `r3c5 = 6`, completing row 3.
+- In the center boxes, `r5c5 = 8`, then the middle-right box forces `r4c7 = 9`, `r6c7 = 7`, `r5c7 = 5`, `r5c8 = 3`, and `r6c8 = 2`.
+- Rows 4–6 then complete:
+  - Row 4: `5 3 1 4 7 2 9 8 6`
+  - Row 5: `2 4 7 9 8 6 5 3 1`
+  - Row 6: `8 6 9 1 5 3 7 2 4`
+- The bottom rows finish by column and box singles, yielding rows 7–9 as:
+  - `7 2 4 6 9 8 1 5 3`
+  - `1 5 3 2 4 7 6 9 8`
+  - `9 8 6 3 1 5 4 7 2`
+
+Requested coordinates:
+
+- `(2, 3) = 8`
+- `(6, 2) = 6`
+- `(8, 3) = 3`
+- `(1, 7) = 8`
+- `(6, 1) = 8`
+- `(1, 9) = 9`
+
+Answer: 8 6 3 8 8 9",8 6 3 8 8 9,1,hard,stop
+sudoku_en_hard_0050,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+9 . . 6 . . . . .
+. . 6 . 2 5 . . .
+. 5 1 . . 4 . 8 3
+3 7 . 2 5 . 9 . .
+5 . . . 4 . . . 7
+. . 9 . 3 7 . 5 6
+6 8 . 4 . . 3 7 .
+. . . 3 7 . 5 . .
+. . . . . 8 . . 2
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(1, 5), (9, 6), (8, 8), (8, 6), (1, 4), (4, 1)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",8 8 6 9 6 3,,"Solved grid:
+
+```text
+9 4 7 6 8 3 1 2 5
+8 3 6 1 2 5 7 9 4
+2 5 1 7 9 4 6 8 3
+3 7 8 2 5 6 9 4 1
+5 6 2 9 4 1 8 3 7
+4 1 9 8 3 7 2 5 6
+6 8 5 4 1 2 3 7 9
+1 2 4 3 7 9 5 6 8
+7 9 3 5 6 8 4 1 2
+```
+
+Key solving steps:
+- In the top-middle box, row 3 forced `r3c5 = 9`, then `r3c4 = 7`, completing row 3 as `2 5 1 7 9 4 6 8 3`.
+- Column 5 then forced `r7c5 = 1`, `r1c5 = 8`, and `r9c5 = 6`.
+- Row 7 became solvable: `6 8 5 4 1 2 3 7 9`.
+- The top-middle box then forced `r2c4 = 1` and `r1c6 = 3`, which completed row 2 as `8 3 6 1 2 5 7 9 4`.
+- Row 4 resolved as `3 7 8 2 5 6 9 4 1`.
+- Column and box eliminations then completed the remaining rows, yielding the full grid above.
+
+Requested coordinates:
+- `(1, 5) = 8`
+- `(9, 6) = 8`
+- `(8, 8) = 6`
+- `(8, 6) = 9`
+- `(1, 4) = 6`
+- `(4, 1) = 3`
+
+Answer: 8 8 6 9 6 3",8 8 6 9 6 3,1,hard,stop
+sudoku_en_hard_0051,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . . 4 . . 8 5 .
+. . . . . . 2 6 3
+. . . . 6 3 4 . 9
+. 6 . . . . 9 . 5
+8 . 9 7 . 6 3 . 1
+4 . 3 . . . . 2 .
+9 . 1 5 7 . . . .
+7 2 5 . . . . . .
+. 4 6 . . 8 . . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(9, 9), (3, 9), (5, 9), (4, 4), (8, 1), (4, 7)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",2 9 1 3 7 9,,"Solved grid:
+
+```text
+6 3 2 | 4 1 9 | 8 5 7
+1 9 4 | 8 5 7 | 2 6 3
+5 7 8 | 2 6 3 | 4 1 9
+------+-------+------
+2 6 7 | 3 4 1 | 9 8 5
+8 5 9 | 7 2 6 | 3 4 1
+4 1 3 | 9 8 5 | 7 2 6
+------+-------+------
+9 8 1 | 5 7 2 | 6 3 4
+7 2 5 | 6 3 4 | 1 9 8
+3 4 6 | 1 9 8 | 5 7 2
+```
+
+Key deductions:
+- In the top-right box, the missing digits were `{1,7}`, giving `r1c9=7` and `r3c8=1`.
+- In the middle-left box, `r4c3=7`, `r6c2=1`, and then `r4c1=2`.
+- Column 1 then forced `r3c1=5`, `r2c1=1`, `r9c1=3`, and `r1c1=6`.
+- Row 3 resolved to `5 7 8 2 6 3 4 1 9`.
+- The bottom-left box forced `r7c2=8`, then row 7 and the lower rows resolved.
+- The remaining singles completed the full grid above.
+
+Requested coordinates:
+- `(9,9) = 2`
+- `(3,9) = 9`
+- `(5,9) = 1`
+- `(4,4) = 3`
+- `(8,1) = 7`
+- `(4,7) = 9`
+
+Answer: 2 9 1 3 7 9",2 9 1 3 7 9,1,hard,stop
+sudoku_en_hard_0052,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+8 . 7 . . . . . .
+. 2 . 5 4 . 3 . 7
+. . . 7 8 . 2 9 .
+. 5 . . . 7 . 3 .
+. . 8 9 3 1 5 . .
+. 1 . 4 . . . 6 .
+. 4 2 . 5 8 . . .
+5 . 6 . 7 9 . 1 .
+. . . . . . 8 . 6
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(9, 5), (2, 9), (8, 4), (3, 7), (5, 7), (6, 2)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",1 7 3 2 5 1,,"Solved grid:
+
+```text
+8 3 7 | 1 9 2 | 6 4 5
+9 2 1 | 5 4 6 | 3 8 7
+4 6 5 | 7 8 3 | 2 9 1
+------+-------+------
+2 5 4 | 8 6 7 | 1 3 9
+6 7 8 | 9 3 1 | 5 2 4
+3 1 9 | 4 2 5 | 7 6 8
+------+-------+------
+1 4 2 | 6 5 8 | 9 7 3
+5 8 6 | 3 7 9 | 4 1 2
+7 9 3 | 2 1 4 | 8 5 6
+```
+
+Key solving steps:
+- In row 2, column 6 had to be `6`, and column 8 had to be `8`.
+- In the top-middle box, row 3 column 6 became `3`, forcing row 1 column 6 to be `2`, row 1 column 4 to be `1`, and row 1 column 5 to be `9`.
+- Column 6 then forced row 6 column 6 to be `5` and row 9 column 6 to be `4`.
+- The middle-middle box forced row 4 column 4 to be `8`.
+- Column 2 resolved as row 1 column 2 = `3`, row 5 column 2 = `7`, row 8 column 2 = `8`, row 9 column 2 = `9`.
+- The bottom-left box forced row 9 column 3 = `3`, then row 9 column 1 = `7`, and row 7 column 1 = `1`.
+- The remaining singles completed the grid.
+
+Requested coordinates:
+- (9, 5) = `1`
+- (2, 9) = `7`
+- (8, 4) = `3`
+- (3, 7) = `2`
+- (5, 7) = `5`
+- (6, 2) = `1`
+
+Answer: 1 7 3 2 5 1",1 7 3 2 5 1,1,hard,stop
+sudoku_en_hard_0053,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+7 . . . 1 8 . 2 6
+. 2 . . . 5 . . .
+9 8 . . . . . . .
+. 6 2 4 5 . 1 . 9
+. . 5 . . . 2 . .
+1 . 8 . 6 3 5 7 .
+. . . . . . . 9 1
+. . . 8 . . . 3 .
+8 1 . 6 3 . . . 5
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(1, 5), (1, 9), (2, 4), (9, 3), (3, 8), (8, 2)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",1 6 7 9 5 4,,"Step-by-step solution highlights:
+
+1. In row 4, the missing digits are {3,7,8}.  
+   - r4c1 must be 3  
+   - r4c6 must be 7  
+   - r4c8 must be 8  
+
+2. In the top-left box, after updates, r1c2 is the only place for 5, so r1c2 = 5.
+
+3. In the top-right box:
+   - r2c8 = 1  
+   - r3c8 = 5  
+
+4. Column 8 then has only one missing digit, so r5c8 = 6.
+
+5. Column 1 resolves:
+   - r5c1 = 4  
+   - r2c1 = 6  
+
+6. In the middle-left box:
+   - r6c2 = 9  
+   - r5c2 = 7  
+
+7. Row 6 then resolves:
+   - r6c4 = 2  
+   - r6c9 = 4  
+
+8. In the middle box, r5c5 is the only place for 8, so r5c5 = 8.  
+   Then row 5 continues:
+   - r5c9 = 3  
+   - r5c4 = 1  
+   - r5c6 = 9  
+
+9. Row 3 resolves:
+   - r3c9 = 7  
+   - r3c4 = 3  
+   - r3c7 = 4  
+   - r3c5 = 2  
+   - r3c6 = 6  
+
+10. Column and row eliminations complete the grid.
+
+Completed Sudoku grid:
+
+```text
+7 5 4 9 1 8 3 2 6
+6 2 3 7 4 5 9 1 8
+9 8 1 3 2 6 4 5 7
+3 6 2 4 5 7 1 8 9
+4 7 5 1 8 9 2 6 3
+1 9 8 2 6 3 5 7 4
+2 3 6 5 7 4 8 9 1
+5 4 7 8 9 1 6 3 2
+8 1 9 6 3 2 7 4 5
+```
+
+Requested coordinates:
+
+- (1,5) = 1
+- (1,9) = 6
+- (2,4) = 7
+- (9,3) = 9
+- (3,8) = 5
+- (8,2) = 4
+
+Answer: 1 6 7 9 5 4",1 6 7 9 5 4,1,hard,stop
+sudoku_en_hard_0054,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. 8 . 4 . . 6 9 .
+6 . . . 8 . 2 4 5
+. 5 . . . . . . 8
+1 . 2 6 . 8 . 7 .
+. . . . 4 . . . .
+. 9 . 7 . 5 1 . 4
+3 . . . . . . 1 .
+4 7 5 . 2 . . . 6
+. 2 1 . . 3 . 5 .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(1, 7), (6, 1), (9, 3), (4, 8), (3, 4), (8, 4)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",6 8 1 7 9 1,,"Solved grid:
+
+```text
+7 8 3 4 5 2 6 9 1
+6 1 9 3 8 7 2 4 5
+2 5 4 9 1 6 7 3 8
+1 4 2 6 9 8 5 7 3
+5 3 7 2 4 1 8 6 9
+8 9 6 7 3 5 1 2 4
+3 6 8 5 7 4 9 1 2
+4 7 5 1 2 9 3 8 6
+9 2 1 8 6 3 4 5 7
+```
+
+Spotcheck values:
+
+- (1, 7) = 6
+- (6, 1) = 8
+- (9, 3) = 1
+- (4, 8) = 7
+- (3, 4) = 9
+- (8, 4) = 1
+
+Answer: 6 8 1 7 9 1",6 8 1 7 9 1,1,hard,stop
+sudoku_en_hard_0055,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . 3 2 . . . . 9
+. . . . . 4 . . .
+2 . . 6 5 . 1 3 .
+8 7 . 5 9 . 4 . .
+. 3 1 . . . 9 5 .
+. . 6 . 4 3 . 2 7
+. 1 4 . 2 8 . . 5
+. . . 9 . . . . .
+9 . . . . 1 7 . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(1, 7), (6, 5), (2, 2), (8, 4), (6, 6), (7, 6)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",5 4 5 9 3 8,,"Solved grid:
+
+```text
+1 4 3 2 8 7 5 6 9
+6 5 9 3 1 4 2 7 8
+2 8 7 6 5 9 1 3 4
+8 7 2 5 9 6 4 1 3
+4 3 1 8 7 2 9 5 6
+5 9 6 1 4 3 8 2 7
+3 1 4 7 2 8 6 9 5
+7 2 8 9 6 5 3 4 1
+9 6 5 4 3 1 7 8 2
+```
+
+Key deductions included:
+- Row 1 column 6 must be `7`.
+- Row 4 quickly resolves to `8 7 2 5 9 6 4 1 3`.
+- Row 6 resolves to `5 9 6 1 4 3 8 2 7`.
+- The top-right box forces several placements: `r2c9=8`, `r3c9=4`, `r1c8=6`, `r1c7=5`, `r2c7=2`, `r2c8=7`.
+- The remaining rows and columns then complete consistently.
+
+Requested coordinates:
+- (1, 7) = 5
+- (6, 5) = 4
+- (2, 2) = 5
+- (8, 4) = 9
+- (6, 6) = 3
+- (7, 6) = 8
+
+Answer: 5 4 5 9 3 8",5 4 5 9 3 8,1,hard,stop
+sudoku_en_hard_0056,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+3 . . . 6 4 . . .
+. . 8 . . . 1 . .
+6 1 . . . 8 7 . 2
+. . . 6 8 . . . 9
+. 6 1 5 2 9 3 4 .
+2 . . . 4 7 . . .
+1 . 3 8 . . . 7 5
+. . 6 . . . 4 . .
+. . . 4 1 . . . 6
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(7, 4), (3, 2), (6, 2), (1, 1), (7, 9), (9, 2)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",8 1 5 3 5 2,,"Solved grid:
+
+```text
+3 7 2 | 1 6 4 | 9 5 8
+5 9 8 | 7 3 2 | 1 6 4
+6 1 4 | 9 5 8 | 7 3 2
+------+-------+------
+4 3 7 | 6 8 1 | 5 2 9
+8 6 1 | 5 2 9 | 3 4 7
+2 5 9 | 3 4 7 | 6 8 1
+------+-------+------
+1 4 3 | 8 9 6 | 2 7 5
+9 8 6 | 2 7 5 | 4 1 3
+7 2 5 | 4 1 3 | 8 9 6
+```
+
+Key solving steps:
+
+- In row 7, the only possible value for c5 was 9, then c7 became 2, leaving c2 = 4 and c6 = 6.
+- Column 7 then forced r4c7 = 5, r1c7 = 9, r9c7 = 8, and r6c7 = 6.
+- In the top-middle box, r1c4 had to be 1; this led to r1c9 = 8.
+- Column 9 then forced r5c9 = 7, so r5c1 = 8.
+- The middle-right box then resolved r6c9 = 1, r4c8 = 2, and r6c8 = 8.
+- Column 8 forced r1c8 = 5, then later r3c8 = 3 and r2c8 = 6.
+- Row 3 resolved as `6 1 4 9 5 8 7 3 2`.
+- Column 5 and column 4 then gave r8c5 = 7, r2c5 = 3, r6c4 = 3.
+- Row 4 resolved as `4 3 7 6 8 1 5 2 9`.
+- The remaining rows and columns completed by singles, giving the full grid above.
+
+Spotcheck values:
+
+- (7, 4) = 8
+- (3, 2) = 1
+- (6, 2) = 5
+- (1, 1) = 3
+- (7, 9) = 5
+- (9, 2) = 2
+
+Answer: 8 1 5 3 5 2",8 1 5 3 5 2,1,hard,stop
+sudoku_en_hard_0057,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . 7 . 4 . . . .
+. . 8 5 . . . 2 .
+4 6 . . 1 . 5 . 3
+. . 5 1 8 6 . 9 .
+8 . . . . . . . 2
+. 3 . 4 2 5 1 . .
+6 . 4 . 9 . . 3 5
+. 7 . . . 3 8 . .
+. . . . 6 . 7 . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(4, 6), (7, 2), (1, 7), (2, 6), (1, 4), (2, 7)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",6 8 9 7 6 6,,"Solved grid:
+
+```text
+3 5 7 6 4 2 9 8 1
+1 9 8 5 3 7 6 2 4
+4 6 2 9 1 8 5 7 3
+2 4 5 1 8 6 3 9 7
+8 1 6 3 7 9 4 5 2
+7 3 9 4 2 5 1 6 8
+6 8 4 7 9 1 2 3 5
+9 7 1 2 5 3 8 4 6
+5 2 3 8 6 4 7 1 9
+```
+
+Key solving steps included:
+- In column 3, only row 9 could contain `3`, so `r9c3 = 3`.
+- In the top-middle box, only `r1c4` could be `6`, so `r1c4 = 6`.
+- That forced `r1c7 = 9`, which then forced `r4c7 = 3`.
+- In the middle-right box, only `r5c8` could be `5`.
+- Column and box eliminations then gave `r2c5 = 3`, `r5c5 = 7`, `r2c6 = 7`, and the puzzle continued resolving cleanly.
+- Final completed grid is shown above.
+
+Spotcheck values:
+- `(4, 6)` = `6`
+- `(7, 2)` = `8`
+- `(1, 7)` = `9`
+- `(2, 6)` = `7`
+- `(1, 4)` = `6`
+- `(2, 7)` = `6`
+
+Answer: 6 8 9 7 6 6",6 8 9 7 6 6,1,hard,stop
+sudoku_en_hard_0058,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+7 3 4 . 5 . . . 9
+. . 5 . . . . . 7
+6 2 . . . 3 . 1 .
+. . . 9 . 2 . . .
+3 4 . 5 8 1 . 2 6
+. . . 7 . 4 . . .
+. 8 . 6 . . . 7 4
+4 . . . . . 6 . .
+9 . . . 4 . 1 8 5
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(8, 5), (3, 8), (3, 2), (4, 4), (4, 5), (3, 3)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",1 1 2 9 6 9,,"Step-by-step solution highlights:
+
+1. **Row 1**
+   - Row 1 was `7 3 4 . 5 . . . 9`, missing `{1,2,6,8}`.
+   - Column 8 allowed only `6`, so `r1c8 = 6`.
+   - Then column 6 allowed only `8`, so `r1c6 = 8`.
+   - Column 7 then became `2`, and column 4 became `1`.
+   - Row 1: `7 3 4 1 5 8 2 6 9`
+
+2. **Top-middle box**
+   - In box rows 1–3, cols 4–6, `r3c4` had to be `4`.
+   - Then `r2c4 = 2`.
+
+3. **Row 3**
+   - Row 3 became `6 2 . 4 . 3 . 1 .`.
+   - `r3c9 = 8`.
+   - The top-left box forced `r3c3 = 9`.
+   - Then `r3c5 = 7` and `r3c7 = 5`.
+   - Row 3: `6 2 9 4 7 3 5 1 8`
+
+4. **Top-left box**
+   - With row 3 resolved, the remaining top-left box cells forced:
+     - `r2c2 = 1`
+     - `r2c1 = 8`
+
+5. **Middle/right progress**
+   - Row 5 had only `{7,9}` missing; `r5c3 = 7`, then `r5c7 = 9`.
+   - Column 7 then forced:
+     - `r7c7 = 3`
+     - `r2c7 = 4`
+     - `r6c7 = 8`
+     - `r4c7 = 7`
+
+6. **Top-right box**
+   - The only missing digit was `3`, so `r2c8 = 3`.
+   - Row 2 then resolved as:
+     - `r2c6 = 6`
+     - `r2c5 = 9`
+   - Row 2: `8 1 5 2 9 6 4 3 7`
+
+7. **Bottom-middle box**
+   - `r9c6 = 7`
+   - `r8c6 = 5`
+   - `r7c6 = 9`
+
+8. **Middle rows**
+   - Column 1 forced `r4c1 = 1`, `r6c1 = 2`.
+   - Row 4 then resolved:
+     - `r4c9 = 3`
+     - `r4c5 = 6`
+     - `r4c2 = 5`
+     - `r4c3 = 8`
+   - Row 4: `1 5 8 9 6 2 7 4 3`
+
+9. **Row 6**
+   - `r6c5 = 3`
+   - `r6c9 = 1`
+   - `r6c3 = 6`
+   - `r6c2 = 9`
+   - Row 6: `2 9 6 7 3 4 8 5 1`
+
+10. **Final cleanup**
+   - Row 8 resolved as `4 7 3 8 1 5 6 9 2`.
+   - Row 7 resolved as `5 8 1 6 2 9 3 7 4`.
+   - Row 9 resolved as `9 6 2 3 4 7 1 8 5`.
+
+Completed Sudoku grid:
+
+```text
+7 3 4 1 5 8 2 6 9
+8 1 5 2 9 6 4 3 7
+6 2 9 4 7 3 5 1 8
+1 5 8 9 6 2 7 4 3
+3 4 7 5 8 1 9 2 6
+2 9 6 7 3 4 8 5 1
+5 8 1 6 2 9 3 7 4
+4 7 3 8 1 5 6 9 2
+9 6 2 3 4 7 1 8 5
+```
+
+Spotcheck values:
+
+- `(8, 5) = 1`
+- `(3, 8) = 1`
+- `(3, 2) = 2`
+- `(4, 4) = 9`
+- `(4, 5) = 6`
+- `(3, 3) = 9`
+
+Answer: 1 1 2 9 6 9",1 1 2 9 6 9,1,hard,stop
+sudoku_en_hard_0059,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+3 2 . . 1 6 4 9 .
+. 1 6 5 . . . . .
+. . . 7 3 . . . .
+9 . 5 . . . . 1 .
+. 6 . 9 4 5 . 2 .
+. 7 . . . . 5 . 9
+. . . . 8 1 . . .
+. . . . . 9 3 7 .
+. 5 9 2 7 . . 6 1
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(2, 3), (3, 2), (7, 8), (6, 2), (9, 4), (8, 7)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",6 9 5 7 2 3,,"Solved grid:
+
+3 2 7 8 1 6 4 9 5  
+8 1 6 5 9 4 2 3 7  
+5 9 4 7 3 2 1 8 6  
+9 4 5 3 2 7 6 1 8  
+1 6 8 9 4 5 7 2 3  
+2 7 3 1 6 8 5 4 9  
+7 3 2 6 8 1 9 5 4  
+6 8 1 4 5 9 3 7 2  
+4 5 9 2 7 3 8 6 1  
+
+Spotcheck values:
+- (2, 3) = 6
+- (3, 2) = 9
+- (7, 8) = 5
+- (6, 2) = 7
+- (9, 4) = 2
+- (8, 7) = 3
+
+Answer: 6 9 5 7 2 3",6 9 5 7 2 3,1,hard,stop
+sudoku_en_hard_0060,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . 7 . 6 . 2 . 9
+6 . 4 . 2 3 7 . .
+. 2 . . 5 . . . 4
+. . 3 1 . . 4 . 6
+. . . . . . . . .
+5 . 1 . . 6 9 . .
+4 . . . 3 . . 1 .
+. . 5 6 4 . 3 . 2
+9 . 2 . 1 . 6 . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(1, 2), (8, 4), (2, 2), (8, 5), (5, 7), (8, 9)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",5 6 8 4 1 2,,"Solving by row/column/box candidate elimination:
+
+- In the top-right box, the only place for `6` is `r3c8`, so `r3c8 = 6`.
+- In the center box, the only place for `3` is `r5c4`, so `r5c4 = 3`.
+- In the bottom-left box, `r9c2 = 3`.
+- In the bottom-right box, `r9c8 = 4`.
+- Column 9 then forces `r6c9 = 3`.
+
+Continuing with candidates, the key resolution is that `r3c7` must be `8` (the alternative leads to contradiction). This gives:
+
+- `r7c7 = 5`
+- `r5c7 = 1`
+- Top-right box then forces `r1c8 = 3`, `r2c8 = 5`, `r2c9 = 1`
+- Row/box propagation gives `r3c3 = 9`, `r2c2 = 8`, `r2c4 = 9`
+- Then `r3c4 = 7`, `r3c6 = 1`, `r3c1 = 3`
+
+Further propagation:
+
+- `r1c2 = 5`, `r8c2 = 1`, `r5c9 = 5`, `r9c4 = 5`, `r7c6 = 9`
+- A contradiction check in row 1 forces `r1c4 = 8`, `r1c6 = 4`, so `r1c1 = 1`
+- Then `r7c4 = 2`, `r6c4 = 4`, `r6c2 = 7`, `r6c5 = 8`, `r6c8 = 2`
+- Column/row cleanup completes the grid.
+
+Completed Sudoku:
+
+```text
+1 5 7 8 6 4 2 3 9
+6 8 4 9 2 3 7 5 1
+3 2 9 7 5 1 8 6 4
+2 9 3 1 7 5 4 8 6
+8 4 6 3 9 2 1 7 5
+5 7 1 4 8 6 9 2 3
+4 6 8 2 3 9 5 1 7
+7 1 5 6 4 8 3 9 2
+9 3 2 5 1 7 6 4 8
+```
+
+Spotchecks:
+
+- `(1,2) = 5`
+- `(8,4) = 6`
+- `(2,2) = 8`
+- `(8,5) = 4`
+- `(5,7) = 1`
+- `(8,9) = 2`
+
+Answer: 5 6 8 4 1 2",5 6 8 4 1 2,1,hard,stop
+sudoku_en_hard_0061,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. 6 . . . . 2 . .
+1 . 8 . 3 . . 7 .
+2 . . 7 . 5 . 9 1
+. . 1 4 . . 6 . .
+. 3 . 5 . 6 . 8 .
+. . 5 . . 9 4 . .
+7 5 . 9 . 8 . . 2
+. 2 . . 5 . 9 . 8
+. . 9 . . . . 6 .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(1, 5), (3, 6), (7, 3), (3, 7), (7, 2), (3, 9)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",9 5 6 8 5 1,,"Solving the Sudoku gives the completed grid:
+
+```text
+5 6 7 | 8 9 1 | 2 3 4
+1 9 8 | 2 3 4 | 5 7 6
+2 4 3 | 7 6 5 | 8 9 1
+------+-------+------
+9 8 1 | 4 2 3 | 6 5 7
+4 3 2 | 5 7 6 | 1 8 9
+6 7 5 | 1 8 9 | 4 2 3
+------+-------+------
+7 5 6 | 9 1 8 | 3 4 2
+3 2 4 | 6 5 7 | 9 1 8
+8 1 9 | 3 4 2 | 7 6 5
+```
+
+Spotcheck values:
+
+- (1, 5) = 9
+- (3, 6) = 5
+- (7, 3) = 6
+- (3, 7) = 8
+- (7, 2) = 5
+- (3, 9) = 1
+
+Answer: 9 5 6 8 5 1",9 5 6 8 5 1,1,hard,stop
+sudoku_en_hard_0062,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. 4 . 6 3 . . . .
+. 8 . 1 . 7 . 6 .
+6 3 . . 8 2 . . 7
+. . . . . 6 7 4 5
+. . . . . . . . .
+8 2 6 4 . . . . .
+2 . . 7 5 . . 9 4
+. 1 . 2 . 3 . 7 .
+. . . . 1 4 . 2 .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(1, 2), (2, 1), (7, 8), (2, 6), (8, 6), (2, 8)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",4 5 9 7 3 6,,"Solved grid:
+
+```text
+1 4 7 | 6 3 9 | 8 5 2
+5 8 2 | 1 4 7 | 3 6 9
+6 3 9 | 5 8 2 | 4 1 7
+------+-------+------
+3 9 1 | 8 2 6 | 7 4 5
+4 7 5 | 3 9 1 | 2 8 6
+8 2 6 | 4 7 5 | 9 3 1
+------+-------+------
+2 6 3 | 7 5 8 | 1 9 4
+9 1 4 | 2 6 3 | 5 7 8
+7 5 8 | 9 1 4 | 6 2 3
+```
+
+Spotcheck values:
+
+- (1, 2) = 4
+- (2, 1) = 5
+- (7, 8) = 9
+- (2, 6) = 7
+- (8, 6) = 3
+- (2, 8) = 6
+
+Answer: 4 5 9 7 3 6",4 5 9 7 3 6,1,hard,stop
+sudoku_en_hard_0063,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+6 . 8 . 1 . . 9 5
+. 1 . . . . 2 6 .
+. 7 . . . 8 1 . 3
+. 4 . . . . . . 7
+. . 7 3 4 2 9 . .
+5 . . . . . . 3 .
+2 . 6 1 . . . 7 .
+. 5 4 . . . . 2 .
+7 8 . . 3 . 5 . 4
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(8, 8), (6, 4), (6, 6), (9, 2), (5, 4), (9, 4)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",2 8 7 8 3 2,,"Solved grid:
+
+```text
+6 2 8 4 1 3 7 9 5
+4 1 3 9 7 5 2 6 8
+9 7 5 6 2 8 1 4 3
+3 4 2 5 9 1 6 8 7
+8 6 7 3 4 2 9 5 1
+5 9 1 8 6 7 4 3 2
+2 3 6 1 5 4 8 7 9
+1 5 4 7 8 9 3 2 6
+7 8 9 2 3 6 5 1 4
+```
+
+Key solving steps:
+- In the top-right box, row 2 column 9 is forced to `8`, then row 3 column 8 becomes `4`, and row 1 column 7 becomes `7`.
+- Row 7 then resolves through column and box constraints: `r7c9=9`, `r7c2=3`, `r7c7=8`, `r7c5=5`, `r7c6=4`.
+- Column 7 becomes complete, forcing `r4c7=6`, `r6c7=4`, and `r8c7=3`.
+- Column 2 forces `r1c2=2` and `r6c2=9`, completing row 1 as `6 2 8 4 1 3 7 9 5`.
+- The middle-right box resolves, completing row 5 as `8 6 7 3 4 2 9 5 1`.
+- The bottom-left box forces `r9c3=9`, then row 9 completes as `7 8 9 2 3 6 5 1 4`.
+- Remaining rows and columns then resolve cleanly to the completed grid above.
+
+Requested coordinates:
+- `(8, 8)` = `2`
+- `(6, 4)` = `8`
+- `(6, 6)` = `7`
+- `(9, 2)` = `8`
+- `(5, 4)` = `3`
+- `(9, 4)` = `2`
+
+Answer: 2 8 7 8 3 2",2 8 7 8 3 2,1,hard,stop
+sudoku_en_hard_0064,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+4 . . 9 . 7 6 5 .
+1 7 9 . . . . 4 .
+. 6 . 8 4 . . . .
+2 . . . 8 . 5 . .
+. . . 3 . 4 . . .
+. . 7 . 9 . . . 3
+. . . . 3 8 . 7 .
+. 8 . . . . 2 6 4
+. 9 5 4 . 2 . . 1
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(5, 1), (7, 4), (6, 8), (2, 8), (1, 4), (9, 6)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",9 1 2 4 9 2,,"Solved grid:
+
+```text
+4 3 8 9 1 7 6 5 2
+1 7 9 2 5 6 3 4 8
+5 6 2 8 4 3 7 1 9
+2 4 3 7 8 1 5 9 6
+9 5 6 3 2 4 1 8 7
+8 1 7 6 9 5 4 2 3
+6 2 4 1 3 8 9 7 5
+3 8 1 5 7 9 2 6 4
+7 9 5 4 6 2 8 3 1
+```
+
+Key solving steps:
+- In row 7, the only possible values forced `r7c1=6`, `r7c7=9`, `r7c9=5`, and then `r7c4=1`.
+- In the bottom-left box, `r8c3=1`.
+- In column 6, the only place for `9` was `r8c6`.
+- In the middle-right box, `r6c7=4`.
+- The top-left box forced `r3c1=5`, then column 1 forced `r6c1=8` and `r5c1=9`.
+- The top-left box then forced `r1c3=8`, leading to row 1 completing as `4 3 8 9 1 7 6 5 2`.
+- Further singles completed rows 3, 5, 6, 8, 9, and finally rows 2 and 4.
+
+Spotcheck values:
+- `(5,1) = 9`
+- `(7,4) = 1`
+- `(6,8) = 2`
+- `(2,8) = 4`
+- `(1,4) = 9`
+- `(9,6) = 2`
+
+Answer: 9 1 2 4 9 2",9 1 2 4 9 2,1,hard,stop
+sudoku_en_hard_0065,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . . . 6 . . 5 2
+. 7 . . 4 . . 6 9
+. . . 2 5 7 8 . .
+6 . 7 . . 1 9 . 4
+. . . . 7 . . . .
+5 . 8 4 . . 2 . 6
+. . 9 3 2 6 . . .
+7 5 . . 9 . . 2 .
+3 6 . . 1 . . . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(2, 2), (3, 3), (8, 2), (9, 3), (7, 9), (7, 5)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",7 6 5 2 7 2,,"Solved grid:
+
+```text
+1 8 4 | 9 6 3 | 7 5 2
+2 7 5 | 1 4 8 | 3 6 9
+9 3 6 | 2 5 7 | 8 4 1
+------+-------+------
+6 2 7 | 5 8 1 | 9 3 4
+4 9 3 | 6 7 2 | 1 8 5
+5 1 8 | 4 3 9 | 2 7 6
+------+-------+------
+8 4 9 | 3 2 6 | 5 1 7
+7 5 1 | 8 9 4 | 6 2 3
+3 6 2 | 7 1 5 | 4 9 8
+```
+
+Key solving steps included:
+- In row 6, column 5 had to be `3`, forcing row 6 to complete as `5 1 8 4 3 9 2 7 6`.
+- Column 5 then forced row 4 column 5 to be `8`, completing row 4.
+- The lower-middle box forced row 8 column 4 to be `8`, row 8 column 6 to be `4`, row 9 column 4 to be `7`, and row 9 column 6 to be `5`.
+- The top-right box forced row 2 column 7 to be `3`, row 3 column 9 to be `1`, row 3 column 8 to be `4`, and row 1 column 7 to be `7`.
+- This allowed rows 2 and 3 to complete, followed by columns and remaining rows.
+
+Requested coordinates:
+- `(2, 2)` = `7`
+- `(3, 3)` = `6`
+- `(8, 2)` = `5`
+- `(9, 3)` = `2`
+- `(7, 9)` = `7`
+- `(7, 5)` = `2`
+
+Answer: 7 6 5 2 7 2",7 6 5 2 7 2,1,hard,stop
+sudoku_en_hard_0066,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . . . 7 . 1 8 .
+. 8 . . . . . . 9
+. . 2 1 . 6 3 . .
+5 . 4 9 2 . . 1 8
+. . . 6 . 8 . . .
+6 1 . . 5 3 9 . 7
+. . 3 7 . 2 8 . .
+9 . . . . . . 5 .
+. 6 1 . 4 . . . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(2, 7), (7, 4), (1, 9), (8, 2), (9, 3), (4, 8)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",2 7 6 2 1 1,,"Using row/column/box constraints, key placements include:
+
+- Row 4: c6 must be 7, then c7 must be 6, and c2 must be 3.
+- Center box forces r5c5 = 1 and r6c4 = 4, completing row 6 with r6c8 = 2.
+- Top-middle box forces r2c5 = 3, and later r3c5 = 8.
+- Bottom-middle box and column 5 force r8c6 = 1, r8c5 = 6, and r7c5 = 9.
+- Bottom-left box then gives r7c1 = 4, r7c2 = 5, r8c2 = 2, and r9c1 = 8.
+- Continuing singles and box eliminations completes the grid.
+
+Completed Sudoku:
+
+```text
+3 4 5 2 7 9 1 8 6
+1 8 6 5 3 4 2 7 9
+7 9 2 1 8 6 3 4 5
+5 3 4 9 2 7 6 1 8
+2 7 9 6 1 8 5 3 4
+6 1 8 4 5 3 9 2 7
+4 5 3 7 9 2 8 6 1
+9 2 7 8 6 1 4 5 3
+8 6 1 3 4 5 7 9 2
+```
+
+Spotcheck values:
+
+- (2, 7) = 2
+- (7, 4) = 7
+- (1, 9) = 6
+- (8, 2) = 2
+- (9, 3) = 1
+- (4, 8) = 1
+
+Answer: 2 7 6 2 1 1",2 7 6 2 1 1,1,hard,stop
+sudoku_en_hard_0067,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . 7 6 . . 9 . .
+. 8 . . . 5 3 7 2
+. . . 2 . . 8 . 6
+7 . 8 4 . . . . 5
+. 2 . . . . . 9 .
+4 . . . . 3 6 . 7
+9 . 2 . . 6 . . .
+8 4 1 9 . . . 6 .
+. . 6 . . 1 5 . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(9, 5), (8, 4), (5, 6), (7, 3), (5, 2), (4, 2)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",4 9 8 2 2 6,,"Solving step by step:
+
+Given puzzle:
+
+```text
+. . 7 | 6 . . | 9 . .
+. 8 . | . . 5 | 3 7 2
+. . . | 2 . . | 8 . 6
+------+-------+------
+7 . 8 | 4 . . | . . 5
+. 2 . | . . . | . 9 .
+4 . . | . . 3 | 6 . 7
+------+-------+------
+9 . 2 | . . 6 | . . .
+8 4 1 | 9 . . | . 6 .
+. . 6 | . . 1 | 5 . .
+```
+
+Key deductions:
+
+- Row 2 has only `{1,4,6,9}` missing. Column 4 forces `r2c4 = 1`, and then column 1 forces `r2c1 = 6`.
+- In the middle-left box, digit `6` can only go at `r4c2`, so `r4c2 = 6`.
+- In the bottom-left box, column constraints force `r9c1 = 3`, then `r9c2 = 7`, and `r7c2 = 5`.
+- Column 4 then forces `r7c4 = 3`.
+- Column 5 has only one place for `6`, so `r5c5 = 6`.
+- Column 9 forces `r9c9 = 9`, then row 9 gives `r9c4 = 8`.
+- Column 4 then gives `r6c4 = 5` and `r5c4 = 7`.
+- Row 6 gives `r6c3 = 9`, then `r6c2 = 1`.
+- Column 2 gives `r1c2 = 3` and `r3c2 = 9`.
+- The top-left box then resolves: `r2c3 = 4`, `r3c3 = 5`, `r3c1 = 1`.
+- Row 3 resolves to `1 9 5 2 3 7 8 4 6`.
+- Column 6 and row 1 then resolve, giving row 1 as `2 3 7 6 8 4 9 5 1`.
+- Continuing the remaining singles resolves the grid completely.
+
+Completed Sudoku:
+
+```text
+2 3 7 | 6 8 4 | 9 5 1
+6 8 4 | 1 9 5 | 3 7 2
+1 9 5 | 2 3 7 | 8 4 6
+------+-------+------
+7 6 8 | 4 1 9 | 2 3 5
+5 2 3 | 7 6 8 | 1 9 4
+4 1 9 | 5 2 3 | 6 8 7
+------+-------+------
+9 5 2 | 3 7 6 | 4 1 8
+8 4 1 | 9 5 2 | 7 6 3
+3 7 6 | 8 4 1 | 5 2 9
+```
+
+Spotcheck values:
+
+- `(9, 5) = 4`
+- `(8, 4) = 9`
+- `(5, 6) = 8`
+- `(7, 3) = 2`
+- `(5, 2) = 2`
+- `(4, 2) = 6`
+
+Answer: 4 9 8 2 2 6",4 9 8 2 2 6,1,hard,stop
+sudoku_en_hard_0068,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . . 6 . 3 . . 5
+4 . . . 7 . . 2 .
+. . 2 . 9 4 8 . 1
+. . 4 7 . 6 . 3 .
+. 7 . . . . . 4 .
+. 2 . 9 . 1 6 . .
+7 . 1 8 6 . 9 . .
+. 3 . . 1 . . . 8
+2 . . 3 . 9 . . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(6, 3), (6, 4), (8, 6), (2, 7), (8, 8), (7, 8)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",3 9 7 3 6 5,,"Solving the Sudoku gives the completed grid:
+
+```text
+8 1 7 | 6 2 3 | 4 9 5
+4 5 9 | 1 7 8 | 3 2 6
+3 6 2 | 5 9 4 | 8 7 1
+------+-------+------
+1 9 4 | 7 8 6 | 5 3 2
+6 7 8 | 2 3 5 | 1 4 9
+5 2 3 | 9 4 1 | 6 8 7
+------+-------+------
+7 4 1 | 8 6 2 | 9 5 3
+9 3 5 | 4 1 7 | 2 6 8
+2 8 6 | 3 5 9 | 7 1 4
+```
+
+Key solving steps included:
+- In row 3, column 4 was forced to `5`, which then forced row 3 to complete as `3 6 2 5 9 4 8 7 1`.
+- The top-middle box then forced `r2c6 = 8` and `r1c5 = 2`.
+- Column 6 forced `r5c6 = 5`, `r7c6 = 2`, and `r8c6 = 7`.
+- The middle-right box resolved with `r5c9 = 9`, `r6c9 = 7`, `r4c9 = 2`, and `r4c7 = 5`.
+- Remaining singles and box/column eliminations completed the grid.
+
+Requested values:
+- `(6, 3) = 3`
+- `(6, 4) = 9`
+- `(8, 6) = 7`
+- `(2, 7) = 3`
+- `(8, 8) = 6`
+- `(7, 8) = 5`
+
+Answer: 3 9 7 3 6 5",3 9 7 3 6 5,1,hard,stop
+sudoku_en_hard_0069,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . . 3 1 . 2 . .
+. . 2 . . 8 . . .
+. . 4 5 6 2 . 7 9
+2 6 . . 8 3 . . .
+. . 5 . . . 3 . .
+. . . 1 4 . . 6 2
+5 4 . 2 7 9 1 . .
+. . . 4 . . 9 . .
+. . 9 . 3 1 . . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(1, 9), (9, 1), (2, 2), (7, 6), (4, 1), (4, 3)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",6 7 5 9 2 7,,"Solved grid:
+
+```text
+9 7 8 | 3 1 4 | 2 5 6
+6 5 2 | 7 9 8 | 4 3 1
+1 3 4 | 5 6 2 | 8 7 9
+------+-------+------
+2 6 7 | 9 8 3 | 5 1 4
+4 1 5 | 6 2 7 | 3 9 8
+8 9 3 | 1 4 5 | 7 6 2
+------+-------+------
+5 4 6 | 2 7 9 | 1 8 3
+3 8 1 | 4 5 6 | 9 2 7
+7 2 9 | 8 3 1 | 6 4 5
+```
+
+Spotcheck values:
+
+- (1, 9) = 6
+- (9, 1) = 7
+- (2, 2) = 5
+- (7, 6) = 9
+- (4, 1) = 2
+- (4, 3) = 7
+
+Answer: 6 7 5 9 2 7",6 7 5 9 2 7,1,hard,stop
+sudoku_en_hard_0070,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+8 . . 4 . 6 1 7 .
+9 . . . 1 . . . .
+1 . . . . 2 . 4 6
+3 5 . . . . 6 1 7
+. . . . . . . . .
+2 4 9 . . . . 8 5
+5 9 . 6 . . . . 8
+. . . . 7 . . . 9
+. 8 3 2 . 9 . . 1
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(8, 9), (7, 4), (6, 5), (3, 2), (7, 7), (3, 1)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",9 6 6 3 7 1,,"Step-by-step solve:
+
+1. In the top-right box, the only place for 9 is r3c7, so r3c7 = 9.
+2. In the middle-left box, the only place for 8 is r4c3, so r4c3 = 8.
+3. Row 4 then resolves to:
+   - r4c4 = 9, r4c6 = 4, r4c5 = 2  
+   Row 4: 3 5 8 9 2 4 6 1 7
+4. In the middle-right box, r6c7 = 3, which forces r6c5 = 6.
+5. In the top-left box, the only place for 4 is r2c3, so r2c3 = 4.
+6. In the top-middle box, the only place for 9 is r1c5, so r1c5 = 9.
+7. Row 1 then gives r1c3 = 5, r3c3 = 7, r3c2 = 3, r1c2 = 2, and r1c9 = 3.
+8. Column 9 then forces r2c9 = 2 and r5c9 = 4; the middle-right box then gives r5c7 = 2.
+9. Column 2 and row 5 resolve several cells:
+   - r2c2 = 6
+   - r8c2 = 1
+   - r5c2 = 7
+   - r5c1 = 6
+   - r5c3 = 1
+10. Column 1 gives r8c1 = 4 and r9c1 = 7.
+11. Column 3 gives r7c3 = 2 and r8c3 = 6.
+12. Row 7 resolves:
+   - r7c8 = 3
+   - r7c5 = 4
+   - r7c7 = 7
+   - r7c6 = 1
+13. Row 9 resolves:
+   - r9c5 = 5
+   - r9c7 = 4
+   - r9c8 = 6
+14. Column 8 gives r2c8 = 5 and r8c8 = 2.
+15. Row 2 resolves:
+   - r2c7 = 8
+   - r2c6 = 3
+   - r2c4 = 7
+16. Row 6 resolves:
+   - r6c6 = 7
+   - r6c4 = 1
+17. Row 8 resolves:
+   - r8c6 = 8
+   - r8c4 = 3
+18. Row 5 resolves:
+   - r5c6 = 5
+   - r5c4 = 8
+   - r5c5 = 3
+19. Finally, row 3 resolves:
+   - r3c5 = 8
+   - r3c4 = 5
+
+Completed grid:
+
+8 2 5 4 9 6 1 7 3  
+9 6 4 7 1 3 8 5 2  
+1 3 7 5 8 2 9 4 6  
+3 5 8 9 2 4 6 1 7  
+6 7 1 8 3 5 2 9 4  
+2 4 9 1 6 7 3 8 5  
+5 9 2 6 4 1 7 3 8  
+4 1 6 3 7 8 5 2 9  
+7 8 3 2 5 9 4 6 1  
+
+Answer: 9 6 6 3 7 1",9 6 6 3 7 1,1,hard,stop
+sudoku_en_hard_0071,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . . . . 1 . 4 .
+. . 6 . 7 8 5 . 2
+. . . 9 . . . 6 3
+. . 8 5 . . . . 9
+9 2 1 . . . 7 5 4
+4 . . . . 2 3 . .
+1 9 . . . 6 . . .
+5 . 2 3 1 . 6 . .
+. 6 . 2 . . . . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(3, 5), (5, 1), (3, 4), (1, 3), (5, 5), (6, 1)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",2 9 9 9 6 4,,"Step-by-step solve highlights:
+
+1. In the top-middle box, the missing digits force:
+   - r1c4 = 6
+   - r2c4 = 4
+   - r3c6 = 5
+   - r3c5 = 2
+   - r1c5 = 3
+
+2. Row 2 then becomes:
+   - r2c1 = 3, r2c2 = 1, r2c8 = 9
+
+3. Column 4 and row 5 give:
+   - r5c4 = 8
+   - r7c4 = 7
+   - r6c4 = 1
+   - r5c6 = 3
+   - r5c5 = 6
+
+4. The center box then forces:
+   - r4c5 = 4
+   - r4c6 = 7
+   - r6c5 = 9
+
+5. In the middle-right box:
+   - r6c8 = 8
+   - r6c9 = 6
+
+6. Row 8 resolves:
+   - r8c9 = 8
+   - r8c2 = 4
+   - r8c6 = 9
+
+7. Column and box eliminations continue:
+   - r9c6 = 4
+   - r4c2 = 3
+   - r4c1 = 6
+   - r1c1 = 2
+
+8. The top-right box resolves:
+   - r1c7 = 8
+   - r1c9 = 7
+   - r3c7 = 1
+
+9. Row 1 completes:
+   - r1c2 = 5
+   - r1c3 = 9
+
+10. Row 3 and remaining columns finish:
+   - r3c3 = 4
+   - r4c7 = 2
+   - r7c7 = 4
+   - r9c7 = 9
+   - r4c8 = 1
+   - r9c8 = 3
+   - r7c8 = 2
+   - r7c9 = 5
+   - r9c9 = 1
+   - r7c3 = 3
+   - r7c5 = 8
+   - r9c5 = 5
+   - r9c3 = 7
+   - r9c1 = 8
+   - r3c1 = 7
+   - r3c2 = 8
+   - r6c2 = 7
+   - r6c3 = 5
+
+Completed Sudoku grid:
+
+```text
+2 5 9 6 3 1 8 4 7
+3 1 6 4 7 8 5 9 2
+7 8 4 9 2 5 1 6 3
+6 3 8 5 4 7 2 1 9
+9 2 1 8 6 3 7 5 4
+4 7 5 1 9 2 3 8 6
+1 9 3 7 8 6 4 2 5
+5 4 2 3 1 9 6 7 8
+8 6 7 2 5 4 9 3 1
+```
+
+Requested coordinates:
+
+- (3, 5) = 2
+- (5, 1) = 9
+- (3, 4) = 9
+- (1, 3) = 9
+- (5, 5) = 6
+- (6, 1) = 4
+
+Answer: 2 9 9 9 6 4",2 9 9 9 6 4,1,hard,stop
+sudoku_en_hard_0072,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. 7 . 6 4 1 . 9 .
+. 1 . . 9 . . . .
+. . 9 2 3 . . . 6
+. 2 . . . . 8 . 3
+3 . . 4 7 2 . . 9
+9 . 1 . . . . 7 .
+7 . . . 2 4 9 . .
+. . . . 8 . . 2 .
+. 4 . 5 6 9 . 8 .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(8, 4), (9, 7), (8, 5), (4, 8), (7, 9), (9, 3)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",7 3 8 5 5 2,,"Solved grid:
+
+```text
+2 7 3 | 6 4 1 | 5 9 8
+6 1 4 | 8 9 5 | 7 3 2
+8 5 9 | 2 3 7 | 1 4 6
+------+-------+------
+4 2 7 | 9 1 6 | 8 5 3
+3 8 5 | 4 7 2 | 6 1 9
+9 6 1 | 3 5 8 | 2 7 4
+------+-------+------
+7 3 8 | 1 2 4 | 9 6 5
+5 9 6 | 7 8 3 | 4 2 1
+1 4 2 | 5 6 9 | 3 8 7
+```
+
+Key solving steps:
+
+1. In column 5, only `5` could go at r6c5, so r6c5 = 5. Then r4c5 = 1.
+2. In box r4–r6/c4–c6, r4c4 = 9 and r4c6 = 6.
+3. Row 4 then forced r4c3 = 7, r4c1 = 4, and r4c8 = 5.
+4. Column 2 forced r8c2 = 9, and later r7c2 = 3.
+5. Row 7 then resolved as r7c4 = 1, r7c8 = 6, r7c9 = 5, r7c3 = 8.
+6. Box and column interactions gave r5c3 = 5, r5c2 = 8, r5c8 = 1, r5c7 = 6.
+7. Row 3 resolved to `8 5 9 2 3 7 1 4 6`.
+8. Column 6 then forced r8c6 = 3, r6c6 = 8, r2c6 = 5.
+9. Row 1 resolved to `2 7 3 6 4 1 5 9 8`.
+10. The remaining singles completed the grid as shown above.
+
+Requested coordinates:
+
+- (8, 4) = 7
+- (9, 7) = 3
+- (8, 5) = 8
+- (4, 8) = 5
+- (7, 9) = 5
+- (9, 3) = 2
+
+Answer: 7 3 8 5 5 2",7 3 8 5 5 2,1,hard,stop
+sudoku_en_hard_0073,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . . 1 . 2 . . .
+. . . . 6 7 . . .
+7 . 6 9 . 3 1 2 4
+. . 8 . . . . . 1
+4 3 9 . . . 7 5 8
+6 . . . . . 3 . .
+1 4 3 6 . 8 5 . 7
+. . . 5 7 . . . .
+. . . 4 . 1 . . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(6, 1), (8, 9), (9, 6), (7, 3), (7, 7), (5, 3)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",6 3 1 3 5 9,,"Solved grid:
+
+```text
+3 9 5 | 1 4 2 | 8 7 6
+2 1 4 | 8 6 7 | 9 3 5
+7 8 6 | 9 5 3 | 1 2 4
+------+-------+------
+5 7 8 | 3 9 4 | 2 6 1
+4 3 9 | 2 1 6 | 7 5 8
+6 2 1 | 7 8 5 | 3 4 9
+------+-------+------
+1 4 3 | 6 2 8 | 5 9 7
+8 6 2 | 5 7 9 | 4 1 3
+9 5 7 | 4 3 1 | 6 8 2
+```
+
+Key solving steps:
+
+- In column 4, row 5 had to be `2`, giving row 5 as `4 3 9 2 1 6 7 5 8`.
+- In the top-middle box, row 2 column 4 was forced to `8`, then row 3 column 5 became `5`, and row 1 column 5 became `4`.
+- Row 7 had only `{2,9}` missing; column 8 forced row 7 column 8 to be `9`, so row 7 column 5 became `2`.
+- The middle boxes then forced several placements, including row 4 column 5 = `9`, row 6 column 5 = `8`, row 4 column 1 = `5`, and row 6 column 9 = `9`.
+- In the bottom-left box, row 8 column 3 was forced to `2`, which led to row 8 solving as `8 6 2 5 7 9 4 1 3`.
+- The remaining rows and columns then resolved cleanly to the completed grid above.
+
+Spotcheck values:
+
+- (6, 1) = `6`
+- (8, 9) = `3`
+- (9, 6) = `1`
+- (7, 3) = `3`
+- (7, 7) = `5`
+- (5, 3) = `9`
+
+Answer: 6 3 1 3 5 9",6 3 1 3 5 9,1,hard,stop
+sudoku_en_hard_0074,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+2 . 5 . . . . 7 .
+7 9 3 . 8 2 6 . .
+. 4 . . . . 5 . 8
+6 . . . . 3 8 . .
+3 . . . 7 . . . 2
+. . 8 4 . . . . 1
+9 . 1 . . . . 4 .
+. . 7 2 5 . 1 9 6
+. 5 . . . . 7 . 3
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(1, 1), (2, 2), (1, 7), (3, 6), (7, 4), (5, 1)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",2 9 3 7 7 3,,"Solving the puzzle step by step:
+
+1. In row 2, column 8 must be 1, then row 2 resolves to:
+   - r2c4 = 5
+   - r2c9 = 4
+
+2. In the top-left box, the only missing digit is 8 at r1c2:
+   - r1c2 = 8
+
+3. Row 3 has forced placements:
+   - r3c1 = 1
+   - r3c3 = 6
+
+4. In column 9, r1c9 must be 9, which then forces:
+   - r4c9 = 7
+   - r7c9 = 5
+
+5. The middle-left box gives:
+   - r5c2 = 1
+   - r4c2 = 2
+   - r6c2 = 7
+
+6. Column 2 then resolves:
+   - r8c2 = 3
+   - r7c2 = 6
+
+7. The top-right box forces:
+   - r1c7 = 3
+   - r3c8 = 2
+
+8. Column 7 forces:
+   - r6c7 = 9
+   - r5c7 = 4
+
+9. Row 6 resolves:
+   - r6c6 = 6
+   - r6c5 = 2
+   - r6c8 = 3
+
+10. Further placements give:
+   - r5c3 = 9
+   - r5c6 = 5
+   - r4c3 = 4
+   - r9c3 = 2
+   - r5c4 = 8
+   - r5c8 = 6
+   - r9c8 = 8
+   - r9c1 = 4
+   - r8c1 = 8
+   - r8c6 = 4
+
+11. Column 6 then resolves:
+   - r1c6 = 1
+   - r9c6 = 9
+   - r3c6 = 7
+   - r7c6 = 8
+
+12. Row 7 resolves:
+   - r7c4 = 7
+
+13. Row 1 resolves:
+   - r1c4 = 6
+   - r1c5 = 4
+
+14. Final placements complete the grid:
+   - r3c5 = 9
+   - r3c4 = 3
+   - r4c5 = 1
+   - r9c5 = 6
+   - r4c4 = 9
+   - r9c4 = 1
+
+Completed Sudoku grid:
+
+```text
+2 8 5 6 4 1 3 7 9
+7 9 3 5 8 2 6 1 4
+1 4 6 3 9 7 5 2 8
+6 2 4 9 1 3 8 5 7
+3 1 9 8 7 5 4 6 2
+5 7 8 4 2 6 9 3 1
+9 6 1 7 3 8 2 4 5
+8 3 7 2 5 4 1 9 6
+4 5 2 1 6 9 7 8 3
+```
+
+Spotcheck values:
+
+- (1, 1) = 2
+- (2, 2) = 9
+- (1, 7) = 3
+- (3, 6) = 7
+- (7, 4) = 7
+- (5, 1) = 3
+
+Answer: 2 9 3 7 7 3",2 9 3 7 7 3,1,hard,stop
+sudoku_en_hard_0075,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . . 7 . 6 1 . .
+. . 8 . 5 9 . . 6
+3 . . . 1 . 4 5 .
+5 . 9 . 7 . . . 2
+. . 3 . . . 9 . .
+1 . . . 4 . 6 . 3
+. 2 1 . 9 . . . 7
+6 . . 1 2 . 5 . .
+. . 5 3 . 7 . . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(2, 8), (8, 1), (1, 8), (5, 6), (4, 5), (4, 8)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",3 6 2 1 7 1,,"Solved grid:
+
+```text
+9 5 4 | 7 3 6 | 1 2 8
+2 1 8 | 4 5 9 | 7 3 6
+3 7 6 | 8 1 2 | 4 5 9
+------+-------+------
+5 4 9 | 6 7 3 | 8 1 2
+7 6 3 | 2 8 1 | 9 4 5
+1 8 2 | 9 4 5 | 6 7 3
+------+-------+------
+8 2 1 | 5 9 4 | 3 6 7
+6 3 7 | 1 2 8 | 5 9 4
+4 9 5 | 3 6 7 | 2 8 1
+```
+
+Key reasoning highlights:
+
+- In the top-middle box, only `r1c5` could be `3`, so `r1c5 = 3`.
+- In row 4, after candidate reduction, `r4c6 = 3`, which forced `r4c7 = 8`.
+- In the middle-right box, `r6c8 = 7`, then row 6 reduced to `r6c3 = 2`, later giving `r6c6 = 5` and `r6c4 = 9`.
+- Column 3 then resolved: `r1c3 = 4`, `r8c3 = 7`, `r3c3 = 6`.
+- Column 7 forced `r7c7 = 3`, then `r9c7 = 2` and `r2c7 = 7`.
+- Column 1 forced `r5c1 = 7`.
+- The center box then collapsed: `r4c4 = 6`, `r5c5 = 8`, `r5c4 = 2`, `r5c6 = 1`.
+- Row 5 completed as `7 6 3 2 8 1 9 4 5`.
+- This completed row 4 as `5 4 9 6 7 3 8 1 2`.
+- The remaining rows and columns then resolved straightforwardly to the full grid above.
+
+Spotcheck values:
+
+- `(2, 8) = 3`
+- `(8, 1) = 6`
+- `(1, 8) = 2`
+- `(5, 6) = 1`
+- `(4, 5) = 7`
+- `(4, 8) = 1`
+
+Answer: 3 6 2 1 7 1",3 6 2 1 7 1,1,hard,stop
+sudoku_en_hard_0076,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+5 1 . 3 9 . . . .
+9 . . . . 8 4 . .
+. 7 8 . . 4 . 9 .
+. 9 . . 4 1 . 2 .
+. . 3 . . . 1 . .
+. 6 . 5 2 . . 8 .
+. 8 . 4 . . 9 7 .
+. . 5 2 . . . . 8
+. . . . 1 6 . 3 4
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(3, 8), (6, 6), (7, 8), (3, 7), (5, 6), (6, 7)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",9 3 7 2 7 7,,"Step-by-step solve (using r = row, c = column):
+
+1. In the top-middle box (rows 1–3, cols 4–6), digit 2 can only go at r1c6, so r1c6 = 2.
+2. Row 1 then becomes:
+   - r1: 5 1 . 3 9 2 . . .
+   - The remaining digits are {4,6,7,8}.
+   - r1c8 = 6, r1c9 = 7, r1c3 = 4, r1c7 = 8.
+   - Row 1 is complete: 5 1 4 3 9 2 8 6 7.
+
+3. In row 4, after candidates are reduced:
+   - r4c3 = 7
+   - r4c1 = 8
+   - r4c4 = 6
+
+4. Column 4 then forces:
+   - r3c4 = 1
+   - r2c4 = 7
+
+5. In the bottom-middle box, r9c4 is the only place for 8:
+   - r9c4 = 8
+   - Row 9 then resolves to:
+     - r9c1 = 7
+     - r9c3 = 9
+     - r9c7 = 5
+   - Row 9 is complete: 7 2 9 8 1 6 5 3 4.
+
+6. Column 3 and row 6 give:
+   - r6c3 = 1
+   - r6c1 = 4
+
+7. In the left-middle box, the only remaining digit is 5 at r5c2:
+   - r5c2 = 5
+   - Then r5c8 = 4
+
+8. Column 8 now forces:
+   - r8c8 = 1
+   - r2c8 = 5
+
+9. Row 2 resolves:
+   - r2c2 = 3
+   - r2c5 = 6
+   - r2c3 = 2
+   - r2c9 = 1
+   - Row 2 is complete: 9 3 2 7 6 8 4 5 1.
+
+10. Column 5 resolves:
+   - r3c5 = 5
+   - r7c5 = 3
+   - r8c5 = 7
+   - r5c5 = 8
+
+11. Row 7 resolves:
+   - r7c1 = 1
+   - r7c6 = 5
+   - r7c9 = 2
+   - Row 7 is complete: 1 8 6 4 3 5 9 7 2.
+
+12. Bottom-right box forces:
+   - r8c7 = 6
+   - Then row 8 resolves:
+     - r8c1 = 3
+     - r8c2 = 4
+     - r8c6 = 9
+   - Row 8 is complete: 3 4 5 2 7 9 6 1 8.
+
+13. Column 1 then forces:
+   - r3c1 = 6
+
+14. Column 6 resolves:
+   - r5c6 = 7
+   - r6c6 = 3
+
+15. Row 6 resolves:
+   - r6c7 = 7
+   - r6c9 = 9
+   - Row 6 is complete: 4 6 1 5 2 3 7 8 9.
+
+16. Column 7 resolves:
+   - r4c7 = 3
+   - r3c7 = 2
+
+17. Row 3 resolves:
+   - r3c9 = 3
+   - Row 3 is complete: 6 7 8 1 5 4 2 9 3.
+
+18. Row 4 resolves:
+   - r4c9 = 5
+   - Row 4 is complete: 8 9 7 6 4 1 3 2 5.
+
+19. Column 9 forces:
+   - r5c9 = 6
+   - Row 5 then has r5c4 = 9.
+   - Row 5 is complete: 2 5 3 9 8 7 1 4 6.
+
+Completed Sudoku grid:
+
+5 1 4 3 9 2 8 6 7  
+9 3 2 7 6 8 4 5 1  
+6 7 8 1 5 4 2 9 3  
+8 9 7 6 4 1 3 2 5  
+2 5 3 9 8 7 1 4 6  
+4 6 1 5 2 3 7 8 9  
+1 8 6 4 3 5 9 7 2  
+3 4 5 2 7 9 6 1 8  
+7 2 9 8 1 6 5 3 4  
+
+Requested coordinates:
+- (3, 8) = 9
+- (6, 6) = 3
+- (7, 8) = 7
+- (3, 7) = 2
+- (5, 6) = 7
+- (6, 7) = 7
+
+Answer: 9 3 7 2 7 7",9 3 7 2 7 7,1,hard,stop
+sudoku_en_hard_0077,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+4 . 5 . 3 . 9 . .
+. . . . . . 1 . 4
+7 . 8 1 . 5 . . .
+. 4 . . . . 7 . 8
+8 7 6 . 5 . 3 1 2
+2 . 1 . . . . 9 .
+. . . 2 . 4 8 . 6
+1 . 4 . . . . . .
+. . 3 . 9 . 2 . 1
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(2, 3), (8, 4), (6, 1), (5, 9), (9, 3), (6, 2)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",2 8 2 2 3 3,,"Solved grid:
+
+```text
+4 1 5 6 3 2 9 8 7
+3 6 2 9 7 8 1 5 4
+7 9 8 1 4 5 6 2 3
+5 4 9 3 2 1 7 6 8
+8 7 6 4 5 9 3 1 2
+2 3 1 7 8 6 4 9 5
+9 5 7 2 1 4 8 3 6
+1 2 4 8 6 3 5 7 9
+6 8 3 5 9 7 2 4 1
+```
+
+Key solving steps:
+- Row 1 forced `r1c9 = 7`, then later `r1c2 = 1`, `r1c4 = 6`, `r1c6 = 2`, `r1c8 = 8`.
+- Column 3 forced `r2c3 = 2`.
+- Row 3 and the top-right box forced `r3c7 = 6`, `r3c9 = 3`, `r3c8 = 2`, then `r3c2 = 9`, `r3c5 = 4`.
+- Row 5 resolved as `8 7 6 4 5 9 3 1 2`.
+- Row 7 resolved through box/column constraints as `9 5 7 2 1 4 8 3 6`.
+- Remaining rows and columns then completed by singles, giving the final grid above.
+
+Spotcheck values:
+- `(2, 3) = 2`
+- `(8, 4) = 8`
+- `(6, 1) = 2`
+- `(5, 9) = 2`
+- `(9, 3) = 3`
+- `(6, 2) = 3`
+
+Answer: 2 8 2 2 3 3",2 8 2 2 3 3,1,hard,stop
+sudoku_en_hard_0078,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+2 8 . . . . 3 5 .
+1 7 . . . . . . 4
+. . 6 4 . . . 1 9
+. . . 2 . 4 . . 1
+. 4 . 1 . 9 . 8 .
+3 . . 5 . 6 . . .
+9 2 . . . 1 5 . .
+4 . . . . . . 6 3
+. 1 3 . . . . 9 7
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(9, 7), (3, 1), (1, 9), (5, 7), (5, 4), (5, 3)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",2 5 6 6 1 2,,"The puzzle as given has no valid Sudoku solution.
+
+A forced chain leads to a contradiction:
+
+- Row 1 forces:
+  - r1c6 = 7
+  - r1c9 = 6
+  - r1c4 = 9
+  - r1c5 = 1
+  - r1c3 = 4
+
+- Column 2 then forces:
+  - r6c2 = 9
+  - r8c2 = 5
+  - r3c2 = 3
+  - r4c2 = 6
+
+- The upper-left box then forces:
+  - r3c1 = 5
+  - r2c3 = 9
+
+- Row 4/column constraints force:
+  - r4c8 = 7
+  - r4c1 = 8
+  - r4c7 = 9
+  - r4c3 = 5
+  - r4c5 = 3
+
+- Further forced placements:
+  - r7c9 = 8
+  - r7c3 = 7
+  - r5c3 = 2
+  - r5c9 = 5
+
+Now row 5 is:
+
+`. 4 2 1 . 9 . 8 5`
+
+So row 5 still needs `{3, 6, 7}` in columns 1, 5, and 7.
+
+But:
+- r5c1 can only be `{6,7}`
+- r5c5 cannot be 3 because column 5 already has r4c5 = 3
+- r5c7 cannot be 3 because column 7 already has r1c7 = 3
+
+So digit 3 has no possible place in row 5, which is impossible.
+
+Therefore the requested spotcheck values are undefined.
+
+Answer: no solution",7 1 7 3 3 5,0,hard,stop
+sudoku_en_hard_0079,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . . 3 2 8 . . .
+. . . 7 1 . 4 . .
+1 . 7 . . . . . 2
+. 4 6 2 8 . . 7 .
+3 . 8 . 5 . 6 . 9
+. 7 . . 6 9 2 3 .
+4 . . . . . 5 . 7
+. . 3 . 7 1 . . .
+. . . 6 9 4 . . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(3, 8), (4, 9), (7, 8), (4, 7), (4, 8), (8, 8)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",8 5 1 1 7 6,,"Step-by-step solution:
+
+1. In the center-left 3×3 box, the missing digits force:
+   - r6c1 = 5, r6c3 = 1
+   - r4c1 = 9, r5c2 = 2
+
+2. In the middle 3×3 box, the missing digits force:
+   - r4c6 = 3
+   - r6c4 = 4
+   - r5c4 = 1
+
+3. This completes several middle rows:
+   - Row 4 becomes: 9 4 6 2 8 3 1 7 5
+   - Row 5 becomes: 3 2 8 1 5 7 6 4 9
+   - Row 6 becomes: 5 7 1 4 6 9 2 3 8
+
+4. In the lower-middle 3×3 box:
+   - r7c4 = 8
+   - r7c6 = 2
+   - r8c4 = 5
+
+5. Column 4 then forces:
+   - r3c4 = 9
+
+6. In the top-left box, digit 4 can only go at:
+   - r1c3 = 4
+
+7. In the top-right box, digit 7 can only go at:
+   - r1c7 = 7
+
+8. Row 1 then forces:
+   - r1c1 = 6
+   - r1c9 = 1
+
+9. Column 9 forces:
+   - r9c9 = 3
+   - r2c9 = 6
+   - r8c9 = 4
+
+10. Column 6 and row 2 give:
+   - r2c6 = 5
+   - r3c6 = 6
+   - r2c3 = 2
+   - r2c1 = 8
+   - r2c8 = 9
+   - r2c2 = 3
+
+11. Column 3 then gives:
+   - r9c3 = 5
+
+12. Row 9 completes:
+   - r9c2 = 1
+   - r9c8 = 2
+
+13. Column 2 and remaining singles finish the puzzle:
+   - r7c2 = 6
+   - r8c2 = 8
+   - r3c2 = 5
+   - r1c2 = 9
+   - r1c8 = 5
+   - r3c8 = 8
+   - r8c8 = 6
+   - r7c8 = 1
+   - r8c1 = 2
+
+Completed grid:
+
+6 9 4 3 2 8 7 5 1  
+8 3 2 7 1 5 4 9 6  
+1 5 7 9 4 6 3 8 2  
+9 4 6 2 8 3 1 7 5  
+3 2 8 1 5 7 6 4 9  
+5 7 1 4 6 9 2 3 8  
+4 6 9 8 3 2 5 1 7  
+2 8 3 5 7 1 9 6 4  
+7 1 5 6 9 4 8 2 3  
+
+Answer: 8 5 1 1 7 6",8 5 1 1 7 6,1,hard,stop
+sudoku_en_hard_0080,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. 1 . . 2 . 3 . .
+. . 9 7 . 8 . . .
+5 2 4 . . 6 . . .
+. 7 6 . 4 2 . . .
+. . 5 6 7 1 4 . .
+. . . 5 9 . 7 1 .
+. . . 1 . . 5 9 2
+. . . 2 . 9 6 . .
+. . 2 . 6 . . 4 .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(2, 9), (6, 2), (9, 6), (8, 7), (4, 2), (5, 5)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",4 4 7 6 7 7,,"Step-by-step solve summary:
+
+1. In the left-middle 3×3 box, row 4 column 1 is forced to be 1.
+2. The center 3×3 box then forces:
+   - r6c6 = 3
+   - r4c4 = 8
+3. Row 6 resolves completely:
+   - r6c3 = 8, r6c2 = 4, r6c1 = 2, r6c9 = 6
+4. Row 4 then gets r4c7 = 9.
+5. The right-middle 3×3 box forces r5c8 = 2.
+6. Column 3 resolves several cells:
+   - r1c3 = 7
+   - r7c3 = 3
+   - r8c3 = 1
+7. Column 2 and row interactions give:
+   - r7c2 = 6
+   - r2c2 = 3
+   - r5c2 = 9
+8. Row 5 resolves:
+   - r5c1 = 3
+   - r5c9 = 8
+9. Row 2 resolves fully:
+   - r2c1 = 6
+   - r2c8 = 5
+   - r2c5 = 1
+   - r2c7 = 2
+   - r2c9 = 4
+10. The remaining singles cascade to complete the grid.
+
+Completed Sudoku grid:
+
+```text
+8 1 7 4 2 5 3 6 9
+6 3 9 7 1 8 2 5 4
+5 2 4 9 3 6 1 8 7
+1 7 6 8 4 2 9 3 5
+3 9 5 6 7 1 4 2 8
+2 4 8 5 9 3 7 1 6
+7 6 3 1 8 4 5 9 2
+4 8 1 2 5 9 6 7 3
+9 5 2 3 6 7 8 4 1
+```
+
+Spotcheck values:
+
+- (2, 9) = 4
+- (6, 2) = 4
+- (9, 6) = 7
+- (8, 7) = 6
+- (4, 2) = 7
+- (5, 5) = 7
+
+Answer: 4 4 7 6 7 7",4 4 7 6 7 7,1,hard,stop
+sudoku_en_hard_0081,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . 4 . 2 9 . . .
+. 5 . 8 3 . 2 9 .
+. . 9 . 1 . 8 . 4
+. . . 5 . 1 4 . .
+. 8 . . . . . 1 .
+. . 5 4 . 3 . . .
+5 . 1 . 4 . 9 . .
+. 9 7 . 5 6 . 4 .
+. . . 2 9 . 5 . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(1, 8), (3, 6), (5, 1), (4, 9), (9, 4), (2, 8)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",5 5 4 3 2 9,,"Solving the puzzle gives the completed grid:
+
+```text
+8 3 4 7 2 9 1 5 6
+1 5 6 8 3 4 2 9 7
+7 2 9 6 1 5 8 3 4
+9 7 2 5 6 1 4 8 3
+4 8 3 9 7 2 6 1 5
+6 1 5 4 8 3 7 2 9
+5 6 1 3 4 8 9 7 2
+2 9 7 1 5 6 3 4 8
+3 4 8 2 9 7 5 6 1
+```
+
+The requested coordinates are:
+
+- (1, 8) = 5
+- (3, 6) = 5
+- (5, 1) = 4
+- (4, 9) = 3
+- (9, 4) = 2
+- (2, 8) = 9
+
+Answer: 5 5 4 3 2 9",5 5 4 3 2 9,1,hard,stop
+sudoku_en_hard_0082,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . 4 9 . 6 7 3 .
+. . 9 . 7 . 8 5 .
+. 7 . . . . . 6 .
+. 1 . . . 2 . 7 .
+. . 3 5 1 8 4 . .
+. 4 . 3 . . . 8 .
+. 3 . . . . . 9 .
+. 5 2 . 6 . 3 . .
+. 6 7 8 . 1 5 . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(3, 7), (3, 1), (4, 1), (9, 2), (2, 6), (9, 7)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",2 3 8 6 3 5,,"Solved grid:
+
+```text
+5 8 4 9 2 6 7 3 1
+6 2 9 1 7 3 8 5 4
+3 7 1 4 8 5 2 6 9
+8 1 5 6 4 2 9 7 3
+7 9 3 5 1 8 4 2 6
+2 4 6 3 9 7 1 8 5
+1 3 8 2 5 4 6 9 7
+4 5 2 7 6 9 3 1 8
+9 6 7 8 3 1 5 4 2
+```
+
+Spotcheck values:
+
+- (3, 7) = 2
+- (3, 1) = 3
+- (4, 1) = 8
+- (9, 2) = 6
+- (2, 6) = 3
+- (9, 7) = 5
+
+Answer: 2 3 8 6 3 5",2 3 8 6 3 5,1,hard,stop
+sudoku_en_hard_0083,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . . . 7 . 9 . .
+2 7 . . . . . 4 8
+. . 5 . . . . 3 2
+7 . . . 4 6 . 8 .
+9 4 6 . . . 5 2 7
+. 3 . 7 5 . . . 9
+4 8 . . . . 6 . .
+3 2 . . . . . 9 4
+. . 7 . 8 . . . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(7, 2), (3, 5), (3, 6), (8, 6), (9, 4), (1, 9)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",8 1 4 7 4 6,,"Solved grid:
+
+```text
+8 1 4 | 2 7 3 | 9 5 6
+2 7 3 | 6 9 5 | 1 4 8
+6 9 5 | 8 1 4 | 7 3 2
+------+-------+------
+7 5 2 | 9 4 6 | 3 8 1
+9 4 6 | 1 3 8 | 5 2 7
+1 3 8 | 7 5 2 | 4 6 9
+------+-------+------
+4 8 9 | 3 2 1 | 6 7 5
+3 2 1 | 5 6 7 | 8 9 4
+5 6 7 | 4 8 9 | 2 1 3
+```
+
+Spotcheck values:
+
+- (7, 2) = 8
+- (3, 5) = 1
+- (3, 6) = 4
+- (8, 6) = 7
+- (9, 4) = 4
+- (1, 9) = 6
+
+Answer: 8 1 4 7 4 6",8 1 4 7 4 6,1,hard,stop
+sudoku_en_hard_0084,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. 6 . 7 3 . . . .
+. 4 . . . 2 3 7 9
+. . 9 5 4 . . . .
+. . . . . 3 . 9 4
+. 7 3 . . . 8 1 .
+9 5 . 1 . . . . .
+. . . . 2 7 9 . .
+6 2 7 3 . . . 4 .
+. . . . 1 8 . 6 .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(3, 9), (1, 4), (4, 5), (7, 9), (8, 2), (6, 2)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",2 7 7 5 2 5,,"Step-by-step solution highlights:
+
+1. In the top-middle box, the only place for 9 is r1c6, so r1c6 = 9.
+2. Column 6 then forces r8c6 = 5. Row 8 completes:
+   - Row 8 = 6 2 7 3 9 5 1 4 8
+3. In the bottom-middle box, r9c4 = 4 and r7c4 = 6.
+4. Column 4 then gives r2c4 = 8, r4c4 = 2, and r5c4 = 9.
+5. Row 2 reduces to two missing digits, and later column/box constraints give:
+   - Row 2 = 5 4 1 8 6 2 3 7 9
+6. In the top-left box, r3c1 = 7. Later, r3c2 = 3.
+7. Row 1 eventually resolves to:
+   - Row 1 = 8 6 2 7 3 9 4 5 1
+8. Row 3 then resolves as:
+   - Row 3 = 7 3 9 5 4 1 6 8 2
+9. Middle and lower boxes/columns finish the remaining rows:
+   - Row 4 = 1 8 6 2 7 3 5 9 4
+   - Row 5 = 2 7 3 9 5 4 8 1 6
+   - Row 6 = 9 5 4 1 6 8 7 2 3
+   - Row 7 = 4 1 8 6 2 7 9 3 5
+   - Row 9 = 3 9 5 4 1 8 2 6 7
+
+Completed Sudoku grid:
+
+```text
+8 6 2 7 3 9 4 5 1
+5 4 1 8 6 2 3 7 9
+7 3 9 5 4 1 6 8 2
+1 8 6 2 7 3 5 9 4
+2 7 3 9 5 4 8 1 6
+9 5 4 1 6 8 7 2 3
+4 1 8 6 2 7 9 3 5
+6 2 7 3 9 5 1 4 8
+3 9 5 4 1 8 2 6 7
+```
+
+Spotcheck values:
+
+- (3, 9) = 2
+- (1, 4) = 7
+- (4, 5) = 7
+- (7, 9) = 5
+- (8, 2) = 2
+- (6, 2) = 5
+
+Answer: 2 7 7 5 2 5",2 7 7 5 2 5,1,hard,stop
+sudoku_en_hard_0085,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . . 7 3 . . . .
+8 . 4 . 1 2 . . 5
+. . . . . . 1 6 2
+4 . . 2 8 . . . 1
+2 8 . . . . . 4 3
+5 . . . 7 3 . . 9
+1 2 8 . . . . . .
+9 . . 1 2 . 5 . 6
+. . . . 4 7 . . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(1, 1), (7, 6), (4, 9), (3, 3), (6, 1), (3, 5)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",6 6 1 5 5 9,,"Solved grid:
+
+```text
+6 1 2 | 7 3 5 | 9 8 4
+8 9 4 | 6 1 2 | 3 7 5
+7 3 5 | 8 9 4 | 1 6 2
+------+-------+------
+4 7 3 | 2 8 9 | 6 5 1
+2 8 9 | 5 6 1 | 7 4 3
+5 6 1 | 4 7 3 | 8 2 9
+------+-------+------
+1 2 8 | 3 5 6 | 4 9 7
+9 4 7 | 1 2 8 | 5 3 6
+3 5 6 | 9 4 7 | 2 1 8
+```
+
+Key reasoning highlights:
+
+- Column 1 forced `r1c1 = 6`, then later `r9c1 = 3` and `r3c1 = 7`.
+- In the top-middle box, digit `6` could only go at `r2c4`, so `r2c4 = 6`.
+- In the bottom-left box, `r8c2 = 4`, then `r8c6 = 8`, completing much of row 8.
+- The top-right box forced `r2c7 = 3`, then row 2 completed as `8 9 4 6 1 2 3 7 5`.
+- Column 8 and the top-right box then forced `r1c8 = 8`, `r1c7 = 9`, completing row 1.
+- The bottom-middle box forced `r7c4 = 3`, and then row 7 completed.
+- The remaining rows and columns resolved by singles.
+
+Spotcheck values:
+
+- `(1, 1) = 6`
+- `(7, 6) = 6`
+- `(4, 9) = 1`
+- `(3, 3) = 5`
+- `(6, 1) = 5`
+- `(3, 5) = 9`
+
+Answer: 6 6 1 5 5 9",6 6 1 5 5 9,1,hard,stop
+sudoku_en_hard_0086,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. 1 7 . . . . . 4
+3 . . . . . 7 . 1
+. . 6 2 . 1 . 3 8
+. 9 1 . . . . . 3
+. 3 4 . 1 . 8 5 .
+5 . . . . . 1 7 .
+1 6 . 8 . 7 3 . .
+4 . 3 . . . . . 7
+8 . . . . . 9 1 .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(1, 6), (4, 2), (6, 1), (4, 8), (8, 5), (1, 5)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",8 9 5 6 9 5,,"Solved grid:
+
+```text
+2 1 7 | 3 5 8 | 6 9 4
+3 8 5 | 9 6 4 | 7 2 1
+9 4 6 | 2 7 1 | 5 3 8
+------+-------+------
+7 9 1 | 5 8 2 | 4 6 3
+6 3 4 | 7 1 9 | 8 5 2
+5 2 8 | 6 4 3 | 1 7 9
+------+-------+------
+1 6 9 | 8 2 7 | 3 4 5
+4 5 3 | 1 9 6 | 2 8 7
+8 7 2 | 4 3 5 | 9 1 6
+```
+
+Key solving steps included:
+
+- In the top-left box, `r3c1` had to be `9`, which forced `r1c1 = 2`.
+- In row 3, the remaining values resolved to give `r3c2 = 4`, `r3c5 = 7`, and `r3c7 = 5`.
+- The top-right box then forced `r1c7 = 6`, `r1c8 = 9`, and `r2c8 = 2`.
+- Column 8 resolved with `r7c8 = 4`, `r4c8 = 6`, and `r8c8 = 8`.
+- Column 1 then forced `r4c1 = 7` and `r5c1 = 6`.
+- The middle-right and bottom-right boxes resolved further, giving placements such as `r8c7 = 2`, `r7c9 = 5`, `r9c9 = 6`, and `r6c9 = 9`.
+- The final unresolved cells were mainly in columns 5 and 6; column constraints forced:
+  - `r4c5 = 8`, `r4c6 = 2`
+  - `r1c5 = 5`, `r1c6 = 8`
+  - `r9c5 = 3`, `r9c6 = 5`
+  - `r6c5 = 4`, `r6c6 = 3`
+  - `r2c5 = 6`, `r2c6 = 4`
+  - `r8c5 = 9`, `r8c6 = 6`
+
+Requested coordinates:
+
+- `(1, 6)` = `8`
+- `(4, 2)` = `9`
+- `(6, 1)` = `5`
+- `(4, 8)` = `6`
+- `(8, 5)` = `9`
+- `(1, 5)` = `5`
+
+Answer: 8 9 5 6 9 5",8 9 5 6 9 5,1,hard,stop
+sudoku_en_hard_0087,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. 3 . . 2 . 8 . .
+8 7 . 5 . . . . .
+. . . 8 . 4 1 . .
+9 2 . 7 . . 5 . 3
+. 1 . 2 . 9 . 8 .
+7 . 8 . . 5 . 6 2
+. . 9 4 . 7 . . .
+. . . . . 3 . 9 6
+. . 3 . 9 . . 7 .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(9, 1), (1, 8), (2, 9), (7, 7), (1, 5), (7, 2)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",1 4 9 3 2 6,,"Step-by-step solution highlights:
+
+1. In column 4, after checking candidates, the only placements force:
+   - r8c4 = 1
+   - r9c4 = 6
+   - then r1c4 = 9 and r6c4 = 3
+
+2. In the middle-left box, r6c2 = 4, which then forces:
+   - r4c3 = 6
+   - r5c3 = 5
+
+3. In the top-left box, the only place for 9 is r3c2:
+   - r3c2 = 9
+
+4. Row 3 then resolves:
+   - r3c5 = 7
+   - r3c9 = 5
+   - r3c3 = 2
+   - r3c1 = 6
+   - r3c8 = 3
+
+5. Row 1 and column 6 give:
+   - r1c1 = 5
+   - r1c6 = 6
+   - r1c9 = 7
+   - r2c6 = 1
+   - r4c6 = 8
+   - r9c6 = 2
+
+6. Row 2 resolves:
+   - r2c3 = 4
+   - r2c9 = 9
+   - r2c5 = 3
+   - r2c8 = 2
+   - r2c7 = 6
+
+7. Column 7 and row 6 resolve:
+   - r6c7 = 9
+   - r8c7 = 2
+   - r7c7 = 3
+   - r6c5 = 1
+
+8. Row 4 and column 8 resolve:
+   - r4c5 = 4
+   - r4c8 = 1
+   - r1c8 = 4
+   - r7c8 = 5
+   - r1c3 = 1
+
+9. The remaining rows finish cleanly:
+   - r8c3 = 7
+   - r7c5 = 8
+   - r7c2 = 6
+   - r7c9 = 1
+   - r7c1 = 2
+   - r8c5 = 5
+   - r8c1 = 4
+   - r8c2 = 8
+   - r9c2 = 5
+   - r9c1 = 1
+   - r9c9 = 8
+
+Completed grid:
+
+```text
+5 3 1 9 2 6 8 4 7
+8 7 4 5 3 1 6 2 9
+6 9 2 8 7 4 1 3 5
+9 2 6 7 4 8 5 1 3
+3 1 5 2 6 9 7 8 4
+7 4 8 3 1 5 9 6 2
+2 6 9 4 8 7 3 5 1
+4 8 7 1 5 3 2 9 6
+1 5 3 6 9 2 4 7 8
+```
+
+Spotcheck values:
+
+- (9, 1) = 1
+- (1, 8) = 4
+- (2, 9) = 9
+- (7, 7) = 3
+- (1, 5) = 2
+- (7, 2) = 6
+
+Answer: 1 4 9 3 2 6",1 4 9 3 2 6,1,hard,stop
+sudoku_en_hard_0088,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . 3 . . 4 . . 9
+. . 9 5 3 . . 2 .
+. . . . . . 1 5 3
+. . . 3 6 . . 7 .
+2 7 1 . . . 5 3 6
+. 3 . . 1 2 . . .
+9 4 2 . . . . . .
+. 6 . . 5 7 9 . .
+7 . . 4 . . 3 . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(4, 7), (3, 1), (2, 3), (1, 2), (2, 2), (3, 7)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",2 4 9 5 8 1,,"I attempted to solve the puzzle, but the givens lead to a contradiction, so the puzzle as written has no valid Sudoku solution.
+
+Key forced steps:
+
+1. In row 7, the only possible value for r7c5 is 8:
+   - Row 7: `9 4 2 . . . . . .`
+   - Considering column and box constraints, r7c5 = 8.
+
+2. Then row 7 has only one place for 3 and 5:
+   - r7c6 = 3
+   - r7c9 = 5
+
+3. In the bottom-left box, forced placements follow:
+   - r8c3 = 8
+   - r9c3 = 5
+   - r9c2 = 1
+   - r8c1 = 3
+
+4. Column 2 is then forced:
+   - r2c2 = 8
+   - r3c2 = 2
+   - r1c2 = 5
+   - r4c2 = 9
+
+5. Continuing forced placements:
+   - r8c4 = 2
+   - r9c5 = 9
+   - r9c6 = 6
+   - r7c4 = 1
+   - r7c8 = 6
+   - r7c7 = 7
+
+6. In column 3:
+   - r4c3 = 4
+   - r6c3 = 6
+   - Therefore r3c3 = 7
+
+7. Now look at column 5:
+   - r5c5 is forced to be 4.
+   - But row 3 now has `r3c2 = 2` and `r3c3 = 7`, so r3 is missing `{4,6,8,9}`.
+   - In column 5, r3c5 is also forced to be 4.
+
+This gives two 4s in column 5: r3c5 = 4 and r5c5 = 4, which violates Sudoku rules.
+
+Therefore, the puzzle has no valid completed solution, and the requested spotcheck values are undefined.
+
+Answer: no solution",3 5 4 5 5 4,0,hard,stop
+sudoku_en_hard_0089,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+2 . . . . . 7 8 .
+. . . . 8 . 5 . 2
+4 . 7 . . 2 . 3 9
+8 . 2 . 6 . 4 7 .
+. . . . 7 . . . .
+. 7 4 . 5 . 9 . 1
+6 4 . 8 . . 1 . 5
+5 . 1 . 4 . . . .
+. 2 8 . . . . . 6
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(1, 8), (2, 2), (1, 9), (2, 4), (7, 6), (6, 9)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",8 3 4 7 7 1,,"The puzzle as given has no valid Sudoku solution. Here is the forced contradiction.
+
+Starting grid:
+
+```text
+2 . . . . . 7 8 .
+. . . . 8 . 5 . 2
+4 . 7 . . 2 . 3 9
+8 . 2 . 6 . 4 7 .
+. . . . 7 . . . .
+. 7 4 . 5 . 9 . 1
+6 4 . 8 . . 1 . 5
+5 . 1 . 4 . . . .
+. 2 8 . . . . . 6
+```
+
+Key forced placements:
+
+1. In row 3, column 5 must be `1`, so row 3 becomes constrained:
+   - `r3c5 = 1`
+   - `r3c7 = 6`
+   - `r3c4 = 5`
+   - `r3c2 = 8`
+
+2. In the top-right box, the remaining digits force:
+   - `r1c9 = 4`
+   - `r2c8 = 1`
+
+3. Column 9 then forces:
+   - `r4c9 = 3`
+   - `r5c9 = 8`
+   - `r8c9 = 7`
+
+4. Continuing the forced placements gives:
+   - `r8c7 = 8`
+   - `r9c8 = 4`
+   - `r9c7 = 3`
+   - `r5c7 = 2`
+   - `r6c8 = 6`
+   - `r5c8 = 5`
+
+5. Further forced placements lead to:
+   - `r9c5 = 9`
+   - `r1c5 = 3`
+   - `r7c5 = 2`
+   - `r7c8 = 9`
+   - `r7c3 = 3`
+   - `r7c6 = 7`
+   - `r9c4 = 1`
+   - `r9c6 = 5`
+   - `r4c4 = 9`
+   - `r4c2 = 1`
+   - `r4c6 = 5`
+
+6. Now look at the middle-left 3×3 box, rows 4–6 and columns 1–3:
+
+```text
+8 1 2
+. . .
+3 7 4
+```
+
+The missing digits are `{5,6,9}`. This forces:
+   - `r5c1 = 9`
+   - `r5c2 = 6`
+   - `r5c3 = 5`
+
+But earlier we already forced `r5c8 = 5`.
+
+That gives row 5 two `5`s:
+
+```text
+9 6 5 . 7 . 2 5 8
+```
+
+This violates Sudoku rules. Therefore, the puzzle as provided is inconsistent and has no valid completed solution.
+
+Answer: no valid solution",6 5 7 2 5 8,0,hard,stop
+sudoku_en_hard_0090,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . . . 1 . . 6 2
+2 . 3 . 4 . 8 . .
+. 9 8 . 2 . . . .
+. . 2 . 5 3 . 7 9
+. . . 1 . 7 . . .
+9 7 . 2 6 . 4 . .
+. . . . 3 . 9 4 .
+. . 9 . 8 . 5 . 3
+3 2 . . 7 . . . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(1, 4), (3, 9), (3, 5), (6, 5), (9, 6), (5, 6)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",8 4 2 6 4 7,,"Solving key steps:
+
+1. In column 5, the only missing digit is 9, so:
+   - r5c5 = 9
+
+2. In the center box (rows 4–6, cols 4–6), the missing digits are {4, 8}:
+   - r6c6 = 8
+   - r4c4 = 4
+
+3. In the bottom-middle box (rows 7–9, cols 4–6), placements force:
+   - r8c4 = 6
+   - r7c4 = 5
+   - r9c4 = 9
+
+4. Column 4 then resolves:
+   - r2c4 = 7
+   - r3c4 = 3
+   - r1c4 = 8
+
+5. In the top-middle box, the only place for 9 is:
+   - r1c6 = 9
+
+6. Row 1 then forces:
+   - r1c7 = 3
+
+7. Column 8 gives:
+   - r6c8 = 3
+
+8. Row 7 has only one place for 2:
+   - r7c6 = 2
+
+9. The pair in the top-middle box is r2c6/r3c6 = {5,6}.  
+   If r2c6 = 6, then r3c6 = 5, which eventually forces r6c3 = 5, leaving no possible 5 in the bottom-left box. So:
+   - r2c6 = 5
+   - r3c6 = 6
+
+Continuing from there, the grid completes as:
+
+```text
+4 5 7 8 1 9 3 6 2
+2 6 3 7 4 5 8 9 1
+1 9 8 3 2 6 7 5 4
+6 8 2 4 5 3 1 7 9
+5 3 4 1 9 7 2 8 6
+9 7 1 2 6 8 4 3 5
+8 1 6 5 3 2 9 4 7
+7 4 9 6 8 1 5 2 3
+3 2 5 9 7 4 6 1 8
+```
+
+The requested coordinates are:
+
+- (1, 4) = 8
+- (3, 9) = 4
+- (3, 5) = 2
+- (6, 5) = 6
+- (9, 6) = 4
+- (5, 6) = 7
+
+Answer: 8 4 2 6 4 7",8 4 2 6 4 7,1,hard,stop
+sudoku_en_hard_0091,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . 2 3 6 7 . 1 9
+7 3 6 . . . . . .
+1 . . . . . . 7 .
+. . 7 2 . . 8 . .
+. 2 . 6 . 3 . 9 .
+. . 8 . . 9 1 . .
+. 8 . . . . . . 1
+. . . . . . 5 6 8
+2 1 . 8 5 6 3 . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(9, 7), (1, 6), (4, 4), (2, 2), (9, 2), (6, 6)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",3 7 2 3 1 9,,"Solving by applying row, column, and box constraints:
+
+1. In row 1, the missing digits are `{4,5,8}`.  
+   - Column 7 can only be `4`, so `r1c7 = 4`.  
+   - Then row 1 becomes missing `{5,8}`; column 2 forces `r1c2 = 5`, so `r1c1 = 8`.
+
+2. In the top-right box, after placing `r1c7 = 4`, the missing digits force:
+   - `r2c7 = 2`
+   - `r3c7 = 6`
+   - `r2c9 = 5`
+   - `r3c9 = 3`
+   - `r2c8 = 8`
+
+3. In row 9, the missing digits are `{4,7,9}`.
+   - Column 8 forces `r9c8 = 4`
+   - Then `r9c3 = 9`, `r9c9 = 7`
+
+4. In row 5, column/box constraints force:
+   - `r5c7 = 7`
+   - `r5c9 = 4`
+   - `r5c1 = 5`
+   - `r5c3 = 1`
+   - `r5c5 = 8`
+
+5. The top-left box then gives:
+   - `r3c3 = 4`
+   - `r3c2 = 9`
+
+6. Column 2 becomes solvable:
+   - `r4c2 = 4`
+   - `r6c2 = 6`
+
+7. Further singles resolve:
+   - `r8c2 = 7`
+   - `r8c3 = 3`
+   - `r7c3 = 5`
+   - `r8c1 = 4`
+   - `r7c1 = 6`
+   - `r6c1 = 3`
+   - `r4c1 = 9`
+
+8. Row 4 then completes:
+   - `r4c8 = 3`
+   - `r4c5 = 1`
+   - `r4c6 = 5`
+
+9. Row 6 then completes:
+   - `r6c8 = 5`
+   - `r6c4 = 4`
+   - `r6c5 = 7`
+
+10. Column 7 forces:
+   - `r7c7 = 9`
+
+11. Row 7 completes:
+   - `r7c6 = 4`
+   - `r7c4 = 7`
+   - `r7c5 = 3`
+
+12. The remaining top and bottom middle boxes resolve:
+   - `r2c6 = 1`
+   - `r8c6 = 2`
+   - `r3c6 = 8`
+   - `r3c4 = 5`
+   - `r3c5 = 2`
+   - `r2c4 = 9`
+   - `r2c5 = 4`
+   - `r8c4 = 1`
+   - `r8c5 = 9`
+
+Completed grid:
+
+```text
+8 5 2 3 6 7 4 1 9
+7 3 6 9 4 1 2 8 5
+1 9 4 5 2 8 6 7 3
+9 4 7 2 1 5 8 3 6
+5 2 1 6 8 3 7 9 4
+3 6 8 4 7 9 1 5 2
+6 8 5 7 3 4 9 2 1
+4 7 3 1 9 2 5 6 8
+2 1 9 8 5 6 3 4 7
+```
+
+Answer: 3 7 2 3 1 9",3 7 2 3 1 9,1,hard,stop
+sudoku_en_hard_0092,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. . . . . 7 . . .
+1 . 2 3 . 6 . . .
+9 7 8 . . . 5 . 6
+. 8 . . 1 . . 4 5
+7 . 1 . 3 . 9 . 8
+4 5 . . 9 . . 7 .
+5 . 6 . . . 4 2 3
+. . . 5 . 9 7 . 1
+. . . 2 . . . . .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(2, 6), (1, 2), (8, 9), (7, 6), (2, 7), (7, 8)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",6 6 1 1 8 2,,"Solved grid:
+
+```text
+3 6 5 9 8 7 2 1 4
+1 4 2 3 5 6 8 9 7
+9 7 8 1 2 4 5 3 6
+6 8 9 7 1 2 3 4 5
+7 2 1 4 3 5 9 6 8
+4 5 3 6 9 8 1 7 2
+5 9 6 8 7 1 4 2 3
+2 3 4 5 6 9 7 8 1
+8 1 7 2 4 3 6 5 9
+```
+
+Key solving steps:
+
+- In row 2, column 7 was forced to `8`, then row 2 resolved to:
+  `1 4 2 3 5 6 8 9 7`.
+- In column 9, the remaining values forced row 1 column 9 to `4` and row 9 column 9 to `9`.
+- Column 3 then forced row 1 column 3 to `5`.
+- The middle-left and middle boxes gave several singles:
+  - row 4 column 3 = `9`
+  - row 4 column 6 = `2`
+  - row 6 column 6 = `8`
+  - row 6 column 4 = `6`
+  - row 4 column 4 = `7`
+- This completed rows 4, 5, and 6.
+- Column 1 then forced row 1 column 1 = `3`, row 9 column 1 = `8`, and row 8 column 1 = `2`.
+- Row 1 completed as:
+  `3 6 5 9 8 7 2 1 4`.
+- The remaining rows and columns then resolved by singles to the completed grid above.
+
+Requested coordinates:
+
+- (2, 6) = `6`
+- (1, 2) = `6`
+- (8, 9) = `1`
+- (7, 6) = `1`
+- (2, 7) = `8`
+- (7, 8) = `2`
+
+Answer: 6 6 1 1 8 2",6 6 1 1 8 2,1,hard,stop
+sudoku_en_hard_0093,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+2 . . 9 . . 8 . .
+9 . 4 . 1 6 2 . .
+. . . . 7 3 . . 5
+4 . . . . . 7 5 2
+. . 5 . 6 . 1 . .
+1 8 3 . . . . . 9
+6 . . 3 2 . . . .
+. . 2 5 9 . 6 . 4
+. . 9 . . 4 . . 1
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(2, 3), (1, 3), (3, 7), (1, 1), (7, 4), (2, 9)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",4 7 9 2 3 3,,"Solved grid:
+
+```text
+2 3 7 9 4 5 8 1 6
+9 5 4 8 1 6 2 7 3
+8 6 1 2 7 3 9 4 5
+4 9 6 1 3 8 7 5 2
+7 2 5 4 6 9 1 3 8
+1 8 3 7 5 2 4 6 9
+6 4 8 3 2 1 5 9 7
+3 1 2 5 9 7 6 8 4
+5 7 9 6 8 4 3 2 1
+```
+
+Spotcheck values:
+
+- (2, 3) = 4
+- (1, 3) = 7
+- (3, 7) = 9
+- (1, 1) = 2
+- (7, 4) = 3
+- (2, 9) = 3
+
+Answer: 4 7 9 2 3 3",4 7 9 2 3 3,1,hard,stop
+sudoku_en_hard_0094,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+3 . . . . . . . 2
+. 9 6 . . 2 3 5 .
+7 . 2 5 . 8 . . .
+. . . . . . 6 3 9
+6 3 . . . . . 7 5
+8 7 5 . . . . . .
+. . . 6 . 1 5 . 7
+. 2 7 8 . . 4 6 .
+4 . . . . . . . 3
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(9, 6), (3, 3), (9, 1), (3, 8), (6, 2), (8, 7)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",7 2 4 9 7 4,,"Solving the Sudoku gives the completed grid:
+
+```text
+3 5 8 | 9 1 6 | 7 4 2
+1 9 6 | 4 7 2 | 3 5 8
+7 4 2 | 5 3 8 | 1 9 6
+------+-------+------
+2 1 4 | 7 8 5 | 6 3 9
+6 3 9 | 1 2 4 | 8 7 5
+8 7 5 | 3 6 9 | 2 1 4
+------+-------+------
+9 8 3 | 6 4 1 | 5 2 7
+5 2 7 | 8 9 3 | 4 6 1
+4 6 1 | 2 5 7 | 9 8 3
+```
+
+Spotcheck values:
+
+- (9, 6) = 7
+- (3, 3) = 2
+- (9, 1) = 4
+- (3, 8) = 9
+- (6, 2) = 7
+- (8, 7) = 4
+
+Answer: 7 2 4 9 7 4",7 2 4 9 7 4,1,hard,stop
+sudoku_en_hard_0095,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. 5 . . . . . 8 .
+. 3 8 . 9 . 1 4 .
+. . 4 . . 3 . 9 6
+. 4 1 7 . . . . .
+. 6 . 4 . 2 . 7 .
+. . . . . 6 2 1 .
+4 1 . 3 . . 9 . .
+. 9 5 . 2 . 8 3 .
+. 7 . . . . . 2 .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(5, 9), (4, 3), (2, 9), (7, 6), (8, 4), (2, 2)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",8 1 2 7 1 3,,"Solving the puzzle gives the completed Sudoku grid:
+
+```text
+9 5 6 | 2 4 1 | 7 8 3
+7 3 8 | 6 9 5 | 1 4 2
+1 2 4 | 8 7 3 | 5 9 6
+------+-------+------
+2 4 1 | 7 3 8 | 6 5 9
+5 6 9 | 4 1 2 | 3 7 8
+3 8 7 | 9 5 6 | 2 1 4
+------+-------+------
+4 1 2 | 3 8 7 | 9 6 5
+6 9 5 | 1 2 4 | 8 3 7
+8 7 3 | 5 6 9 | 4 2 1
+```
+
+Key solving steps included:
+- Column 2 forced `r6c2 = 8`, then `r3c2 = 2`.
+- Column 3 then forced `r5c3 = 9`, `r6c3 = 7`, and `r1c3 = 6`.
+- In the lower-left box, the remaining placements forced `r8c1 = 6`, `r9c3 = 3`, `r7c3 = 2`, and `r9c1 = 8`.
+- Column 9 and the right-side boxes then resolved several values, including `r2c9 = 2`, `r7c9 = 5`, `r8c9 = 7`, and `r5c9 = 8`.
+- The remaining rows and columns then completed cleanly.
+
+Requested coordinates:
+- `(5, 9) = 8`
+- `(4, 3) = 1`
+- `(2, 9) = 2`
+- `(7, 6) = 7`
+- `(8, 4) = 1`
+- `(2, 2) = 3`
+
+Answer: 8 1 2 7 1 3",8 1 2 7 1 3,1,hard,stop
+sudoku_en_hard_0096,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+2 . 3 4 . . . 5 .
+9 8 . . 6 . 3 . .
+5 6 . . . . . . .
+. . 5 2 4 7 . 8 1
+. . . . 1 . . . .
+8 1 . 5 3 6 2 . .
+. . . . . . . 3 2
+. . 6 . 9 . . 1 5
+. 5 . . . 3 7 . 9
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(5, 6), (8, 2), (9, 7), (3, 3), (3, 1), (4, 8)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",8 2 7 1 5 8,,"Step-by-step solve highlights:
+
+1. Row 1 quickly resolves:
+   - r1c2 = 7
+   - r1c5 = 8
+   - r1c9 = 6
+   - Later r1c6 = 9 and r1c7 = 1  
+   Row 1 becomes: `2 7 3 4 8 9 1 5 6`
+
+2. In the top-middle box, the candidates force:
+   - r2c4 = 1
+   - r3c6 = 2
+   - r3c4 = 3
+   - r2c6 = 5
+
+3. Column 5 then gives:
+   - r3c5 = 7
+   - r7c5 = 5
+
+4. The middle box forces:
+   - r5c6 = 8
+   - r5c4 = 9
+
+5. In the bottom-left box:
+   - r8c2 = 2
+   - Then row 8 resolves to `3 2 6 7 9 4 8 1 5`
+
+6. The top-left box resolves:
+   - r2c3 = 4
+   - r3c3 = 1
+   - Then row 2 becomes `9 8 4 1 6 5 3 2 7`
+
+7. The top-right box gives:
+   - r3c9 = 8
+   - Then r3 resolves to `5 6 1 3 7 2 4 9 8`
+
+8. Continuing singles and box/column eliminations:
+   - r6c9 = 4
+   - r5c9 = 3
+   - r5c2 = 4
+   - r7c2 = 9
+   - r4c2 = 3
+   - r4c1 = 6
+   - r4c7 = 9
+   - r7c7 = 6
+   - r7c4 = 8
+   - r9c4 = 6
+   - r9c8 = 4
+   - r9c3 = 8
+   - r6c8 = 7
+   - r6c3 = 9
+   - r7c3 = 7
+   - r5c3 = 2
+   - r7c1 = 4
+   - r5c1 = 7
+
+Completed Sudoku grid:
+
+```text
+2 7 3 4 8 9 1 5 6
+9 8 4 1 6 5 3 2 7
+5 6 1 3 7 2 4 9 8
+6 3 5 2 4 7 9 8 1
+7 4 2 9 1 8 5 6 3
+8 1 9 5 3 6 2 7 4
+4 9 7 8 5 1 6 3 2
+3 2 6 7 9 4 8 1 5
+1 5 8 6 2 3 7 4 9
+```
+
+Requested coordinates:
+
+- (5, 6) = 8
+- (8, 2) = 2
+- (9, 7) = 7
+- (3, 3) = 1
+- (3, 1) = 5
+- (4, 8) = 8
+
+Answer: 8 2 7 1 5 8",8 2 7 1 5 8,1,hard,stop
+sudoku_en_hard_0097,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+. 5 . 7 . 2 . . 6
+7 . . . 9 6 1 5 3
+. . 6 . . . . . .
+3 8 9 . . . . 7 .
+. . . 6 . 4 . . .
+. 7 . . . . 2 1 5
+. . . . . . 5 . .
+9 6 7 5 3 . . . 1
+5 . . 4 . 1 . 6 .
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(3, 5), (5, 1), (9, 9), (9, 7), (6, 2), (1, 7)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",5 2 7 9 7 8,,"Solved grid:
+
+```text
+1 5 3 7 4 2 8 9 6
+7 4 2 8 9 6 1 5 3
+8 9 6 1 5 3 7 4 2
+3 8 9 2 1 5 6 7 4
+2 1 5 6 7 4 3 8 9
+6 7 4 3 8 9 2 1 5
+4 2 1 9 6 7 5 3 8
+9 6 7 5 3 8 4 2 1
+5 3 8 4 2 1 9 6 7
+```
+
+Key solving steps:
+- In row 4, column 6 is forced to `5`, and later row 4 resolves to `3 8 9 2 1 5 6 7 4`.
+- In row 8, the missing digits are `{2,4,8}`; column constraints force `r8c6=8`, `r8c7=4`, `r8c8=2`.
+- The top-left box then forces `r3c2=9`, and column/box interactions force `r2c3=2`, `r2c2=4`, and `r1c3=3`.
+- Column 6 forces `r3c6=3`, then `r6c6=9`, `r7c6=7`.
+- Column 4 resolves with `r3c4=1`, `r4c4=2`, `r7c4=9`.
+- The remaining singles cascade through rows 1, 3, 5, 7, and 9 to complete the grid.
+
+Requested coordinates:
+- `(3, 5)` = `5`
+- `(5, 1)` = `2`
+- `(9, 9)` = `7`
+- `(9, 7)` = `9`
+- `(6, 2)` = `7`
+- `(1, 7)` = `8`
+
+Answer: 5 2 7 9 7 8",5 2 7 9 7 8,1,hard,stop
+sudoku_en_hard_0098,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+5 . . 3 . 4 . . 6
+. 6 . 9 7 5 . 4 .
+. . . . . 8 9 . .
+1 . . . . . 7 3 .
+9 . 6 . 4 . 2 . 8
+. 4 7 . . . . . 5
+. . 5 4 . . . . .
+. 1 . 8 9 6 . 7 .
+6 . . 5 . 7 . . 1
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(2, 7), (7, 5), (7, 3), (5, 8), (9, 9), (3, 4)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",3 1 5 1 1 1,,"The puzzle does not have a unique Sudoku solution. After applying standard deductions, it branches into at least two valid completed grids.
+
+One valid solution is:
+
+```text
+5 7 9 3 1 4 8 2 6
+8 6 3 9 7 5 1 4 2
+4 3 1 2 6 8 9 5 7
+1 2 8 6 5 9 7 3 4
+9 5 6 7 4 3 2 1 8
+3 4 7 1 8 2 6 9 5
+7 8 5 4 2 1 3 6 9
+2 1 4 8 9 6 5 7 3
+6 9 2 5 3 7 4 8 1
+```
+
+Another valid solution is:
+
+```text
+5 7 9 3 2 4 1 8 6
+8 6 1 9 7 5 3 4 2
+4 2 3 1 6 8 9 5 7
+1 8 2 6 5 9 7 3 4
+9 5 6 7 4 3 2 1 8
+3 4 7 2 8 1 6 9 5
+7 3 5 4 1 2 8 6 9
+2 1 4 8 9 6 5 7 3
+6 9 8 5 3 7 4 2 1
+```
+
+So the requested spotcheck values are not uniquely determined:
+
+- For solution 1: `(2,7), (7,5), (7,3), (5,8), (9,9), (3,4)` = `1 2 5 1 1 2`
+- For solution 2: `(2,7), (7,5), (7,3), (5,8), (9,9), (3,4)` = `3 1 5 1 1 1`
+
+Answer: 1 2 5 1 1 2",1 2 5 1 1 2,0,hard,stop
+sudoku_en_hard_0099,"You are an expert Sudoku solver. Solve the following Sudoku puzzle completely.
+
+Sudoku rules:
+- Fill the 9x9 grid so that each row, column, and 3x3 box contains digits 1-9
+- Each digit must appear exactly once in each row, column, and box
+
+The puzzle is given below as a 9-line grid.
+'.' represents an empty cell.
+
+Puzzle grid:
+8 2 . . . . . . .
+5 . 1 8 2 . 3 9 .
+4 . 9 . . . . . 8
+. . . 1 . 3 8 . .
+1 . 3 . 8 . 4 . 9
+. . 7 9 . 2 . . .
+2 . . . . . 6 . 7
+. 6 5 . 9 8 1 . 3
+. . . . . . . 8 2
+
+First, solve the entire puzzle step by step.
+Then, report the values at these (row, col) coordinates (1-based) in the same order:
+(5, 5), (3, 1), (9, 5), (9, 1), (7, 4), (3, 7)
+
+CRITICAL: After solving, your very last line MUST be exactly:
+Answer: [digits at those coordinates, separated by spaces]
+
+Example (if the values are 5, 3, 4, 6, 7, 8):
+Answer: 5 3 4 6 7 8",8 4 6 3 3 2,,"Step-by-step solve highlights:
+
+1. In the top-left box, row 1 column 3 must be 6:
+   - Row 1 becomes: `8 2 6 . . . . . .`
+
+2. In the same box:
+   - r2c2 = 7
+   - r3c2 = 3
+
+3. In the middle-left box, r6c2 is the only place for 8:
+   - r6c2 = 8
+   - Then r6c1 = 6
+
+4. In row 6:
+   - r6c7 = 5
+   - r6c9 = 1
+   - r6c8 = 3
+   - r6c5 = 4
+
+5. In row 4 / middle-left box:
+   - r4c1 = 9
+   - r4c2 = 4
+   - r4c3 = 2
+   - r4c9 = 6
+   - r4c8 = 7
+   - r4c5 = 5
+
+6. Row 8 resolves:
+   - r8c8 = 4
+   - r8c1 = 7
+   - r8c4 = 2
+
+7. Bottom-left and column deductions:
+   - r9c1 = 3
+   - r9c3 = 4
+   - r7c3 = 8
+
+8. Column 9 gives:
+   - r2c9 = 4
+   - r1c9 = 5
+   - Then r2c6 = 6
+
+9. Row 1 and top-right box resolve:
+   - r1c8 = 1
+   - r1c7 = 7
+   - r3c7 = 2
+   - r1c5 = 3
+   - r1c4 = 4
+   - r1c6 = 9
+
+10. Remaining rows and columns finish:
+   - r5c6 = 7
+   - r5c4 = 6
+   - r7c4 = 3
+   - r7c5 = 1
+   - r7c6 = 4
+   - r7c2 = 9
+   - r9c2 = 1
+   - r3c5 = 7
+   - r9c5 = 6
+   - r3c4 = 5
+   - r3c6 = 1
+   - r9c4 = 7
+   - r9c6 = 5
+   - r9c7 = 9
+
+Completed Sudoku grid:
+
+```text
+8 2 6 4 3 9 7 1 5
+5 7 1 8 2 6 3 9 4
+4 3 9 5 7 1 2 6 8
+9 4 2 1 5 3 8 7 6
+1 5 3 6 8 7 4 2 9
+6 8 7 9 4 2 5 3 1
+2 9 8 3 1 4 6 5 7
+7 6 5 2 9 8 1 4 3
+3 1 4 7 6 5 9 8 2
+```
+
+Spotcheck values:
+
+- (5, 5) = 8
+- (3, 1) = 4
+- (9, 5) = 6
+- (9, 1) = 3
+- (7, 4) = 3
+- (3, 7) = 2
+
+Answer: 8 4 6 3 3 2",8 4 6 3 3 2,1,hard,stop

@@ -1,0 +1,2611 @@
+id,question,answer,thinking_content,resps,filtered_resps,exact_match,difficulty,finish_reason
+time_ko_easy_0000,"1999년 새해 첫날에 ""금일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 23일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",1999.1.24,"**Calculating a Date**
+
+Okay, so the text is guiding me through a date calculation, which is pretty straightforward. I'm given that the date, the initial date, is January 1st, 1999 (as implied by ""1999년 새해 첫날""). ""금일이 내 생일이야"" confirms the date given. I need to figure out what date is 23 days after this.
+
+The initial thought process is simple addition: January 1st + 23 days. I can do that in my head (or on paper, though not necessary here): 1 + 23 = 24.  January has 31 days, so that falls within the month of January. Therefore, the date is January 24th, 1999.
+
+I need to make sure I format the date as YYYY.M.D, as requested. The verification is also simple: Birthday on January 1st. 1 day after is January 2nd. 23 days after is indeed January 24th. And the final, correct answer, is 1999.1.24.
+
+
+","1999년 새해 첫날은 양력으로 1999년 1월 1일입니다.
+이 날로부터 23일 후의 날짜를 계산하면 다음과 같습니다.
+
+1월 1일 + 23일 = 1월 24일
+
+따라서 1999년 1월 24일이 됩니다.
+
+Answer: 1999.1.24",1999.1.24,1,easy,stop
+time_ko_easy_0001,"1991년 광복절에 ""내일모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 26일 후, 그 날의 일진(日辰), 즉 그 날에 해당하는 60갑자는 무엇인가? (예: 갑자)",을유,"**My Thought Process on Calculating a Date's Sexagenary Cycle**
+
+Okay, so I'm presented with a date: August 15, 1991, which I understand to be a specific historical event. The task is to calculate the sexagenary cycle (干支, ganzhi) for a specific date, twenty-six days after ""the day after tomorrow"".  No problem, let's break this down systematically.
+
+First, ""the day after tomorrow"" from August 15, 1991, is August 17th. Then, 26 days after that is September 12, 1991.  Now, the core of the problem: finding the ganzhi for September 12, 1991.
+
+I know I can use a reference date or a formula. I start by deciding to derive the calculation from the ganzhi of January 1, 1991.  I quickly see the year 1991 is not a leap year. Now, to determine a base year, I'll go with January 1, 2000, which I know to be  戊午(Muwu). 
+
+I need to calculate the difference in days between 1991 and 2000.  It's a straightforward calculation: I have nine years between 1991 and 2000. These years include 2 leap years (1992, 1996) resulting in 3287 days.
+
+I calculate the remainder when dividing the number of days by 60 which is 47. To move backward from 2000 to 1991, I subtract these 47 days from 戊午(Muwu), which is 55 in the ganzhi index. Doing the math, 55 - 47 = 8.  That's 辛未(Sinmi), which I calculate as the ganzhi of January 1, 1991.
+
+I will verify my calculation:
+Now I need to calculate the number of days between January 1st and September 12th.
+Summing the days in each month:
+*   January: 31
+*   February: 28
+*   March: 31
+*   April: 30
+*   May: 31
+*   June: 30
+*   July: 31
+*   August: 31
+*   September: 12 (including the day)
+The total is 254 days. Now I check the total against the ganzhi.
+
+So, 254 % 60 = 14. Adding this to the index of January 1st (8, 辛未(Sinmi)), I get 8 + 14 = 22.
+
+The 22nd ganzhi is 乙酉(Eulyu).
+
+I do a check:
+To further verify, I will calculate the result in days and by month.
+1991, Aug 15: 광복절 (independence)
+""The day after tomorrow"" (8/17) and + 26 days = 9/12.
+Months calculation:
+1st of Jan to the 12th of Sep (8/17)
+255th days
+255 % 60 = 15.
+1月1일 (Jan 1) is 8 (辛未(Sinmi)) + 14 = 22. 을유(Eulyu).
+
+I will check the result based on a different reference point: January 1, 1970, which I know was 丁未(Dingmi) (44th index)
+
+Again, I will determine the difference in days: From 1970 to 1990: 21 years with 5 leap years. This means 7670 days total. 7670 % 60 = 50. Then, 44 + 50 = 94 = 34. (丁酉(Dingyu))
+I see there is a discrepancy. I have to verify all information.
+
+I re-do calculation: I double check with 1970 to 2000.
+2000- 1970 = 30 * 365 + 7 leap year. 10957 days
+10957 % 60 = 37.
+55 - 37 = 18 (辛巳(Sinsa))
+1970년 Jan 1 is 辛巳(
+
+","1. 1991년 광복절은 8월 15일입니다.
+2. ""내일모레""는 이틀 후를 의미하므로, 생일은 1991년 8월 17일입니다.
+3. 그 생일로부터 26일 후의 날짜를 계산하면, 8월은 31일까지 있으므로 17 + 26 - 31 = 12, 즉 1991년 9월 12일이 됩니다.
+4. 1991년 1월 1일의 일진은 신미(辛未)일입니다.
+5. 1991년(평년) 1월 1일부터 9월 12일까지의 일수는 다음과 같습니다.
+   - 1월(31) + 2월(28) + 3월(31) + 4월(30) + 5월(31) + 6월(30) + 7월(31) + 8월(31) = 243일
+   - 여기에 9월 12일까지 12일을 더하면 총 255번째 날(1월 1일 기준 254일 후)이 됩니다.
+6. 254를 60으로 나누면 몫은 4, 나머지는 14입니다.
+7. 육십갑자 표에서 신미(8번째)로부터 14번째 뒤의 간지는 을유(22번째)가 됩니다.
+
+Answer: 을유",을유,1,easy,stop
+time_ko_easy_0002,"2025년 식목일에 ""모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 25일 후, 그 날의 일진(日辰), 즉 그 날에 해당하는 60갑자는 무엇인가? (예: 갑자)",신미,"**Calculating the Day's Ganzhi (Stem-Branch)**
+
+Okay, let's break this down. We're given that the date is April 5th, and two days later is someone's birthday (April 7th). We need to determine the Ganzhi (sexagenary cycle) of the date 25 days after the birthday, which is May 2nd, 2025.
+
+First, the calculation: April 7th + 25 days = April 32nd, which is the same as May 2nd. Now, the main task: finding the Ganzhi for May 2nd, 2025.
+
+I'll start with a known reference point. I recall that 식목일 (Arbor Day) is April 5th. Knowing that 식목일 is April 5th in the Gregorian calendar (양력), I can trust this date.
+
+Let's work backward or from a known date, remembering that the sexagenary cycle consists of 60 unique combinations. I'll need to figure out a reliable starting point. I know 2024 was a leap year, and 설날 (Lunar New Year) was on February 10th in that year, which was 갑진(甲辰) (the 41st combination in the sexagenary cycle). I could use this, but to be safe, I'll go with a consistent base year that's easier to verify: 2000. It's a leap year, and I have a strong memory that January 1st, 2000, was 무오(戊午) (55th of the 60). We can verify this, and if it's correct, then 2001 January 1st is going to be 갑자 (1st). I can verify that by knowing a leap year adds one day, or 6 days to the sexagenary cycle (60 / 6). A standard year then adds 5 days.
+
+I can confirm that by checking the cycle: 2000 January 1st = 무오. A leap year adds 366 days, 366 % 60 = 6, so 2001 January 1st must be 갑자 (1st). Great, it's verified.
+
+Now to calculate the days to the target date. From January 1st, 2001 to January 1st, 2025, there are 24 years. Of those, 6 were leap years (2004, 2008, 2012, 2016, 2020, 2024).
+
+So, 24 years * 365 days/year + 6 leap days = 8766 days.
+
+8766 % 60 = 6. This means January 1st, 2025, is 6 days *after* 갑자 (1st). Therefore, it should be 경오 (7th) in the sexagenary cycle.
+
+Now calculate the days from January 1st, 2025 to May 2nd.
+January 1st is 경오 (7th).
+January (31 days), February (28), March (31), April (30), May (2). So, 31 + 28 + 31 + 30 + 2 = 122 days.
+
+Subtract the first day, so 122 - 1 = 121 days passed.
+121 % 60 = 1.
+So, the target day's Ganzhi = 경오 (7) + 1 = 신미 (8th).
+
+I can cross-check:
+2025 January 1st is 경오 (7).
+January 31st (30 days after) = 경오 + 30 = 37 (경자).
+February 28th = 경자 + 28 = 65 -> 무진 (5th).
+March 31st = 무진 + 31 = 36 (기해).
+April 30th = 기해 + 30 = 6 (기사).
+May 2nd = 기사 + 2 = 신미 (8). This confirms my result!
+
+Another cross-check with the Lunar New Year: 2024's Lunar New Year was 갑진 (41st) on February 10th. From February 10th, 2024 to February 10th, 2025, there are 366 days (leap
+
+","1. **생일 날짜 계산**
+2025년 식목일은 양력 4월 5일입니다.
+이 날 ""모레가 내 생일""이라고 했으므로 생일은 **4월 7일**입니다.
+
+2. **25일 후 날짜 계산**
+4월은 30일까지 있으므로, 4월 7일에서 25일을 더하면 4월 32일이 되어 날짜가 다음 달로 넘어갑니다.
+따라서 생일로부터 25일 후는 2025년 **5월 2일**입니다.
+
+3. **2025년 5월 2일의 일진(60갑자) 계산**
+2025년 1월 1일의 일진은 경오(庚午)입니다.
+1월 1일부터 각 달의 일수를 더해 5월 1일의 일진을 구해보면:
+- 1월: 31일
+- 2월: 28일 (2025년은 평년)
+- 3월: 31일
+- 4월: 30일
+합계: 120일이 지나면 5월 1일이 됩니다. 120은 60의 배수이므로 5월 1일의 일진은 1월 1일과 같은 경오(庚午)일이 됩니다.
+따라서 그 다음 날인 5월 2일의 일진은 경오 다음인 **신미(辛未)**가 됩니다.
+
+Answer: 신미",신미,1,easy,stop
+time_ko_easy_0003,"2010년 제헌절에 ""오늘이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 16일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2010.8.2,"**Calculating a Date**
+
+Okay, so the user wants the date 16 days after the Korean Constitution Day in 2010. First, I need to confirm the date of Constitution Day, which I know is always July 17th. So, today's date in this scenario is July 17th, 2010.
+
+Now, I need to add 16 days to that. July 17th + 16 days gets me to July 33rd. Since July only has 31 days, I have to subtract that out: 33 - 31 = 2. This means we've crossed into the next month, August, and the date is August 2nd.
+
+Therefore, the year is 2010, the month is August, and the day is the 2nd.
+
+Finally, I need to format the output as YYYY.M.D, so that gives me 2010.8.2.
+
+Let me double-check this: July 17th... plus 1 day is the 18th... and so on... plus 14 days gets us to the 31st. Plus 15 days is August 1st, and plus 16 days is August 2nd. Perfect, that's correct.
+
+
+","1. 제헌절은 매년 양력 7월 17일입니다. 따라서 2010년 제헌절은 2010년 7월 17일입니다.
+2. 2010년 7월 17일로부터 16일 후의 날짜를 계산합니다.
+3. 7월은 31일까지 있으므로, 17 + 16 = 33에서 31을 빼면 2일이 됩니다.
+4. 따라서 달이 8월로 넘어가 8월 2일이 됩니다.
+
+Answer: 2010.8.2",2010.8.2,1,easy,stop
+time_ko_easy_0004,"1999년 개천절에 ""오늘이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 10일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",1999.10.13,"**My Analytical Process for Determining a Date**
+
+Okay, let's break this down. First, the **analysis**: My starting point is October 3rd, 1999 (the Korean National Foundation Day in 1999, specifically). What I need to find is the date that is exactly ten days after this ""base date,"" which I'm interpreting as a birthday.
+
+Now, for the **calculation**: I know October 3rd is the fixed date for National Foundation Day. So, 1999's Foundation Day is, as expected, October 3rd, 1999. The phrase ""ten days after that birthday"" translates directly into adding ten days to October 3rd, 1999. So, October 3rd + 10 days. Simple enough. 3 + 10 = 13, and since October has 31 days, October 13th is a perfectly valid date within that month. The year and month, obviously, remain the same.
+
+Next, the **formatting**: The prompt requests the answer in the 'YYYY.M.D' format. Therefore, I need to represent my answer as such.
+
+Finally, the **verification**: I’ll double-check my work. Start with October 3rd, 1999. Adding one day gives October 4th, then October 5th, and so on. Counting carefully, adding ten days brings me to October 13th. The calculation is correct. My result, properly formatted, is 1999.10.13.
+
+
+","1999년 개천절은 10월 3일입니다.
+따라서 생일인 1999년 10월 3일로부터 10일 후의 날짜를 계산하면 다음과 같습니다.
+
+10월 3일 + 10일 = 10월 13일
+
+결과적으로 그 날의 양력 날짜는 1999년 10월 13일입니다.
+
+Answer: 1999.10.13",1999.10.13,1,easy,stop
+time_ko_easy_0005,"1995년 성탄절에 ""낼모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 10일 후, 그 날의 일진(日辰), 즉 그 날에 해당하는 60갑자는 무엇인가? (예: 갑자)",임인,"**Calculating the Stem-Branch (干支) for a Future Date**
+
+Okay, so here's how my mind's working through this: We start with a date, Christmas 1995 (December 25th, 1995, to be precise). The problem wants me to figure out the ganzhi (干支 - stem-branch, or sexagenary cycle) of a date that is ten days after a birthday that is two days after that Christmas. That's our goal.
+
+First, I define Christmas 1995 as December 25th, 1995. Then, if someone said ""My birthday is the day after tomorrow,"" that means their birthday is December 27th, 1995. Ten days after that birthday puts us at January 6th, 1996.
+
+Now, the task is to find the ganzhi for January 6th, 1996. To make this easier, I'll establish a base date for the calculations. Finding the ganzhi for 1995's Christmas is a possible starting point. Or, I could use January 1st, 1996, as the base date, which could be helpful, because the calculation is straightforward. It is important to note that 1996 is a leap year (February 29th exists). 1995 is not a leap year.
+
+I know that January 1st, 1900, was Gap-sul (甲戌, the 11th in the ganzhi cycle). So, I am going to use that as my reference point to calculate.
+
+To find the ganzhi for January 1st, 1996, I need to figure out how many days there are between January 1st, 1900, and January 1st, 1996. That's 96 years. Each year has 365 days, but we have to account for leap years. Leap years occur every four years, except for years divisible by 100 but not by 400. So, we need to carefully count the leap years. There were 23 leap years between 1900 and 1996 (1904, 1908,...1992). But remember, 1900 was *not* a leap year!
+
+Therefore, the total number of days is (96 * 365) + 23 = 35063.
+
+Now, to find the ganzhi, I take the remainder when dividing the total number of days by 60 (the length of the sexagenary cycle): 35063 % 60 = 23.
+
+Since January 1st, 1900, was Gap-sul (甲戌, 11), I add 23 to that: 11 + 23 = 34. This means January 1st, 1996 is Jung-yu (丁酉). I have to do a quick check to make sure this is correct. I can look up January 1st, 1996, and it confirms the result to be Jung-yu (丁酉).
+
+Now I can calculate January 6th, 1996. January 6th is 5 days after January 1st.
+So, I add 5 to the ganzhi value of January 1st: 34 + 5 = 39.
+
+For the stem (천간), I find the remainder when dividing by 10: 39 % 10 = 9, which corresponds to Im (壬).
+For the branch (지지), I find the remainder when dividing by 12: 39 % 12 = 3, which corresponds to In (寅).
+
+So, January 6th, 1996, is Im-in (壬寅).
+
+To confirm my calculation, I can work backward to find the ganzhi of December 25th and December 27th: December 25th (Christmas) is 7 days before January 1st, 1996. So, 34-7 = 27 = Gyeong-in (庚寅). December 27th is 2 days after that, 27+2 = 29 = Im-jin (壬辰). Then, 10 days later is January 6th. Add 10 to Im-jin (29) to reach Im-in (39), again!
+
+A secondary confirmation shows a detailed day-by-day calculation through January 6th confirms my result: Im-in.
+
+","1. 1995년 성탄절은 1995년 12월 25일입니다.
+2. 성탄절의 '낼모레(2일 후)'는 1995년 12월 27일이므로 이 날이 생일입니다.
+3. 그 생일로부터 10일 후는 1995년 12월 27일 + 10일 = 1996년 1월 6일입니다. (12월은 31일까지 있습니다)
+4. 1996년 1월 1일의 일진은 정유(丁酉)일입니다.
+5. 1996년 1월 1일로부터 5일 후인 1월 6일의 일진을 계산하면 정유(丁酉) 다음으로 무술(戊戌), 기해(己亥), 경자(庚子), 신축(辛丑), 임인(壬寅)이 됩니다.
+
+Answer: 임인",임인,1,easy,stop
+time_ko_easy_0006,"2004년 한글날에 ""금일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 18일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2004.10.27,"**Calculating a Date**
+
+Okay, so the prompt states that ""today is my birthday"" relative to the 2004 Hangul Day.  Therefore, my base date is October 9th, 2004, since Hangul Day is always October 9th in the Gregorian calendar. My task is to determine the date 18 days after that.
+
+Let's break it down: 2004.10.09 plus 18 days. October has 31 days. Adding 9 and 18, I get 27.  So, it's 2004.10.27.
+
+Just to be absolutely sure, let's double-check. Adding one day to October 9th gives October 10th. And adding 18 days confirms that we arrive at October 27th.
+
+The required output format is YYYY.M.D.  Therefore:
+
+Answer: 2004.10.27
+
+
+","2004년 한글날은 양력 10월 9일입니다.
+기준일인 2004년 10월 9일로부터 18일 후의 날짜를 계산하면 다음과 같습니다.
+9일 + 18일 = 27일
+따라서 18일 후의 날짜는 10월 27일입니다.
+
+Answer: 2004.10.27",2004.10.27,1,easy,stop
+time_ko_easy_0007,"2007년 현충일에 ""내일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 11일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2007.6.18,"**Calculating the Date**
+
+Okay, so the user needs the Gregorian date eleven days after someone's birthday, and that person said ""Tomorrow is my birthday"" on Memorial Day in 2007. Let's break this down systematically.
+
+First, I need to pinpoint Memorial Day in 2007, which is, of course, June 6th in South Korea. The user mentioned this, but it's always good to confirm. So, the statement ""Tomorrow is my birthday"" was made on June 6th. Therefore, the birthday itself must have been on June 7, 2007, the next day.
+
+Now the user is asking for the date eleven days *after* the birthday, that is, eleven days after June 7th. A quick calculation: 7 + 11 = 18. Therefore, the requested date is June 18, 2007.
+
+Finally, I need to present the answer in the 'YYYY.M.D' format. So, the final output should be '2007.6.18'.
+
+Let me just double-check to make sure everything lines up. Statement made on Memorial Day (June 6th, 2007). Birthday the next day (June 7th, 2007). Eleven days after the birthday gives us June 18th, 2007. And the format is correct: '2007.6.18'. Great.
+
+
+","1. 2007년 현충일은 양력 2007년 6월 6일입니다.
+2. ""내일이 내 생일이야""라고 했으므로, 생일은 하루 뒤인 2007년 6월 7일입니다.
+3. 생일(6월 7일)로부터 11일 후의 날짜를 계산하면, 6월 7일 + 11일 = 6월 18일입니다.
+4. 따라서 그 날의 양력 날짜는 2007년 6월 18일입니다.
+
+Answer: 2007.6.18",2007.6.18,1,easy,stop
+time_ko_easy_0008,"2020년 현충일에 ""금일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 22일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2020.6.28,"**My Reasoning Process: Calculating a Date**
+
+Okay, let's break this down. First, the core of the question: I'm told that someone's birthday was on the 2020 현충일 (Memorial Day). The person then says ""today is my birthday."" The task then is to calculate the date 22 days after that birthday, presenting it in the YYYY.M.D format.
+
+So, step one is to nail down the precise date of 현충일 in 2020. I already know 현충일 is always June 6th, and from the context it is understood that the event in question happened in 2020, so the date is 2020 June 6.
+
+Now, simple addition. The question asks for the date 22 days *after* June 6th, 2020. I need to calculate 6 + 22, which is 28. Since June has 30 days, the calculation is straightforward. Therefore, 22 days after June 6th, 2020, is June 28th, 2020.
+
+Finally, I just need to format the answer according to the specified YYYY.M.D output format. This results in 2020.6.28. And I'm done.
+
+
+","2020년 현충일은 양력 6월 6일입니다.
+이 날로부터 22일 후의 날짜를 계산하면 다음과 같습니다.
+6월 6일 + 22일 = 6월 28일.
+6월은 30일까지 있으므로 달이 넘어가지 않고 6월 28일이 됩니다.
+
+Answer: 2020.6.28",2020.6.28,1,easy,stop
+time_ko_easy_0009,"1998년 3·1절에 ""낼모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 30일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",1998.4.2,"**My Calculation Process: A Date Derivation**
+
+Okay, let's break this down systematically. My initial task is pretty clear: I need to calculate a specific date. The base date is March 1st, 1998 (that's the 3.1절). My goal is to determine a date 30 days after a calculated birthday. The birthday itself is defined as ""낼모레"" which translates to ""two days after"" the base date. The answer needs to be formatted as YYYY.M.D.
+
+First, I calculate the birthday. The base date is March 1st, 1998, and ""낼모레"" means two days later. So, adding two days to March 1st yields March 3rd, 1998.
+
+Now, to the core calculation. I need to find the date 30 days after the calculated birthday (March 3rd, 1998). I'll add 30 days to March 3rd. Since March has 31 days, I'll essentially go past the end of March. Adding 30 days to March 3rd gives me March 33rd. Since March only has 31 days, I subtract 31 days from March 33rd to find it to be April 2nd. The year remains unchanged. Thus the target date is April 2nd, 1998.
+
+I'll double-check this: Starting from March 1st (3.1절) and taking the birthday to be March 3rd (3.3). So, to get 30 days after March 3rd, I have 3.3 + 28 days to get to March 31, and then another 2 days for April 2nd.
+
+Finally, the answer is clearly 1998.4.2 in the required format. The job's done!
+
+
+","1. 기준일: 1998년 3·1절은 양력 1998년 3월 1일입니다.
+2. 생일 계산: ""낼모레""는 2일 후를 의미하므로, 생일은 1998년 3월 1일에서 2일을 더한 1998년 3월 3일입니다.
+3. 30일 후 날짜 계산: 1998년 3월 3일에서 30일을 더합니다.
+   - 3월은 31일까지 있습니다.
+   - 3일 + 30일 = 33일
+   - 33일 - 31일(3월의 총 일수) = 2일
+   - 따라서 달이 넘어가 4월 2일이 됩니다.
+
+Answer: 1998.4.2",1998.4.2,1,easy,stop
+time_ko_easy_0010,"2018년 성탄절에 ""모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 30일 후, 그 날의 일진(日辰), 즉 그 날에 해당하는 60갑자는 무엇인가? (예: 갑자)",계해,"**My Analysis of the Calendar and Sexagenary Cycle**
+
+Okay, let's break this down systematically. The problem hinges on correctly calculating a date and then determining its corresponding sexagenary cycle (""iljin"" or day-branch in Korean).
+
+1.  First, the base date: 2018 Christmas is December 25th, so ""two days after Christmas"" is December 27th, which I will call the birthday.
+
+2.  Next, adding 30 days to the birthday: December 27th + 30 days.  December has 31 days, so from the 27th to the 31st is 4 days.  30 days - 4 days = 26 days remaining in January. So the final date is January 26th, 2019.
+
+3.  Now, the main challenge: Determining the *iljin* of January 26th, 2019. I'll need to use my knowledge of the sexagenary cycle. I know that either I can use a known base date to start. 2000 January 1st was Mu-oh (戊午) and this is easily accessible.
+
+4.  Calculate the days from 2000-01-01 to 2019-01-26.
+    *   2000-2018 is 19 years:
+        *   Leap years: 2000, 2004, 2008, 2012, 2016 (5 leap years).
+        *   Non-leap years: 14.
+        *   Total days: (14 * 365) + (5 * 366) = 5110 + 1830 = 6940 days.
+
+    *   2019-01-01 to 2019-01-26 is 25 days.
+    *   Total days from 2000-01-01 is 6940 + 25 = 6965 days.
+
+    *   Now, I can calculate the remainder when divided by 60 for sexagenary: 6965 % 60 = 5.
+    *   Mu-oh (55) + 5 = 60, so that means the iljin is Gye-hae (癸亥).
+
+5.  Quick check: I need to verify that I'm on track here:
+    *   The calculations must be done correctly
+    *   Let's verify by using the method of Julian Day Number.
+    *   First, the reference date, January 1, 2000, and calculate the amount of days to reach January 26, 2019. I am using the Julian Day Number, JD.
+        *   (JD + 49) % 60 to derive the iljin.
+    *   The Julian Date for December 31 2018 is 2458484
+    *   For January 26, 2019, calculate JD: 365\*2019 + 2019/4 - 2019/100 + 2019/400 + (153\*14+2)/5 + 26 - 32045...
+    *   Or, use the simpler approach: The year 1900 January 1 was Gap-sul (甲戌, 11).
+    *   Calculate number of days:
+    *   Years 1900 to 2018: 119 years, 29 leap years (1904-2016).
+    *   Days: (119 * 365) + 29 = 43435 + 29 = 43464.
+    *   Days 2019-01-01 to 2019-01-26 is 25 days.
+    *   Total days: 43464 + 25 = 43489.
+    *   43489 % 60 = 49.
+    *   Gap-sul (11) + 49 = 60 = Gye-hae (癸亥).
+
+    *   Further Calculation check.
+        *   1900.01.01 Gap-sul (1
+
+","1. **2018년 성탄절 날짜 확인**
+2018년 성탄절은 2018년 12월 25일입니다.
+
+2. **생일 날짜 계산**
+2018년 12월 25일의 '모레'는 2018년 12월 27일입니다. 따라서 생일은 2018년 12월 27일입니다.
+
+3. **생일로부터 30일 후 날짜 계산**
+12월은 31일까지 있습니다. 
+2018년 12월 27일에서 남은 12월의 일수는 4일입니다(12월 31일까지).
+30일 중 4일을 빼면 26일이 남으므로, 30일 후의 날짜는 **2019년 1월 26일**입니다.
+
+4. **일진(60갑자) 계산**
+2019년 1월 1일의 일진은 무술(戊戌)일입니다.
+1월 1일로부터 25일이 지난 1월 26일의 일진을 구하기 위해, 무술(35번째 간지)에 25를 더하면 60이 됩니다.
+60갑자의 60번째 간지는 계해(癸亥)입니다.
+따라서 2019년 1월 26일의 일진은 계해입니다.
+
+Answer: 계해",계해,1,easy,stop
+time_ko_easy_0011,"2010년 식목일에 ""오늘이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 19일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2010.4.24,"**My Analysis of the Date Calculation**
+
+Okay, let's break this down systematically. First, I'm given a starting date: 2010's Arbor Day. Then, I need to add 19 days to that date. Finally, the result needs to be formatted in the ""YYYY.M.D"" format, which is straightforward.
+
+Next, I need to know what day Arbor Day falls on in 2010.  I know Arbor Day is always April 5th in the Gregorian calendar. So, that's my starting point: April 5, 2010.
+
+Now, for the addition. I take April 5th, 2010, and simply add 19 days. That's a direct calculation, and it lands me on April 24th, 2010. I double-check this: April 5th + 19 days does indeed equal April 24th.
+
+Therefore, the date 19 days after 2010's Arbor Day is April 24th, 2010.
+
+Finally, I just need to format the answer according to the specifications: ""2010.4.24."" I'll present this in a clear, step-by-step format, with the final answer explicitly stated.
+
+
+","1. 기준일 확인: 식목일은 매년 양력 4월 5일입니다. 따라서 기준일은 2010년 4월 5일입니다.
+2. 날짜 계산: 4월 5일에 19일을 더합니다.
+3. 5 + 19 = 24이므로, 19일 후는 4월 24일이 됩니다.
+4. 결과 날짜는 2010년 4월 24일입니다.
+
+Answer: 2010.4.24",2010.4.24,1,easy,stop
+time_ko_easy_0012,"2015년 새해 첫날에 ""금일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 13일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2015.1.14,"**My Analysis of the Date Problem**
+
+Okay, let's break this down. The core of this problem seems straightforward, but I need to make sure I don't miss any subtleties.
+
+First, I've got my reference point: January 1st, 2015, which is the start date. Someone claims today, January 1st, is their birthday. The question is asking for the date that's thirteen days after this birthday. Pretty simple so far.
+
+Now for the calculation itself. My starting point is 2015.01.01. I need to add 13 days to that. So, 01 + 13 = 14. This tells me the date will be January 14th of that same year. Nothing complex.
+
+To be extra certain, I'll quickly check my work. If January 1st is day one, then adding one day results in January 2nd. Adding thirteen days means starting at 1, and adding 13 = 14. This confirms my answer: January 14th, 2015.
+
+Finally, I need to make sure my answer is in the correct format. The instructions specify a YYYY.M.D format. So, 2015.1.14 is the correct output format.
+
+My answer: 2015.1.14
+
+
+","기준일은 2015년 새해 첫날이므로 2015년 1월 1일입니다.
+이 날로부터 13일 후를 계산하면 다음과 같습니다.
+1일 + 13일 = 14일
+따라서 2015년 1월 14일이 됩니다.
+
+Answer: 2015.1.14",2015.1.14,1,easy,stop
+time_ko_easy_0013,"2024년 어린이날에 ""금일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 2일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2024.5.7,"**Calculating a Date**
+
+Okay, so I need to figure out a specific date based on some information related to Children's Day. First, I need to confirm the date of Children's Day in 2024. That's easy; I know it's always on May 5th. Now, the prompt states that someone said ""Today is my birthday"" on May 5th, 2024. Therefore, their birthday is May 5th, 2024. The task requires calculating a date two days after this birthday. So, I just need to add two days to May 5th. Since May has 31 days and 2024 is a leap year but we are in May, the calculation is straightforward. 5 plus 2 is 7, so the date is May 7th, 2024. Finally, I should present the answer in the correct format, which is '2024.5.7'.
+
+
+","2024년 어린이날은 5월 5일입니다.
+생일이 5월 5일이고, 그로부터 2일 후의 날짜를 계산하면 5월 7일이 됩니다.
+따라서 구하는 양력 날짜는 2024년 5월 7일입니다.
+
+Answer: 2024.5.7",2024.5.7,1,easy,stop
+time_ko_easy_0014,"2014년 3·1절에 ""낼모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 14일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2014.3.17,"**Calculating a Date 14 Days After a Given Date**
+
+Okay, so the 2014 삼일절 (March 1st) is straightforward: it's March 1st, 2014. Now, the prompt says ""the day after tomorrow is my birthday,"" implying a birthday on March 3rd. We need to find the date 14 days after the birthday, March 3rd, 2014.
+
+Simple enough; we add the days: 3 + 14 = 17. Therefore, it's March 17th, 2014. Let me double-check: if my birthday is the 3rd, adding 14 days gets us to the 17th.
+
+Alright, the confirmation looks good. It's a non-leap year so 31 days in March is irrelevant and the 17th falls within that month. The final answer, formatted as requested (YYYY.M.D) is 2014.3.17.
+
+
+","1. 2014년 3·1절은 양력 2014년 3월 1일입니다.
+2. ""낼모레가 내 생일""이라고 했으므로, 생일은 3월 1일에서 2일 후인 2014년 3월 3일입니다.
+3. 생일로부터 14일 후의 날짜를 계산하면, 3월 3일에 14일을 더하여 3월 17일이 됩니다.
+4. 따라서 구하는 양력 날짜는 2014년 3월 17일입니다.
+
+Answer: 2014.3.17",2014.3.17,1,easy,stop
+time_ko_easy_0015,"2003년 광복절에 ""이튿날이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 28일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2003.9.13,"**Calculating a Date 28 Days After a Specific Birthday**
+
+Okay, so the prompt tells me someone was told their birthday was the day after Korean Liberation Day in 2003. Let's break this down. Liberation Day is always August 15th. Therefore, the birthday in question must be August 16th, 2003.
+
+Now, I need to figure out what date is 28 days after that.  I'll start with the base date: August 16th, 2003. Adding 28 days gets me to August 44th. Since August only has 31 days, I have to subtract that to see how far into September we've gone. 44 - 31 = 13.  So, we are at September 13th. The year remains 2003.
+
+Let me just double-check my work. Starting at August 16th and adding 15 days gets me to August 31st. I have 13 days remaining in my calculation (28 days total - 15 days accounted for = 13 remaining), and that takes me into September. The final date is definitely September 13th, 2003.
+
+
+","1. 2003년 광복절은 양력 2003년 8월 15일입니다.
+2. ""이튿날이 내 생일이야""라고 했으므로 생일은 하루 뒤인 2003년 8월 16일입니다.
+3. 2003년 8월 16일로부터 28일 후의 날짜를 계산합니다.
+   - 8월은 31일까지 있습니다.
+   - 16일 + 28일 = 44일
+   - 44일 - 31일(8월) = 13일
+   - 따라서 달은 9월로 넘어가고, 날짜는 13일이 됩니다.
+
+Answer: 2003.9.13",2003.9.13,1,easy,stop
+time_ko_easy_0016,"1993년 새해 첫날에 ""익일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 17일 후, 그 날의 일진(日辰), 즉 그 날에 해당하는 60갑자는 무엇인가? (예: 갑자)",경자,"**Delving into the 1993 Ephemeris**
+
+Okay, so I'm focusing on calculating the *iljin* (daily stem-branch combination, or 60-year cycle) for specific dates in 1993. The primary target is January 19th, precisely seventeen days after my birthday, which I’ve established is January 2nd.
+
+First, I need a reliable starting point. I know January 1st, 1993, was a Friday. To ascertain the *iljin* for January 19th, I need to find the *iljin* of January 1st and then add the 18 days between the two dates. I already know that the *iljin* on January 1st, 2000 was *Muo*.
+
+I can work backward from this. Between January 1st, 1993, and December 31st, 1999, are seven years, plus a leap year, adding up to 2556 days. 2556 mod 60 gives me 36. Backtracking from *Muo* (55), minus 36, gets me *Im-O* (19). So, January 1st, 1993, is *Im-O*. From here, I can find that January 1st plus 18 days is the same as counting 18 days ahead in the 60-year cycle, starting from Im-O (19). 19 + 18 = 37. *Gyeong-Ja* (37). This is my first method.
+
+Alternatively, I could try another approach. January 1st, 1900, was *Gap-Sul* (11). From 1900 to 1993, there are 93 years. Among these, there are 23 leap years, making a total of 33,968 days, which modulo 60 gives me 8. This leads me to *Im-O* again (11 + 8 = 19). And using this as the starting point, I confirm again that January 19, 1993, is *Gyeong-Ja* (37).
+
+Then, using the basic cycles:
+
+1.  Gap-Ja
+2.  ...
+3.  ...
+4.  ...
+5.  ...
+6.  ...
+7.  ...
+8.  ...
+9.  ...
+10. ...
+11. Gap-Sul
+12. ...
+13. ...
+14. ...
+15. ...
+16. ...
+17. ...
+18. ...
+19. Gyeong-Ja (37)
+
+So the 17 days after my birthday falls on the 19th. Which is indeed *Gyeong-Ja*. I confirm my calculations by counting in 60-year cycle, and all signs point to January 19th, 1993, being *Gyeong-Ja*. That's the answer.
+
+
+","1993년 새해 첫날은 1월 1일입니다.
+
+1. ""익일이 내 생일이야""라고 하였으므로, 생일은 1월 1일의 다음 날인 1월 2일입니다.
+2. 생일(1월 2일)로부터 17일 후의 날짜를 계산하면 1월 2일 + 17일 = 1월 19일이 됩니다.
+3. 1993년 1월 19일의 일진을 계산합니다.
+   - 1993년 1월 1일은 임오(壬午)일입니다.
+   - 1월 19일은 1월 1일로부터 18일이 지난 날입니다.
+   - 60갑자 순서에서 임오(19번째)에 18을 더하면 37번째가 됩니다.
+   - 60갑자 중 37번째는 경자(庚子)입니다.
+
+Answer: 경자",경자,1,easy,stop
+time_ko_easy_0017,"2017년 현충일에 ""명일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 2일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2017.6.9,"**Calculating a Date**
+
+Okay, let's break this down. First, I need to pinpoint the date of 현충일 (Hyeonchung-il, Memorial Day) in 2017. Ah, right, it's always on June 6th in the Gregorian calendar. So, 2017's 현충일 would be June 6, 2017.
+
+Now, someone mentions that ""명일이 내 생일이야"" – ""Myeong-il-i nae saeng-il-iya"". I see, '명일' (Myeong-il) means ""tomorrow."" If 현충일 is June 6th, then tomorrow would be June 7th. So, that person's birthday is June 7th, 2017.
+
+Next, I need to figure out the date two days *after* that birthday. Easy enough: June 7th plus two days. That gives me June 9th, 2017.
+
+Finally, I need to format the result to match the 'YYYY.M.D' format. Therefore, the final answer is 2017.6.9. Done.
+
+
+","1. 2017년 현충일 확인: 현충일은 매년 양력 6월 6일입니다. 따라서 기준일은 2017년 6월 6일입니다.
+2. 생일 확인: ""명일(내일)""이 생일이라고 했으므로, 생일은 현충일의 다음 날인 2017년 6월 7일입니다.
+3. 생일로부터 2일 후 계산: 2017년 6월 7일에서 2일 후는 2017년 6월 9일입니다.
+
+Answer: 2017.6.9",2017.6.9,1,easy,stop
+time_ko_easy_0018,"2018년 현충일에 ""금일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 15일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2018.6.21,"**Calculating a Date 15 Days After 현충일 (Memorial Day)**
+
+Okay, let's break this down systematically. I see that the Korean 현충일 (Memorial Day) in 2018 fell on June 6th. So, today, being 현충일, my ""birthday"" for this calculation is June 6th, 2018. Now, I need to figure out the date that's 15 days after that.
+
+The math is simple: June 6th + 15 days. That gives us 6 + 15 = 21. Since June has 30 days, June 21st is a perfectly valid date. The final format needed is 'YYYY.M.D', so the answer is **2018.6.21**. A quick check confirms no calendar irregularities with those numbers and it looks good.
+
+
+","1. 2018년 현충일은 양력 6월 6일입니다.
+2. 따라서 생일은 2018년 6월 6일이 됩니다.
+3. 이 날로부터 15일 후의 날짜를 계산하면, 6월 6일 + 15일 = 6월 21일입니다.
+4. 연도를 포함하여 지정된 형식으로 변환하면 2018.6.21이 됩니다.
+
+Answer: 2018.6.21",2018.6.21,1,easy,stop
+time_ko_easy_0019,"2017년 현충일에 ""내일모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 21일 후, 그 날의 일진(日辰), 즉 그 날에 해당하는 60갑자는 무엇인가? (예: 갑자)",정해,"**Analyzing a Calendrical Calculation**
+
+Okay, let's break this down step-by-step. First, I have the date for 현충일 (Memorial Day) of 2017: June 6th. Then, my birthday is ""내일모레"" (the day after tomorrow), and since today is June 6th, that makes my birthday June 8th, 2017. The next part involves calculating the date 21 days after my birthday: June 8th + 21 days equals June 29th, 2017. My goal is to determine the ""일진 (Iljin)"", the sexagenary cycle day, for that date (June 29th, 2017).
+
+I know that 2017 starts with 무자(戊子) as January 1st. I need to determine how many days have passed between January 1st and June 29th. Calculating this, January has 31 days, February has 28 (it's not a leap year), March has 31, April has 30, May has 31, and June has 29. Summing these, I get a total of 180 days. Subtracting one since January 1st, is the first day, the difference is 179 days. Since the cycle repeats every 60 days, let's take modulo 60.
+
+Now, let's figure out what the 일진 is 179 days after the start. Doing the calculation, 179 modulo 60 is 59. This means 59 days after 무자. I'll need to reference the sexagenary cycle. Since the 간지(ganji) cycle number for 무자 is 25 and we want to determine 59 days after, that's just a matter of adding, 25 + 59 = 84. Then, since this is in the 60-day cycle, take the modulo to determine which day we are on. 84 modulo 60 is 24. Day number 24 on the 간지(ganji) cycle. Looking at the list, I have 정해 (丁亥).
+
+Okay, let's check one more time. To be certain. I know my birthday, June 8th, 2017. That's our anchor point for this calculation. Let's do a sanity check to verify: The 일진 is 정해.
+
+Therefore, the final answer is **정해**.
+
+
+","1. **기준일 파악**
+2017년 현충일은 6월 6일입니다.
+""내일모레가 내 생일이야""라고 했으므로 생일은 6월 6일의 이틀 뒤인 **2017년 6월 8일**입니다.
+
+2. **목표 날짜 계산**
+생일인 6월 8일로부터 21일 후의 날짜를 계산합니다.
+6월 8일 + 21일 = **2017년 6월 29일**입니다. (6월은 30일까지 있음)
+
+3. **일진(60갑자) 계산**
+알려진 기준일인 2024년 1월 1일은 '갑자(甲子)'일입니다.
+2017년 1월 1일부터 2024년 1월 1일까지는 7년(윤년인 2020년 포함)의 차이가 나며, 총 일수 차이는 365 × 6 + 366 × 1 = 2556일입니다.
+2556 % 60 = 36이므로, 갑자(1 또는 61)에서 36일 전으로 거슬러 올라가면 2017년 1월 1일은 **무자(戊子, 25번째 간지)**일이 됩니다.
+
+2017년 1월 1일로부터 6월 29일까지의 경과 일수를 구합니다.
+- 1월(31일) + 2월(28일) + 3월(31일) + 4월(30일) + 5월(31일) + 6월 28일 경과 = 179일
+- 179 % 60 = 59
+
+무자(戊子)일에서 59일 후(또는 1일 전)의 일진을 찾으면 됩니다. 
+25 + 59 = 84이며, 84 - 60 = 24번째 간지가 됩니다.
+천간의 4번째는 '정(丁)', 지지의 12번째는 '해(亥)'이므로 24번째 간지는 **정해(丁亥)**입니다.
+
+Answer: 정해",정해,1,easy,stop
+time_ko_easy_0020,"2019년 개천절에 ""명일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 20일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2019.10.24,"**My Analytical Process for the Birthday Calculation**
+
+Okay, let's break this down. First, I'm given an event: hearing ""Tomorrow is my birthday"" on Gaecheonjeol in 2019. The task is to calculate the date 20 days after that birthday, expressed in a YYYY.M.D format – straightforward.
+
+Now, I'll establish the key dates. Gaecheonjeol, the National Foundation Day, is always October 3rd, so October 3, 2019, becomes my base date. The statement ""Tomorrow is my birthday"" is heard on this day. Thus, the birthday must be October 4, 2019, the very next day.
+
+Next, the calculation. I need to add 20 days to October 4th. October has 31 days. Adding 20 to the 4th yields the 24th of October.
+
+Finally, I format the result: 2019.10.24.
+
+As a final check, let's revisit each element and confirm its validity in reverse. *2019 Gaecheonjeol* is October 3rd, and the next day is October 4th. Twenty days after October 4th is indeed October 24th, 2019. Everything adds up perfectly. Therefore, my final result is sound.
+
+
+","1. 2019년 개천절은 양력 2019년 10월 3일입니다.
+2. ""명일(내일)이 내 생일이야""라고 했으므로, 생일은 하루 뒤인 2019년 10월 4일입니다.
+3. 2019년 10월 4일로부터 20일 후의 날짜를 계산합니다.
+   - 4일 + 20일 = 24일
+   - 10월은 31일까지 있으므로 달이 넘어가지 않고 10월 24일이 됩니다.
+따라서 그 날의 양력 날짜는 2019년 10월 24일입니다.
+
+Answer: 2019.10.24",2019.10.24,1,easy,stop
+time_ko_easy_0021,"2020년 한글날에 ""내일모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 4일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2020.10.15,"**Calculating a Future Date**
+
+Okay, let's break this down systematically. First, I need a clear baseline: today is October 9th, 2020 – that's the Korean Hangul Day, which is easy to remember. Next, the clue ""the day after tomorrow is my birthday"" gives me a solid starting point. Today being the 9th, tomorrow is the 10th, and the day after tomorrow, the 11th, must be the birthday. So, the birthday is October 11th, 2020. Now, the goal is to find a date four days after that.  Simple addition: October 11th plus four days equals October 15th, 2020.  The instructions specify a YYYY.M.D format. Therefore, the final answer is 2020.10.15.  Just to double-check my logic: 10/9 + 2 days = 10/11 (birthday), and 10/11 + 4 days = 10/15 (target). Looks good.
+
+
+","2020년 한글날은 양력 10월 9일입니다.
+이 날로부터 ""내일모레""인 생일은 10월 9일에 2일을 더한 10월 11일이 됩니다.
+그 생일로부터 4일 후의 날짜는 10월 11일에 4일을 더하여 10월 15일이 됩니다.
+
+Answer: 2020.10.15",2020.10.15,1,easy,stop
+time_ko_easy_0022,"2013년 어린이날에 ""다음날이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 17일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2013.5.23,"**My Calculation of a Date**
+
+Okay, let's break this down methodically. First, we're given that the date is May 5th, 2013, which is Children's Day in that year. Now, the statement ""Tomorrow is my birthday"" clearly indicates that the birthday is the day after Children's Day, meaning May 6th, 2013.
+
+The question then asks for the date 17 days *after* that birthday. Simple addition is required here: May 6th plus 17 days equals May 23rd, 2013.
+
+To confirm, I can walk through this one last time: Children's Day is 2013.5.5, the birthday is 2013.5.6, and 17 days after the birthday is indeed 5.6 + 17, which yields 5.23.
+
+Therefore, formatting this final answer as requested in YYYY.M.D format, the date is 2013.5.23.
+
+
+","2013년 어린이날은 5월 5일입니다.
+이 날의 다음날이 생일이므로, 생일은 2013년 5월 6일입니다.
+생일(5월 6일)로부터 17일 후의 날짜를 계산하면 5월 6일 + 17일 = 5월 23일이 됩니다.
+
+Answer: 2013.5.23",2013.5.23,1,easy,stop
+time_ko_easy_0023,"2001년 식목일에 ""오늘이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 28일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2001.5.3,"**My Calculation of a Date 28 Days After Korean Arbor Day (2001)**
+
+Okay, here's how I'd approach this. First, the core task: determine the Gregorian calendar date 28 days after Korean Arbor Day, which is set in 2001.
+
+1.  **Analysis**: I need to calculate a date. My starting point is the 2001 Arbor Day, and the target is 28 days later.
+
+2.  **Establish the Base Date**: Korean Arbor Day is always April 5th in the Gregorian calendar. Even if it is no longer a holiday, the date stays the same. So my starting date is April 5th, 2001.
+
+3.  **Perform the Date Arithmetic**: Now, I need to add 28 days to April 5th, 2001. Since April has 30 days, I just need to figure out where the addition pushes us to.
+    *   April 5th + 28 days.
+    *   5 + 28 = 33 days.
+    *   33 - 30 (days in April) = 3 days remaining.
+    *   So, that takes me to May 3rd, 2001.
+
+4.  **Confirm the Result**: The result of this calculation is May 3rd, 2001. My output format, as requested, is YYYY.M.D. So, that's 2001.5.3.
+
+5.  **Validation**: Let me quickly run some validation checks to make sure I did not make any calculation errors.
+    *   April 5th + 25 days = April 30th
+    *   April 5th + 26 days = May 1st
+    *   April 5th + 27 days = May 2nd
+    *   April 5th + 28 days = May 3rd
+    *   That matches the result.
+
+6.  **Final Response**: My detailed response would describe each step clearly, concluding with: **Answer: 2001.5.3**
+
+
+","기준일인 2001년 식목일은 양력 4월 5일입니다.
+이 날짜로부터 28일 후의 날짜를 계산해보겠습니다.
+
+1. 4월 5일에 28일을 더하면 4월 33일이 됩니다.
+2. 4월은 30일까지 있으므로, 33일에서 30일을 빼면 다음 달인 5월 3일이 됩니다.
+3. 따라서 2001년 4월 5일의 28일 후는 2001년 5월 3일입니다.
+
+Answer: 2001.5.3",2001.5.3,1,easy,stop
+time_ko_easy_0024,"2006년 성탄절에 ""오늘이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 6일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2006.12.31,"**Calculating a Date**
+
+Okay, so it's simple date arithmetic, no need for anything complex. The problem states that Christmas 2006 was December 25th of that year. My task is to calculate the date six days after.
+
+Alright, straight forward. 12/25 plus 6 days... let's see, 25 + 6 = 31. So, that's December 31st, 2006.
+
+Just to be absolutely sure, a quick mental check: December 25th + 1 day is 26th, then 27th, 28th, 29th, 30th, and finally, 31st. Yup, it checks out.
+
+Finally, expressing it in the required format of 'YYYY.M.D', the answer is 2006.12.31. Done.
+
+
+","1. 2006년 성탄절(크리스마스)은 양력 2006년 12월 25일입니다.
+2. 이 날로부터 6일 후의 날짜를 계산합니다.
+   - 12월 25일 + 6일 = 12월 31일
+3. 따라서 6일 후의 양력 날짜는 2006년 12월 31일입니다.
+
+Answer: 2006.12.31",2006.12.31,1,easy,stop
+time_ko_easy_0025,"2013년 어린이날에 ""이튿날이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 21일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2013.5.27,"**Calculating a Date 21 Days After a Specific Birthday**
+
+Okay, so the text gives me a scenario. It starts with the assumption that Children's Day in 2013 was May 5th.  Then, it states someone's birthday was ""the next day"" (이튿날). Therefore, the birthday must be May 6th, 2013.  I need to figure out the date that is 21 days *after* that birthday.
+
+Let's break it down:  We're starting with May 6th. I know May has 31 days. So, adding 21 days to the 6th of May.
+
+6 + 21 = 27.
+
+That's it!  The result is May 27th, 2013.
+
+Therefore, the final answer is 2013.5.27.
+
+Now, let me just quickly verify: Children's Day was May 5th. Birthday is the next day, May 6th. 6 + 21 does indeed equal 27, and that falls within May. So 2013.5.27 is the correct format.
+
+
+","2013년 어린이날은 양력으로 5월 5일입니다.
+이튿날은 다음 날을 의미하므로, 생일은 5월 6일입니다.
+생일인 5월 6일로부터 21일 후의 날짜를 계산하면 다음과 같습니다.
+6 + 21 = 27이므로, 같은 달 27일이 됩니다.
+따라서 날짜는 2013년 5월 27일입니다.
+
+Answer: 2013.5.27",2013.5.27,1,easy,stop
+time_ko_easy_0026,"2020년 광복절에 ""오늘이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 5일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2020.8.20,"**My Calculation for a Date Five Days After a Specific Date**
+
+Okay, let's break this down systematically. First, I need to establish a base date – the starting point for my calculation. In this case, I'm working with the 2020 광복절 (Liberation Day), which I know is always August 15th. So, my 기준일 (base date), or ""today"" as far as this calculation is concerned, is August 15th, 2020.
+
+Now, the objective is straightforward: to find the date exactly five days *after* this base date. The calculation is simply 2020.8.15 + 5 days.
+
+Adding five days to August 15th is a simple arithmetic problem. 15 plus 5 equals 20. Therefore, 2020.8.15 + 5 days results in August 20th.
+
+Finally, I need to format the answer in the desired ""YYYY.M.D"" format. So, August 20th, 2020 becomes 2020.8.20.
+
+To ensure accuracy, let's verify. Starting from the base date of 2020.8.15 and adding a day at a time, we have:
+
+*   1 day after: 2020.8.16
+*   2 days after: 2020.8.17
+*   3 days after: 2020.8.18
+*   4 days after: 2020.8.19
+*   5 days after: 2020.8.20
+
+The result is confirmed, 2020.8.20 is the correct date.
+
+
+","2020년 광복절은 8월 15일입니다. 
+따라서 생일은 2020년 8월 15일이 됩니다.
+이 날로부터 5일 후의 날짜를 계산하면 다음과 같습니다.
+8월 15일 + 5일 = 8월 20일
+
+Answer: 2020.8.20",2020.8.20,1,easy,stop
+time_ko_easy_0027,"1995년 개천절에 ""금일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 8일 후, 그 날의 일진(日辰), 즉 그 날에 해당하는 60갑자는 무엇인가? (예: 갑자)",을해,"**My Thought Process: Calculating the Heavenly Stem and Earthly Branch**
+
+Okay, so I need to figure out the ganzhi (60-year cycle) for October 11, 1995, given that the date is 8 days after 1995's Gaecheonjeol.  Let's start with the basics: October 3 + 8 days = October 11, 1995.
+
+Now, I need a reference point. I'll use January 1, 2024, which is a 甲子 (gapja) day. My strategy will be to calculate the difference in days between the target date and the reference, then use the remainder after division by 60 to find the corresponding ganzhi.
+
+So, from October 11, 1995, to December 31, 1995, that's: October (31 - 11 = 20), November (30), December (31), totaling 81 days. From 1996 to 2023, that's 28 years, or 28 * 365 = 10220 days.  And we have 7 leap years (1996, 2000, 2004, 2008, 2012, 2016, 2020), adding 7 days, for a total of 10227 days.  Finally, one day to include January 1, 2024.
+
+The total difference is then 81 + 10227 + 1 = 10309 days. Dividing by 60 gives me 10309 % 60 = 49.
+
+Since January 1, 2024 is 甲子 (0), October 11, 1995, is 49 days *before* this.  Or, using the other side, 60 - 49 = 11 days *after*甲子.
+甲子 (0) + 11 = 11.
+Then using modulo for the Heavenly Stem and Earthly Branch:
+
+*   Heavenly Stem: 11 % 10 = 1 -> 乙 (eul)
+*   Earthly Branch: 11 % 12 = 11 -> 亥 (hae)
+
+Therefore, the date should be 乙亥 (eulhae).
+
+Let's double-check. I recall 1995 was a 乙亥 year, but I'll use another point to verify this method. Let's look at the difference from January 1, 1995. This is where I have to be careful with my math. I need to calculate the difference from October 11, 1995, to January 1, 1995, to then compare this to the result of our prior calculation. This will act as our ""control"".
+
+So October 11, back to January 1 is:  January (31), February (28), March (31), April (30), May (31), June (30), July (31), August (31), September (30), October (10), totaling 283 days. 283 % 60 = 43.
+
+So it should be 乙亥.  43 days earlier?  乙亥 - 43 days is -32 = 28 days or 임진일. This seems like a reasonable result!
+
+**Alternatively**, use the reference point of January 1, 1999 (I remember something about the significance of this date). This is a known day of 무진일. 1995 October 11 to 1999 January 1:
+October: 20
+November: 30
+December: 31
+(81 total)
+1996: 366
+1997: 365
+1998: 365
+1999 Jan: 1
+total: 81 + 366 + 365 + 365 + 1 = 1178.
+1178 % 60 = 38
+무진 (4) - 38 = -34 + 60 = 26
+26 = 경인일 (different).
+
+The differences are giving slightly different values, where is the error?
+
+Okay, let's step back and consider 2024 again, using the
+
+","1. 1995년 개천절 날짜 확인: 개천절은 매년 양력 10월 3일입니다. 따라서 기준일은 1995년 10월 3일입니다.
+2. 8일 후 날짜 계산: 10월 3일에 8일을 더하면 1995년 10월 11일이 됩니다.
+3. 일진(60갑자) 계산: 
+   - 2024년 1월 1일은 갑자(甲子)일입니다.
+   - 1995년 10월 11일부터 2024년 1월 1일까지의 총 일수를 구합니다.
+   - 1995년 10월 11일부터 연말(12월 31일)까지는 81일 남았습니다.
+   - 1996년부터 2023년까지는 총 28년으로, 10220일(28년×365일)에 윤년이 7번(1996, 2000, 2004, 2008, 2012, 2016, 2020)이므로 7일을 더하여 10227일입니다.
+   - 2024년 1월 1일까지 1일을 더하면 총 10309일 차이가 납니다.
+   - 10309를 60으로 나누면 몫이 171, 나머지가 49입니다.
+   - 갑자(0)에서 49일 전으로 역산하면(또는 60에서 49를 빼서 11일 후), 60갑자 중 11번째에 해당하는 간지인 을해(乙亥)가 됩니다.
+
+Answer: 을해",을해,1,easy,stop
+time_ko_easy_0028,"1992년 광복절에 ""낼모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 9일 후, 그 날의 일진(日辰), 즉 그 날에 해당하는 60갑자는 무엇인가? (예: 갑자)",갑술,"**My Thought Process on Calculating a Specific Day's Ganzhi (Stem-Branch)**
+
+Okay, let's break this down systematically. The question revolves around finding the Ganzhi (sexagenary cycle) of a specific date.
+
+1.  **Pinpointing the Reference Date:** The problem gives me August 15, 1992, as the base date, which is 광복절 (Liberation Day). So, the reference date is August 15, 1992.
+
+2.  **Determining the Birthday:** The phrase ""the day after tomorrow is my birthday"" establishes the birthday as two days after the reference date. Therefore, the birthday is August 17, 1992 (8.15 + 2 = 8.17).
+
+3.  **Identifying the Target Date:** The goal is to determine the Ganzhi nine days after the birthday. Thus, the target date is August 26, 1992 (8.17 + 9 = 8.26).
+
+4.  **Calculating the Target Date's Ganzhi (Stem-Branch):** Now comes the core of the problem: determining the Ganzhi for August 26, 1992.
+
+    *   I'll use the JDN (Julian Day Number) and/or an easier alternative.
+    *   I consider that 1992 is a leap year (1992 % 4 == 0), so February has 29 days.
+    *   While the JDN formula exists, there might be a simpler method; I'll see if I can use a known date as a base to calculate the required date.
+    *   I know that January 1, 2000, was a 무오일 (Muo-il). I can use this as a reference point.
+    *   The difference between 1992 and 2000 is 8 years. Over these 8 years, there are two leap years (1992, 1996). So, the total number of days = (8 \* 365) + 2 = 2922 days.
+    *   2922 days modulo 60 (the cycle of Ganzhi) is 42 days (2922 % 60 = 42).
+    *   I'll need to work backward from 2000, subtracting 42 days, but in the opposite direction. (무오 - 42) is equivalent to (무오 + 18).
+    *   무오 is the 55th (무=5, 오=7 -> 55).
+    *   55 - 42 = 13.
+    *   The 13th Ganzhi: Tenkan (heavenly stem) is 13 % 10 = 3 (병-Byeong), and Jiji (earthly branch) is 13 % 12 = 1 (자-Ja), making the 13th Ganzhi is 병자 (Byeongja).
+    *   I'll confirm the calculation. 1992 January 1st should be 병자일 (Byeongja-il).
+
+    Now I'll calculate the number of days from January 1, 1992, to August 26, 1992:
+    *   January: 31 days
+    *   February: 29 days (leap year)
+    *   March: 31 days
+    *   April: 30 days
+    *   May: 31 days
+    *   June: 30 days
+    *   July: 31 days
+    *   August: 26 days (from the 1st day). Total = 238 days (total 239 days because January 1st is Day 1).
+    *   238 days modulo 60 = 58 days.
+    *   병자(13) + 58 = 71
+    *   71 % 60 = 11.
+    *   The 11th Ganzhi: Tenkan (heavenly stem) is 11 % 10 = 1 (갑-Gap), and Jiji (earthly branch) is 11 % 12 = 11 (술-Sul). The result is 갑술일 (Gap-Sul).
+
+5.  **Verification:** Let's verify:
+    *   January 1, 1992 = 병자 (Byeongja)
+    *   February 29, 
+
+","1. **기준일 확인**: 1992년 광복절은 양력 1992년 8월 15일입니다.
+2. **생일 계산**: 기준일(8월 15일)의 '낼모레(2일 후)'이므로 생일은 1992년 8월 17일입니다.
+3. **목표일 계산**: 생일(8월 17일)로부터 9일 후는 1992년 8월 26일입니다.
+4. **일진(60갑자) 계산**:
+   - 1992년은 윤년으로 2월이 29일까지 있습니다.
+   - 1992년 1월 1일의 일진은 병자(丙子)일입니다.
+   - 1월 1일부터 3월 1일까지 60일이 지나므로 3월 1일은 다시 병자일입니다.
+   - 3월 1일부터 4월 30일까지 60일이 지나므로 4월 30일도 병자일입니다.
+   - 4월 30일부터 6월 29일까지 60일이 지나므로 6월 29일도 병자일입니다.
+   - 6월 29일(병자)로부터 8월 26일까지는 58일이 경과합니다. (6월 1일 남음 + 7월 31일 + 8월 26일 = 58일)
+   - 병자(13번째 간지) + 58 = 71번째 간지
+   - 71을 60으로 나눈 나머지는 11이므로, 11번째 간지인 갑술(甲戌)이 됩니다.
+
+Answer: 갑술",갑술,1,easy,stop
+time_ko_easy_0029,"2014년 새해 첫날에 ""내일모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 23일 후, 그 날의 일진(日辰), 즉 그 날에 해당하는 60갑자는 무엇인가? (예: 갑자)",정유,"**My Calculation of a Specific Day's Iljin (Stem-Branch)**
+
+Okay, let me break this down systematically. First, I'm given a starting point: January 1, 2014 (Solar New Year's Day). My immediate thought is to establish a clear date for analysis.
+
+Next, I need to figure out the ""birthday,"" defined as ""two days from"" January 1st, 2014, making it January 3rd, 2014. Simple enough.
+
+Now for the target date. It's 23 days after the ""birthday,"" so January 3rd + 23 days = January 26th, 2014. This is the date I must compute the *iljin* for.
+
+Here’s where it gets interesting – calculating the *iljin* for January 26th, 2014. I need a reference point. I recall that January 1st, 1900, was Gap-Sul (甲戌, 11). Alternatively, I can use a formula, or leverage a known date. Considering the date, I choose the latter approach, since it's easier to verify using the JDN formula (or a known *iljin*).
+
+Since 2014 falls after 1900, I'll start with January 1, 2001, which was a Monday and had *iljin* Mu-Sul (戊戌, 35). I can count the days between 2001 and 2013: 13 years, with 3 leap years (2004, 2008, 2012). This totals 13 * 365 + 3 = 4748 days. Calculating the remainder, 4748 % 60 = 8. Adding the remainder to the *iljin* of 2001: 35 + 8 = 43. This means January 1st, 2014, has the *iljin* Byung-Oh (丙午, 43). Checking this, I can confirm that the Year 2014 is Gap-Oh and January 1st is Byung-Oh.
+
+Now, January 26th is 25 days after January 1st. Adding 25 days to Byung-Oh (43): 43 + 25 = 68. 68 - 60 = 8. So, the *iljin* for January 26th, 2014, is Shin-Mi (辛未).
+
+Let me double-check this: January 1st is Byung-Oh (43), January 3rd is Mu-Sin (45), and 23 days after January 3rd, is January 26th. Mu-Sin (45) + 23 days = 68, or 8, which is Shin-Mi (辛未). The pattern aligns!
+
+I need to confirm January 1st, 2014, as Byung-Oh. Let me reference 2000/1/1 as Mu-Oh, and compute from there: Using Zeller's or another known formula, I can establish the JDN for 2014/1/1 as 2456659, which verifies Byung-Oh (丙午) is correct.
+
+Therefore, for January 26th, 2014, I add 25 days, and get 43 + 25 = 68, or 8, which corresponds to Shin-Mi.
+
+So, summarizing all of that:
+
+*   **Reference:** January 1, 2014 (New Year's Day)
+*   **Birthday:** January 3, 2014 (""Tomorrow the Day After Tomorrow"")
+*   **Target Date:** January 26, 2014 (Birthday + 23 days)
+*   **January 1, 2014 iljin:** Byung-Oh (丙午, 43)
+*   **25 days later:** Byung-Oh + 25 days = Shin-Mi (辛未, 8)
+*   **Answer:** Shin-Mi (辛未)
+
+
+","1. **기준일 파악**: 2014년 새해 첫날은 양력 2014년 1월 1일입니다.
+2. **생일 계산**: 1월 1일의 ""내일모레""는 2일 후인 양력 2014년 1월 3일입니다.
+3. **목표일 계산**: 생일(1월 3일)로부터 23일 후의 날짜는 1월 3일 + 23일 = 양력 2014년 1월 26일입니다.
+4. **일진(60갑자) 계산**:
+   - 2014년 1월 1일의 일진은 병오(丙午)입니다.
+   - 1월 26일은 1월 1일로부터 25일 후입니다.
+   - 병오(43번째 간지)에서 25일이 지나면 43 + 25 = 68이 되고, 60을 빼면 8번째 간지가 됩니다.
+   - 60갑자 중 8번째 간지는 신미(辛未)입니다.
+
+Answer: 신미",신미,0,easy,stop
+time_ko_easy_0030,"2005년 현충일에 ""금일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 22일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2005.6.28,"**Calculating a Date**
+
+Okay, so I'm given that the Korean Memorial Day, *Hyeonchung-il*, in 2005 was June 6th. ""Geumil"" translates to that date, 2005.6.6. I need to calculate the date 22 days after this. Alright, let's break this down systematically.
+
+First, I start with June 6th, 2005. I need to add 22 days to this date. Knowing June has 30 days is crucial.  So, 6 days plus 22 days equals 28 days.
+
+Therefore, the resulting date is June 28th, 2005. Expressed in the required format, that's 2005.6.28.
+
+Just a quick check to ensure accuracy... let's add days incrementally. If I add 1 day to 6.6, it’s 6.7. If I add 22 days, it comes out to 6.28. Confirmed; it checks out. That's the correct calculation.
+
+
+","2005년 현충일은 양력으로 6월 6일입니다.
+이 날짜로부터 22일 후의 날짜를 계산하면 다음과 같습니다.
+
+- 기준일: 2005년 6월 6일
+- 6일에 22일을 더하면 28일이 됩니다.
+- 6월은 30일까지 있으므로 달이 넘어가지 않습니다.
+- 따라서 날짜는 2005년 6월 28일입니다.
+
+Answer: 2005.6.28",2005.6.28,1,easy,stop
+time_ko_easy_0031,"1995년 광복절에 ""금일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 10일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",1995.8.25,"**Calculating a Date**
+
+Okay, so I'm given a date: August 15th, 1995. This is the starting point, the 광복절 (Liberation Day) for that year. The problem is straightforward; I need to figure out what date is exactly ten days after that.
+
+Let's break it down: August 15th plus 10 days. Simple addition! 15 + 10 = 25. Therefore, the date ten days after August 15th, 1995 is August 25th, 1995.
+
+Now, checking it one more time... Starting date: August 15th. Adding ten days: August 15th + 10 days = August 25th. The year remains unchanged at 1995.
+
+Finally, the output format: YYYY.M.D. So, it's 1995.8.25. Done.
+
+
+","1995년 광복절은 양력 1995년 8월 15일입니다.
+이 날로부터 10일 후의 날짜를 계산하면 다음과 같습니다.
+
+1995년 8월 15일 + 10일 = 1995년 8월 25일
+
+따라서 구하는 양력 날짜는 1995년 8월 25일입니다.
+
+Answer: 1995.8.25",1995.8.25,1,easy,stop
+time_ko_easy_0032,"1990년 제헌절에 ""이튿날이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 23일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",1990.8.10,"**Calculating a Date**
+
+Okay, let's break this down. First, I need to figure out the date of Constitution Day in 1990. I know Constitution Day is July 17th on the Gregorian calendar. So, that means Constitution Day in 1990 was July 17th, 1990.
+
+The problem states ""the next day is my birthday,"" so my birthday is the day after Constitution Day. ""The next day"" clearly means the following day, which puts my birthday on July 18th, 1990.
+
+Now, I've got to calculate the date that's 23 days after my birthday. I need to add 23 days to July 18th, 1990.
+
+18 + 23 = 41. Now, July only has 31 days. So, I need to adjust for that.
+
+41 - 31 = 10. That leaves me with August 10th. Thus, the final answer is August 10th, 1990. Now, I need to format it in the YYYY.M.D style, which makes it 1990.8.10.
+
+Let's double-check: Constitution Day is 1990.7.17. The day after is 1990.7.18. Adding 23 days makes 1990.7.41. July has 31 days, so 41 - 31 = 10. That checks out as August 10th, 1990. The answer is indeed correct.
+
+
+","1. 1990년 제헌절 날짜: 제헌절은 매년 양력 7월 17일입니다. 따라서 기준일은 1990년 7월 17일입니다.
+2. 생일 날짜: ""이튿날""은 다음 날을 의미하므로, 생일은 1990년 7월 17일의 하루 뒤인 1990년 7월 18일입니다.
+3. 23일 후 날짜 계산: 1990년 7월 18일에 23일을 더합니다.
+   - 18일 + 23일 = 41일
+   - 7월은 31일까지 있으므로, 41일 - 31일 = 10일
+   - 따라서 월이 바뀌어 8월 10일이 됩니다.
+
+Answer: 1990.8.10",1990.8.10,1,easy,stop
+time_ko_easy_0033,"1991년 개천절에 ""모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 9일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",1991.10.14,"**My Analytical Breakdown of the Date Calculation**
+
+Okay, let's break this down systematically. The core piece of information is the reference date: 1991's National Foundation Day, which is October 3rd. We're given that ""the day after tomorrow is my birthday,"" and ""the day after tomorrow"" from October 3rd is, obviously, October 5th. This is simple, just adding two days.
+
+Now, we need to calculate the date nine days *after* that birthday. Given that the birthday is October 5th, this is a straightforward addition: 5 + 9 = 14. Therefore, the date we're seeking is October 14th, 1991. The format desired is YYYY.M.D. So, we arrive at the final answer of 1991.10.14. A quick sanity check confirms this: the given logic and calendar arithmetic are flawless.
+
+
+","1991년 개천절은 양력으로 10월 3일입니다.
+이 날을 기준으로 ""모레""는 10월 5일입니다. 
+따라서 생일은 1991년 10월 5일이 됩니다.
+그 생일로부터 9일 후를 계산하면 10월 5일 + 9일 = 10월 14일이 됩니다.
+
+Answer: 1991.10.14",1991.10.14,1,easy,stop
+time_ko_easy_0034,"2003년 현충일에 ""오늘이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 27일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2003.7.3,"**Calculating a Date**
+
+Okay, so the text gives me a starting point: June 6th, 2003. That's the key date, seemingly a birthday! My goal is to figure out the date 27 days after that.
+
+Let's break it down: starting on June 6th, adding 27 days pushes us past the end of June. June has 30 days total, so June 6th plus 27 days is essentially June 33rd. Since June only has 30 days, I subtract 30 from 33, leaving me with 3. That means June 33rd is equivalent to July 3rd. The year remains 2003.
+
+To verify, I'll double check my work. If I add 24 days to June 6th, I get to June 30th. Then, adding another 3 days puts me at July 3rd. And since 24 plus 3 equals 27, it checks out.
+
+So, the answer in YYYY.M.D format is '2003.7.3'.
+
+
+","1. **기준일 파악**: 2003년 현충일은 양력 2003년 6월 6일입니다.
+2. **일수 가산**: 6월 6일로부터 27일 후를 계산합니다.
+   - 6월 6일에 24일을 더하면 6월 30일입니다. (6월은 30일까지 있습니다.)
+   - 남은 3일을 마저 더하면 7월 3일이 됩니다.
+3. **최종 날짜**: 따라서 27일 후의 양력 날짜는 2003년 7월 3일입니다.
+
+Answer: 2003.7.3",2003.7.3,1,easy,stop
+time_ko_easy_0035,"2020년 식목일에 ""내일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 13일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2020.4.19,"**Calculating the Date**
+
+Okay, let's break this down. First, we're given that *Sikmokil* (Arbor Day) in 2020 was April 5th.  The key is the statement, ""Tomorrow is my birthday."" This immediately tells me the birthday must be the day *after* Arbor Day, so April 6th, 2020. Now the question is asking me to calculate the date 13 days *after* the birthday. Simple addition from here: April 6th plus 13 days equals April 19th. Therefore, the date we're looking for is April 19th, 2020.  Let me double-check. Okay, Arbor Day is the 5th, birthday the 6th, and adding 13 days gets me to the 19th. The format required is YYYY.M.D which means the final answer is 2020.4.19.  That's it, problem solved.
+
+
+","2020년 식목일은 4월 5일입니다. 
+""내일이 내 생일이야""라고 했으므로, 생일은 4월 5일의 다음 날인 4월 6일입니다.
+4월 6일로부터 13일 후의 날짜를 계산하면 4월 6일 + 13일 = 4월 19일이 됩니다.
+
+Answer: 2020.4.19",2020.4.19,1,easy,stop
+time_ko_easy_0036,"1997년 광복절에 ""금일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 20일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",1997.9.4,"**Calculating a Date**
+
+Okay, let's break this down. My starting point is August 15th, 1997, which is also my birthday, apparently! The task is to figure out what date it will be 20 days after that.
+
+First, I need to pinpoint the reference date. So, it's August 15th, 1997. Easy enough.
+
+Now, let's do the math. We're adding 20 days to August 15th. August has 31 days. So, 15 plus 20 is 35. Since August only has 31 days, we need to subtract 31 from 35, which leaves us with 4. This means we've moved into September.
+
+Therefore, August 15th plus 20 days equals September 4th, 1997.
+
+To double-check: 15 days gets us to August 30th (or 31st), and the remaining 4 days would then take us to September 4th, so our calculations are correct.
+
+Finally, the output needs to be in 'YYYY.M.D' format, so the final answer is 1997.9.4.
+
+
+","1. 1997년 광복절은 양력 1997년 8월 15일입니다.
+2. 화자의 생일은 금일인 1997년 8월 15일입니다.
+3. 이 날로부터 20일 후의 날짜를 계산합니다.
+   - 8월은 31일까지 있습니다.
+   - 15일 + 20일 = 35일
+   - 35일 - 31일 = 다음 달(9월) 4일
+4. 따라서 20일 후는 1997년 9월 4일이 됩니다.
+
+Answer: 1997.9.4",1997.9.4,1,easy,stop
+time_ko_easy_0037,"2015년 어린이날에 ""낼모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 11일 후, 그 날의 일진(日辰), 즉 그 날에 해당하는 60갑자는 무엇인가? (예: 갑자)",갑오,"**My Thought Process: Determining the Day's Ganzhi**
+
+Alright, let's break this down systematically. The core task is to determine the *ganji* (stem-branch) for a specific date: May 18th, 2015.  Since the problem's start is, '2015년 어린이날은 양력 2015년 5월 5일이다' followed by, '생일은 5월 5일로부터 2일 후인 5월 7일이다' followed by, '그 생일로부터 11일 후의 날짜를 구해야 한다' gives us 5/5 + 2 + 11 = May 18th, 2015 as the target.
+
+I need to find a reliable method.  The core idea is to establish a known *ganji* as a base and calculate the difference in days. I know that 1900.1.1 was 갑술 (11) and 2000.1.1 was 무오 (55).  Let's use 2000.1.1 as the reference point, as it's more recent.
+
+First, let's calculate the days from 2000.1.1 to 2015.1.1. I can break it down to this.
+*   15 years difference.
+*   15 * 365 days.
+*   Count the leap years (2000, 2004, 2008, 2012) - that's 4.  So, add 4 days.
+*   Total days: (15 \* 365) + 4 = 5479 days.
+*   The Chinese sexagenary cycle is 60 days long. So, take the mod 60.
+
+Now, 5479 mod 60 = 19.  The *ganji* for 2000.1.1 is 무오 (55).  Add 19 to it, to get 74.
+74 is 14 mod 60, meaning the 14th *ganji*, or 정축(丁丑).
+Therefore, 2015.1.1 is 정축.
+
+Now, let's calculate the days between 2015.1.1 and 2015.5.18:
+*   January: 31 days
+*   February: 28 days (2015 is not a leap year)
+*   March: 31 days
+*   April: 30 days
+*   May: 18 days (including the 18th). Subtract 1, to get the difference between the 1st and the 18th to find the days to add.
+*   Total: 31 + 28 + 31 + 30 + 17 = 137 days.
+
+Now, 137 mod 60 = 17.  Add this to 정축 (14th *ganji*).  So, 14 + 17 = 31. This is the 31st *ganji*.  The 31st *ganji* is 갑오(甲午).
+
+I should verify this. From the calculation I did, 2015.5.18 must be 갑오.
+Let's apply the rule one more time. The number of the *ganji* of 2015.1.1 should be 정축 which is the 14th, from which we count 137 days to get to 2015.5.18.
+The calculation is same. (137 mod 60 + 14th *ganji* = 31st *ganji* = 갑오).
+
+But wait, there's a possible mistake. Let's start with the base, 1970.1.1 and work out all dates to check.
+
+I am now going to re-calculate everything to be sure. I'm going to determine a known reference, 2024.1.1. and work backward.
+
+2024.1.1: I already know is 갑진 (41).
+2024 - 2015 = 9 years.
+Calculate the days between 2015.1.1 and 2024.1.1.
+9 \* 365 + 2 (leap year for 2016,
+
+","1. **어린이날 날짜 확인**
+2015년 어린이날은 양력 5월 5일입니다.
+
+2. **생일 날짜 계산**
+""낼모레가 내 생일이야""라고 하였으므로, 5월 5일의 이틀 후인 **5월 7일**이 생일입니다.
+
+3. **목표 날짜 계산**
+생일로부터 11일 후의 날짜를 구해야 하므로, 5월 7일에 11일을 더하면 **2015년 5월 18일**이 됩니다.
+
+4. **일진(60갑자) 계산**
+2024년 1월 1일은 갑진(甲辰, 41번째)일입니다. 이를 기준으로 역산하여 2015년 1월 1일의 일진을 구하면 다음과 같습니다.
+- 2015년부터 2023년까지 총 9년간 일수: 평년 7번(7 × 365), 윤년 2번(2 × 366) = 3287일
+- 3287을 60으로 나눈 나머지는 47입니다. 
+- 따라서 갑진(41)에서 47을 빼면 2015년 1월 1일의 일진은 정사(丁巳, 54번째)가 됩니다.
+
+2015년은 평년이므로 1월부터 4월까지의 총 일수는 120일(31+28+31+30)입니다. 
+- 120은 60으로 나누어 떨어지므로(120 mod 60 = 0), 2015년 5월 1일의 일진 역시 1월 1일과 같은 **정사(丁巳, 54번째)**일입니다.
+- 목표 날짜인 5월 18일은 5월 1일로부터 17일 후입니다.
+- 정사(54) + 17 = 71이며, 60을 뺀 11번째 간지는 **갑술(甲戌)**이 됩니다.
+
+Answer: 갑술",갑술,0,easy,stop
+time_ko_easy_0038,"2011년 식목일에 ""이튿날이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 25일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2011.5.1,"**My Thought Process: Date Calculation**
+
+Okay, let's break this down systematically. My goal is to determine a specific date based on a given reference point and calculate the final output in the format YYYY.M.D.
+
+Firstly, the **analysis**: My base date is 식목일 (Arbor Day) in 2011. Specifically, this is April 5th of that year. The next day, 식목일 + 1, is considered a ""birthday"" or the key date of the calculation. The target date is 25 days after this ""birthday"".
+
+Next, the **calculation**: 식목일 in Korea is always April 5th. In 2011, that makes the ""birthday"" April 6th (2011.4.6). The task is to add 25 days to this date. Adding 25 days to April 6th gives us 31. Knowing April has only 30 days, I subtract 30 from the result; 31 - 30, and the remaining 1 day moves us to the next month. Therefore, the target date should be May 1st.
+
+To **verify** this, I'm checking my work. Arbor Day is April 5th. The ""birthday"" is April 6th. Going out 24 days from April 6th reaches April 30th. Adding one more day—25 days in total—shifts the date to May 1st. It confirms the ""birthday"" + 25 days lands on May 1st.
+
+Finally, after all the analysis and calculations, the answer is formatted: 2011.5.1.
+
+
+","2011년 식목일은 4월 5일입니다.
+그날로부터 이튿날(생일)은 4월 6일입니다.
+4월 6일에서 25일 후의 날짜를 계산하면, 4월은 30일까지 있으므로 6 + 25 = 31에서 30을 뺀 5월 1일이 됩니다.
+
+Answer: 2011.5.1",2011.5.1,1,easy,stop
+time_ko_easy_0039,"2016년 어린이날에 ""낼모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 20일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2016.5.27,"**My Calculation of a Date**
+
+Okay, let's break this down step-by-step. First, I need to establish the reference date: this is for Korean Children's Day, which is always May 5th in the Gregorian calendar. So, for the year 2016, that's May 5th, 2016.
+
+Now, the problem states that ""낼모레가 내 생일이야."" ""Nelmore"" means ""the day after tomorrow"", or two days from a given date. My birthday is two days after Children's Day. So, taking the 5th of May and adding two days puts my birthday on May 7th, 2016.
+
+Next, I need to figure out a date 20 days after my birthday. Since my birthday is May 7th, simply adding 20 days gives me May 27th, 2016. May has 31 days, so 27th falls within that month.
+
+Finally, I need to format this date. The instructions specify 'YYYY.M.D', so May 27th, 2016 needs to be expressed as 2016.5.27.
+
+Just to double check myself, I will quickly verify: 2016, May 5th (Children's Day), plus 2 days gives me May 7th (birthday). Plus 20 days gives me May 27th. And the format is correct: 2016.5.27. That's my final answer!
+
+
+","어린이날은 매년 양력 5월 5일입니다. 따라서 2016년 어린이날은 2016년 5월 5일입니다.
+이 날로부터 ""낼모레(2일 후)""가 생일이므로, 생일은 2016년 5월 7일입니다.
+생일인 5월 7일로부터 20일 후의 날짜를 계산하면 5월 27일이 됩니다. (5월 7일 + 20일 = 5월 27일)
+
+Answer: 2016.5.27",2016.5.27,1,easy,stop
+time_ko_easy_0040,"2013년 식목일에 ""모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 13일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2013.4.20,"**My Calculation of a Date**
+
+Okay, let's break this down methodically. First, I need to confirm the date of Arbor Day in 2013.  Ah, yes, it's consistently April 5th on the Gregorian calendar. So, that's April 5th, 2013.
+
+Now, on that day (April 5th, 2013), someone mentions that ""the day after tomorrow is my birthday"". 'The day after tomorrow' is, of course, two days from that date. So, April 5th + 2 days = April 7th, 2013. That's the birthday.
+
+The task is to figure out the date that's 13 days *after* that birthday. Easy enough: April 7th + 13 days = April 20th.
+
+The year remains 2013. Therefore, the final date is April 20th, 2013.
+
+Let me recap my process for clarity:
+
+1.  **Arbor Day:** April 5, 2013
+2.  **Birthday:** April 5 + 2 days = April 7, 2013
+3.  **13 days after Birthday:** April 7 + 13 days = April 20, 2013
+4.  **Final Date:** April 20, 2013
+
+
+","1. 2013년 식목일은 양력 4월 5일입니다.
+2. ""모레가 내 생일이야""라고 했으므로, 생일은 4월 5일에서 2일 뒤인 4월 7일입니다.
+3. 그 생일(4월 7일)로부터 13일 후의 날짜를 계산하면 4월 20일이 됩니다.
+
+Answer: 2013.4.20",2013.4.20,1,easy,stop
+time_ko_easy_0041,"2022년 제헌절에 ""모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 9일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2022.7.28,"**Calculating a Date Nine Days After My Birthday**
+
+Okay, let's break this down logically. First, I know that **Constitution Day (제헌절)** always falls on July 17th of each year. Specifically, this year, 2022, it's July 17th.
+
+The statement says ""The day after tomorrow is my birthday."" Okay, so ""the day after tomorrow"" from today is the 17th, meaning my birthday is two days after that.  Therefore, my birthday is July 17th + 2 days = July 19th, 2022.
+
+Now, the question requires me to calculate the date that is nine days after my birthday. So, I need to add nine days to July 19th.  July 19th + 9 days = July 28th.
+
+Therefore, the final answer must be July 28th, 2022.
+
+Just to confirm, let's run through the steps again:
+
+*   Constitution Day: 7.17
+*   Birthday: 7.19 (two days after the 17th)
+*   Nine Days Later: 7.19 + 9 = 7.28
+
+The required output format is YYYY.M.D, so the answer is 2022.7.28.
+
+
+","1. 2022년 제헌절은 양력 7월 17일입니다.
+2. ""모레가 내 생일이야""라고 했으므로, 생일은 7월 17일의 모레인 7월 19일입니다.
+3. 생일(7월 19일)로부터 9일 후의 날짜를 계산하면, 19 + 9 = 28이므로 7월 28일이 됩니다.
+4. 연도는 그대로 2022년입니다.
+
+Answer: 2022.7.28",2022.7.28,1,easy,stop
+time_ko_easy_0042,"1994년 제헌절에 ""금일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 10일 후, 그 날의 일진(日辰), 즉 그 날에 해당하는 60갑자는 무엇인가? (예: 갑자)",갑인,"**My Analytical Process for Determining the Lunar Day (Iljin)**
+
+Alright, here's how I'm approaching this. I'm starting with the known: 제헌절 (Constitution Day) in 1994, which was on July 17th.  My target date is 10 days after that, July 27th, 1994. The goal is to figure out the 일진 (60-day cycle of Korean calendar) for that target date.
+
+First, I established the base date and calculated the target. The main challenge is the 일진 calculation. I need a reliable method. I could try to find a known 일진 date and calculate the difference. 1994 January 1st is an obvious anchor date, but I'd need to look up its corresponding 일진, which I don't readily have. Also, using Excel and the potential 1900 date bug is something I am wary of, even though I know how to account for it. I decide on using a precise formula and a well-known date as the starting point to reduce the risk of error. I'm going to start with a date and a known 일진, and figure out the difference between them.
+
+I know that January 1st, 2000, was a Saturday, and its 일진 was 무오 (戊午). I'll calculate the difference in days between July 27th, 1994, and January 1st, 2000. It's a bit tedious, but necessary. First, the days from July 27th to December 31st, 1994. Then, the full years: 1995 to 1999 (I need to account for leap years). Finally, the total days come up to 1983 days between July 27th 1994 and January 1st, 2000. Now, I need to find the remainder when dividing by 60 for the 일진 cycle. 1983 mod 60 is easy enough: it's 3. This means July 27th, 1994 is three days earlier than 무오.
+
+Therefore, since January 1st, 2000 is 무오 (55th in the cycle), I need to count back three days (1994, 7/27) . I double-check the 간지 number for 무오: 천간 is 戊 (5) and 지지 is 午 (7). (5-7) *5 + 5 = -10 + 5. Since this is negative, the calculation shifts to -2 mod 12 or 10. Thus, for 무오 we get (5-7)*5 +5 = -10+5.  Add 12 to the number and use this. -2 +12 = 10. (10)*5+5 = 55. This calculation of 간지 is correct. Back to the cycle calculation: If I go back three days, 1994, 7/27, then my target day should be 3 일진 days before 55.
+
+My target 일진 should be (55 - 3) mod 60, which gives me 52.
+
+Now, to determine the 간지 corresponding to 52. 천간: 52 mod 10 is 2, which maps to 을 (乙).  지지: 52 mod 12 is 4, which maps to 묘 (卯).  Therefore, I'm expecting the 일진 to be 을묘 (乙卯).
+
+Before committing, a verification step is crucial. Now I decide to verify with a different reference date, to eliminate any potential errors in my calculations.
+ I use December 31st, 1999, which I find is 정사 (丁巳) 일진, which is the 54th in the cycle. Now, I'll calculate the number of days between my target date, July 27th, 1994, and December 31st, 1999.
+Days remaining in 1994: 157. Years 1995-1999: again 1826 days
+Total is 1983 days, which when divided by 60 again give a remainder of 3.
+
+Therefore (July 27th) + 3 days is December 31st. This should match up. This leads to  my target 일진 + 3 = 54 mod 60. Then my target 일진 becomes 51.
+
+I made
+
+","1994년 제헌절은 7월 17일입니다. 
+그 날로부터 10일 후의 날짜는 1994년 7월 27일입니다.
+
+1994년 7월 27일의 일진(60갑자)을 계산해보겠습니다.
+기준일로 2024년 1월 1일(갑자일, 60갑자의 1번째)을 사용합니다.
+- 1994년 7월 27일부터 1994년 12월 31일까지의 일수: 157일
+- 1995년부터 2023년까지의 일수(29년, 윤년 7번 포함): 29 × 365 + 7 = 10,592일
+- 2024년 1월 1일까지 +1일
+총 차이 일수는 157 + 10,592 + 1 = 10,750일입니다.
+
+10,750을 60으로 나누면 몫은 179이고 나머지는 10이 됩니다.
+따라서 1994년 7월 27일의 일진에 10일을 더한 것이 갑자(1)가 되므로, 1994년 7월 27일은 60갑자 중 51번째에 해당하는 날입니다.
+
+51번째 간지는 천간이 첫 번째인 갑(甲), 지지가 세 번째인 인(寅)이 되어 '갑인'이 됩니다.
+
+Answer: 갑인",갑인,1,easy,stop
+time_ko_easy_0043,"2006년 새해 첫날에 ""금일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 12일 후, 그 날의 일진(日辰), 즉 그 날에 해당하는 60갑자는 무엇인가? (예: 갑자)",임인,"**Analyzing the Lunar Calendar and Finding the Day's Ganzhi**
+
+Alright, let's break this down systematically. My goal is to determine the *ganzhi* (stem-branch) for a specific date: January 13, 2006.  I'm treating January 1, 2006, as the base or birthday to keep things straight.
+
+First, I need to figure out what the *ganzhi* was for the reference date, January 1, 2006.
+
+My approach is to find a known date as a reference point. I know that January 1, 2000, was *Muo (戊午)*. That’s a good starting place, let’s leverage it.  I'll calculate the number of days between January 1, 2000, and January 1, 2006. I know 2000 and 2004 were leap years. Doing the math, that comes out to 2192 days total. The key here is the modulo operation, I need to find the remainder when dividing the number of days by 60 (the number of days in a *ganzhi* cycle). Doing that, I get a remainder of 32. Since *Muo* is the 55th day in the cycle, adding 32 gives me 87, and then subtracting 60 to bring it within the 60-day range leaves us with 27. This calculates to *Gyeongin (경인)*, but I always want to make sure I am spot on.
+
+Now, a possibly simpler method to double-check. I know that January 1, 2024, was *Gapja (갑자)*. We can then work backwards, and the total number of years is 18 years, 4 of which are leap years.  The calculation gives me a total of 6574 days between those dates. Performing the modulo operation on that number, I get a remainder of 34, and working backwards from the 1st position with *Gapja*, this gives me *Gyeongin (경인)* as well. That confirms my earlier calculation!
+
+Now, the final calculation. I know January 1, 2006, is *Gyeongin*. I need the *ganzhi* for the 13th. That’s 12 days after. Adding 12 days to *Gyeongin* (*Gyeong* is the 7th stem and *In* is the 3rd branch in the respective cycles) requires me to increment the stems and branches. For the stem, 7 + 12 = 19, which mod 10 is 9 (*Im*). For the branch, 3 + 12 = 15, which mod 12 is 3 (*In*). The resulting *ganzhi* is *Im-In (壬寅)*.
+
+To verify, let's just count out the days. *Gyeong-In*, *Sin-Myo*, *Im-Jin*, *Gye-Sa*, *Gap-O*, *Eul-Mi*, *Byeong-Sin*, *Jeong-Yu*, *Mu-Sul*, *Gi-Hae*, *Gyeong-Ja*, *Sin-Chuk*, and *Im-In*. Looks like the *Im-In* is correct.
+
+Therefore, the final answer: January 13, 2006, was *Im-In (壬寅)*.
+
+
+","1. **기준일 파악**: 2006년 새해 첫날은 2006년 1월 1일입니다.
+2. **목표일 계산**: 생일(1월 1일)로부터 12일 후는 2006년 1월 13일입니다.
+3. **일진 계산**:
+   - 2024년 1월 1일은 갑자(甲子)일입니다. 
+   - 2006년 1월 1일부터 2024년 1월 1일까지는 총 6574일(18년 + 윤일 4일) 차이가 납니다.
+   - 6574를 60으로 나눈 나머지는 34이므로, 갑자에서 역산하면 2006년 1월 1일의 일진은 경인(庚寅)일입니다.
+   - 2006년 1월 1일이 경인일이므로, 그로부터 12일 후인 1월 13일의 일진은 지지는 12일 주기이므로 그대로 '인(寅)'이 되고, 천간은 '경(庚)'에서 12를 더해 10으로 나눈 나머지(2칸 이동)인 '임(壬)'이 됩니다.
+   - 따라서 2006년 1월 13일의 일진은 임인(壬寅)입니다.
+
+Answer: 임인",임인,1,easy,stop
+time_ko_easy_0044,"2001년 한글날에 ""금일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 15일 후, 그 날의 일진(日辰), 즉 그 날에 해당하는 60갑자는 무엇인가? (예: 갑자)",경신,"**Calculating the 60-Year Cycle Day**
+
+Okay, so I'm trying to figure out the *iljin* (60-year cycle day) for a specific date: 2001's Hangul Day plus 15 days. Hangul Day is October 9th. Adding 15 days gives us October 24th, 2001.
+
+Now, to calculate the *iljin*, I'll use a reference point. I'll take January 1, 2001, as my starting point. I could also have started at 1901 and gone from there or used a known formula. The given formula says that January 1, 2000, was *Muo* (戊午). 2000 was a leap year, so 366 days after the reference point is the first of January. 366 modulo 60 gives 6. *Muo* is the 55th in the cycle (5 for the Heavenly Stem, 7 for the Earthly Branch), so I add 6 to it, getting 61, which is the same as the 1st. That makes January 1st, 2001, *Gapja* (甲子). I'll double check that. *Muo* is indeed 55. Correct.
+
+Now I need to calculate how many days are between January 1st and October 24th, 2001. Let's tally those up: January (31), February (28 – it's a non-leap year), March (31), April (30), May (31), June (30), July (31), August (31), September (30), and finally October 24th. The sum of those days from Jan to Sept is 273. The total day number of Oct 24th is 273 + 24 = 297. Since January 1st is the first day, the day offset is 296 days.
+
+*Gapja* is the 1st day. So, I add 296 to 1: 1 + 296 = 297. Modulo 60 gives 57. The 57th *iljin* is calculated as the 7th Heavenly Stem and the 9th Earthly Branch. That’s *Gyeongsin* (庚申).
+
+Let's double-check. *Gyeong* is 7 (7). *Sin* is 9 (57 % 12). Yep, it's correct.
+
+Calculating again to be absolutely sure:
+*Gapja* is the 1st day. The 297th day is 296 days after.
+297 = 4 * 60 + 57. The *iljin* is the 57th. Thus we get *Gyeongsin* (庚申).
+
+I can confirm the date is Oct 24th, calculated by: Hangul Day (Oct 9th) plus 15 days.
+
+Days from Jan 1st to Oct 24th
+Jan (31), Feb (28 (59)), Mar (31 (90)), Apr (30 (120)), May (31 (151)), Jun (30 (181)), Jul (31 (212)), Aug (31 (243)), Sept (30 (273)), Oct (24 (297))
+
+January 1st, 2001 is *Gapja* (1). The 297th day: 297 = 4 * 60 + 57. Thus the 57th *iljin*.
+Heavenly Stem: 57 % 10 = 7 (*Gyeong*)
+Earthly Branch: 57 % 12 = 9 (*Sin*)
+*Gyeongsin*
+
+Verification: January 1, 2000 = *Muo* (55). January 1, 2001 = 55 + 366 = 421. 421 % 60 = 1, so *Gapja*.
+October 24, 2001 = 296 days after Jan 1. Thus 1 + 296 = 297. 297 % 60 = 57, confirming *Gyeongsin* again.
+
+So, the *iljin* for October 24, 2001, is *Gyeongsin* (庚
+
+","2001년 한글날은 10월 9일입니다. 
+""금일이 내 생일이야""라고 했으므로 생일은 2001년 10월 9일입니다.
+
+1. 생일로부터 15일 후 날짜 계산:
+10월 9일 + 15일 = 10월 24일 (2001년 10월 24일)
+
+2. 2001년 10월 24일의 일진 계산:
+- 2000년 1월 1일은 무오(戊午)일입니다.
+- 2000년은 윤년이므로 366일이며, 366을 60으로 나누면 나머지가 6입니다. 따라서 2001년 1월 1일의 일진은 무오(55)에서 6을 더한 갑자(1)일이 됩니다.
+- 2001년은 평년이며, 1월 1일부터 10월 24일까지의 총 일수는 다음과 같습니다.
+  1월(31) + 2월(28) + 3월(31) + 4월(30) + 5월(31) + 6월(30) + 7월(31) + 8월(31) + 9월(30) + 10월(24) = 297일째 되는 날입니다.
+- 1월 1일이 1번째 날이므로 297번째 날의 60갑자를 구하면, 297을 60으로 나눈 나머지는 57이 됩니다.
+- 57번째 60갑자는 천간이 7번째인 '경(庚)', 지지가 9번째인 '신(申)'으로 경신(庚申)이 됩니다.
+
+Answer: 경신",경신,1,easy,stop
+time_ko_easy_0045,"2018년 한글날에 ""익일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 27일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2018.11.6,"**My Calculation Process**
+
+Okay, let me break this down methodically. First, I need to establish the reference date, which is clearly identified as ""2018년 한글날"" (2018 Hangul Day). I know that Hangul Day falls on October 9th in the Gregorian calendar, so my base date is 2018.10.9.
+
+Next, I need to find the actual birthday. The statement ""익일이 내 생일이야"" translates to ""My birthday is tomorrow"" or ""the following day."" This means the birthday is the day after the reference date, 2018.10.9, which makes the birthday 2018.10.10.
+
+Now comes the crucial part: determining the target date. The problem states that I need to find the date 27 days *after* the birthday. So, I take my birthday date, 2018.10.10, and add 27 days. This results in 2018.10.37. But of course, October only has 31 days. So, 37 - 31 = 6. This means 6 days into the next month, which would be November. Therefore, my target date is 2018.11.6.
+
+To ensure accuracy, I'll quickly confirm everything.
+
+*   2018 Hangul Day: 2018.10.9
+*   Birthday: 2018.10.10
+*   27 days after Birthday: 2018.10.10 + 27 days = 2018.11.6
+
+The desired output format is 'YYYY.M.D', so I'm confident my answer is 2018.11.6.
+
+
+","1. 2018년 한글날은 양력 2018년 10월 9일입니다.
+2. ""익일(내일)이 내 생일이야""라고 했으므로, 생일은 10월 9일의 다음 날인 2018년 10월 10일입니다.
+3. 2018년 10월 10일로부터 27일 후의 날짜를 계산합니다.
+   - 10월 10일 + 27일 = 10월 37일
+   - 10월은 31일까지 있으므로, 37일 - 31일 = 6일이 되어 다음 달로 넘어갑니다.
+   - 따라서 11월 6일이 됩니다.
+
+Answer: 2018.11.6",2018.11.6,1,easy,stop
+time_ko_easy_0046,"2012년 3·1절에 ""내일모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 3일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2012.3.6,"**My Logical Deduction**
+
+Okay, let's break this down. First, we're given that the 2012 March 1st date is... well, March 1st, 2012. Fine. Next, the statement ""My birthday is the day after tomorrow"" confirms that the birthday is two days *after* March 1st. Therefore, my birthday is March 3rd, 2012.
+
+The question asks for the date three days *after* the birthday. Simple addition, really. March 3rd + 3 days = March 6th. So, the date in question is March 6th, 2012.
+
+Just to be absolutely certain, let's verify. We'll start with the base date, and count forward:
+*   March 1st (The given date)
+*   March 2nd (One day after)
+*   March 3rd (Two days after - My Birthday)
+
+Now, we add 3 days to my birthday (March 3rd):
+*   March 3rd
+*   March 4th
+*   March 5th
+*   March 6th
+
+This aligns with my initial calculation. The answer in the YYYY.M.D format is 2012.3.6
+My birthday is 2012.3.3.
+Three days after my birthday is 2012.3.6.
+That's the final answer.
+
+
+","2012년 3·1절은 2012년 3월 1일입니다.
+이 날로부터 ""내일모레""는 이틀 후이므로, 생일은 2012년 3월 3일이 됩니다.
+생일인 2012년 3월 3일로부터 3일 후의 날짜는 3을 더하여 2012년 3월 6일이 됩니다.
+
+Answer: 2012.3.6",2012.3.6,1,easy,stop
+time_ko_easy_0047,"2023년 성탄절에 ""오늘이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 13일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2024.1.7,"**My Analysis of the Date Calculation**
+
+Okay, let's break this down. The core problem is straightforward: we need to figure out the date 13 days after Christmas 2023, specifically December 25th, 2023. The output format is explicitly defined as YYYY.M.D.
+
+First, the calculation. I take December 25th, 2023, and add 13 days. That gives us 25 + 13 = 38. Since December only has 31 days, we have to account for that. So, 38 - 31 = 7. This means we've crossed over into the next year. Thus, the date is January 7th, 2024.
+
+Now, to double-check this, let's do a sanity check. From December 25th, adding 6 days gets us to December 31st. Then, adding another 7 days gets us to January 7th. That confirms the 6 + 7 = 13 days in total. The initial calculation is correct.
+
+Finally, we need to format the answer as YYYY.M.D. So, January 7th, 2024, becomes 2024.1.7.
+
+Therefore, the solution is: Answer: 2024.1.7
+
+
+","2023년 성탄절은 12월 25일입니다. 
+따라서 2023년 12월 25일로부터 13일 후의 날짜를 계산해야 합니다.
+
+12월은 31일까지 있으므로, 남은 일수를 계산하면 다음과 같습니다.
+- 12월 25일에서 6일이 지나면 12월 31일이 됩니다.
+- 13일 중 남은 7일을 다음 연도인 2024년 1월에 더합니다.
+
+따라서 2023년 12월 31일에서 7일이 지난 날은 2024년 1월 7일입니다.
+
+Answer: 2024.1.7",2024.1.7,1,easy,stop
+time_ko_easy_0048,"2019년 현충일에 ""모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 19일 후, 그 날의 일진(日辰), 즉 그 날에 해당하는 60갑자는 무엇인가? (예: 갑자)",을미,"**Analyzing the 일진 (Daily Stem-Branch) for a Specific Date**
+
+Okay, here's my thought process. I'm given that on 현충일 (Memorial Day) in 2019, someone said, ""My birthday is the day after tomorrow.""  I need to determine the 일진 19 days after that birthday.
+
+1.  First, establish the reference point: 현충일 in 2019 was June 6th.
+
+2.  ""The day after tomorrow"" means the birthday is June 8th (6/6 + 2 days).
+
+3.  I need to find the date 19 days after June 8th: that's June 27th, 2019.
+
+4.  Now, the core of the problem: determining the 일진 for June 27th, 2019. I need a base date and a calculation methodology.
+
+    *   I consider finding the 일진 for June 6th directly or for January 1st of that year.
+
+    *   I'll start with January 1st, 2019, since I know the 일진 for a known date, which is 2000 January 1st, and the number of days difference between them.
+
+    *   I'm already aware that the 일진 for January 1st, 2000, is 무오 (戊午 - 55).
+
+    *   From 2000 to 2019 (inclusive), there are 19 years, including 5 leap years (2000, 2004, 2008, 2012, 2016). Therefore, number of days: (19 \* 365) + 5 = 6940.
+
+    *   6940 days is equivalent to 40 days modulo 60.
+
+    *   Since 2000/01/01 is 무오 (55), then the 일진 for 2019/01/01 is 55 + 40 = 95. Then we have to reduce this value: 95 % 60 = 35, which is 무술 (戊戌).  Good, that checks out!
+
+    *   Now, I have to figure out how many days after January 1st is June 27th.
+
+    *   Summing up days from January 1st to June 27th: 31 + 28 + 31 + 30 + 31 + 27 - 1 = 177 days.
+
+    *   177 modulo 60 = 57.
+
+    *   무술 is the 35th in the 60-year cycle (천간 무 = 5, 지지 술 = 11.  5 + 11 = 16, 16 + (1-1) * 60 = 35)
+
+    *   So, 35 + 57 = 92.  92 modulo 60 = 32.
+
+    *   Let's find the 일진 number 32.  32 modulo 10 = 2 -> 을(乙). 32 modulo 12 = 8 -> 미(未). Thus, the 일진 is 을미(乙未).
+
+    *   Let me confirm my approach. The base date is June 8th + 19 days = June 27th.
+
+    *   Calculate the date for June 1st, as it's closer: 31+28+31+30+31 = 151 days from January 1st.  35 + 151 mod 60 = 6, which is 기사(己巳). June 1st is 기사. Then, June 27th is 26 days after June 1st: 6 + 26 = 32. It's 을미. This looks correct.
+
+    *   Alternatively: June 6th is 갑술(甲戌). June 8th is 병자(丙子). The 13th number is 병자. The date 19 days later is 13+19 = 32, 을미. This check confirms my solution!
+
+    *   Therefore:
+        *   2019 현충일: June 6th
+        *   Birthday: June 8th
+        *   Date 19 days after birthday: June 27th
+        *   일
+
+","1. **현충일 확인**: 현충일은 매년 양력 6월 6일입니다. 따라서 2019년 현충일은 2019년 6월 6일입니다.
+2. **생일 날짜 계산**: 6월 6일의 모레(2일 후)이므로 생일은 2019년 6월 8일입니다.
+3. **생일로부터 19일 후 계산**: 6월 8일에서 19일을 더하면 2019년 6월 27일이 됩니다.
+4. **2019년 6월 27일의 일진 계산**:
+   - 2019년 1월 1일의 일진은 무술(戊戌)입니다.
+   - 1월 1일부터 6월 27일까지의 경과 일수를 구합니다. (2019년은 평년)
+   - 1월(31일) + 2월(28일) + 3월(31일) + 4월(30일) + 5월(31일) + 6월 27일 - 1 = 177일.
+   - 177을 60으로 나눈 나머지는 57입니다.
+   - 무술(35번째)에서 57번째 뒤의 간지는 92가 되며, 60을 빼면 32번째 간지가 됩니다.
+   - 32번째 60갑자는 천간의 두 번째 '을(乙)'과 지지의 여덟 번째 '미(未)'가 결합한 을미(乙未)입니다.
+
+Answer: 을미",을미,1,easy,stop
+time_ko_easy_0049,"2007년 현충일에 ""금일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 10일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2007.6.16,"**Calculating a Date**
+
+Okay, so I've got this input: someone born on Memorial Day (현충일) of 2007 is saying ""Today is my birthday"" and wants to know the date 10 days after that.  No problem. Let's break this down systematically.
+
+First, I need to figure out what date Memorial Day is in the Gregorian calendar. Memorial Day is always June 6th, so the birthday is June 6th, 2007.
+
+Next, I need to calculate the date 10 days after June 6th. Simple addition. June 6th + 10 days = June 16th, 2007.
+
+Finally, I need to format the answer as 'YYYY.M.D', so that makes it 2007.6.16.
+
+Just to double check, 6 + 10 = 16. That confirms it's June 16th, 2007. The answer is valid.
+
+
+","2007년 현충일은 양력 6월 6일입니다. 
+따라서 그 사람의 생일은 2007년 6월 6일이 됩니다.
+이 날로부터 10일 후의 날짜를 계산하면 다음과 같습니다.
+
+6월 6일 + 10일 = 6월 16일
+
+따라서 2007년 6월 16일이 됩니다.
+
+Answer: 2007.6.16",2007.6.16,1,easy,stop
+time_ko_easy_0050,"2022년 성탄절에 ""내일모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 21일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2023.1.17,"**Calculating a Date 21 Days After a Specific Birthday**
+
+Okay, let's break this down systematically. I'm given that Christmas 2022 was December 25th, 2022. Then, someone said, ""My birthday is the day after tomorrow."" That immediately tells me the birthday is December 27th, 2022.
+
+Now, I need to figure out the date that is 21 days *after* that birthday. Alright, let's do the math. Starting from December 27th, I need to add 21 days. December has 31 days in total. So, I have:
+
+27 + 21 = 48.
+
+Since December only has 31 days, I subtract 31 from 48:
+
+48 - 31 = 17
+
+This tells me that after accounting for the end of December, the date lands on January 17th of the following year. That would be January 17th, 2023.
+
+Just to double-check my work, let me confirm. 27 days plus 4 days equals the 31st of December, and then that leaves me with 17 days to account for in January (21 days - 4 days = 17 days). Yes, that confirms it: January 17th.
+
+Therefore, the year is the next one up, 2023. So, the final date, in YYYY.M.D format, is 2023.1.17.
+
+In summary, the process looks like this:
+
+1.  Christmas 2022: 2022.12.25
+2.  Birthday (the day after tomorrow): 2022.12.27
+3.  21 days after: 2023.1.17
+
+
+","1. 2022년 성탄절은 양력 2022년 12월 25일입니다.
+2. ""내일모레""는 이틀 뒤이므로, 생일은 2022년 12월 27일입니다.
+3. 2022년 12월 27일로부터 21일 후의 날짜를 계산합니다.
+   - 12월은 31일까지 있습니다.
+   - 27일 + 21일 = 48일
+   - 48일 - 31일 = 17일
+   - 해가 바뀌어 2023년 1월이 됩니다.
+4. 따라서 생일로부터 21일 후의 날짜는 2023년 1월 17일입니다.
+
+Answer: 2023.1.17",2023.1.17,1,easy,stop
+time_ko_easy_0051,"2004년 제헌절에 ""명일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 9일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2004.7.27,"**Calculating a Date**
+
+Okay, so I need to figure out a specific date. First, I looked up 제헌절 (Constitution Day) in 2004, and confirmed it's on July 17th. Then, the prompt states that if someone says ""My birthday is 明日 (my birthday is tomorrow)"", that means the birthday is July 18th, 2004. So, logically, since 明日 is tomorrow, adding one day to the reference day gives me the date I was looking for. Now, I need to calculate the date nine days *after* that birthday. Simple enough, just addition. Taking the 18th of July, I add nine days: 18 + 9 = 27. Therefore, the date nine days after the birthday is July 27th, 2004.
+
+Let me just confirm this. My reference point, based on ""my birthday is 明日"", is July 18th. Adding nine days from there. 18th + 9 days = 27th. And the format I need is ‘2004.7.27’, which is accurate.
+
+
+","1. 제헌절은 양력 7월 17일입니다. 따라서 기준일은 2004년 7월 17일입니다.
+2. ""명일(내일)""이 생일이라고 했으므로, 생일은 2004년 7월 18일입니다.
+3. 생일로부터 9일 후의 날짜를 계산합니다. 7월 18일에 9일을 더하면 7월 27일이 됩니다.
+4. 따라서 구하는 양력 날짜는 2004년 7월 27일입니다.
+
+Answer: 2004.7.27",2004.7.27,1,easy,stop
+time_ko_easy_0052,"2002년 식목일에 ""다음날이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 16일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2002.4.22,"**Calculating a Specific Date**
+
+Okay, let's break this down systematically. First, I need to establish a starting point: the Arbor Day in 2002 was April 5th. Now, the prompt states that the next day is a significant date – that must be my ""birthday"" for the purpose of the calculation. Thus, ""my"" birthday is April 6th.
+
+The next step is to calculate a date 16 days after that. Simply adding 16 days to April 6th gives us April 22nd. Since we are operating within a defined year, that date, April 22nd, occurs in 2002. Finally, confirming that it's a Gregorian (solar) calendar date, we have: 2002.4.22. Therefore, the answer is 2002.4.22.
+
+
+","1. 2002년 식목일은 양력 4월 5일입니다.
+2. ""다음날이 내 생일이야""라고 했으므로, 생일은 4월 5일의 다음날인 4월 6일입니다.
+3. 생일(4월 6일)로부터 16일 후를 계산하면 4월 6일 + 16일 = 4월 22일입니다.
+4. 따라서 연도와 함께 양력 날짜로 표현하면 2002년 4월 22일이 됩니다.
+
+Answer: 2002.4.22",2002.4.22,1,easy,stop
+time_ko_easy_0053,"1999년 현충일에 ""모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 5일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",1999.6.13,"**Calculating a Future Date**
+
+Okay, let's break this down systematically. First, I see the date: June 6th, 1999 is Hyeonchungil. Now, the statement ""The day after tomorrow is my birthday"" presents a straightforward calculation.  ""The day after tomorrow"" from June 6th is June 8th.  So, my birthday is June 8th, 1999.  The next step specifies ""5 days after that birthday."" Simple addition here: June 8th plus 5 days gets me to June 13th, 1999.  Therefore, the final date I'm looking for is June 13th, 1999. It's a rather straightforward date calculation, no tricks or hidden complexities.
+
+
+","1. 1999년 현충일은 양력 1999년 6월 6일입니다.
+2. ""모레가 내 생일이야""라고 했으므로 생일은 현충일로부터 2일 뒤인 1999년 6월 8일입니다.
+3. 그 생일(6월 8일)로부터 5일 후의 날짜를 계산하면 6월 8일 + 5일 = 6월 13일이 됩니다.
+4. 따라서 해당 날짜는 1999년 6월 13일입니다.
+
+Answer: 1999.6.13",1999.6.13,1,easy,stop
+time_ko_easy_0054,"2015년 3·1절에 ""금일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 29일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2015.3.30,"**Calculating the Date 29 Days After a Specific Birthday**
+
+Okay, let's break this down. The problem states that someone said ""Today is my birthday"" on the 2015 March 1st (3.1절). This instantly establishes March 1st, 2015, as the birthday. The question is, what's the date 29 days after that birthday?
+
+It's a straightforward calculation. I start with the given date, March 1st, 2015. Then, I need to add 29 days to that. Remembering my calendar knowledge (which is, of course, second nature), I know March has 31 days. Therefore, adding 29 days to March 1st means: 1 (initial day) + 29 (days to add) = 30. So the final day is the 30th of March. No month boundary is crossed within the calculation.
+
+Therefore, the date 29 days after March 1st, 2015, is March 30th, 2015. So, in the standard YYYY.M.D format, the answer is 2015.3.30.
+
+
+","1. **2015년 3·1절 날짜 확인**
+   - 3·1절은 매년 양력 3월 1일입니다.
+   - 따라서 '금일(오늘)'은 2015년 3월 1일입니다.
+
+2. **29일 후 날짜 계산**
+   - 3월 1일에 29일을 더합니다.
+   - 1 + 29 = 30
+   - 3월은 31일까지 있으므로 달은 넘어가지 않습니다.
+   - 따라서 2015년 3월 30일이 됩니다.
+
+Answer: 2015.3.30",2015.3.30,1,easy,stop
+time_ko_easy_0055,"2008년 현충일에 ""내일모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 4일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2008.6.12,"**Calculating a Date**
+
+Okay, let's break this down. The core reference date is June 6th, 2008 – 현충일 (Hyeonchungil). The speaker mentions that the day after tomorrow is their birthday. So, we need to add two days to the reference date to find the birthday: June 6th + 2 days = June 8th, 2008.
+
+Now, we need to find the date that is four days after the birthday. That's a straightforward calculation: June 8th + 4 days = June 12th, 2008.
+
+Let's do a quick confirmation to ensure accuracy. Yes, we established that June 8th is the birthday. Adding four days to the 8th results in the 12th. The year is confirmed as 2008. Therefore, the target date is June 12, 2008.
+
+Finally, confirm the output format; it’s YYYY.M.D. So, my final answer should be 2008.6.12.
+
+
+","2008년 현충일은 6월 6일입니다. 
+""내일모레가 내 생일이야""라고 했으므로, 생일은 6월 6일에서 2일 뒤인 6월 8일입니다.
+생일로부터 4일 후의 날짜를 구하려면 6월 8일에 4일을 더하면 됩니다.
+따라서 6월 12일이 됩니다.
+
+Answer: 2008.6.12",2008.6.12,1,easy,stop
+time_ko_easy_0056,"2019년 새해 첫날에 ""내일모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 26일 후, 그 날의 일진(日辰), 즉 그 날에 해당하는 60갑자는 무엇인가? (예: 갑자)",병인,"**My Thought Process: A Day-by-Day Interrogation of the Lunar Calendar**
+
+Okay, let's break this down systematically. First, we establish our initial reference point: New Year's Day, 2019, is unequivocally January 1st, 2019. Now, we're told ""the day after tomorrow is my birthday,"" so that places the birthday on January 3rd, 2019.
+
+The target date, the one we're really interested in, is 26 days *after* the birthday, which mathematically becomes January 3rd + 26 days = January 29th, 2019. We're looking to determine the 'iljin' (일진, a daily sexagenary cycle) of this date.
+
+To achieve this, I need a reliable starting point. I could use 1901 January 1st, which is known to be 신축(辛丑). Alternatively, 2024 January 1st is 갑자(甲子). I'll use 2024 to find 2019, as the latter is more recent and easier to manage in my mental calculations.
+
+First, calculate the number of days between 2019 January 1st and 2024 January 1st. 2019 is a normal year (365 days). Then, 2020 (leap), 2021, 2022, and 2023. Total days = (365 * 4) + 366 = 1826. 2024 January 1st is 갑자 (1). Thus, we need to apply the modulo 60 operation to see what the value of 2019 January 1st is.
+1826 mod 60 = 26.
+2019 January 1st would be 1 - 26 = -25.
+-25 + 60 = 35. Therefore 2019 January 1st is 무술(35).
+
+Let's double-check this using another known date: 1901 January 1st (신축, 38). Now, determine how many days are there from 1901 to 2019, 118 years. Number of leap years = floor(118 / 4) = 29. Total days = (118 * 365) + 29 = 43099.
+43099 mod 60 = 19.
+38 + 19 = 57. The result, 57 is 경신(庚申). It does not match.
+
+Let's use a more reliable starting point: 2000 January 1st is 무오(55). So from 2000 to 2018 (19 years) and consider leap years (2000, 2004, 2008, 2012, 2016). Total days is (19 * 365) + 5 = 6940.
+6940 mod 60 = 40.
+55 + 40 = 95 -> 35. This matches the previous calculation: 2019 January 1st = 무술.
+
+Now we can proceed to January 29th, 2019. January 1st is 무술. Then January 29th is 28 days later: (35 + 28) mod 60 = 63 mod 60 = 3. 3 corresponds to 병인 (丙寅).
+
+Let's make sure it checks out day by day. January 1st: 무술. January 2nd: 기해. January 3rd: 경자. Birthday = 경자 + 26 days = January 29th. 경자 (37) + 26 = 63 mod 60 = 3. That corresponds to 병인.
+
+So, let's double check by using the 천간 (Heavenly Stems) and 지지 (Earthly Branches). January 1st: 무술(35). January 29th, which is 28 days after, must be 무(5) + 28 = 33 -> 33 mod 10 = 3 -> 병(丙) and 술(11) + 28 = 39 -> 39 mod 12 = 3 -> 인(寅
+
+","1. **기준 날짜 파악**
+2019년 새해 첫날은 2019년 1월 1일입니다.
+
+2. **생일 계산**
+""내일모레""는 2일 후를 의미합니다. 따라서 생일은 2019년 1월 1일에서 2일을 더한 2019년 1월 3일입니다.
+
+3. **목표 날짜 계산**
+생일(1월 3일)로부터 26일 후의 날짜를 계산합니다.
+1월 3일 + 26일 = 2019년 1월 29일
+
+4. **일진(日辰) 계산**
+2000년 1월 1일은 무오(戊午)일입니다. 2000년부터 2019년까지 19년 동안 평년 14번, 윤년 5번(2000, 2004, 2008, 2012, 2016)이 지나 총 6940일이 경과했습니다.
+6940을 60으로 나눈 나머지는 40이므로, 2019년 1월 1일의 일진은 무오에서 40번째 뒤인 무술(戊戌)일입니다.
+- 2019년 1월 1일: 무술(戊戌)
+- 2019년 1월 29일은 1월 1일로부터 28일 후입니다.
+- 천간: 무(5) + 28 = 33 → 10으로 나눈 나머지 3 = 병(丙)
+- 지지: 술(11) + 28 = 39 → 12로 나눈 나머지 3 = 인(寅)
+
+따라서 2019년 1월 29일의 일진은 병인(丙寅)입니다.
+
+Answer: 병인",병인,1,easy,stop
+time_ko_easy_0057,"2012년 현충일에 ""내일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 24일 후, 그 날의 일진(日辰), 즉 그 날에 해당하는 60갑자는 무엇인가? (예: 갑자)",계해,"**My Thought Process: Determining the Day's Ganzhi**
+
+Okay, so I'm presented with a date puzzle. The user mentioned their birthday was ""tomorrow"" on the 2012 Memorial Day. That's a good starting point. First, I need to figure out the actual date of Memorial Day in 2012. It's always June 6th, so that's easy. Therefore, the user's birthday is June 7th, 2012.
+
+Now, the problem asks for the *ganzhi* (sexagenary cycle) of 24 days *after* the birthday. Simple math: June 7th + 24 days = June 31st, which is actually July 1st, 2012.
+
+The key now is finding the *ganzhi* for July 1st, 2012. I need a reference point. I could try calculating from the beginning of a year or using a known point in time. I recall a common standard reference: January 1st, 2000, which was *Muo* (戊午). But, since I'm concerned with a specific year, a more useful reference would be January 1st, 2012. I remember that 2012 was a leap year, adding an extra day in February.
+
+So, let's start with January 1st, 2012. I know 2000 was *Muo*. Now, 2012 minus 2000 is 12 years. Let's calculate the number of leap years from 2000 to 2012. It should be 3 leap years (2000, 2004, and 2008, 2012). Thus the number of days will be (12 * 365) + 3.
+
+I'm thinking, let's establish January 1st, 2012 as a *ganzhi* to work from. To figure that out. 1900 is an easy anchor point to work from. The total number of years from 1900 to 2012 is 112 years. Now, calculate the number of leap years from 1900 to 2012. I count 27, by recalling 1904, 1908, ...., 2008. So, the number of days is (112 * 365) + 27 = 40907 days. Since 1900 January 1st is *Gaesul* (甲戌, 11).
+
+I need to apply the modulus 60 to this total and see where that lands. 40907 modulo 60 gives me 47. Adding 11, *Gaesul* (11) + 47 = 58. That is *Shinyu* (辛酉). So, January 1st, 2012, is *Shinyu* (辛酉, 58).
+
+Let's test this...2012 January 1st is *Shinyu*. Now, let's count the days between January 1st and July 1st.
+January (31 days)
+February (29 days - leap year)
+March (31 days)
+April (30 days)
+May (31 days)
+June (30 days)
+Total is 182 days.
+
+182 days after January 1st means *Shinyu* + 182 days. Again, I will take the modulus: 182 modulo 60 equals 2. So, *Shinyu* (58) + 2 = 60. That is *Gyehae* (癸亥).
+
+Just to be sure, let's double-check. The January 1st, 2000 reference point, *Muo* (戊午, 55).  Between 2000 and 2012, there are 12 years and 3 leap years. (12 * 365) + 3 = 4383 days. 4383 modulo 60 equals 3. *Muo* (55) + 3 = 58, which is *Shinyu*! Then, we confirm the 182 days to July 1st. 182 modulo 60 is 2. *Shinyu* (58) + 2 = 60, *Gyehae* (癸亥
+
+","1. **2012년 현충일 확인**
+   현충일은 매년 양력 6월 6일입니다. 따라서 2012년 현충일은 2012년 6월 6일입니다.
+
+2. **생일 날짜 계산**
+   ""내일이 내 생일이야""라고 했으므로, 생일은 현충일의 다음 날인 2012년 6월 7일입니다.
+
+3. **생일로부터 24일 후의 날짜 계산**
+   6월 7일에서 24일을 더하면 6월 31일이 됩니다. 6월은 30일까지 있으므로, 6월 31일은 **2012년 7월 1일**이 됩니다.
+
+4. **2012년 7월 1일의 일진(60갑자) 계산**
+   - 2000년 1월 1일은 무오(戊午)일입니다.
+   - 2000년부터 2012년 1월 1일까지는 12년이 지났으며, 그 사이 윤년이 3번(2000년, 2004년, 2008년) 있었습니다.
+   - 총 날짜 차이: 12년 × 365일 + 3일 = 4383일. 
+   - 4383을 60으로 나눈 나머지는 3이므로, 무오(55)에서 3을 더하면 58, 즉 2012년 1월 1일은 신유(辛酉)일입니다.
+   - 2012년은 윤년이므로 2월이 29일까지 있습니다. 1월 1일부터 7월 1일까지의 일수 차이는 31 + 29 + 31 + 30 + 31 + 30 = 182일입니다.
+   - 182를 60으로 나눈 나머지는 2입니다.
+   - 신유(58)에 2를 더하면 60번째 간지인 계해(癸亥)가 됩니다.
+
+Answer: 계해",계해,1,easy,stop
+time_ko_easy_0058,"1992년 한글날에 ""낼모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 10일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",1992.10.21,"**Calculating the Date Based on Hangeul Day**
+
+Okay, so the user wants me to figure out a specific date, and it seems to involve some date arithmetic using Korean expressions. Let me break this down step-by-step. The base date is Hangeul Day in 1992. I know Hangeul Day is celebrated on October 9th in South Korea. So, we're starting with October 9, 1992 (1992.10.09).
+
+The next clue: ""The day after tomorrow is my birthday."" (""낼모레가 내 생일이야""). Now, ""낼모레"" means the day after tomorrow. So if today is Hangeul Day, October 9th, then tomorrow is October 10th, and the day after tomorrow is October 11th. That means the birthday is October 11, 1992 (1992.10.11).
+
+The user is asking for the date *10 days after* the birthday. Simple enough, just add 10 days to October 11th. 11 + 10 = 21. So, that lands us on October 21, 1992 (1992.10.21).
+
+I will double-check. Okay, Hangeul Day has been on October 9th since 1945. So, yes, it was October 9th in 1992. Then, ""낼모레"" really does mean two days from the base date, October 9th. Adding 2 to October 9th will result in October 11th. Then adding 10 more days will result in October 21st. I do not think there is any linguistic trick or twist, in this case.
+
+Here's the breakdown again:
+
+1.  Hangeul Day (1992): 1992.10.09
+2.  ""낼모레"" (Birthday): 1992.10.09 + 2 days = 1992.10.11
+3.  10 days after the birthday: 1992.10.11 + 10 days = 1992.10.21
+
+So, the final answer should be: 1992.10.21
+
+
+","1. **기준일 파악**: 1992년 한글날은 양력 1992년 10월 9일입니다.
+2. **생일 계산**: ""낼모레(2일 뒤)가 내 생일""이라고 하였으므로, 생일은 10월 9일에서 2일을 더한 1992년 10월 11일입니다.
+3. **10일 후 날짜 계산**: 생일인 10월 11일로부터 10일 후의 날짜를 계산하면 10월 11일 + 10일 = 10월 21일이 됩니다.
+
+따라서 구하는 양력 날짜는 1992년 10월 21일입니다.
+
+Answer: 1992.10.21",1992.10.21,1,easy,stop
+time_ko_easy_0059,"2003년 어린이날에 ""오늘이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 5일 후, 그 날의 일진(日辰), 즉 그 날에 해당하는 60갑자는 무엇인가? (예: 갑자)",계미,"**My Thought Process: Determining the Ganzhi (Sexagenary Cycle) Date**
+
+Okay, let's break this down systematically. My objective is to figure out the Ganzhi (stem-branch) for a specific date: 2003 May 10th. I'll need to calculate a series of dates and then apply the sexagenary cycle.
+
+First, I need to pinpoint the date: the problem asks for 5 days after Children's Day in 2003. Children's Day is always May 5th, so the target date is May 10th, 2003.
+
+Now, to the core calculation. I’ll establish a reference point. I recall that January 1st, 2000 was Mu-Oh (戊午). I double-check my starting point. I know 2000 was a leap year, so 2001 January 1st would be 366 days later. Since 366 mod 60 is 6, Mu-Oh (55) + 6 = 61 which mod 60 is 1. January 1st, 2001 is Gap-Ja (甲子) - that’s good. 2002 then should be Gap-Ja (1) + 365 (mod 60, which is 5) = 6, or Gi-Sa (己巳). And 2003, well that’s Gi-Sa (6) + 365 (mod 60, which is 5) = 11, or Gap-Sul (甲戌). That seems right.
+
+So, January 1st, 2003 is Gap-Sul (甲戌).
+
+Now, the days between January 1st and May 10th:
+*   January: 31 days
+*   February: 28 days (2003 is not a leap year)
+*   March: 31 days
+*   April: 30 days
+*   May: 10 days
+*   Total: 130 days
+
+Now calculate the total: 130 - 1 = 129 days from Gap-Sul (甲戌, 11).
+Thus 11 + 129 = 140. Now, 140 mod 60 = 20.
+
+Determine the stem and branch from 20:
+*   Heavenly stem (천간): 20 mod 10 = 0. That's Kye (癸).
+*   Earthly Branch (지지): 20 mod 12 = 8. That's Mi (未).
+
+Therefore, the Ganzhi for May 10th, 2003 should be Kye-Mi (癸未).
+
+Finally, I do a quick sanity check. If May 10th is Kye-Mi, then May 5th, 2003 would be Mu-In, this is May 5th = 130-5=125, so 11+124 = 135 mod 60 = 15 = Mu-In. And I can confirm that is correct with the lunar calendar data.
+
+So, I conclude that the Ganzhi for May 10th, 2003 is Kye-Mi.
+
+
+","2003년 어린이날은 양력 5월 5일입니다. 
+이 날로부터 5일 후의 날짜는 5월 10일입니다.
+
+2003년 5월 10일의 일진을 계산하면 다음과 같습니다.
+- 2001년 1월 1일은 갑자(甲子)일입니다.
+- 2002년 1월 1일은 365일이 지나 기사(己巳)일입니다.
+- 2003년 1월 1일은 365일이 지나 갑술(甲戌)일입니다.
+- 2003년 1월 1일부터 5월 10일까지의 경과 일수는 130일입니다. (1월 31일 + 2월 28일 + 3월 31일 + 4월 30일 + 5월 10일)
+- 1월 1일이 갑술(11번째)이므로, 129일이 지난 5월 10일은 11 + 129 = 140이 됩니다.
+- 140을 60으로 나눈 나머지는 20이며, 60갑자 중 20번째에 해당하는 간지는 계미(癸未)입니다.
+
+Answer: 계미",계미,1,easy,stop
+time_ko_easy_0060,"1994년 어린이날에 ""내일모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 23일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",1994.5.30,"**Calculating a Date: A Step-by-Step Approach**
+
+Okay, let's break this down systematically. First, I need to establish the initial point of reference. I see the question is asking to determine a specific date, so I'll start with the base date: **1. I'm given that Children's Day in 1994 was May 5th.** Straightforward.
+
+**2. Now I have to interpret ""the day after tomorrow is my birthday.""** ""The day after tomorrow"" means two days from today. Knowing Children's Day was May 5th, I can simply add two days: May 5th + 2 days = May 7th, 1994. Therefore, my birthday must have been on May 7th, 1994.
+
+**3. Now, the task is to find the date 23 days after that birthday.** The starting point is May 7th, 1994. So, I add 23 days to May 7th. May 7th + 23 days = May 30th, 1994.
+
+**4. I need to make a mental quick check to ensure the result is valid.** May has 31 days. May 30th falls within May, so the date is logically sound.
+
+**5. Finally, format the answer as requested.** It seems the expected format is YYYY.M.D. Therefore, the final result is 1994.5.30.
+
+
+","1994년 어린이날은 양력 5월 5일입니다.
+이 날로부터 내일모레(2일 후)는 5월 7일이므로, 생일은 1994년 5월 7일입니다.
+그 생일(5월 7일)로부터 23일 후의 날짜를 계산하면, 7 + 23 = 30이므로 5월 30일이 됩니다.
+
+Answer: 1994.5.30",1994.5.30,1,easy,stop
+time_ko_easy_0061,"2002년 한글날에 ""낼모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 4일 후, 그 날의 일진(日辰), 즉 그 날에 해당하는 60갑자는 무엇인가? (예: 갑자)",병진,"**Calculating the 60-Year Cycle Day**
+
+Okay, so the problem starts with a statement made on Hangeul Day, October 9th, 2002: ""My birthday is the day after tomorrow."" That immediately translates to a birthday on October 11th, 2002. Then, the question asks for the cyclical day four days after that birthday, which means we need to find the cyclical day for October 15th, 2002.
+
+Since I know that the cycle repeats every 60 days (or rather, the combination of stems and branches in the sexagenary cycle repeats), the approach is to find the cyclical day for a known reference and then calculate the difference. From prior knowledge, 2000 January 1st was ""무오(戊午)"".
+
+First, I calculate the number of days between January 1st, 2000, and January 1st, 2002. I take into account that 2000 was a leap year (366 days), and 2001 was a regular year (365 days). Summing this up gives me 731 days. This allows me to calculate the 2002 January 1st's day with ""무오"".
+
+731 days from 무오 puts us at the 6th day of the sexagenary cycle, ""기사(己巳)"", in 2002. I check this, but it is not necessary. We need to go from January 1st to October 15th within the year.
+
+Next, I calculate the number of days from January 1st to October 15th, 2002. I sum the days in each month: January (31), February (28 - since 2002 is not a leap year), March (31), April (30), May (31), June (30), July (31), August (31), September (30), and October (14). The sum of these is 287.
+
+Now, starting from the 6th day (""기사"") on January 1st, I add 287 days. This means computing 6 + 287 = 293. I find the remainder of that result from dividing 293 by 60, which is 53. Since '기사' is the 6th, and we add 287, we perform modulo 60 operation to see what the final day is.
+I know from prior knowledge of this cycle that the 53rd cyclical day corresponds to ""병진(丙辰)"".
+
+To double-check the result, I calculate another way, starting from October 1st, and going 14 days later. October 1st is found to be 39, which is 임인 (39) when based on the cycle. Since 39 + 14 = 53.
+
+Answer: 병진
+
+
+","1. **기준일 파악**: 
+   2002년 한글날은 10월 9일입니다.
+
+2. **생일 계산**: 
+   ""낼모레가 내 생일이야""라고 했으므로, 생일은 10월 9일의 이틀 뒤인 10월 11일입니다.
+
+3. **목표 날짜 계산**: 
+   생일로부터 4일 후는 10월 11일 + 4일 = 2002년 10월 15일입니다.
+
+4. **목표 날짜의 일진(간지) 계산**:
+   - 2002년 1월 1일의 일진은 기사(己巳, 6번째 간지)입니다.
+   - 1월 1일부터 10월 1일까진 평년 기준으로 총 273일이 지납니다 (31+28+31+30+31+30+31+31+30 = 273).
+   - 273을 60으로 나누면 나머지가 33입니다.
+   - 따라서 10월 1일의 간지 번호는 6 + 33 = 39, 즉 임인(壬寅)입니다.
+   - 10월 15일은 10월 1일로부터 14일 뒤이므로, 39 + 14 = 53입니다.
+   - 60갑자 중 53번째 간지는 병진(丙辰)입니다.
+
+Answer: 병진",병진,1,easy,stop
+time_ko_easy_0062,"2020년 3·1절에 ""익일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 26일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2020.3.28,"**Calculating a Date 26 Days After a Specific Birthday**
+
+Okay, let's break this down systematically. First, I recognize that March 1st, 2020, is the 3.1절 (Independence Movement Day) in Korea. The problem states that the individual's birthday is ""tomorrow,"" in relation to the 3.1절. Therefore, the birthday must be the very next day, March 2nd, 2020. My task is to determine the date 26 days after that birthday.
+
+Simple enough, I just need to add 26 days to March 2nd. Doing the math, 2 (the day) + 26 = 28. Since March has 31 days, I'm well within the month. Therefore, the result is March 28th. The year remains 2020, as we haven't crossed into a new year.
+
+Finally, I just need to present the answer in the requested format. Therefore, the final answer is 2020.3.28.
+
+
+","2020년 3·1절은 2020년 3월 1일입니다.
+익일(다음 날)이 생일이라고 했으므로 생일은 2020년 3월 2일입니다.
+2020년 3월 2일로부터 26일 후의 날짜를 계산하면, 2 + 26 = 28이므로 3월 28일이 됩니다.
+따라서 양력 날짜는 2020년 3월 28일입니다.
+
+Answer: 2020.3.28",2020.3.28,1,easy,stop
+time_ko_easy_0063,"1999년 현충일에 ""금일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 21일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",1999.6.27,"**Calculating a Date**
+
+Okay, so we're starting with the Korean Memorial Day, *Hyeonchung-il*, in 1999. I know that's June 6th, 1999. Now I need to figure out the date that's 21 days from that day. This is pretty straightforward. June 6th, plus 21 days... That should be simple addition. Let's see, 6 plus 21 equals 27.  Since 27 doesn't go over into July, it all stays within the same month. Therefore, the answer is June 27th, 1999.  I'll express that in the requested YYYY.M.D format for clarity: 1999.6.27. Done.
+
+
+","1999년 현충일은 양력 1999년 6월 6일입니다.
+이 날로부터 21일 후의 날짜를 계산하면 다음과 같습니다.
+6월 6일 + 21일 = 6월 27일
+
+따라서 21일 후의 양력 날짜는 1999년 6월 27일입니다.
+
+Answer: 1999.6.27",1999.6.27,1,easy,stop
+time_ko_easy_0064,"2010년 성탄절에 ""모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 18일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2011.1.14,"**Calculating a Date 18 Days After My Birthday**
+
+Okay, let's break this down logically. The text states that Christmas in 2010 was December 25th, and someone said ""My birthday is the day after tomorrow."" That directly implies my birthday is December 27th. The question is, what's the date 18 days after that?
+
+First, I need to perform the initial calculation: December 27th plus 18 days. This gives me December 45th. Now I recognize that December only has 31 days. So, I need to adjust for that.
+
+Subtracting 31 from 45, the remaining days become 14 which means that I am now in the next month, January. Therefore, the date is January 14th, 2011, which gives me 2011.1.14 in YYYY.M.D format.
+
+Let me do a quick sanity check to confirm: If my birthday is the 27th, and 12/31 is four days away, then the remaining 14 days are the 14th of January. Perfect, it is 2011.1.14!
+
+
+","1. 2010년 성탄절은 양력 2010년 12월 25일입니다.
+2. ""모레가 내 생일이야""라고 하였으므로, 생일은 12월 25일의 2일 뒤인 2010년 12월 27일입니다.
+3. 생일로부터 18일 후의 날짜를 계산합니다.
+   - 12월 27일에 18일을 더하면 12월 45일이 됩니다.
+   - 12월은 31일까지 있으므로, 45 - 31 = 14일이 다음 해 1월로 넘어갑니다.
+   - 따라서 날짜는 2011년 1월 14일입니다.
+
+Answer: 2011.1.14",2011.1.14,1,easy,stop
+time_ko_easy_0065,"1992년 새해 첫날에 ""오늘이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 19일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",1992.1.20,"**Calculating a Date**
+
+Okay, so the prompt tells me that the starting date is January 1st, 1992 (in the Gregorian calendar, of course). The problem is phrased as a birthday, so I know this is a fixed date. The challenge is to calculate the date 19 days after this starting point. Let's see...
+
+I'll start with January 1st, 1992. Then, I need to add 19 days to that date. Simple arithmetic. If I add one day, I get to January 2nd, and so on.
+
+Therefore, January 1st + 19 days is clearly January 20th. I just need to verify it.
+
+I confirm the date is January 20th, 1992. I'm asked for the date in YYYY.M.D format. So the answer is 1992.1.20. That was straightforward.
+
+
+","1992년 새해 첫날은 양력으로 1992년 1월 1일입니다.
+이 날로부터 19일 후를 계산하려면 1일에 19를 더합니다.
+1 + 19 = 20이므로, 19일 후는 1992년 1월 20일이 됩니다.
+
+Answer: 1992.1.20",1992.1.20,1,easy,stop
+time_ko_easy_0066,"1992년 3·1절에 ""이튿날이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 8일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",1992.3.10,"**My Calculation Process**
+
+Okay, let me break this down methodically. First, the text establishes that 1992년 3·1절 (March 1st, 1992) is March 1st, 1992 – that's my baseline. Next, ""이튿날이 내 생일이야"" (""The next day is my birthday"") implies that the birthday is the ""next day,"" or March 2nd, 1992. Now, I need to find the date eight days *after* that birthday. Simple enough: March 2nd + 8 days = March 10th, 1992. The question asks for the Gregorian date, which is already in the Gregorian Calendar so no further conversion is needed. Therefore the answer is March 10th, 1992. Finally, per the prompt, I'll format the output as ""YYYY.M.D"", resulting in ""1992.3.10"". Let me quickly double-check: March 1st is March 1st. Birthday is the following day: March 2nd. Eight days after the birthday is: March 10th, 1992. Yep, it's all correct.
+
+
+","1992년 3·1절은 1992년 3월 1일입니다.
+이튿날은 다음 날을 의미하므로, 언급된 생일은 1992년 3월 2일입니다.
+생일인 1992년 3월 2일로부터 8일 후의 날짜를 계산하면 다음과 같습니다.
+3월 2일 + 8일 = 3월 10일
+
+따라서 해당 날짜는 1992년 3월 10일입니다.
+
+Answer: 1992.3.10",1992.3.10,1,easy,stop
+time_ko_easy_0067,"2011년 광복절에 ""모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 18일 후, 그 날의 일진(日辰), 즉 그 날에 해당하는 60갑자는 무엇인가? (예: 갑자)",임술,"**Calculating the Lunar Day and the Final Answer**
+
+Okay, let's break this down systematically. The core task is to determine the *iljin* (60-year cycle day) of a specific date. First, I identify the reference date, which is August 15, 2011 (Korean Independence Day). The question asks for a date two days after, so it's August 17th. Then, 18 days after that is the target date, September 4, 2011. Now, calculating the *iljin* requires a starting point and the number of days elapsed.
+
+I'll calculate the 일진 of the date of September 4, 2011. The core method is to find the number of days between a known *iljin* date and the target date, then use modular arithmetic (modulo 60) to determine the *iljin* of the target date. I need a reference point to start, and 2000-01-01 (戊午) is provided. But, I decide to use the 1900-01-01 (갑술) to have more reliable and consistent calculation in the long run.
+
+The plan is to figure out the 일진 of 2011-01-01. I need to calculate the difference between 1900-01-01 and 2011-01-01. I'll determine how many leap years are in between, then add the total days, and take the remainder when divided by 60. Then I can determine the difference between 1900-01-01 (갑술) and 2011-01-01.
+
+111 years, plus leap years. Calculate the total days and divide by 60 to find the remainder. Now, this is a more straightforward and accurate calculation, avoiding potential errors. I'll use 2024-01-01 (갑자) as another reference point to verify and cross-check. The difference in days and modular arithmetic should give me a consistent *iljin* for 2011-01-01.
+
+Okay, I've got it. The calculation to find the total days and modular arithmetic to determine the *iljin* of January 1, 2011. I calculated that January 1, 2011 is 병진 (53). Now I will determine the day's *iljin* for September 4, 2011. I have to find how many days elapsed. I will add the total days (245) to 53 and calculate mod 60 to get 59. This gives me 임술(59). I should use the calculation:
+
+(일진(2011.01.01) + 날짜의차이(245)) % 60.
+53 + 245 = 298.
+298 % 60 = 58. (신유).
+The result, 임술. Wait, I made a mistake... I should add the total number of days to January 1, 2011 (병진(53)) correctly, I need to check one more time from the beginning.
+
+Okay, now let's find the difference between 2011.09.04 and 2024.01.01 and use 2024.01.01 (갑자) as a reference point.
+4502 days. Mod 60 is 2. The difference is -2 from 갑자(1). So it is 59번째.
+Since it's 59, the answer is 임술.
+
+Answer: 임술
+
+
+","1. **기준일 파악**:
+   - 2011년 광복절은 2011년 8월 15일입니다.
+
+2. **생일 및 목표 날짜 계산**:
+   - ""모레가 내 생일""이라고 하였으므로 생일은 기준일로부터 2일 후인 2011년 8월 17일입니다.
+   - 생일로부터 18일 후의 날짜를 계산하면, 8월 17일 + 18일 = 8월 35일이 됩니다.
+   - 8월은 31일까지 있으므로 35일에서 31일을 빼면 9월 4일이 됩니다. 즉, 찾고자 하는 날짜는 **2011년 9월 4일**입니다.
+
+3. **일진(60갑자) 계산**:
+   - 최근의 확실한 기준일인 2024년 1월 1일은 '갑자(甲子)'일입니다.
+   - 2011년 9월 4일부터 2024년 1월 1일까지의 총 일수를 계산해 봅니다.
+     - 2011년 9월 4일부터 12월 31일까지: 9월(26일) + 10월(31일) + 11월(30일) + 12월(31일) = 118일
+     - 2012년부터 2023년까지(12년, 윤년 3번 포함): 365일 × 12 + 3일 = 4,383일
+     - 2024년 1월 1일: 1일
+     - 총 일수 차이: 118 + 4383 + 1 = 4,502일
+   - 60갑자는 60일마다 반복되므로 4,502를 60으로 나눈 나머지를 구합니다.
+     - 4,502 ÷ 60 = 75 ... 나머지 2
+   - 2024년 1월 1일(갑자일, 60갑자의 1번째)에서 2일 전으로 역산하면 59번째 간지가 됩니다. (1 - 2 + 60 = 59)
+   - 60갑자의 59번째는 '임술(壬戌)'입니다.
+
+Answer: 임술",임술,1,easy,stop
+time_ko_easy_0068,"2010년 현충일에 ""익일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 17일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2010.6.24,"**My Analytical Breakdown: Calculating the Target Date**
+
+Okay, let's break this down systematically. First, I need to establish the initial anchor date. We're given ""현충일"" as the base, and since this is Korea, and I know that 현충일 is always June 6th, I'm setting 2010.6.6 as my starting point.
+
+The core information is that ""the day after"" is my birthday. Thus, if the base date is 2010.6.6, then my birthday must be 2010.6.7. This is straightforward.
+
+Now, the actual calculation. The problem states I need to find the date 17 days after my birthday. So, I add 17 days to 2010.6.7. Quickly checking my calendar knowledge, I know June has 30 days.  7 + 17 = 24. This confirms the new date within the month of June.
+
+To verify, I quickly run through the dates: 현충일 on 2010.6.6, birthday on 2010.6.7, and the target date of 2010.6.24. This makes sense.
+
+Finally, I'll state the answer in the required YYYY.M.D format: 2010.6.24.
+
+
+","기준일인 2010년 현충일은 양력 6월 6일입니다.
+""익일이 내 생일이야""라고 했으므로, 생일은 현충일의 다음 날인 2010년 6월 7일입니다.
+이 생일로부터 17일 후를 계산하면, 6월 7일 + 17일 = 6월 24일이 됩니다.
+
+따라서 구하는 날짜는 2010년 6월 24일입니다.
+
+Answer: 2010.6.24",2010.6.24,1,easy,stop
+time_ko_easy_0069,"2004년 현충일에 ""이튿날이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 20일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2004.6.27,"**Calculating a Date Twenty Days After My Birthday**
+
+Okay, let's break this down systematically. First, I need to establish the reference point. I see ""현충일"" mentioned, so I quickly confirm that 현충일 in 2004 was on June 6th. Then, the text states ""이튿날이 내 생일이야,"" meaning my birthday is the following day. That puts my birthday at June 7th, 2004.
+
+Now, the core calculation. I need to find the date 20 days *after* my birthday. It's a simple addition problem, really. June 7th plus 20 days. 7 + 20 equals 27. I double-check that June has 30 days, so June 27th, 2004 is a valid date.
+
+Finally, I'll format the answer as requested: YYYY.M.D, and thus, my final answer is 2004.6.27.
+
+
+","2004년의 현충일은 6월 6일입니다.
+현충일의 이튿날은 6월 7일이므로, 생일은 2004년 6월 7일이 됩니다.
+이 생일인 6월 7일로부터 20일 후의 날짜를 계산하면 다음과 같습니다.
+6월 7일 + 20일 = 6월 27일
+
+따라서 그 날의 양력 날짜는 2004년 6월 27일입니다.
+
+Answer: 2004.6.27",2004.6.27,1,easy,stop
+time_ko_easy_0070,"2000년 한글날에 ""오늘이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 25일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2000.11.3,"**My Analysis of the Date Calculation**
+
+Okay, let's break this down systematically. The core problem is finding the date 25 days after the year 2000's Hangul Day. The target output format is YYYY.M.D, simple enough.
+
+First, I need to establish the baseline: Hangul Day is always October 9th in the Gregorian calendar. So, our starting point is 2000.10.09.
+
+Now the calculation: I'm adding 25 days to this date. This means straightforward date arithmetic. 2000.10.09 + 25 days. I know October has 31 days. So, if I add 25 days to the 9th, I'm at the 34th of October. Clearly, that is wrong as October has only 31 days.
+
+Therefore, 34-31=3. That means it rolls over into the next month. So, it becomes November 3rd, 2000. The year remains unchanged at 2000.
+
+Let's double-check. 22 days after the 9th of October is October 31st. 23 days is November 1st. 24 days is November 2nd. Thus, 25 days after is indeed November 3rd. Confirmed!
+
+Finally, I just need to present the answer in the required YYYY.M.D format. So, the final answer is 2000.11.3.
+
+
+","1. 기준일 파악: 2000년 한글날은 양력 10월 9일입니다.
+2. 날짜 더하기: 2000년 10월 9일에서 25일 후의 날짜를 계산합니다.
+   - 10월 9일에 25일을 더하면 10월 34일이 됩니다.
+   - 10월은 31일까지 있으므로, 34일에서 31일을 빼면 다음 달인 11월 3일이 됩니다.
+3. 따라서 2000년 한글날(10.9)로부터 25일 후는 2000년 11월 3일입니다.
+
+Answer: 2000.11.3",2000.11.3,1,easy,stop
+time_ko_easy_0071,"2002년 한글날에 ""모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 2일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2002.10.13,"**Calculating a Date**
+
+Okay, let me break this down methodically. The text is providing a date calculation problem. First, I establish that Korean Alphabet Day (Hangeul Day) in 2002 was October 9th. The phrase ""My birthday is the day after tomorrow"" tells me the birthday is two days after Hangeul Day. Simple arithmetic: October 9th + 2 days equals October 11th. So my birthday is October 11th, 2002.
+
+Now, the core of the problem: I need to find the date two days after my birthday. Adding two days to October 11th brings me to October 13th, 2002.  Therefore, the final date I'm looking for is October 13th, 2002. I double-checked the logic to make sure I had each step accounted for. The format is YYYY.M.D, so the answer is 2002.10.13.
+
+
+","2002년 한글날은 10월 9일입니다.
+이 날로부터 ""모레""인 생일은 10월 9일에 2일을 더한 10월 11일입니다.
+그리고 그 생일(10월 11일)로부터 다시 2일 후의 날짜를 계산하면 10월 11일 + 2일 = 10월 13일이 됩니다.
+따라서 해당 날짜는 2002년 10월 13일입니다.
+
+Answer: 2002.10.13",2002.10.13,1,easy,stop
+time_ko_easy_0072,"2020년 3·1절에 ""내일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 2일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2020.3.4,"**Calculating a Date**
+
+Okay, let me break this down. First, we're dealing with March 1st, 2020 – that's our starting point, as that's the established date for the 3.1절 holiday.  The text explicitly states ""tomorrow is my birthday,"" so my birthday must be the very next day, March 2nd, 2020. Now, I need to figure out the date two days after my birthday.  Simple addition: March 2nd plus two days.  That lands us on March 4th, 2020.  Finally, formatting the result as requested, we get '2020.3.4'.  That was straightforward.
+
+
+","1. 2020년 3·1절은 양력 2020년 3월 1일입니다.
+2. ""내일이 내 생일이야""라고 했으므로, 생일은 2020년 3월 2일입니다.
+3. 생일로부터 2일 후의 날짜를 계산하면 3월 2일에 2일을 더해 3월 4일이 됩니다.
+따라서 구하는 양력 날짜는 2020년 3월 4일입니다.
+
+Answer: 2020.3.4",2020.3.4,1,easy,stop
+time_ko_easy_0073,"2007년 3·1절에 ""오늘이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 5일 후, 그 날의 일진(日辰), 즉 그 날에 해당하는 60갑자는 무엇인가? (예: 갑자)",기해,"**Calculating the Heavenly Stem and Earthly Branch for March 6, 2007**
+
+Alright, let's break this down systematically. The core task is to determine the *iljin* (daily stem-branch) of March 6, 2007, and it's most efficient to work from a known reference point.
+
+First, I need to pinpoint the date in question. The problem states it's 5 days after the March 1st, 2007, which confirms that date.  So, March 1st, 2007 + 5 days equals March 6th, 2007. That's the target date.
+
+Now, establishing a base is key.  I'll use the common standard of 2000 January 1st which is known to be *Muo* (戊午). Then, the goal is to calculate the number of days between the base date and the target.
+
+I'll calculate the date from 2000-01-01 to 2007-01-01. Counting the leap years (2000 and 2004), I have: 366 (2000) + 365*3 + 366 (2004) + 365*2 = 2557 days.  Dividing this number by 60 for the sexagenary cycle (*60甲子*), 2557 mod 60 = 37. Since 2000 Jan 1st is *Muo*, which is the 55th, the 37th after that date is (55+37) mod 60 = 32. This gives *Eulmi* (乙未) for January 1st, 2007.
+
+Next, I need to know how many days are between January 1st and March 6th in 2007. It's a non-leap year so this is: 31 (Jan) + 28 (Feb) + 6 (March) - 1 = 64 days after January 1. Since (64 mod 60) = 4, four days after *Eulmi* is what the date is after that. Therefore (32+4) mod 60 = 36. Thus, I count forward from the known *Eulmi* (32) and find the 36th day in the *Ganji* cycle is *Gihae* (己亥).
+
+Now, it's good practice to double-check. I will calculate from March 1st to verify the results.  March 1st is 59 days after January 1st (31 + 28 -1 = 58). This can be verified, 59 mod 60 = 59. This calculates as (32 + 59) mod 60 = 31 (*Gap-O*, 甲午). Adding 5 days from March 1st, (31 + 5) mod 60 = 36, confirming that the *iljin* of March 6, 2007 is indeed *Gihae*.
+
+Final Answer is: *Gihae* (己亥).
+
+
+","1. **2007년 3·1절 날짜 확인**
+   2007년 3·1절은 2007년 3월 1일입니다.
+
+2. **5일 후 날짜 계산**
+   2007년 3월 1일에서 5일 후는 2007년 3월 6일입니다.
+
+3. **2007년 3월 6일의 일진 계산**
+   - 2000년 1월 1일은 무오(戊午)일입니다.
+   - 2000년 1월 1일부터 2007년 1월 1일까지의 총 일수는 2,557일입니다. (윤년 2000년, 2004년 포함)
+   - 2,557을 60으로 나눈 나머지는 37이므로, 무오(55번째)에서 37을 더하면 92가 되며, 60을 빼면 32번째인 을미(乙未)일이 됩니다. 즉, 2007년 1월 1일은 을미일입니다.
+   - 2007년 1월 1일부터 3월 1일까지의 경과 일수는 1월(31일) + 2월(28일) = 59일입니다.
+   - 을미(32번째)에 59를 더하면 91, 60을 빼면 31번째인 갑오(甲午)일이 됩니다. 따라서 2007년 3월 1일은 갑오일입니다.
+   - 3월 1일(갑오)로부터 5일 후인 3월 6일의 일진은 갑오(31) + 5 = 36번째 간지인 기해(己亥)가 됩니다.
+
+Answer: 기해",기해,1,easy,stop
+time_ko_easy_0074,"2023년 제헌절에 ""오늘이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 15일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2023.8.1,"**Calculating a Date 15 Days After Constitution Day 2023**
+
+Alright, let's break this down. First, I need to pinpoint the date of Constitution Day in 2023. I already know that Constitution Day is always on July 17th. So, today's starting point is July 17, 2023.
+
+Now, the task is to figure out the date 15 days from that. Simple addition here: July 17th plus 15 days is July 32nd. But we know July only has 31 days. So, we subtract 31 from 32, leaving us with 1. This means we've rolled into August, and the date is August 1st. The year, of course, remains 2023.
+
+Finally, formatting the result as requested (YYYY.M.D), the answer is 2023.8.1. Just to be absolutely sure, I'll quickly verify:
+
+July 17 + 1 day = July 18... and so on... adding each day until it gets to Aug 1st, so it's correct.
+
+
+","2023년 제헌절은 양력 7월 17일입니다. 
+따라서 ""오늘""은 2023년 7월 17일이 됩니다.
+
+7월 17일로부터 15일 후의 날짜를 계산하면 다음과 같습니다.
+17 + 15 = 32
+7월은 31일까지 있으므로, 32 - 31 = 1
+즉, 다음 달인 8월 1일이 됩니다.
+
+따라서 구하는 양력 날짜는 2023년 8월 1일입니다.
+
+Answer: 2023.8.1",2023.8.1,1,easy,stop
+time_ko_easy_0075,"2000년 3·1절에 ""낼모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 13일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2000.3.16,"**Calculating a Date 13 Days After a Specific Birthday in the Year 2000**
+
+Okay, so the 2000 March 1st date is straightforward – that's a given. Now, I'm told ""the day after tomorrow is my birthday"".  ""The day after tomorrow"" in this context refers to two days from the reference date, 3/1.  Therefore, my birthday must be March 3rd.
+
+The core of the problem then, becomes straightforward – calculate the date that is thirteen days after the birthday, March 3rd, 2000. It's a simple addition problem, then: 3/3 + 13 days = 3/16.
+
+Since the year is specified as 2000, the final answer is March 16th, 2000. Converting to the requested format we have 2000.3.16.
+
+Just to be absolutely sure, I'll quickly double-check the logic. March 1st + 2 days (for ""the day after tomorrow"") confirms the birthday as March 3rd.  Then, March 3rd plus 13 days *does* equal March 16th. Therefore, the answer is verified.
+
+
+","2000년 3·1절은 양력 2000년 3월 1일입니다.
+이 날로부터 ""낼모레""는 2일 뒤이므로 생일은 2000년 3월 3일입니다.
+생일인 3월 3일로부터 13일 후의 날짜는 3월 3일 + 13일 = 3월 16일이 됩니다.
+따라서 양력 날짜는 2000년 3월 16일입니다.
+
+Answer: 2000.3.16",2000.3.16,1,easy,stop
+time_ko_easy_0076,"2011년 제헌절에 ""금일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 16일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2011.8.2,"**Calculating a Date 16 Days After South Korean Constitution Day**
+
+Okay, let's break this down systematically. First, I need to confirm the date of Constitution Day (제헌절) in 2011. Ah, right, it's always July 17th. So, 2011.7.17 it is. Now, the task is to figure out the date that's 16 days after that.
+
+Let's do the math. July 17th plus 16 days. That's 17 + 16 = 33. July only has 31 days, so we need to carry over into August. 33 - 31 = 2. Therefore, we transition to August and the date becomes August 2nd.
+
+Just to double-check my calculation: Let's confirm it in steps. July 17th + 1 day = July 18th, July 17th + 14 days = July 31st, July 17th + 15 days = August 1st, and July 17th + 16 days = August 2nd. That looks correct.
+
+Okay, that confirms it. The answer is indeed 2011.8.2. And the prompt is requesting the format of 'YYYY.M.D' so the final answer is 2011.8.2.
+
+
+","2011년 제헌절은 7월 17일입니다.
+따라서 기준이 되는 날짜는 2011년 7월 17일입니다.
+
+이 날로부터 16일 후의 날짜를 계산하면 다음과 같습니다.
+7월 17일 + 16일 = 7월 33일
+7월은 31일까지 있으므로, 33일에서 31일을 빼면 8월 2일이 됩니다.
+
+Answer: 2011.8.2",2011.8.2,1,easy,stop
+time_ko_easy_0077,"2011년 식목일에 ""내일모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 3일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2011.4.10,"**Calculating a Date Based on 식목일**
+
+Okay, let's break this down systematically. First, I need to establish the reference point: 식목일 (Arbor Day) in 2011. It's April 5th. Now, the prompt mentions ""내일모레,"" which translates to ""the day after tomorrow"" – so, two days after 식목일. That puts me at April 7th.
+
+Next, I need to calculate a date three days *after* April 7th. Simple addition. 7 + 3 equals 10. So that lands us on April 10th.
+
+Just to confirm: starting from April 5th, adding two days and then an additional three days, takes us to April 10th. Putting it all together, the final date, in YYYY.M.D format, is 2011.4.10. Got it.
+
+
+","2011년 식목일의 양력 날짜는 4월 5일입니다.
+식목일의 '내일모레'(2일 후)인 생일은 4월 7일이 됩니다.
+그 생일로부터 다시 3일 후의 날짜를 계산하면, 4월 7일에 3일을 더한 4월 10일이 됩니다.
+
+Answer: 2011.4.10",2011.4.10,1,easy,stop
+time_ko_easy_0078,"2019년 현충일에 ""금일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 2일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2019.6.8,"**My Calculation Process: Determining the Date Two Days After the 2019 Memorial Day**
+
+Okay, here's my breakdown of this problem. First, I need to figure out what the 2019 Memorial Day's date is. I know that in South Korea, Memorial Day is always on June 6th, and specifically in the Gregorian calendar (solar calendar). So, 2019's Memorial Day is definitely June 6th, 2019. Now I need to calculate the date two days *after* that. I'll make sure to output the final result in YYYY.M.D format.
+
+Let's break it down: starting with June 6th, 2019. One day after is June 7th, 2019. Two days after that? That's June 8th, 2019. Easy enough.
+
+Now, let me just format that: June 8th, 2019 becomes 2019.6.8. I'll double-check this for the final output. Yes, Memorial Day is indeed June 6th, and two days later is June 8th. The output format is correct. So, the final answer is 2019.6.8.
+
+
+","2019년 현충일은 매년 양력으로 6월 6일입니다. 따라서 기준일은 2019년 6월 6일이 됩니다.
+이 날로부터 2일 후의 날짜를 계산하면 6월 6일에 2일을 더하여 6월 8일이 됩니다.
+
+Answer: 2019.6.8",2019.6.8,1,easy,stop
+time_ko_easy_0079,"2023년 현충일에 ""이튿날이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 18일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2023.6.25,"**My Analytical Process for Date Calculation**
+
+Okay, let's break this down systematically. First, I need to define the parameters. The core date is 현충일 (Memorial Day) in 2023. I'm calling that the '기준일'. The next day, or '이튿날', is the key starting point for further calculations; which in this case represents a '생일'. My goal is to determine the date exactly 18 days after this '생일', which I'm calling the '목표일', and format the final answer in 'YYYY.M.D'.
+
+I need to ascertain the specific date for 2023 현충일. After a quick look-up (or mental recall, in this instance), I know it's June 6th, 2023. This is our 기준일.
+
+Now I'll calculate the '생일'. Since it's the day following 현충일, that's simply June 6th + 1 day = June 7th, 2023. So, the '생일' is June 7th, 2023.
+
+Next, I have to figure out the '목표일'. I need to add 18 days to the '생일'. That means June 7th + 18 days. Doing the mental math or quick calendar check, June 7th + 18 days brings us to June 25th, 2023. The year and month remain unchanged; it's simply a shift within the month.
+
+To ensure accuracy, I'll quickly verify: 현충일 is 2023.6.6, the '이튿날' (or '생일') is indeed 2023.6.7, and adding 18 days results in 2023.6.25, just like I calculated.
+
+Finally, I need to present the answer in the required 'YYYY.M.D' format. Therefore, the final answer, after formatting, is 2023.6.25.
+
+
+","2023년 현충일은 6월 6일입니다.
+현충일의 이튿날(생일)은 6월 7일입니다.
+그 생일(6월 7일)로부터 18일 후를 계산하면 6월 25일이 됩니다.
+
+Answer: 2023.6.25",2023.6.25,1,easy,stop
+time_ko_easy_0080,"1995년 새해 첫날에 ""익일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 7일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",1995.1.9,"**My Analysis of This Date Calculation Problem**
+
+Okay, let's break this down. The core of the problem is figuring out a date given some information and doing it methodically. The starting point is January 1st, 1995. I'm told ""tomorrow is my birthday"".  ""Tomorrow"" in this context refers to the day *after* January 1st, 1995 – that would be January 2nd, 1995. The question asks for the date that is seven days *after* this birthday, so January 2nd, 1995 + 7 days.
+
+Now, let me perform the actual steps of this calculation:
+
+*   **Initial Date:** We begin with January 1st, 1995.
+*   **Birthday Date:** Adding one day to the starting date, we find the birthday is January 2nd, 1995.
+*   **Target Date:** We need to advance the birthday by seven days to arrive at the solution. Adding 7 days to the birthday gives us January 9th, 1995.
+
+My final output will be: The calculation begins with a base date of January 1st, 1995. The birthday, January 2nd, 1995, is calculated as the following day. We add seven days to that resulting date. The answer is January 9th, 1995.
+
+Answer: 1995.1.9
+
+
+","1. 1995년 새해 첫날은 양력으로 1995년 1월 1일입니다.
+2. ""익일(내일)이 내 생일이야""라고 했으므로, 생일은 1995년 1월 1일의 다음 날인 1995년 1월 2일입니다.
+3. 이 생일(1월 2일)로부터 7일 후의 날짜를 계산하면 1월 2일 + 7일 = 1월 9일이 됩니다.
+
+따라서 구하고자 하는 날짜는 1995년 1월 9일입니다.
+
+Answer: 1995.1.9",1995.1.9,1,easy,stop
+time_ko_easy_0081,"2008년 새해 첫날에 ""이튿날이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 2일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2008.1.4,"**Deconstructing the Date: A Logical Progression**
+
+Okay, let's break this down systematically. The question presents a chronological puzzle, and as an expert, I need to methodically trace each step.
+
+1.  ""2008년 새해 첫날"" - Immediately, I recognize this as January 1st, 2008, in the Gregorian calendar. No surprises there.
+
+2.  ""이튿날이 내 생일이야"" - ""이튿날"" clearly refers to the day following. So, my birthday is January 2nd, 2008. Simple.
+
+3.  ""그 생일로부터 2일 후"" - Now, we need to calculate two days after January 2nd. A straightforward addition: January 2nd + 2 days = January 4th, 2008.
+
+4.  The question demands the answer in ""YYYY.M.D"" format. Therefore, the final answer must be '2008.1.4'.
+
+Let's double-check:
+*   New Year's Day: January 1st, 2008
+*   Birthday (the next day): January 2nd, 2008
+*   Two days after birthday: January 4th, 2008
+*   The format is correctly represented as 2008.1.4.
+
+Confirmed. The solution is elegant in its simplicity.
+
+
+","1. 2008년 새해 첫날은 양력 2008년 1월 1일입니다.
+2. ""이튿날""은 다음 날을 의미하므로, 생일은 2008년 1월 2일입니다.
+3. 생일로부터 2일 후의 날짜를 계산하면, 1월 2일 + 2일 = 1월 4일이 됩니다.
+4. 따라서 그 날의 양력 날짜는 2008년 1월 4일입니다.
+
+Answer: 2008.1.4",2008.1.4,1,easy,stop
+time_ko_easy_0082,"2014년 3·1절에 ""금일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 17일 후, 그 날의 일진(日辰), 즉 그 날에 해당하는 60갑자는 무엇인가? (예: 갑자)",무자,"**Calculating the Ganzhi for March 18, 2014**
+
+Alright, let's break this down systematically. I need to determine the ganzhi (sexagenary cycle) for March 18, 2014. First, I know that March 1st, 2014 is the starting point, and I need to calculate 17 days forward from that date. So, March 1st + 17 days equals March 18th. Now, let's find the ganzhi for that date.
+
+I need a reference point. I'll use January 1st, 2000, which is Mu-Oh (戊午), the 55th term in the cycle (since Gap-Ja, 甲子, is 1). Then I'll calculate the number of days between January 1st, 2000 and January 1st, 2014. From 2000 to 2013, that's 14 years. There are 4 leap years in that period (2000, 2004, 2008, 2012). The total days is 14 * 365 + 4 = 5114.
+
+Since the cycle repeats every 60 days, I calculate 5114 modulo 60, which equals 14. This means January 1st, 2014 is 14 terms after January 1st, 2000. January 1st, 2000 being Mu-Oh (55), January 1st, 2014 will be 55 + 14 = 69. 69 modulo 60 is 9. This gives me Im-Shin (壬申), the 9th term. I'll confirm this - 1999/12/31 is Jeong-Sa (54) so 54+14 = 68, or 8, Shin-Mi (辛未). So January 1st is Im-Shin.
+
+Now to calculate the days elapsed until March 18th. January has 31 days, February has 28 days (2014 is not a leap year), and we have 18 days in March. That's 31 + 28 + 18 = 77 days. But, since we want to find how many days elapsed after Jan 1, we subtract 1, and so, 76 days.
+
+76 modulo 60 is 16. Then, Im-Shin (9) + 16 = 25. 25 modulo 10 gives us 5, which is Mu (戊). 25 modulo 12 gives us 1, which is Ja (子). So, this gives us Mu-Ja (戊子).
+
+Let's do this calculation one more time, using March 1st as our start date. The days elapsed from January 1st until March 1st is 31 + 28 = 59 days. 59 modulo 60 is 59.  Im-Shin (9) + 59 = 68 = 8, Shin-Mi (辛未) on March 1st. Now we add 17 days to Shin-Mi. 8 + 17 = 25, which, as we've seen, is Mu-Ja.
+
+Therefore, the ganzhi for March 18, 2014, is Mu-Ja (戊子).
+
+
+","2014년 3·1절은 2014년 3월 1일입니다. 
+이 날로부터 17일 후의 날짜는 2014년 3월 18일입니다.
+
+2014년 3월 18일의 일진을 구하는 과정은 다음과 같습니다.
+1. 2000년 1월 1일은 무오(戊午)일입니다.
+2. 2000년부터 2013년까지 총 14년의 일수를 구하면 14 × 365 + 4(윤일) = 5114일입니다.
+3. 5114를 60으로 나눈 나머지는 14이므로, 2014년 1월 1일의 일진은 무오에서 14일이 지난 임신(壬申)일입니다.
+4. 2014년 1월 1일(임신)부터 3월 1일까지는 평년이므로 59일이 경과합니다. 59일 후는 신미(辛未)일이 됩니다.
+5. 2014년 3월 1일(신미)로부터 17일 후는 간지 순서에서 17칸 뒤로 이동합니다.
+   - 천간: 신(辛, 8번째) + 17 = 25 ➔ 5번째인 무(戊)
+   - 지지: 미(未, 8번째) + 17 = 25 ➔ 1번째인 자(子)
+따라서 2014년 3월 18일의 일진은 무자(戊子)입니다.
+
+Answer: 무자",무자,1,easy,stop
+time_ko_easy_0083,"2003년 성탄절에 ""내일모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 25일 후, 그 날의 일진(日辰), 즉 그 날에 해당하는 60갑자는 무엇인가? (예: 갑자)",기해,"**Analysis and Calculation of the Sexagenary Cycle**
+
+Okay, so the request is to figure out the ""일진"" (Sexagenary cycle day, 간지) of a date that's 25 days after a birthday. The birthday, according to the statement ""내일모레가 내 생일이야,"" is two days after Christmas 2003, which is December 27, 2003. So, the target date is December 27, 2003, plus 25 days.
+
+First, I need to compute this date. December has 31 days, so 31 - 27 leaves 4 days in December. Subtracting that from the 25 days means the target date will be in January 2004, specifically, the 21st. So, the goal is to determine the 간지 of January 21, 2004.
+
+To calculate the sexagenary cycle, a reference date is needed. Let's use January 1, 2000, which I know was a Saturday. I'll need to check the 일진 (Sexagenary cycle day) of that date, and I'll confirm that 2000-01-01 was 무오. To do this, I can calculate the Julian Day and use that to perform modular arithmetic with 60 to find the corresponding index in the cycle. Or better yet, I can simply use January 1, 2000 as my base. It's 무오(戊午, 55th in cycle? 0=갑자, 1=을축... 무오 = 천간 무(5)-1=4, 지지 오(7)-1=6. No, 갑자 is 1. 무오는 54).
+
+I know 1999-12-31 was 정사(丁巳, 53).
+
+The next step is to calculate the number of days between January 1, 2000 and January 21, 2004, the target date. There are 4 years between them. The year 2000 was a leap year, so 366 days. The others are ordinary years of 365 days, making it 1461 days total from 2000-01-01 to 2004-01-01 (366 + 365 + 365 + 365 = 1461). Then, adding the 20 days between Jan 1 and Jan 21 makes it 1481 days.
+
+Now, apply modular arithmetic: 1481 modulo 60 equals 41. January 1, 2000, was 무오 (54), so adding 41 gives a total of 95. The remainder of 95 divided by 60 is 35.
+
+I need to confirm the 일진 index:
+*   0=갑자,
+*   10=갑술,
+*   20=갑신,
+*   30=갑오.
+Then,
+*   31=을미,
+*   32=병신,
+*   33=정유,
+*   34=무술,
+*   35=기해(己亥).
+
+So, the result should be 기해(己亥). To ensure complete certainty, let's derive it from scratch to confirm.
+
+I'll check the base date of Jan 1, 2000, which is 무오.
+Number of days from 2000-01-01 to 2004-01-01 = 1461 days.
+1461 modulo 60 = 21. 무오 + 21 = (54+21) = 75, so 75%60=15. Index 15 is 기묘.
+
+Since January 1, 2004, is 기묘, and the difference is 20 days, it is necessary to go +20 indexes after 기묘(15). 15+20=35, so the 일진 of January 21, 2004, is 35. Index 35 = 기해(己亥).
+
+Therefore, the answer is: 기해.
+
+
+","1. **생일 날짜 계산**
+2003년 성탄절은 12월 25일입니다. 
+""내일모레가 생일""이라고 하였으므로, 성탄절에서 2일 뒤인 2003년 12월 27일이 생일이 됩니다.
+
+2. **목표 날짜 계산**
+생일인 12월 27일로부터 25일 후의 날짜를 계산합니다.
+- 12월은 31일까지 있으므로 12월의 남은 일수는 4일(31일 - 27일)입니다.
+- 25일 - 4일 = 21일이 남으므로, 목표 날짜는 해가 바뀐 **2004년 1월 21일**입니다.
+
+3. **일진(60갑자) 계산**
+2000년 1월 1일의 일진은 무오(戊午)입니다.
+- 2000년(윤년) 1월 1일부터 2004년 1월 1일까지의 총 일수는 366 + 365 + 365 + 365 = 1461일입니다.
+- 1461일을 60으로 나누면 나머지 21이 됩니다.
+- 2000년 1월 1일이 무오(54번째)이므로, 2004년 1월 1일의 일진은 (54 + 21) % 60 = 15번째인 기묘(己卯)가 됩니다.
+- 2004년 1월 21일은 1월 1일로부터 20일 후입니다.
+- 15 + 20 = 35번째 간지가 됩니다.
+- 60갑자의 35번째(인덱스로는 36번째) 간지는 기해(己亥)입니다.
+
+Answer: 기해",기해,1,easy,stop
+time_ko_easy_0084,"2008년 한글날에 ""모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 12일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2008.10.23,"**Calculating a Date**
+
+Okay, let me break this down methodically. We're given that Hangul Day in 2008 was October 9th. Now, the statement ""The day after tomorrow is my birthday"" was made on October 9th. ""The day after tomorrow"" means two days from today, so my birthday must be October 9th + 2 days = October 11th.
+
+The problem asks for the date twelve days *after* my birthday. So, we add twelve days to October 11th: October 11th + 12 days = October 23rd. The year remains 2008. Therefore, the target date is 2008.10.23.
+
+Let's double-check this. October 9th is indeed Hangul Day in 2008. Two days from then (the ""day after tomorrow"") is October 11th, which lines up with the birthday calculation. Adding twelve days to the 11th, we arrive at the 23rd. October has 31 days, so 23rd is a valid date within the month. Conclusion: 2008.10.23 is confirmed.
+
+
+","1. 2008년 한글날은 양력 2008년 10월 9일입니다.
+2. 이 날에 ""모레가 내 생일이야""라고 했으므로 생일은 10월 9일의 모레인 2008년 10월 11일입니다.
+3. 생일(10월 11일)로부터 12일 후의 날짜를 계산하면, 11 + 12 = 23일입니다.
+4. 따라서 그 날의 양력 날짜는 2008년 10월 23일입니다.
+
+Answer: 2008.10.23",2008.10.23,1,easy,stop
+time_ko_easy_0085,"1996년 식목일에 ""낼모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 12일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",1996.4.19,"**My Reasoning: Calculating a Date**
+
+Okay, let's break this down systematically. The core task is figuring out a specific date. First, I need to establish the reference point: the year is 1996, and the context involves the Arbor Day, which is always April 5th in the Gregorian calendar. So, my base date is April 5th, 1996.
+
+The problem states ""the day after tomorrow is my birthday,"" implying the birthday is two days after Arbor Day. Thus, I calculate April 5th + 2 days, which lands on April 7th, 1996.
+
+Now, the question is what date is twelve days after the birthday. I simply add twelve days to April 7th. Therefore, April 7th + 12 days = April 19th, 1996.
+
+To verify, let me retrace my steps:
+1.  Arbor Day: April 5th, 1996.
+2.  Birthday (two days later): April 7th, 1996.
+3.  Twelve days after the birthday: April 7th + 12 days = April 19th, 1996.
+
+Let's double-check. Tomorrow is the 6th, and the day after tomorrow is the 7th. 7 + 12 indeed results in 19.
+
+Therefore, the final answer, in the specified YYYY.M.D format, is 1996.4.19.
+
+
+","1. 1996년 식목일은 양력 1996년 4월 5일입니다.
+2. ""낼모레""는 2일 후를 의미하므로, 생일은 1996년 4월 5일에서 2일을 더한 1996년 4월 7일입니다.
+3. 그 생일로부터 12일 후를 계산하면, 4월 7일 + 12일 = 4월 19일입니다.
+4. 따라서 해당 날짜는 1996년 4월 19일입니다.
+
+Answer: 1996.4.19",1996.4.19,1,easy,stop
+time_ko_easy_0086,"2018년 한글날에 ""오늘이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 25일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2018.11.3,"**My Approach to the Date Calculation**
+
+Okay, let's break this down systematically. First, the core task is clear: I need to determine a specific date. Specifically, I'm given the 2018 Korean Alphabet Day (Hangeul Day), and I need to calculate the date that is 25 days after that date. The final output needs to be in a standard 'YYYY.M.D' format.
+
+Step one is to identify the base date. I immediately recall that Hangeul Day is always on October 9th. So, my starting point is 2018-10-09.
+
+Now, the actual date calculation begins. I'm adding 25 days to October 9th, 2018. October has 31 days. So, if I add 25 to 9, I get 34. Since October only has 31 days, I have to account for the overflow. 34 (total days) - 31 (days in October) = 3 days. This means the date is now November 3rd, 2018.
+
+Finally, I just need to format the result into the requested 'YYYY.M.D' format. So, 2018.11.3 is the final answer.
+
+Just to be certain, I'll quickly double-check the calculations. If I add 22 days to October 9th, I end up on October 31st. With three days left, I go into November: November 1st, November 2nd, November 3rd. Confirmed! My approach has produced the correct outcome.
+
+
+","2018년 한글날은 양력 10월 9일입니다.
+이 날로부터 25일 후의 날짜를 계산해보겠습니다.
+
+10월은 31일까지 있으므로, 10월 9일에 25일을 더하면 다음과 같이 계산됩니다:
+9 + 25 = 34
+10월은 31일까지 있으므로 34일에서 31일을 빼면 11월 3일이 됩니다.
+
+따라서 2018년 10월 9일에서 25일 후는 2018년 11월 3일입니다.
+
+Answer: 2018.11.3",2018.11.3,1,easy,stop
+time_ko_easy_0087,"2015년 새해 첫날에 ""낼모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 25일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2015.1.28,"**Calculating a Date**
+
+Okay, let's break this down. It's the first day of the new year, January 1st, 2015. ""The day after tomorrow is my birthday"" is the prompt. Let's work that out chronologically:
+
+*   Today is January 1st, 2015.
+*   Tomorrow is January 2nd, 2015.
+*   The day after tomorrow, ""낼모레"", is January 3rd, 2015. That's my birthday!
+
+Now, the problem states that I want to find the date 25 days *after* my birthday. So, we'll start with January 3rd, 2015, and add 25 days. Doing the simple arithmetic: 3 + 25 = 28. Therefore, the date is January 28th, 2015. We are not crossing into February, which would make the calculation slightly more complex.
+
+Finally, confirm the output format. It's specified as YYYY.M.D, so the final answer is 2015.1.28. Perfect!
+
+
+","2015년 새해 첫날은 양력으로 2015년 1월 1일입니다.
+이 날로부터 '낼모레'는 2일 뒤이므로 생일은 2015년 1월 3일이 됩니다.
+그 생일(1월 3일)로부터 25일 후의 날짜를 계산하면, 3 + 25 = 28이므로 1월 28일이 됩니다.
+
+Answer: 2015.1.28",2015.1.28,1,easy,stop
+time_ko_easy_0088,"2005년 현충일에 ""익일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 15일 후, 그 날의 일진(日辰), 즉 그 날에 해당하는 60갑자는 무엇인가? (예: 갑자)",정축,"**Calculating the Iljin for a Specific Date**
+
+Okay, so I'm presented with a problem: Determine the *iljin* (day's cyclical designation) for a date 15 days after someone's birthday, which is the day after *Hyeonchungil* (Memorial Day) in 2005. Let's break this down systematically.
+
+First, I know *Hyeonchungil* in 2005 was June 6th.  Therefore, the birthday is June 7th. Fifteen days after June 7th is June 22nd.  Now, the challenge is to find the *iljin* for June 22, 2005.
+
+To make this manageable, I'll establish a known reference point. Finding the *iljin* of January 1, 2005 will be key. I'm leveraging the cyclical nature of the *ganji* system (Heavenly Stems and Earthly Branches).
+
+I'll start with January 1, 2000, which I remember as *Muo* (戊午). I need to determine the days elapsed from January 1, 2000, to January 1, 2005.  That’s 5 years.  I'll account for leap years: 2000 and 2004 were leap years.  The calculation is: 366 (2000) + 365 (2001) + 365 (2002) + 365 (2003) + 366 (2004) = 1827 days. I can then take the remainder of this divided by 60, which represents the 60-day cycle of *ganji*.  1827 % 60 = 27. So, *Muo* (55) + 27 = 82, reducing to *Eulyu* (乙酉) which is 22 in the *ganji* cycle. I'll double-check this: 2005, January 1, is *Eulyu* (乙酉).
+
+Now I need to find the day count from January 1, 2005, to June 22, 2005. Let's break this down by month:
+
+*   January: 31 days
+*   February: 28 days (2005 is a common year)
+*   March: 31 days
+*   April: 30 days
+*   May: 31 days
+*   June: 21 days (I’m excluding January 1st to compute the total days after 1 January)
+
+This adds up to 31 + 28 + 31 + 30 + 31 + 21 = 172 days. I'll divide this by 60 to find the remainder. 172 % 60 = 52.  We take our starting date, January 1, 2005, which is *Eulyu* (22), and add 52. 22 + 52 = 74, which reduces to 14 in the cycle. This translates to *Jeongchuk* (丁丑).
+
+I did a separate, similar calculation again, for double checking: January 1, 2005 (*Eulyu*). Adding days through June 22, the result again points to *Jeongchuk*.
+
+Thus, by analyzing the *ganji* for January 1, 2005, then adding the days passed to reach June 22, 2005, the result again points to *Jeongchuk*.
+
+I've confirmed everything. The problem was clear, I needed to figure out what day it was 15 days after the birthday that was the day after Memorial Day. All the calculations align. The *iljin* for June 22, 2005 is indeed *Jeongchuk* (丁丑).
+
+
+","1. **현충일 확인**: 매년 현충일은 양력 6월 6일입니다.
+2. **생일 계산**: 2005년 현충일의 익일(다음 날)이 생일이므로, 생일은 2005년 6월 7일입니다.
+3. **15일 후 날짜 계산**: 6월 7일로부터 15일 후는 6월 22일입니다.
+4. **일진 계산**:
+   - 2000년 1월 1일의 일진은 무오(戊午)입니다.
+   - 2005년 1월 1일까지의 경과 일수는 1827일(윤년 2000, 2004 포함)입니다. 1827을 60으로 나눈 나머지는 27이므로, 무오(55)에 27을 더하면 82, 즉 22(을유)가 2005년 1월 1일의 일진이 됩니다.
+   - 2005년 1월 1일에서 6월 22일까지의 경과 일수는 172일입니다 (1월 31일 + 2월 28일 + 3월 31일 + 4월 30일 + 5월 31일 + 6월 21일).
+   - 172를 60으로 나눈 나머지는 52입니다.
+   - 22(을유)에 52를 더하면 74가 되며, 60을 빼면 14번째 간지가 됩니다.
+   - 14번째 간지는 천간이 정(丁), 지지가 축(丑)인 정축(丁丑)입니다.
+
+Answer: 정축",정축,1,easy,stop
+time_ko_easy_0089,"2005년 광복절에 ""금일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 17일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2005.9.1,"**Calculating a Date**
+
+Okay, so today is August 15th, 2005. The text explicitly states ""Today is my birthday,"" so my birthday is August 15th, 2005. Now, I need to figure out what the date is 17 days after my birthday.
+
+Let's break this down. August has 31 days. So, if I add 17 days to August 15th, I have: 15 + 17 = 32. Since August only has 31 days, I need to subtract 31 from 32. That leaves me with 1. This means the date will fall in the next month.
+
+Therefore, August 15th + 17 days becomes September 1st, 2005.
+
+Let's double-check this for accuracy:
+August 15 + 1 day = August 16
+...
+August 15 + 16 days = August 31
+August 15 + 17 days = September 1
+
+Yes, that confirms it!
+
+The final answer is: 2005.9.1.
+
+
+","2005년 광복절은 8월 15일입니다. 
+따라서 기준이 되는 날짜는 2005년 8월 15일입니다.
+
+이 날로부터 17일 후의 날짜를 계산해 보겠습니다.
+- 8월 15일 + 17일 = 8월 32일
+- 8월은 31일까지 있으므로, 32일에서 31일을 빼면 다음 달인 9월 1일이 됩니다.
+
+따라서 구하는 날짜는 2005년 9월 1일입니다.
+
+Answer: 2005.9.1",2005.9.1,1,easy,stop
+time_ko_easy_0090,"2011년 현충일에 ""내일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 8일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2011.6.15,"**Calculating the Date Eight Days After a Birthday in June 2011**
+
+Okay, let's break this down. The problem states that on the Korean Memorial Day (Hyunchung-il) in 2011, someone said ""Tomorrow is my birthday"".  My first step, of course, is to nail down the fundamental facts. I know Hyunchung-il is always June 6th in South Korea, so that's June 6, 2011.
+
+Now, if ""tomorrow"" is the birthday, that means the birthday is June 7, 2011. The core of the question is to work out the date eight days *after* that birthday. Elementary date arithmetic: June 7th plus eight days equals June 15th, 2011.
+
+Finally, to present it in a clean format that is clear to the user, the answer is 2011.6.15. Seems correct.
+
+
+","1. 2011년 현충일은 양력 6월 6일입니다.
+2. ""내일이 내 생일""이라고 하였으므로, 생일은 하루 뒤인 양력 6월 7일입니다.
+3. 생일(6월 7일)로부터 8일 후의 날짜는 6월 7일 + 8일 = 6월 15일입니다.
+
+Answer: 2011.6.15",2011.6.15,1,easy,stop
+time_ko_easy_0091,"2006년 한글날에 ""내일모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 5일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2006.10.16,"**My Mental Date Calculations**
+
+Okay, let's break this down systematically. First, I need a clear *reference point*. The text gives me ""2006년 한글날,"" which translates to Korean Language Day in 2006.  I immediately recall that Han-geul Day is always October 9th in the Gregorian calendar. So, my starting date is established: October 9, 2006.
+
+Next, I need to figure out the target date. The prompt states ""내일모레가 내 생일이야"" (The day after tomorrow is my birthday).  ""내일모레"" means ""the day after tomorrow"", or two days after the reference date. Therefore, the birthday must be October 9th, 2006 + 2 days, making the birthday October 11, 2006.
+
+Now, the final calculation. I need the date 5 days *after* the birthday. That means adding 5 days to October 11, 2006. Simple addition: October 11th + 5 days = October 16th, 2006.
+
+Just to be certain, I'll quickly verify everything. We started at October 9, 2006. The birthday is indeed October 11, 2006, which is two days later. Five days after the birthday lands us at October 16, 2006. Okay, all checks out.  The final format specified is 'YYYY.M.D', so the answer is clear.
+
+Answer: 2006.10.16
+
+
+","1. 기준일 확인: 2006년 한글날은 양력 10월 9일입니다.
+2. 생일 계산: ""내일모레가 내 생일""이라고 했으므로, 생일은 10월 9일에서 2일 후인 2006년 10월 11일입니다.
+3. 5일 후 계산: 생일인 10월 11일로부터 5일 후는 10월 16일입니다.
+
+Answer: 2006.10.16",2006.10.16,1,easy,stop
+time_ko_easy_0092,"2008년 개천절에 ""금일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 9일 후, 그 날의 일진(日辰), 즉 그 날에 해당하는 60갑자는 무엇인가? (예: 갑자)",을유,"**My Reasoning Process for Determining the Iljin**
+
+Okay, so I'm tasked with figuring out the Iljin (sexagenary cycle day) nine days after the 2008 National Foundation Day, which is October 3rd. Let's break this down systematically.
+
+1.  **Establishing the Base:** The starting point is October 3rd, 2008. The target date is thus October 12th, 2008.
+
+2.  **Choosing a Reference Point:** To calculate this, I need a known point in time to work from.  I'm going to leverage the sexagenary cycle, meaning 60-day cycles. I'll need a starting date with a known Iljin.  2000 sounds like a good starting point, so I'll be using 2000.  2000-01-01 is 무오 (Muo). *Important: Muo is the 55th*
+
+3.  **Calculating the Days:**  The primary calculation involves finding the number of days between my reference date (2000.01.01) and my target date (2008.10.12).
+
+    *   Years from 2000 to 2007:  There are 8 years, 2 of which were leap years (2000, 2004, 2008). That equates to:
+        (365 * 8) + 2 = 2922 days.
+    *   2008: From 2008.01.01 to 2008.10.12, I need to compute the total number of days:
+        January (31) + February (29) + March (31) + April (30) + May (31) + June (30) + July (31) + August (31) + September (30) + October (12) = 286 days.
+    *   Total Days from 2000 to 2008: 2922 + 286 -1=3207 days. The '-1' is because we include the first day, reducing the total by one.
+
+4.  **Applying the Sexagenary Cycle:**  Now I can take the day offset, and the number of days, and relate it to the 60-day cycle.
+
+    *   Since 2000.01.01 is 무오 (55), I add that to my day's offset.
+    *   (55 + 3207 - 1) % 60 = 3261 % 60.
+    *   3261 divided by 60 is 54 with a remainder of 21.
+    *   So, the 21st in the sexagenary cycle is what I am looking for.  The 21st is 갑신 (Gapshin).
+    *   Thus, I believe 2008.10.12 is 甲申 (Gapshin).
+
+5.  **Verification:** However, it always pays to check and recalculate.  I need a second perspective to verify my steps.
+
+    *   Let's calculate the Iljin of 2008.01.01. It is exactly 2922 from 무오 in 2000.
+    *   (55 + 2922 - 1) % 60 = 2976 % 60 = 36. This corresponds to the day before, so we count 37, not 36.
+    *   Thus, 2008.01.01 is 경자 (Gyeongja) (37).
+    *   From 경자(37) to 2008.10.12, there are 286 days.
+    *   (37 + 286 - 1) % 60 = 322 % 60 = 22.
+    *   22nd in the sexagenary cycle is 을유 (Euryu).
+    *   I did a double check by using known events, like the 2008 Olympic. However, I corrected an error about that date and confirmed the validity.
+
+6.  **Final Calculation and Conclusion:**
+    *   Now, I have two different numbers, 21 vs. 22.  I now realize I needed to count the first day.  Thus,
+
+","1. 2008년 개천절 날짜: 2008년 10월 3일 (양력)
+2. 개천절로부터 9일 후의 날짜 계산:
+   2008년 10월 3일 + 9일 = 2008년 10월 12일
+3. 2008년 10월 12일의 일진 계산:
+   - 2000년 1월 1일은 무오(戊午, 55번째)일입니다.
+   - 2000년 1월 1일부터 2008년 10월 12일까지의 경과 일수를 구합니다.
+   - 2000년~2007년까지 총 2922일 (윤년 2000, 2004 포함)
+   - 2008년 1월 1일부터 10월 12일까지의 일수는 286일 (2008년은 윤년)
+   - 총 일수 차이: 2922 + 286 - 1 = 3207일
+   - 3207을 60으로 나눈 나머지는 27입니다.
+   - 55(무오) + 27 = 82, 82를 60으로 나눈 나머지는 22입니다.
+   - 60갑자 중 22번째는 천간 을(乙)과 지지 유(酉)가 결합한 을유(乙酉)입니다.
+
+Answer: 을유",을유,1,easy,stop
+time_ko_easy_0093,"2015년 3·1절에 ""모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 16일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2015.3.19,"**Analyzing the Date Calculation**
+
+Okay, let's break this down systematically. The problem gives us a reference date: March 1st, 2015, which is identified as 3·1절, or Independence Movement Day. The statement ""The day after tomorrow is my birthday"" is our key piece of information. Since today is March 1st, ""the day after tomorrow"" (모레) must be March 3rd, 2015. Therefore, the birthday in question is March 3rd, 2015.
+
+Now, the question asks for the date 16 days *after* that birthday. The calculation is straightforward: March 3rd + 16 days = March 19th. We need to verify that this date is valid. Thankfully, March has 31 days. So, since 3 + 16 equals 19, and 19 is within the bounds of March, 2015, the date is valid. My final answer then is: 2015.3.19.
+
+
+","기준일인 2015년 3·1절은 2015년 3월 1일입니다.
+이 날로부터 ""모레""는 2일 뒤이므로 생일은 2015년 3월 3일이 됩니다.
+생일인 3월 3일로부터 16일 후의 날짜를 계산하면, 3 + 16 = 19이므로 3월 19일이 됩니다.
+
+Answer: 2015.3.19",2015.3.19,1,easy,stop
+time_ko_easy_0094,"1997년 3·1절에 ""내일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 11일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",1997.3.13,"**My Calculation and Validation**
+
+Okay, here's the breakdown of this date calculation. My starting point is March 1st, 1997. It looks like I need to calculate a date.
+
+First, I need to figure out what date is ""tomorrow"" from the given reference date. That is simply March 2nd, 1997.
+
+Next, I need to find the date 11 days after the calculated birth date. So, I add 11 days to March 2nd, 1997. Adding the numbers gives me March 13th, 1997.
+
+Now, to double-check my work, I'll go through it again: I'm given March 1st, 1997. ""Tomorrow"" is March 2nd. Adding 11 days to March 2nd gets me March 13th.
+
+Finally, I need to present the answer in the required ""YYYY.M.D"" format, so the result is 1997.3.13.
+
+
+","1997년 3·1절은 1997년 3월 1일입니다.
+이 날의 내일인 생일은 1997년 3월 2일이 됩니다.
+그 생일(1997년 3월 2일)로부터 11일 후의 날짜를 계산하면, 3월 2일에 11일을 더해 3월 13일이 됩니다.
+
+Answer: 1997.3.13",1997.3.13,1,easy,stop
+time_ko_easy_0095,"2000년 3·1절에 ""내일모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 24일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2000.3.27,"**Calculating a Date**
+
+Okay, so the prompt gives us March 1st, 2000, as the date of the 3/1 holiday. The statement ""my birthday is the day after tomorrow"" from that date points to a birthday on March 3rd, 2000.  The task is to determine the date 24 days after my birthday.
+
+I'm starting with March 3rd, and adding 24 days.  Simple arithmetic: 3 + 24 equals 27. I double-checked the calendar and March has 31 days. So, it is logical that 24 days after March 3rd would indeed be March 27th of 2000.
+
+
+","1. 2000년 3·1절은 양력으로 2000년 3월 1일입니다.
+2. ""내일모레가 내 생일이야""라고 했으므로, 생일은 3월 1일에서 2일 후인 2000년 3월 3일입니다.
+3. 생일(3월 3일)로부터 24일 후의 날짜를 계산하면, 3 + 24 = 27이므로 2000년 3월 27일이 됩니다.
+
+Answer: 2000.3.27",2000.3.27,1,easy,stop
+time_ko_easy_0096,"2004년 한글날에 ""내일모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 7일 후, 그 날의 일진(日辰), 즉 그 날에 해당하는 60갑자는 무엇인가? (예: 갑자)",경오,"**Calculating the Lunar Calendar Day**
+
+Okay, so I'm trying to figure out the lunar calendar day, specifically the *iljin* (일진), for October 18, 2004. The prompt gave me the date as October 9th of that year. I'm told that ""the day after tomorrow"" from that date is someone's birthday. So, that means the birthday is on October 11th, 2004. I need to find the *iljin* seven days after that birthday, which means I need to calculate the *iljin* for October 18th, 2004.
+
+First, I need a reference point. I'll determine the *iljin* of January 1, 2004. 2004 was a *Gapshin* year (갑신년 - 甲申年). I already know that January 1, 2000 was *Muo* (무오일 - 戊午). I remember that 2451545 modulo 60 gives me the remainder for the reference point. This turns out to be 5, but I can't directly map that to the *iljin*.
+
+I'll think about a year with known *iljin*. 2024 is *Gapja* (갑자일 - 甲子). Let's see how many days are between January 1, 2004 and January 1, 2024. That's 20 years, and I need to account for leap years: 2004, 2008, 2012, 2016, 2020 (5 leap years). So, the total number of days is (20 * 365) + 5 = 7305.  7305 modulo 60 is 45.  So, 2004's *iljin* is 45 days earlier than 2024. Therefore, 2004's reference day is -45 = 15 = *Gimyo* (기묘일 - 己卯).  I can verify that *Gimyo* (15) + 45 = 60 (or 0) = *Gapja*, so it checks out. Therefore, January 1, 2004, was *Gimyo* (己卯).
+
+Now, to get to October 18th. I need to figure out the number of days from January 1st to October 18th. 2004 was a leap year, so February has 29 days. I can calculate the cumulative days:
+
+*   January: 31
+*   February: 29
+*   March: 31
+*   April: 30
+*   May: 31
+*   June: 30
+*   July: 31
+*   August: 31
+*   September: 30
+*   October 18: 18
+
+Summing these up, I get 292 days from January 1st. But, because the first day is also day one, I want the total from day zero. So this is equal to 291 days, excluding day 1.
+
+291 modulo 60 is 51. So, *Gimyo* (15) + 51 = 66, modulo 60, this is 6, which is *Gyeong-o* (경오). I can verify:
+
+*   *Gapja* (0)
+*   *Eulchuk* (1)
+*   *Byeongin* (2)
+*   *Jeongmyo* (3)
+*   *Mujin* (4)
+*   *Gisa* (5)
+*   *Gyeong-o* (6)
+*   *Sinmi* (7)
+*   *Imshin* (8)
+*   *Gyeyu* (9)
+* ...
+* *Gimyo* (15)
+
+It's correct, 15 + 1 day = 16 = *Gyeong* (6)
+And 3 + 3 = 6
+Therefore, October 18th, 2004 is indeed *Gyeong-o* (庚午).
+
+I can calculate the days more carefully as well, and by summing the days monthly modulo 60:
+
+*   January: 31 (31)
+*   February: 29 (0)
+*   March: 3
+
+","1. 2004년 한글날은 10월 9일입니다.
+2. ""내일모레가 내 생일이야""라고 하였으므로, 생일은 10월 9일의 이틀 뒤인 2004년 10월 11일입니다.
+3. 그 생일로부터 7일 후는 10월 11일에 7일을 더한 2004년 10월 18일입니다.
+4. 2004년 1월 1일의 일진은 기묘(己卯)입니다. 
+5. 2004년은 윤년이므로 2월이 29일까지 있습니다. 1월 1일부터 10월 18일까지의 일수를 계산하면 1월(31)+2월(29)+3월(31)+4월(30)+5월(31)+6월(30)+7월(31)+8월(31)+9월(30)+18일 = 292일째가 됩니다.
+6. 일진은 60일에 한 번씩 돌아오므로, 기묘(15)를 기준으로 291일 뒤의 일진을 계산하면 (15 + 291) % 60 = 6이 되며, 이는 경오(庚午)에 해당합니다.
+
+Answer: 경오",경오,1,easy,stop
+time_ko_easy_0097,"1998년 3·1절에 ""금일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 6일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",1998.3.7,"**Calculating a Date**
+
+Okay, here's the breakdown. I need to figure out a date. The starting point is March 1st, 1998 – that's the reference date. Crucially, my birthday is also March 1st, 1998. The task is straightforward: determine the date that falls six days *after* that birthday. So, it's a simple addition problem, really. Take the starting date, March 1st, 1998, and just add six days to it. That leads directly to March 7th, 1998. Now, the final output needs to be in the ""YYYY.M.D"" format. Therefore the answer must be 1998.3.7
+
+
+","1998년 3·1절은 1998년 3월 1일입니다.
+이 날로부터 6일 후를 계산하면 다음과 같습니다.
+
+1998년 3월 1일 + 6일 = 1998년 3월 7일
+
+Answer: 1998.3.7",1998.3.7,1,easy,stop
+time_ko_easy_0098,"2016년 성탄절에 ""내일모레가 내 생일이야"" 라는 말을 들었다. 그 생일로부터 8일 후, 그 날의 양력 날짜는 무엇인가? 답은 'YYYY.M.D' 형식으로 써라.",2017.1.4,"**Calculating a Date: Christmas 2016 and Beyond**
+
+Okay, let's break this down systematically. It's December 25th, 2016, a Christmas Day. The prompt says ""My birthday is the day after tomorrow.""  Let's translate that.  Today is the 25th. Tomorrow is the 26th.  The day after tomorrow, or ""내일모레,"" is the 27th.  Therefore, my birthday is December 27th, 2016.
+
+Now, I need to figure out the date 8 days *after* that birthday.  It's a simple addition, but I'll double-check it.  December 27th + 8 days.  That's where a little calendar math comes in.  December has 31 days. So, 27 + 8 is 35. Since December only goes to the 31st, we need to subtract that: 35 - 31 = 4.  This means we cross over into the next month.  Therefore, the date is January 4th, 2017.
+
+To ensure accuracy, I'll do a quick sanity check:
+
+*   27 + 1 = 28
+*   27 + 2 = 29
+*   27 + 3 = 30
+*   27 + 4 = 31
+*   27 + 5 = Jan 1
+*   27 + 6 = Jan 2
+*   27 + 7 = Jan 3
+*   27 + 8 = Jan 4
+
+Yep, the math checks out. The answer is January 4th, 2017. Now in the format requested, YYYY.M.D, the final answer is 2017.1.4.
+
+
+","2016년 성탄절은 2016년 12월 25일입니다.
+이 날로부터 ""내일모레""는 2일 후이므로, 생일은 2016년 12월 27일입니다.
+
+생일(12월 27일)로부터 8일 후의 날짜를 계산해보겠습니다.
+- 12월 27일 + 8일 = 12월 35일
+- 12월은 31일까지 있으므로, 35일에서 31일을 빼면 다음 해인 2017년 1월 4일이 됩니다.
+
+따라서 구하는 양력 날짜는 2017년 1월 4일입니다.
+
+Answer: 2017.1.4",2017.1.4,1,easy,stop
+time_ko_easy_0099,"1992년 식목일에 ""명일이 내 생일이야"" 라는 말을 들었다. 그 생일로부터 30일 후, 그 날의 일진(日辰), 즉 그 날에 해당하는 60갑자는 무엇인가? (예: 갑자)",임오,"**My Calculations on the Heavenly Stem and Earthly Branch (Ganji) for May 6, 1992**
+
+Okay, here’s how my mind worked through this Ganji problem:
+
+First, the date: Someone mentioned their birthday as ""tomorrow"" after Arbor Day (April 5th), so the birthday is April 6th, 1992. I needed to figure out the Ganji for that date plus 30 days, which lands on May 6th, 1992. No problem, simple date arithmetic confirms that.
+
+Now for the Ganji: To find the Ganji for May 6th, 1992, I need a reference point. I'll use the well-known rule and knowledge that January 1st, 2000, was a *Muo* (*戊午*) day. Then calculating the difference in days is necessary.
+
+I needed to calculate the day difference between January 1, 1992 and January 1, 2000. I have the year 1992 (a leap year), and then I need to consider all the following years. Summing it all up, I have 2922 days. Taking the modulo 60 gives me 42 days.
+
+Now, January 1, 2000 is 55 (Muo). Therefore, to find January 1, 1992, it's (55 - 42) mod 60, which leads me to 13, *Jeongchuk* (*丁丑*).
+
+Next, I need to figure out how many days separate January 1, 1992, and May 6, 1992. I added the days from January through April and then 5 days in May. The total of days is 126 days.
+
+Then I needed to find the Ganji: I started with *Jeongchuk* (13) and added the difference to obtain the number of the day for May 6, 1992. 13+126 is 139. 139 modulo 60 is 19. The Ganji number 19 corresponds to *Gyemi* (*癸未*).
+
+Okay, that’s one calculation. But, I am always double-checking!
+
+So, I re-calculated. I used a year to year calculation and looked up the JND (Julian Day Number) and did some calculations to make sure I am on the right track. I also confirmed my calculations again.
+
+I double-checked to make sure that the date difference was accurate using another approach. This method checks the calculations in different forms.
+
+All the calculations point to *Gyemi* (*癸未*).
+
+I made sure there were no errors in how I calculated the days and I kept the calculation steps in different ways.
+
+Finally, I checked my reference day: January 1, 2000 *Muo*.
+
+Using the difference between dates (2796 days), I confirmed again by using the JND offset. 2796 modulo 60 gives me 36.
+
+55-36 = 19 (Gyemi).
+
+The final answer, as I figured out, is indeed *Gyemi* (*癸未*).
+
+
+","1992년 식목일은 양력 4월 5일입니다. 
+""명일(내일)이 내 생일이야""라고 했으므로, 생일은 식목일의 다음 날인 1992년 4월 6일입니다.
+
+1. **생일로부터 30일 후의 날짜 계산**
+- 1992년 4월은 30일까지 있으므로, 4월 6일에서 30일을 더하면 **1992년 5월 6일**이 됩니다.
+
+2. **1992년 5월 6일의 일진(60갑자) 계산**
+- 2000년 1월 1일은 무오(戊午)일이며, 이를 기준으로 1992년 1월 1일의 일진을 구하면 정축(丁丑)일입니다.
+- 1992년은 윤년이므로 2월이 29일까지 있습니다.
+- 1992년 1월 1일부터 5월 6일까지의 경과 일수를 구합니다.
+  - 1월: 31일
+  - 2월: 29일
+  - 3월: 31일
+  - 4월: 30일
+  - 5월 1일~6일: 5일 (1일에서 6일까지의 차이)
+  - 총 일수 차이: 31 + 29 + 31 + 30 + 5 = 126일
+- 정축(丁丑)은 60갑자 중 14번째(인덱스 13)입니다. 
+- 13 + 126 = 139이고, 이를 60으로 나눈 나머지는 19입니다.
+- 인덱스 19에 해당하는 간지는 **계미(癸未)**입니다.
+
+Answer: 계미",계미,0,easy,stop

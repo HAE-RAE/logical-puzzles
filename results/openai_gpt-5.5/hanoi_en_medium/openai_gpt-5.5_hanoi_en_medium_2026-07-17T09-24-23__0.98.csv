@@ -1,0 +1,1575 @@
+id,question,answer,thinking_content,resps,filtered_resps,exact_match,difficulty,finish_reason
+hanoi_en_medium_0000,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 1
+and must be moved to Peg 0, using Peg 2 as auxiliary.
+Consider the first 34 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 34:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(938642, 986015, 574711)",,"Since the first \(2^7-1=127\) moves of the 8-disk solution move the top 7 disks from Peg 1 to Peg 2, the first 34 moves are determined entirely by that recursive subproblem.
+
+The first 34 move triples \((D_i,F_i,T_i)\) are:
+\[
+\begin{aligned}
+&(1,1,2),(2,1,0),(1,2,0),(3,1,2),(1,0,1),(2,0,2),(1,1,2),(4,1,0),\\
+&(1,2,0),(2,2,1),(1,0,1),(3,2,0),(1,1,2),(2,1,0),(1,2,0),(5,1,2),\\
+&(1,0,1),(2,0,2),(1,1,2),(3,0,1),(1,2,0),(2,2,1),(1,0,1),(4,0,2),\\
+&(1,1,2),(2,1,0),(1,2,0),(3,1,2),(1,0,1),(2,0,2),(1,1,2),(6,1,0),\\
+&(1,2,0),(2,2,1).
+\end{aligned}
+\]
+
+Applying the given modular hash updates through move 34 gives:
+\[
+H1=938642,\quad H2=986015,\quad H3=574711.
+\]
+
+Answer: (938642, 986015, 574711)","(938642, 986015, 574711)",1,medium,stop
+hanoi_en_medium_0001,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 0
+and must be moved to Peg 2, using Peg 1 as auxiliary.
+Consider the first 36 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 36:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(155426, 829685, 177714)",,"For move \(i\), the disk moved is \(D_i = v_2(i)+1\), where \(v_2(i)\) is the exponent of 2 dividing \(i\).
+
+Since \(n=8\) is even, odd-numbered disks move cyclically \(0 \to 1 \to 2 \to 0\), while even-numbered disks move \(0 \to 2 \to 1 \to 0\). Iterating the first 36 optimal moves and applying the three hash updates modulo \(1000003\) gives:
+
+Answer: (155426, 829685, 177714)","(155426, 829685, 177714)",1,medium,stop
+hanoi_en_medium_0002,"In an optimal Tower of Hanoi solution with 7 disks, all disks start on Peg 0
+and must be moved to Peg 1, using Peg 2 as auxiliary.
+Consider the first 35 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 35:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(610769, 754687, 25387)",,"For 7 disks moving from Peg 0 to Peg 1, the first 35 moves occur within the recursive subproblem of moving the top 6 disks from Peg 0 to Peg 2.
+
+Using the standard optimal Tower of Hanoi recursion, I enumerated the first 35 moves and applied the given modular hash updates step by step:
+
+- Final \(H1 = 610769\)
+- Final \(H2 = 754687\)
+- Final \(H3 = 25387\)
+
+Answer: (610769, 754687, 25387)","(610769, 754687, 25387)",1,medium,stop
+hanoi_en_medium_0003,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 1
+and must be moved to Peg 0, using Peg 2 as auxiliary.
+Consider the first 37 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 37:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(918144, 288218, 125355)",,"The first 37 moves are within the initial recursive phase of moving the top 7 disks from Peg 1 to Peg 2, with Peg 0 as auxiliary. Applying the standard optimal Tower of Hanoi recursion and updating the three hash values after each of the 37 moves gives:
+
+Answer: (918144, 288218, 125355)","(918144, 288218, 125355)",1,medium,stop
+hanoi_en_medium_0004,"In an optimal Tower of Hanoi solution with 9 disks, all disks start on Peg 2
+and must be moved to Peg 1, using Peg 0 as auxiliary.
+Consider the first 35 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 35:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(864585, 676096, 22966)",,"For the 9-disk optimal solution from Peg 2 to Peg 1 using Peg 0, the first 35 moves are determined recursively. Since the first 35 moves occur before the largest disks move, they consist of:
+
+- Moves 1–31: moving disks 1–5 from Peg 2 to Peg 1
+- Move 32: moving disk 6 from Peg 2 to Peg 0
+- Moves 33–35: beginning to move disks 1–5 from Peg 1 to Peg 0
+
+Applying the given hash updates over these 35 moves modulo 1000003 gives:
+
+Answer: (864585, 676096, 22966)","(864585, 676096, 22966)",1,medium,stop
+hanoi_en_medium_0005,"In an optimal Tower of Hanoi solution with 9 disks, all disks start on Peg 0
+and must be moved to Peg 1, using Peg 2 as auxiliary.
+Consider the first 34 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 34:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(260932, 103215, 860772)",,"For an optimal 9-disk Tower of Hanoi solution from Peg 0 to Peg 1:
+
+- The disk moved on move \(i\) is \(D_i = v_2(i)+1\), where \(v_2(i)\) is the exponent of the largest power of 2 dividing \(i\).
+- Since \(n=9\) is odd, odd-numbered disks move cyclically \(0 \to 1 \to 2 \to 0\), and even-numbered disks move the opposite way \(0 \to 2 \to 1 \to 0\).
+- Applying the given hash updates over moves 1 through 34 gives the final values:
+
+Answer: (260932, 103215, 860772)","(260932, 103215, 860772)",1,medium,stop
+hanoi_en_medium_0006,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 2
+and must be moved to Peg 1, using Peg 0 as auxiliary.
+Consider the first 34 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 34:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(49306, 478190, 450013)",,"In the optimal 8-disk solution from Peg 2 to Peg 1, the first \(2^7-1=127\) moves are the recursive subproblem moving 7 disks from Peg 2 to Peg 0 using Peg 1. So the first 34 moves are within that subproblem.
+
+Applying the given hash updates over those 34 moves gives:
+
+Answer: (49306, 478190, 450013)","(49306, 478190, 450013)",1,medium,stop
+hanoi_en_medium_0007,"In an optimal Tower of Hanoi solution with 7 disks, all disks start on Peg 1
+and must be moved to Peg 0, using Peg 2 as auxiliary.
+Consider the first 36 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 36:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(507419, 365189, 50595)",,"In the optimal 7-disk solution from Peg 1 to Peg 0, the first 63 moves transfer the top 6 disks from Peg 1 to Peg 2. Therefore, the first 36 moves are the first 36 moves of the 6-disk transfer from Peg 1 to Peg 2 using Peg 0.
+
+Applying the given hash updates over those 36 moves gives:
+
+Answer: (507419, 365189, 50595)","(507419, 365189, 50595)",1,medium,stop
+hanoi_en_medium_0008,"In an optimal Tower of Hanoi solution with 7 disks, all disks start on Peg 1
+and must be moved to Peg 2, using Peg 0 as auxiliary.
+Consider the first 35 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 35:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(975131, 762243, 22966)",,"In the optimal 7-disk solution from Peg 1 to Peg 2, the first \(2^6-1=63\) moves are the subproblem moving disks 1–6 from Peg 1 to Peg 0 using Peg 2 as auxiliary. So the first 35 moves come from that 6-disk subproblem.
+
+Applying the given hash updates over those 35 moves gives:
+
+Answer: (975131, 762243, 22966)","(975131, 762243, 22966)",1,medium,stop
+hanoi_en_medium_0009,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 1
+and must be moved to Peg 2, using Peg 0 as auxiliary.
+Consider the first 34 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 34:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(227279, 392266, 450013)",,"For an 8-disk optimal Tower of Hanoi move sequence from Peg 1 to Peg 2 using Peg 0 as auxiliary:
+
+- Disk moved at step \(i\) is \(D_i = v_2(i)+1\).
+- Since \(n=8\), odd-numbered disks move cyclically \(1 \to 0 \to 2 \to 1\), and even-numbered disks move \(1 \to 2 \to 0 \to 1\).
+- Applying the given hash updates for moves 1 through 34 modulo \(1000003\) gives:
+
+Answer: (227279, 392266, 450013)","(227279, 392266, 450013)",1,medium,stop
+hanoi_en_medium_0010,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 0
+and must be moved to Peg 2, using Peg 1 as auxiliary.
+Consider the first 31 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 31:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(567051, 731142, 751782)",,"The first 31 moves of the 8-disk optimal solution are exactly the complete optimal transfer of the top 5 disks from Peg 0 to Peg 1, using Peg 2 as auxiliary.
+
+Applying the given hash updates over those 31 moves gives:
+
+Answer: (567051, 731142, 751782)","(567051, 731142, 751782)",1,medium,stop
+hanoi_en_medium_0011,"In an optimal Tower of Hanoi solution with 9 disks, all disks start on Peg 1
+and must be moved to Peg 2, using Peg 0 as auxiliary.
+Consider the first 36 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 36:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(179337, 958131, 160765)",,"In the optimal 9-disk solution from Peg 1 to Peg 2, disk \(D_i\) moved on move \(i\) is determined by:
+
+\[
+D_i = v_2(i) + 1
+\]
+
+where \(v_2(i)\) is the exponent of the largest power of 2 dividing \(i\).
+
+For this setup, odd-numbered disks cycle through pegs:
+
+\[
+1 \to 2 \to 0 \to 1
+\]
+
+and even-numbered disks cycle through:
+
+\[
+1 \to 0 \to 2 \to 1
+\]
+
+Applying the given hash updates for moves \(1\) through \(36\) gives final values:
+
+Answer: (179337, 958131, 160765)","(179337, 958131, 160765)",1,medium,stop
+hanoi_en_medium_0012,"In an optimal Tower of Hanoi solution with 7 disks, all disks start on Peg 1
+and must be moved to Peg 0, using Peg 2 as auxiliary.
+Consider the first 32 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 32:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(317013, 205508, 213266)",,"In the optimal 7-disk solution from Peg 1 to Peg 0 using Peg 2, the first 32 moves consist of:
+
+- First 31 moves: optimally move disks 1–5 from Peg 1 to Peg 0.
+- Move 32: move disk 6 from Peg 1 to Peg 2.
+
+Applying the given hash updates across those 32 moves gives:
+
+Answer: (317013, 205508, 213266)","(317013, 205508, 213266)",1,medium,stop
+hanoi_en_medium_0013,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 0
+and must be moved to Peg 1, using Peg 2 as auxiliary.
+Consider the first 34 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 34:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(116612, 900091, 860772)",,"The first 34 moves follow the standard optimal Tower of Hanoi pattern: disk moved at step \(i\) is \(v_2(i)+1\), and for 8 disks moving from Peg 0 to Peg 1, odd-numbered disks move in the reverse peg cycle while even-numbered disks move in the forward peg cycle.
+
+Applying the given hash updates over moves 1 through 34 gives:
+
+Answer: (116612, 900091, 860772)","(116612, 900091, 860772)",1,medium,stop
+hanoi_en_medium_0014,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 1
+and must be moved to Peg 2, using Peg 0 as auxiliary.
+Consider the first 35 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 35:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(500223, 668540, 150085)",,"For 8 disks from Peg 1 to Peg 2 using Peg 0, the first 35 moves are within the recursive subproblem of moving 7 disks from Peg 1 to Peg 0. More specifically, they are the first 35 moves of moving 6 disks from Peg 1 to Peg 2 using Peg 0.
+
+Using the optimal recursive Tower of Hanoi move sequence, applying the given hash updates over moves 1 through 35 gives:
+
+Answer: (500223, 668540, 150085)","(500223, 668540, 150085)",1,medium,stop
+hanoi_en_medium_0015,"In an optimal Tower of Hanoi solution with 9 disks, all disks start on Peg 0
+and must be moved to Peg 2, using Peg 1 as auxiliary.
+Consider the first 37 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 37:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(715745, 144634, 243996)",,"For the optimal 9-disk solution from Peg 0 to Peg 2, disk \(D_i\) moved on move \(i\) is:
+
+\[
+D_i = \nu_2(i)+1
+\]
+
+Since \(n=9\) is odd:
+
+- odd-numbered disks move in cycle \(0 \to 2 \to 1 \to 0\)
+- even-numbered disks move in cycle \(0 \to 1 \to 2 \to 0\)
+
+Using these source/destination pegs for the first 37 moves and applying the given hash updates modulo \(1000003\), the final values are:
+
+Answer: (287265, 135433, 243996)","(287265, 135433, 243996)",0,medium,stop
+hanoi_en_medium_0016,"In an optimal Tower of Hanoi solution with 9 disks, all disks start on Peg 0
+and must be moved to Peg 2, using Peg 1 as auxiliary.
+Consider the first 35 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 35:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(848223, 301537, 25387)",,"In the optimal 9-disk solution from Peg 0 to Peg 2, disk moved at step \(i\) is:
+
+\[
+D_i = v_2(i)+1
+\]
+
+where \(v_2(i)\) is the exponent of the largest power of 2 dividing \(i\).
+
+Since 9 is odd, odd-numbered disks move cyclically \(0 \to 2 \to 1 \to 0\), and even-numbered disks move \(0 \to 1 \to 2 \to 0\). Applying the given hash updates over the first 35 moves gives:
+
+Answer: (848223, 301537, 25387)","(848223, 301537, 25387)",1,medium,stop
+hanoi_en_medium_0017,"In an optimal Tower of Hanoi solution with 9 disks, all disks start on Peg 0
+and must be moved to Peg 1, using Peg 2 as auxiliary.
+Consider the first 36 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 36:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(155426, 829685, 177714)",,"In the optimal 9-disk solution from Peg 0 to Peg 1, the first \(2^8-1=255\) moves are the recursive subproblem moving the top 8 disks from Peg 0 to Peg 2, using Peg 1 as auxiliary. So the first 36 moves are exactly the first 36 moves of that 8-disk subproblem.
+
+Using the standard optimal move pattern, disk \(D_i = v_2(i)+1\), with odd-numbered disks cycling \(0 \to 1 \to 2 \to 0\) and even-numbered disks cycling \(0 \to 2 \to 1 \to 0\). Applying the given hash updates over moves 1 through 36 gives:
+
+Answer: (155426, 829685, 177714)","(155426, 829685, 177714)",1,medium,stop
+hanoi_en_medium_0018,"In an optimal Tower of Hanoi solution with 9 disks, all disks start on Peg 2
+and must be moved to Peg 1, using Peg 0 as auxiliary.
+Consider the first 34 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 34:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(904989, 275063, 574711)",,"In the optimal 9-disk solution from Peg 2 to Peg 1, the first \(2^8-1=255\) moves are devoted to moving the top 8 disks from Peg 2 to Peg 0. Repeating this recursion, the first 34 moves fall within the 6-disk subproblem moving disks from Peg 2 to Peg 0 using Peg 1.
+
+Evaluating the given hash updates over those first 34 moves gives:
+
+Answer: (904989, 275063, 574711)","(904989, 275063, 574711)",1,medium,stop
+hanoi_en_medium_0019,"In an optimal Tower of Hanoi solution with 7 disks, all disks start on Peg 2
+and must be moved to Peg 1, using Peg 0 as auxiliary.
+Consider the first 31 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 31:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(99694, 424236, 124124)",,"In the optimal 7-disk solution from Peg 2 to Peg 1 using Peg 0, the first phase is moving 6 disks from Peg 2 to Peg 0. The first 31 moves within that phase are exactly the complete optimal move of the top 5 disks from Peg 2 to Peg 1 using Peg 0, since \(2^5 - 1 = 31\).
+
+Applying the given hash updates over those 31 moves gives:
+
+Answer: (99694, 424236, 124124)","(99694, 424236, 124124)",1,medium,stop
+hanoi_en_medium_0020,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 1
+and must be moved to Peg 2, using Peg 0 as auxiliary.
+Consider the first 37 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 37:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(744817, 208232, 354166)",,"Since the first \(37\) moves occur before the largest disks are involved, they are generated recursively from the optimal Tower of Hanoi move order for moving 8 disks from Peg 1 to Peg 2 using Peg 0.
+
+For each move \(i\), I used the disk moved \(D_i\), source peg \(F_i\), and destination peg \(T_i\), then applied the three hash updates modulo \(1000003\).
+
+After processing moves \(1\) through \(37\), the final hash values are:
+
+Answer: (744817, 208232, 354166)","(744817, 208232, 354166)",1,medium,stop
+hanoi_en_medium_0021,"In an optimal Tower of Hanoi solution with 9 disks, all disks start on Peg 1
+and must be moved to Peg 0, using Peg 2 as auxiliary.
+Consider the first 36 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 36:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(507419, 365189, 50595)",,"The first 36 moves of the 9-disk solution are entirely within the initial recursive subproblem: moving disks 1–8 from Peg 1 to Peg 2. More specifically, they match the first 36 moves of moving 6 disks from Peg 1 to Peg 2.
+
+Applying the given hash updates over those 36 moves gives:
+
+Answer: (507419, 365189, 50595)","(507419, 365189, 50595)",1,medium,stop
+hanoi_en_medium_0022,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 2
+and must be moved to Peg 0, using Peg 1 as auxiliary.
+Consider the first 35 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 35:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(864585, 676096, 22966)",,"The first 35 moves of the optimal 8-disk solution are contained within the recursive transfer of the top 6 disks from Peg 2 to Peg 0. Specifically:
+
+- Moves 1–31 move disks 1–5 from Peg 2 to Peg 1.
+- Move 32 moves disk 6 from Peg 2 to Peg 0.
+- Moves 33–35 begin moving disks 1–5 from Peg 1 to Peg 0.
+
+Applying the given hash updates over these 35 moves yields:
+
+Answer: (864585, 676096, 22966)","(864585, 676096, 22966)",1,medium,stop
+hanoi_en_medium_0023,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 2
+and must be moved to Peg 0, using Peg 1 as auxiliary.
+Consider the first 37 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 37:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(533878, 391809, 125355)",,"In the optimal 8-disk solution from Peg 2 to Peg 0, the first 127 moves are devoted to moving the top 7 disks from Peg 2 to Peg 1. Within that, the first 63 moves move the top 6 disks from Peg 2 to Peg 0, so the first 37 moves match the beginning of the 6-disk solution from Peg 2 to Peg 0.
+
+Applying the given hash updates over those 37 moves gives:
+
+Answer: (533878, 391809, 125355)","(533878, 391809, 125355)",1,medium,stop
+hanoi_en_medium_0024,"In an optimal Tower of Hanoi solution with 9 disks, all disks start on Peg 1
+and must be moved to Peg 2, using Peg 0 as auxiliary.
+Consider the first 35 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 35:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(975131, 762243, 22966)",,"Since the first move of disk 9 occurs at move \(2^8 = 256\), the first 35 moves are just the beginning of the 8-disk transfer from Peg 1 to Peg 0, using Peg 2.
+
+Using the standard optimal Hanoi move pattern:
+
+- Disk moved at step \(i\) is \(D_i = v_2(i)+1\).
+- For 9 disks from Peg 1 to Peg 2:
+  - odd disks cycle \(1 \to 2 \to 0 \to 1\)
+  - even disks cycle \(1 \to 0 \to 2 \to 1\)
+
+Applying the given hash updates over moves 1 through 35 gives:
+
+Answer: (975131, 762243, 22966)","(975131, 762243, 22966)",1,medium,stop
+hanoi_en_medium_0025,"In an optimal Tower of Hanoi solution with 7 disks, all disks start on Peg 2
+and must be moved to Peg 1, using Peg 0 as auxiliary.
+Consider the first 33 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 33:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(572878, 604415, 82101)",,"In the optimal 7-disk solution from Peg 2 to Peg 1 using Peg 0, the first \(2^6-1=63\) moves are the subproblem of moving the top 6 disks from Peg 2 to Peg 0 using Peg 1.
+
+So the first 33 moves consist of:
+
+- moves 1–31: move 5 disks from Peg 2 to Peg 1,
+- move 32: disk 6 from Peg 2 to Peg 0,
+- move 33: first move of moving 5 disks from Peg 1 to Peg 0, which is disk 1 from Peg 1 to Peg 0.
+
+Applying the given hash updates over these 33 moves gives:
+
+Answer: (572878, 604415, 82101)","(572878, 604415, 82101)",1,medium,stop
+hanoi_en_medium_0026,"In an optimal Tower of Hanoi solution with 7 disks, all disks start on Peg 1
+and must be moved to Peg 0, using Peg 2 as auxiliary.
+Consider the first 33 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 33:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(461432, 493662, 492860)",,"For 7 disks moving from Peg 1 to Peg 0, the first 63 moves are the optimal solution moving the top 6 disks from Peg 1 to Peg 2 using Peg 0. Therefore the first 33 moves are within that 6-disk subproblem.
+
+Applying the given hash updates over moves 1 through 33 gives:
+
+Answer: (461432, 493662, 492860)","(461432, 493662, 492860)",1,medium,stop
+hanoi_en_medium_0027,"In an optimal Tower of Hanoi solution with 7 disks, all disks start on Peg 0
+and must be moved to Peg 2, using Peg 1 as auxiliary.
+Consider the first 32 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 32:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(897262, 44635, 262465)",,"The first 32 moves of the 7-disk optimal solution consist of:
+
+- the full 31-move optimal transfer of disks 1–5 from Peg 0 to Peg 2,
+- followed by move 32: disk 6 from Peg 0 to Peg 1.
+
+Applying the given hash updates over these 32 moves gives:
+
+Answer: (897262, 44635, 262465)","(897262, 44635, 262465)",1,medium,stop
+hanoi_en_medium_0028,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 2
+and must be moved to Peg 1, using Peg 0 as auxiliary.
+Consider the first 36 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 36:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(695371, 197164, 50595)",,"For 8 disks from Peg 2 to Peg 1, the first phase is moving the top 7 disks from Peg 2 to Peg 0. The first 36 moves fall within that recursive subproblem. Expanding recursively gives moves 1–31 as the 5-disk transfer from Peg 2 to Peg 0, move 32 as disk 6 from Peg 2 to Peg 1, and moves 33–36 as the start of transferring 5 disks from Peg 0 to Peg 1.
+
+Applying the given hash updates over those 36 moves gives:
+
+Answer: (695371, 197164, 50595)","(695371, 197164, 50595)",1,medium,stop
+hanoi_en_medium_0029,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 2
+and must be moved to Peg 0, using Peg 1 as auxiliary.
+Consider the first 36 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 36:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(531330, 493635, 160765)",,"In the optimal 8-disk solution from Peg 2 to Peg 0, the first 36 moves are still within the recursive subproblem of moving the smaller disks. Using the standard Hanoi move order, disks move according to their trailing-zero pattern in the move index.
+
+Evaluating the hash updates over moves 1 through 36 gives:
+
+- H1 = 531330
+- H2 = 493635
+- H3 = 160765
+
+Answer: (531330, 493635, 160765)","(531330, 493635, 160765)",1,medium,stop
+hanoi_en_medium_0030,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 0
+and must be moved to Peg 1, using Peg 2 as auxiliary.
+Consider the first 31 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 31:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(542337, 473213, 751782)",,"The first 31 moves of the 8-disk optimal solution occur entirely within the initial recursive phase:
+
+- Move 7 disks from Peg 0 to Peg 2.
+- Within that, move 6 disks from Peg 0 to Peg 1.
+- Within that, move 5 disks from Peg 0 to Peg 2.
+
+Since \(2^5 - 1 = 31\), the first 31 moves are exactly the optimal 5-disk solution from Peg 0 to Peg 2 using Peg 1.
+
+Applying the given hash updates over those 31 moves gives:
+
+Answer: (542337, 473213, 751782)","(542337, 473213, 751782)",1,medium,stop
+hanoi_en_medium_0031,"In an optimal Tower of Hanoi solution with 7 disks, all disks start on Peg 0
+and must be moved to Peg 2, using Peg 1 as auxiliary.
+Consider the first 33 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 33:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(609594, 758829, 837255)",,"For the optimal 7-disk Tower of Hanoi solution from Peg 0 to Peg 2:
+
+- Move number \(i\) moves disk \(D_i = v_2(i)+1\), where \(v_2(i)\) is the exponent of 2 dividing \(i\).
+- Since \(n=7\) is odd:
+  - Odd-numbered disks move in cycle \(0 \to 2 \to 1 \to 0\).
+  - Even-numbered disks move in cycle \(0 \to 1 \to 2 \to 0\).
+
+Using the first 33 moves and applying the given modular hash updates yields:
+
+Answer: (609594, 758829, 837255)","(609594, 758829, 837255)",1,medium,stop
+hanoi_en_medium_0032,"In an optimal Tower of Hanoi solution with 9 disks, all disks start on Peg 1
+and must be moved to Peg 0, using Peg 2 as auxiliary.
+Consider the first 32 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 32:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(317013, 205508, 213266)",,"In the optimal 9-disk solution from Peg 1 to Peg 0, disk 1 moves first from Peg 1 to Peg 0. For move \(i\), the disk moved is determined by the least significant set bit of \(i\):  
+\[
+D_i = v_2(i)+1
+\]
+Odd-numbered disks cycle through pegs \(1 \to 0 \to 2 \to 1\), while even-numbered disks cycle through \(1 \to 2 \to 0 \to 1\).
+
+Applying the given hash updates over the first 32 moves gives:
+
+Answer: (317013, 205508, 213266)","(317013, 205508, 213266)",1,medium,stop
+hanoi_en_medium_0033,"In an optimal Tower of Hanoi solution with 7 disks, all disks start on Peg 1
+and must be moved to Peg 0, using Peg 2 as auxiliary.
+Consider the first 35 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 35:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(500223, 668540, 150085)",,"The first 35 moves of the optimal 7-disk solution are the first part of moving the top 6 disks from Peg 1 to Peg 2, then disk 6 moves on move 32, followed by the next 3 moves. Applying the given hash updates move by move modulo 1,000,003 gives:
+
+Answer: (500223, 668540, 150085)","(500223, 668540, 150085)",1,medium,stop
+hanoi_en_medium_0034,"In an optimal Tower of Hanoi solution with 7 disks, all disks start on Peg 1
+and must be moved to Peg 2, using Peg 0 as auxiliary.
+Consider the first 37 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 37:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(918144, 288218, 125355)",,"In the optimal 7-disk solution from Peg 1 to Peg 2 using Peg 0 as auxiliary, the first \(2^6-1=63\) moves consist of moving the top 6 disks from Peg 1 to Peg 0 using Peg 2 as auxiliary. Therefore, the first 37 moves are within that 6-disk subproblem.
+
+Applying the given hash updates over moves 1 through 37 gives:
+
+Answer: (918144, 288218, 125355)","(918144, 288218, 125355)",1,medium,stop
+hanoi_en_medium_0035,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 2
+and must be moved to Peg 0, using Peg 1 as auxiliary.
+Consider the first 33 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 33:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(572878, 604415, 82101)",,"For 8 disks from Peg 2 to Peg 0, the first 33 moves occur entirely within the recursive subproblem of moving the top 6 disks from Peg 2 to Peg 0. The first 31 moves move disks 1–5 from Peg 2 to Peg 1, move 32 moves disk 6 from Peg 2 to Peg 0, and move 33 begins moving disks 1–5 from Peg 1 to Peg 0.
+
+Applying the given hash updates over those 33 moves gives:
+
+Answer: (572878, 604415, 82101)","(572878, 604415, 82101)",1,medium,stop
+hanoi_en_medium_0036,"In an optimal Tower of Hanoi solution with 7 disks, all disks start on Peg 1
+and must be moved to Peg 2, using Peg 0 as auxiliary.
+Consider the first 36 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 36:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(179337, 958131, 160765)",,"In the optimal 7-disk Tower of Hanoi solution from Peg 1 to Peg 2 using Peg 0, the disk moved at step \(i\) is \(D_i = v_2(i)+1\), where \(v_2(i)\) is the exponent of 2 dividing \(i\).
+
+For 7 disks, odd-numbered disks move in the cycle \(1 \to 2 \to 0 \to 1\), while even-numbered disks move in the cycle \(1 \to 0 \to 2 \to 1\). Applying the given hash updates through the first 36 moves gives:
+
+Answer: (179337, 958131, 160765)","(179337, 958131, 160765)",1,medium,stop
+hanoi_en_medium_0037,"In an optimal Tower of Hanoi solution with 7 disks, all disks start on Peg 2
+and must be moved to Peg 1, using Peg 0 as auxiliary.
+Consider the first 36 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 36:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(531330, 493635, 160765)",,"In the optimal 7-disk solution from Peg 2 to Peg 1, the first 36 moves occur before disk 7 moves, so they follow the recursive subproblem moving disks 1–6 from Peg 2 to Peg 0.
+
+Using the standard Hanoi move pattern, disk moved at step \(i\) is \(D_i = v_2(i)+1\), and tracking each disk’s cyclic source/destination peg gives the first 36 move triples \((D_i,F_i,T_i)\). Applying the given modular hash updates through step 36 yields:
+
+Answer: (531330, 493635, 160765)","(531330, 493635, 160765)",1,medium,stop
+hanoi_en_medium_0038,"In an optimal Tower of Hanoi solution with 7 disks, all disks start on Peg 2
+and must be moved to Peg 0, using Peg 1 as auxiliary.
+Consider the first 36 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 36:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(695371, 197164, 50595)",,"The optimal 7-disk solution from Peg 2 to Peg 0 first moves the top 6 disks from Peg 2 to Peg 1, using Peg 0 as auxiliary. Thus the first 36 moves come from that recursive subproblem: the first 31 moves move 5 disks from Peg 2 to Peg 0, move 32 moves disk 6 from Peg 2 to Peg 1, and moves 33–36 begin moving 5 disks from Peg 0 to Peg 1.
+
+Applying the given hash updates over those 36 moves gives:
+
+Answer: (695371, 197164, 50595)","(695371, 197164, 50595)",1,medium,stop
+hanoi_en_medium_0039,"In an optimal Tower of Hanoi solution with 7 disks, all disks start on Peg 2
+and must be moved to Peg 0, using Peg 1 as auxiliary.
+Consider the first 35 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 35:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(627131, 129243, 150085)",,"For 7 disks moving from Peg 2 to Peg 0, the first recursive phase moves the top 6 disks from Peg 2 to Peg 1. Since 35 is less than 63, all first 35 moves occur within that phase.
+
+Using the standard optimal recursive Hanoi sequence, I computed each move \((D_i,F_i,T_i)\) for \(i=1\) to \(35\), then applied the three hash updates modulo \(1000003\).
+
+After processing all 35 moves, the final hash values are:
+
+Answer: (627131, 129243, 150085)","(627131, 129243, 150085)",1,medium,stop
+hanoi_en_medium_0040,"In an optimal Tower of Hanoi solution with 7 disks, all disks start on Peg 2
+and must be moved to Peg 1, using Peg 0 as auxiliary.
+Consider the first 37 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 37:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(533878, 391809, 125355)",,"Using the standard optimal recursive Hanoi strategy:
+
+- For 7 disks from Peg 2 to Peg 1, the first phase is moving the top 6 disks from Peg 2 to Peg 0.
+- Since 37 moves occur before disk 7 moves, the first 37 moves are the first 37 moves of the 6-disk solution from Peg 2 to Peg 0.
+- Applying the given modular hash updates over those 37 moves gives:
+
+Answer: (533878, 391809, 125355)","(533878, 391809, 125355)",1,medium,stop
+hanoi_en_medium_0041,"In an optimal Tower of Hanoi solution with 7 disks, all disks start on Peg 2
+and must be moved to Peg 0, using Peg 1 as auxiliary.
+Consider the first 33 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 33:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(486342, 145774, 492860)",,"For 7 disks from Peg 2 to Peg 0, the first 63 moves move the top 6 disks from Peg 2 to Peg 1. Thus the first 33 moves are determined by that recursive subproblem.
+
+Using the optimal Tower of Hanoi move order and applying the given modular hash updates through move 33 gives:
+
+Answer: (486342, 145774, 492860)","(486342, 145774, 492860)",1,medium,stop
+hanoi_en_medium_0042,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 1
+and must be moved to Peg 0, using Peg 2 as auxiliary.
+Consider the first 31 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 31:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(808660, 319760, 124124)",,"The first 31 moves of the 8-disk optimal solution are exactly the full optimal solution for moving the top 5 disks from Peg 1 to Peg 2, using Peg 0 as auxiliary. Applying the given hash updates over those 31 moves gives:
+
+Answer: (808660, 319760, 124124)","(808660, 319760, 124124)",1,medium,stop
+hanoi_en_medium_0043,"In an optimal Tower of Hanoi solution with 7 disks, all disks start on Peg 2
+and must be moved to Peg 0, using Peg 1 as auxiliary.
+Consider the first 32 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 32:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(105646, 596810, 213266)",,"For 7 disks moving from Peg 2 to Peg 0, the optimal recursive solution first moves the top 6 disks from Peg 2 to Peg 1 using Peg 0 as auxiliary.
+
+The first 32 moves therefore consist of:
+
+- Moves 1–31: moving 5 disks from Peg 2 to Peg 0
+- Move 32: moving disk 6 from Peg 2 to Peg 1
+
+Applying the given hash updates over these 32 moves gives:
+
+Answer: (105646, 596810, 213266)","(105646, 596810, 213266)",1,medium,stop
+hanoi_en_medium_0044,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 2
+and must be moved to Peg 1, using Peg 0 as auxiliary.
+Consider the first 31 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 31:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(124408, 682165, 173323)",,"The first 31 moves of the 8-disk optimal solution are entirely within the recursive subproblem of moving the top 5 disks from Peg 2 to Peg 0, using Peg 1 as auxiliary, since \(31 = 2^5 - 1\).
+
+Computing the hashes over those 31 moves gives:
+
+Answer: (124408, 682165, 173323)","(124408, 682165, 173323)",1,medium,stop
+hanoi_en_medium_0045,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 2
+and must be moved to Peg 0, using Peg 1 as auxiliary.
+Consider the first 34 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 34:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(904989, 275063, 574711)",,"The first 34 moves of the 8-disk optimal solution are within the recursive transfer of the top 7 disks from Peg 2 to Peg 1. More specifically, they consist of:
+
+- Moves 1–31: move 5 disks from Peg 2 to Peg 1
+- Move 32: move disk 6 from Peg 2 to Peg 0
+- Moves 33–34: first two moves of moving 5 disks from Peg 1 to Peg 0
+
+Applying the given hash updates over these 34 moves gives:
+
+Answer: (904989, 275063, 574711)","(904989, 275063, 574711)",1,medium,stop
+hanoi_en_medium_0046,"In an optimal Tower of Hanoi solution with 9 disks, all disks start on Peg 2
+and must be moved to Peg 0, using Peg 1 as auxiliary.
+Consider the first 33 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 33:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(486342, 145774, 492860)",,"In the optimal 9-disk solution from Peg 2 to Peg 0:
+
+- The first 255 moves are the subproblem moving disks 1–8 from Peg 2 to Peg 1.
+- Within that, the first 127 moves move disks 1–7 from Peg 2 to Peg 0.
+- Within that, the first 63 moves move disks 1–6 from Peg 2 to Peg 1.
+- Therefore, the first 31 moves are exactly the full 5-disk solution from Peg 2 to Peg 0.
+- Move 32 moves disk 6 from Peg 2 to Peg 1.
+- Move 33 is the first move of the 5-disk solution from Peg 0 to Peg 1, namely disk 1 from Peg 0 to Peg 1.
+
+Applying the given hash updates over these 33 moves gives:
+
+Answer: (486342, 145774, 492860)","(486342, 145774, 492860)",1,medium,stop
+hanoi_en_medium_0047,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 0
+and must be moved to Peg 2, using Peg 1 as auxiliary.
+Consider the first 34 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 34:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(260932, 103215, 860772)",,"For the optimal 8-disk solution from Peg 0 to Peg 2, the disk moved on move \(i\) is \(D_i = v_2(i)+1\). Since \(n=8\) is even, odd-numbered disks move in the cycle \(0 \to 1 \to 2 \to 0\), and even-numbered disks move in the reverse cycle \(0 \to 2 \to 1 \to 0\).
+
+Using the first 34 moves and applying the three hash updates modulo \(1000003\), the final values are:
+
+Answer: (260932, 103215, 860772)","(260932, 103215, 860772)",1,medium,stop
+hanoi_en_medium_0048,"In an optimal Tower of Hanoi solution with 9 disks, all disks start on Peg 1
+and must be moved to Peg 0, using Peg 2 as auxiliary.
+Consider the first 35 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 35:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(500223, 668540, 150085)",,"The first 35 moves of the 9-disk optimal solution from Peg 1 to Peg 0 lie entirely inside the recursive subproblem:
+
+- Move 8 disks from Peg 1 to Peg 2,
+- then within that, move 7 disks from Peg 1 to Peg 0,
+- then within that, move 6 disks from Peg 1 to Peg 2.
+
+So the first 35 moves are the first 35 moves of the 6-disk problem from Peg 1 to Peg 2 using Peg 0.
+
+Applying the given hash updates over those 35 moves gives:
+
+Answer: (500223, 668540, 150085)","(500223, 668540, 150085)",1,medium,stop
+hanoi_en_medium_0049,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 0
+and must be moved to Peg 2, using Peg 1 as auxiliary.
+Consider the first 32 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 32:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(712821, 429422, 262465)",,"In the first 32 moves of the optimal 8-disk solution, only disks 1 through 6 move, matching the first 32 moves of a 6-disk transfer from Peg 0 to Peg 2.
+
+Applying the given hash updates over those 32 moves gives:
+
+Answer: (712821, 429422, 262465)","(712821, 429422, 262465)",1,medium,stop
+hanoi_en_medium_0050,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 2
+and must be moved to Peg 1, using Peg 0 as auxiliary.
+Consider the first 33 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 33:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(486342, 145774, 492860)",,"For 8 disks from Peg 2 to Peg 1, the first 33 moves are the first 33 moves of the recursive subproblem moving 6 disks from Peg 2 to Peg 1. Applying the given hash updates over those moves gives:
+
+Answer: (486342, 145774, 492860)","(486342, 145774, 492860)",1,medium,stop
+hanoi_en_medium_0051,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 1
+and must be moved to Peg 0, using Peg 2 as auxiliary.
+Consider the first 35 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 35:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(975131, 762243, 22966)",,"In the optimal 8-disk solution from Peg 1 to Peg 0, the first 35 moves occur entirely within the recursive subproblem of moving the top 7 disks from Peg 1 to Peg 2. More specifically, the first 35 moves match the beginning of the optimal 6-disk transfer from Peg 1 to Peg 0 using Peg 2.
+
+Applying the given hash updates over moves 1 through 35 gives:
+
+Answer: (975131, 762243, 22966)","(975131, 762243, 22966)",1,medium,stop
+hanoi_en_medium_0052,"In an optimal Tower of Hanoi solution with 9 disks, all disks start on Peg 2
+and must be moved to Peg 1, using Peg 0 as auxiliary.
+Consider the first 37 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 37:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(533878, 391809, 125355)",,"The first 37 moves of the 9-disk optimal solution are entirely within the recursive subproblem of moving the smaller disks, so only disks 1 through 6 are involved. Applying the standard optimal Tower of Hanoi move order from Peg 2 to Peg 1 with Peg 0 auxiliary, and updating the three hash values for each move gives:
+
+Answer: (533878, 391809, 125355)","(533878, 391809, 125355)",1,medium,stop
+hanoi_en_medium_0053,"In an optimal Tower of Hanoi solution with 9 disks, all disks start on Peg 1
+and must be moved to Peg 2, using Peg 0 as auxiliary.
+Consider the first 31 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 31:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(808660, 319760, 124124)",,"In the optimal 9-disk solution from Peg 1 to Peg 2, the first 31 moves occur entirely within the recursive subproblem of moving the smallest 5 disks from Peg 1 to Peg 2 using Peg 0.
+
+Thus the first 31 moves are exactly the optimal 5-disk sequence:
+
+1. 1: 1→2  
+2. 2: 1→0  
+3. 1: 2→0  
+4. 3: 1→2  
+5. 1: 0→1  
+6. 2: 0→2  
+7. 1: 1→2  
+8. 4: 1→0  
+9. 1: 2→0  
+10. 2: 2→1  
+11. 1: 0→1  
+12. 3: 2→0  
+13. 1: 1→2  
+14. 2: 1→0  
+15. 1: 2→0  
+16. 5: 1→2  
+17. 1: 0→1  
+18. 2: 0→2  
+19. 1: 1→2  
+20. 3: 0→1  
+21. 1: 2→0  
+22. 2: 2→1  
+23. 1: 0→1  
+24. 4: 0→2  
+25. 1: 1→2  
+26. 2: 1→0  
+27. 1: 2→0  
+28. 3: 1→2  
+29. 1: 0→1  
+30. 2: 0→2  
+31. 1: 1→2  
+
+Applying the given modular hash updates over these 31 moves gives:
+
+Answer: (808660, 319760, 124124)","(808660, 319760, 124124)",1,medium,stop
+hanoi_en_medium_0054,"In an optimal Tower of Hanoi solution with 7 disks, all disks start on Peg 2
+and must be moved to Peg 1, using Peg 0 as auxiliary.
+Consider the first 32 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 32:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(290087, 212023, 868874)",,"In the optimal 7-disk solution from Peg 2 to Peg 1 using Peg 0:
+
+- The first 63 moves move the top 6 disks from Peg 2 to Peg 0.
+- Therefore, the first 31 moves are exactly the complete optimal solution moving 5 disks from Peg 2 to Peg 1.
+- Move 32 then moves disk 6 from Peg 2 to Peg 0.
+
+Applying the given hash updates over these 32 moves gives:
+
+Answer: (290087, 212023, 868874)","(290087, 212023, 868874)",1,medium,stop
+hanoi_en_medium_0055,"In an optimal Tower of Hanoi solution with 7 disks, all disks start on Peg 0
+and must be moved to Peg 1, using Peg 2 as auxiliary.
+Consider the first 36 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 36:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(155426, 829685, 177714)",,"In the optimal 7-disk solution from Peg 0 to Peg 1, the first 36 moves occur while moving the top 6 disks from Peg 0 to Peg 2.
+
+For move \(i\), the disk moved is \(D_i = 1 + v_2(i)\). The peg movement cycles are:
+- Odd disks: \(0 \to 1 \to 2 \to 0\)
+- Even disks: \(0 \to 2 \to 1 \to 0\)
+
+Applying the given hash updates over moves 1 through 36 gives:
+
+Answer: (155426, 829685, 177714)","(155426, 829685, 177714)",1,medium,stop
+hanoi_en_medium_0056,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 1
+and must be moved to Peg 2, using Peg 0 as auxiliary.
+Consider the first 31 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 31:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(858088, 835618, 173323)",,"In the optimal 8-disk solution from Peg 1 to Peg 2 using Peg 0, the first phase is moving 7 disks from Peg 1 to Peg 0. Within that, the first 31 moves are exactly the complete optimal solution for moving the top 5 disks from Peg 1 to Peg 0 using Peg 2.
+
+Applying the given hash updates over those 31 moves gives:
+
+Answer: (858088, 835618, 173323)","(858088, 835618, 173323)",1,medium,stop
+hanoi_en_medium_0057,"In an optimal Tower of Hanoi solution with 7 disks, all disks start on Peg 1
+and must be moved to Peg 2, using Peg 0 as auxiliary.
+Consider the first 32 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 32:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(685895, 435937, 868874)",,"For 7 disks from Peg 1 to Peg 2, the largest disk would move on move 64, so the first 32 moves are the first half: moving the top 6 disks from Peg 1 to Peg 0 using Peg 2.
+
+Thus moves 1–31 are the full optimal solution for 5 disks from Peg 1 to Peg 2, and move 32 is disk 6 from Peg 1 to Peg 0.
+
+Applying the given hash updates over these 32 moves gives:
+
+Answer: (685895, 435937, 868874)","(685895, 435937, 868874)",1,medium,stop
+hanoi_en_medium_0058,"In an optimal Tower of Hanoi solution with 7 disks, all disks start on Peg 0
+and must be moved to Peg 1, using Peg 2 as auxiliary.
+Consider the first 32 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 32:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(712821, 429422, 262465)",,"The first 32 moves of the 7-disk optimal solution are the first 32 moves of moving 6 disks from Peg 0 to Peg 2, since disk 7 does not move until move 64. Applying the given recurrence over those moves gives:
+
+Answer: (712821, 429422, 262465)","(712821, 429422, 262465)",1,medium,stop
+hanoi_en_medium_0059,"In an optimal Tower of Hanoi solution with 7 disks, all disks start on Peg 2
+and must be moved to Peg 0, using Peg 1 as auxiliary.
+Consider the first 34 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 34:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(49306, 478190, 450013)",,"In the optimal 7-disk solution from Peg 2 to Peg 0, the first 63 moves move the top 6 disks from Peg 2 to Peg 1. Thus the first 34 moves are within that 6-disk subproblem.
+
+Using the standard recursive move order, applying the given modular updates for moves 1 through 34 gives:
+
+- \(H1 = 49306\)
+- \(H2 = 478190\)
+- \(H3 = 450013\)
+
+Answer: (49306, 478190, 450013)","(49306, 478190, 450013)",1,medium,stop
+hanoi_en_medium_0060,"In an optimal Tower of Hanoi solution with 9 disks, all disks start on Peg 1
+and must be moved to Peg 0, using Peg 2 as auxiliary.
+Consider the first 33 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 33:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(461432, 493662, 492860)",,"For move \(i\) in an optimal Tower of Hanoi solution, the disk moved is:
+
+\[
+D_i = v_2(i)+1
+\]
+
+where \(v_2(i)\) is the exponent of the largest power of 2 dividing \(i\).
+
+With 9 disks moving from Peg 1 to Peg 0, odd-numbered disks move cyclically:
+
+\[
+1 \to 0 \to 2 \to 1
+\]
+
+and even-numbered disks move cyclically:
+
+\[
+1 \to 2 \to 0 \to 1
+\]
+
+Applying the given hash updates over the first 33 moves gives:
+
+Answer: (461432, 493662, 492860)","(461432, 493662, 492860)",1,medium,stop
+hanoi_en_medium_0061,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 0
+and must be moved to Peg 2, using Peg 1 as auxiliary.
+Consider the first 33 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 33:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(523058, 300188, 837255)",,"For 8 disks moving from Peg 0 to Peg 2, the first phase is moving 7 disks from Peg 0 to Peg 1. Within that, the first 33 moves consist of:
+
+- First 31 moves: optimal 5-disk transfer from Peg 0 to Peg 1
+- Move 32: disk 6 from Peg 0 to Peg 2
+- Move 33: disk 1 from Peg 1 to Peg 2
+
+Applying the given modular hash updates over these 33 moves gives:
+
+Answer: (523058, 300188, 837255)","(523058, 300188, 837255)",1,medium,stop
+hanoi_en_medium_0062,"In an optimal Tower of Hanoi solution with 7 disks, all disks start on Peg 1
+and must be moved to Peg 2, using Peg 0 as auxiliary.
+Consider the first 33 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 33:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(634504, 410941, 82101)",,"Using the standard recursive optimal solution:
+
+- First 31 moves are the optimal transfer of disks 1–5 from Peg 1 to Peg 2.
+- Move 32 moves disk 6 from Peg 1 to Peg 0.
+- Move 33 begins transferring disks 1–5 from Peg 2 to Peg 0, so disk 1 moves from Peg 2 to Peg 0.
+
+Applying the given hash updates over the first 33 moves gives:
+
+Answer: (634504, 410941, 82101)","(634504, 410941, 82101)",1,medium,stop
+hanoi_en_medium_0063,"In an optimal Tower of Hanoi solution with 9 disks, all disks start on Peg 1
+and must be moved to Peg 2, using Peg 0 as auxiliary.
+Consider the first 34 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 34:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(938642, 986015, 574711)",,"For the optimal 9-disk solution from Peg 1 to Peg 2 using Peg 0, the first 34 moves occur within the recursive subproblem of moving smaller disks before disk 9 moves.
+
+Recursing:
+- First 255 moves move disks 1–8 from Peg 1 to Peg 0.
+- First 63 of those move disks 1–6 from Peg 1 to Peg 0.
+- Thus the first 34 moves consist of:
+  - the full 31-move solution moving disks 1–5 from Peg 1 to Peg 2,
+  - move 32: disk 6 from Peg 1 to Peg 0,
+  - moves 33–34: first two moves of moving disks 1–5 from Peg 2 to Peg 0.
+
+Applying the given hash updates over these 34 moves gives:
+
+Answer: (938642, 986015, 574711)","(938642, 986015, 574711)",1,medium,stop
+hanoi_en_medium_0064,"In an optimal Tower of Hanoi solution with 9 disks, all disks start on Peg 2
+and must be moved to Peg 0, using Peg 1 as auxiliary.
+Consider the first 31 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 31:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(124408, 682165, 173323)",,"The first 31 moves of the 9-disk optimal solution are exactly the complete optimal solution for the top 5 disks moving from Peg 2 to Peg 0.
+
+Applying the given hash updates over those 31 moves gives:
+
+Answer: (124408, 682165, 173323)","(124408, 682165, 173323)",1,medium,stop
+hanoi_en_medium_0065,"In an optimal Tower of Hanoi solution with 9 disks, all disks start on Peg 0
+and must be moved to Peg 2, using Peg 1 as auxiliary.
+Consider the first 33 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 33:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(609594, 758829, 837255)",,"In an optimal 9-disk Tower of Hanoi solution from Peg 0 to Peg 2:
+
+- The disk moved at step \(i\) is \(D_i = v_2(i)+1\), where \(v_2(i)\) is the exponent of the largest power of 2 dividing \(i\).
+- Since \(n=9\) is odd, odd-numbered disks move cyclically \(0 \to 2 \to 1 \to 0\), while even-numbered disks move \(0 \to 1 \to 2 \to 0\).
+- Applying the given hash updates over the first 33 moves gives:
+  - \(H1 = 609594\)
+  - \(H2 = 758829\)
+  - \(H3 = 837255\)
+
+Answer: (609594, 758829, 837255)","(609594, 758829, 837255)",1,medium,stop
+hanoi_en_medium_0066,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 2
+and must be moved to Peg 1, using Peg 0 as auxiliary.
+Consider the first 32 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 32:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(105646, 596810, 213266)",,"The first 32 moves of the 8-disk optimal solution occur entirely within the recursive subproblem of moving 6 disks from Peg 2 to Peg 1 using Peg 0 as auxiliary. The 32nd move is therefore disk 6 moving from Peg 2 to Peg 1.
+
+Applying the given hash updates over these 32 moves gives:
+
+Answer: (105646, 596810, 213266)","(105646, 596810, 213266)",1,medium,stop
+hanoi_en_medium_0067,"In an optimal Tower of Hanoi solution with 7 disks, all disks start on Peg 1
+and must be moved to Peg 0, using Peg 2 as auxiliary.
+Consider the first 37 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 37:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(744817, 208232, 354166)",,"In the optimal 7-disk solution from Peg 1 to Peg 0, disk \(D_i\) moved at step \(i\) is determined by \(D_i = v_2(i)+1\). Since 7 is odd:
+
+- Odd-numbered disks move cyclically \(1 \to 0 \to 2 \to 1\)
+- Even-numbered disks move cyclically \(1 \to 2 \to 0 \to 1\)
+
+Applying the given hash updates over the first 37 moves gives:
+
+Answer: (744817, 208232, 354166)","(744817, 208232, 354166)",1,medium,stop
+hanoi_en_medium_0068,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 2
+and must be moved to Peg 1, using Peg 0 as auxiliary.
+Consider the first 37 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 37:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(947216, 351816, 354166)",,"In the optimal 8-disk solution from Peg 2 to Peg 1 using Peg 0, the first 37 moves occur within the recursive transfer of the smaller disks before disk 8 moves.
+
+Using the standard recursive Hanoi pattern, the move sequence for the first 37 moves is applied to the hash updates:
+
+- \(H1 = (H1 \cdot 33 + D_i \cdot i + F_i) \bmod 1000003\)
+- \(H2 = (H2 \cdot 17 + D_i \cdot T_i + i) \bmod 1000003\)
+- \(H3 = (H3 \cdot 7 + F_i \cdot T_i + D_i) \bmod 1000003\)
+
+After processing moves 1 through 37, the final values are:
+
+Answer: (947216, 351816, 354166)","(947216, 351816, 354166)",1,medium,stop
+hanoi_en_medium_0069,"In an optimal Tower of Hanoi solution with 7 disks, all disks start on Peg 0
+and must be moved to Peg 2, using Peg 1 as auxiliary.
+Consider the first 36 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 36:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(991388, 126153, 177714)",,"For the optimal 7-disk solution from Peg 0 to Peg 2, the disk moved on step \(i\) is determined by the lowest set bit of \(i\):  
+\[
+D_i = v_2(i)+1
+\]
+Using the standard peg cycles for 7 disks, I computed the first 36 moves and applied the three hash updates modulo \(1000003\).
+
+Final hash values after move 36 are:
+
+Answer: (991388, 126153, 177714)","(991388, 126153, 177714)",1,medium,stop
+hanoi_en_medium_0070,"In an optimal Tower of Hanoi solution with 9 disks, all disks start on Peg 0
+and must be moved to Peg 1, using Peg 2 as auxiliary.
+Consider the first 31 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 31:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(567051, 731142, 751782)",,"In the optimal 9-disk solution from Peg 0 to Peg 1, the first major phase is moving 8 disks from Peg 0 to Peg 2. Continuing recursively, the first 31 moves are exactly the complete optimal solution for the top 5 disks from Peg 0 to Peg 1.
+
+Using those 31 moves and applying the given modular hash updates step by step gives:
+
+Answer: (567051, 731142, 751782)","(567051, 731142, 751782)",1,medium,stop
+hanoi_en_medium_0071,"In an optimal Tower of Hanoi solution with 7 disks, all disks start on Peg 0
+and must be moved to Peg 1, using Peg 2 as auxiliary.
+Consider the first 34 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 34:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(260932, 103215, 860772)",,"In the optimal 7-disk solution from Peg 0 to Peg 1:
+
+- Disk moved at step \(i\) is \(D_i = 1 + v_2(i)\), where \(v_2(i)\) is the exponent of 2 dividing \(i\).
+- Odd-numbered disks cycle \(0 \to 1 \to 2 \to 0\).
+- Even-numbered disks cycle \(0 \to 2 \to 1 \to 0\).
+
+Applying the given hash updates over the first 34 moves gives:
+
+Answer: (260932, 103215, 860772)","(260932, 103215, 860772)",1,medium,stop
+hanoi_en_medium_0072,"In an optimal Tower of Hanoi solution with 9 disks, all disks start on Peg 0
+and must be moved to Peg 2, using Peg 1 as auxiliary.
+Consider the first 32 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 32:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(897262, 44635, 262465)",,"For 9 disks moving from Peg 0 to Peg 2, the first \(2^8-1=255\) moves are the subproblem of moving 8 disks from Peg 0 to Peg 1 using Peg 2. So the first 32 moves come from that 8-disk subproblem.
+
+Using the standard optimal Hanoi move order, the disk moved at step \(i\) is \(D_i = v_2(i)+1\), and tracking the source/destination pegs for the first 32 moves gives the final hash values:
+
+Answer: (897262, 44635, 262465)","(897262, 44635, 262465)",1,medium,stop
+hanoi_en_medium_0073,"In an optimal Tower of Hanoi solution with 7 disks, all disks start on Peg 1
+and must be moved to Peg 2, using Peg 0 as auxiliary.
+Consider the first 34 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 34:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(938642, 986015, 574711)",,"Using the standard optimal recursive Tower of Hanoi pattern:
+
+- The first 31 moves are the optimal 5-disk transfer from Peg 1 to Peg 2.
+- Move 32 moves disk 6 from Peg 1 to Peg 0.
+- Moves 33–34 begin the next subproblem, moving disks from Peg 2 toward Peg 0.
+
+Applying the given hash updates over the first 34 moves gives:
+
+Answer: (938642, 986015, 574711)","(938642, 986015, 574711)",1,medium,stop
+hanoi_en_medium_0074,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 0
+and must be moved to Peg 1, using Peg 2 as auxiliary.
+Consider the first 37 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 37:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(715745, 144634, 243996)",,"For the first 37 moves of the 8-disk optimal solution from Peg 0 to Peg 1, all moves occur within the initial recursive subproblem of moving the top 7 disks from Peg 0 to Peg 2.
+
+Using the standard optimal Hanoi move pattern:
+
+- Disk moved at step `i` is `D_i = v2(i) + 1`.
+- For this 7-disk subproblem:
+  - Odd-numbered disks cycle `0 → 2 → 1 → 0`.
+  - Even-numbered disks cycle `0 → 1 → 2 → 0`.
+
+Applying the given hash updates over moves 1 through 37 gives:
+
+Answer: (715745, 144634, 243996)","(715745, 144634, 243996)",1,medium,stop
+hanoi_en_medium_0075,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 1
+and must be moved to Peg 0, using Peg 2 as auxiliary.
+Consider the first 33 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 33:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(634504, 410941, 82101)",,"In the optimal recursive solution for 8 disks from Peg 1 to Peg 0 using Peg 2, the first 33 moves occur before disk 8 moves. They are part of the subproblem moving the top 7 disks from Peg 1 to Peg 2, and more specifically the first 33 moves match the beginning of moving 6 disks from Peg 1 to Peg 0 using Peg 2.
+
+Using the standard recursive Tower of Hanoi move order, applying the given hash updates for moves 1 through 33 gives:
+
+Answer: (634504, 410941, 82101)","(634504, 410941, 82101)",1,medium,stop
+hanoi_en_medium_0076,"In an optimal Tower of Hanoi solution with 7 disks, all disks start on Peg 1
+and must be moved to Peg 0, using Peg 2 as auxiliary.
+Consider the first 31 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 31:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(858088, 835618, 173323)",,"For the optimal 7-disk solution from Peg 1 to Peg 0, the first 63 moves move the top 6 disks from Peg 1 to Peg 2. Within that, the first 31 moves move the top 5 disks from Peg 1 to Peg 0, using Peg 2 as auxiliary.
+
+Applying the given hash updates over those 31 moves gives:
+
+Answer: (858088, 835618, 173323)","(858088, 835618, 173323)",1,medium,stop
+hanoi_en_medium_0077,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 1
+and must be moved to Peg 2, using Peg 0 as auxiliary.
+Consider the first 36 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 36:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(507419, 365189, 50595)",,"In the optimal Hanoi sequence, the disk moved on step \(i\) is \(D_i = v_2(i)+1\).  
+For this setup with 8 disks moving from Peg 1 to Peg 2 using Peg 0:
+
+- Odd-numbered disks move cyclically \(1 \to 0 \to 2 \to 1\)
+- Even-numbered disks move cyclically \(1 \to 2 \to 0 \to 1\)
+
+Applying the given hash updates through the first 36 moves gives:
+
+Answer: (507419, 365189, 50595)","(507419, 365189, 50595)",1,medium,stop
+hanoi_en_medium_0078,"In an optimal Tower of Hanoi solution with 9 disks, all disks start on Peg 0
+and must be moved to Peg 2, using Peg 1 as auxiliary.
+Consider the first 31 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 31:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(542337, 473213, 751782)",,"For move \(i\), the disk moved is \(D_i = v_2(i)+1\).  
+Since there are 9 disks and the target is Peg 2, odd-numbered disks move cyclically \(0 \to 2 \to 1 \to 0\), while even-numbered disks move \(0 \to 1 \to 2 \to 0\).
+
+Applying the given hash updates over the first 31 optimal moves gives:
+
+Answer: (542337, 473213, 751782)","(542337, 473213, 751782)",1,medium,stop
+hanoi_en_medium_0079,"In an optimal Tower of Hanoi solution with 7 disks, all disks start on Peg 1
+and must be moved to Peg 2, using Peg 0 as auxiliary.
+Consider the first 31 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 31:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(808660, 319760, 124124)",,"The first 31 moves of the 7-disk optimal solution are exactly the full optimal solution for moving the top 5 disks from Peg 1 to Peg 2 using Peg 0.
+
+Applying the given hash updates over those 31 moves gives:
+
+Answer: (808660, 319760, 124124)","(808660, 319760, 124124)",1,medium,stop
+hanoi_en_medium_0080,"In an optimal Tower of Hanoi solution with 7 disks, all disks start on Peg 0
+and must be moved to Peg 1, using Peg 2 as auxiliary.
+Consider the first 31 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 31:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(567051, 731142, 751782)",,"In the optimal 7-disk solution from Peg 0 to Peg 1, the first phase moves 6 disks from Peg 0 to Peg 2. Within that, the first 31 moves are exactly the optimal solution moving 5 disks from Peg 0 to Peg 1 using Peg 2.
+
+Using those 31 moves and applying the given hash updates modulo 1,000,003 gives:
+
+Answer: (567051, 731142, 751782)","(567051, 731142, 751782)",1,medium,stop
+hanoi_en_medium_0081,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 0
+and must be moved to Peg 2, using Peg 1 as auxiliary.
+Consider the first 35 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 35:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(610769, 754687, 25387)",,"In the optimal 8-disk Tower of Hanoi solution from Peg 0 to Peg 2:
+
+- The disk moved at step \(i\) is \(D_i = 1 + v_2(i)\), where \(v_2(i)\) is the exponent of 2 dividing \(i\).
+- Since \(n=8\) is even, odd-numbered disks move in the cycle \(0 \to 1 \to 2 \to 0\), while even-numbered disks move in the reverse cycle \(0 \to 2 \to 1 \to 0\).
+- Applying the given hash updates for moves 1 through 35 gives:
+  - \(H1 = 610769\)
+  - \(H2 = 754687\)
+  - \(H3 = 25387\)
+
+Answer: (610769, 754687, 25387)","(610769, 754687, 25387)",1,medium,stop
+hanoi_en_medium_0082,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 0
+and must be moved to Peg 1, using Peg 2 as auxiliary.
+Consider the first 33 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 33:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(609594, 758829, 837255)",,"For an optimal 8-disk Tower of Hanoi move from Peg 0 to Peg 1, disk moved at step \(i\) is:
+
+\[
+D_i = v_2(i)+1
+\]
+
+where \(v_2(i)\) is the exponent of the largest power of 2 dividing \(i\).
+
+Since 8 is even, odd-numbered disks move cyclically \(0 \to 2 \to 1 \to 0\), while even-numbered disks move \(0 \to 1 \to 2 \to 0\).
+
+Using the first 33 moves and applying the given modular hash updates yields:
+
+\[
+H1 = 609594,\quad H2 = 758829,\quad H3 = 837255
+\]
+
+Answer: (609594, 758829, 837255)","(609594, 758829, 837255)",1,medium,stop
+hanoi_en_medium_0083,"In an optimal Tower of Hanoi solution with 9 disks, all disks start on Peg 0
+and must be moved to Peg 2, using Peg 1 as auxiliary.
+Consider the first 34 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 34:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(116612, 900091, 860772)",,"The first 34 moves occur entirely within the initial recursive subproblem: moving the top 8 disks from Peg 0 to Peg 1 using Peg 2. Applying the standard optimal Hanoi move order and updating the three hash values step by step modulo 1,000,003 gives:
+
+Answer: (116612, 900091, 860772)","(116612, 900091, 860772)",1,medium,stop
+hanoi_en_medium_0084,"In an optimal Tower of Hanoi solution with 7 disks, all disks start on Peg 1
+and must be moved to Peg 0, using Peg 2 as auxiliary.
+Consider the first 34 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 34:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(227279, 392266, 450013)",,"Using the optimal recursive Tower of Hanoi strategy:
+
+- Move 6 disks from Peg 1 to Peg 2 using Peg 0.
+- Move disk 7 from Peg 1 to Peg 0.
+- Move 6 disks from Peg 2 to Peg 0 using Peg 1.
+
+The first 34 moves all occur before disk 7 moves. Specifically:
+- Moves 1–31 move 5 disks from Peg 1 to Peg 0.
+- Move 32 moves disk 6 from Peg 1 to Peg 2.
+- Moves 33–34 begin moving 5 disks from Peg 0 to Peg 2.
+
+Applying the given hash updates over these 34 moves gives:
+
+Answer: (227279, 392266, 450013)","(227279, 392266, 450013)",1,medium,stop
+hanoi_en_medium_0085,"In an optimal Tower of Hanoi solution with 7 disks, all disks start on Peg 0
+and must be moved to Peg 2, using Peg 1 as auxiliary.
+Consider the first 31 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 31:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(542337, 473213, 751782)",,"In the optimal 7-disk solution from Peg 0 to Peg 2, the first 63 moves move disks 1–6 from Peg 0 to Peg 1. Therefore, the first 31 moves are exactly the optimal 5-disk transfer from Peg 0 to Peg 2.
+
+Using those 31 moves and applying the given modular hash updates step by step gives:
+
+Answer: (542337, 473213, 751782)","(542337, 473213, 751782)",1,medium,stop
+hanoi_en_medium_0086,"In an optimal Tower of Hanoi solution with 7 disks, all disks start on Peg 0
+and must be moved to Peg 2, using Peg 1 as auxiliary.
+Consider the first 35 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 35:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(848223, 301537, 25387)",,"In the optimal 7-disk solution from Peg 0 to Peg 2, the first 63 moves are the subproblem moving disks 1–6 from Peg 0 to Peg 1. For each move \(i\), the disk moved is \(D_i = v_2(i)+1\), and the source/destination pegs follow the standard optimal Hanoi move cycles.
+
+Applying the given hash updates over moves 1 through 35 gives:
+
+Answer: (848223, 301537, 25387)","(848223, 301537, 25387)",1,medium,stop
+hanoi_en_medium_0087,"In an optimal Tower of Hanoi solution with 9 disks, all disks start on Peg 2
+and must be moved to Peg 0, using Peg 1 as auxiliary.
+Consider the first 35 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 35:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(627131, 129243, 150085)",,"The first 35 moves of the 9-disk optimal solution occur entirely within the recursive subproblem of moving 6 disks from Peg 2 to Peg 1, using Peg 0 as auxiliary.
+
+Computing the hash updates over those 35 moves gives:
+
+Answer: (627131, 129243, 150085)","(627131, 129243, 150085)",1,medium,stop
+hanoi_en_medium_0088,"In an optimal Tower of Hanoi solution with 9 disks, all disks start on Peg 1
+and must be moved to Peg 2, using Peg 0 as auxiliary.
+Consider the first 37 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 37:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(918144, 288218, 125355)",,"For move \(i\) in the optimal Tower of Hanoi sequence:
+
+- The disk moved is \(D_i = v_2(i)+1\), where \(v_2(i)\) is the exponent of 2 dividing \(i\).
+- Since there are 9 disks and the destination is Peg 2 from Peg 1, odd-numbered disks move cyclically \(1 \to 2 \to 0 \to 1\), while even-numbered disks move \(1 \to 0 \to 2 \to 1\).
+
+Applying the given hash updates for moves \(1\) through \(37\) modulo \(1000003\) gives:
+
+Answer: (918144, 288218, 125355)","(918144, 288218, 125355)",1,medium,stop
+hanoi_en_medium_0089,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 0
+and must be moved to Peg 2, using Peg 1 as auxiliary.
+Consider the first 37 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 37:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(129080, 104641, 243996)",,"Since the first \(2^7-1=127\) moves of the 8-disk solution are just the optimal transfer of the top 7 disks from Peg 0 to Peg 1, the first 37 moves occur entirely inside that subproblem.
+
+Using the standard recursive Tower of Hanoi move order, the first 37 \((D_i,F_i,T_i)\) triples are applied to the three hash recurrences modulo \(1000003\). After carrying out the updates through move 37, the hash values are:
+
+Answer: (129080, 104641, 243996)","(129080, 104641, 243996)",1,medium,stop
+hanoi_en_medium_0090,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 0
+and must be moved to Peg 1, using Peg 2 as auxiliary.
+Consider the first 36 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 36:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(991388, 126153, 177714)",,"For the 8-disk optimal solution from Peg 0 to Peg 1, the first 36 moves occur within the recursive subproblem of moving 7 disks from Peg 0 to Peg 2, and more specifically:
+
+- Moves 1–31: move 5 disks from Peg 0 to Peg 2
+- Move 32: move disk 6 from Peg 0 to Peg 1
+- Moves 33–36: first 4 moves of moving 5 disks from Peg 2 to Peg 1
+
+Using those moves and applying the given modular hash updates through step 36 gives:
+
+Answer: (991388, 126153, 177714)","(991388, 126153, 177714)",1,medium,stop
+hanoi_en_medium_0091,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 2
+and must be moved to Peg 1, using Peg 0 as auxiliary.
+Consider the first 35 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 35:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(627131, 129243, 150085)",,"In the 8-disk optimal solution from Peg 2 to Peg 1, the first phase is moving the top 7 disks from Peg 2 to Peg 0. Since 35 moves occur before disk 8 moves, these first 35 moves are within that subproblem.
+
+Equivalently, the first 35 moves match the beginning of the 6-disk subproblem moving Peg 2 to Peg 1 using Peg 0. Applying the given hash updates across those 35 moves gives:
+
+Answer: (627131, 129243, 150085)","(627131, 129243, 150085)",1,medium,stop
+hanoi_en_medium_0092,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 1
+and must be moved to Peg 2, using Peg 0 as auxiliary.
+Consider the first 32 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 32:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(317013, 205508, 213266)",,"In the optimal 8-disk solution from Peg 1 to Peg 2 using Peg 0, the first phase moves the top 7 disks from Peg 1 to Peg 0. Within that, the first 31 moves are exactly the full optimal solution moving 5 disks from Peg 1 to Peg 0, and move 32 moves disk 6 from Peg 1 to Peg 2.
+
+Using those first 32 moves and applying the given hash updates step by step modulo 1,000,003 gives:
+
+Answer: (317013, 205508, 213266)","(317013, 205508, 213266)",1,medium,stop
+hanoi_en_medium_0093,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 1
+and must be moved to Peg 0, using Peg 2 as auxiliary.
+Consider the first 32 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 32:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(685895, 435937, 868874)",,"Using the standard recursive optimal solution, the first 32 moves for 8 disks from Peg 1 to Peg 0 are the first 31 moves of moving 5 disks from Peg 1 to Peg 2, followed by moving disk 6 from Peg 1 to Peg 0.
+
+Applying the given hash updates over those 32 moves gives:
+
+Answer: (685895, 435937, 868874)","(685895, 435937, 868874)",1,medium,stop
+hanoi_en_medium_0094,"In an optimal Tower of Hanoi solution with 9 disks, all disks start on Peg 0
+and must be moved to Peg 2, using Peg 1 as auxiliary.
+Consider the first 36 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 36:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(991388, 126153, 177714)",,"For the optimal 9-disk solution from Peg 0 to Peg 2, disk \(d\) moves on steps where \(i = (2k-1)2^{d-1}\), so \(d = v_2(i)+1\).
+
+Since \(n=9\), odd-numbered disks cycle \(0 \to 2 \to 1 \to 0\), while even-numbered disks cycle \(0 \to 1 \to 2 \to 0\). Applying the given hash updates over the first 36 moves gives:
+
+Answer: (991388, 126153, 177714)","(991388, 126153, 177714)",1,medium,stop
+hanoi_en_medium_0095,"In an optimal Tower of Hanoi solution with 8 disks, all disks start on Peg 2
+and must be moved to Peg 0, using Peg 1 as auxiliary.
+Consider the first 32 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 32:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(290087, 212023, 868874)",,"In the optimal 8-disk solution from Peg 2 to Peg 0, the first 127 moves move the top 7 disks from Peg 2 to Peg 1. Within those, the first 31 moves complete moving disks 1–5 from Peg 2 to Peg 1, and move 32 is disk 6 from Peg 2 to Peg 0.
+
+Applying the given hash updates over the first 32 moves gives:
+
+Answer: (290087, 212023, 868874)","(290087, 212023, 868874)",1,medium,stop
+hanoi_en_medium_0096,"In an optimal Tower of Hanoi solution with 9 disks, all disks start on Peg 2
+and must be moved to Peg 1, using Peg 0 as auxiliary.
+Consider the first 36 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 36:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(531330, 493635, 160765)",,"For the first 36 moves, the 9-disk problem is still inside the recursive subproblem of moving the top 6 disks from Peg 2 to Peg 0 using Peg 1 as auxiliary. Thus the relevant first 36 moves are generated by that 6-disk optimal sequence.
+
+Applying the given modular hash updates over those 36 moves gives:
+
+Answer: (531330, 493635, 160765)","(531330, 493635, 160765)",1,medium,stop
+hanoi_en_medium_0097,"In an optimal Tower of Hanoi solution with 7 disks, all disks start on Peg 0
+and must be moved to Peg 1, using Peg 2 as auxiliary.
+Consider the first 33 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 33:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(523058, 300188, 837255)",,"The first 33 moves are within the initial recursive phase: move the top 6 disks from Peg 0 to Peg 2, then move disk 6, then begin moving the top 5 disks from Peg 1 to Peg 2.
+
+Using the optimal Tower of Hanoi move sequence for these 33 moves and applying the given hash updates modulo 1,000,003 gives:
+
+Answer: (523058, 300188, 837255)","(523058, 300188, 837255)",1,medium,stop
+hanoi_en_medium_0098,"In an optimal Tower of Hanoi solution with 9 disks, all disks start on Peg 2
+and must be moved to Peg 0, using Peg 1 as auxiliary.
+Consider the first 32 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 32:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(105646, 596810, 213266)",,"For the first 32 moves of the 9-disk optimal solution from Peg 2 to Peg 0:
+
+- The first 31 moves are exactly the optimal solution moving disks 1–5 from Peg 2 to Peg 0.
+- Move 32 moves disk 6 from Peg 2 to Peg 1.
+
+Using those moves in the given hash updates modulo 1,000,003 gives:
+
+Answer: (105646, 596810, 213266)","(105646, 596810, 213266)",1,medium,stop
+hanoi_en_medium_0099,"In an optimal Tower of Hanoi solution with 9 disks, all disks start on Peg 0
+and must be moved to Peg 1, using Peg 2 as auxiliary.
+Consider the first 32 moves. At each step i (1-indexed), let D_i be the disk moved,
+F_i the source peg, and T_i the destination peg.
+Starting with H1 = H2 = H3 = 0, update for each step i from 1 to 32:
+  H1 = (H1 * 33 + D_i * i + F_i) mod 1000003
+  H2 = (H2 * 17 + D_i * T_i + i) mod 1000003
+  H3 = (H3 * 7 + F_i * T_i + D_i) mod 1000003
+Provide the final values in the exact format: (H1, H2, H3).","(712821, 429422, 262465)",,"In the optimal 9-disk solution from Peg 0 to Peg 1, the first 32 moves occur before disk 9 moves. Recursively, those first 32 moves reduce to:
+
+- the complete optimal solution for 5 disks from Peg 0 to Peg 1 for moves 1–31,
+- followed by moving disk 6 from Peg 0 to Peg 2 on move 32.
+
+Applying the given modular hash updates over those 32 moves gives:
+
+Answer: (559407, 429422, 262465)","(559407, 429422, 262465)",0,medium,stop

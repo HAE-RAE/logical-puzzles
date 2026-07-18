@@ -1,0 +1,4412 @@
+id,question,answer,thinking_content,resps,filtered_resps,exact_match,difficulty,finish_reason
+cipher_en_hard_0000,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 1689: STATUS STABLE. ENCRYPTION SEED IS DETERMINED AS ECHO. COORDINATES SET TO 98.64 | SECTOR E9A7. TARGET SATELLITE IS BREACHED.
+-------------------------------
+
+Ciphertext: 'QXQULNICBTRL'
+
+Encryption guide:
+1. The encryption keyword is the 12-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - ODJEI -> HZVWNZLL
+  - EXWFI -> BZLWAZML
+  - LLNF -> PNUT
+  - GBJL -> FIQZ
+  - PEQRE -> IZWSUZYL
+  - CYEDP -> CZJDIZKL
+  - RZVSIQ -> DSYWZZZL
+  - PMAE -> QRHS
+  - RXOYEP -> BRYSSZFL
+  - OVFHBC -> ZEVPJZOL
+
+Enter the decrypted plaintext (uppercase, no spaces).",GMBRHVOKLJ,,"The 12th word in the mission log is **ECHO**, so the keyword is **ECHO**.
+
+Decrypting in reverse order:
+
+1. **Vigenère decrypt** `QXQULNICBTRL` with keyword `ECHO` gives:
+   `MVJGHLBOXRKX`
+
+2. **Undo columnar transposition** with keyword `ECHO`.
+   - Column order from alphabetically sorting ECHO is: C, E, H, O → columns 2, 1, 3, 4
+   - Reconstructing the grid gives padded plaintext:
+     `GMBRHVOKLJXX`
+
+3. Remove padding `XX`:
+   `GMBRHVOKLJ`
+
+Answer: GMBRHVOKLJ",GMBRHVOKLJ,1,hard,stop
+cipher_en_hard_0001,"--- [RECOVERED MISSION LOG] ---
+TARGET DATABASE IS READY. COORDINATES SET TO 21.3 | SECTOR A520. ENCRYPTION SEED IS DETERMINED AS ALPHA. SYSTEM REPORT ID 9837: STATUS OVERLOADED.
+-------------------------------
+
+Ciphertext: 'WZXELFHUOV'
+
+Encryption guide:
+1. The encryption keyword is the 17-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - RMCKEN -> RYTEKXXMJX
+  - TOBX -> TIMVB
+  - XWCACW -> XHREAXHMJX
+  - BVQLUA -> BLJELXGMXX
+  - DBTL -> DIAIT
+  - GJQBYM -> GXNEBXUMXX
+  - QVVP -> QIECV
+  - ZIKYF -> ZQNPK
+  - LTGBD -> LOQAG
+  - PQJC -> PIRXJ
+
+Enter the decrypted plaintext (uppercase, no spaces).",WWHLIOFVF,,"The 17th word in the mission log, counting `21.3` as `21` and `3` after excluding punctuation, is **ALPHA**.
+
+Using keyword **ALPHA**:
+
+1. Undo Vigenère on `WZXELFHUOV`:
+   - Subtract repeated `ALPHA`
+   - Result: `WOIXLFWFHV`
+
+2. Undo columnar transposition with keyword `ALPHA`.
+   - Alphabetical column order for ALPHA is: A(1), A(5), H(4), L(2), P(3)
+   - Reconstructing the grid gives padded plaintext: `WWHLIOFVFX`
+
+3. Remove the padding `X`:
+   - Plaintext: `WWHLIOFVF`
+
+Answer: WWHLIOFVF",WWHLIOFVF,1,hard,stop
+cipher_en_hard_0002,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 71.91 | SECTOR E30A. TARGET CORE IS STANDBY. SYSTEM REPORT ID 5245: STATUS SYNCING. ENCRYPTION SEED IS DETERMINED AS INDIA.
+-------------------------------
+
+Ciphertext: 'TKXFMFIACQ'
+
+Encryption guide:
+1. The encryption keyword is the 23-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - UZPHEH -> MKSFUPUAHX
+  - TREWF -> NRWER
+  - EKQWJB -> RKTFEJJASX
+  - XZNWF -> NAAEZ
+  - XTIJS -> AVART
+  - JOXUTW -> BKAFJEHAWX
+  - XOALOR -> WKDFXZYAWX
+  - WBKRW -> EXZZB
+  - DTCK -> FPGST
+  - BGDSPR -> XKGFBZFAOX
+
+Enter the decrypted plaintext (uppercase, no spaces).",MUUVLXQ,,"The encryption keyword is the 23rd word when splitting the mission log on punctuation, which gives **INDIA**.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** using keyword INDIA  
+   Ciphertext: `TKXFMFIACQ`  
+   Vigenère-decrypted text: `LXUXMXVXUQ`
+
+2. **Undo columnar transposition** with keyword INDIA  
+   Keyword column order from sorting INDIA: A, D, I, I, N → columns `[4, 2, 0, 3, 1]`
+
+   Reconstructing the grid and reading rows gives:  
+   `MUUVLXQXXX`
+
+3. Remove transposition padding Xs:  
+   `MUUVLXQ`
+
+Answer: MUUVLXQ",MUUVLXQ,1,hard,stop
+cipher_en_hard_0003,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 2901: STATUS OVERLOADED. COORDINATES SET TO 102.66 | SECTOR 9DFF. TARGET TERMINAL IS READY. ENCRYPTION VECTOR IS DETERMINED AS HOTEL.
+-------------------------------
+
+Ciphertext: 'OQSZXEUATO'
+
+Encryption guide:
+1. The encryption keyword is the 23-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - QDYMX -> TEQHJ
+  - HXGMA -> TVTBR
+  - RSCRC -> YFVWN
+  - AVZC -> JOQZK
+  - KZPD -> KYQDA
+  - JUFJ -> QXQYQ
+  - OURY -> FCQYC
+  - BBJMEY -> TLUCPEPQNI
+  - RJWXP -> EFINH
+  - XKSXP -> ELIOD
+
+Enter the decrypted plaintext (uppercase, no spaces).",ZGPHMVHDC,,"Keyword: HOTEL
+
+1. Undo Vigenère on `OQSZXEUATO` using `HOTELHOTEL`:
+
+`OQSZXEUATO` → `HCZVMXGHPD`
+
+2. Undo columnar transposition.  
+Keyword `HOTEL` sorted alphabetically gives column order:
+
+`E, H, L, O, T` → original columns `4, 1, 5, 2, 3`
+
+Split `HCZVMXGHPD` into 2-letter column chunks:
+
+- Col 4: HC
+- Col 1: ZV
+- Col 5: MX
+- Col 2: GH
+- Col 3: PD
+
+Reading rows in original column order gives:
+
+`ZGPHMVHDCX`
+
+Answer: ZGPHMVHDCX",ZGPHMVHDCX,0,hard,stop
+cipher_en_hard_0004,"--- [RECOVERED MISSION LOG] ---
+TARGET DATABASE IS BREACHED. ENCRYPTION SEED IS DETERMINED AS HOTEL. COORDINATES SET TO 118.91 | SECTOR DADD. SYSTEM REPORT ID 3581: STATUS OVERLOADED.
+-------------------------------
+
+Ciphertext: 'SUGQZMUSHP'
+
+Encryption guide:
+1. The encryption keyword is the 10-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - UJGE -> LIQNR
+  - INZZPI -> GLBMAEBQDI
+  - TXMIA -> PHTBX
+  - NNMIJ -> PBCRX
+  - QQPAX -> HEQUA
+  - DTXDAM -> KLWQLEHQBI
+  - JRPA -> HXQVA
+  - CGDOC -> VQVKO
+  - FEUQM -> XTFIF
+  - PNPKEL -> RLIPPEBQTI
+
+Enter the decrypted plaintext (uppercase, no spaces).",NGDLOMZEGF,,"The 10th word in the mission log is **HOTEL**, so the keyword is HOTEL.
+
+Decrypting in reverse order:
+
+1. **Undo Vigenère** on `SUGQZMUSHP` using repeated key `HOTELHOTEL` gives:
+   `LGNMOFGZDE`
+
+2. **Undo columnar transposition** with keyword HOTEL.  
+   Column order from sorting HOTEL is: E, H, L, O, T → column positions `4,1,5,2,3`.
+
+   Reconstructing the grid gives plaintext:
+   `NGDLOMZEGF`
+
+Answer: NGDLOMZEGF",NGDLOMZEGF,1,hard,stop
+cipher_en_hard_0005,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 2214: STATUS LOCKED. TARGET GRID IS STANDBY. ENCRYPTION PRIMARY KEY IS DETERMINED AS GOLF. COORDINATES SET TO 44.62 | SECTOR 6D53.
+-------------------------------
+
+Ciphertext: 'ULQQSLMH'
+
+Encryption guide:
+1. The encryption keyword is the 17-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - YYDBJ -> HLJOJLJC
+  - PRMFEO -> LLAJSLCT
+  - EGCCT -> ILPYILRC
+  - CDAX -> DQLI
+  - QTWBV -> HLBACLEC
+  - HVEEX -> KLSCKLGC
+  - ANKL -> ROVS
+  - EOOL -> RSZT
+  - KWWNBF -> TLVGCLHK
+  - ETEWCZ -> CLPHKLEE
+
+Enter the decrypted plaintext (uppercase, no spaces).",FBMOLC,,"The 17th token in the mission log is **GOLF**, so the keyword is **GOLF**.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** on `ULQQSLMH` using repeated key `GOLFGOLF`:
+   - Result: `OXFLMXBC`
+
+2. **Undo columnar transposition** with keyword `GOLF`.
+   - Column order from sorted keyword letters: F, G, L, O → positions **4, 1, 3, 2**
+   - Reconstructing the 2-row grid gives: `FBMOLCXX`
+
+3. Remove padding `X`s:
+   - Plaintext: `FBMOLC`
+
+Answer: FBMOLC",FBMOLC,1,hard,stop
+cipher_en_hard_0006,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION PRIMARY KEY IS DETERMINED AS ALPHA. COORDINATES SET TO 70.33 | SECTOR 1A61. TARGET TERMINAL IS OFFLINE. SYSTEM REPORT ID 7348: STATUS STABLE.
+-------------------------------
+
+Ciphertext: 'JZGEWXAKFX'
+
+Encryption guide:
+1. The encryption keyword is the 7-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - LJWE -> LITQW
+  - YFMF -> YIUMM
+  - RAQO -> RIDHQ
+  - NWOZ -> NIODO
+  - DGVPEN -> DYTEPXRMCX
+  - IZAXW -> IHMGA
+  - YOBA -> YIPVB
+  - JQCO -> JIDXC
+  - DLZD -> DISSZ
+  - OFNVGG -> ORVEVXQMUX
+
+Enter the decrypted plaintext (uppercase, no spaces).",JPYWROV,,"The 7th word in the mission log is **ALPHA**, so the keyword is **ALPHA**.
+
+Undo Vigenère on `JZGEWXAKFX` using ALPHA gives:
+
+`JORXWXPVYX`
+
+Then undo the columnar transposition with keyword ALPHA. The sorted column order is:
+
+`0, 4, 3, 1, 2`
+
+Reconstructing the grid gives padded plaintext:
+
+`JPYWROVXXX`
+
+Removing padding X’s:
+
+Answer: JPYWROV",JPYWROV,1,hard,stop
+cipher_en_hard_0007,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 168.38 | SECTOR E503. SYSTEM REPORT ID 4103: STATUS CRITICAL. TARGET CORE IS BREACHED. ENCRYPTION PRIMARY KEY IS DETERMINED AS DELTA.
+-------------------------------
+
+Ciphertext: 'RBSMEEQIXX'
+
+Encryption guide:
+1. The encryption keyword is the 24-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - BIBYRC -> UBMVIAFIRX
+  - PZIX -> ATKBX
+  - UFVKDS -> GBFLFAZIDX
+  - ZVTXO -> RDGMX
+  - FRZXU -> XJCSX
+  - RJANFK -> IBCDJAEIGX
+  - LZWPF -> IPKPP
+  - YYGG -> ACJZG
+  - SCGNR -> UWNZN
+  - ZMLX -> ADXEX
+
+Enter the decrypted plaintext (uppercase, no spaces).",HEMEOTB,,"The mission log’s 24th word is **DELTA**, so the keyword is DELTA.
+
+Decrypting:
+
+1. Undo Vigenère on `RBSMEEQIXX` with DELTA gives:
+   `OXHTEBMXEX`
+
+2. Undo columnar transposition with keyword DELTA:
+   - Sorted column order: A, D, E, L, T → columns 5, 1, 2, 3, 4
+   - Reconstructing the grid gives padded plaintext:
+     `HEMEOTBXXX`
+
+3. Remove padding Xs:
+   `HEMEOTB`
+
+Answer: HEMEOTB",HEMEOTB,1,hard,stop
+cipher_en_hard_0008,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 2943: STATUS LOCKED. TARGET GRID IS READY. COORDINATES SET TO 68.43 | SECTOR 6248. ENCRYPTION SEED IS DETERMINED AS GOLF.
+-------------------------------
+
+Ciphertext: 'CIIATYTXDCTC'
+
+Encryption guide:
+1. The encryption keyword is the 23-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - SVOLA -> RLDFULGC
+  - LYKENX -> KLWSQLJC
+  - CZOSU -> YLNZULKC
+  - VXLGT -> MLGYRLIC
+  - LWXYA -> ELWFDLHC
+  - LGYO -> UZJL
+  - HAWIP -> OLSUCLLC
+  - LYFR -> XZQD
+  - YHVI -> OMGM
+  - BTGCHM -> ILMMMLER
+
+Enter the decrypted plaintext (uppercase, no spaces).",VOIWNISUK,,"The keyword is the 23rd word of the mission log, counting `68.43` as `68` and `43`, so the keyword is **GOLF**.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** with keyword `GOLF`:
+
+`CIIATYTXDCTC` → `WUXVNKISXOIX`
+
+2. **Undo columnar transposition** with keyword `GOLF`.
+
+Sorted keyword column order is:
+
+`F, G, L, O` → column positions `4, 1, 3, 2`
+
+Split the intermediate text into 3-letter columns:
+
+- Col 4: `WUX`
+- Col 1: `VNK`
+- Col 3: `ISX`
+- Col 2: `OIX`
+
+Reconstruct rows in original keyword order `G O L F`:
+
+`VOIW NISU KXXX`
+
+Remove padding Xs:
+
+`VOIWNISUK`
+
+Answer: VOIWNISUK",VOIWNISUK,1,hard,stop
+cipher_en_hard_0009,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 9728: STATUS LOCKED. ENCRYPTION PRIMARY KEY IS DETERMINED AS FOXTROT. TARGET GRID IS OFFLINE. COORDINATES SET TO 6.65 | SECTOR B6BC.
+-------------------------------
+
+Ciphertext: 'FNXQMLGCQUAOEQ'
+
+Encryption guide:
+1. The encryption keyword is the 13-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - SCZU -> XQUQLLS
+  - FVSBA -> KJUTSLL
+  - ELJXWX -> JZUPOLC
+  - RFECHK -> WTHATLX
+  - HBMSK -> MPUDJLF
+  - CPVSGV -> HDSZJLO
+  - HZPUKK -> MNHDLLI
+  - SUSPDN -> XIKWGLL
+  - TVOCPH -> YJEITLH
+  - YIBYN -> DWUGPLU
+
+Enter the decrypted plaintext (uppercase, no spaces).",AAQCNVHZ,,"The 13th word of the mission log content is **FOXTROT**, so the keyword is FOXTROT.
+
+Decrypting the ciphertext in reverse order:
+
+1. **Undo Vigenère** with FOXTROT:  
+   `FNXQMLGCQUAOEQ` → `AZAXVXNXCXHXQX`
+
+2. **Undo columnar transposition** using FOXTROT.  
+   Sorted column order for FOXTROT is: `0, 1, 5, 4, 3, 6, 2`
+
+   Reconstructing the grid gives plaintext with padding:  
+   `AAQCNVHZXXXXXX`
+
+3. Remove trailing padding Xs:  
+   `AAQCNVHZ`
+
+Answer: AAQCNVHZ",AAQCNVHZ,1,hard,stop
+cipher_en_hard_0010,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION VECTOR IS DETERMINED AS FOXTROT. SYSTEM REPORT ID 1743: STATUS STABLE. COORDINATES SET TO 114.95 | SECTOR 5AA5. TARGET SATELLITE IS OFFLINE.
+-------------------------------
+
+Ciphertext: 'DXJPDPF'
+
+Encryption guide:
+1. The encryption keyword is the 6-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - NPQW -> SDUQNLJ
+  - DKQT -> IYUQKLJ
+  - CBXR -> HPUQILQ
+  - USFG -> ZGUQXLY
+  - IJSD -> NXUQULL
+  - BEKV -> GSUQMLD
+  - MIEE -> RWUQVLX
+  - BFSLT -> GTUMCLL
+  - ZCPF -> EQUQWLI
+  - YLXHL -> DZUEYLQ
+
+Enter the decrypted plaintext (uppercase, no spaces).",YJMMWMB,,"The 6th word of the mission log is **FOXTROT**, so the keyword is FOXTROT.
+
+Encryption was:
+
+1. TRANSPOSITION
+2. VIGENERE
+
+So decryption reverses that:
+
+1. Undo Vigenère using FOXTROT  
+   - Ciphertext: `DXJPDPF`
+   - Key shifts: F O X T R O T = 5,14,23,19,17,14,19
+   - Result: `YJMWMBM`
+
+2. Undo columnar transposition with keyword FOXTROT  
+   - Column order from sorted FOXTROT: positions `1,2,6,5,4,7,3`
+   - Reconstructing gives plaintext: `YJMMWMB`
+
+Answer: YJMMWMB",YJMMWMB,1,hard,stop
+cipher_en_hard_0011,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION PRIMARY KEY IS DETERMINED AS CHARLIE. COORDINATES SET TO 72.2 | SECTOR 8817. TARGET GRID IS BREACHED. SYSTEM REPORT ID 3938: STATUS OVERLOADED.
+-------------------------------
+
+Ciphertext: 'JEBGGFTBRXHIEB'
+
+Encryption guide:
+1. The encryption keyword is the 7-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - BLKPGL -> MIXCWOT
+  - KZUCR -> WRXQIZG
+  - RZSDBE -> UYXQPJH
+  - UFHUZ -> JBXWIHY
+  - VXGSK -> ICXOISW
+  - LAWJXN -> YSXRYFN
+  - VHNZGQ -> PCXYBOD
+  - NXROB -> TUXOIJS
+  - LPTH -> VSXGIFL
+  - RUTD -> VYXLIFH
+
+Enter the decrypted plaintext (uppercase, no spaces).",BPHWQKVPZ,,"The 7th word of the mission log is **CHARLIE**, so the keyword is CHARLIE.
+
+Decrypt in reverse order:
+
+1. Undo Vigenère using CHARLIE on `JEBGGFTBRXHIEB`:
+   - Gives intermediate transposition text: `HXBPVXPZKXQXWX`
+
+2. Undo columnar transposition with keyword CHARLIE.
+   - Column order from sorted keyword letters is: A,C,E,H,I,L,R → positions `2,0,6,1,5,4,3`
+   - Reconstructing the grid and reading rows gives: `BPHWQKVPZXXXXX`
+
+3. Remove padding X’s:
+   - Plaintext: `BPHWQKVPZ`
+
+Answer: BPHWQKVPZ",BPHWQKVPZ,1,hard,stop
+cipher_en_hard_0012,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 7694: STATUS LOCKED. ENCRYPTION VECTOR IS DETERMINED AS DELTA. TARGET CORE IS OFFLINE. COORDINATES SET TO 66.6 | SECTOR FC5A.
+-------------------------------
+
+Ciphertext: 'YBEOORVFTC'
+
+Encryption guide:
+1. The encryption keyword is the 12-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - FFNS -> AJQGS
+  - TLQFO -> RXWJF
+  - UEYBF -> IYPRB
+  - WQJXO -> RABCX
+  - MNPCK -> NQYIC
+  - EPYJS -> VIARJ
+  - HNFOZ -> CLYYO
+  - QJTW -> AUUMW
+  - EYMBIM -> LBPFYAQIUX
+  - AWTCUO -> XBLHWAXIVX
+
+Enter the decrypted plaintext (uppercase, no spaces).",TORAVVOUC,,"Using the 12th word in the mission log as the keyword gives **DELTA**.
+
+Decrypting the ciphertext by reversing the steps:
+
+1. Undo Vigenère with keyword DELTA:
+   - `YBEOORVFTC` → `VXTVOORUAC`
+
+2. Undo columnar transposition with keyword DELTA:
+   - Column order from sorted DELTA is A,D,E,L,T → positions 4,0,1,2,3
+   - Reconstructing the grid gives `TORAVVOUCX`
+
+3. Remove the padding `X`:
+   - `TORAVVOUC`
+
+Answer: TORAVVOUC",TORAVVOUC,1,hard,stop
+cipher_en_hard_0013,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 125.10 | SECTOR FE2A. SYSTEM REPORT ID 7352: STATUS STABLE. TARGET TERMINAL IS READY. ENCRYPTION VECTOR IS DETERMINED AS INDIA.
+-------------------------------
+
+Ciphertext: 'VUZKOTPJKF'
+
+Encryption guide:
+1. The encryption keyword is the 23-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - WLQHI -> QDZPL
+  - PASPGA -> OKVFPICAIX
+  - HXBOQE -> YKEFHMBAFX
+  - XACT -> FPABA
+  - ODIV -> FVRDD
+  - BWUB -> FHEJW
+  - TMJJH -> PWWRM
+  - YYMN -> FZBVY
+  - GHZBB -> JMJJH
+  - WRZA -> FMZIR
+
+Enter the decrypted plaintext (uppercase, no spaces).",OCWCNLFCGH,,"The 23rd word of the mission log is **INDIA**, so the keyword is **INDIA**.
+
+Reverse the encryption steps:
+
+1. **Undo Vigenère** on `VUZKOTPJKF` using keyword `INDIA`:
+   - Result: `NHWCOLCGCF`
+
+2. **Undo columnar transposition** with keyword `INDIA`.
+   - Sorted column order for `INDIA`: A, D, I, I, N → columns 5, 3, 1, 4, 2
+   - Reconstructing the grid gives plaintext: `OCWCNLFCGH`
+
+Answer: OCWCNLFCGH",OCWCNLFCGH,1,hard,stop
+cipher_en_hard_0014,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 55.39 | SECTOR 5AF9. ENCRYPTION PRIMARY KEY IS DETERMINED AS INDIA. TARGET DATABASE IS OFFLINE. SYSTEM REPORT ID 716: STATUS OVERLOADED.
+-------------------------------
+
+Ciphertext: 'TKWFBCBAJX'
+
+Encryption guide:
+1. The encryption keyword is the 14-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - AFDMSY -> AKGFAGZANX
+  - OJNDW -> EARLJ
+  - WYUKWG -> EKXFWOXAGX
+  - YUMRIG -> QKPFYOEACX
+  - TMYOLK -> TKBFTSBAUX
+  - JJTBK -> SGMJJ
+  - YOCBQR -> YKFFYZOAWX
+  - ICRZ -> FELHC
+  - ABKQK -> SXDYB
+  - MKWEP -> XJPMK
+
+Enter the decrypted plaintext (uppercase, no spaces).",BBTOLU,,"The 14th word of the mission log, excluding punctuation and splitting `55.39` into `55` and `39`, is:
+
+`INDIA`
+
+So the keyword is `INDIA`.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** on `TKWFBCBAJX` with repeated key `INDIAINDIA`:
+   - Result: `LXTXBUOXBX`
+
+2. **Undo columnar transposition** with keyword `INDIA`.
+   - Column order from alphabetically sorting `INDIA`: A(5), D(3), I(1), I(4), N(2)
+   - Reconstructing the grid gives padded plaintext: `BBTOLUXXXX`
+   - Remove padding X’s: `BBTOLU`
+
+Answer: BBTOLU",BBTOLU,1,hard,stop
+cipher_en_hard_0015,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 151.9 | SECTOR 48E0. SYSTEM REPORT ID 5218: STATUS OVERLOADED. TARGET SATELLITE IS BREACHED. ENCRYPTION PRIMARY KEY IS DETERMINED AS CHARLIE.
+-------------------------------
+
+Ciphertext: 'MVUXIFKENXSIXB'
+
+Encryption guide:
+1. The encryption keyword is the 24-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - VPEU -> GCXGIFY
+  - TGXQ -> ZAXXIFU
+  - KOIY -> KRXFIFC
+  - PWJPON -> LWXNYWT
+  - ZSZTQ -> BGXJIYX
+  - OLRLB -> TVXCIJP
+  - NSUJEN -> WUXJYMN
+  - LIAXH -> CSXZIPB
+  - GKUYMT -> WNXBEUC
+  - TIKGHA -> MAXZLPK
+
+Enter the decrypted plaintext (uppercase, no spaces).",UGKPBGXGCO,,"The 24th word in the mission log, excluding punctuation, is **CHARLIE**, so the keyword is:
+
+**CHARLIE**
+
+Decrypting the Vigenère layer with CHARLIE gives:
+
+**KOUGXXGCGXBXPX**
+
+Now undo the columnar transposition using keyword order for CHARLIE:
+
+Sorted column order: **A C E H I L R** → column indices **2, 0, 6, 1, 5, 4, 3**
+
+Reconstructing the rows gives padded plaintext:
+
+**UGKPBGXGCOXXXX**
+
+Removing trailing padding Xs:
+
+**UGKPBGXGCO**
+
+Answer: UGKPBGXGCO",UGKPBGXGCO,1,hard,stop
+cipher_en_hard_0016,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION SEED IS DETERMINED AS BRAVO. SYSTEM REPORT ID 9467: STATUS CRITICAL. COORDINATES SET TO 81.59 | SECTOR 7E33. TARGET CORE IS READY.
+-------------------------------
+
+Ciphertext: 'HVZUCTYFGM'
+
+Encryption guide:
+1. The encryption keyword is the 6-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - GSFDD -> GXDNR
+  - PLFM -> GGXGA
+  - UEEFY -> FLYZT
+  - NNSV -> TEXIJ
+  - MRKQJC -> LOMXXYIXLL
+  - XTSZI -> TOION
+  - LUAW -> BCXPK
+  - CCBHDT -> COCORYTXCL
+  - HOCA -> DYXJO
+  - YRLN -> MPXMB
+
+Enter the decrypted plaintext (uppercase, no spaces).",ZHGLOZFEYS,,"The 6th word in the mission log is **BRAVO**, so the keyword is BRAVO.
+
+Undo Vigenère first:
+
+- Ciphertext: `HVZUCTYFGM`
+- Key: `BRAVOBRAVO`
+- Subtracting key shifts gives: `GEZZOSHFLY`
+
+Now undo the columnar transposition with keyword **BRAVO**.
+
+Keyword columns:
+
+- B = column 1
+- R = column 2
+- A = column 3
+- V = column 4
+- O = column 5
+
+Sorted order is: **A, B, O, R, V**, so columns were read in order: 3, 1, 5, 2, 4.
+
+Splitting `GEZZOSHFLY` into 5 columns of length 2 and restoring original column order gives the plaintext:
+
+`ZHGLOZFEYS`
+
+Answer: ZHGLOZFEYS",ZHGLOZFEYS,1,hard,stop
+cipher_en_hard_0017,"--- [RECOVERED MISSION LOG] ---
+TARGET TERMINAL IS STANDBY. ENCRYPTION VECTOR IS DETERMINED AS FOXTROT. COORDINATES SET TO 132.84 | SECTOR 6A86. SYSTEM REPORT ID 6639: STATUS CRITICAL.
+-------------------------------
+
+Ciphertext: 'LNSQALGCXUAORQ'
+
+Encryption guide:
+1. The encryption keyword is the 10-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - QSSSB -> VGUUJLL
+  - LPSE -> QDUQVLL
+  - BOBFWP -> GCMPWLU
+  - OEIXRP -> TSMKOLB
+  - HLSP -> MZUQGLL
+  - ISDY -> NGUQPLW
+  - RRPITN -> WFKMZLI
+  - BUNPJV -> GISCGLG
+  - KOTD -> PCUQULM
+  - THHH -> YVUQYLA
+
+Enter the decrypted plaintext (uppercase, no spaces).",GVDJNJHZ,,"The 10th word in the mission log is **FOXTROT**, so the keyword is FOXTROT.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** using FOXTROT:
+   - Ciphertext: `LNSQALGCXUAORQ`
+   - Vigenère-decrypted text: `GZVXJXNXJXHXDX`
+
+2. **Undo columnar transposition** with keyword FOXTROT.
+   - Alphabetical column order for FOXTROT is positions: `1, 2, 6, 5, 4, 7, 3`
+   - Reconstructing the grid gives:
+     - Row 1: `GVDJNJH`
+     - Row 2: `ZXXXXXX`
+
+Removing padding Xs leaves:
+
+Answer: GVDJNJHZ",GVDJNJHZ,1,hard,stop
+cipher_en_hard_0018,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 3134: STATUS LOCKED. COORDINATES SET TO 21.50 | SECTOR 2ED3. ENCRYPTION VECTOR IS DETERMINED AS HOTEL. TARGET CORE IS BREACHED.
+-------------------------------
+
+Ciphertext: 'LMNHBJTQPO'
+
+Encryption guide:
+1. The encryption keyword is the 19-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - KXZSS -> ZYLBK
+  - WCSRJD -> YLPHUEQQWI
+  - GSQYJC -> FLZGUEGQUI
+  - MHBRP -> YAILM
+  - QMTF -> MEQQE
+  - XGCTFR -> ALQVQEUQGI
+  - LFNRW -> YZPJY
+  - DVQSOT -> ZLWXZEJQUI
+  - KLLWMH -> DLDLXEZQPI
+  - KSPG -> NYQWA
+
+Enter the decrypted plaintext (uppercase, no spaces).",UFLEQDXDYC,,"The 19th word of the mission log, counting punctuation-separated numeric parts, is **HOTEL**.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** with keyword HOTEL:
+
+Ciphertext: `LMNHBJTQPO`  
+Key:        `HOTELHOTEL`  
+
+This gives the columnar-transposition text:
+
+`EYUDQCFXLD`
+
+2. **Undo columnar transposition** using HOTEL.
+
+Keyword column order sorted alphabetically:
+
+- HOTEL columns: H O T E L
+- Sorted order: E, H, L, O, T
+- Column indices: 3, 0, 4, 1, 2
+
+Split `EYUDQCFXLD` into 2-letter columns in that order:
+
+- Col 3 = EY
+- Col 0 = UD
+- Col 4 = QC
+- Col 1 = FX
+- Col 2 = LD
+
+Reconstructing rows gives:
+
+`UFLEQDXDYC`
+
+Answer: UFLEQDXDYC",UFLEQDXDYC,1,hard,stop
+cipher_en_hard_0019,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION VECTOR IS DETERMINED AS ALPHA. TARGET CORE IS OFFLINE. COORDINATES SET TO 37.20 | SECTOR A956. SYSTEM REPORT ID 358: STATUS LOCKED.
+-------------------------------
+
+Ciphertext: 'DRVEMXNMBX'
+
+Encryption guide:
+1. The encryption keyword is the 6-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - ALYQ -> AIFSY
+  - OGAS -> OIHNA
+  - KWQO -> KIDDQ
+  - UIZD -> UISPZ
+  - UNLVU -> UFKUL
+  - VRMX -> VIMYM
+  - XFEVE -> XPKME
+  - GAUVY -> GJKHU
+  - FPVQ -> FIFWV
+  - HEPDR -> HCSLP
+
+Enter the decrypted plaintext (uppercase, no spaces).",DCUMGG,,"The 6th word in the mission log is **ALPHA**, so the keyword is ALPHA.
+
+Decrypting the ciphertext by reversing the steps:
+
+1. Undo Vigenère with keyword ALPHA:
+   - DRVEMXNMBX → DGGXMXCXUX
+
+2. Undo columnar transposition using ALPHA.
+   - Column order from ALPHA is positions 1, 5, 4, 2, 3.
+   - Reconstructing the grid gives padded plaintext:
+     - DCUMGGXXXX
+
+Removing padding X’s gives:
+
+Answer: DCUMGG",DCUMGG,1,hard,stop
+cipher_en_hard_0020,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION PRIMARY KEY IS DETERMINED AS CHARLIE. COORDINATES SET TO 28.2 | SECTOR D4A3. TARGET TERMINAL IS STANDBY. SYSTEM REPORT ID 5348: STATUS SYNCING.
+-------------------------------
+
+Ciphertext: 'HSFVVFKFSXEIGB'
+
+Encryption guide:
+1. The encryption keyword is the 7-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - BZGWK -> IIXQISA
+  - CMHLFR -> JJXDCNP
+  - BMDT -> FIXDIFX
+  - FVNQ -> PMXMIFU
+  - MFCM -> ETXWIFQ
+  - VDWFA -> YCXUIIJ
+  - AJBDIE -> DHXAPQH
+  - AWGR -> IHXNIFV
+  - DYKZTM -> MKXPXBD
+  - CPWHPF -> YJXGQXL
+
+Enter the decrypted plaintext (uppercase, no spaces).",FGFYNLKEDL,,"Using the 7th word of the mission log gives the keyword **CHARLIE**.
+
+Decrypting the ciphertext by reversing the steps:
+
+1. Undo Vigenère with keyword CHARLIE:
+   - `HSFVVFKFSXEIGB` → `FLFEKXGDLXNXYX`
+
+2. Undo columnar transposition with keyword CHARLIE:
+   - Column order from sorted CHARLIE is: A, C, E, H, I, L, R → indices `2,0,6,1,5,4,3`
+   - Reconstructing the grid gives plaintext with padding: `FGFYNLKEDLXXXX`
+
+Removing padding X’s gives:
+
+Answer: FGFYNLKEDL",FGFYNLKEDL,1,hard,stop
+cipher_en_hard_0021,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 2419: STATUS OVERLOADED. ENCRYPTION VECTOR IS DETERMINED AS GOLF. COORDINATES SET TO 40.21 | SECTOR 7093. TARGET CORE IS BREACHED.
+-------------------------------
+
+Ciphertext: 'ILSHFLSU'
+
+Encryption guide:
+1. The encryption keyword is the 12-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - PQLX -> DDWV
+  - SWWLB -> RLDGCLHC
+  - XNFIY -> OLIDLLYC
+  - JCASF -> YLUKGLNC
+  - BPQSA -> YLMFWLAC
+  - CLSK -> QQDQ
+  - STVQH -> WLDMBLEC
+  - CLSUOL -> ALNTYLWQ
+  - VFSH -> NJDK
+  - KCJZJK -> FLVOPLNP
+
+Enter the decrypted plaintext (uppercase, no spaces).",HHZCCP,,"The 12th token in the mission log is **GOLF**, confirmed by the examples.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** with key GOLF:
+   - Ciphertext: `ILSHFLSU`
+   - Key shifts: G O L F G O L F = 6,14,11,5,6,14,11,5
+   - Result: `CXHCZXHP`
+
+2. **Undo columnar transposition** with keyword GOLF.
+   - Sorted column order for GOLF is: F, G, L, O → columns 4,1,3,2
+   - Reconstructing the 2-row grid gives: `HHZCCPXX`
+
+3. The examples show padding with `X`, so remove trailing padding:
+   - Plaintext: `HHZCCP`
+
+Answer: HHZCCP",HHZCCP,1,hard,stop
+cipher_en_hard_0022,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 6539: STATUS LOCKED. COORDINATES SET TO 79.56 | SECTOR 285B. TARGET SATELLITE IS READY. ENCRYPTION PRIMARY KEY IS DETERMINED AS DELTA.
+-------------------------------
+
+Ciphertext: 'XBLRQSBIZX'
+
+Encryption guide:
+1. The encryption keyword is the 24-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - DJZQJS -> MBOLJADIJX
+  - NDHKKF -> NBYYDALIDX
+  - YPRDQR -> TBJKPAVIWX
+  - ZWOBUT -> XBKMWASIUX
+  - FVBN -> AJGUN
+  - XKNZHD -> KBIWKARISX
+  - WJXHL -> OAUQH
+  - EIHF -> AITAF
+  - PPVWBW -> EBAPPAZIPX
+  - IDTHW -> ZMOMH
+
+Enter the decrypted plaintext (uppercase, no spaces).",AQXGUYP,,"Using the mission log and the examples, the keyword is **DELTA**.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** on `XBLRQSBIZX` with repeated key `DELTADELTA`:
+
+`XBLRQSBIZX` → `UXAYQPXXGX`
+
+2. **Undo columnar transposition** with keyword `DELTA`.
+
+Keyword column order alphabetically is:
+
+`A, D, E, L, T` → original column indices `5, 1, 2, 3, 4`
+
+Splitting `UXAYQPXXGX` into 2-letter column chunks and restoring rows gives:
+
+`AQXGUYPXXX`
+
+Remove padding X’s:
+
+`AQXGUYP`
+
+Answer: AQXGUYP",AQXGUYP,1,hard,stop
+cipher_en_hard_0023,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 96.17 | SECTOR 1418. ENCRYPTION VECTOR IS DETERMINED AS FOXTROT. SYSTEM REPORT ID 7322: STATUS SYNCING. TARGET GRID IS OFFLINE.
+-------------------------------
+
+Ciphertext: 'BLPJDLACBUGOBG'
+
+Encryption guide:
+1. The encryption keyword is the 13-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - QLGOE -> VZUXFLZ
+  - RPCOQ -> WDUJFLV
+  - SOULZ -> XCUSCLN
+  - QCUB -> VQUQSLN
+  - BCNJ -> GQUQALG
+  - VWIWIV -> AKSBNLB
+  - JQZH -> OEUQYLS
+  - WIAH -> BWUQYLT
+  - EGARJT -> JUQCILT
+  - UBPZM -> ZPUFQLI
+
+Enter the decrypted plaintext (uppercase, no spaces).",WSNNHMNXQN,,"The keyword is **FOXTROT**.
+
+1. Undo Vigenère using FOXTROT:
+
+`BLPJDLACBUGOBG` → `WXSQMXHXNXNXNN`
+
+2. Undo columnar transposition.  
+FOXTROT sorted column order is: **1, 2, 6, 5, 4, 7, 3**.
+
+Filling columns and reading rows gives:
+
+`WSNNHMNXQNXXXX`
+
+Removing trailing padding Xs:
+
+`WSNNHMNXQN`
+
+Answer: WSNNHMNXQN",WSNNHMNXQN,1,hard,stop
+cipher_en_hard_0024,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 4963: STATUS CRITICAL. COORDINATES SET TO 130.70 | SECTOR FD72. ENCRYPTION VECTOR IS DETERMINED AS ALPHA. TARGET TERMINAL IS OFFLINE.
+-------------------------------
+
+Ciphertext: 'KEDEVXILXE'
+
+Encryption guide:
+1. The encryption keyword is the 19-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - XMPZC -> XNOTP
+  - TURH -> TIWBR
+  - SSYDQO -> SZFEDXDMFX
+  - EJJWR -> ECLQJ
+  - DPNLDP -> DASELXAMUX
+  - MEVOED -> MOTEOXPMCX
+  - ZOQZR -> ZCOVQ
+  - FYLVPF -> FQEEVXJMSX
+  - JFMU -> JIJMM
+  - JTTELQ -> JBAEEXEMAX
+
+Enter the decrypted plaintext (uppercase, no spaces).",KXQVOTWE,,"The keyword is **ALPHA**.
+
+Reverse the final Vigenère step using `ALPHAALPHA`:
+
+`KEDEVXILXE` → `KTOXVXXWQE`
+
+Now undo the columnar transposition. For keyword **ALPHA**, the sorted column order is:
+
+`1, 5, 4, 2, 3`
+
+Cipher length is 10, so there are 2 rows. Split into 2-letter column chunks:
+
+- Col 1 = `KT`
+- Col 5 = `OX`
+- Col 4 = `VX`
+- Col 2 = `XW`
+- Col 3 = `QE`
+
+Reconstructing rows in normal column order gives:
+
+`KXQVOTWEXX`
+
+Removing the padding X’s:
+
+Answer: KXQVOTWE",KXQVOTWE,1,hard,stop
+cipher_en_hard_0025,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 45.4 | SECTOR AE7F. TARGET SATELLITE IS STANDBY. ENCRYPTION AUTH CODE IS DETERMINED AS BRAVO. SYSTEM REPORT ID 5366: STATUS SYNCING.
+-------------------------------
+
+Ciphertext: 'VOQJLYBZGL'
+
+Encryption guide:
+1. The encryption keyword is the 18-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - WNARA -> BNAIF
+  - ONLIYD -> MOOYMYEXDL
+  - RXFDG -> GIGSR
+  - TSFVQ -> GKQNJ
+  - WJAC -> BNXEQ
+  - ATDBGW -> EOARUYKXWL
+  - RLHLKF -> IORAYYCXGL
+  - ZNDS -> EQXIG
+  - FBJIVX -> KOFSJYSXDL
+  - IQWZ -> XZXLN
+
+Enter the decrypted plaintext (uppercase, no spaces).",QKULXOZ,,"The keyword is the 18th word of the mission log, excluding punctuation. Since `45.4` splits into `45` and `4`, the 18th word is:
+
+`BRAVO`
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** on `VOQJLYBZGL` with key `BRAVO`:
+   - Result: `UXQOXXKZLX`
+
+2. **Undo columnar transposition** with key `BRAVO`.
+   - Column order from sorted keyword letters: A, B, O, R, V → columns 3, 1, 5, 2, 4
+   - Reconstructing the grid gives padded plaintext: `QKULXOZXXX`
+   - Remove padding X’s: `QKULXOZ`
+
+Answer: QKULXOZ",QKULXOZ,1,hard,stop
+cipher_en_hard_0026,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION SEED IS DETERMINED AS ECHO. SYSTEM REPORT ID 925: STATUS SYNCING. COORDINATES SET TO 135.65 | SECTOR 876E. TARGET TERMINAL IS READY.
+-------------------------------
+
+Ciphertext: 'BIGNXNKL'
+
+Encryption guide:
+1. The encryption keyword is the 6-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - SKUU -> OUBI
+  - ZUYJE -> YZGSCZQL
+  - QVYPW -> ZZXKCZWL
+  - GFWGP -> JZNDAZNL
+  - BBVC -> FDCQ
+  - GHKBZS -> LUNNOZIL
+  - BLHO -> PDOC
+  - YODVDM -> SOFRHZCL
+  - YJEKX -> NZFLIZRL
+  - YGZPJE -> KGFXDZWL
+
+Enter the decrypted plaintext (uppercase, no spaces).",ZXTDZGL,,"Decryption uses keyword **ECHO** (the 6th word of the mission log).
+
+Undo Vigenère first, then reverse the columnar transposition. This gives padded plaintext:
+
+**ZXTDZGLX**
+
+The trailing **X** is padding, so the plaintext is:
+
+Answer: ZXTDZGL",ZXTDZGL,1,hard,stop
+cipher_en_hard_0027,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 1.62 | SECTOR B2F4. SYSTEM REPORT ID 5600: STATUS OVERLOADED. TARGET TERMINAL IS STANDBY. ENCRYPTION SEED IS DETERMINED AS GOLF.
+-------------------------------
+
+Ciphertext: 'FBUBDSKI'
+
+Encryption guide:
+1. The encryption keyword is the 23-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - OHQKI -> QLZNWLSC
+  - AMXGDS -> MLLIDLXX
+  - XINO -> ULYN
+  - CNOMJ -> SLNOULYC
+  - YJVE -> KMGO
+  - ZCJAAA -> GLKFPLNF
+  - ICDFFW -> LLTKJLNB
+  - IAXKW -> QLTBDLLC
+  - MNNYO -> ELXTTLYC
+  - QXID -> JETC
+
+Enter the decrypted plaintext (uppercase, no spaces).",JZXZWDEN,,"The 23rd word in the mission log is **GOLF**, so the keyword is **GOLF**.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** on `FBUBDSKI` using `GOLF`:
+   - Result: `ZNJWXEZD`
+
+2. **Undo columnar transposition** with keyword `GOLF`.
+   - Sorted column order for GOLF is: F, G, L, O → columns 4, 1, 3, 2
+   - Reconstructing the grid gives plaintext: `JZXZWDEN`
+
+Answer: JZXZWDEN",JZXZWDEN,1,hard,stop
+cipher_en_hard_0028,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 9.23 | SECTOR 978F. TARGET DATABASE IS READY. SYSTEM REPORT ID 3846: STATUS OVERLOADED. ENCRYPTION VECTOR IS DETERMINED AS ALPHA.
+-------------------------------
+
+Ciphertext: 'ZKMEGXHAVK'
+
+Encryption guide:
+1. The encryption keyword is the 23-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - HBFB -> HIQIF
+  - ZAPHBZ -> ZKQEHXLMWX
+  - ERAERF -> EQGEEXCMHX
+  - DIOUX -> DIJPO
+  - LVLAUX -> LIJEAXGMSX
+  - FXLCSU -> FFHECXIMSX
+  - HOVR -> HIGVV
+  - ZUWJ -> ZIYBW
+  - GUFS -> GIHBF
+  - CKSAL -> CWPRS
+
+Enter the decrypted plaintext (uppercase, no spaces).",ZWOGXZLK,,"The 23rd word in the mission log, excluding punctuation, is **ALPHA**, so the keyword is **ALPHA**.
+
+Decrypt in reverse order:
+
+1. Undo Vigenère on `ZKMEGXHAVK` with key `ALPHA`:
+   - Result: `ZZXXGXWLOK`
+
+2. Undo columnar transposition with keyword `ALPHA`.
+   - Sorted column order for `ALPHA` is columns: 1, 5, 4, 2, 3
+   - Reconstructing gives: `ZWOGXZLKXX`
+
+3. Remove padding X’s:
+   - Plaintext: `ZWOGXZLK`
+
+Answer: ZWOGXZLK",ZWOGXZLK,1,hard,stop
+cipher_en_hard_0029,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION PRIMARY KEY IS DETERMINED AS ECHO. TARGET TERMINAL IS STANDBY. SYSTEM REPORT ID 5054: STATUS SYNCING. COORDINATES SET TO 18.7 | SECTOR 4050.
+-------------------------------
+
+Ciphertext: 'YFWKNZTL'
+
+Encryption guide:
+1. The encryption keyword is the 7-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - FKPMQ -> OZMETZTL
+  - TRQKG -> VZAUUZRL
+  - IIYN -> MKFB
+  - XVQLES -> ZUESUZSL
+  - DDDHTC -> HEKHHZOL
+  - UXTJ -> BWAX
+  - RUYP -> YTFD
+  - KHSNU -> LZRIWZUL
+  - SCNFFP -> GRZTRZML
+  - ANORML -> RNHASZYL
+
+Enter the decrypted plaintext (uppercase, no spaces).",PUJMWD,,"The 7th word in the mission log is **ECHO**, so the keyword is **ECHO**.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** on `YFWKNZTL` using `ECHOECHO`:
+   - Result: `UDPWJXMX`
+
+2. **Undo columnar transposition** with keyword `ECHO`.
+   - Keyword column order sorted alphabetically: `C, E, H, O` → columns `2, 1, 3, 4`
+   - Split `UDPWJXMX` into columns:
+     - col 2: `UD`
+     - col 1: `PW`
+     - col 3: `JX`
+     - col 4: `MX`
+   - Reconstruct rows:
+     - `PUJM`
+     - `WDXX`
+
+So padded plaintext is `PUJMWDXX`; removing padding `XX` gives `PUJMWD`.
+
+Answer: PUJMWD",PUJMWD,1,hard,stop
+cipher_en_hard_0030,"--- [RECOVERED MISSION LOG] ---
+TARGET TERMINAL IS OFFLINE. SYSTEM REPORT ID 6862: STATUS SYNCING. ENCRYPTION SEED IS DETERMINED AS CHARLIE. COORDINATES SET TO 179.64 | SECTOR 6540.
+-------------------------------
+
+Ciphertext: 'ZEWMUFXNXXQIMB'
+
+Encryption guide:
+1. The encryption keyword is the 16-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - NJPQ -> RUXAIFU
+  - LHTMSG -> VSXYRAQ
+  - TNDTB -> FAXEIJX
+  - NGWGPX -> YUXXIXK
+  - FWQWGP -> SMXNAOA
+  - RUUCOB -> WYXLMWG
+  - NBYJ -> AUXSIFN
+  - RGGE -> IYXXIFI
+  - TNPOZ -> RAXEIHS
+  - FCYN -> AMXTIFR
+
+Enter the decrypted plaintext (uppercase, no spaces).",WTXEZQJVL,,"The 16th token in the mission log, excluding punctuation, is **CHARLIE**, so the keyword is **CHARLIE**.
+
+Decrypting the ciphertext:
+
+1. Undo Vigenère with keyword **CHARLIE**:
+   - `ZEWMUFXNXXQIMB` → `XXWVJXTLQXZXEX`
+
+2. Undo the columnar transposition using keyword **CHARLIE**.
+   - Column order from sorting `CHARLIE`: A, C, E, H, I, L, R → positions 3,1,7,2,6,5,4
+   - Reconstructing the grid gives:
+     - `WTXEZQJ`
+     - `VLXXXXX`
+
+So the padded plaintext is `WTXEZQJVLXXXXX`. Removing padding Xs gives:
+
+Answer: WTXEZQJVL",WTXEZQJVL,1,hard,stop
+cipher_en_hard_0031,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 180.17 | SECTOR 8ECB. ENCRYPTION VECTOR IS DETERMINED AS GOLF. SYSTEM REPORT ID 1063: STATUS OVERLOADED. TARGET GRID IS OFFLINE.
+-------------------------------
+
+Ciphertext: 'RLFMKMZU'
+
+Encryption guide:
+1. The encryption keyword is the 13-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - FMDDRQ -> JLQWJLXV
+  - HNCAA -> GLSFILYC
+  - LMFVKT -> BLWPLLXY
+  - OMBEOV -> KLZTHLXA
+  - SKJFA -> LLDFPLVC
+  - DJEZR -> FLOWKLUC
+  - SZNQ -> WGYE
+  - YAWP -> VMHF
+  - QKMT -> ZEXP
+  - UVFAN -> GLFSLLGC
+
+Enter the decrypted plaintext (uppercase, no spaces).",UOELHPY,,"Using the log/examples, the keyword is **GOLF**.
+
+1. Undo Vigenère on `RLFMKMZU` with repeated key `GOLFGOLF`:
+   - Result: `LXUHEYOP`
+
+2. Undo columnar transposition with keyword `GOLF`.
+   - Alphabetical column order: `F, G, L, O` → original columns `4, 1, 3, 2`
+   - Reconstructing gives: `UOELHPYX`
+
+3. Remove padding `X`:
+   - Plaintext: `UOELHPY`
+
+Answer: UOELHPY",UOELHPY,1,hard,stop
+cipher_en_hard_0032,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 3501: STATUS STABLE. TARGET SATELLITE IS BREACHED. COORDINATES SET TO 179.68 | SECTOR B5D7. ENCRYPTION VECTOR IS DETERMINED AS ALPHA.
+-------------------------------
+
+Ciphertext: 'XSVEXAWQUP'
+
+Encryption guide:
+1. The encryption keyword is the 23-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - IQOXO -> IZMXO
+  - XDNK -> XIZKN
+  - GVUZJ -> GUOCU
+  - TASUG -> TRJHS
+  - WAWBSE -> WPHEBXLMDX
+  - ZSLJ -> ZIYZL
+  - VFURP -> VAGMU
+  - XNFKBN -> XYQEKXYMMX
+  - CPQSIU -> CFXESXAMXX
+  - ZUXFX -> ZIUBX
+
+Enter the decrypted plaintext (uppercase, no spaces).",XLNXGHBPA,,"The 23rd word of the mission log, treating punctuation as separators, is **ALPHA**. This matches the examples.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** with keyword ALPHA  
+   Ciphertext: `XSVEXAWQUP`  
+   Key shifts: `A L P H A A L P H A` = `0,11,15,7,0,0,11,15,7,0`  
+   Result: `XHGXXALBNP`
+
+2. **Undo columnar transposition** with keyword ALPHA  
+   Sorted column order for ALPHA is columns: `0, 4, 3, 1, 2`
+
+   Split `XHGXXALBNP` into 2-letter column chunks:
+   - col 0 = `XH`
+   - col 4 = `GX`
+   - col 3 = `XA`
+   - col 1 = `LB`
+   - col 2 = `NP`
+
+   Reading rows in normal column order gives:
+   `XLNXGHBPAX`
+
+3. Remove trailing padding `X`:
+   `XLNXGHBPA`
+
+Answer: XLNXGHBPA",XLNXGHBPA,1,hard,stop
+cipher_en_hard_0033,"--- [RECOVERED MISSION LOG] ---
+TARGET TERMINAL IS READY. SYSTEM REPORT ID 5154: STATUS LOCKED. COORDINATES SET TO 27.67 | SECTOR F531. ENCRYPTION VECTOR IS DETERMINED AS BRAVO.
+-------------------------------
+
+Ciphertext: 'POEZRYBXML'
+
+Encryption guide:
+1. The encryption keyword is the 23-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - NIYOJK -> ZONFXYZXJL
+  - AFBDB -> CRBAR
+  - ZHGZ -> HQXCN
+  - JJRQW -> SAWEE
+  - NQSDKX -> TONSYYHXYL
+  - JCCV -> DAXXJ
+  - GSJK -> KXXNY
+  - KRUMXK -> VOKFLYIXHL
+  - TYVNQ -> WKQTB
+  - LNVHW -> WCWIV
+
+Enter the decrypted plaintext (uppercase, no spaces).",EKORDE,,"The 23rd word in the mission log is **BRAVO**, so the keyword is **BRAVO**.
+
+Decrypting the ciphertext `POEZRYBXML`:
+
+1. Undo Vigenère with key `BRAVO`:
+   - `POEZRYBXML` → `OXEEDXKXRX`
+
+2. Undo columnar transposition with keyword `BRAVO`.
+   - Sorted column order: A, B, O, R, V → columns 3, 1, 5, 2, 4
+   - Reconstructing the grid gives:
+     - `EKORD`
+     - `EXXXX`
+
+Removing padding X’s gives plaintext:
+
+**EKORDE**
+
+Answer: EKORDE",EKORDE,1,hard,stop
+cipher_en_hard_0034,"--- [RECOVERED MISSION LOG] ---
+TARGET TERMINAL IS OFFLINE. ENCRYPTION SEED IS DETERMINED AS GOLF. COORDINATES SET TO 123.63 | SECTOR B4DB. SYSTEM REPORT ID 1429: STATUS OVERLOADED.
+-------------------------------
+
+Ciphertext: 'NLEHBVAM'
+
+Encryption guide:
+1. The encryption keyword is the 10-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - ZEFR -> XNQJ
+  - MVJN -> TAUA
+  - ZHZC -> INKM
+  - JBHKFH -> QLUKNLMM
+  - PRIBCO -> HLAHOLCT
+  - GXVTIU -> ZLRNBLIZ
+  - BMAOAN -> ULMFGLXS
+  - XCRY -> ELCH
+  - OZHD -> JCSE
+  - HUZYN -> ELSSFLFC
+
+Enter the decrypted plaintext (uppercase, no spaces).",TPVHCHH,,"The 10th word of the mission log is **GOLF**, so the keyword is GOLF.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** using GOLF:
+   - Ciphertext: `NLEHBVAM`
+   - After Vigenère decryption: `HXTCVHPH`
+
+2. **Undo columnar transposition** with keyword GOLF.
+   - Column order from sorted keyword letters: F, G, L, O → columns 4, 1, 3, 2
+   - Reconstructing the grid gives: `TPVHCHHX`
+
+3. Remove padding `X`:
+   - Plaintext: `TPVHCHH`
+
+Answer: TPVHCHH",TPVHCHH,1,hard,stop
+cipher_en_hard_0035,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION VECTOR IS DETERMINED AS GOLF. SYSTEM REPORT ID 1924: STATUS SYNCING. COORDINATES SET TO 16.88 | SECTOR 3807. TARGET TERMINAL IS STANDBY.
+-------------------------------
+
+Ciphertext: 'GLKFNVGV'
+
+Encryption guide:
+1. The encryption keyword is the 6-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - YENW -> CMYJ
+  - PBFIU -> OLAZLLMC
+  - YHVICF -> OLJHBLSK
+  - ERNCYO -> ILPDTLCT
+  - HHNT -> ZVYM
+  - FZFS -> YTQE
+  - IGIIMR -> OLTROLRW
+  - WXXTX -> ZLHCDLIC
+  - INPQG -> WLTLVLYC
+  - PIYJ -> PDJN
+
+Enter the decrypted plaintext (uppercase, no spaces).",ZVHAAQH,,"The 6th word in the mission log is **GOLF**, so the keyword is GOLF.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** on `GLKFNVGV` using repeated key `GOLFGOLF`:
+   - Result: `AXZAHHVQ`
+
+2. **Undo columnar transposition** with keyword GOLF.
+   - Sorted column order for GOLF is: F, G, L, O → column order 4, 1, 3, 2
+   - Reconstructing the rows gives: `ZVHAAQHX`
+
+3. Remove the trailing padding `X`:
+   - Plaintext: `ZVHAAQH`
+
+Answer: ZVHAAQH",ZVHAAQH,1,hard,stop
+cipher_en_hard_0036,"--- [RECOVERED MISSION LOG] ---
+TARGET CORE IS BREACHED. COORDINATES SET TO 99.57 | SECTOR 5B13. SYSTEM REPORT ID 1732: STATUS CRITICAL. ENCRYPTION SEED IS DETERMINED AS FOXTROT.
+-------------------------------
+
+Ciphertext: 'UBXNLLOCUUSOHQ'
+
+Encryption guide:
+1. The encryption keyword is the 23-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - USAW -> ZGUQNLT
+  - DYFNA -> IMUTELY
+  - ZJWWR -> EXUKNLP
+  - UTKQ -> ZHUQHLD
+  - MEVHE -> RSUXYLO
+  - LCKSXA -> QQXQJLD
+  - QLQWZG -> VZDSNLJ
+  - XWGC -> CKUQTLZ
+  - XQJO -> CEUQFLC
+  - OXIV -> TLUQMLB
+
+Enter the decrypted plaintext (uppercase, no spaces).",PATGVUZNU,,"The 23rd word in the mission log is **FOXTROT** (counting `99.57` as `99` and `57` after excluding punctuation), so the keyword is **FOXTROT**.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** with keyword FOXTROT:
+   - Ciphertext: `UBXNLLOCUUSOHQ`
+   - Result: `PNAUUXVXGXZXTX`
+
+2. **Undo columnar transposition** using keyword FOXTROT.
+   - Column order from sorted keyword letters: `1, 2, 6, 5, 4, 7, 3`
+   - Reconstructing the rows gives: `PATGVUZNUXXXXX`
+
+3. Remove padding X’s:
+   - Plaintext: `PATGVUZNU`
+
+Answer: PATGVUZNU",PATGVUZNU,1,hard,stop
+cipher_en_hard_0037,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 82.24 | SECTOR 4048. ENCRYPTION AUTH CODE IS DETERMINED AS BRAVO. SYSTEM REPORT ID 4386: STATUS LOCKED. TARGET DATABASE IS OFFLINE.
+-------------------------------
+
+Ciphertext: 'SOQGGYSXBL'
+
+Encryption guide:
+1. The encryption keyword is the 14-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - YNWU -> XPXII
+  - PRAIRK -> BOPFFYIXDL
+  - GNXY -> YXXIM
+  - PXNGX -> OGXSU
+  - BXPZZ -> QSZSN
+  - MANP -> ODXVD
+  - YAZZFC -> AOYXTYRXUL
+  - OXKR -> LFXSF
+  - MEYDRU -> ZOMPFYVXYL
+  - CDTV -> UTXYJ
+
+Enter the decrypted plaintext (uppercase, no spaces).",QBRGSL,,"The 14th token in the mission log (excluding punctuation, with `82.24` counted as `82` and `24`) is **BRAVO**, so the keyword is **BRAVO**.
+
+1. Undo Vigenère on `SOQGGYSXBL` using `BRAVO`:
+
+`SOQGGYSXBL` → `RXQLSXBXGX`
+
+2. Undo columnar transposition with keyword **BRAVO**.  
+Sorted column order is `A, B, O, R, V`, corresponding to original columns `3, 1, 5, 2, 4`.
+
+Split into 2-character columns:
+
+- Col 3: `RX`
+- Col 1: `QL`
+- Col 5: `SX`
+- Col 2: `BX`
+- Col 4: `GX`
+
+Reconstruct rows:
+
+`QBRGS`  
+`LXXXX`
+
+Remove padding X’s:
+
+`QBRGSL`
+
+Answer: QBRGSL",QBRGSL,1,hard,stop
+cipher_en_hard_0038,"--- [RECOVERED MISSION LOG] ---
+TARGET CORE IS OFFLINE. SYSTEM REPORT ID 8495: STATUS OVERLOADED. ENCRYPTION AUTH CODE IS DETERMINED AS INDIA. COORDINATES SET TO 109.63 | SECTOR 9B7D.
+-------------------------------
+
+Ciphertext: 'QKYPVCDAHZ'
+
+Encryption guide:
+1. The encryption keyword is the 17-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - XCQYBI -> JKTFXQLAKX
+  - LBJKA -> IWOSB
+  - GDEL -> FRJTD
+  - YQDRUJ -> CKGFYREAYX
+  - TODA -> FQWIO
+  - ZYNL -> FACTY
+  - UAYIG -> OLXQA
+  - ZAZMWU -> EKCFZCZAIX
+  - QZJSMO -> UKMFQWFAHX
+  - QEVUD -> LITCE
+
+Enter the decrypted plaintext (uppercase, no spaces).",VZVQIUZH,,"The 17th word in the mission log is **INDIA**, so the keyword is INDIA.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** with keyword INDIA:
+   - Ciphertext: `QKYPVCDAHZ`
+   - After Vigenère decryption: `IXVHVUQXZZ`
+
+2. **Undo columnar transposition** using keyword INDIA:
+   - Sorted column order: A, D, I, I, N → columns `5, 3, 1, 4, 2`
+   - Reconstructing the grid gives: `VZVQIUZHXX`
+   - Removing padding `XX` gives: `VZVQIUZH`
+
+Answer: VZVQIUZH",VZVQIUZH,1,hard,stop
+cipher_en_hard_0039,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 21.99 | SECTOR 9057. ENCRYPTION VECTOR IS DETERMINED AS ALPHA. TARGET DATABASE IS READY. SYSTEM REPORT ID 6583: STATUS SYNCING.
+-------------------------------
+
+Ciphertext: 'TVVECXSQRX'
+
+Encryption guide:
+1. The encryption keyword is the 13-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - QUTM -> QIBBT
+  - TPUL -> TIAWU
+  - PCEZCS -> PDREZXNMLX
+  - DKJOI -> DTDRJ
+  - OSFK -> OIZZF
+  - DSLZFY -> DJUEZXDMSX
+  - EQZUG -> ERJXZ
+  - RAEQGR -> RCVEQXLMLX
+  - ZGICZG -> ZROECXRMPX
+  - TFQX -> TIMMQ
+
+Enter the decrypted plaintext (uppercase, no spaces).",THKCGKB,,"The 13th word in the mission log is **ALPHA**, so the keyword is ALPHA.
+
+Decrypting `TVVECXSQRX`:
+
+1. **Undo Vigenère** with keyword ALPHA:
+   - Result: `TKGXCXHBKX`
+
+2. **Undo columnar transposition** using ALPHA.
+   - Sorted column order for ALPHA is: 1, 5, 4, 2, 3
+   - Reconstructing the grid gives: `THKCGKBXXX`
+
+3. Remove padding X’s:
+   - Plaintext: `THKCGKB`
+
+Answer: THKCGKB",THKCGKB,1,hard,stop
+cipher_en_hard_0040,"--- [RECOVERED MISSION LOG] ---
+TARGET TERMINAL IS READY. COORDINATES SET TO 161.34 | SECTOR 6AEA. ENCRYPTION PRIMARY KEY IS DETERMINED AS GOLF. SYSTEM REPORT ID 6199: STATUS SYNCING.
+-------------------------------
+
+Ciphertext: 'FLERFLWX'
+
+Encryption guide:
+1. The encryption keyword is the 18-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - UDWE -> KIHI
+  - KZTHV -> NLVAZLKC
+  - GXZZVF -> FLRAFLIK
+  - LVSDVX -> JLWAYLGC
+  - ZVVIQH -> OLKVBLGM
+  - RFVU -> AFGK
+  - YTVV -> BMGY
+  - IXUSL -> YLTQALIC
+  - SZMRCC -> XLDHSLKH
+  - JUFAY -> GLUDLLFC
+
+Enter the decrypted plaintext (uppercase, no spaces).",TLZZMS,,"Using the keyword **GOLF**:
+
+1. Undo Vigenère on `FLERFLWX` with repeated key `GOLFGOLF`:
+   - `FLERFLWX` → `ZXTMZXLS`
+
+2. Undo columnar transposition with keyword **GOLF**.
+   - Column order from sorting GOLF alphabetically: **F, G, L, O**
+   - Original column indices: **3, 0, 2, 1**
+   - Reconstructing gives: `TLZZMSXX`
+
+3. Remove padding `X`s:
+   - Plaintext: `TLZZMS`
+
+Answer: TLZZMS",TLZZMS,1,hard,stop
+cipher_en_hard_0041,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 2005: STATUS STABLE. COORDINATES SET TO 91.16 | SECTOR BE87. ENCRYPTION AUTH CODE IS DETERMINED AS FOXTROT. TARGET TERMINAL IS OFFLINE.
+-------------------------------
+
+Ciphertext: 'OIKZHSS'
+
+Encryption guide:
+1. The encryption keyword is the 20-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - JTIGYO -> OHLRXLB
+  - AMFXY -> FAUROLY
+  - MBDB -> RPUQSLW
+  - ETBFWW -> JHTPWLU
+  - AKMEZ -> FYUSVLF
+  - FQUKO -> KEUHBLN
+  - ITVTDY -> NHVWKLO
+  - TGMJI -> YUUBALF
+  - EEEAU -> JSUNRLX
+  - HURDW -> MIUPULK
+
+Enter the decrypted plaintext (uppercase, no spaces).",JUZQGNE,,"Using the mission log and the provided examples, the encryption keyword is **FOXTROT**.
+
+Decrypting `OIKZHSS`:
+
+1. Undo Vigenère with keyword **FOXTROT** → `JUNGQEZ`
+2. Undo columnar transposition using FOXTROT column order → `JUZQGNE`
+
+Answer: JUZQGNE",JUZQGNE,1,hard,stop
+cipher_en_hard_0042,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 30.3 | SECTOR 3074. ENCRYPTION PRIMARY KEY IS DETERMINED AS HOTEL. SYSTEM REPORT ID 7786: STATUS STABLE. TARGET DATABASE IS BREACHED.
+-------------------------------
+
+Ciphertext: 'TEXOXEOBXQ'
+
+Encryption guide:
+1. The encryption keyword is the 14-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - FWHW -> DTQAS
+  - VUHOBI -> VLOMMEIQLI
+  - AKFQK -> XODOQ
+  - LTMMKX -> TLEBVEHQQI
+  - ZFLTR -> ANKJW
+  - IOCZX -> GWQSN
+  - IFTFJ -> MWCJE
+  - ICDXM -> EWFGO
+  - VOPHP -> OJISA
+  - DTON -> URQXZ
+
+Enter the decrypted plaintext (uppercase, no spaces).",EATMMKIFQ,,"Using the keyword **HOTEL**:
+
+1. Undo Vigenère on `TEXOXEOBXQ` with repeated key `HOTELHOTEL`:
+
+`TEXOXEOBXQ` → `MQEKMXAITF`
+
+2. Undo columnar transposition with keyword **HOTEL**.  
+Sorted keyword column order is: **E, H, L, O, T** = column indices **3, 0, 4, 1, 2**.
+
+Reconstructing the grid gives:
+
+`E A T M M`  
+`K I F Q X`
+
+So the plaintext is:
+
+`EATMMKIFQX`
+
+Removing the padding `X`:
+
+Answer: EATMMKIFQ",EATMMKIFQ,1,hard,stop
+cipher_en_hard_0043,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION AUTH CODE IS DETERMINED AS BRAVO. SYSTEM REPORT ID 777: STATUS STABLE. TARGET GRID IS STANDBY. COORDINATES SET TO 105.51 | SECTOR 31B9.
+-------------------------------
+
+Ciphertext: 'BLOYDLRGGY'
+
+Encryption guide:
+1. The encryption keyword is the 7-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - VFBPZ -> CMZAD
+  - HAPO -> QYXVC
+  - JTZGMN -> AOJIAYKXBL
+  - HMMJR -> NYRHX
+  - STQKH -> RJHOY
+  - FNVY -> WWXIM
+  - OBSHYK -> TOOFMYSXCL
+  - KAWIJ -> XBJVW
+  - IWRSUZ -> SOIUIYNXNL
+  - KYOJ -> PBXTX
+
+Enter the decrypted plaintext (uppercase, no spaces).",OAALPDGUKK,,"The 7th word in the mission log is **BRAVO**, so the keyword is BRAVO.
+
+1. Undo Vigenère on ciphertext `BLOYDLRGGY` using BRAVO:
+   - Result: `AUODPKAGLK`
+
+2. Undo columnar transposition with keyword BRAVO:
+   - Alphabetical column order: A, B, O, R, V → positions 3, 1, 5, 2, 4
+   - Reconstructing the grid gives plaintext: `OAALPDGUKK`
+
+Answer: OAALPDGUKK",OAALPDGUKK,1,hard,stop
+cipher_en_hard_0044,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 7860: STATUS LOCKED. ENCRYPTION VECTOR IS DETERMINED AS FOXTROT. TARGET TERMINAL IS BREACHED. COORDINATES SET TO 155.80 | SECTOR 28F5.
+-------------------------------
+
+Ciphertext: 'UWWFLYZ'
+
+Encryption guide:
+1. The encryption keyword is the 12-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - XGFI -> CUUQZLY
+  - BYPFKB -> GMYDWLI
+  - DNIC -> IBUQTLB
+  - ZEST -> ESUQKLL
+  - YIHHMI -> DWFFYLA
+  - FEJCMJ -> KSGFTLC
+  - CNEO -> HBUQFLX
+  - PNTGO -> UBUHXLM
+  - YQZKO -> DEUHBLS
+  - MYECV -> RMUOTLX
+
+Enter the decrypted plaintext (uppercase, no spaces).",PIGUMZK,,"The 12th word in the mission log is **FOXTROT**, so the keyword is FOXTROT.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** using FOXTROT:
+   - Ciphertext: `UWWFLYZ`
+   - Key: `FOXTROT`
+   - Result: `PIZMUKG`
+
+2. **Undo columnar transposition** with keyword FOXTROT.
+   - Sorted column order for FOXTROT is positions: `1, 2, 6, 5, 4, 7, 3`
+   - Reconstructing the original row gives: `PIGUMZK`
+
+Answer: PIGUMZK",PIGUMZK,1,hard,stop
+cipher_en_hard_0045,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 131.70 | SECTOR 8864. ENCRYPTION SEED IS DETERMINED AS BRAVO. SYSTEM REPORT ID 6589: STATUS LOCKED. TARGET DATABASE IS OFFLINE.
+-------------------------------
+
+Ciphertext: 'IONKQYUSXG'
+
+Encryption guide:
+1. The encryption keyword is the 13-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - STKWNM -> LOSHBYKXRL
+  - KEMA -> NBXZO
+  - RUCR -> DIXPF
+  - PJUHR -> VGREV
+  - OCQAG -> RFGXO
+  - AYQZG -> RRGTN
+  - CBQV -> RTXWJ
+  - ZARDUR -> SOZMIYRXYL
+  - SFFXO -> GJOAL
+  - CJIP -> JTXED
+
+Enter the decrypted plaintext (uppercase, no spaces).",NDHCCPSXS,,"The 13th token (splitting punctuation) is **BRAVO**, which matches the examples.
+
+Undo Vigenère with keyword BRAVO:
+
+`IONKQYUSXG` → `HXNPCXDSCS`
+
+Undo columnar transposition with keyword BRAVO. Column order by sorted letters is:
+
+A, B, O, R, V → columns 2, 0, 4, 1, 3
+
+Reconstructing gives padded plaintext:
+
+`NDHCCPSXSX`
+
+Removing the trailing padding X gives:
+
+Answer: NDHCCPSXS",NDHCCPSXS,1,hard,stop
+cipher_en_hard_0046,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 38.86 | SECTOR 6AF9. SYSTEM REPORT ID 7252: STATUS SYNCING. ENCRYPTION AUTH CODE IS DETERMINED AS ALPHA. TARGET SATELLITE IS STANDBY.
+-------------------------------
+
+Ciphertext: 'FZFEWXAFFZ'
+
+Encryption guide:
+1. The encryption keyword is the 20-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - QCXZ -> QIOJX
+  - ULEW -> UILSE
+  - RVMUDA -> RLSEUXGMTX
+  - KHKPUM -> KXJEPXSMRX
+  - PUQNB -> PMCBQ
+  - BAPOL -> BWDHP
+  - HEAO -> HIDLA
+  - NZUHQ -> NBWGU
+  - ZSNMFK -> ZVUEMXDMUX
+  - BCIEI -> BTTJI
+
+Enter the decrypted plaintext (uppercase, no spaces).",FPYWQOQZ,,"The 20th word of the mission log, treating punctuation as separators, is **ALPHA**, so the keyword is **ALPHA**.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** with keyword `ALPHA`:
+
+`FZFEWXAFFZ` → `FOQXWXPQYZ`
+
+2. **Undo columnar transposition** with keyword `ALPHA`.
+
+Sorted column order for `ALPHA` is:
+
+A(1), A(5), H(4), L(2), P(3)
+
+Splitting `FOQXWXPQYZ` into 2-letter column chunks and restoring the grid gives:
+
+`FPYWQOQZXX`
+
+Removing the padding X’s gives:
+
+`FPYWQOQZ`
+
+Answer: FPYWQOQZ",FPYWQOQZ,1,hard,stop
+cipher_en_hard_0047,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION SEED IS DETERMINED AS INDIA. SYSTEM REPORT ID 3141: STATUS LOCKED. COORDINATES SET TO 7.17 | SECTOR 4D48. TARGET SATELLITE IS OFFLINE.
+-------------------------------
+
+Ciphertext: 'PKMUIHUAKM'
+
+Encryption guide:
+1. The encryption keyword is the 6-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - HFJJ -> FWKRF
+  - UWMNJ -> RZXVW
+  - THCH -> FPWPH
+  - HKFNKX -> SKIFHFAASX
+  - RDJKGM -> OKMFRUXALX
+  - YHDTUH -> CKGFYPGAPX
+  - SUYY -> FLVGU
+  - QOLS -> FYTAO
+  - DSLSWT -> EKOFDBFAAX
+  - GHYDTS -> BKBFGAQAPX
+
+Enter the decrypted plaintext (uppercase, no spaces).",ICJHHZMM,,"The 6th word in the mission log is **INDIA**, so the keyword is **INDIA**.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** on `PKMUIHUAKM` using repeated key `INDIAINDIA`:
+   - Result: `HXJMIZHXCM`
+
+2. **Undo columnar transposition** with key `INDIA`.
+   - Column order from alphabetic key sorting: A(5), D(3), I(1), I(4), N(2)
+   - Reconstructing the grid gives padded plaintext: `ICJHHZMMXX`
+
+3. Remove padding `XX`:
+   - Plaintext: `ICJHHZMM`
+
+Answer: ICJHHZMM",ICJHHZMM,1,hard,stop
+cipher_en_hard_0048,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 7923: STATUS SYNCING. TARGET GRID IS STANDBY. ENCRYPTION SEED IS DETERMINED AS ALPHA. COORDINATES SET TO 103.66 | SECTOR AB91.
+-------------------------------
+
+Ciphertext: 'KOGEWIZXYJ'
+
+Encryption guide:
+1. The encryption keyword is the 16-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - AVXA -> AIPCX
+  - VEPKAR -> VCPEKXPMWX
+  - IZBD -> IISGB
+  - SYDCDU -> SFSECXJMKX
+  - XNBVIA -> XLXEVXYMIX
+  - UZCUPX -> UIEEUXKMJX
+  - ELNFN -> EYUSN
+  - QDANX -> QICKA
+  - TKNBE -> TPQRN
+  - TXIY -> TINEI
+
+Enter the decrypted plaintext (uppercase, no spaces).",KORWRDIJI,,"The 16th word in the mission log is **ALPHA**, so the keyword is ALPHA.
+
+Decrypting the Vigenère step with ALPHA gives:
+
+`KOGEWIZXYJ` → `KDRXWIOIRJ`
+
+Then reversing the columnar transposition using keyword ALPHA reconstructs the padded plaintext:
+
+`KORWRDIJIX`
+
+Removing the padding `X` gives:
+
+Answer: KORWRDIJI",KORWRDIJI,1,hard,stop
+cipher_en_hard_0049,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 795: STATUS LOCKED. COORDINATES SET TO 114.73 | SECTOR CF3B. TARGET TERMINAL IS BREACHED. ENCRYPTION SEED IS DETERMINED AS DELTA.
+-------------------------------
+
+Ciphertext: 'YBVEZURICX'
+
+Encryption guide:
+1. The encryption keyword is the 23-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - XJUD -> ABUND
+  - TVIM -> AXGBM
+  - MWZM -> AQHSM
+  - FVPAYW -> BBQPVATITX
+  - UZPSMB -> PBFUZATILX
+  - BGSHLL -> OBMEGAWIAX
+  - LXQJ -> APIJJ
+  - YYZPB -> ECJSP
+  - QWUFEP -> HBBIWAYIYX
+  - IHZF -> AMSSF
+
+Enter the decrypted plaintext (uppercase, no spaces).",KZNJVLR,,"The 23rd word in the mission log is **DELTA** (counting `114.73` as `114` and `73` when punctuation is excluded), so the keyword is **DELTA**.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** with DELTA:
+   - Ciphertext: `YBVEZURICX`
+   - Keyword shifts: D E L T A = 3,4,11,19,0 repeated
+   - Result: `VXKLZRNXJX`
+
+2. **Undo columnar transposition** with keyword DELTA:
+   - Column order by sorted keyword letters: A,D,E,L,T → columns 5,1,2,3,4
+   - Split `VXKLZRNXJX` into 2-letter columns:
+     - Col 5: VX
+     - Col 1: KL
+     - Col 2: ZR
+     - Col 3: NX
+     - Col 4: JX
+   - Reconstruct rows:
+     - `KZNJV`
+     - `LRXXX`
+   - Read row-wise and remove padding Xs: `KZNJVLR`
+
+Answer: KZNJVLR",KZNJVLR,1,hard,stop
+cipher_en_hard_0050,"--- [RECOVERED MISSION LOG] ---
+TARGET TERMINAL IS STANDBY. SYSTEM REPORT ID 9396: STATUS OVERLOADED. COORDINATES SET TO 48.58 | SECTOR 8DBB. ENCRYPTION SEED IS DETERMINED AS INDIA.
+-------------------------------
+
+Ciphertext: 'GKMKPRFLWM'
+
+Encryption guide:
+1. The encryption keyword is the 23-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - TOSQU -> CFWYO
+  - DIYTGL -> OKBFDTGAQX
+  - MXBK -> FOPSX
+  - XOVY -> FIAGO
+  - EBNAE -> MAHIB
+  - MSGW -> FTPES
+  - MHZHBV -> JKCFMDUAPX
+  - ASUB -> FHDJS
+  - IXJDHK -> PKMFISQAFX
+  - BIIOT -> BVEWI
+
+Enter the decrypted plaintext (uppercase, no spaces).",POJSYJMCI,,"The 23rd word in the mission log is **INDIA** (counting `48.58` as `48` and `58` after excluding punctuation).
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** with keyword `INDIA`:
+   - `GKMKPRFLWM` → `YXJCPJSIOM`
+
+2. **Undo columnar transposition** using keyword `INDIA`.
+   - Column order from sorting `INDIA`: positions `5, 3, 1, 4, 2`
+   - Reconstructing the grid gives padded plaintext:
+     - `POJSYJMCIX`
+
+3. Remove padding `X`:
+   - `POJSYJMCI`
+
+Answer: POJSYJMCI",POJSYJMCI,1,hard,stop
+cipher_en_hard_0051,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 33.23 | SECTOR E336. TARGET DATABASE IS BREACHED. ENCRYPTION PRIMARY KEY IS DETERMINED AS BRAVO. SYSTEM REPORT ID 7349: STATUS STABLE.
+-------------------------------
+
+Ciphertext: 'AFSASGHJVH'
+
+Encryption guide:
+1. The encryption keyword is the 18-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - DGTRMC -> UODXAYXXML
+  - MSEHPH -> FOMCDYJXCL
+  - SJHJDC -> IOSXRYAXEL
+  - TRCIC -> DKCMW
+  - FEZTT -> AWTZH
+  - ISLYK -> MZKNM
+  - HINK -> OYXDY
+  - VCWPVM -> XOVHJYTXKL
+  - DOAAM -> BUMJO
+  - EQIOV -> JVVLC
+
+Enter the decrypted plaintext (uppercase, no spaces).",SQZAEFJOTF,,"Using the 18th word from the mission log gives the keyword **BRAVO**.
+
+Reverse the encryption steps:
+
+1. **Undo Vigenère** with keyword BRAVO:  
+   `AFSASGHJVH` → `ZOSFEFQJAT`
+
+2. **Undo columnar transposition** using BRAVO.  
+   Keyword column order by alphabetical sort is: A,B,O,R,V → columns **3,1,5,2,4**.  
+   Reconstructing the 5-column grid gives plaintext:
+
+`SQZAEFJOTF`
+
+Answer: SQZAEFJOTF",SQZAEFJOTF,1,hard,stop
+cipher_en_hard_0052,"--- [RECOVERED MISSION LOG] ---
+TARGET GRID IS READY. ENCRYPTION SEED IS DETERMINED AS INDIA. COORDINATES SET TO 110.20 | SECTOR 9A7B. SYSTEM REPORT ID 5973: STATUS OVERLOADED.
+-------------------------------
+
+Ciphertext: 'ZCXDYVFMOW'
+
+Encryption guide:
+1. The encryption keyword is the 10-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - ZBCF -> FPCNB
+  - WSNA -> FAZIS
+  - YLBV -> FOBDL
+  - TYJB -> FWWJY
+  - WFJUEL -> MKMFWTHANX
+  - WBYRDD -> LKBFWLEAJX
+  - XPMLV -> DZATP
+  - KXJP -> FWNXX
+  - HSXU -> FKKCS
+  - GUWYQ -> YJJGU
+
+Enter the decrypted plaintext (uppercase, no spaces).",YGUSRNWVJP,,"The 10th word in the mission log is **INDIA**, so the keyword is **INDIA**.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** using INDIA  
+   Ciphertext: `ZCXDYVFMOW`  
+   Key:        `INDIAINDIA`  
+   Result:     `RPUVYNSJGW`
+
+2. **Undo columnar transposition**  
+   Keyword INDIA column order alphabetically is: A(5), D(3), I(1), I(4), N(2) → columns `[5,3,1,4,2]`.
+
+   Split `RPUVYNSJGW` into 5 columns of 2 letters:
+   - Col 5 = RP
+   - Col 3 = UV
+   - Col 1 = YN
+   - Col 4 = SJ
+   - Col 2 = GW
+
+   Reconstruct rows:
+   - Row 1: Y G U S R
+   - Row 2: N W V J P
+
+   Plaintext: `YGUSRNWVJP`
+
+Answer: YGUSRNWVJP",YGUSRNWVJP,1,hard,stop
+cipher_en_hard_0053,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 7824: STATUS CRITICAL. TARGET DATABASE IS STANDBY. ENCRYPTION PRIMARY KEY IS DETERMINED AS FOXTROT. COORDINATES SET TO 59.30 | SECTOR B527.
+-------------------------------
+
+Ciphertext: 'AOESILPCHUEOLJ'
+
+Encryption guide:
+1. The encryption keyword is the 17-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - EDJT -> JRUQKLC
+  - MTIPRY -> RHVKGLB
+  - BSVAMT -> GGQFRLO
+  - QHXX -> VVUQOLQ
+  - GQTO -> LEUQFLM
+  - GLAM -> LZUQDLT
+  - FGDDAY -> KUVTULW
+  - YYUI -> DMUQZLN
+  - KIIKJ -> PWUCBLB
+  - EYJWW -> JMUPNLC
+
+Enter the decrypted plaintext (uppercase, no spaces).",VHXTWRLAZQ,,"The 17th word of the mission log content is **FOXTROT**, so the keyword is FOXTROT.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** with repeated key FOXTROT:
+   - Ciphertext: `AOESILPCHUEOLJ`
+   - Result: `VAHZRXWXTXLXXQ`
+
+2. **Undo columnar transposition** with keyword FOXTROT.
+   - Keyword column order by alphabetical sorting: `1, 2, 6, 5, 4, 7, 3`
+   - Reconstructing the grid gives: `VHXTWRLAZQXXXX`
+
+Removing padding X’s gives the plaintext:
+
+Answer: VHXTWRLAZQ",VHXTWRLAZQ,1,hard,stop
+cipher_en_hard_0054,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION AUTH CODE IS DETERMINED AS FOXTROT. COORDINATES SET TO 40.24 | SECTOR A55D. TARGET GRID IS OFFLINE. SYSTEM REPORT ID 933: STATUS SYNCING.
+-------------------------------
+
+Ciphertext: 'CPNQKLRCMUJOPQ'
+
+Encryption guide:
+1. The encryption keyword is the 7-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - VRHMMD -> AFAFDLA
+  - FHSPW -> KVUPGLL
+  - CVMTNV -> HJSGKLF
+  - DTPAYM -> IHJRRLI
+  - XZHR -> CNUQILA
+  - XBKEN -> CPUGVLD
+  - UDVDK -> ZRUDULO
+  - SICN -> XWUQELV
+  - NVOSZO -> SJLSJLH
+  - ETABD -> JHUWSLT
+
+Enter the decrypted plaintext (uppercase, no spaces).",XQBYYTQB,,"The 7th word in the mission log is **FOXTROT**, so the keyword is FOXTROT.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** on `CPNQKLRCMUJOPQ` using repeated key `FOXTROTFOXTROT`:
+   - Result: `XBQXTXYXYXQXBX`
+
+2. **Undo columnar transposition** with keyword FOXTROT.
+   - Alphabetical column order: 1, 2, 6, 5, 4, 7, 3
+   - Reconstructing the rows gives: `XQBYYTQBXXXXXX`
+
+3. Remove padding X’s:
+   - Plaintext: `XQBYYTQB`
+
+Answer: XQBYYTQB",XQBYYTQB,1,hard,stop
+cipher_en_hard_0055,"--- [RECOVERED MISSION LOG] ---
+TARGET GRID IS READY. COORDINATES SET TO 2.90 | SECTOR 982F. SYSTEM REPORT ID 1278: STATUS LOCKED. ENCRYPTION SEED IS DETERMINED AS ALPHA.
+-------------------------------
+
+Ciphertext: 'SXYEWXLSTX'
+
+Encryption guide:
+1. The encryption keyword is the 23-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - NZDU -> NIJGD
+  - XLAVGL -> XWVEVXWMHX
+  - EZNIH -> ESXGN
+  - KLUGRO -> KZGEGXWMBX
+  - FPXYH -> FSNWX
+  - LFSAP -> LAPMS
+  - ZXIF -> ZIUEI
+  - WHDXVX -> WIKEXXSMKX
+  - KVRCAG -> KRPECXGMYX
+  - SAYCGV -> SGVECXLMFX
+
+Enter the decrypted plaintext (uppercase, no spaces).",SAMWJMD,,"The 23rd word of the mission log, excluding punctuation, is **ALPHA**.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** with keyword `ALPHA`  
+   Ciphertext: `SXYEWXLSTX`  
+   Key repeat: `ALPHAALPHA`  
+   Result: `SMJXWXADMX`
+
+2. **Undo columnar transposition** with keyword `ALPHA`  
+   Sorted column order for `ALPHA` is positions: `1, 5, 4, 2, 3`  
+   Reconstructing the grid gives: `SAMWJMDXXX`
+
+3. Remove padding `X`s: `SAMWJMD`
+
+Answer: SAMWJMD",SAMWJMD,1,hard,stop
+cipher_en_hard_0056,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION VECTOR IS DETERMINED AS INDIA. SYSTEM REPORT ID 7921: STATUS LOCKED. COORDINATES SET TO 140.75 | SECTOR C1B1. TARGET CORE IS READY.
+-------------------------------
+
+Ciphertext: 'GBATQNZJZN'
+
+Encryption guide:
+1. The encryption keyword is the 6-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - DKQM -> FDGUK
+  - DRTWG -> OGGER
+  - JAWNNK -> VKZFJSAAIX
+  - ERPU -> FCHCR
+  - JDQJGK -> OKTFJSWALX
+  - QSRYLU -> TKUFQCLAAX
+  - YBKTNY -> VKNFYGGAJX
+  - KCPWR -> ZCNEC
+  - DXUNLM -> TKXFDUAAFX
+  - HOTA -> FGKIO
+
+Enter the decrypted plaintext (uppercase, no spaces).",QRXMYFNLGO,,"The 6th word of the mission log is **INDIA**, so the keyword is **INDIA**.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** on `GBATQNZJZN` using repeated key `INDIAINDIA`:
+   - Result: `YOXLQFMGRN`
+
+2. **Undo columnar transposition** with keyword `INDIA`.
+   - Column order from sorted keyword letters: A(5), D(3), I(1), I(4), N(2)
+   - Order: 5, 3, 1, 4, 2
+   - Reconstructing rows gives: `QRXMYFNLGO`
+
+Answer: QRXMYFNLGO",QRXMYFNLGO,1,hard,stop
+cipher_en_hard_0057,"--- [RECOVERED MISSION LOG] ---
+TARGET TERMINAL IS BREACHED. COORDINATES SET TO 95.14 | SECTOR 3150. ENCRYPTION SEED IS DETERMINED AS GOLF. SYSTEM REPORT ID 9082: STATUS LOCKED.
+-------------------------------
+
+Ciphertext: 'RIQNAGIZ'
+
+Encryption guide:
+1. The encryption keyword is the 17-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - BYPFVO -> LLMAVLJT
+  - RADHW -> NLCBJLLC
+  - DOTC -> IRET
+  - LRKVK -> BLWPQLCC
+  - LKOB -> HZZP
+  - UTHP -> VISY
+  - ZDCLTX -> RLKYILOC
+  - AYHK -> QOSD
+  - ASNYCI -> ELLHTLDN
+  - HQEPZ -> VLSEKLBC
+
+Enter the decrypted plaintext (uppercase, no spaces).",FXULIUSU,,"The 17th word of the mission log, excluding punctuation, is **GOLF**, so the keyword is **GOLF**.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** on `RIQNAGIZ` using keyword `GOLF`:
+   - Result: `LUFIUSXU`
+
+2. **Undo columnar transposition** with keyword `GOLF`.
+   - Column order from alphabetic keyword letters: F, G, L, O → columns 4, 1, 3, 2
+   - Reconstructing rows gives: `FXULIUSU`
+
+Answer: FXULIUSU",FXULIUSU,1,hard,stop
+cipher_en_hard_0058,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION SEED IS DETERMINED AS ECHO. TARGET DATABASE IS BREACHED. SYSTEM REPORT ID 3939: STATUS SYNCING. COORDINATES SET TO 52.2 | SECTOR 3D48.
+-------------------------------
+
+Ciphertext: 'VKFZZUCGBPRL'
+
+Encryption guide:
+1. The encryption keyword is the 6-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - RYOGZJ -> CLYNSZNL
+  - UIGUSZ -> MBBGKZBL
+  - LWKA -> ANRO
+  - UVDJ -> ZWKX
+  - TBYWK -> FZAYCZDL
+  - AJAE -> NCHS
+  - IRVDT -> VZPHZZKL
+  - GPQZHP -> TRNVUZGL
+  - OFQLGP -> JRVUUZSL
+  - YNZPE -> RZFSDZWL
+
+Enter the decrypted plaintext (uppercase, no spaces).",LRVNVISKSY,,"The 6th word in the mission log, excluding punctuation, is **ECHO**, so the keyword is ECHO.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** on `VKFZZUCGBPRL` using ECHO:
+   - Result: `RIYLVSVSXNKX`
+
+2. **Undo columnar transposition** with keyword ECHO.
+   - Column order from alphabetical sorting of ECHO is: C, E, H, O → columns 2, 1, 3, 4.
+   - Reconstructing rows gives: `LRVNVISKSYXX`
+   - Remove padding Xs: `LRVNVISKSY`
+
+Answer: LRVNVISKSY",LRVNVISKSY,1,hard,stop
+cipher_en_hard_0059,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION AUTH CODE IS DETERMINED AS HOTEL. SYSTEM REPORT ID 5606: STATUS SYNCING. COORDINATES SET TO 130.31 | SECTOR 8113. TARGET CORE IS BREACHED.
+-------------------------------
+
+Ciphertext: 'XQCTBEQVHE'
+
+Encryption guide:
+1. The encryption keyword is the 7-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - JIAVRG -> CLCKCEWQEI
+  - JIBT -> AXQMM
+  - ARRA -> HOQVC
+  - BDZLV -> SPOHK
+  - YCYAUM -> HLRQFEQQCI
+  - SDXHO -> OGHHI
+  - OAXTF -> ACYEI
+  - KIKZU -> GYNMV
+  - HMTGIT -> NLAXTEAQXI
+  - TRCGSL -> NLMPDEFQGI
+
+Enter the decrypted plaintext (uppercase, no spaces).",JCDQQPCTC,,"The 7th word in the mission log is **HOTEL**, so the keyword is HOTEL.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** on `XQCTBEQVHE` using repeated key `HOTELHOTEL`:
+   - Result: `QCJPQXCCDT`
+
+2. **Undo columnar transposition** with keyword HOTEL.
+   - Alphabetical column order for HOTEL is: E, H, L, O, T → columns 4, 1, 5, 2, 3
+   - Reconstructing gives: `JCDQQPCTCX`
+
+3. Remove padding `X`:
+   - Plaintext: `JCDQQPCTC`
+
+Answer: JCDQQPCTC",JCDQQPCTC,1,hard,stop
+cipher_en_hard_0060,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 112.84 | SECTOR 9F82. TARGET GRID IS STANDBY. ENCRYPTION AUTH CODE IS DETERMINED AS FOXTROT. SYSTEM REPORT ID 2396: STATUS OVERLOADED.
+-------------------------------
+
+Ciphertext: 'NIBMJLSCIUFOTR'
+
+Encryption guide:
+1. The encryption keyword is the 18-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - RLIG -> WZUQXLB
+  - KWEC -> PKUQTLX
+  - OUKMTD -> TIAMDLD
+  - OGOA -> TUUQRLH
+  - AFKO -> FTUQFLD
+  - ORHEF -> TFUYVLA
+  - SISHN -> XWUGYLL
+  - TQNSE -> YEUXJLG
+  - VMZO -> AAUQFLS
+  - DIED -> IWUQULX
+
+Enter the decrypted plaintext (uppercase, no spaces).",IEFUZSMUTY,,"The examples confirm the keyword is **FOXTROT**.
+
+Decrypting `NIBMJLSCIUFOTR`:
+
+1. Undo Vigenère with keyword `FOXTROT`:
+   - Result: `IUETSXZXUXMXFY`
+
+2. Undo columnar transposition using `FOXTROT`.
+   - Sorted column order: `F O O R T T X` → column indices `0,1,5,4,3,6,2`
+   - Reconstructed padded plaintext: `IEFUZSMUTYXXXX`
+
+3. Remove padding `X`s:
+   - Plaintext: `IEFUZSMUTY`
+
+Answer: IEFUZSMUTY",IEFUZSMUTY,1,hard,stop
+cipher_en_hard_0061,"--- [RECOVERED MISSION LOG] ---
+TARGET TERMINAL IS BREACHED. ENCRYPTION PRIMARY KEY IS DETERMINED AS GOLF. COORDINATES SET TO 60.99 | SECTOR 79AB. SYSTEM REPORT ID 3307: STATUS STABLE.
+-------------------------------
+
+Ciphertext: 'WLAYUCXJ'
+
+Encryption guide:
+1. The encryption keyword is the 11-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - KNWF -> LYHS
+  - DBJKVO -> QLOAPLMT
+  - TMXWXL -> CLECDLXQ
+  - IPUX -> DWFU
+  - SCXCK -> ILDPDLNC
+  - TOCW -> CHNT
+  - WWXME -> SLHJDLHC
+  - BFKXX -> DLMCQLQC
+  - XUMA -> GLXZ
+  - NKHDF -> JLYKNLVC
+
+Enter the decrypted plaintext (uppercase, no spaces).",PMOQTEO,,"The 11th word in the mission log is **GOLF**, so the keyword is **GOLF**.
+
+Reverse the encryption:
+
+1. **Undo Vigenère** on `WLAYUCXJ` using `GOLF`:
+   - Result: `QXPTOOME`
+
+2. **Undo columnar transposition** with keyword `GOLF`.
+   - Sorted keyword order: `F, G, L, O` → columns `4, 1, 3, 2`
+   - Reconstructing gives: `PMOQTEOX`
+
+3. Remove the final padding `X`:
+   - Plaintext: `PMOQTEO`
+
+Answer: PMOQTEO",PMOQTEO,1,hard,stop
+cipher_en_hard_0062,"--- [RECOVERED MISSION LOG] ---
+TARGET CORE IS OFFLINE. SYSTEM REPORT ID 4555: STATUS SYNCING. COORDINATES SET TO 47.21 | SECTOR F35D. ENCRYPTION PRIMARY KEY IS DETERMINED AS FOXTROT.
+-------------------------------
+
+Ciphertext: 'JOKIWLY'
+
+Encryption guide:
+1. The encryption keyword is the 24-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - BZPI -> GNUQZLI
+  - RSSQLW -> WGTEHLL
+  - CEYDQE -> HSBJULR
+  - FHKUZS -> KVPSLLD
+  - KIQX -> PWUQOLJ
+  - PCMYL -> UQUEPLF
+  - GCUX -> LQUQOLN
+  - GHYE -> LVUQVLR
+  - IJHP -> NXUQGLA
+  - PXLLSO -> ULLLCLE
+
+Enter the decrypted plaintext (uppercase, no spaces).",EAFFPN,,"The 24th word in the mission log, counting `47.21` as `47` and `21`, is **FOXTROT**, so the keyword is:
+
+**FOXTROT**
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** on `JOKIWLY` using FOXTROT:
+   - `JOKIWLY` → `EANPFXF`
+
+2. **Undo columnar transposition** with keyword FOXTROT.
+   - Sorted column order for FOXTROT is: 1, 2, 6, 5, 4, 7, 3
+   - Reconstructing the row gives: `EAFFPNX`
+
+3. Remove the padding `X`:
+   - Plaintext: `EAFFPN`
+
+Answer: EAFFPN",EAFFPN,1,hard,stop
+cipher_en_hard_0063,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 43.0 | SECTOR 1B76. TARGET GRID IS BREACHED. SYSTEM REPORT ID 6567: STATUS LOCKED. ENCRYPTION VECTOR IS DETERMINED AS BRAVO.
+-------------------------------
+
+Ciphertext: 'OOCVLYYXTL'
+
+Encryption guide:
+1. The encryption keyword is the 23-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - AXMOGU -> NOAPUYOXJL
+  - WYLC -> MNXTQ
+  - OWCOQP -> DOOKEYNXJL
+  - VJSQ -> TMXEE
+  - YWAA -> BPXRO
+  - VTCWU -> DMUOK
+  - VGNJO -> OMOBX
+  - HDETK -> FYKYH
+  - SQLJM -> MJMLX
+  - OBJGQC -> KOOXEYSXBL
+
+Enter the decrypted plaintext (uppercase, no spaces).",CHNYXA,,"The 23rd word is found by excluding punctuation; the decimal `43.0` splits into `43` and `0`, making the 23rd word:
+
+`BRAVO`
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** with keyword `BRAVO`:
+   - Ciphertext: `OOCVLYYXTL`
+   - Result: `NXCAXXHXYX`
+
+2. **Undo columnar transposition** with keyword `BRAVO`.
+   - Sorted column order for `BRAVO`: A, B, O, R, V → positions `2,0,4,1,3`
+   - Reconstructing rows gives: `CHNYXAXXXX`
+   - Remove padding Xs: `CHNYXA`
+
+Answer: CHNYXA",CHNYXA,1,hard,stop
+cipher_en_hard_0064,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION SEED IS DETERMINED AS FOXTROT. SYSTEM REPORT ID 2333: STATUS CRITICAL. TARGET SATELLITE IS OFFLINE. COORDINATES SET TO 7.86 | SECTOR A783.
+-------------------------------
+
+Ciphertext: 'YGBQXLBCNUEOTQ'
+
+Encryption guide:
+1. The encryption keyword is the 6-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - RQWZ -> WEUQQLP
+  - EMHT -> JAUQKLA
+  - ZQST -> EEUQKLL
+  - THRKF -> YVUYBLK
+  - MFWT -> RTUQKLP
+  - HCOQS -> MQULHLH
+  - UIQT -> ZWUQKLJ
+  - LLKZNH -> QZEGQLD
+  - LPHXN -> QDUGOLA
+  - ENQB -> JBUQSLJ
+
+Enter the decrypted plaintext (uppercase, no spaces).",TEFZIGLS,,"The 6th word in the mission log is **FOXTROT**, so the keyword is **FOXTROT**.
+
+Decrypt in reverse order:
+
+1. Undo Vigenère on ciphertext `YGBQXLBCNUEOTQ` using `FOXTROT`:
+   - Result: `TSEXGXIXZXLXFX`
+
+2. Undo columnar transposition with keyword `FOXTROT`.
+   - Sorted column order for `FOXTROT`: columns `1,2,6,5,4,7,3`
+   - Reconstructing the grid gives plaintext with padding:
+     - `TEFZIGLSXXXXXX`
+   - Removing trailing padding X’s:
+     - `TEFZIGLS`
+
+Answer: TEFZIGLS",TEFZIGLS,1,hard,stop
+cipher_en_hard_0065,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION SEED IS DETERMINED AS FOXTROT. TARGET CORE IS BREACHED. SYSTEM REPORT ID 6195: STATUS OVERLOADED. COORDINATES SET TO 84.55 | SECTOR 38D2.
+-------------------------------
+
+Ciphertext: 'DKNHMLUCTUZOCE'
+
+Encryption guide:
+1. The encryption keyword is the 6-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - CTOAFK -> HHHYRLH
+  - BXPVI -> GLUBMLI
+  - CNLLV -> HBUOCLE
+  - CFKZ -> HTUQQLD
+  - MOYKM -> RCUFBLR
+  - THBFN -> YVUGWLU
+  - KEHOF -> PSUYFLA
+  - DXUD -> ILUQULN
+  - XZVQXH -> CNEQHLO
+  - CPJR -> HDUQILC
+
+Enter the decrypted plaintext (uppercase, no spaces).",YQOFBVGWOL,,"The 6th word of the mission log is **FOXTROT**, so the keyword is FOXTROT.
+
+Undo the encryption in reverse:
+
+1. **Vigenère decrypt** `DKNHMLUCTUZOCE` using FOXTROT  
+   → `YWQOVXBXFXGXOL`
+
+2. **Undo columnar transposition** with keyword FOXTROT.  
+   Sorted column order is: F, O, O, R, T, T, X → columns `1,2,6,5,4,7,3`.
+
+Reconstructing the grid gives:
+
+`YQOFBVG`  
+`WOLXXXX`
+
+Removing the padding Xs gives:
+
+Answer: YQOFBVGWOL",YQOFBVGWOL,1,hard,stop
+cipher_en_hard_0066,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 140.69 | SECTOR 4C79. TARGET TERMINAL IS STANDBY. ENCRYPTION PRIMARY KEY IS DETERMINED AS ECHO. SYSTEM REPORT ID 1779: STATUS CRITICAL.
+-------------------------------
+
+Ciphertext: 'UYEICADGBAZL'
+
+Encryption guide:
+1. The encryption keyword is the 18-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - CORB -> SEYP
+  - HNUID -> RZORYZPL
+  - ZOOLPY -> SAGDSZSL
+  - ZDZU -> HBGI
+  - NOJFYG -> SIUMNZML
+  - ANOHNP -> RRHBSZOL
+  - YBRF -> FAYT
+  - QEPV -> ISWJ
+  - MDJO -> HOQC
+  - AEGFZI -> IKHNKZML
+
+Enter the decrypted plaintext (uppercase, no spaces).",UQWYYWSSY,,"The keyword is **ECHO**.
+
+Decrypting the Vigenère layer gives:
+
+`QWXUYYWSXYSX`
+
+Undoing the columnar transposition with keyword **ECHO** gives:
+
+`UQWYYWSSYXXX`
+
+The trailing `XXX` are padding, so the plaintext is:
+
+Answer: UQWYYWSSY",UQWYYWSSY,1,hard,stop
+cipher_en_hard_0067,"--- [RECOVERED MISSION LOG] ---
+TARGET SATELLITE IS BREACHED. ENCRYPTION SEED IS DETERMINED AS ECHO. COORDINATES SET TO 111.16 | SECTOR 25F3. SYSTEM REPORT ID 9889: STATUS LOCKED.
+-------------------------------
+
+Ciphertext: 'TIJYWVBR'
+
+Encryption guide:
+1. The encryption keyword is the 10-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - RJEJS -> NZYGIZQL
+  - TJIUEY -> NAASMZBL
+  - IWFY -> AKMM
+  - BXHOGG -> BIIULZVL
+  - XVWAD -> ZZERAZHL
+  - ULHQI -> PZBWLZXL
+  - GRVGRE -> VGNFZZNL
+  - UNZXA -> RZBODZEL
+  - UAHM -> EWOA
+  - EFCUM -> JZLAGZBL
+
+Enter the decrypted plaintext (uppercase, no spaces).",CPSUKGTD,,"The 10th word of the mission log is **ECHO**, so the keyword is **ECHO**.
+
+Decrypting in reverse order:
+
+1. **Undo Vigenère** on `TIJYWVBR` using key `ECHO`:
+   - Result: `PGCKSTUD`
+
+2. **Undo columnar transposition** with keyword `ECHO`.
+   - Alphabetical column order for ECHO is: C, E, H, O → positions 2, 1, 3, 4
+   - Reconstructing rows gives: `CPSUKGTD`
+
+Answer: CPSUKGTD",CPSUKGTD,1,hard,stop
+cipher_en_hard_0068,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 132.72 | SECTOR 6DB9. TARGET GRID IS READY. SYSTEM REPORT ID 4011: STATUS OVERLOADED. ENCRYPTION PRIMARY KEY IS DETERMINED AS ALPHA.
+-------------------------------
+
+Ciphertext: 'CFFGAGTGQW'
+
+Encryption guide:
+1. The encryption keyword is the 24-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - LJFBHF -> LQWEBXUMMX
+  - KACUHH -> KSWEUXLMJX
+  - AHBBTE -> APIEBXSMIX
+  - UFIDHS -> UDWEDXQMPX
+  - PDZEUE -> PPJEEXOMGX
+  - ZJRUM -> ZXJQR
+  - NQQU -> NIJXQ
+  - PYSI -> PIXFS
+  - PHKU -> PIJOK
+  - JGWKQ -> JBZNW
+
+Enter the decrypted plaintext (uppercase, no spaces).",CIJAQURWGZ,,"The 24th word in the mission log, excluding punctuation, is **ALPHA**, so the keyword is **ALPHA**.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** on `CFFGAGTGQW` using repeated key `ALPHAALPHA`:
+   - Result: `CUQZAGIRJW`
+
+2. **Undo columnar transposition** with keyword `ALPHA`.
+   - Alphabetical column order for `ALPHA` is columns: 1, 5, 4, 2, 3
+   - Reconstructing the rows gives: `CIJAQURWGZ`
+
+Answer: CIJAQURWGZ",CIJAQURWGZ,1,hard,stop
+cipher_en_hard_0069,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 160.94 | SECTOR 6079. ENCRYPTION PRIMARY KEY IS DETERMINED AS INDIA. TARGET CORE IS BREACHED. SYSTEM REPORT ID 6290: STATUS CRITICAL.
+-------------------------------
+
+Ciphertext: 'CKZDLLCAZD'
+
+Encryption guide:
+1. The encryption keyword is the 14-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - CTYUR -> ZLFCT
+  - WUMFV -> DZZNU
+  - OQJVYC -> GKMFOKIAYX
+  - ZCRA -> FECIC
+  - EPGTQ -> YTHBP
+  - EAOVZH -> HKRFEPIAIX
+  - KDRLV -> DENTD
+  - IRDJJO -> RKGFIWWAZX
+  - QBBM -> FOTUB
+  - YSSIQH -> YKVFYPVAAX
+
+Enter the decrypted plaintext (uppercase, no spaces).",LRWPUDDV,,"The 14th word (counting numbers split by punctuation) is **INDIA**, matching the mission log clue.
+
+Decrypting in reverse:
+
+1. **Undo Vigenère** with keyword INDIA:  
+   `CKZDLLCAZD` → `UXWVLDPXRD`
+
+2. **Undo columnar transposition** with keyword INDIA.  
+   Sorted column order is: 5, 3, 1, 4, 2.  
+   Reconstructing gives padded plaintext:  
+   `LRWPUDDVXX`
+
+3. Remove the padding `XX`:  
+   `LRWPUDDV`
+
+Answer: LRWPUDDV",LRWPUDDV,1,hard,stop
+cipher_en_hard_0070,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 3308: STATUS OVERLOADED. COORDINATES SET TO 144.62 | SECTOR 6DD5. ENCRYPTION PRIMARY KEY IS DETERMINED AS ECHO. TARGET DATABASE IS READY.
+-------------------------------
+
+Ciphertext: 'ZAEKASUOBAHL'
+
+Encryption guide:
+1. The encryption keyword is the 20-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - GQYZ -> UIFN
+  - BAKN -> EDRB
+  - LJCA -> NNJO
+  - LILCA -> MZSOPZJL
+  - FKMK -> OHTY
+  - WAVJTK -> EMDHZZQL
+  - FSFSCK -> WMMQJZZL
+  - EUYEBA -> YCLPCZLL
+  - OTRVF -> XZVTVZCL
+  - EFBJ -> JGIX
+
+Enter the decrypted plaintext (uppercase, no spaces).",WVNYWYAAQ,,"The keyword is the 20th word of the mission log when punctuation splits `144.62` into `144` and `62`, giving **ECHO**.
+
+Decrypt Vigenère with ECHO:
+
+`ZAEKASUOBAHL` → `VYXWWQNAXYAX`
+
+Undo columnar transposition using ECHO. Sorted column order is `C, E, H, O`, so the chunks restore to:
+
+`WVNYWYAAQXXX`
+
+Removing padding `XXX` gives:
+
+Answer: WVNYWYAAQ",WVNYWYAAQ,1,hard,stop
+cipher_en_hard_0071,"--- [RECOVERED MISSION LOG] ---
+TARGET DATABASE IS READY. SYSTEM REPORT ID 1859: STATUS OVERLOADED. ENCRYPTION SEED IS DETERMINED AS FOXTROT. COORDINATES SET TO 92.27 | SECTOR B5B4.
+-------------------------------
+
+Ciphertext: 'YOXYMQS'
+
+Encryption guide:
+1. The encryption keyword is the 16-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - RDGKF -> WRUYBLZ
+  - AHXF -> FVUQWLQ
+  - ZXFNS -> ELULELY
+  - YACJA -> DOUTALV
+  - PPYLSP -> UDMLCLR
+  - FDGVBK -> KRHUMLZ
+  - ZWRNJ -> EKUCELK
+  - RXBJD -> WLUWALU
+  - JXXW -> OLUQNLQ
+  - PGZQ -> UUUQHLS
+
+Enter the decrypted plaintext (uppercase, no spaces).",TAZVFAC,,"The 16th word in the mission log is **FOXTROT**, so the keyword is **FOXTROT**.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** on `YOXYMQS` using `FOXTROT`:
+   - Result: `TAAFVCZ`
+
+2. **Undo columnar transposition** using keyword `FOXTROT`.
+   - Column order from sorted keyword letters: positions `1,2,6,5,4,7,3`
+   - Reconstructing gives: `TAZVFAC`
+
+Answer: TAZVFAC",TAZVFAC,1,hard,stop
+cipher_en_hard_0072,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 593: STATUS SYNCING. ENCRYPTION PRIMARY KEY IS DETERMINED AS FOXTROT. COORDINATES SET TO 83.95 | SECTOR 32A5. TARGET GRID IS BREACHED.
+-------------------------------
+
+Ciphertext: 'STWMZLM'
+
+Encryption guide:
+1. The encryption keyword is the 13-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - LAEY -> QOUQPLX
+  - BUBRDK -> GIHWILU
+  - ZQTMA -> EEUTDLM
+  - DGWD -> IUUQULP
+  - VSMJJO -> AGLCALF
+  - RVPBDC -> WJZWSLI
+  - GSFEPM -> LGJIVLY
+  - PNCWEW -> UBTXNLV
+  - IRRF -> NFUQWLK
+  - PEOW -> USUQNLH
+
+Enter the decrypted plaintext (uppercase, no spaces).",NFTITZ,,"The 13th word in the mission log, excluding punctuation, is **FOXTROT**, so the keyword is FOXTROT.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** using FOXTROT  
+   Ciphertext: `STWMZLM`  
+   Keyword: `FOXTROT`  
+   Result: `NFZTIXT`
+
+2. **Undo columnar transposition**  
+   Keyword column order for FOXTROT is: `0, 1, 5, 4, 3, 6, 2`  
+   Reconstructing gives: `NFTITZX`
+
+3. Remove padding `X` at the end: `NFTITZ`
+
+Answer: NFTITZ",NFTITZ,1,hard,stop
+cipher_en_hard_0073,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 9089: STATUS CRITICAL. ENCRYPTION AUTH CODE IS DETERMINED AS FOXTROT. COORDINATES SET TO 86.34 | SECTOR 4576. TARGET SATELLITE IS OFFLINE.
+-------------------------------
+
+Ciphertext: 'NLERXLFCPUDOAQ'
+
+Encryption guide:
+1. The encryption keyword is the 13-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - JVNGP -> OJUIXLG
+  - ISYE -> NGUQVLR
+  - QKTMND -> VYAGDLM
+  - WYWSE -> BMUXJLP
+  - OHFV -> TVUQMLY
+  - NCQIU -> SQUNZLJ
+  - ZLSR -> EZUQILL
+  - SQLOC -> XEUVFLE
+  - TXWHK -> YLUDYLP
+  - FGGEJE -> KUBCVLZ
+
+Enter the decrypted plaintext (uppercase, no spaces).",IHMBMGKXY,,"The 13th word in the mission log, counting `9089` as a token and ignoring punctuation, is **FOXTROT**.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** with keyword FOXTROT:
+   - Ciphertext: `NLERXLFCPUDOAQ`
+   - Result: `IXHYGXMXBXKXMX`
+
+2. **Undo columnar transposition** using FOXTROT.
+   - Keyword order sorted alphabetically: F, O, O, R, T, T, X
+   - Column positions: 1, 2, 6, 5, 4, 7, 3
+   - Reconstructing the grid gives padded plaintext:
+     `IHMBMGKXYXXXXX`
+
+3. Remove trailing padding X’s:
+   - Plaintext: `IHMBMGKXY`
+
+Answer: IHMBMGKXY",IHMBMGKXY,1,hard,stop
+cipher_en_hard_0074,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 3092: STATUS CRITICAL. ENCRYPTION PRIMARY KEY IS DETERMINED AS DELTA. COORDINATES SET TO 133.56 | SECTOR CC68. TARGET SATELLITE IS BREACHED.
+-------------------------------
+
+Ciphertext: 'EBVSOBKIVX'
+
+Encryption guide:
+1. The encryption keyword is the 13-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - CNEAAT -> DBNMNAIITX
+  - DVBPSG -> VBOZVAFIIX
+  - ZGXXQ -> TDRQX
+  - ABYP -> AEMRP
+  - PJAV -> ATUTV
+  - QNYW -> AUYRW
+  - WELH -> AAPEH
+  - JYSD -> ANJLD
+  - ODCZWG -> ZBZZDAGISX
+  - HPRSS -> VLAKS
+
+Enter the decrypted plaintext (uppercase, no spaces).",KOGCBZY,,"The 13th word in the mission log, excluding punctuation, is **DELTA**, so the keyword is DELTA.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** using DELTA on `EBVSOBKIVX`:
+   - Result: `BXKZOYGXCX`
+
+2. **Undo columnar transposition** with keyword DELTA.
+   - Keyword column order by sorted letters: A,D,E,L,T → columns 5,1,2,3,4
+   - Reconstructing the grid gives: `KOGCBZYXXX`
+
+3. Remove padding X’s:
+   - Plaintext: `KOGCBZY`
+
+Answer: KOGCBZY",KOGCBZY,1,hard,stop
+cipher_en_hard_0075,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 145.12 | SECTOR 799D. TARGET GRID IS READY. ENCRYPTION PRIMARY KEY IS DETERMINED AS BRAVO. SYSTEM REPORT ID 6831: STATUS SYNCING.
+-------------------------------
+
+Ciphertext: 'LOENZYZCAL'
+
+Encryption guide:
+1. The encryption keyword is the 18-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - KIFG -> GBXDU
+  - IZYM -> ZZXUA
+  - SVLPBV -> MOSQPYMXKL
+  - RZMA -> NIXUO
+  - XLTE -> UOXGS
+  - FKBBM -> CWMFP
+  - UZYSA -> ZLAUG
+  - FZSKS -> TWSUY
+  - YPXW -> YPXKK
+  - CNBMAG -> COCBOYEXHL
+
+Enter the decrypted plaintext (uppercase, no spaces).",EIKFLSC,,"Using the mission log and examples, the keyword is **BRAVO**.
+
+Decrypting in reverse order:
+
+1. Undo Vigenère with **BRAVO**:
+   - `LOENZYZCAL` → `KXESLXICFX`
+
+2. Undo the columnar transposition with keyword **BRAVO**:
+   - Column order from sorted BRAVO is: A, B, O, R, V → columns 3, 1, 5, 2, 4
+   - Reconstructing gives: `EIKFLSCXXX`
+
+3. Remove padding X’s:
+   - Plaintext: `EIKFLSC`
+
+Answer: EIKFLSC",EIKFLSC,1,hard,stop
+cipher_en_hard_0076,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 640: STATUS SYNCING. TARGET DATABASE IS READY. ENCRYPTION VECTOR IS DETERMINED AS FOXTROT. COORDINATES SET TO 127.27 | SECTOR 1FB9.
+-------------------------------
+
+Ciphertext: 'ZQGQDLBCOUCODQ'
+
+Encryption guide:
+1. The encryption keyword is the 16-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - WPBGZG -> BDDSXLU
+  - LUMBH -> QIUASLF
+  - WZGHIL -> BNIBYLZ
+  - UJJEZC -> ZXZSVLC
+  - GTCKAE -> LHBTBLV
+  - HZKHW -> MNUPYLD
+  - YSBWP -> DGUINLU
+  - KSVCG -> PGUZTLO
+  - DQBS -> IEUQJLU
+  - WNBT -> BBUQKLU
+
+Enter the decrypted plaintext (uppercase, no spaces).",UJPAIMJC,,"The 16th word in the mission log (counting numeric tokens, excluding punctuation) is **FOXTROT**, so the keyword is FOXTROT.
+
+Decrypting the ciphertext by reversing the steps:
+
+1. Undo Vigenère with FOXTROT:
+   - `ZQGQDLBCOUCODQ` → `UCJXMXIXAXJXPX`
+
+2. Undo the columnar transposition using FOXTROT’s sorted column order:
+   - Column order: F, O, O, R, T, T, X → indices `[0,1,5,4,3,6,2]`
+   - Reconstructed padded plaintext: `UJPAIMJCXXXXXX`
+
+3. Remove padding X’s:
+   - `UJPAIMJC`
+
+Answer: UJPAIMJC",UJPAIMJC,1,hard,stop
+cipher_en_hard_0077,"--- [RECOVERED MISSION LOG] ---
+TARGET CORE IS BREACHED. SYSTEM REPORT ID 1949: STATUS SYNCING. COORDINATES SET TO 66.9 | SECTOR 6BAD. ENCRYPTION PRIMARY KEY IS DETERMINED AS BRAVO.
+-------------------------------
+
+Ciphertext: 'QTYMOYCQDL'
+
+Encryption guide:
+1. The encryption keyword is the 24-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - MHUTSE -> VOMZGYYXOL
+  - BDZSW -> ASWYG
+  - KZRT -> SBXUH
+  - TEJQD -> KKDZE
+  - LTBJFS -> COLNTYKXEL
+  - KGYXSB -> ZOKWGYXXSL
+  - PLHER -> IGRGS
+  - RALEUP -> MORKIYRXZL
+  - LMWFOB -> XOLWCYDXAL
+  - RPRMGW -> SORRUYGXHL
+
+Enter the decrypted plaintext (uppercase, no spaces).",YLPIARQC,,"The 24th word in the mission log, excluding punctuation, is **BRAVO**.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** with keyword BRAVO  
+   Ciphertext: `QTYMOYCQDL`  
+   Key shifts: B R A V O = 1,17,0,21,14 repeated  
+   Result: `PCYRAXLQIX`
+
+2. **Undo columnar transposition** with keyword BRAVO  
+   Column order by sorted keyword letters:
+   - A = column 3
+   - B = column 1
+   - O = column 5
+   - R = column 2
+   - V = column 4
+
+   Split `PCYRAXLQIX` into 5 columns of 2 letters:
+   - col3 = PC
+   - col1 = YR
+   - col5 = AX
+   - col2 = LQ
+   - col4 = IX
+
+   Reconstruct rows:
+   - `YLPIA`
+   - `RQCXX`
+
+   Plaintext with padding removed: `YLPIARQC`
+
+Answer: YLPIARQC",YLPIARQC,1,hard,stop
+cipher_en_hard_0078,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 334: STATUS STABLE. TARGET GRID IS BREACHED. COORDINATES SET TO 25.7 | SECTOR C9C4. ENCRYPTION AUTH CODE IS DETERMINED AS FOXTROT.
+-------------------------------
+
+Ciphertext: 'ROAWLLH'
+
+Encryption guide:
+1. The encryption keyword is the 24-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - XWBHLF -> CKCEYLU
+  - KBSI -> PPUQZLL
+  - HBPPH -> MPUAGLI
+  - RVCUU -> WJUNLLV
+  - LNUD -> QBUQULN
+  - YCEOEQ -> DQNXFLX
+  - YMNMD -> DAUWDLG
+  - STWDHG -> XHDAULP
+  - NETALM -> SSJERLM
+  - BBCRJN -> GPKCILV
+
+Enter the decrypted plaintext (uppercase, no spaces).",MAOUDD,,"Using the encryption guide, the keyword is **FOXTROT**.
+
+1. Undo Vigenère on ciphertext `ROAWLLH` with repeated key `FOXTROT`:
+
+`ROAWLLH - FOXTROT = MADDUXO`
+
+2. Undo the columnar transposition.  
+Keyword `FOXTROT` sorted column order is:
+
+`F O O R T T X` → original positions `1,2,6,5,4,7,3`
+
+Placing `MADDUXO` back into those columns gives:
+
+`MAOUDDX`
+
+The final `X` is padding, so the plaintext is:
+
+Answer: MAOUDD",MAOUDD,1,hard,stop
+cipher_en_hard_0079,"--- [RECOVERED MISSION LOG] ---
+TARGET TERMINAL IS OFFLINE. ENCRYPTION VECTOR IS DETERMINED AS INDIA. SYSTEM REPORT ID 3889: STATUS OVERLOADED. COORDINATES SET TO 147.68 | SECTOR C4B0.
+-------------------------------
+
+Ciphertext: 'JKWFHOYAKX'
+
+Encryption guide:
+1. The encryption keyword is the 10-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - YFGRQK -> YKJFYSEANX
+  - KOPSEI -> MKSFKQFAWX
+  - EUYHF -> NLHPU
+  - KEILQR -> YKLFKZYAMX
+  - BWXM -> FKEUW
+  - TAQXOO -> WKTFTWKAIX
+  - CGSLG -> OFFTG
+  - NGQMZE -> HKTFNMZAOX
+  - XLZR -> FMAZL
+  - HCCB -> FPKJC
+
+Enter the decrypted plaintext (uppercase, no spaces).",HCTLBG,,"The 10th word in the mission log is **INDIA**, so the keyword is INDIA.
+
+Decrypt Vigenère first:
+
+- Ciphertext: `JKWFHOYAKX`
+- Keyword repeated: `INDIAINDIA`
+- Result: `BXTXHGLXCX`
+
+Undo columnar transposition with keyword INDIA:
+
+- Column order from sorting INDIA: A(5), D(3), I(1), I(4), N(2)
+- Reconstructing gives padded plaintext: `HCTLBGXXXX`
+- Removing padding X’s gives: `HCTLBG`
+
+Answer: HCTLBG",HCTLBG,1,hard,stop
+cipher_en_hard_0080,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION AUTH CODE IS DETERMINED AS HOTEL. SYSTEM REPORT ID 3271: STATUS OVERLOADED. COORDINATES SET TO 156.54 | SECTOR A359. TARGET DATABASE IS OFFLINE.
+-------------------------------
+
+Ciphertext: 'FLQGEEXONV'
+
+Encryption guide:
+1. The encryption keyword is the 7-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - SYSHU -> OGNCD
+  - XCNQKK -> XLQOVEQQRI
+  - FYBXT -> ETMCM
+  - UGBM -> TIQKM
+  - XHSP -> WLQLD
+  - DJHCMZ -> JLWDXEXQLI
+  - JCPU -> BXQGA
+  - PBJQGH -> XLILREPQNI
+  - LVBLXY -> SLECIEJQFI
+  - BOWU -> BPQSH
+
+Enter the decrypted plaintext (uppercase, no spaces).",XJJYTCVK,,"The 7th word in the mission log is **HOTEL**, so the keyword is HOTEL.
+
+Decrypting the ciphertext **FLQGEEXONV**:
+
+1. Undo Vigenère with keyword HOTEL:
+   - Result: **YXXCXBJJJK**
+
+2. Undo columnar transposition using HOTEL:
+   - Column order from sorted HOTEL is: E, H, L, O, T → columns 4, 1, 5, 2, 3
+   - Reconstructed plaintext: **XJJYXCJKXB**
+
+Answer: XJJYXCJKXB",XJJYXCJKXB,0,hard,stop
+cipher_en_hard_0081,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 112.58 | SECTOR 1992. SYSTEM REPORT ID 548: STATUS LOCKED. ENCRYPTION PRIMARY KEY IS DETERMINED AS GOLF. TARGET SATELLITE IS READY.
+-------------------------------
+
+Ciphertext: 'ZLMQJLXT'
+
+Encryption guide:
+1. The encryption keyword is the 20-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - GPGUAV -> ALRFMLAA
+  - DVISG -> YLOLOLGC
+  - DHNK -> QRYM
+  - VGKZSO -> FLGXQLRT
+  - GZNZ -> FUYE
+  - CPKF -> LQVU
+  - NDVM -> SBGI
+  - DZEVC -> BLOHKLKC
+  - TPJFV -> LLEAPLAC
+  - XFSOCD -> ULIHYLQI
+
+Enter the decrypted plaintext (uppercase, no spaces).",BMDTLO,,"The mission log explicitly states the encryption primary key is **GOLF**.
+
+Encryption was:
+
+1. Columnar transposition with keyword **GOLF**
+2. Vigenère with keyword **GOLF**
+
+So decrypt in reverse:
+
+1. Undo Vigenère on `ZLMQJLXT` using `GOLF` → `TXBLDXMO`
+2. Undo columnar transposition.
+
+For `GOLF`, alphabetical column order is:
+
+- F = column 4
+- G = column 1
+- L = column 3
+- O = column 2
+
+Reconstructing the 2-row grid gives:
+
+`B M D T`  
+`L O X X`
+
+Removing padding `X`s gives:
+
+`BMDTLO`
+
+Answer: BMDTLO",BMDTLO,1,hard,stop
+cipher_en_hard_0082,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 5770: STATUS SYNCING. TARGET DATABASE IS OFFLINE. ENCRYPTION AUTH CODE IS DETERMINED AS CHARLIE. COORDINATES SET TO 126.54 | SECTOR 9937.
+-------------------------------
+
+Ciphertext: 'TSXMVZH'
+
+Encryption guide:
+1. The encryption keyword is the 17-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - CYUSG -> WJXPIOW
+  - WAFY -> HDXRIFC
+  - BAUV -> WIXRIFZ
+  - JWOIUP -> QQXNACM
+  - KXUOSN -> WRXOYAS
+  - JMZBS -> BQXDIAF
+  - PFIPE -> KWXWIMT
+  - ZAJTJO -> LGXRZRX
+  - KBEL -> GRXSIFP
+  - SUEW -> GZXLIFA
+
+Enter the decrypted plaintext (uppercase, no spaces).",LVRDRK,,"The 17th word of the mission log is **CHARLIE**, which is the keyword.
+
+Decrypting in reverse order:
+
+1. **Undo Vigenère** using CHARLIE:  
+   `TSXMVZH` → `RLXVKRD`
+
+2. **Undo columnar transposition** with keyword CHARLIE.  
+   Sorted column order is: A(3), C(1), E(7), H(2), I(6), L(5), R(4).  
+   Reconstructing gives: `LVRDRKX`
+
+3. The final `X` is padding, so the plaintext is: `LVRDRK`
+
+Answer: LVRDRK",LVRDRK,1,hard,stop
+cipher_en_hard_0083,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION VECTOR IS DETERMINED AS DELTA. COORDINATES SET TO 176.55 | SECTOR 3D18. SYSTEM REPORT ID 1183: STATUS CRITICAL. TARGET GRID IS OFFLINE.
+-------------------------------
+
+Ciphertext: 'YBQDXJRXMX'
+
+Encryption guide:
+1. The encryption keyword is the 6-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - YSJW -> ACDCW
+  - IBXRMA -> PBTTBABIKX
+  - BLZEUF -> XBMYLADIXX
+  - KWDN -> AOHWN
+  - NRPYLU -> OBYNRATIRX
+  - EHMQJF -> MBPYHAQIJX
+  - XNKO -> ABYDO
+  - IPNE -> AMAGE
+  - OBQCO -> RSMJC
+  - VEEEI -> LZPXE
+
+Enter the decrypted plaintext (uppercase, no spaces).",FXNTVKGM,,"The 6th word in the mission log is **DELTA**, so the keyword is DELTA.
+
+Decrypt Vigenère first using DELTA:
+
+- Ciphertext: `YBQDXJRXMX`
+- After Vigenère decryption: `VXFKXGNMTX`
+
+Now undo the columnar transposition with keyword DELTA.  
+Sorted keyword column order is: A, D, E, L, T → columns `5,1,2,3,4`.
+
+Reconstructing the grid and reading rows gives:
+
+`FXNTVKGMXX`
+
+The final `XX` is padding, so the plaintext is:
+
+Answer: FXNTVKGM",FXNTVKGM,1,hard,stop
+cipher_en_hard_0084,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 179.6 | SECTOR 3132. ENCRYPTION SEED IS DETERMINED AS INDIA. SYSTEM REPORT ID 4421: STATUS SYNCING. TARGET CORE IS OFFLINE.
+-------------------------------
+
+Ciphertext: 'WKKFSRZBQD'
+
+Encryption guide:
+1. The encryption keyword is the 13-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - RHSEY -> GFUMH
+  - DXTZS -> AGGHX
+  - WAVS -> FIZAA
+  - HKYSEA -> MKBFHIFASX
+  - VETDFP -> NKWFVXQAMX
+  - SZUJV -> DHVRZ
+  - GPVXY -> GIJFP
+  - GSPM -> FCJUS
+  - RFNST -> BAUAF
+  - JAHOAF -> IKKFJNBAIX
+
+Enter the decrypted plaintext (uppercase, no spaces).",SIHMOJDXY,,"The encryption keyword is the 13th word when punctuation separates the numeric chunks:
+
+COORDINATES(1) SET(2) TO(3) 179(4) 6(5) SECTOR(6) 3132(7) ENCRYPTION(8) SEED(9) IS(10) DETERMINED(11) AS(12) INDIA(13)
+
+Keyword: INDIA
+
+Undo Vigenère with INDIA:
+
+- Ciphertext: WKKFSRZBQD
+- Key: INDIAINDIA
+- Result: OXHXSJMYID
+
+Undo the columnar transposition using INDIA. Sorted column order is A, D, I, I, N, giving original column indices:
+
+5, 3, 1, 4, 2
+
+Split OXHXSJMYID into 2-letter column chunks:
+
+- Col 5 = OX
+- Col 3 = HX
+- Col 1 = SJ
+- Col 4 = MY
+- Col 2 = ID
+
+Reconstructing rows:
+
+SIHMO  
+JDXYX
+
+This gives SIHMOJDXYX, with the final X as padding.
+
+Answer: SIHMOJDXY",SIHMOJDXY,1,hard,stop
+cipher_en_hard_0085,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 3.60 | SECTOR 9ED0. ENCRYPTION VECTOR IS DETERMINED AS GOLF. SYSTEM REPORT ID 1858: STATUS OVERLOADED. TARGET SATELLITE IS STANDBY.
+-------------------------------
+
+Ciphertext: 'ULXWMZRT'
+
+Encryption guide:
+1. The encryption keyword is the 13-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - PWUHM -> NLARALHC
+  - YLJIA -> OLJFPLWC
+  - CZHYNE -> ELNSNLKJ
+  - CUHC -> IQSZ
+  - GGTM -> SUEL
+  - IWSPG -> VLTLYLHC
+  - JJSWUE -> CLUZYLUJ
+  - YDRVVI -> BLJAXLON
+  - VXRK -> QJCC
+  - SGJG -> MGUL
+
+Enter the decrypted plaintext (uppercase, no spaces).",MGGOROL,,"The 13th word of the mission log, counting punctuation-split tokens, is **GOLF**, so the keyword is GOLF.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** using GOLF:
+   - Ciphertext: `ULXWMZRT`
+   - Key: `GOLFGOLF`
+   - Result: `OXMRGLGO`
+
+2. **Undo columnar transposition** with keyword GOLF.
+   - Column order from alphabetical keyword letters: F, G, L, O → columns 4, 1, 3, 2
+   - Split `OXMRGLGO` into 2-letter columns:
+     - col 4 = `OX`
+     - col 1 = `MR`
+     - col 3 = `GL`
+     - col 2 = `GO`
+   - Reconstruct rows: `MGGOROLX`
+
+Remove the padding `X`.
+
+Answer: MGGOROL",MGGOROL,1,hard,stop
+cipher_en_hard_0086,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 88.98 | SECTOR 7085. SYSTEM REPORT ID 6914: STATUS LOCKED. TARGET SATELLITE IS BREACHED. ENCRYPTION AUTH CODE IS DETERMINED AS CHARLIE.
+-------------------------------
+
+Ciphertext: 'EPUTAFLBNXXIJB'
+
+Encryption guide:
+1. The encryption keyword is the 24-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - HSNVBP -> POXJAJZ
+  - OAAT -> CVXRIFX
+  - DVGQUK -> IKXMVCU
+  - FTTOJR -> VMXKCRS
+  - HEYOQ -> AOXVIYS
+  - MALLWD -> NTXROEP
+  - AEVOBD -> XHXVOJS
+  - ORBNDI -> DVXITLR
+  - ZZPJMS -> RGXQDUN
+  - LAMGTS -> OSXRDBK
+
+Enter the decrypted plaintext (uppercase, no spaces).",UHCBGGPCZI,,"The 24th word in the mission log is **CHARLIE**, so the keyword is CHARLIE.
+
+Decrypting the Vigenère layer first gives:
+
+`CIUCPXHZGXGXBX`
+
+Undoing the columnar transposition with keyword order `A C E H I L R` restores the padded plaintext:
+
+`UHCBGGPCZIXXXX`
+
+Removing the trailing padding Xs gives:
+
+Answer: UHCBGGPCZI",UHCBGGPCZI,1,hard,stop
+cipher_en_hard_0087,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 7769: STATUS STABLE. TARGET DATABASE IS BREACHED. COORDINATES SET TO 33.46 | SECTOR C85A. ENCRYPTION VECTOR IS DETERMINED AS HOTEL.
+-------------------------------
+
+Ciphertext: 'SXKSHEIPOR'
+
+Encryption guide:
+1. The encryption keyword is the 23-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - MPFVP -> CAITQ
+  - CRBKH -> RQAVM
+  - VIKVIY -> CLOCTEWQOI
+  - ODRC -> JCQHC
+  - ONVB -> ICQRG
+  - GIOV -> CUQMZ
+  - SKSO -> VGQOD
+  - AZHJ -> QOQDS
+  - JWGP -> WXQAR
+  - IQWRE -> YWXUH
+
+Enter the decrypted plaintext (uppercase, no spaces).",RUKLWOWGJ,,"The 23rd word in the mission log, excluding punctuation, is **HOTEL**.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** on `SXKSHEIPOR` using keyword `HOTEL`:
+   - Result: `LJROWXUWKG`
+
+2. **Undo columnar transposition** with keyword `HOTEL`.
+   - Sorted column order for `HOTEL`: E, H, L, O, T → column indices `3,0,4,1,2`
+   - Reconstructing and reading rows gives: `RUKLWOWGJX`
+
+Answer: RUKLWOWGJX",RUKLWOWGJX,0,hard,stop
+cipher_en_hard_0088,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION SEED IS DETERMINED AS ECHO. COORDINATES SET TO 92.17 | SECTOR 8700. SYSTEM REPORT ID 3820: STATUS SYNCING. TARGET TERMINAL IS BREACHED.
+-------------------------------
+
+Ciphertext: 'WEMBKIOL'
+
+Encryption guide:
+1. The encryption keyword is the 6-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - TQFX -> UVML
+  - LBKWB -> FZSPOZDL
+  - LUBS -> YNIG
+  - FPTXVN -> TPMJXZEL
+  - LPXRBV -> TXSPBZYL
+  - SLOJD -> PZZRSZQL
+  - LCUP -> GNBD
+  - FNYRBS -> RUMPCZYL
+  - KGVYN -> KZRBZZFL
+  - NHTIPQ -> LSUDXZPL
+
+Enter the decrypted plaintext (uppercase, no spaces).",FSGHNCG,,"The 6th word in the mission log is **ECHO**, so the keyword is **ECHO**.
+
+Decrypt in reverse order:
+
+1. **Vigenère decrypt** `WEMBKIOL` with keyword `ECHO` → `SCFNGGHX`
+2. **Undo columnar transposition** using keyword order `C,E,H,O` → padded plaintext `FSGHNCGX`
+3. Remove padding `X` → `FSGHNCG`
+
+Answer: FSGHNCG",FSGHNCG,1,hard,stop
+cipher_en_hard_0089,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 7782: STATUS STABLE. TARGET GRID IS BREACHED. ENCRYPTION SEED IS DETERMINED AS BRAVO. COORDINATES SET TO 56.71 | SECTOR FAE4.
+-------------------------------
+
+Ciphertext: 'VWTLDYAHKH'
+
+Encryption guide:
+1. The encryption keyword is the 16-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - IJKUYG -> LOIBMYAXPL
+  - IMPF -> QZXHT
+  - AMJSJN -> KOAIXYDXNL
+  - NMCHN -> DENHV
+  - MHTU -> UDXCI
+  - BJZMRH -> AOBCFYAXHL
+  - SSTL -> UJXNZ
+  - UHWJ -> XLXCX
+  - SMGNP -> HJPHB
+  - JWQW -> RAXRK
+
+Enter the decrypted plaintext (uppercase, no spaces).",TJUPPQHFT,,"The 16th word in the mission log is **BRAVO**, so the keyword is BRAVO.
+
+Reverse the encryption steps:
+
+1. **Undo Vigenère** on `VWTLDYAHKH` using BRAVO:
+   - Result: `UFTQPXJHPT`
+
+2. **Undo columnar transposition** with keyword BRAVO.
+   - Sorted column order for BRAVO is: A, B, O, R, V → columns `[2, 0, 4, 1, 3]`
+   - Reconstructing the grid gives: `TJUPPQHFTX`
+
+3. Remove padding `X`:
+   - Plaintext: `TJUPPQHFT`
+
+Answer: TJUPPQHFT",TJUPPQHFT,1,hard,stop
+cipher_en_hard_0090,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION PRIMARY KEY IS DETERMINED AS INDIA. TARGET CORE IS BREACHED. COORDINATES SET TO 17.15 | SECTOR E2ED. SYSTEM REPORT ID 4770: STATUS CRITICAL.
+-------------------------------
+
+Ciphertext: 'ZXCMDHPXJZ'
+
+Encryption guide:
+1. The encryption keyword is the 7-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - YEEHFA -> NKHFYIUAMX
+  - RASE -> FFUMA
+  - PULS -> FYSAU
+  - LNJRGD -> OKMFLLEAVX
+  - EBIPV -> DVHXB
+  - JVSJXJ -> FKVFJRWADX
+  - LERAN -> VEOIE
+  - JVIZR -> ZVMHV
+  - FQAAP -> XNIIQ
+  - KREA -> FRNIR
+
+Enter the decrypted plaintext (uppercase, no spaces).",DBZCRZZEUK,,"The 7th word in the mission log is **INDIA**, so the keyword is INDIA.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** on `ZXCMDHPXJZ` using key `INDIA`:
+   - Result: `RKZEDZCUBZ`
+
+2. **Undo columnar transposition** with keyword `INDIA`.
+   - Column order from sorted keyword letters is: 5, 3, 1, 4, 2
+   - Reconstructing the grid gives plaintext: `DBZCRZZEUK`
+
+Answer: DBZCRZZEUK",DBZCRZZEUK,1,hard,stop
+cipher_en_hard_0091,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 153.42 | SECTOR E715. TARGET GRID IS BREACHED. SYSTEM REPORT ID 6146: STATUS CRITICAL. ENCRYPTION PRIMARY KEY IS DETERMINED AS CHARLIE.
+-------------------------------
+
+Ciphertext: 'LEMKNFEPFXPIJB'
+
+Encryption guide:
+1. The encryption keyword is the 24-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - PALNK -> NWXRISR
+  - LBODXO -> QSXSZFH
+  - AHKLQA -> MHXYLYP
+  - PSPYTN -> RWXJYBC
+  - DFTF -> VKXWIFJ
+  - VMWV -> YCXDIFZ
+  - BYVE -> XIXPIFI
+  - WXXP -> ZDXOIFT
+  - GOUI -> WNXFIFM
+  - ERSJRK -> ULXIVZN
+
+Enter the decrypted plaintext (uppercase, no spaces).",MAJBYYCTN,,"The 24th word in the mission log is **CHARLIE** (counting `153.42` as `153` and `42` after excluding punctuation).
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** with keyword `CHARLIE`:
+
+`LEMKNFEPFXPIJB` → `JXMTCXANYXYXBX`
+
+2. **Undo columnar transposition** with keyword `CHARLIE`.
+
+Column order from alphabetizing `CHARLIE` is:
+
+`A C E H I L R` → original column positions `3, 1, 7, 2, 6, 5, 4`
+
+Reconstructing the grid gives:
+
+`MAJBYYCTNXXXXX`
+
+Removing the trailing padding X’s gives:
+
+`MAJBYYCTN`
+
+Answer: MAJBYYCTN",MAJBYYCTN,1,hard,stop
+cipher_en_hard_0092,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 174.8 | SECTOR C905. TARGET GRID IS STANDBY. ENCRYPTION SEED IS DETERMINED AS HOTEL. SYSTEM REPORT ID 9261: STATUS CRITICAL.
+-------------------------------
+
+Ciphertext: 'KLCXFELJRI'
+
+Encryption guide:
+1. The encryption keyword is the 17-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - PHMJGO -> QLISREVQQI
+  - GXJFEB -> MLZFPELQNI
+  - GYHHM -> OUFCS
+  - VPVXT -> EJMTG
+  - EQITP -> ASIUT
+  - ZMWWE -> DNXQH
+  - DEEUCJ -> BLWNNESQII
+  - VMSGV -> NJOQD
+  - MCCOD -> VAWGN
+  - BOCFJ -> MPCSN
+
+Enter the decrypted plaintext (uppercase, no spaces).",JXNDUTQ,,"The 17th word in the mission log is found by excluding punctuation and treating `174.8` as `174` and `8`, giving the keyword:
+
+`HOTEL`
+
+Decrypt in reverse order:
+
+1. Undo Vigenère with keyword `HOTEL`:
+`KLCXFELJRI` → `DXJTUXXQNX`
+
+2. Undo columnar transposition using `HOTEL`.
+Sorted column order for `HOTEL` is: `E, H, L, O, T`, corresponding to column positions `4, 1, 5, 2, 3`.
+
+Reconstructing the grid gives:
+
+`JXNDUTQXXX`
+
+Remove trailing padding X’s:
+
+`JXNDUTQ`
+
+Answer: JXNDUTQ",JXNDUTQ,1,hard,stop
+cipher_en_hard_0093,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 141.23 | SECTOR 5263. SYSTEM REPORT ID 4346: STATUS OVERLOADED. ENCRYPTION VECTOR IS DETERMINED AS DELTA. TARGET TERMINAL IS STANDBY.
+-------------------------------
+
+Ciphertext: 'GKAKRPUNCP'
+
+Encryption guide:
+1. The encryption keyword is the 19-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - BQHZQ -> TFBAZ
+  - CBBX -> AGMUX
+  - XRTH -> ABCMH
+  - CMKURM -> UBNFMAOINX
+  - BZNPI -> LFKGP
+  - PLGOBW -> EBAPLAKIHX
+  - RMNTEY -> HBCRMARIMX
+  - VDEOCF -> FBGYDAIIHX
+  - GQPZ -> AKBIZ
+  - WCWCG -> JANPC
+
+Enter the decrypted plaintext (uppercase, no spaces).",PRQJDRMCPG,,"Counting the mission log words with punctuation removed/splitting punctuation:
+
+1 COORDINATES  
+2 SET  
+3 TO  
+4 141  
+5 23  
+6 SECTOR  
+7 5263  
+8 SYSTEM  
+9 REPORT  
+10 ID  
+11 4346  
+12 STATUS  
+13 OVERLOADED  
+14 ENCRYPTION  
+15 VECTOR  
+16 IS  
+17 DETERMINED  
+18 AS  
+19 DELTA  
+
+So the keyword is **DELTA**.
+
+Decrypting `GKAKRPUNCP`:
+
+1. Undo Vigenère with keyword DELTA:
+- `GKAKRPUNCP` → `DGPRRMQCJP`
+
+2. Undo columnar transposition with keyword DELTA.  
+Sorted column order for DELTA is: A, D, E, L, T → columns 5, 1, 2, 3, 4.
+
+Reconstructing the rows gives:
+
+`PRQJD`  
+`RMCPG`
+
+Plaintext: `PRQJDRMCPG`
+
+Answer: PRQJDRMCPG",PRQJDRMCPG,1,hard,stop
+cipher_en_hard_0094,"--- [RECOVERED MISSION LOG] ---
+TARGET GRID IS OFFLINE. COORDINATES SET TO 35.39 | SECTOR E1C4. SYSTEM REPORT ID 3769: STATUS LOCKED. ENCRYPTION VECTOR IS DETERMINED AS FOXTROT.
+-------------------------------
+
+Ciphertext: 'HJZYALF'
+
+Encryption guide:
+1. The encryption keyword is the 23-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - TALWCC -> YOZVNLE
+  - AXUUSW -> FLTLLLN
+  - MUKY -> RIUQPLD
+  - IXWP -> NLUQGLP
+  - JAFZE -> OOUXQLY
+  - XUAM -> CIUQDLT
+  - WFDB -> BTUQSLW
+  - UYMH -> ZMUQYLF
+  - ZMZUUB -> EAYNLLS
+  - GXGJEA -> LLXXALZ
+
+Enter the decrypted plaintext (uppercase, no spaces).",CVMJFC,,"The mission log’s 23rd word is **FOXTROT**, so the keyword is FOXTROT.
+
+Decrypting in reverse:
+
+1. Undo Vigenère on `HJZYALF` with FOXTROT → `CVCFJXM`
+2. Undo columnar transposition using FOXTROT column order → `CVMJFCX`
+3. Remove padding `X` → `CVMJFC`
+
+Answer: CVMJFC",CVMJFC,1,hard,stop
+cipher_en_hard_0095,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 17.55 | SECTOR BF51. ENCRYPTION SEED IS DETERMINED AS CHARLIE. SYSTEM REPORT ID 7543: STATUS CRITICAL. TARGET SATELLITE IS OFFLINE.
+-------------------------------
+
+Ciphertext: 'BEQLPFBZOXAICB'
+
+Encryption guide:
+1. The encryption keyword is the 13-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - FMEK -> GMXDIFO
+  - JHRRXN -> TQXYYFV
+  - GSEHOB -> GNXJMWL
+  - QKHDYS -> JXXBDGH
+  - IWEB -> GPXNIFF
+  - YLGG -> IFXCIFK
+  - XERFAT -> TEXVEIJ
+  - NCDEEB -> FUXTMMI
+  - IHIUGC -> KPXYNOY
+  - KLFUV -> HRXCIDY
+
+Enter the decrypted plaintext (uppercase, no spaces).",QXZUJHEUX,,"The 13th log token (excluding punctuation, with `17.55` split by the period) is **CHARLIE**, matching the stated encryption seed.
+
+Reverse the final Vigenère step using keyword **CHARLIE**:
+
+`BEQLPFBZOXAICB` → `ZXQUEXXXHXJXUX`
+
+For columnar transposition with keyword **CHARLIE**, sorted column order is:
+
+A C E H I L R → columns `3, 1, 7, 2, 6, 5, 4`
+
+Split the intermediate text into 2-character column chunks and restore original column order:
+
+- col 3 = ZX
+- col 1 = QU
+- col 7 = EX
+- col 2 = XX
+- col 6 = HX
+- col 5 = JX
+- col 4 = UX
+
+Reading rows gives:
+
+`QXZUJHEUXXXXXX`
+
+Removing padding X’s:
+
+`QXZUJHEU`
+
+Answer: QXZUJHEU",QXZUJHEU,0,hard,stop
+cipher_en_hard_0096,"--- [RECOVERED MISSION LOG] ---
+TARGET CORE IS STANDBY. SYSTEM REPORT ID 3478: STATUS LOCKED. COORDINATES SET TO 98.81 | SECTOR 4F13. ENCRYPTION VECTOR IS DETERMINED AS HOTEL.
+-------------------------------
+
+Ciphertext: 'AUQYLQBUWB'
+
+Encryption guide:
+1. The encryption keyword is the 23-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - GNSX -> EUQRD
+  - WUIBYY -> ILPCJEIQMI
+  - EKZDY -> KSROK
+  - RTIPTV -> WLKZEEHQMI
+  - CEUVS -> CQLIF
+  - VPRDWB -> KLOFHEDQVI
+  - YFMN -> UMQJX
+  - WGXIW -> PKPKI
+  - CQOHSC -> OLVGDEEQSI
+  - RCXOPW -> VLKAAEQQBI
+
+Enter the decrypted plaintext (uppercase, no spaces).",XNSTAUBQGJ,,"The 23rd word in the mission log is **HOTEL**, so the keyword is HOTEL.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** using keyword HOTEL:
+   - Ciphertext: `AUQYLQBUWB`
+   - Key:        `HOTELHOTEL`
+   - Result:     `TGXUAJNBSQ`
+
+2. **Undo columnar transposition** with keyword HOTEL.
+   - Column order from sorting HOTEL alphabetically is: E, H, L, O, T → columns `4,1,5,2,3`
+   - Reconstructing the grid gives plaintext: `XNSTAUBQGJ`
+
+Answer: XNSTAUBQGJ",XNSTAUBQGJ,1,hard,stop
+cipher_en_hard_0097,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION PRIMARY KEY IS DETERMINED AS GOLF. SYSTEM REPORT ID 1220: STATUS SYNCING. TARGET DATABASE IS OFFLINE. COORDINATES SET TO 124.81 | SECTOR 2AE8.
+-------------------------------
+
+Ciphertext: 'BGIOMGGRDGTC'
+
+Encryption guide:
+1. The encryption keyword is the 7-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - ASAV -> BOLX
+  - UGUXZB -> DLFEALRG
+  - JIFZA -> FLUFLLTC
+  - AHTHIT -> NLLNZLSY
+  - PCWSX -> YLACCLNC
+  - WIMNO -> TLHTSLTC
+  - SMVRI -> XLDNBLXC
+  - XZVTVB -> ZLIABLKG
+  - TVXY -> EHIA
+  - HDASS -> YLSXGLOC
+
+Enter the decrypted plaintext (uppercase, no spaces).",JSVVGIMSS,,"The 7th word in the mission log is **GOLF**, so the keyword is **GOLF**.
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** using GOLF:
+   - Ciphertext: `BGIOMGGRDGTC`
+   - After Vigenère decryption: `VSXJGSVMXSIX`
+
+2. **Undo columnar transposition** with keyword GOLF.
+   - Keyword column order sorted alphabetically: F, G, L, O → positions 4, 1, 3, 2
+   - Reconstructing the grid gives padded plaintext: `JSVVGIMSSXXX`
+
+Removing padding X’s:
+
+Answer: JSVVGIMSS",JSVVGIMSS,1,hard,stop
+cipher_en_hard_0098,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 172.92 | SECTOR 123D. ENCRYPTION PRIMARY KEY IS DETERMINED AS BRAVO. SYSTEM REPORT ID 6208: STATUS LOCKED. TARGET CORE IS STANDBY.
+-------------------------------
+
+Ciphertext: 'ZHKFSYYNUX'
+
+Encryption guide:
+1. The encryption keyword is the 14-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - BUQS -> RSXPG
+  - ZJTEMA -> UOZVAYAXZL
+  - EIDM -> EVXDA
+  - DCPGUM -> QODHIYTXBL
+  - BFCOGF -> DOBAUYWXJL
+  - NTMLSL -> NONGGYKXGL
+  - SFNEJ -> OJJAS
+  - MVUV -> VDXQJ
+  - XZNMCO -> OOXJQYQXHL
+  - VRZAAR -> AOVMOYIXVL
+
+Enter the decrypted plaintext (uppercase, no spaces).",KHYZEKNQJ,,"The 14th word in the mission log is **BRAVO** (counting `172.92` as `172` and `92` after excluding punctuation).
+
+Decrypt in reverse order:
+
+1. **Undo Vigenère** using keyword BRAVO:
+   - Ciphertext: `ZHKFSYYNUX`
+   - Vigenère-decrypted text: `YQKKEXHNZJ`
+
+2. **Undo columnar transposition** with keyword BRAVO:
+   - Column order from sorting BRAVO alphabetically: A(3), B(1), O(5), R(2), V(4)
+   - Reconstructing the 5-column grid gives plaintext: `KHYZEKNQJX`
+
+Answer: KHYZEKNQJX",KHYZEKNQJX,0,hard,stop
+cipher_en_hard_0099,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 125.35 | SECTOR 80E5. ENCRYPTION SEED IS DETERMINED AS ECHO. TARGET CORE IS BREACHED. SYSTEM REPORT ID 1528: STATUS STABLE.
+-------------------------------
+
+Ciphertext: 'BOSYSOJL'
+
+Encryption guide:
+1. The encryption keyword is the 13-th word in the mission log below (excluding punctuation).
+2. Applied algorithms: TRANSPOSITION -> VIGENERE
+
+Algorithm details:
+- TRANSPOSITION: This is columnar transposition; read columns vertically in the order produced by sorting the keyword letters alphabetically.
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+3. To decrypt, undo the algorithms in reverse order, starting from the last applied algorithm.
+
+Examples encrypted with the same keyword and algorithms:
+  - XWFP -> AZMD
+  - OUJPQ -> YZVENZWL
+  - DFBOP -> JZKDFZVL
+  - VDHSRH -> HJCFLZZL
+  - JGDDM -> KZQAHZKL
+  - VWIYT -> AZCHMZFL
+  - SAMNY -> EZZMQZUL
+  - GGXCIV -> KXNWBZJL
+  - PGYDWH -> KJWKCZKL
+  - RYCHY -> CZYMGZOL
+
+Enter the decrypted plaintext (uppercase, no spaces).",LXOCKMM,,"The 13th word in the mission log is **ECHO**, so the keyword is **ECHO**.
+
+Decrypting `BOSYSOJL`:
+
+1. **Undo Vigenère** with keyword `ECHO`:
+   - `BOSYSOJL` → `XMLKOMCX`
+
+2. **Undo columnar transposition** with keyword `ECHO`.
+   - Column order for `ECHO` is: C, E, H, O → columns 2, 1, 3, 4
+   - Reconstructing the grid gives: `LXOCKMMX`
+   - Remove padding `X` → `LXOCKMM`
+
+Answer: LXOCKMM",LXOCKMM,1,hard,stop

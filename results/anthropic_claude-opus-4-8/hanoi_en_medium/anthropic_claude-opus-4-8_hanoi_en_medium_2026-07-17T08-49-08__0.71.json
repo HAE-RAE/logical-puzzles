@@ -1,0 +1,31 @@
+{
+  "metadata": {
+    "task": "hanoi_en_medium",
+    "model": "anthropic/claude-opus-4-8",
+    "timestamp": "2026-07-17T08-49-08",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "max_tokens": 32768,
+      "reasoning_effort": "medium"
+    },
+    "gen_kwargs_cli": "max_tokens=32768,reasoning_effort=medium"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.71,
+      "correct_count": 71,
+      "total_count": 100,
+      "avg_latency_ms": 92543.36171150208,
+      "finish_reason_counts": {
+        "stop": 100
+      }
+    },
+    "by_difficulty": {
+      "medium": {
+        "total": 100,
+        "correct": 71,
+        "accuracy": 0.71
+      }
+    }
+  }
+}

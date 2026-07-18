@@ -1,0 +1,31 @@
+{
+  "metadata": {
+    "task": "causal_dag_en_easy",
+    "model": "anthropic/claude-opus-4-8",
+    "timestamp": "2026-07-17T11-20-30",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "max_tokens": 32768,
+      "reasoning_effort": "medium"
+    },
+    "gen_kwargs_cli": "max_tokens=32768,reasoning_effort=medium"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.76,
+      "correct_count": 76,
+      "total_count": 100,
+      "avg_latency_ms": 21089.358024597168,
+      "finish_reason_counts": {
+        "stop": 100
+      }
+    },
+    "by_difficulty": {
+      "easy": {
+        "total": 100,
+        "correct": 76,
+        "accuracy": 0.76
+      }
+    }
+  }
+}

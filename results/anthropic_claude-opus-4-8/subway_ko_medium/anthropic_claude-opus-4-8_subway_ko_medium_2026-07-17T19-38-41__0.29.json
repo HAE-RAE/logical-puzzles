@@ -1,0 +1,31 @@
+{
+  "metadata": {
+    "task": "subway_ko_medium",
+    "model": "anthropic/claude-opus-4-8",
+    "timestamp": "2026-07-17T19-38-41",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "max_tokens": 32768,
+      "reasoning_effort": "medium"
+    },
+    "gen_kwargs_cli": "max_tokens=32768,reasoning_effort=medium"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.29,
+      "correct_count": 29,
+      "total_count": 100,
+      "avg_latency_ms": 15935.600941181183,
+      "finish_reason_counts": {
+        "stop": 100
+      }
+    },
+    "by_difficulty": {
+      "medium": {
+        "total": 100,
+        "correct": 29,
+        "accuracy": 0.29
+      }
+    }
+  }
+}

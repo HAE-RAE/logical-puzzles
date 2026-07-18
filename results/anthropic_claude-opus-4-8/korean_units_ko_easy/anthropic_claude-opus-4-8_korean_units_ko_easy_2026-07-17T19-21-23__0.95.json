@@ -1,0 +1,31 @@
+{
+  "metadata": {
+    "task": "korean_units_ko_easy",
+    "model": "anthropic/claude-opus-4-8",
+    "timestamp": "2026-07-17T19-21-23",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "max_tokens": 32768,
+      "reasoning_effort": "medium"
+    },
+    "gen_kwargs_cli": "max_tokens=32768,reasoning_effort=medium"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.95,
+      "correct_count": 95,
+      "total_count": 100,
+      "avg_latency_ms": 37311.71897649765,
+      "finish_reason_counts": {
+        "stop": 100
+      }
+    },
+    "by_difficulty": {
+      "easy": {
+        "total": 100,
+        "correct": 95,
+        "accuracy": 0.95
+      }
+    }
+  }
+}

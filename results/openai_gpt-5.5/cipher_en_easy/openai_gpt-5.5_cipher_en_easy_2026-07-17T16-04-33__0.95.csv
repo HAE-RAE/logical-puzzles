@@ -1,0 +1,2496 @@
+id,question,answer,thinking_content,resps,filtered_resps,exact_match,difficulty,finish_reason
+cipher_en_easy_0000,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 113.98 | SECTOR 63D6. ENCRYPTION AUTH CODE IS DETERMINED AS FOXTROT. TARGET TERMINAL IS STANDBY. SYSTEM REPORT ID 1344: STATUS STABLE.
+-------------------------------
+
+Ciphertext: 'SCTAHLOTYJOUZEPPHVUAMAE'
+
+Encryption guide:
+1. The encryption keyword is 'FOXTROT'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - IRRVL -> NFOOC
+
+Enter the decrypted plaintext (uppercase, no spaces).",NOWHQXVOKMVDLLKBKCDMTVQ,,"Using Vigenère decryption with keyword **FOXTROT** (subtracting repeated keyword shifts from the ciphertext):
+
+Ciphertext: SCTAHLOTYJOUZEPPHVUAMAE  
+Keyword:    FOXTROTFOXTROTFOXTROTFO  
+
+Decrypted plaintext: **NOWHQXVOKMVDLLKBKCDMTVQ**
+
+Answer: NOWHQXVOKMVDLLKBKCDMTVQ",NOWHQXVOKMVDLLKBKCDMTVQ,1,easy,stop
+cipher_en_easy_0001,"--- [RECOVERED MISSION LOG] ---
+TARGET TERMINAL IS OFFLINE. ENCRYPTION AUTH CODE IS DETERMINED AS FOXTROT. SYSTEM REPORT ID 1972: STATUS CRITICAL. COORDINATES SET TO 20.77 | SECTOR B4A4.
+-------------------------------
+
+Ciphertext: 'ASKZGMIBLWRGJLEMERBEHRJ'
+
+Encryption guide:
+1. The encryption keyword is 'FOXTROT'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - BZGJAL -> GNDCRZ
+
+Enter the decrypted plaintext (uppercase, no spaces).",VENGPYPWXZYPVSZYHYKQOMV,,"Using Vigenère decryption with keyword FOXTROT:
+
+- Keyword shifts: F=5, O=14, X=23, T=19, R=17, O=14, T=19
+- Decrypt by subtracting the repeated keyword shifts from the ciphertext.
+
+This gives:
+
+VENGPYPWXZYPVSZYHYKQOMV
+
+Answer: VENGPYPWXZYPVSZYHYKQOMV",VENGPYPWXZYPVSZYHYKQOMV,1,easy,stop
+cipher_en_easy_0002,"--- [RECOVERED MISSION LOG] ---
+TARGET GRID IS OFFLINE. SYSTEM REPORT ID 9166: STATUS CRITICAL. COORDINATES SET TO 22.56 | SECTOR 4FAA. ENCRYPTION VECTOR IS DETERMINED AS HOTEL.
+-------------------------------
+
+Ciphertext: 'VNVESFGQFNEXMTJIFCIUEPR'
+
+Encryption guide:
+1. The encryption keyword is 'HOTEL'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - FMCF -> MAVJ
+
+Enter the decrypted plaintext (uppercase, no spaces).",OZCAHYSXBCXJTPYBRJEJXBY,,"Using Vigenère with keyword HOTEL, decrypt by subtracting the repeated key shifts (H=7, O=14, T=19, E=4, L=11) from the ciphertext.
+
+Ciphertext: VNVESFGQFNEXMTJIFCIUEPR  
+Key repeat: HOTELHOTELHOTELHOTELHOT  
+
+Decrypted plaintext: OZCAHYSXBCXJTPYBRJEJXBY
+
+Answer: OZCAHYSXBCXJTPYBRJEJXBY",OZCAHYSXBCXJTPYBRJEJXBY,1,easy,stop
+cipher_en_easy_0003,"--- [RECOVERED MISSION LOG] ---
+TARGET GRID IS STANDBY. ENCRYPTION VECTOR IS DETERMINED AS INDIA. COORDINATES SET TO 10.74 | SECTOR 51B2. SYSTEM REPORT ID 4104: STATUS STABLE.
+-------------------------------
+
+Ciphertext: 'PRELUGJTAVQZFEXFSOKJK'
+
+Encryption guide:
+1. The encryption keyword is 'INDIA'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - VXNCJ -> DKQKJ
+
+Enter the decrypted plaintext (uppercase, no spaces).",HEBDUYWQSVIMCWXXFLCJC,,"Using the Vigenère keyword **INDIA** with shifts:
+
+- I = 8
+- N = 13
+- D = 3
+- I = 8
+- A = 0
+
+Repeating the keyword and subtracting these shifts from the ciphertext:
+
+Ciphertext: `PRELUGJTAVQZFEXFSOKJK`  
+Plaintext: `HEBDUYWQSVIMCWXXFLCJC`
+
+Answer: HEBDUYWQSVIMCWXXFLCJC",HEBDUYWQSVIMCWXXFLCJC,1,easy,stop
+cipher_en_easy_0004,"--- [RECOVERED MISSION LOG] ---
+TARGET DATABASE IS READY. ENCRYPTION AUTH CODE IS DETERMINED AS BRAVO. SYSTEM REPORT ID 9392: STATUS CRITICAL. COORDINATES SET TO 73.62 | SECTOR A187.
+-------------------------------
+
+Ciphertext: 'XCPLNCDAJONMTSUIDWBHLYA'
+
+Encryption guide:
+1. The encryption keyword is 'BRAVO'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - ETBG -> FKBB
+
+Enter the decrypted plaintext (uppercase, no spaces).",WLPQZBMAOAMVTXGHMWGTKHA,,"Decrypted plaintext using Vigenère with keyword BRAVO:
+
+Answer: WLPQZBMAOAMVTXGHMWGTKHA",WLPQZBMAOAMVTXGHMWGTKHA,1,easy,stop
+cipher_en_easy_0005,"--- [RECOVERED MISSION LOG] ---
+TARGET CORE IS STANDBY. ENCRYPTION PRIMARY KEY IS DETERMINED AS INDIA. SYSTEM REPORT ID 4317: STATUS LOCKED. COORDINATES SET TO 146.82 | SECTOR AD8F.
+-------------------------------
+
+Ciphertext: 'EFVEDMWDASKSATZMWEEYS'
+
+Encryption guide:
+1. The encryption keyword is 'INDIA'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - IAZPAB -> QNCXAJ
+
+Enter the decrypted plaintext (uppercase, no spaces).",WSSWDEJASSCFXLZEJBWYK,,"Using Vigenère decryption with keyword `INDIA` and A=0:
+
+- Key shifts: I=8, N=13, D=3, I=8, A=0
+- Subtract repeated key shifts from the ciphertext.
+
+Decrypted plaintext:
+`WSSWDEJASSCFXLZEJBWYK`
+
+Answer: WSSWDEJASSCFXLZEJBWYK",WSSWDEJASSCFXLZEJBWYK,1,easy,stop
+cipher_en_easy_0006,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION PRIMARY KEY IS DETERMINED AS ECHO. SYSTEM REPORT ID 3117: STATUS STABLE. COORDINATES SET TO 147.91 | SECTOR 5052. TARGET TERMINAL IS OFFLINE.
+-------------------------------
+
+Ciphertext: 'LBCYDGCQZVHBIMWJSXFHXPBF'
+
+Encryption guide:
+1. The encryption keyword is 'ECHO'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - ILBX -> MNIL
+
+Enter the decrypted plaintext (uppercase, no spaces).",HZVKZEVCVTANEKPVOVYTTNUR,,"Using Vigenère decryption with keyword **ECHO**:
+
+- Key shifts: E=4, C=2, H=7, O=14
+- Subtract repeated key shifts from the ciphertext letters.
+
+Ciphertext: `LBCYDGCQZVHBIMWJSXFHXPBF`  
+Decrypted plaintext: `HZVKZEVCVTANEKPVOVYTTNUR`
+
+Answer: HZVKZEVCVTANEKPVOVYTTNUR",HZVKZEVCVTANEKPVOVYTTNUR,1,easy,stop
+cipher_en_easy_0007,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION SEED IS DETERMINED AS ECHO. COORDINATES SET TO 38.1 | SECTOR EA24. SYSTEM REPORT ID 909: STATUS CRITICAL. TARGET CORE IS READY.
+-------------------------------
+
+Ciphertext: 'MGMAFBUHYILNQQEHUDWPL'
+
+Encryption guide:
+1. The encryption keyword is 'ECHO'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - ZTIYDM -> DVPMHO
+
+Enter the decrypted plaintext (uppercase, no spaces).",IEFMBZNTUGEZMOXTQBPBH,,"Using Vigenère decryption with keyword **ECHO**:
+
+- Key shifts: E=4, C=2, H=7, O=14
+- Subtract repeated key shifts from the ciphertext.
+
+Decrypted plaintext: **IEFMBZNTUGEZMOXTQBPBH**
+
+Answer: IEFMBZNTUGEZMOXTQBPBH",IEFMBZNTUGEZMOXTQBPBH,1,easy,stop
+cipher_en_easy_0008,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION AUTH CODE IS DETERMINED AS GOLF. SYSTEM REPORT ID 1330: STATUS LOCKED. COORDINATES SET TO 95.18 | SECTOR 16CC. TARGET TERMINAL IS OFFLINE.
+-------------------------------
+
+Ciphertext: 'JKTPJPGTTIZRMQDKSCIZFXYM'
+
+Encryption guide:
+1. The encryption keyword is 'GOLF'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - DQIA -> JETF
+
+Enter the decrypted plaintext (uppercase, no spaces).",DWIKDBVONUOMGCSFMOXUZJNH,,"Using Vigenère with keyword **GOLF**, repeat the key and subtract its shifts from the ciphertext:
+
+- G = 6, O = 14, L = 11, F = 5
+- Ciphertext: JKTPJPGTTIZRMQDKSCIZFXYM
+- Decrypted plaintext: DWIKDBVONUOMGCSFMOXUZJNH
+
+Answer: DWIKDBVONUOMGCSFMOXUZJNH",DWIKDBVONUOMGCSFMOXUZJNH,1,easy,stop
+cipher_en_easy_0009,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION AUTH CODE IS DETERMINED AS ALPHA. TARGET CORE IS OFFLINE. COORDINATES SET TO 80.90 | SECTOR 507B. SYSTEM REPORT ID 3737: STATUS CRITICAL.
+-------------------------------
+
+Ciphertext: 'ALYJSNTUFLBPALEICSGNPJT'
+
+Encryption guide:
+1. The encryption keyword is 'ALPHA'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - VNAY -> VYPF
+
+Enter the decrypted plaintext (uppercase, no spaces).",AAJCSNIFYLBELEEIRDZNPYE,,"Using Vigenère decryption with keyword **ALPHA** repeated:
+
+- Key shifts: A=0, L=11, P=15, H=7, A=0
+- Subtract the repeated key shifts from the ciphertext letters.
+
+This gives the plaintext:
+
+AAJCSNIFYLBELEEIRDZNPYE
+
+Answer: AAJCSNIFYLBELEEIRDZNPYE",AAJCSNIFYLBELEEIRDZNPYE,1,easy,stop
+cipher_en_easy_0010,"--- [RECOVERED MISSION LOG] ---
+TARGET SATELLITE IS BREACHED. COORDINATES SET TO 43.25 | SECTOR BE56. ENCRYPTION SEED IS DETERMINED AS GOLF. SYSTEM REPORT ID 1367: STATUS STABLE.
+-------------------------------
+
+Ciphertext: 'OEUZBNKFTMXKZCSEXWEAR'
+
+Encryption guide:
+1. The encryption keyword is 'GOLF'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - BDSB -> HRDG
+
+Enter the decrypted plaintext (uppercase, no spaces).",IQJUVZZANYMFTOHZRITVL,,"Using Vigenère decryption with keyword **GOLF**, repeat the keyword across the ciphertext and subtract each keyword letter shift from the ciphertext letter.
+
+Keyword shifts: G=6, O=14, L=11, F=5.
+
+Ciphertext: `OEUZBNKFTMXKZCSEXWEAR`  
+Repeated key: `GOLFGOLFGOLFGOLFGOLFG`
+
+Decrypted plaintext: `IQJUVZZANYMFTOHZRITVL`
+
+Answer: IQJUVZZANYMFTOHZRITVL",IQJUVZZANYMFTOHZRITVL,1,easy,stop
+cipher_en_easy_0011,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION SEED IS DETERMINED AS GOLF. COORDINATES SET TO 76.37 | SECTOR 1D19. TARGET CORE IS READY. SYSTEM REPORT ID 4904: STATUS LOCKED.
+-------------------------------
+
+Ciphertext: 'SIPLEDFLIYQXCHMRAXBS'
+
+Encryption guide:
+1. The encryption keyword is 'GOLF'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - NCQMCQ -> TQBRIE
+
+Enter the decrypted plaintext (uppercase, no spaces).",MUEGYPUGCKFSWTBMUJQN,,Answer: MUEGYPUGCKFSWTBMUJQN,MUEGYPUGCKFSWTBMUJQN,1,easy,stop
+cipher_en_easy_0012,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION PRIMARY KEY IS DETERMINED AS HOTEL. TARGET DATABASE IS READY. SYSTEM REPORT ID 2775: STATUS STABLE. COORDINATES SET TO 95.41 | SECTOR D45F.
+-------------------------------
+
+Ciphertext: 'ZNNNRHQOGLYGYJCUVLLEZ'
+
+Encryption guide:
+1. The encryption keyword is 'HOTEL'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - KKJSYQ -> RYCWJX
+
+Enter the decrypted plaintext (uppercase, no spaces).",SZUJGACVCARSFFRNHSHTS,,"Using the Vigenère decryption rule, subtract the repeated keyword `HOTEL` from the ciphertext letters:
+
+Ciphertext: `ZNNNRHQOGLYGYJCUVLLEZ`  
+Keyword:    `HOTELHOTELHOTELHOTELH`
+
+This gives:
+
+`SZUJGACVCARSFFRNHSHTS`
+
+Answer: SZUJGACVCARSFFRNHSHTS",SZUJGACVCARSFFRNHSHTS,1,easy,stop
+cipher_en_easy_0013,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 56.50 | SECTOR C686. SYSTEM REPORT ID 6744: STATUS LOCKED. TARGET DATABASE IS STANDBY. ENCRYPTION VECTOR IS DETERMINED AS HOTEL.
+-------------------------------
+
+Ciphertext: 'SCENZCIDVIOVEUIDSAOJ'
+
+Encryption guide:
+1. The encryption keyword is 'HOTEL'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - OCCME -> VQVQP
+
+Enter the decrypted plaintext (uppercase, no spaces).",LOLJOVUKRXHHLQXWEHKY,,"Using Vigenère decryption with keyword **HOTEL**:
+
+- Repeat key: HOTELHOTELHOTELHOTEL
+- Subtract key letters from ciphertext letters modulo 26.
+
+Decrypted plaintext:
+
+**LOLJOVUKRXHHLQXWEHKY**
+
+Answer: LOLJOVUKRXHHLQXWEHKY",LOLJOVUKRXHHLQXWEHKY,1,easy,stop
+cipher_en_easy_0014,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 4246: STATUS CRITICAL. COORDINATES SET TO 37.27 | SECTOR FE88. ENCRYPTION VECTOR IS DETERMINED AS ECHO. TARGET SATELLITE IS READY.
+-------------------------------
+
+Ciphertext: 'QVAMWGEKJOFPLJEWUCAEFLXK'
+
+Encryption guide:
+1. The encryption keyword is 'ECHO'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - MFMK -> QHTY
+
+Enter the decrypted plaintext (uppercase, no spaces).",MTTYSEXWFMYBHHXIQATQBJQW,,"Using the Vigenère cipher with keyword **ECHO**:
+
+- Keyword shifts: E=4, C=2, H=7, O=14
+- Decrypt by subtracting repeated keyword shifts from the ciphertext.
+
+Ciphertext: `QVAMWGEKJOFPLJEWUCAEFLXK`  
+Plaintext: `MTTYSEXWFMYBHHXIQATQBJQW`
+
+Answer: MTTYSEXWFMYBHHXIQATQBJQW",MTTYSEXWFMYBHHXIQATQBJQW,1,easy,stop
+cipher_en_easy_0015,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION VECTOR IS DETERMINED AS GOLF. COORDINATES SET TO 174.42 | SECTOR C823. SYSTEM REPORT ID 4262: STATUS CRITICAL. TARGET SATELLITE IS BREACHED.
+-------------------------------
+
+Ciphertext: 'UXLELZXGLTEQCHXBMTQYMLBE'
+
+Encryption guide:
+1. The encryption keyword is 'GOLF'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - ZMXU -> FAIZ
+
+Enter the decrypted plaintext (uppercase, no spaces).",OJAZFLMBFFTLWTMWGFFTGXQZ,,"Using the Vigenère cipher with keyword **GOLF**:
+
+- G = 6, O = 14, L = 11, F = 5
+- Decrypt by subtracting the repeated key shifts from the ciphertext.
+
+Ciphertext: `UXLELZXGLTEQCHXBMTQYMLBE`  
+Key:        `GOLFGOLFGOLFGOLFGOLFGOLF`
+
+Decrypted plaintext: `OJAZFLMBFFTLWTMWGFFTGXQZ`
+
+Answer: OJAZFLMBFFTLWTMWGFFTGXQZ",OJAZFLMBFFTLWTMWGFFTGXQZ,1,easy,stop
+cipher_en_easy_0016,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION VECTOR IS DETERMINED AS ALPHA. SYSTEM REPORT ID 1072: STATUS OVERLOADED. COORDINATES SET TO 104.69 | SECTOR 744B. TARGET CORE IS BREACHED.
+-------------------------------
+
+Ciphertext: 'KQHOXNIRIWNOWACDRWFRP'
+
+Encryption guide:
+1. The encryption keyword is 'ALPHA'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - NDWBXA -> NOLIXA
+
+Enter the decrypted plaintext (uppercase, no spaces).",KFSHXNXCBWNDHTCDGHYRP,,"Using the Vigenère cipher with keyword **ALPHA**, repeat the key across the ciphertext:
+
+Ciphertext: `KQHOXNIRIWNOWACDRWFRP`  
+Key:        `ALPHAALPHAALPHAALPHAA`
+
+Decrypt by subtracting key values from ciphertext values with A=0:
+
+Plaintext: `KFSHXNXCBWNDHTCDGHYRP`
+
+Answer: KFSHXNXCBWNDHTCDGHYRP",KFSHXNXCBWNDHTCDGHYRP,1,easy,stop
+cipher_en_easy_0017,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 6214: STATUS LOCKED. TARGET CORE IS OFFLINE. COORDINATES SET TO 43.46 | SECTOR C10B. ENCRYPTION PRIMARY KEY IS DETERMINED AS FOXTROT.
+-------------------------------
+
+Ciphertext: 'DZVPEVVDWABBYNVXHSQIVC'
+
+Encryption guide:
+1. The encryption keyword is 'FOXTROT'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - WGUL -> BURE
+
+Enter the decrypted plaintext (uppercase, no spaces).",YLYWNHCYIDIKKUQJKZZUCX,,"Using Vigenère decryption with keyword **FOXTROT**, subtract each repeated key letter from the ciphertext letters.
+
+This gives:
+
+**YLYWNHCYIDIKKUQJKZZUCX**
+
+Answer: YLYWNHCYIDIKKUQJKZZUCX",YLYWNHCYIDIKKUQJKZZUCX,1,easy,stop
+cipher_en_easy_0018,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 1829: STATUS STABLE. TARGET DATABASE IS STANDBY. COORDINATES SET TO 132.42 | SECTOR 94B9. ENCRYPTION SEED IS DETERMINED AS ALPHA.
+-------------------------------
+
+Ciphertext: 'CCBFWRZRXUQNPDVFIMWNVFI'
+
+Encryption guide:
+1. The encryption keyword is 'ALPHA'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - VRFDD -> VCUKD
+
+Enter the decrypted plaintext (uppercase, no spaces).",CRMYWROCQUQCAWVFXXPNVUT,,"Using Vigenère decryption with keyword **ALPHA**:
+
+- Key shifts: A=0, L=11, P=15, H=7, A=0, repeating
+- Subtract these shifts from the ciphertext letters.
+
+Ciphertext: `CCBFWRZRXUQNPDVFIMWNVFI`  
+Decrypted plaintext: `CRMYWROCQUQCAWVFXXPNVUT`
+
+Answer: CRMYWROCQUQCAWVFXXPNVUT",CRMYWROCQUQCAWVFXXPNVUT,1,easy,stop
+cipher_en_easy_0019,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 1440: STATUS STABLE. ENCRYPTION SEED IS DETERMINED AS INDIA. TARGET GRID IS BREACHED. COORDINATES SET TO 44.47 | SECTOR 537B.
+-------------------------------
+
+Ciphertext: 'CLRCVTQKWQFZWURYNPJURV'
+
+Encryption guide:
+1. The encryption keyword is 'INDIA'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - FOAPE -> NBDXE
+
+Enter the decrypted plaintext (uppercase, no spaces).",UYOUVLDHOQXMTMRQAMBUJI,,"Using the specified Vigenère keyword **INDIA** with shifts:
+
+- I = 8
+- N = 13
+- D = 3
+- I = 8
+- A = 0
+
+Decrypt by subtracting the repeated key from the ciphertext:
+
+Ciphertext: `CLRCVTQKWQFZWURYNPJURV`  
+Plaintext: `UYOUVLDHOQXMTMRQAMBUJI`
+
+Answer: UYOUVLDHOQXMTMRQAMBUJI",UYOUVLDHOQXMTMRQAMBUJI,1,easy,stop
+cipher_en_easy_0020,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 3.20 | SECTOR FCEB. TARGET SATELLITE IS OFFLINE. ENCRYPTION VECTOR IS DETERMINED AS ECHO. SYSTEM REPORT ID 3305: STATUS CRITICAL.
+-------------------------------
+
+Ciphertext: 'AICNRKXMSYXQKKYVRULLF'
+
+Encryption guide:
+1. The encryption keyword is 'ECHO'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - ESKSLF -> IURGPH
+
+Enter the decrypted plaintext (uppercase, no spaces).",WGVZNIQYOWQCGIRHNSEXB,,"Using the Vigenère keyword **ECHO** (E=4, C=2, H=7, O=14), subtract each repeated key value from the ciphertext letters.
+
+Decrypted plaintext: **WGVZNIQYOWQCGIRHNSEXB**
+
+Answer: WGVZNIQYOWQCGIRHNSEXB",WGVZNIQYOWQCGIRHNSEXB,1,easy,stop
+cipher_en_easy_0021,"--- [RECOVERED MISSION LOG] ---
+TARGET TERMINAL IS READY. COORDINATES SET TO 17.10 | SECTOR A606. ENCRYPTION AUTH CODE IS DETERMINED AS ECHO. SYSTEM REPORT ID 3432: STATUS STABLE.
+-------------------------------
+
+Ciphertext: 'BNFWFCJRCDYVMMKAONLQ'
+
+Encryption guide:
+1. The encryption keyword is 'ECHO'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - KTUDBM -> OVBRFO
+
+Enter the decrypted plaintext (uppercase, no spaces).",XLYIBACDYBRHIKDMKLEC,,"Using Vigenère decryption with keyword **ECHO**:
+
+- Keyword shifts: E=4, C=2, H=7, O=14
+- Subtract repeated keyword from ciphertext letters.
+
+Ciphertext: `BNFWFCJRCDYVMMKAONLQ`  
+Key:        `ECHOECHOECHOECHOECHO`  
+Plaintext:  `XLYIBACDYBRHIKDMKLEC`
+
+Answer: XLYIBACDYBRHIKDMKLEC",XLYIBACDYBRHIKDMKLEC,1,easy,stop
+cipher_en_easy_0022,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 8367: STATUS STABLE. TARGET DATABASE IS OFFLINE. COORDINATES SET TO 116.51 | SECTOR 8E56. ENCRYPTION SEED IS DETERMINED AS INDIA.
+-------------------------------
+
+Ciphertext: 'LVPOWFHMWGTRULTWHGGEZD'
+
+Encryption guide:
+1. The encryption keyword is 'INDIA'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - ZKGIA -> HXJQA
+
+Enter the decrypted plaintext (uppercase, no spaces).",DIMGWXUJOGLERDTOUDYERQ,,"Using Vigenère decryption with keyword **INDIA**:
+
+- Keyword shifts: I=8, N=13, D=3, I=8, A=0
+- Repeat the keyword across the ciphertext.
+- Subtract each keyword shift from the ciphertext letter.
+
+Decrypted plaintext:
+
+**DIMGWXUJOGLERDTOUDYERQ**
+
+Answer: DIMGWXUJOGLERDTOUDYERQ",DIMGWXUJOGLERDTOUDYERQ,1,easy,stop
+cipher_en_easy_0023,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION PRIMARY KEY IS DETERMINED AS HOTEL. TARGET TERMINAL IS STANDBY. SYSTEM REPORT ID 1410: STATUS OVERLOADED. COORDINATES SET TO 108.63 | SECTOR 9575.
+-------------------------------
+
+Ciphertext: 'VOWWNSHGHKZKHTBGAQKKADY'
+
+Encryption guide:
+1. The encryption keyword is 'HOTEL'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - ZGRH -> GUKL
+
+Enter the decrypted plaintext (uppercase, no spaces).",OADSCLTNDZSWOPQZMXGZTPF,,"Using Vigenère decryption with keyword HOTEL, subtract the repeated key letters from the ciphertext.
+
+Plaintext: OADSCLTNDZSWOPQZMXGZTPF
+
+Answer: OADSCLTNDZSWOPQZMXGZTPF",OADSCLTNDZSWOPQZMXGZTPF,1,easy,stop
+cipher_en_easy_0024,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 9207: STATUS LOCKED. COORDINATES SET TO 134.92 | SECTOR C489. ENCRYPTION SEED IS DETERMINED AS FOXTROT. TARGET DATABASE IS STANDBY.
+-------------------------------
+
+Ciphertext: 'BPJCUIISDQGVKDBZKKHSGB'
+
+Encryption guide:
+1. The encryption keyword is 'FOXTROT'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - ZISZNZ -> EWPSEN
+
+Enter the decrypted plaintext (uppercase, no spaces).",WBMJDUPNPTNEWKWLNRQENW,,"Using Vigenère decryption with keyword **FOXTROT**, subtract each repeated keyword letter from the ciphertext letter using A=0.
+
+Ciphertext: `BPJCUIISDQGVKDBZKKHSGB`  
+Keyword: `FOXTROTFOXTROTFOXTROTF`
+
+Decrypted plaintext: `WBMJDUPNPTNEWKWLNRQENW`
+
+Answer: WBMJDUPNPTNEWKWLNRQENW",WBMJDUPNPTNEWKWLNRQENW,1,easy,stop
+cipher_en_easy_0025,"--- [RECOVERED MISSION LOG] ---
+TARGET SATELLITE IS BREACHED. SYSTEM REPORT ID 7369: STATUS LOCKED. ENCRYPTION VECTOR IS DETERMINED AS ALPHA. COORDINATES SET TO 141.1 | SECTOR 5E4F.
+-------------------------------
+
+Ciphertext: 'JEEYOGHNQHDZMIRCULUQP'
+
+Encryption guide:
+1. The encryption keyword is 'ALPHA'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - MKTOE -> MVIVE
+
+Enter the decrypted plaintext (uppercase, no spaces).",JTPROGWYJHDOXBRCJWNQP,,"Using Vigenère decryption with keyword **ALPHA**:
+
+- Keyword shifts: A=0, L=11, P=15, H=7, A=0
+- Repeat keyword over ciphertext and subtract shifts modulo 26.
+
+Ciphertext: `JEEYOGHNQHDZMIRCULUQP`  
+Decrypted plaintext: `JTPROGWYJHDOXBRCJWNQP`
+
+Answer: JTPROGWYJHDOXBRCJWNQP",JTPROGWYJHDOXBRCJWNQP,1,easy,stop
+cipher_en_easy_0026,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 6052: STATUS CRITICAL. ENCRYPTION PRIMARY KEY IS DETERMINED AS GOLF. TARGET TERMINAL IS STANDBY. COORDINATES SET TO 127.41 | SECTOR 8D54.
+-------------------------------
+
+Ciphertext: 'CAVCKKQIQUYOCDFOVQCT'
+
+Encryption guide:
+1. The encryption keyword is 'GOLF'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - KXMJZ -> QLXOF
+
+Enter the decrypted plaintext (uppercase, no spaces).",WMKXEWFDKGNJWPUJPCRO,,"Using Vigenère decryption with keyword **GOLF**:
+
+- Key shifts: G=6, O=14, L=11, F=5
+- Subtract the repeated key from the ciphertext.
+
+Decrypted plaintext:
+
+**WMKXEWFDKGNJWPUJPCRO**
+
+Answer: WMKXEWFDKGNJWPUJPCRO",WMKXEWFDKGNJWPUJPCRO,1,easy,stop
+cipher_en_easy_0027,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 4183: STATUS LOCKED. COORDINATES SET TO 65.47 | SECTOR 2074. ENCRYPTION SEED IS DETERMINED AS DELTA. TARGET DATABASE IS STANDBY.
+-------------------------------
+
+Ciphertext: 'UIDGGEQRYYPCVLPHWUCK'
+
+Encryption guide:
+1. The encryption keyword is 'DELTA'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - XBGZ -> AFRS
+
+Enter the decrypted plaintext (uppercase, no spaces).",RESNGBMGFYMYKSPESJJK,,"Using Vigenère decryption with keyword **DELTA**, subtract the repeated key letters from the ciphertext letters (A=0).
+
+Ciphertext: `UIDGGEQRYYPCVLPHWUCK`  
+Key:        `DELTADELTADELTADELTA`
+
+Decryption gives:
+
+`RESNGBMGFYMYKSPESJJK`
+
+Answer: RESNGBMGFYMYKSPESJJK",RESNGBMGFYMYKSPESJJK,1,easy,stop
+cipher_en_easy_0028,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 37.40 | SECTOR F0FA. SYSTEM REPORT ID 3817: STATUS SYNCING. ENCRYPTION VECTOR IS DETERMINED AS BRAVO. TARGET SATELLITE IS READY.
+-------------------------------
+
+Ciphertext: 'QDOOOVAEGFUFJWNQJSPWBQ'
+
+Encryption guide:
+1. The encryption keyword is 'BRAVO'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - NQKZ -> OHKU
+
+Enter the decrypted plaintext (uppercase, no spaces).",PMOTAUJELRTOJBZPSSUIAZ,,"Using Vigenère decryption with keyword **BRAVO**, subtracting the repeated key shifts from the ciphertext gives:
+
+**PMOTAUJELRTOJBZPSSUIAZ**
+
+Answer: PMOTAUJELRTOJBZPSSUIAZ",PMOTAUJELRTOJBZPSSUIAZ,1,easy,stop
+cipher_en_easy_0029,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 5528: STATUS CRITICAL. ENCRYPTION PRIMARY KEY IS DETERMINED AS BRAVO. COORDINATES SET TO 25.27 | SECTOR 8AFE. TARGET SATELLITE IS OFFLINE.
+-------------------------------
+
+Ciphertext: 'RNVGVPARVIYSCWCHRWMELSV'
+
+Encryption guide:
+1. The encryption keyword is 'BRAVO'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - QITF -> RZTA
+
+Enter the decrypted plaintext (uppercase, no spaces).",QWVLHOJRAUXBCBOGAWRQKBV,,"Using Vigenère decryption with keyword **BRAVO**, repeat the key under the ciphertext and subtract the key letters from the ciphertext letters using A=0.
+
+Ciphertext: `RNVGVPARVIYSCWCHRWMELSV`  
+Key repeat: `BRAVOBRAVOBRAVOBRAVOBRA`
+
+Decrypted plaintext:
+
+`QWVLHOJRAUXBCBOGAWRQKBV`
+
+Answer: QWVLHOJRAUXBCBOGAWRQKBV",QWVLHOJRAUXBCBOGAWRQKBV,1,easy,stop
+cipher_en_easy_0030,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 40.7 | SECTOR 9AEF. SYSTEM REPORT ID 308: STATUS SYNCING. ENCRYPTION AUTH CODE IS DETERMINED AS FOXTROT. TARGET GRID IS BREACHED.
+-------------------------------
+
+Ciphertext: 'EKWOHQOJMDBZGUDOKMNFTOS'
+
+Encryption guide:
+1. The encryption keyword is 'FOXTROT'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - DBYF -> IPVY
+
+Enter the decrypted plaintext (uppercase, no spaces).",ZWZVQCVEYGIISBYANTWRAJE,,"Using the Vigenère keyword **FOXTROT**, subtract each repeated keyword letter from the ciphertext letter with A=0.
+
+Ciphertext: `EKWOHQOJMDBZGUDOKMNFTOS`  
+Keyword repeated: `FOXTROTFOXTROTFOXTROTFO`
+
+Decryption gives:
+
+`ZWZVQCVEYGIISBYANTWRAJE`
+
+Answer: ZWZVQCVEYGIISBYANTWRAJE",ZWZVQCVEYGIISBYANTWRAJE,1,easy,stop
+cipher_en_easy_0031,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 6236: STATUS OVERLOADED. ENCRYPTION SEED IS DETERMINED AS DELTA. COORDINATES SET TO 74.73 | SECTOR 6BE1. TARGET TERMINAL IS STANDBY.
+-------------------------------
+
+Ciphertext: 'RWDOSUZQIHXZCHSNSAISNKLC'
+
+Encryption guide:
+1. The encryption keyword is 'DELTA'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - BTHQNM -> EXSJNP
+
+Enter the decrypted plaintext (uppercase, no spaces).",OSSVSRVFPHUVROSKOPPSKGAJ,,"Using Vigenère decryption with keyword **DELTA**:
+
+- Keyword shifts: D=3, E=4, L=11, T=19, A=0
+- Decrypt by subtracting the repeated keyword shifts from the ciphertext.
+
+Ciphertext: `RWDOSUZQIHXZCHSNSAISNKLC`  
+Repeated key: `DELTADELTADELTADELTADELT`
+
+Decrypted plaintext: `OSSVSRVFPHUVROSKOPPSKGAJ`
+
+Answer: OSSVSRVFPHUVROSKOPPSKGAJ",OSSVSRVFPHUVROSKOPPSKGAJ,1,easy,stop
+cipher_en_easy_0032,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 111.81 | SECTOR 9153. SYSTEM REPORT ID 5507: STATUS SYNCING. TARGET DATABASE IS READY. ENCRYPTION VECTOR IS DETERMINED AS DELTA.
+-------------------------------
+
+Ciphertext: 'TYPGHBJMZVLPDWECMXXFTLVU'
+
+Encryption guide:
+1. The encryption keyword is 'DELTA'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - PDNMC -> SHYFC
+
+Enter the decrypted plaintext (uppercase, no spaces).",QUENHYFBGVILSDEZIMEFQHKB,,"To decrypt, reverse the Vigenère step by subtracting the repeated keyword `DELTA` from the ciphertext.
+
+Ciphertext: `TYPGHBJMZVLPDWECMXXFTLVU`  
+Keyword repeated: `DELTADELTADELTADELTADELT`
+
+This gives plaintext:
+
+`QUENHYFBGVILSDEZIMEFQHKB`
+
+Answer: QUENHYFBGVILSDEZIMEFQHKB",QUENHYFBGVILSDEZIMEFQHKB,1,easy,stop
+cipher_en_easy_0033,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION AUTH CODE IS DETERMINED AS HOTEL. COORDINATES SET TO 83.24 | SECTOR 91CB. SYSTEM REPORT ID 3559: STATUS SYNCING. TARGET SATELLITE IS OFFLINE.
+-------------------------------
+
+Ciphertext: 'SIWRFHWGPYEUKCPMHJWSNNBH'
+
+Encryption guide:
+1. The encryption keyword is 'HOTEL'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - NGJLQ -> UUCPB
+
+Enter the decrypted plaintext (uppercase, no spaces).",LUDNUAINLNXGRYEFTQSHGZID,,"Using Vigenère decryption with keyword **HOTEL**, subtract each repeated keyword letter from the ciphertext letter (A=0).
+
+Ciphertext: `SIWRFHWGPYEUKCPMHJWSNNBH`  
+Key:        `HOTELHOTELHOTELHOTELHOTE`  
+Plaintext:  `LUDNUAINLNXGRYEFTQSHGZID`
+
+Answer: LUDNUAINLNXGRYEFTQSHGZID",LUDNUAINLNXGRYEFTQSHGZID,1,easy,stop
+cipher_en_easy_0034,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 6163: STATUS CRITICAL. ENCRYPTION VECTOR IS DETERMINED AS BRAVO. COORDINATES SET TO 21.31 | SECTOR 5E3B. TARGET DATABASE IS STANDBY.
+-------------------------------
+
+Ciphertext: 'CUBQPTNJPOIYYWUXNAMNSV'
+
+Encryption guide:
+1. The encryption keyword is 'BRAVO'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - VUKA -> WLKV
+
+Enter the decrypted plaintext (uppercase, no spaces).",BDBVBSWJUAHHYBGWWARZRE,,"Using Vigenère decryption with keyword **BRAVO**, subtract the repeated key from the ciphertext:
+
+Ciphertext: `CUBQPTNJPOIYYWUXNAMNSV`  
+Key repeat: `BRAVOBRAVOBRAVOBRAVOBR`
+
+Decrypted plaintext: `BDBVBSWJUAHHYBGWWARZRE`
+
+Answer: BDBVBSWJUAHHYBGWWARZRE",BDBVBSWJUAHHYBGWWARZRE,1,easy,stop
+cipher_en_easy_0035,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 4430: STATUS LOCKED. ENCRYPTION SEED IS DETERMINED AS ALPHA. COORDINATES SET TO 40.18 | SECTOR 8E52. TARGET CORE IS OFFLINE.
+-------------------------------
+
+Ciphertext: 'YPQUAVGNJBUSUQZWQTYFOX'
+
+Encryption guide:
+1. The encryption keyword is 'ALPHA'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - IMHV -> IXWC
+
+Enter the decrypted plaintext (uppercase, no spaces).",YEBNAVVYCBUHFJZWFERFOM,,"Using Vigenère decryption with keyword `ALPHA`:
+
+- Keyword shifts: A=0, L=11, P=15, H=7, A=0
+- Repeat keyword across the ciphertext.
+- Subtract each keyword shift from the ciphertext letter.
+
+Ciphertext: `YPQUAVGNJBUSUQZWQTYFOX`  
+Decrypted plaintext: `YEBNAVVYCBUHFJZWFERFOM`
+
+Answer: YEBNAVVYCBUHFJZWFERFOM",YEBNAVVYCBUHFJZWFERFOM,1,easy,stop
+cipher_en_easy_0036,"--- [RECOVERED MISSION LOG] ---
+TARGET SATELLITE IS OFFLINE. COORDINATES SET TO 65.36 | SECTOR 21FF. SYSTEM REPORT ID 5104: STATUS OVERLOADED. ENCRYPTION SEED IS DETERMINED AS HOTEL.
+-------------------------------
+
+Ciphertext: 'DGQFOBZEMPJKFPECTNCY'
+
+Encryption guide:
+1. The encryption keyword is 'HOTEL'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - OZBZUU -> VNUDFB
+
+Enter the decrypted plaintext (uppercase, no spaces).",WSXBDULLIECWMLTVFUYN,,"Using Vigenère decryption with keyword **HOTEL**:
+
+- Key shifts: H=7, O=14, T=19, E=4, L=11
+- Repeating key: HOTELHOTELHOTELHOTEL
+- Subtract key letters from ciphertext letters modulo 26.
+
+This decrypts:
+
+DGQFOBZEMPJKFPECTNCY → WSXBDULLIECWMLTVFUYN
+
+Answer: WSXBDULLIECWMLTVFUYN",WSXBDULLIECWMLTVFUYN,1,easy,stop
+cipher_en_easy_0037,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION SEED IS DETERMINED AS DELTA. TARGET TERMINAL IS OFFLINE. COORDINATES SET TO 103.8 | SECTOR 1A4D. SYSTEM REPORT ID 5943: STATUS CRITICAL.
+-------------------------------
+
+Ciphertext: 'RSERBWQEUFCQAMDZFGUTMERJ'
+
+Encryption guide:
+1. The encryption keyword is 'DELTA'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - VNMKIT -> YRXDIW
+
+Enter the decrypted plaintext (uppercase, no spaces).",OOTYBTMTBFZMPTDWBVBTJAGQ,,"Using Vigenère decryption with keyword **DELTA**:
+
+- DELTA shifts = D=3, E=4, L=11, T=19, A=0
+- Decrypt by subtracting these shifts repeatedly from the ciphertext.
+
+Ciphertext: `RSERBWQEUFCQAMDZFGUTMERJ`  
+Plaintext: `OOTYBTMTBFZMPTDWBVBTJAGQ`
+
+Answer: OOTYBTMTBFZMPTDWBVBTJAGQ",OOTYBTMTBFZMPTDWBVBTJAGQ,1,easy,stop
+cipher_en_easy_0038,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION PRIMARY KEY IS DETERMINED AS BRAVO. SYSTEM REPORT ID 6354: STATUS OVERLOADED. COORDINATES SET TO 67.32 | SECTOR EEFE. TARGET TERMINAL IS READY.
+-------------------------------
+
+Ciphertext: 'MVGUSIWWUHPMVULCMMBLTN'
+
+Encryption guide:
+1. The encryption keyword is 'BRAVO'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - QYOK -> RPOF
+
+Enter the decrypted plaintext (uppercase, no spaces).",LEGZEHFWZTOVVZXBVMGXSW,,"Using Vigenère decryption with keyword **BRAVO**:
+
+- Key shifts: B=1, R=17, A=0, V=21, O=14
+- Repeated key: `BRAVOBRAVOBRAVOBRAVOBR`
+- Subtract the key shifts from the ciphertext letters.
+
+Decrypted plaintext:
+
+`LEGZEHFWZTOVVZXBVMGXSW`
+
+Answer: LEGZEHFWZTOVVZXBVMGXSW",LEGZEHFWZTOVVZXBVMGXSW,1,easy,stop
+cipher_en_easy_0039,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 75.53 | SECTOR 214C. SYSTEM REPORT ID 4814: STATUS STABLE. TARGET GRID IS BREACHED. ENCRYPTION PRIMARY KEY IS DETERMINED AS HOTEL.
+-------------------------------
+
+Ciphertext: 'SBPNKLRZHJFQMRWEQINIK'
+
+Encryption guide:
+1. The encryption keyword is 'HOTEL'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - BSBDR -> IGUHC
+
+Enter the decrypted plaintext (uppercase, no spaces).",LNWJZEDGDYYCTNLXCPJXD,,"Using Vigenère decryption with keyword `HOTEL`, subtract the repeated key from the ciphertext:
+
+Ciphertext: `SBPNKLRZHJFQMRWEQINIK`  
+Key:        `HOTELHOTELHOTELHOTELH`  
+
+Plaintext: `LNWJZEDGDYYCTNLXCPJXD`
+
+Answer: LNWJZEDGDYYCTNLXCPJXD",LNWJZEDGDYYCTNLXCPJXD,1,easy,stop
+cipher_en_easy_0040,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION PRIMARY KEY IS DETERMINED AS INDIA. TARGET SATELLITE IS BREACHED. COORDINATES SET TO 72.20 | SECTOR B177. SYSTEM REPORT ID 6036: STATUS STABLE.
+-------------------------------
+
+Ciphertext: 'SHAZRCLWBLVZDJLMHHTZ'
+
+Encryption guide:
+1. The encryption keyword is 'INDIA'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - BXQVOV -> JKTDOD
+
+Enter the decrypted plaintext (uppercase, no spaces).",KUXRRUYTTLNMABLEUELZ,,"Using the Vigenère keyword **INDIA** (I=8, N=13, D=3, I=8, A=0), decrypt by subtracting the repeated key from the ciphertext:
+
+Ciphertext: `SHAZRCLWBLVZDJLMHHTZ`  
+Plaintext: `KUXRRUYTTLNMABLEUELZ`
+
+Answer: KUXRRUYTTLNMABLEUELZ",KUXRRUYTTLNMABLEUELZ,1,easy,stop
+cipher_en_easy_0041,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION VECTOR IS DETERMINED AS HOTEL. SYSTEM REPORT ID 3917: STATUS CRITICAL. COORDINATES SET TO 59.15 | SECTOR 4F64. TARGET CORE IS STANDBY.
+-------------------------------
+
+Ciphertext: 'YYXPGOBBWCQLMVWXRSIAWBGR'
+
+Encryption guide:
+1. The encryption keyword is 'HOTEL'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - PZCQXX -> WNVUIE
+
+Enter the decrypted plaintext (uppercase, no spaces).",RKELVHNISRJXTRLQDZEPPNNN,,"Using Vigenère decryption with keyword `HOTEL`, subtract the repeated key shifts (`H=7, O=14, T=19, E=4, L=11`) from the ciphertext letters.
+
+Ciphertext: `YYXPGOBBWCQLMVWXRSIAWBGR`  
+Repeated key: `HOTELHOTELHOTELHOTELHOTE`
+
+Decrypted plaintext:
+
+`RKELVHNISRJXTRLQDZEPPNNN`
+
+Answer: RKELVHNISRJXTRLQDZEPPNNN",RKELVHNISRJXTRLQDZEPPNNN,1,easy,stop
+cipher_en_easy_0042,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION SEED IS DETERMINED AS ECHO. COORDINATES SET TO 140.30 | SECTOR 521C. SYSTEM REPORT ID 3418: STATUS CRITICAL. TARGET SATELLITE IS STANDBY.
+-------------------------------
+
+Ciphertext: 'FSDGYYMTEXZKRIGQMYXFMKKM'
+
+Encryption guide:
+1. The encryption keyword is 'ECHO'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - VNWIK -> ZPDWO
+
+Enter the decrypted plaintext (uppercase, no spaces).",BQWSUWFFAVSWNGZCIWQRIIDY,,"Using the Vigenère keyword **ECHO** with shifts **E=4, C=2, H=7, O=14**, I subtract the repeated keyword from the ciphertext:
+
+Ciphertext: `FSDGYYMTEXZKRIGQMYXFMKKM`  
+Key:        `ECHOECHOECHOECHOECHOECHO`
+
+Decrypted plaintext: `BQWSUWFFAVSWNGZCIWQRIIDY`
+
+Answer: BQWSUWFFAVSWNGZCIWQRIIDY",BQWSUWFFAVSWNGZCIWQRIIDY,1,easy,stop
+cipher_en_easy_0043,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 35.85 | SECTOR EA58. TARGET TERMINAL IS BREACHED. ENCRYPTION SEED IS DETERMINED AS ECHO. SYSTEM REPORT ID 1609: STATUS CRITICAL.
+-------------------------------
+
+Ciphertext: 'UWZCPFTLHLHOFBQEFOMALQH'
+
+Encryption guide:
+1. The encryption keyword is 'ECHO'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - QFFRA -> UHMFE
+
+Enter the decrypted plaintext (uppercase, no spaces).",QUSOLDMXDJAABZJQBMFMHOA,,"Using the Vigenère key **ECHO**:
+
+- E = 4
+- C = 2
+- H = 7
+- O = 14
+
+Subtracting the repeated key shifts from the ciphertext gives:
+
+**QUSOLDMXDJAABZJQBMFMMHOA**
+
+Answer: QUSOLDMXDJAABZJQBMFMMHOA",QUSOLDMXDJAABZJQBMFMMHOA,0,easy,stop
+cipher_en_easy_0044,"--- [RECOVERED MISSION LOG] ---
+TARGET SATELLITE IS STANDBY. ENCRYPTION SEED IS DETERMINED AS CHARLIE. SYSTEM REPORT ID 7896: STATUS STABLE. COORDINATES SET TO 68.91 | SECTOR 6BE4.
+-------------------------------
+
+Ciphertext: 'QBLCSAOPALOQMJQZBJXONZBO'
+
+Encryption guide:
+1. The encryption keyword is 'CHARLIE'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - FBKROA -> HIKIZI
+
+Enter the decrypted plaintext (uppercase, no spaces).",OULLHSKNTLXFEFOSBSMGJXUO,,"Using Vigenère decryption with keyword **CHARLIE**:
+
+- Repeat key: `CHARLIECHARLIECHARLIECHA`
+- Subtract key letter values from ciphertext letter values modulo 26.
+
+This gives plaintext:
+
+`OULLHSKNTLXFEEFOSBSMGJXUO`
+
+Answer: OULLHSKNTLXFEEFOSBSMGJXUO",OULLHSKNTLXFEEFOSBSMGJXUO,0,easy,stop
+cipher_en_easy_0045,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 9127: STATUS STABLE. TARGET SATELLITE IS OFFLINE. COORDINATES SET TO 67.7 | SECTOR EBED. ENCRYPTION PRIMARY KEY IS DETERMINED AS INDIA.
+-------------------------------
+
+Ciphertext: 'JWDEMIMGBAQTEMYDQJODFSVJ'
+
+Encryption guide:
+1. The encryption keyword is 'INDIA'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - ATOY -> IGRG
+
+Enter the decrypted plaintext (uppercase, no spaces).",BJAWMAZDTAIGBEYVDGGDXFSB,,"Using the Vigenère keyword **INDIA** (I=8, N=13, D=3, I=8, A=0), subtracting the repeated key from the ciphertext gives:
+
+**BJAWMAZDTAIGBEYVDGGDXFSB**
+
+Answer: BJAWMAZDTAIGBEYVDGGDXFSB",BJAWMAZDTAIGBEYVDGGDXFSB,1,easy,stop
+cipher_en_easy_0046,"--- [RECOVERED MISSION LOG] ---
+TARGET TERMINAL IS BREACHED. ENCRYPTION AUTH CODE IS DETERMINED AS DELTA. SYSTEM REPORT ID 8033: STATUS CRITICAL. COORDINATES SET TO 42.76 | SECTOR 9305.
+-------------------------------
+
+Ciphertext: 'UJBTWVDMMCOGAMNDTJSFULNW'
+
+Encryption guide:
+1. The encryption keyword is 'DELTA'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - GCHS -> JGSL
+
+Enter the decrypted plaintext (uppercase, no spaces).",RFQAWSZBTCLCPTNAPYZFRHCD,,"Using Vigenère decryption with keyword DELTA:
+
+Ciphertext: UJBTWVDMMCOGAMNDTJSFULNW  
+Keyword repeated: DELTADELTADELTADELTADELT  
+
+Subtracting keyword shifts from ciphertext gives:
+
+RFQAWSZBTCLCPTNAPYZFRHCD
+
+Answer: RFQAWSZBTCLCPTNAPYZFRHCD",RFQAWSZBTCLCPTNAPYZFRHCD,1,easy,stop
+cipher_en_easy_0047,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 2969: STATUS OVERLOADED. COORDINATES SET TO 128.64 | SECTOR D273. ENCRYPTION PRIMARY KEY IS DETERMINED AS ECHO. TARGET TERMINAL IS STANDBY.
+-------------------------------
+
+Ciphertext: 'ATLHJLCBODSSVXPPTTEWYWR'
+
+Encryption guide:
+1. The encryption keyword is 'ECHO'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - OMJH -> SOQV
+
+Enter the decrypted plaintext (uppercase, no spaces).",WRETFJVNKBLERVIBPRXIUUK,,"Using the Vigenère keyword **ECHO**, convert it to shifts:
+
+- E = 4
+- C = 2
+- H = 7
+- O = 14
+
+Decrypt by subtracting these shifts repeatedly from the ciphertext:
+
+`ATLHJLCBODSSVXPPTTEWYWR`
+
+This gives:
+
+`WRETFJVNKBLERVIBPRXIUUK`
+
+Answer: WRETFJVNKBLERVIBPRXIUUK",WRETFJVNKBLERVIBPRXIUUK,1,easy,stop
+cipher_en_easy_0048,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 156.58 | SECTOR BA5B. ENCRYPTION VECTOR IS DETERMINED AS BRAVO. SYSTEM REPORT ID 7190: STATUS CRITICAL. TARGET GRID IS READY.
+-------------------------------
+
+Ciphertext: 'QKRNOBIYEWMSKFSJPUWRJGMC'
+
+Encryption guide:
+1. The encryption keyword is 'BRAVO'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - NHCPL -> OYCKZ
+
+Enter the decrypted plaintext (uppercase, no spaces).",PTRSAARYJILBKKEIYUBDIPMH,,"Decrypted by subtracting the repeated Vigenère keyword **BRAVO** from the ciphertext.
+
+Answer: PTRSAARYJILBKKEIYUBDIPMH",PTRSAARYJILBKKEIYUBDIPMH,1,easy,stop
+cipher_en_easy_0049,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 8510: STATUS CRITICAL. TARGET CORE IS OFFLINE. COORDINATES SET TO 14.62 | SECTOR ACC4. ENCRYPTION AUTH CODE IS DETERMINED AS HOTEL.
+-------------------------------
+
+Ciphertext: 'WLAHSLDDDYCJITRHTLASMJS'
+
+Encryption guide:
+1. The encryption keyword is 'HOTEL'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - PEJKI -> WSCOT
+
+Enter the decrypted plaintext (uppercase, no spaces).",PXHDHEPKZNVVPPGAFSWHFVZ,,"Using the Vigenère keyword **HOTEL** with shifts H=7, O=14, T=19, E=4, L=11, repeat the keyword and subtract those shifts from the ciphertext.
+
+Decrypted plaintext:
+
+**PXHDHEPKZNVVPPGAFSWHFVZ**
+
+Answer: PXHDHEPKZNVVPPGAFSWHFVZ",PXHDHEPKZNVVPPGAFSWHFVZ,1,easy,stop
+cipher_en_easy_0050,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 4833: STATUS LOCKED. COORDINATES SET TO 46.28 | SECTOR 1FB5. ENCRYPTION AUTH CODE IS DETERMINED AS FOXTROT. TARGET CORE IS READY.
+-------------------------------
+
+Ciphertext: 'UZXFNQBDXNRQNFGIQEDDMBQ'
+
+Encryption guide:
+1. The encryption keyword is 'FOXTROT'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - VHWP -> AVTI
+
+Enter the decrypted plaintext (uppercase, no spaces).",PLAMWCIYJQYZZMBUTLMPTWC,,"Using the Vigenère keyword **FOXTROT**, subtract each repeated keyword shift from the ciphertext:
+
+Ciphertext: `UZXFNQBDXNRQNFGIQEDDMBQ`  
+Keyword: `FOXTROTFOXTROTFOXTROTFO`
+
+Decryption gives:
+
+`PLAMWCIYJQYZZMBUTLMPTWC`
+
+Answer: PLAMWCIYJQYZZMBUTLMPTWC",PLAMWCIYJQYZZMBUTLMPTWC,1,easy,stop
+cipher_en_easy_0051,"--- [RECOVERED MISSION LOG] ---
+TARGET CORE IS BREACHED. COORDINATES SET TO 60.68 | SECTOR DE27. SYSTEM REPORT ID 8282: STATUS OVERLOADED. ENCRYPTION PRIMARY KEY IS DETERMINED AS INDIA.
+-------------------------------
+
+Ciphertext: 'JXTKAQDRXBZRHYMFEAMPXGXP'
+
+Encryption guide:
+1. The encryption keyword is 'INDIA'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - STSAC -> AGVIC
+
+Enter the decrypted plaintext (uppercase, no spaces).",BKQCAIQOPBREEQMXRXEPPTUH,,"Using Vigenère decryption with keyword **INDIA**:
+
+- Keyword shifts: I=8, N=13, D=3, I=8, A=0
+- Decrypt by subtracting these shifts from the ciphertext letters.
+
+Ciphertext: `JXTKAQDRXBZRHYMFEAMPXGXP`  
+Plaintext: `BKQCAIQOPBREEQMXRXEPPTUH`
+
+Answer: BKQCAIQOPBREEQMXRXEPPTUH",BKQCAIQOPBREEQMXRXEPPTUH,1,easy,stop
+cipher_en_easy_0052,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 4667: STATUS CRITICAL. COORDINATES SET TO 108.41 | SECTOR 9F51. ENCRYPTION AUTH CODE IS DETERMINED AS BRAVO. TARGET CORE IS BREACHED.
+-------------------------------
+
+Ciphertext: 'IKZLXJVZZBEEPQMIRWVQJYET'
+
+Encryption guide:
+1. The encryption keyword is 'BRAVO'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - IELS -> JVLN
+
+Enter the decrypted plaintext (uppercase, no spaces).",HTZQJIEZENDNPVYHAWACIHEY,,"Using the Vigenère cipher with keyword **BRAVO**:
+
+- Keyword shifts: B=1, R=17, A=0, V=21, O=14
+- Decryption subtracts the repeated keyword shifts from the ciphertext.
+
+Ciphertext: `IKZLXJVZZBEEPQMIRWVQJYET`  
+Repeated key: `BRAVOBRAVOBRAVOBRAVOBRAV`
+
+Decrypted plaintext:
+
+`HTZQJIEZENDNPVYHAWACIHEY`
+
+Answer: HTZQJIEZENDNPVYHAWACIHEY",HTZQJIEZENDNPVYHAWACIHEY,1,easy,stop
+cipher_en_easy_0053,"--- [RECOVERED MISSION LOG] ---
+TARGET CORE IS BREACHED. SYSTEM REPORT ID 3336: STATUS OVERLOADED. ENCRYPTION PRIMARY KEY IS DETERMINED AS INDIA. COORDINATES SET TO 139.48 | SECTOR 7D46.
+-------------------------------
+
+Ciphertext: 'VTLWOERUBLAUGOZRPJOY'
+
+Encryption guide:
+1. The encryption keyword is 'INDIA'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - RCIAFZ -> ZPLIFH
+
+Enter the decrypted plaintext (uppercase, no spaces).",NGIOOWERTLSHDGZJCGGY,,"Using the Vigenère cipher with keyword **INDIA**:
+
+- Keyword shifts: I=8, N=13, D=3, I=8, A=0
+- Decrypt by subtracting the repeated keyword shifts from the ciphertext.
+
+Ciphertext: `VTLWOERUBLAUGOZRPJOY`  
+Repeated key: `INDIAINDIAINDIAINDIA`
+
+Decrypted plaintext:
+
+`NGIOOWERTLSHDGZJCGGY`
+
+Answer: NGIOOWERTLSHDGZJCGGY",NGIOOWERTLSHDGZJCGGY,1,easy,stop
+cipher_en_easy_0054,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION VECTOR IS DETERMINED AS CHARLIE. TARGET CORE IS OFFLINE. COORDINATES SET TO 74.42 | SECTOR C010. SYSTEM REPORT ID 1930: STATUS STABLE.
+-------------------------------
+
+Ciphertext: 'GLWXWMSFSMMXDSLBKLYX'
+
+Encryption guide:
+1. The encryption keyword is 'CHARLIE'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - QIPP -> SPPG
+
+Enter the decrypted plaintext (uppercase, no spaces).",EEWGLEODLMVMVOJUKUNP,,"Using Vigenère decryption with keyword `CHARLIE`:
+
+- Ciphertext: `GLWXWMSFSMMXDSLBKLYX`
+- Repeated key: `CHARLIECHARLIECHARLI`
+- Decrypt by subtracting key letters with A=0.
+
+This yields:
+
+`EEWGLEODLMVMVOJUKUNP`
+
+Answer: EEWGLEODLMVMVOJUKUNP",EEWGLEODLMVMVOJUKUNP,1,easy,stop
+cipher_en_easy_0055,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION SEED IS DETERMINED AS BRAVO. TARGET GRID IS OFFLINE. SYSTEM REPORT ID 4902: STATUS CRITICAL. COORDINATES SET TO 88.70 | SECTOR 83B7.
+-------------------------------
+
+Ciphertext: 'SJBUIGVVCMADICWUUTJE'
+
+Encryption guide:
+1. The encryption keyword is 'BRAVO'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - LPZBD -> MGZWR
+
+Enter the decrypted plaintext (uppercase, no spaces).",RSBZUFEVHYZMIHITDTOQ,,"Using Vigenère decryption with keyword **BRAVO** (B=1, R=17, A=0, V=21, O=14), subtract the repeated key values from the ciphertext letters.
+
+Ciphertext: `SJBUIGVVCMADICWUUTJE`  
+Key repeat: `BRAVOBRAVOBRAVOBRAVO`
+
+Decrypted plaintext: `RSBZUFEVHYZMIHITDTOQ`
+
+Answer: RSBZUFEVHYZMIHITDTOQ",RSBZUFEVHYZMIHITDTOQ,1,easy,stop
+cipher_en_easy_0056,"--- [RECOVERED MISSION LOG] ---
+TARGET GRID IS STANDBY. ENCRYPTION SEED IS DETERMINED AS CHARLIE. COORDINATES SET TO 140.94 | SECTOR F0C3. SYSTEM REPORT ID 8620: STATUS OVERLOADED.
+-------------------------------
+
+Ciphertext: 'JVAGTFESWMRWKDAMRRPORIWL'
+
+Encryption guide:
+1. The encryption keyword is 'CHARLIE'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - LTUDV -> NAUUG
+
+Enter the decrypted plaintext (uppercase, no spaces).",HOAPIXAQPMALCZYFRAEGNGPL,,"Using Vigenère decryption with keyword **CHARLIE**, subtract the repeated keyword letters from the ciphertext letters.
+
+Ciphertext: `JVAGTFESWMRWKDAMRRPORIWL`  
+Keyword repeated: `CHARLIECHARLIECHARLIECHA`
+
+Decrypted plaintext: `HOAPIXAQPMALCZYFRAEGNGPL`
+
+Answer: HOAPIXAQPMALCZYFRAEGNGPL",HOAPIXAQPMALCZYFRAEGNGPL,1,easy,stop
+cipher_en_easy_0057,"--- [RECOVERED MISSION LOG] ---
+TARGET DATABASE IS OFFLINE. ENCRYPTION PRIMARY KEY IS DETERMINED AS ALPHA. SYSTEM REPORT ID 2905: STATUS LOCKED. COORDINATES SET TO 13.67 | SECTOR 7467.
+-------------------------------
+
+Ciphertext: 'SYVBMCPIWJRDYMCDUDII'
+
+Encryption guide:
+1. The encryption keyword is 'ALPHA'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - VMTQZ -> VXIXZ
+
+Enter the decrypted plaintext (uppercase, no spaces).",SNGUMCETPJRSJFCDJOBI,,"Decryption with Vigenère keyword **ALPHA** gives:
+
+**SNGUMCETPJRSJFCDJOBI**
+
+Answer: SNGUMCETPJRSJFCDJOBI",SNGUMCETPJRSJFCDJOBI,1,easy,stop
+cipher_en_easy_0058,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION VECTOR IS DETERMINED AS GOLF. SYSTEM REPORT ID 7602: STATUS OVERLOADED. TARGET DATABASE IS READY. COORDINATES SET TO 110.48 | SECTOR AD8D.
+-------------------------------
+
+Ciphertext: 'WGYQTTQQRXMMCZDVPRUBUYAJ'
+
+Encryption guide:
+1. The encryption keyword is 'GOLF'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - DEFJP -> JSQOV
+
+Enter the decrypted plaintext (uppercase, no spaces).",QSNLNFFLLJBHWLSQJDJWOKPE,,"Using Vigenère decryption with keyword **GOLF**, subtract the repeating key shifts:
+
+- G = 6
+- O = 14
+- L = 11
+- F = 5
+
+Ciphertext: `WGYQTTQQRXMMCZDVPRUBUYAJ`  
+Repeated key: `GOLFGOLFGOLFGOLFGOLFGOLF`
+
+Decrypted plaintext:
+
+`QSNLNFFLLJBHWLSQJDJWOKPE`
+
+Answer: QSNLNFFLLJBHWLSQJDJWOKPE",QSNLNFFLLJBHWLSQJDJWOKPE,1,easy,stop
+cipher_en_easy_0059,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION PRIMARY KEY IS DETERMINED AS ECHO. TARGET SATELLITE IS READY. COORDINATES SET TO 28.69 | SECTOR D7D3. SYSTEM REPORT ID 7691: STATUS SYNCING.
+-------------------------------
+
+Ciphertext: 'EWNVYVNKOWIWYUTHCPIC'
+
+Encryption guide:
+1. The encryption keyword is 'ECHO'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - XLFF -> BNMT
+
+Enter the decrypted plaintext (uppercase, no spaces).",AUGHUTGWKUBIUSMTYNBO,,"Using Vigenère decryption with keyword ECHO:
+
+- Key repeats as: ECHOECHOECHOECHOECHO
+- Shifts: E=4, C=2, H=7, O=14
+- Subtracting those shifts from the ciphertext gives:
+
+AUGHUTGWKUBIURAOLGV
+
+Answer: AUGHUTGWKUBIURAOLGV",AUGHUTGWKUBIURAOLGV,0,easy,stop
+cipher_en_easy_0060,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 160.62 | SECTOR 8981. SYSTEM REPORT ID 3801: STATUS OVERLOADED. ENCRYPTION SEED IS DETERMINED AS BRAVO. TARGET DATABASE IS STANDBY.
+-------------------------------
+
+Ciphertext: 'GOMSEFAHATOIETGXPQUURAX'
+
+Encryption guide:
+1. The encryption keyword is 'BRAVO'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - YIRTCW -> ZZROQX
+
+Enter the decrypted plaintext (uppercase, no spaces).",FXMXQEJHFFNREYSWYQZGQJX,,"Using the Vigenère cipher with keyword **BRAVO**, repeat the key across the ciphertext:
+
+Ciphertext: `GOMSEFAHATOIETGXPQUURAX`  
+Key:        `BRAVOBRAVOBRAVOBRAVOBRA`
+
+Decrypt by subtracting key letter values from ciphertext letter values.
+
+This gives:
+
+`FXMXQEJHFFNREYSWYQZGQJX`
+
+Answer: FXMXQEJHFFNREYSWYQZGQJX",FXMXQEJHFFNREYSWYQZGQJX,1,easy,stop
+cipher_en_easy_0061,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 174.35 | SECTOR 4C8C. ENCRYPTION SEED IS DETERMINED AS CHARLIE. SYSTEM REPORT ID 7598: STATUS STABLE. TARGET GRID IS READY.
+-------------------------------
+
+Ciphertext: 'GDBZATUWAAMNNSECARDSA'
+
+Encryption guide:
+1. The encryption keyword is 'CHARLIE'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - XMGP -> ZTGG
+
+Enter the decrypted plaintext (uppercase, no spaces).",EWBIPLQUTAVCFOCVAASKW,,"Using Vigenère decryption with keyword CHARLIE, subtract each repeated keyword letter from the ciphertext letters.
+
+Ciphertext: GDBZATUWAAMNNSECARDSA  
+Keyword:    CHARLIECHARLIECHARLIE
+
+Decrypted plaintext: EWBIPLQUTAVCFOCVAASKW
+
+Answer: EWBIPLQUTAVCFOCVAASKW",EWBIPLQUTAVCFOCVAASKW,1,easy,stop
+cipher_en_easy_0062,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION PRIMARY KEY IS DETERMINED AS INDIA. SYSTEM REPORT ID 2795: STATUS SYNCING. COORDINATES SET TO 152.70 | SECTOR AD6E. TARGET TERMINAL IS STANDBY.
+-------------------------------
+
+Ciphertext: 'YHFIDHWOSXZUUDMCKAOINDEK'
+
+Encryption guide:
+1. The encryption keyword is 'INDIA'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - GHCA -> OUFI
+
+Enter the decrypted plaintext (uppercase, no spaces).",QUCADZJLKXRHRVMUXXGIFQBC,,"Decrypted with Vigenère using keyword INDIA:
+
+Answer: QUCADZJLKXRHRVMUXXGIFQBC",QUCADZJLKXRHRVMUXXGIFQBC,1,easy,stop
+cipher_en_easy_0063,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION AUTH CODE IS DETERMINED AS BRAVO. COORDINATES SET TO 22.0 | SECTOR FB3F. TARGET DATABASE IS READY. SYSTEM REPORT ID 7599: STATUS SYNCING.
+-------------------------------
+
+Ciphertext: 'OIEBWSFXPEUPXCZBEXQLHX'
+
+Encryption guide:
+1. The encryption keyword is 'BRAVO'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - KKWQMB -> LBWLAC
+
+Enter the decrypted plaintext (uppercase, no spaces).",NREGIROXUQTYXHLANXVXGG,,"Using Vigenère decryption with keyword **BRAVO**:
+
+- Keyword shifts: B=1, R=17, A=0, V=21, O=14
+- Repeat keyword over ciphertext and subtract each shift.
+
+Ciphertext: `OIEBWSFXPEUPXCZBEXQLHX`  
+Decrypted plaintext: `NREGIROXUQTYXHLANXVXGG`
+
+Answer: NREGIROXUQTYXHLANXVXGG",NREGIROXUQTYXHLANXVXGG,1,easy,stop
+cipher_en_easy_0064,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION AUTH CODE IS DETERMINED AS ECHO. TARGET GRID IS BREACHED. SYSTEM REPORT ID 4848: STATUS SYNCING. COORDINATES SET TO 11.89 | SECTOR F13D.
+-------------------------------
+
+Ciphertext: 'ZCPDKELHEHEIKNCOGKTSDPAF'
+
+Encryption guide:
+1. The encryption keyword is 'ECHO'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - ZNAPE -> DPHDI
+
+Enter the decrypted plaintext (uppercase, no spaces).",VAIPGCETAFXUGLVACIMEZNTR,,"Using the Vigenère cipher with keyword **ECHO**:
+
+- E = 4
+- C = 2
+- H = 7
+- O = 14
+
+Decrypting by subtracting the repeated keyword shifts from the ciphertext gives:
+
+**VAIPGCETAFXUGLVACIMEZNTR**
+
+Answer: VAIPGCETAFXUGLVACIMEZNTR",VAIPGCETAFXUGLVACIMEZNTR,1,easy,stop
+cipher_en_easy_0065,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION AUTH CODE IS DETERMINED AS DELTA. TARGET TERMINAL IS READY. COORDINATES SET TO 11.83 | SECTOR 50B1. SYSTEM REPORT ID 9560: STATUS LOCKED.
+-------------------------------
+
+Ciphertext: 'PRDHTYPLEHQQUNUIBQXXEOBG'
+
+Encryption guide:
+1. The encryption keyword is 'DELTA'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - BSEP -> EWPI
+
+Enter the decrypted plaintext (uppercase, no spaces).",MNSOTVLALHNMJUUFXFEXBKQN,,"Using Vigenère decryption with keyword **DELTA**, subtract the repeated keyword shifts from the ciphertext.
+
+Ciphertext: `PRDHTYPLEHQQUNUIBQXXEOBG`  
+Keyword repeat: `DELTADELTADELTADELTADELT`
+
+Decrypted plaintext: `MNSOTVLALHNMJUUFXFEXBKQN`
+
+Answer: MNSOTVLALHNMJUUFXFEXBKQN",MNSOTVLALHNMJUUFXFEXBKQN,1,easy,stop
+cipher_en_easy_0066,"--- [RECOVERED MISSION LOG] ---
+TARGET TERMINAL IS STANDBY. ENCRYPTION SEED IS DETERMINED AS HOTEL. SYSTEM REPORT ID 3058: STATUS STABLE. COORDINATES SET TO 15.33 | SECTOR B0F7.
+-------------------------------
+
+Ciphertext: 'YTSHUFODDUWQDMLJVSNH'
+
+Encryption guide:
+1. The encryption keyword is 'HOTEL'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - RRUXY -> YFNBJ
+
+Enter the decrypted plaintext (uppercase, no spaces).",RFZDJYAKZJPCKIACHZJW,,"Using the Vigenère cipher with keyword **HOTEL**, repeat the key across the ciphertext and subtract each key letter value modulo 26.
+
+Ciphertext: `YTSHUFODDUWQDMLJVSNH`  
+Key repeat: `HOTELHOTELHOTELHOTEL`
+
+Decryption gives:
+
+`RFZDJYAKZJPCKIACHZJW`
+
+Answer: RFZDJYAKZJPCKIACHZJW",RFZDJYAKZJPCKIACHZJW,1,easy,stop
+cipher_en_easy_0067,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 108.51 | SECTOR 6A64. ENCRYPTION AUTH CODE IS DETERMINED AS FOXTROT. SYSTEM REPORT ID 4264: STATUS STABLE. TARGET GRID IS BREACHED.
+-------------------------------
+
+Ciphertext: 'JCTXZOABXEDSNFNBFNEP'
+
+Encryption guide:
+1. The encryption keyword is 'FOXTROT'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - UWLXT -> ZKIQK
+
+Enter the decrypted plaintext (uppercase, no spaces).",EOWEIAHWJHKBZMINIUNB,,"Using Vigenère decryption with keyword **FOXTROT**:
+
+- Keyword shifts: F=5, O=14, X=23, T=19, R=17, O=14, T=19, repeat
+- Decrypt by subtracting the keyword shifts from the ciphertext letters.
+
+Ciphertext: `JCTXZOABXEDSNFNBFNEP`  
+Plaintext: `EOWEIAHWJHKBZMINIUNB`
+
+Answer: EOWEIAHWJHKBZMINIUNB",EOWEIAHWJHKBZMINIUNB,1,easy,stop
+cipher_en_easy_0068,"--- [RECOVERED MISSION LOG] ---
+TARGET CORE IS READY. COORDINATES SET TO 99.91 | SECTOR D230. ENCRYPTION VECTOR IS DETERMINED AS FOXTROT. SYSTEM REPORT ID 9077: STATUS CRITICAL.
+-------------------------------
+
+Ciphertext: 'UCMGDSKNCUGJFPNIPAKDD'
+
+Encryption guide:
+1. The encryption keyword is 'FOXTROT'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - QJPZXE -> VXMSOS
+
+Enter the decrypted plaintext (uppercase, no spaces).",POPNMERIOXNSRWIUSHTPK,,"Using Vigenère decryption with keyword **FOXTROT**, subtract each repeated keyword letter value from the ciphertext letter value.
+
+Ciphertext: `UCMGDSKNCUGJFPNIPAKDD`  
+Keyword:    `FOXTROTFOXTROTFOXTROT`
+
+Decrypted plaintext: `POPNMERIOXNSRWIUSHTPK`
+
+Answer: POPNMERIOXNSRWIUSHTPK",POPNMERIOXNSRWIUSHTPK,1,easy,stop
+cipher_en_easy_0069,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 180.70 | SECTOR FCFD. TARGET TERMINAL IS STANDBY. ENCRYPTION VECTOR IS DETERMINED AS BRAVO. SYSTEM REPORT ID 9375: STATUS STABLE.
+-------------------------------
+
+Ciphertext: 'PXDYCVMALEWJFFXGOJDO'
+
+Encryption guide:
+1. The encryption keyword is 'BRAVO'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - CWWRPU -> DNWMDV
+
+Enter the decrypted plaintext (uppercase, no spaces).",OGDDOUVAQQVSFKJFXJIA,,"Using Vigenère decryption with keyword **BRAVO**:
+
+- Key values: B=1, R=17, A=0, V=21, O=14
+- Subtract the repeated key from the ciphertext letters.
+
+Ciphertext: `PXDYCVMALEWJFFXGOJDO`  
+Decrypted plaintext: `OGDDOUVAQQVSFKJFXJIA`
+
+Answer: OGDDOUVAQQVSFKJFXJIA",OGDDOUVAQQVSFKJFXJIA,1,easy,stop
+cipher_en_easy_0070,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 150.51 | SECTOR F8CD. ENCRYPTION AUTH CODE IS DETERMINED AS FOXTROT. TARGET CORE IS STANDBY. SYSTEM REPORT ID 2876: STATUS STABLE.
+-------------------------------
+
+Ciphertext: 'XDEREMCSWIBUYHWUWPYS'
+
+Encryption guide:
+1. The encryption keyword is 'FOXTROT'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - WDVZK -> BRSSB
+
+Enter the decrypted plaintext (uppercase, no spaces).",SPHYNYJNILIDKORGZWHE,,"Using the Vigenère keyword **FOXTROT**, repeat it across the ciphertext:
+
+Ciphertext: `XDEREMCSWIBUYHWUWPYS`  
+Key:        `FOXTROTFOXTROTFOXTRO`
+
+Decrypt by subtracting key letters from ciphertext letters (A=0):
+
+`X-F=S, D-O=P, E-X=H, ...`
+
+This gives:
+
+Answer: SPHYNYJNILIDKORGZWHE",SPHYNYJNILIDKORGZWHE,1,easy,stop
+cipher_en_easy_0071,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION AUTH CODE IS DETERMINED AS ALPHA. TARGET TERMINAL IS READY. COORDINATES SET TO 172.93 | SECTOR 383F. SYSTEM REPORT ID 6184: STATUS STABLE.
+-------------------------------
+
+Ciphertext: 'FDSFTTDAYYMAZNRJHHFS'
+
+Encryption guide:
+1. The encryption keyword is 'ALPHA'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - WIHO -> WTWV
+
+Enter the decrypted plaintext (uppercase, no spaces).",FSDYTTSLRYMPKGRJWSYS,,"Using Vigenère decryption with keyword **ALPHA**:
+
+- Keyword shifts: A=0, L=11, P=15, H=7, A=0
+- Repeat keyword over ciphertext and subtract shifts from ciphertext letters.
+
+Ciphertext: `FDSFTTDAYYMAZNRJHHFS`  
+Repeated key: `ALPHAALPHAALPHAALPHA`  
+Decrypted plaintext: `FSDYTTSLRYMPKGRJWSYS`
+
+Answer: FSDYTTSLRYMPKGRJWSYS",FSDYTTSLRYMPKGRJWSYS,1,easy,stop
+cipher_en_easy_0072,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 473: STATUS OVERLOADED. COORDINATES SET TO 94.98 | SECTOR C07B. TARGET GRID IS OFFLINE. ENCRYPTION VECTOR IS DETERMINED AS ALPHA.
+-------------------------------
+
+Ciphertext: 'ORQANRXMILSHITYDMKTVXBA'
+
+Encryption guide:
+1. The encryption keyword is 'ALPHA'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - YEVK -> YPKR
+
+Enter the decrypted plaintext (uppercase, no spaces).",OGBTNRMXBLSWTMYDBVMVXQL,,"Using the Vigenère keyword **ALPHA** with shifts:
+
+- A = 0
+- L = 11
+- P = 15
+- H = 7
+- A = 0
+
+I repeat the keyword across the ciphertext and subtract the key shifts from each ciphertext letter.
+
+Ciphertext: `ORQANRXMILSHITYDMKTVXBA`  
+Decrypted plaintext: `OGBTNRMXBLSWTMYDBVMVXQL`
+
+Answer: OGBTNRMXBLSWTMYDBVMVXQL",OGBTNRMXBLSWTMYDBVMVXQL,1,easy,stop
+cipher_en_easy_0073,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION PRIMARY KEY IS DETERMINED AS CHARLIE. COORDINATES SET TO 180.65 | SECTOR 6DD1. SYSTEM REPORT ID 1959: STATUS STABLE. TARGET SATELLITE IS READY.
+-------------------------------
+
+Ciphertext: 'NPGNGOBJMRMKCTTSIOCTMOY'
+
+Encryption guide:
+1. The encryption keyword is 'CHARLIE'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - LFERF -> NMEIQ
+
+Enter the decrypted plaintext (uppercase, no spaces).",LIGWVGXHFRVZUPRLIXRLIMR,,"Using Vigenère decryption with keyword **CHARLIE**:
+
+- Keyword shifts: C=2, H=7, A=0, R=17, L=11, I=8, E=4
+- Repeat keyword across the ciphertext.
+- Subtract each keyword shift from the ciphertext letter modulo 26.
+
+This decrypts:
+
+**NPGNGOBJMRMKCTTSIOCTMOY**  
+→ **LIGWVGXHFRVZUPRLIXRLIMR**
+
+Answer: LIGWVGXHFRVZUPRLIXRLIMR",LIGWVGXHFRVZUPRLIXRLIMR,1,easy,stop
+cipher_en_easy_0074,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 6320: STATUS STABLE. TARGET CORE IS OFFLINE. ENCRYPTION SEED IS DETERMINED AS FOXTROT. COORDINATES SET TO 59.10 | SECTOR E200.
+-------------------------------
+
+Ciphertext: 'SWUVAQIWQAKWOCOFXFSQ'
+
+Encryption guide:
+1. The encryption keyword is 'FOXTROT'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - ZACG -> EOZZ
+
+Enter the decrypted plaintext (uppercase, no spaces).",NIXCJCPRCDRFAJJRAMBC,,"Using Vigenère decryption with keyword **FOXTROT**, subtract each repeated key letter from the ciphertext letter modulo 26.
+
+Ciphertext: `SWUVAQIWQAKWOCOFXFSQ`  
+Key repeated: `FOXTROTFOXTROTFOXTRO`  
+Plaintext: `NIXCJCPRCDRFAJJRAMBC`
+
+Answer: NIXCJCPRCDRFAJJRAMBC",NIXCJCPRCDRFAJJRAMBC,1,easy,stop
+cipher_en_easy_0075,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 78.42 | SECTOR D51D. TARGET GRID IS BREACHED. ENCRYPTION PRIMARY KEY IS DETERMINED AS DELTA. SYSTEM REPORT ID 223: STATUS SYNCING.
+-------------------------------
+
+Ciphertext: 'TTJWNQSYIQEPZMRGKTDN'
+
+Encryption guide:
+1. The encryption keyword is 'DELTA'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - AJMRW -> DNXKW
+
+Enter the decrypted plaintext (uppercase, no spaces).",QPYDNNONPQBLOTRDGIKN,,"Decryption by Vigenère with keyword **DELTA** gives:
+
+Answer: QPYDNNONPQBLOTRDGIKN",QPYDNNONPQBLOTRDGIKN,1,easy,stop
+cipher_en_easy_0076,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 1597: STATUS STABLE. COORDINATES SET TO 113.62 | SECTOR CE0A. ENCRYPTION PRIMARY KEY IS DETERMINED AS FOXTROT. TARGET TERMINAL IS BREACHED.
+-------------------------------
+
+Ciphertext: 'XVTLLLSRRJQMFZLHTHFGX'
+
+Encryption guide:
+1. The encryption keyword is 'FOXTROT'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - JGNK -> OUKD
+
+Enter the decrypted plaintext (uppercase, no spaces).",SHWSUXZMDMXVRGGTWOOSE,,"Using the Vigenère keyword **FOXTROT** with A=0:
+
+- Ciphertext: `XVTLLLSRRJQMFZLHTHFGX`
+- Repeated key: `FOXTROTFOXTROTFOXTROT`
+- Decrypt by subtracting key letters from ciphertext letters.
+
+This gives:
+
+`SHWSUXZMDMXVRGGTWOOSE`
+
+Answer: SHWSUXZMDMXVRGGTWOOSE",SHWSUXZMDMXVRGGTWOOSE,1,easy,stop
+cipher_en_easy_0077,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 121.54 | SECTOR FEA4. TARGET DATABASE IS BREACHED. ENCRYPTION AUTH CODE IS DETERMINED AS FOXTROT. SYSTEM REPORT ID 5542: STATUS CRITICAL.
+-------------------------------
+
+Ciphertext: 'OTUMDBRCGNGWRTGOIPRASW'
+
+Encryption guide:
+1. The encryption keyword is 'FOXTROT'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - NYAIXD -> SMXBOR
+
+Enter the decrypted plaintext (uppercase, no spaces).",JFXTMNYXSQNFDABALWAMZR,,"Using Vigenère decryption with keyword FOXTROT, subtract each repeated keyword letter from the ciphertext letter.
+
+Ciphertext: OTUMDBRCGNGWRTGOIPRASW  
+Keyword:    FOXTROTFOXTROTFOXTROTF  
+
+Decrypted plaintext: JFXTMNYXSQNFDBALWAMZR
+
+Answer: JFXTMNYXSQNFDBALWAMZR",JFXTMNYXSQNFDBALWAMZR,0,easy,stop
+cipher_en_easy_0078,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 145.85 | SECTOR E552. SYSTEM REPORT ID 3849: STATUS LOCKED. ENCRYPTION SEED IS DETERMINED AS ECHO. TARGET CORE IS STANDBY.
+-------------------------------
+
+Ciphertext: 'VLFTEORULKFRDYKBOXYD'
+
+Encryption guide:
+1. The encryption keyword is 'ECHO'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - VKSIB -> ZMZWF
+
+Enter the decrypted plaintext (uppercase, no spaces).",RJYFAMKGHIYDZWDNKVRP,,"Using Vigenère decryption with keyword **ECHO**:
+
+- Keyword shifts: E=4, C=2, H=7, O=14
+- Subtract repeated keyword shifts from the ciphertext.
+
+Ciphertext: `VLFTEORULKFRDYKBOXYD`  
+Repeated key: `ECHOECHOECHOECHOECHO`  
+Plaintext: `RJYFAMKGHIYDZWDNKVRP`
+
+Answer: RJYFAMKGHIYDZWDNKVRP",RJYFAMKGHIYDZWDNKVRP,1,easy,stop
+cipher_en_easy_0079,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION PRIMARY KEY IS DETERMINED AS DELTA. COORDINATES SET TO 6.25 | SECTOR 7522. SYSTEM REPORT ID 3435: STATUS CRITICAL. TARGET CORE IS OFFLINE.
+-------------------------------
+
+Ciphertext: 'KAQSMUKWGTIYAWFFOQHCO'
+
+Encryption guide:
+1. The encryption keyword is 'DELTA'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - HQJFL -> KUUYL
+
+Enter the decrypted plaintext (uppercase, no spaces).",HWFZMRGLNTFUPDFCKFOCL,,"Using Vigenère decryption with keyword **DELTA**:
+
+- DELTA shifts: D=3, E=4, L=11, T=19, A=0
+- Subtract these repeated shifts from the ciphertext.
+
+Ciphertext: `KAQSMUKWGTIYAWFFOQHCO`  
+Plaintext: `HWFZMRGLNTFUPDFCKFOCL`
+
+Answer: HWFZMRGLNTFUPDFCKFOCL",HWFZMRGLNTFUPDFCKFOCL,1,easy,stop
+cipher_en_easy_0080,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 1931: STATUS LOCKED. ENCRYPTION SEED IS DETERMINED AS FOXTROT. TARGET GRID IS STANDBY. COORDINATES SET TO 52.72 | SECTOR A9FB.
+-------------------------------
+
+Ciphertext: 'RDPEYXQDCMPBIIKBSQFXDJC'
+
+Encryption guide:
+1. The encryption keyword is 'FOXTROT'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - RFAS -> WTXL
+
+Enter the decrypted plaintext (uppercase, no spaces).",MPSLHJXYOPWKUPFNVXOJKEO,,"Using Vigenère decryption with keyword **FOXTROT**, subtract each repeated keyword letter from the ciphertext letter.
+
+Decrypted plaintext:
+
+**MPSLHJXYOPWKUPFNVXOJKEO**
+
+Answer: MPSLHJXYOPWKUPFNVXOJKEO",MPSLHJXYOPWKUPFNVXOJKEO,1,easy,stop
+cipher_en_easy_0081,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION SEED IS DETERMINED AS INDIA. TARGET TERMINAL IS STANDBY. SYSTEM REPORT ID 5059: STATUS LOCKED. COORDINATES SET TO 10.93 | SECTOR BACA.
+-------------------------------
+
+Ciphertext: 'SNMDRLHGNNNXFUAHWQRXNJ'
+
+Encryption guide:
+1. The encryption keyword is 'INDIA'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - EYYK -> MLBS
+
+Enter the decrypted plaintext (uppercase, no spaces).",KAJVRDUDFNFKCMAZJNJXFW,,"Using Vigenère decryption with keyword **INDIA**:
+
+- Keyword shifts: I=8, N=13, D=3, I=8, A=0
+- Subtract the repeated keyword shifts from the ciphertext letters.
+
+This gives the plaintext:
+
+**KAJVRDUDFNFKCMAZJNJXFW**
+
+Answer: KAJVRDUDFNFKCMAZJNJXFW",KAJVRDUDFNFKCMAZJNJXFW,1,easy,stop
+cipher_en_easy_0082,"--- [RECOVERED MISSION LOG] ---
+TARGET CORE IS READY. COORDINATES SET TO 139.18 | SECTOR 12C5. SYSTEM REPORT ID 6743: STATUS LOCKED. ENCRYPTION PRIMARY KEY IS DETERMINED AS DELTA.
+-------------------------------
+
+Ciphertext: 'YHJDBHRBJGLBHSZUTSPVU'
+
+Encryption guide:
+1. The encryption keyword is 'DELTA'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - GYWHU -> JCHAU
+
+Enter the decrypted plaintext (uppercase, no spaces).",VDYKBENQQGIXWZZRPHWVR,,"Using Vigenère decryption with keyword **DELTA** (shifts 3, 4, 11, 19, 0 repeated), subtract the key shifts from the ciphertext:
+
+Ciphertext: `YHJDBHRBJGLBHSZUTSPVU`  
+Plaintext: `VDYKBENQQGIXWZZRPHWVR`
+
+Answer: VDYKBENQQGIXWZZRPHWVR",VDYKBENQQGIXWZZRPHWVR,1,easy,stop
+cipher_en_easy_0083,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION SEED IS DETERMINED AS HOTEL. COORDINATES SET TO 169.13 | SECTOR 5C9C. TARGET TERMINAL IS OFFLINE. SYSTEM REPORT ID 8696: STATUS OVERLOADED.
+-------------------------------
+
+Ciphertext: 'TIYIKTANPCAADJUVDLOSICZH'
+
+Encryption guide:
+1. The encryption keyword is 'HOTEL'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - GGBTC -> NUUXN
+
+Enter the decrypted plaintext (uppercase, no spaces).",MUFEZMMULRTMKFJOPSKHBOGD,,"Using Vigenère decryption with keyword **HOTEL** (A=0), subtract the repeated keyword from the ciphertext:
+
+Ciphertext: `TIYIKTANPCAADJUVDLOSICZH`  
+Keyword: `HOTELHOTELHOTELHOTELHOTE`
+
+Decrypted plaintext: `MUFEZMMULRTMKFJOPSKHBOGD`
+
+Answer: MUFEZMMULRTMKFJOPSKHBOGD",MUFEZMMULRTMKFJOPSKHBOGD,1,easy,stop
+cipher_en_easy_0084,"--- [RECOVERED MISSION LOG] ---
+TARGET CORE IS STANDBY. COORDINATES SET TO 65.6 | SECTOR B6AD. SYSTEM REPORT ID 9178: STATUS LOCKED. ENCRYPTION SEED IS DETERMINED AS ALPHA.
+-------------------------------
+
+Ciphertext: 'VCKLWGZXTRZEMSKETNOOV'
+
+Encryption guide:
+1. The encryption keyword is 'ALPHA'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - IUIXT -> IFXET
+
+Enter the decrypted plaintext (uppercase, no spaces).",VRVEWGOIMRZTXLKEIYHOV,,"Using Vigenère decryption with keyword **ALPHA**:
+
+- Key repeated: `ALPHAALPHAALPHAALPHAA`
+- Subtract key letters from ciphertext letters modulo 26.
+
+Decrypted plaintext:
+
+`VRVEWGOIMRZTXLKEIYHOV`
+
+Answer: VRVEWGOIMRZTXLKEIYHOV",VRVEWGOIMRZTXLKEIYHOV,1,easy,stop
+cipher_en_easy_0085,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION AUTH CODE IS DETERMINED AS CHARLIE. TARGET GRID IS OFFLINE. SYSTEM REPORT ID 850: STATUS CRITICAL. COORDINATES SET TO 114.84 | SECTOR 7255.
+-------------------------------
+
+Ciphertext: 'BGEFZBEVVBIMHQVUMPMPMHN'
+
+Encryption guide:
+1. The encryption keyword is 'CHARLIE'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - QNOGUW -> SUOXFE
+
+Enter the decrypted plaintext (uppercase, no spaces).",ZZEOOTATOBRBZMTNMYBHIFG,,"Using Vigenère decryption with keyword **CHARLIE** and A=0:
+
+- Repeat key: CHARLIECHARLIECHARLIECH
+- Subtract key letters from ciphertext letters modulo 26.
+
+This gives plaintext:
+
+**ZZEOOTATOBRBZMTNMYBHIFG**
+
+Answer: ZZEOOTATOBRBZMTNMYBHIFG",ZZEOOTATOBRBZMTNMYBHIFG,1,easy,stop
+cipher_en_easy_0086,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 2598: STATUS OVERLOADED. TARGET CORE IS BREACHED. COORDINATES SET TO 48.86 | SECTOR 8D94. ENCRYPTION PRIMARY KEY IS DETERMINED AS INDIA.
+-------------------------------
+
+Ciphertext: 'ABAROPBSCIRJXCIUQSMR'
+
+Encryption guide:
+1. The encryption keyword is 'INDIA'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - SLBY -> AYEG
+
+Enter the decrypted plaintext (uppercase, no spaces).",SOXJOHOPUIJWUUIMDPER,,"Using Vigenère decryption with keyword `INDIA`, subtract the repeated key letters from the ciphertext:
+
+Ciphertext: `ABAROPBSCIRJXCIUQSMR`  
+Key:        `INDIAINDIAINDIAINDIA`
+
+Decrypted plaintext: `SOXJOHOPUIJWUUIMDPER`
+
+Answer: SOXJOHOPUIJWUUIMDPER",SOXJOHOPUIJWUUIMDPER,1,easy,stop
+cipher_en_easy_0087,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 6737: STATUS CRITICAL. TARGET DATABASE IS STANDBY. ENCRYPTION SEED IS DETERMINED AS BRAVO. COORDINATES SET TO 15.79 | SECTOR F0E6.
+-------------------------------
+
+Ciphertext: 'BGAKUVLRINMQVORMYVFJTB'
+
+Encryption guide:
+1. The encryption keyword is 'BRAVO'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - WILNQ -> XZLIE
+
+Enter the decrypted plaintext (uppercase, no spaces).",APAPGUURNZLZVTDLHVKVSK,,"Using Vigenère decryption with keyword BRAVO, subtracting the repeated keyword shifts from the ciphertext gives:
+
+APAPGUURNZLZVTDLHVKVSK
+
+Answer: APAPGUURNZLZVTDLHVKVSK",APAPGUURNZLZVTDLHVKVSK,1,easy,stop
+cipher_en_easy_0088,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 9099: STATUS SYNCING. TARGET DATABASE IS OFFLINE. ENCRYPTION PRIMARY KEY IS DETERMINED AS INDIA. COORDINATES SET TO 86.2 | SECTOR 717A.
+-------------------------------
+
+Ciphertext: 'PVYHDZOUETVRWRMNMAYS'
+
+Encryption guide:
+1. The encryption keyword is 'INDIA'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - MLEF -> UYHN
+
+Enter the decrypted plaintext (uppercase, no spaces).",HIVZDRBRWTNETJMFZXQS,,"Using Vigenère decryption with keyword **INDIA**:
+
+Ciphertext: `PVYHDZOUETVRWRMNMAYS`  
+Keyword repeated: `INDIAINDIAINDIAINDIA`
+
+Subtracting the keyword shifts gives:
+
+`HIVZDRBRWTNETJMFZXQS`
+
+Answer: HIVZDRBRWTNETJMFZXQS",HIVZDRBRWTNETJMFZXQS,1,easy,stop
+cipher_en_easy_0089,"--- [RECOVERED MISSION LOG] ---
+TARGET TERMINAL IS READY. ENCRYPTION SEED IS DETERMINED AS CHARLIE. COORDINATES SET TO 41.12 | SECTOR AFAD. SYSTEM REPORT ID 6317: STATUS STABLE.
+-------------------------------
+
+Ciphertext: 'YTLQUCLESYFTHCIFOSVOF'
+
+Encryption guide:
+1. The encryption keyword is 'CHARLIE'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - HQBKGP -> JXBBRX
+
+Enter the decrypted plaintext (uppercase, no spaces).",WMLZJUHCLYOIZYGYOBKGB,,"Using Vigenère decryption with keyword **CHARLIE**:
+
+Ciphertext: `YTLQUCLESYFTHCIFOSVOF`  
+Keyword repeated: `CHARLIECHARLIECHARLIE`
+
+Decrypted plaintext: `WMLZJUHCLYOIZYGYOBKGB`
+
+Answer: WMLZJUHCLYOIZYGYOBKGB",WMLZJUHCLYOIZYGYOBKGB,1,easy,stop
+cipher_en_easy_0090,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION PRIMARY KEY IS DETERMINED AS ALPHA. SYSTEM REPORT ID 3761: STATUS SYNCING. COORDINATES SET TO 45.36 | SECTOR 5FF4. TARGET TERMINAL IS READY.
+-------------------------------
+
+Ciphertext: 'NMQRTVXDXMUXRYCRSCZFTWSJ'
+
+Encryption guide:
+1. The encryption keyword is 'ALPHA'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - DYFM -> DJUT
+
+Enter the decrypted plaintext (uppercase, no spaces).",NBBKTVMOQMUMCRCRHNSFTLDC,,"Using Vigenère decryption with keyword ALPHA, subtract the repeating key shifts A=0, L=11, P=15, H=7, A=0 from the ciphertext.
+
+Ciphertext: NMQRTVXDXMUXRYCRSCZFTWSJ  
+Key:        ALPHAALPHAALPHAALPHAALPH  
+Plaintext:  NBBKTVMOQUMCRCRHNSFTLDC
+
+Answer: NBBKTVMOQUMCRCRHNSFTLDC",NBBKTVMOQUMCRCRHNSFTLDC,0,easy,stop
+cipher_en_easy_0091,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 139.24 | SECTOR E80B. SYSTEM REPORT ID 2266: STATUS STABLE. TARGET TERMINAL IS OFFLINE. ENCRYPTION VECTOR IS DETERMINED AS ECHO.
+-------------------------------
+
+Ciphertext: 'JQBRAVWMMPMPHJYPKPKDWXR'
+
+Encryption guide:
+1. The encryption keyword is 'ECHO'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - JXXYZC -> NZEMDE
+
+Enter the decrypted plaintext (uppercase, no spaces).",FOUDWTPYINFBDHRBGNDPSVK,,"Using the Vigenère keyword **ECHO**, repeat it under the ciphertext and subtract each keyword letter value from the ciphertext letter value modulo 26.
+
+Ciphertext: `JQBRAVWMMPMPHJYPKPKDWXR`  
+Key:        `ECHOECHOECHOECHOECHOECH`
+
+Decryption gives:
+
+`FOUDWTPYINFBDHRBGNDPSVK`
+
+Answer: FOUDWTPYINFBDHRBGNDPSVK",FOUDWTPYINFBDHRBGNDPSVK,1,easy,stop
+cipher_en_easy_0092,"--- [RECOVERED MISSION LOG] ---
+TARGET TERMINAL IS BREACHED. ENCRYPTION PRIMARY KEY IS DETERMINED AS GOLF. COORDINATES SET TO 63.26 | SECTOR EEFE. SYSTEM REPORT ID 9702: STATUS STABLE.
+-------------------------------
+
+Ciphertext: 'MRSDWSYNFJFJYNCNAITNQMUG'
+
+Encryption guide:
+1. The encryption keyword is 'GOLF'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - BOFON -> HCQTT
+
+Enter the decrypted plaintext (uppercase, no spaces).",GDHYQENIZVUESZRIUUIIKYJB,,"Using Vigenère decryption with keyword **GOLF**:
+
+- Key shifts: G=6, O=14, L=11, F=5
+- Decrypt by subtracting the repeated key from the ciphertext letters.
+
+Ciphertext: `MRSDWSYNFJFJYNCNAITNQMUG`  
+Repeated key: `GOLFGOLFGOLFGOLFGOLFGOLF`
+
+This gives plaintext:
+
+`GDHYQENIZVUESZRIUUIIKYJB`
+
+Answer: GDHYQENIZVUESZRIUUIIKYJB",GDHYQENIZVUESZRIUUIIKYJB,1,easy,stop
+cipher_en_easy_0093,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 1185: STATUS LOCKED. ENCRYPTION PRIMARY KEY IS DETERMINED AS GOLF. COORDINATES SET TO 150.17 | SECTOR 4452. TARGET DATABASE IS READY.
+-------------------------------
+
+Ciphertext: 'IPSRVRJUUDEJLOVMTUIJDGO'
+
+Encryption guide:
+1. The encryption keyword is 'GOLF'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - BBZBT -> HPKGZ
+
+Enter the decrypted plaintext (uppercase, no spaces).",CBHMPDYPOPTEFAKHNGXEXSD,,"Using Vigenère decryption with keyword **GOLF**:
+
+- Repeat key: GOLFGOLFGOLFGOLFGOLFGOL
+- Subtract key shifts from ciphertext letters.
+
+Decrypted plaintext:
+
+CBHMPDYPOPTEFAKHNGXEXSD
+
+Answer: CBHMPDYPOPTEFAKHNGXEXSD",CBHMPDYPOPTEFAKHNGXEXSD,1,easy,stop
+cipher_en_easy_0094,"--- [RECOVERED MISSION LOG] ---
+TARGET SATELLITE IS STANDBY. ENCRYPTION SEED IS DETERMINED AS HOTEL. SYSTEM REPORT ID 6142: STATUS SYNCING. COORDINATES SET TO 76.64 | SECTOR 4DAA.
+-------------------------------
+
+Ciphertext: 'UXLJCPQFIHGBZVQZEAVBMB'
+
+Encryption guide:
+1. The encryption keyword is 'HOTEL'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - EVRDG -> LJKHR
+
+Enter the decrypted plaintext (uppercase, no spaces).",NJSFRICMEWZNGRFSQHRQFN,,Answer: NJSFRICMEWZNGRFSQHRQFN,NJSFRICMEWZNGRFSQHRQFN,1,easy,stop
+cipher_en_easy_0095,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 3076: STATUS SYNCING. TARGET GRID IS OFFLINE. ENCRYPTION VECTOR IS DETERMINED AS ECHO. COORDINATES SET TO 63.50 | SECTOR 9DEF.
+-------------------------------
+
+Ciphertext: 'JUAEDAFEVXPBXADVUKZKSTM'
+
+Encryption guide:
+1. The encryption keyword is 'ECHO'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - YWHYSM -> CYOMWO
+
+Enter the decrypted plaintext (uppercase, no spaces).",FSTQZYYQRVINTYWHQISWORF,,"Using the Vigenère keyword **ECHO**, with shifts:
+
+- E = 4
+- C = 2
+- H = 7
+- O = 14
+
+Repeating the keyword and subtracting these shifts from the ciphertext gives:
+
+**FSTQZYYQRVINTYWHQISWORF**
+
+Answer: FSTQZYYQRVINTYWHQISWORF",FSTQZYYQRVINTYWHQISWORF,1,easy,stop
+cipher_en_easy_0096,"--- [RECOVERED MISSION LOG] ---
+TARGET TERMINAL IS BREACHED. COORDINATES SET TO 22.39 | SECTOR F597. SYSTEM REPORT ID 262: STATUS LOCKED. ENCRYPTION PRIMARY KEY IS DETERMINED AS HOTEL.
+-------------------------------
+
+Ciphertext: 'GMOWVUUXGERVBFKQWQNF'
+
+Encryption guide:
+1. The encryption keyword is 'HOTEL'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - FVMUT -> MJFYE
+
+Enter the decrypted plaintext (uppercase, no spaces).",ZYVSKNGECTKHIBZJIXJU,,"Decrypted with Vigenère using keyword HOTEL:
+
+Answer: ZYVSKNGECTKHIBZJIXJU",ZYVSKNGECTKHIBZJIXJU,1,easy,stop
+cipher_en_easy_0097,"--- [RECOVERED MISSION LOG] ---
+SYSTEM REPORT ID 2897: STATUS LOCKED. ENCRYPTION SEED IS DETERMINED AS ALPHA. TARGET CORE IS BREACHED. COORDINATES SET TO 123.97 | SECTOR 66D0.
+-------------------------------
+
+Ciphertext: 'ORGVPDQVVEAIMLUZDDNGI'
+
+Encryption guide:
+1. The encryption keyword is 'ALPHA'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - MLGYE -> MWVFE
+
+Enter the decrypted plaintext (uppercase, no spaces).",OGROPDFGOEAXXEUZSOGGI,,"Using Vigenère decryption with keyword **ALPHA**:
+
+- Key shifts: A=0, L=11, P=15, H=7, A=0
+- Subtract the repeated key from the ciphertext.
+
+Ciphertext: `ORGVPDQVVEAIMLUZDDNGI`  
+Decrypted plaintext: `OGROPDFGOEAXXEUZSOGGI`
+
+Answer: OGROPDFGOEAXXEUZSOGGI",OGROPDFGOEAXXEUZSOGGI,1,easy,stop
+cipher_en_easy_0098,"--- [RECOVERED MISSION LOG] ---
+COORDINATES SET TO 77.13 | SECTOR 9FFE. TARGET DATABASE IS READY. ENCRYPTION SEED IS DETERMINED AS HOTEL. SYSTEM REPORT ID 8714: STATUS SYNCING.
+-------------------------------
+
+Ciphertext: 'LPMWYDRKQXVKWPUICMGEZXY'
+
+Encryption guide:
+1. The encryption keyword is 'HOTEL'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - XRMFC -> EFFJN
+
+Enter the decrypted plaintext (uppercase, no spaces).",EBTSNWDRMMOWDLJBOTCTSJF,,"Using the Vigenère cipher with keyword **HOTEL**, decrypt by subtracting the repeated key letters from the ciphertext letters.
+
+Keyword repeated:
+
+`HOTELHOTELHOTELHOTELHOT`
+
+Ciphertext:
+
+`LPMWYDRKQXVKWPUICMGEZXY`
+
+Decrypted plaintext:
+
+`EBTSNWDRMMOWDLJBOTCTSJF`
+
+Answer: EBTSNWDRMMOWDLJBOTCTSJF",EBTSNWDRMMOWDLJBOTCTSJF,1,easy,stop
+cipher_en_easy_0099,"--- [RECOVERED MISSION LOG] ---
+ENCRYPTION VECTOR IS DETERMINED AS HOTEL. COORDINATES SET TO 156.23 | SECTOR 47FF. SYSTEM REPORT ID 1449: STATUS CRITICAL. TARGET GRID IS OFFLINE.
+-------------------------------
+
+Ciphertext: 'TOEQGEUGZOLDHJDSQUXVDCJ'
+
+Encryption guide:
+1. The encryption keyword is 'HOTEL'.
+2. Applied algorithms: VIGENERE
+
+Algorithm details:
+- VIGENERE: Repeat the keyword and add it to the plaintext letters (A=0, B=1...).
+
+Examples encrypted with the same keyword and algorithms:
+  - LLYGW -> SZRKH
+
+Enter the decrypted plaintext (uppercase, no spaces).",MALMVXGNVDEPOFSLCBTKWOQ,,"Decrypted by subtracting the repeated Vigenère keyword `HOTEL` from the ciphertext:
+
+Ciphertext: `TOEQGEUGZOLDHJDSQUXVDCJ`  
+Keyword: `HOTELHOTELHOTELHOTELHOT`
+
+Answer: MALMVXGNVDEPOFSLCBTKWOQ",MALMVXGNVDEPOFSLCBTKWOQ,1,easy,stop

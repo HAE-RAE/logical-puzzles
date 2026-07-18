@@ -1,0 +1,32 @@
+{
+  "metadata": {
+    "task": "yacht_dice_en_easy",
+    "model": "gemini/gemini-3.1-pro-preview",
+    "timestamp": "2026-07-17T11-06-51",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "temperature": 1.0,
+      "max_tokens": 32768,
+      "reasoning_effort": "medium"
+    },
+    "gen_kwargs_cli": "temperature=1.0,max_tokens=32768,reasoning_effort=medium"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.79,
+      "correct_count": 79,
+      "total_count": 100,
+      "avg_latency_ms": 55739.533281326294,
+      "finish_reason_counts": {
+        "stop": 100
+      }
+    },
+    "by_difficulty": {
+      "easy": {
+        "total": 100,
+        "correct": 79,
+        "accuracy": 0.79
+      }
+    }
+  }
+}

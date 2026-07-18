@@ -1,0 +1,31 @@
+{
+  "metadata": {
+    "task": "yacht_dice_ko_hard",
+    "model": "openai/gpt-5.5",
+    "timestamp": "2026-07-17T14-59-49",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "max_tokens": 32768,
+      "reasoning_effort": "medium"
+    },
+    "gen_kwargs_cli": "max_tokens=32768,reasoning_effort=medium"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.45,
+      "correct_count": 45,
+      "total_count": 100,
+      "avg_latency_ms": 137519.26046609879,
+      "finish_reason_counts": {
+        "stop": 100
+      }
+    },
+    "by_difficulty": {
+      "hard": {
+        "total": 100,
+        "correct": 45,
+        "accuracy": 0.45
+      }
+    }
+  }
+}
