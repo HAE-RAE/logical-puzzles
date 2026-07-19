@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "task": "kinship_ko_easy",
+    "task": "korean_units_ko_medium",
     "model": "openai/gpt-oss-120b",
-    "timestamp": "2026-07-17T13-19-54",
+    "timestamp": "2026-07-19T17-36-17",
     "total_puzzles": 100,
     "gen_kwargs": {
       "temperature": 1.0,
@@ -14,19 +14,19 @@
   },
   "summary": {
     "overall": {
-      "accuracy": 0.06,
-      "correct_count": 6,
+      "accuracy": 0.77,
+      "correct_count": 77,
       "total_count": 100,
-      "avg_latency_ms": 57557.370953559875,
+      "avg_latency_ms": 128083.82484674454,
       "finish_reason_counts": {
         "stop": 100
       }
     },
     "by_difficulty": {
-      "easy": {
+      "medium": {
         "total": 100,
-        "correct": 6,
-        "accuracy": 0.06
+        "correct": 77,
+        "accuracy": 0.77
       }
     }
   }

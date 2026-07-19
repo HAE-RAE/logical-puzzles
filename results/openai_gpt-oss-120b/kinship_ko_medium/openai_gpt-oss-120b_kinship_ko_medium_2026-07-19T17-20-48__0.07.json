@@ -2,7 +2,7 @@
   "metadata": {
     "task": "kinship_ko_medium",
     "model": "openai/gpt-oss-120b",
-    "timestamp": "2026-07-17T14-13-57",
+    "timestamp": "2026-07-19T17-20-48",
     "total_puzzles": 100,
     "gen_kwargs": {
       "temperature": 1.0,
@@ -14,10 +14,10 @@
   },
   "summary": {
     "overall": {
-      "accuracy": 0.01,
-      "correct_count": 1,
+      "accuracy": 0.07,
+      "correct_count": 7,
       "total_count": 100,
-      "avg_latency_ms": 67253.8030052185,
+      "avg_latency_ms": 55890.44636964798,
       "finish_reason_counts": {
         "stop": 100
       }
@@ -25,8 +25,8 @@
     "by_difficulty": {
       "medium": {
         "total": 100,
-        "correct": 1,
-        "accuracy": 0.01
+        "correct": 7,
+        "accuracy": 0.07
       }
     }
   }

@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "task": "korean_units_ko_medium",
+    "task": "korean_units_ko_hard",
     "model": "openai/gpt-oss-120b",
-    "timestamp": "2026-07-17T14-41-32",
+    "timestamp": "2026-07-19T17-41-36",
     "total_puzzles": 100,
     "gen_kwargs": {
       "temperature": 1.0,
@@ -17,13 +17,13 @@
       "accuracy": 0.85,
       "correct_count": 85,
       "total_count": 100,
-      "avg_latency_ms": 127146.70352935791,
+      "avg_latency_ms": 154988.75839471817,
       "finish_reason_counts": {
         "stop": 100
       }
     },
     "by_difficulty": {
-      "medium": {
+      "hard": {
         "total": 100,
         "correct": 85,
         "accuracy": 0.85
