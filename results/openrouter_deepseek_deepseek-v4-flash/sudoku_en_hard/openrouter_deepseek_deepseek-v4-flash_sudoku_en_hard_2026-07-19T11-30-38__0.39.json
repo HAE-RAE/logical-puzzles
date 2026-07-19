@@ -1,0 +1,33 @@
+{
+  "metadata": {
+    "task": "sudoku_en_hard",
+    "model": "openrouter/deepseek/deepseek-v4-flash",
+    "timestamp": "2026-07-19T11-30-38",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "temperature": 1.0,
+      "top_p": 1.0,
+      "max_tokens": 32768
+    },
+    "gen_kwargs_cli": "temperature=1.0,top_p=1.0,max_tokens=32768"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.39,
+      "correct_count": 39,
+      "total_count": 100,
+      "avg_latency_ms": 282174.4406080246,
+      "finish_reason_counts": {
+        "stop": 73,
+        "length": 27
+      }
+    },
+    "by_difficulty": {
+      "hard": {
+        "total": 100,
+        "correct": 39,
+        "accuracy": 0.39
+      }
+    }
+  }
+}

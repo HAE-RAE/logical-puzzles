@@ -1,0 +1,33 @@
+{
+  "metadata": {
+    "task": "cipher_en_hard",
+    "model": "openrouter/deepseek/deepseek-v4-flash",
+    "timestamp": "2026-07-19T14-02-44",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "temperature": 1.0,
+      "top_p": 1.0,
+      "max_tokens": 32768
+    },
+    "gen_kwargs_cli": "temperature=1.0,top_p=1.0,max_tokens=32768"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.44,
+      "correct_count": 44,
+      "total_count": 100,
+      "avg_latency_ms": 257850.98661899567,
+      "finish_reason_counts": {
+        "stop": 96,
+        "length": 4
+      }
+    },
+    "by_difficulty": {
+      "hard": {
+        "total": 100,
+        "correct": 44,
+        "accuracy": 0.44
+      }
+    }
+  }
+}

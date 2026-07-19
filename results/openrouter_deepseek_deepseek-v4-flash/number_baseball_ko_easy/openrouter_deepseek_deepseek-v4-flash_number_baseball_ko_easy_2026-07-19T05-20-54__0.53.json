@@ -1,0 +1,33 @@
+{
+  "metadata": {
+    "task": "number_baseball_ko_easy",
+    "model": "openrouter/deepseek/deepseek-v4-flash",
+    "timestamp": "2026-07-19T05-20-54",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "temperature": 1.0,
+      "top_p": 1.0,
+      "max_tokens": 32768
+    },
+    "gen_kwargs_cli": "temperature=1.0,top_p=1.0,max_tokens=32768"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.53,
+      "correct_count": 53,
+      "total_count": 100,
+      "avg_latency_ms": 399580.38866758347,
+      "finish_reason_counts": {
+        "stop": 90,
+        "length": 10
+      }
+    },
+    "by_difficulty": {
+      "easy": {
+        "total": 100,
+        "correct": 53,
+        "accuracy": 0.53
+      }
+    }
+  }
+}

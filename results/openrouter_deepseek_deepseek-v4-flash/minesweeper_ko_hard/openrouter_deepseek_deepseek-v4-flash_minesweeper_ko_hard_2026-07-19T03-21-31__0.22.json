@@ -1,0 +1,33 @@
+{
+  "metadata": {
+    "task": "minesweeper_ko_hard",
+    "model": "openrouter/deepseek/deepseek-v4-flash",
+    "timestamp": "2026-07-19T03-21-31",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "temperature": 1.0,
+      "top_p": 1.0,
+      "max_tokens": 32768
+    },
+    "gen_kwargs_cli": "temperature=1.0,top_p=1.0,max_tokens=32768"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.22,
+      "correct_count": 22,
+      "total_count": 100,
+      "avg_latency_ms": 520931.8322610855,
+      "finish_reason_counts": {
+        "stop": 54,
+        "length": 46
+      }
+    },
+    "by_difficulty": {
+      "hard": {
+        "total": 100,
+        "correct": 22,
+        "accuracy": 0.22
+      }
+    }
+  }
+}

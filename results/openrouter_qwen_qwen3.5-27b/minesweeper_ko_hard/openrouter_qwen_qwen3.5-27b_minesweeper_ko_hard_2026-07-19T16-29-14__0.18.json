@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "task": "minesweeper_ko_hard",
+    "model": "openrouter/qwen/qwen3.5-27b",
+    "timestamp": "2026-07-19T16-29-14",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "temperature": 0.6,
+      "top_p": 0.95,
+      "top_k": 20,
+      "max_tokens": 32768
+    },
+    "gen_kwargs_cli": "temperature=0.6,top_p=0.95,top_k=20,max_tokens=32768"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.18,
+      "correct_count": 18,
+      "total_count": 100,
+      "avg_latency_ms": 552266.4250159264,
+      "finish_reason_counts": {
+        "stop": 78,
+        "length": 22
+      }
+    },
+    "by_difficulty": {
+      "hard": {
+        "total": 100,
+        "correct": 18,
+        "accuracy": 0.18
+      }
+    }
+  }
+}

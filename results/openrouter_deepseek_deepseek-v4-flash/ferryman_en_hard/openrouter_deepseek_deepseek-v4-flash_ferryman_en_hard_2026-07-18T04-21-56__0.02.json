@@ -1,0 +1,33 @@
+{
+  "metadata": {
+    "task": "ferryman_en_hard",
+    "model": "openrouter/deepseek/deepseek-v4-flash",
+    "timestamp": "2026-07-18T04-21-56",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "temperature": 1.0,
+      "top_p": 1.0,
+      "max_tokens": 32768
+    },
+    "gen_kwargs_cli": "temperature=1.0,top_p=1.0,max_tokens=32768"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.02,
+      "correct_count": 2,
+      "total_count": 100,
+      "avg_latency_ms": 436270.63061237335,
+      "finish_reason_counts": {
+        "length": 52,
+        "stop": 48
+      }
+    },
+    "by_difficulty": {
+      "hard": {
+        "total": 100,
+        "correct": 2,
+        "accuracy": 0.02
+      }
+    }
+  }
+}

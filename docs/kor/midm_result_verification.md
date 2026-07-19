@@ -78,16 +78,86 @@ sat_puzzles 예 (형식 일치, 값 불일치):
 - 검증 스크립트: CSV의 `finish_reason`/`filtered_resps`/`resps` 컬럼 대조 (evaluation/run.py 출력 스키마)
 - 원 데이터: 태스크별 CSV에 문항 단위 질문/정답/모델응답/추출답/finish_reason 전체 보존
 
-## 부록. DeepSeek-V4-Flash의 ferryman truncation 노트 (진행 중 실험, 2026-07-18)
+## 부록. 전 모델 truncation 집계 (최종, 2026-07-19)
 
-Midm과 달리 **DeepSeek-V4-Flash(OpenRouter, thinking on)의 ferryman 저점수는 절반 이상이 토큰 한도 잘림**이다. API 에러는 아니다:
+Qwen3.5-27B·DeepSeek-V4-Flash(OpenRouter) 완주 후, config 정책("finish_reason 기반
+truncation rate를 태스크×난이도별 집계, 유의한 셀은 결과표에 각주 처리")에 따라
+**잘림(finish_reason=length) 비율 ≥20% 셀**을 집계했다. 에러 행은 세 모델 모두 0건
+(에러 발생 태스크는 전량 재실행)이다.
 
-| 태스크 | 점수 (100점) | finish_reason=length (잘림 비율) |
-|---|---|---|
-| ferryman_en_medium | 0 | **54%** |
-| ferryman_en_hard | 2 | **52%** |
-| ferryman_ko_easy | 23 | 23% |
+**Qwen3.5-27B** (22개 셀):
 
-즉 문항의 절반에서 thinking이 `max_tokens=32768`을 다 쓰고도 답에 못 도달했다. ferryman이 탐색형 계획 문제라 DeepSeek이 thinking을 극단적으로 길게 쓰는 패턴이다.
+| 태스크 | 잘림 비율 |
+|---|---|
+| cryptarithmetic_en_hard | 44% |
+| sat_puzzles_en_hard | 39% |
+| cryptarithmetic_en_medium | 34% |
+| minesweeper_en_hard | 33% |
+| cipher_en_easy | 27% |
+| hanoi_en_hard | 27% |
+| cipher_en_hard | 26% |
+| cipher_ko_medium | 26% |
+| cryptarithmetic_ko_hard | 26% |
+| minesweeper_en_medium | 26% |
+| cipher_ko_hard | 25% |
+| number_baseball_en_hard | 25% |
+| inequality_en_hard | 24% |
+| sudoku_en_hard | 23% |
+| cipher_en_medium | 22% |
+| cryptarithmetic_en_easy | 22% |
+| minesweeper_ko_hard | 22% |
+| sat_puzzles_ko_hard | 22% |
+| causal_dag_en_hard | 21% |
+| causal_dag_ko_hard | 21% |
+| sat_puzzles_ko_medium | 21% |
+| cryptarithmetic_ko_medium | 20% |
 
-**다만 이는 재실행 사유가 아니다.** 32768은 이미 `model_configs.yaml`의 본 실험 통일 스펙 상한이고, config에 이 상황에 대한 정책이 명시되어 있다: "finish_reason 기반 truncation rate를 태스크×난이도별 집계, 유의한 셀은 결과표에 각주 처리." 현재 파이프라인이 finish_reason을 전부 기록하고 있으므로 정책대로 처리 가능한 상태다. 전 모델 완주 후 태스크×난이도별 truncation rate 표를 집계해 각주 대상 셀을 확정한다.
+**DeepSeek-V4-Flash** (29개 셀):
+
+| 태스크 | 잘림 비율 |
+|---|---|
+| ferryman_ko_hard | 64% |
+| ferryman_en_medium | 54% |
+| ferryman_en_hard | 52% |
+| minesweeper_ko_hard | 46% |
+| ferryman_ko_medium | 43% |
+| sat_puzzles_en_hard | 43% |
+| sat_puzzles_ko_hard | 42% |
+| hanoi_en_hard | 40% |
+| ferryman_en_easy | 37% |
+| array_formula_ko_hard | 36% |
+| minesweeper_en_hard | 33% |
+| minesweeper_ko_medium | 33% |
+| number_baseball_ko_hard | 33% |
+| cryptarithmetic_en_hard | 32% |
+| hanoi_ko_hard | 32% |
+| cipher_ko_hard | 30% |
+| causal_dag_ko_hard | 29% |
+| number_baseball_en_hard | 29% |
+| sudoku_ko_hard | 29% |
+| sudoku_en_hard | 27% |
+| number_baseball_ko_medium | 26% |
+| array_formula_en_hard | 25% |
+| inequality_en_hard | 24% |
+| ferryman_ko_easy | 23% |
+| sat_puzzles_ko_medium | 22% |
+| causal_dag_ko_medium | 21% |
+| sat_puzzles_en_medium | 21% |
+| cryptarithmetic_ko_hard | 20% |
+| kinship_ko_hard | 20% |
+
+**Midm-2.0** (2개 셀):
+
+| 태스크 | 잘림 비율 |
+|---|---|
+| korean_units_ko_hard | 35% |
+| array_formula_ko_easy | 21% |
+
+패턴: hard 난이도 + 탐색형(ferryman·hanoi·minesweeper)·기호조작형(cipher·cryptarithmetic)
+태스크에 잘림이 집중된다. `max_tokens=32768`은 본 실험 통일 스펙 상한이므로 재실행이 아니라
+각주 대상이다. Midm은 출력이 짧아(non-reasoning) 잘림이 거의 없다.
+
+참고 관찰: Qwen3.5-27B의 일부 태스크(causal_dag, logic_grid)는 시트1의 로컬 vLLM(BF16)
+실측 대비 큰 폭으로 낮았다. 잘림(10~21%)만으로는 설명되지 않는 격차로, 서빙 환경
+(로컬 BF16 vs OpenRouter 프로바이더 서빙)에 대한 민감도가 태스크별로 크게 다름을 시사한다.
+단, 시트1은 설정 변경으로 무효 처리된 기준이므로 직접 비교보다는 방법론 각주로 기록한다.
