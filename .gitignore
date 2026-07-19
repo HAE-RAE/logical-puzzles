@@ -28,9 +28,8 @@ Desktop.ini
 $RECYCLE.BIN/
 
 # data
-hrmcr/
 evaluation_results/
-
+temp/
 # 로컬 평가 실행 로그/셋업
 .setup_logs/
 
