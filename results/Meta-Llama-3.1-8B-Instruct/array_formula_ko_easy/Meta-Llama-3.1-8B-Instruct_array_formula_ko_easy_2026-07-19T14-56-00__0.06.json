@@ -1,0 +1,33 @@
+{
+    "metadata": {
+        "task": "array_formula_ko_easy",
+        "model": "meta-llama/Meta-Llama-3.1-8B-Instruct",
+        "timestamp": "2026-07-19T14-56-00",
+        "total_puzzles": 100,
+        "gen_kwargs": {
+            "temperature": 0.6,
+            "max_tokens": 32768,
+            "top_p": 0.9,
+            "top_k": -1,
+            "presence_penalty": 0.0,
+            "enable_thinking": false
+        },
+        "gen_kwargs_cli": "temperature=0.6,max_tokens=32768,top_p=0.9,top_k=-1,presence_penalty=0.0,reasoning=off"
+    },
+    "summary": {
+        "overall": {
+            "accuracy": 0.06,
+            "correct_count": 6,
+            "total_count": 100,
+            "accuracy_source": "sheet2",
+            "graded_correct_count": 4
+        },
+        "by_difficulty": {
+            "easy": {
+                "total": 100,
+                "correct": 6,
+                "accuracy": 0.06
+            }
+        }
+    }
+}

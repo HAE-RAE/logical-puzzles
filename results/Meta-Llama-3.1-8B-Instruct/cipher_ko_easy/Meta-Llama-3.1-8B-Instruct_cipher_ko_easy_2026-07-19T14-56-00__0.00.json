@@ -18,7 +18,9 @@
         "overall": {
             "accuracy": 0.0,
             "correct_count": 0,
-            "total_count": 100
+            "total_count": 100,
+            "accuracy_source": "sheet2",
+            "graded_correct_count": 0
         },
         "by_difficulty": {
             "easy": {
