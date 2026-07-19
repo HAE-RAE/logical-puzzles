@@ -833,7 +833,8 @@ def generate_question(difficulty="Medium", forced_chain=None):
     difficulty_config = {
         "easy": {
             "num_choices": 26,
-            "num_noise_dialogues": 36,
+            # flash 보정: hop 3-4 + 노이즈 36 조합이 목표 0.75에 못 미쳐 하향.
+            "num_noise_dialogues": 15,
             "near_miss_distractor_ratio": 1.0,
             "similar_distractor_ratio": 1.0,
             "confusable_distractor_ratio": 1.0,
@@ -845,7 +846,9 @@ def generate_question(difficulty="Medium", forced_chain=None):
         },
         "medium": {
             "num_choices": 26,
-            "num_noise_dialogues": 40,
+            # flash 보정: 노이즈 40에서 0.66이라 목표 0.50 위. 노이즈가 주 레버
+            # (친가 기준 노이즈 40→112에서 0.78→0.32 관측)이므로 상향.
+            "num_noise_dialogues": 62,
             "near_miss_distractor_ratio": 1.0,
             "similar_distractor_ratio": 1.0,
             "confusable_distractor_ratio": 1.0,
@@ -1168,33 +1171,80 @@ def _round_robin_chains(all_chains, n):
     return result
 
 
-def _is_affinal_or_extended_chain(chain):
-    """Return True for spouse-side or extended branch relations."""
-    affinal = {"남편", "아내"}
-    extended_markers = {"형", "남동생", "누나", "언니", "오빠", "여동생", "아내", "남편", "자녀"}
-    return any(rel in affinal for rel in chain) or sum(rel in extended_markers for rel in chain[1:]) >= 2
+# 난이도축(hop)이 관계 유형과 교락되어 강한 모델에서 hard>easy 역전이 발생했던
+# 문제를 해소하기 위한 브랜치 쿼터: 모든 tier가 동일한 시댁/처가/외가/친가 구성을
+# 갖도록 한다. (인벤토리 제약: 5-hop 사슬은 시댁/처가에만 존재, 외가/친가는 최대 4-hop)
+_BRANCH_QUOTAS = {"시댁": 30, "처가": 30, "외가": 15, "친가": 25}
+
+# tier×브랜치별 hop 범위(min, max).
+#
+# 두 축이 모델별로 분리되어 있다는 측정 결과에 기반한 설계:
+#   - hop  = 강한 모델(gemini-3.1-pro)의 난이도를 결정. 짧은 사슬일수록 어렵다
+#            (근친 호칭 큰아버지/백부/삼촌처럼 변형이 미세하게 갈려 혼동).
+#            노이즈 62 고정 시 3.1-pro hop3 0.61 vs hop4 0.77.
+#   - 노이즈 = flash의 난이도를 결정. 3.1-pro는 노이즈에 거의 반응하지 않는다
+#            (hop4 고정 시 노이즈 15/62/112에서 0.86/0.77/0.88).
+#            반대로 flash는 고노이즈에서 hop에 둔감하다(노이즈 112에서
+#            hop4 0.28 vs hop5 0.30).
+# 따라서 hop은 난이도가 올라갈수록 '짧아지도록'(3.1-pro용),
+# 노이즈는 '커지도록'(flash용) 두어 서로 간섭 없이 두 조건을 동시에 만족시킨다.
+# (외가/친가는 5-hop 사슬이 인벤토리에 없어 easy에서 4-hop이 상한)
+_TIER_HOP_RANGES = {
+    "easy":   {"시댁": (4, 5), "처가": (4, 5), "외가": (4, 4), "친가": (4, 4)},
+    "medium": {"시댁": (3, 4), "처가": (3, 4), "외가": (3, 4), "친가": (3, 4)},
+    "hard":   {"시댁": (2, 3), "처가": (2, 3), "외가": (2, 3), "친가": (2, 3)},
+}
 
 
-def _difficulty_chain_pool(all_chains, difficulty):
-    """Select relation chains whose hop length and branch complexity match a target difficulty."""
+def _chain_branch(chain, title_map, branch_map):
+    """사슬의 첫 번째 호칭 기준 가족 브랜치(시댁/처가/외가/친가)를 반환."""
+    titles = title_map[chain]
+    first = titles[0] if isinstance(titles, list) else titles
+    return branch_map.get(first)
+
+
+def _stratified_chain_queue(all_chains, difficulty, num_questions):
+    """
+    브랜치 쿼터×hop 범위로 층화된 사슬 큐(num_questions개)를 반환.
+    모든 tier가 동일한 브랜치 구성을 가지므로 난이도축(hop·노이즈)과
+    관계 유형이 교락하지 않는다.
+    """
     difficulty = difficulty.lower()
-    if difficulty == "easy":
-        # Easy still scored 94%; make 3-hop the floor and include some 4-hop.
-        pool = [c for c in all_chains if 3 <= len(c) - 1 <= 4]
-        longer = [c for c in pool if len(c) - 1 == 4]
-        shorter = [c for c in pool if len(c) - 1 == 3]
-        return longer * 60 + shorter
-    if difficulty == "medium":
-        pool = [c for c in all_chains if 4 <= len(c) - 1 <= 5]
-        complex_pool = [c for c in pool if _is_affinal_or_extended_chain(c)]
-        simple_pool = [c for c in pool if c not in complex_pool]
-        longest = [c for c in complex_pool if len(c) - 1 >= 5]
-        four_hop = [c for c in complex_pool if len(c) - 1 == 4]
-        return longest * 20 + four_hop + simple_pool
-    if difficulty == "hard":
-        longest = [c for c in all_chains if len(c) - 1 >= 5]
-        return longest
-    return list(all_chains)
+    title_map = get_relation_chain_to_title()
+    branch_map = get_title_to_family_branch()
+    hop_ranges = _TIER_HOP_RANGES.get(difficulty)
+    if hop_ranges is None:
+        return _round_robin_chains(list(all_chains), num_questions)
+
+    by_branch = {br: [] for br in _BRANCH_QUOTAS}
+    for c in all_chains:
+        br = _chain_branch(c, title_map, branch_map)
+        if br in by_branch:
+            by_branch[br].append(c)
+
+    total_quota = sum(_BRANCH_QUOTAS.values())
+    alloc = {
+        br: num_questions * quota // total_quota
+        for br, quota in _BRANCH_QUOTAS.items()
+    }
+    # 반올림 잔여분은 쿼터가 큰 브랜치부터 배분
+    remainder = num_questions - sum(alloc.values())
+    for br in sorted(_BRANCH_QUOTAS, key=_BRANCH_QUOTAS.get, reverse=True):
+        if remainder <= 0:
+            break
+        alloc[br] += 1
+        remainder -= 1
+
+    queue = []
+    for br, n in alloc.items():
+        lo, hi = hop_ranges[br]
+        pool = [c for c in by_branch[br] if lo <= len(c) - 1 <= hi]
+        if not pool:  # 방어: hop 범위가 비면 브랜치 전체로 확장
+            pool = by_branch[br]
+        queue.extend(_round_robin_chains(pool, n))
+
+    random.shuffle(queue)
+    return queue
 
 
 def create_dataset_files(num_questions_per_difficulty=128):
@@ -1219,9 +1269,9 @@ def create_dataset_files(num_questions_per_difficulty=128):
     for difficulty in difficulties:
         print(f"\n=== Generating {difficulty} problems ({num_questions_per_difficulty} questions) ===")
 
-        chain_pool = _difficulty_chain_pool(all_chains, difficulty)
-        print(f"  Chain pool: {len(chain_pool)} chains")
-        chain_queue = _round_robin_chains(chain_pool, num_questions_per_difficulty)
+        chain_queue = _stratified_chain_queue(
+            all_chains, difficulty, num_questions_per_difficulty)
+        print(f"  Chain queue: {len(chain_queue)} chains (branch-quota stratified)")
         diff_idx = 0
 
         for i, chain in enumerate(chain_queue):

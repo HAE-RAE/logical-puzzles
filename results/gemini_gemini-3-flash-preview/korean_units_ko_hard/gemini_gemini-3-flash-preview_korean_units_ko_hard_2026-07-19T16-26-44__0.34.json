@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "task": "korean_units_ko_hard",
+    "model": "gemini/gemini-3-flash-preview",
+    "timestamp": "2026-07-19T16-26-44",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "temperature": 1.0,
+      "max_tokens": 32768,
+      "top_p": 0.95,
+      "top_k": 64,
+      "reasoning_effort": "medium"
+    },
+    "gen_kwargs_cli": "temperature=1.0,max_tokens=32768,top_p=0.95,top_k=64,reasoning_effort=medium"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.34,
+      "correct_count": 34,
+      "total_count": 100,
+      "avg_latency_ms": 63068.25791120529,
+      "finish_reason_counts": {
+        "stop": 100
+      }
+    },
+    "by_difficulty": {
+      "hard": {
+        "total": 100,
+        "correct": 34,
+        "accuracy": 0.34
+      }
+    }
+  }
+}
