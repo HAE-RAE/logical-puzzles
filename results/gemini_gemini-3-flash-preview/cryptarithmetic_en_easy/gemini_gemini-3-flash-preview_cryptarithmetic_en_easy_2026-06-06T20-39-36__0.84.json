@@ -1,0 +1,31 @@
+{
+  "metadata": {
+    "task": "cryptarithmetic_en_easy",
+    "model": "gemini/gemini-3-flash-preview",
+    "timestamp": "2026-06-06T20-39-36",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "temperature": 1.0,
+      "max_tokens": 32768,
+      "top_p": 0.95,
+      "top_k": 64,
+      "reasoning_effort": "medium"
+    },
+    "gen_kwargs_cli": "temperature=1.0,max_tokens=32768,top_p=0.95,top_k=64,reasoning_effort=medium"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.84,
+      "correct_count": 84,
+      "total_count": 100,
+      "avg_latency_ms": 51297.73118972778
+    },
+    "by_difficulty": {
+      "easy": {
+        "total": 100,
+        "correct": 84,
+        "accuracy": 0.84
+      }
+    }
+  }
+}

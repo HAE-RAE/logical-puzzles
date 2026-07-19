@@ -47,18 +47,30 @@ UNIT_SYSTEMS = {
 UGLY_RATIOS = [7, 11, 12, 13, 16, 17, 19, 23]
 
 # 난이도별 레버 프리셋. (gemini-3-flash 기준 보정 대상)
+# hard 보정 이력 (flash 기준, 합격 밴드 15~35%):
+#   n_quant 40 + scalar(2,49) 아님, cmax 9999 -> 0.15
+#   n_quant 30 + scalar(2,49), cmax 9999      -> 0.11
+#   n_quant 30 + scalar(2,9),  cmax 9999      -> 0.13
+#   → 항목 수(40→30)는 표준오차 내로 거의 무효. 이 구간의 지배 변수는
+#     계수 크기(cmax)와 항목당 단위 수(terms)이므로 cmax를 직접 낮춘다.
+#   n_quant 26 + cmax 3999                    -> 0.36 (밴드 상한 0.35 초과)
+#   → cmax 감도가 커서(9999:0.13, 3999:0.36) 두 점 보간으로 0.25 지점인
+#     cmax 6999를 채택.
 _CONFIG = {
     'easy': dict(
         depth=5, ratio_mode='ugly', n_quant=17, terms=(4, 5),
-        cmax=1249, scalar=True, subtract=True,
+        cmax=1249, scalar=True, scalar_range=(2, 9), subtract=True,
+        subtract_p=0.25,
     ),
     'medium': dict(
         depth=5, ratio_mode='ugly', n_quant=24, terms=(4, 5),
-        cmax=2499, scalar=True, subtract=True,
+        cmax=2499, scalar=True, scalar_range=(2, 9), subtract=True,
+        subtract_p=0.25,
     ),
     'hard': dict(
-        depth=5, ratio_mode='ugly', n_quant=40, terms=(5, 5),
-        cmax=9999, scalar=True, subtract=True,
+        depth=5, ratio_mode='ugly', n_quant=26, terms=(5, 5),
+        cmax=6999, scalar=True, scalar_range=(2, 9), subtract=True,
+        subtract_p=0.25,
     ),
 }
 
@@ -125,8 +137,8 @@ def generate_puzzle(difficulty='easy', seed=None):
         items = []
         for _i in range(cfg['n_quant']):
             q = _make_quantity(rng, depth, cfg['terms'], cfg['cmax'])
-            scalar = rng.randint(2, 9) if cfg['scalar'] else 1
-            sign = -1 if (cfg['subtract'] and rng.random() < 0.25) else 1
+            scalar = rng.randint(*cfg['scalar_range']) if cfg['scalar'] else 1
+            sign = -1 if (cfg['subtract'] and rng.random() < cfg['subtract_p']) else 1
             items.append({'q': q, 'scalar': scalar, 'sign': sign})
 
         # 각 항목 1개라도 단위 2개 미만이면 배제

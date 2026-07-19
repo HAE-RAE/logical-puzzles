@@ -1,0 +1,32 @@
+{
+  "metadata": {
+    "task": "kinship_ko_medium",
+    "model": "gemini/gemini-3.1-pro-preview",
+    "timestamp": "2026-07-19T17-32-37",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "temperature": 1.0,
+      "max_tokens": 32768,
+      "reasoning_effort": "medium"
+    },
+    "gen_kwargs_cli": "temperature=1.0,max_tokens=32768,reasoning_effort=medium"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.68,
+      "correct_count": 68,
+      "total_count": 100,
+      "avg_latency_ms": 37680.995275974274,
+      "finish_reason_counts": {
+        "stop": 100
+      }
+    },
+    "by_difficulty": {
+      "medium": {
+        "total": 100,
+        "correct": 68,
+        "accuracy": 0.68
+      }
+    }
+  }
+}
