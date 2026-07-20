@@ -1,0 +1,31 @@
+{
+    "metadata": {
+        "task": "yacht_dice_en_medium",
+        "model": "Qwen/Qwen3.5-397B-A17B",
+        "timestamp": "2026-07-19T15-40-00",
+        "total_puzzles": 100,
+        "gen_kwargs": {
+            "temperature": 0.6,
+            "max_tokens": 32768,
+            "top_p": 0.9,
+            "top_k": -1,
+            "presence_penalty": 0.0,
+            "enable_thinking": false
+        },
+        "gen_kwargs_cli": "temperature=0.6,max_tokens=32768,top_p=0.9,top_k=-1,presence_penalty=0.0,reasoning=off"
+    },
+    "summary": {
+        "overall": {
+            "accuracy": 0.66,
+            "correct_count": 66,
+            "total_count": 100
+        },
+        "by_difficulty": {
+            "medium": {
+                "total": 100,
+                "correct": 66,
+                "accuracy": 0.66
+            }
+        }
+    }
+}

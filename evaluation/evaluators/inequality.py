@@ -2,7 +2,9 @@
 Inequality Evaluator
 
 Evaluates inequality puzzle responses with constraint-based fallback validation.
-Answer format: digit sequence (e.g., "3142" or "5 3 12 4 10 1" for size>9).
+Answer format: digit sequence for size<=9 (e.g., "3142"); for size>9, one char
+per cell using lowercase letters for values 10+ (a=10 ... g=16, e.g.
+"123456789abcdefg"). Space-separated numbers are also accepted when grading.
 """
 
 import logging
@@ -18,7 +20,8 @@ class InequalityEvaluator(BaseEvaluator):
     """
     Inequality puzzle evaluator.
 
-    Supports both concatenated (size<=9) and space-separated (size>9) formats.
+    Supports concatenated digits (size<=9), letter notation a-g for values
+    10-16 (size>9), and space-separated numbers as a grading fallback.
     Falls back to constraint-based validation when the answer doesn't match
     the pre-computed value but still satisfies all inequality constraints.
     """
@@ -34,7 +37,7 @@ You are an expert at inequality-grid (Futoshiki-style) constraint puzzles.
 ### Output format
 Your final line must be:
 Answer: <left to right>
-(If puzzle size <= 9, use concatenated digits only, e.g. Answer: 53241; if size > 9, separate numbers with single spaces, e.g. Answer: 5 3 12 4 10 1.)
+(If puzzle size <= 9, use concatenated digits only, e.g. Answer: 53241; if size > 9, write one character per cell, using lowercase letters for values 10 and above (a=10, b=11, ... g=16), concatenated without spaces, e.g. Answer: 123456789abcdefg.)
 """
 
     KOREAN_SYSTEM_PROMPT = """### 지시사항
@@ -48,8 +51,47 @@ Answer: <left to right>
 ### 출력 형식
 마지막 줄은 반드시 아래 형식으로 작성하세요:
 Answer: <왼쪽에서 오른쪽>
-(크기 9 이하는 숫자만 이어 쓰기, 예: Answer: 53241; 크기 9 초과는 공백 한 칸으로 구분, 예: Answer: 5 3 12 4 10 1.)
+(크기 9 이하는 숫자만 이어 쓰기, 예: Answer: 53241; 크기 9 초과는 10 이상의 값을 소문자(a=10, b=11, ... g=16)로 표기하여 공백 없이 이어 쓰기, 예: Answer: 123456789abcdefg.)
 """
+
+    @staticmethod
+    def _infer_size(expected_answer: str) -> int:
+        """Infer puzzle size from the gold answer string.
+
+        Letter-notation answers (values 10-16 written as a-g, one char per
+        cell, e.g. "194c26b7d5g8af3e") have size == len(answer). Otherwise
+        fall back to counting space-separated numbers, or the string length
+        for concatenated digits.
+        """
+        s = str(expected_answer).strip()
+        if not s:
+            return 0
+        if re.fullmatch(r'[0-9a-g]+', s, re.IGNORECASE) and re.search(
+            r'[a-g]', s, re.IGNORECASE
+        ):
+            return len(s)
+        nums = re.findall(r'\d+', s)
+        return len(nums) if len(nums) > 1 else len(s)
+
+    @staticmethod
+    def _extract_letter_token(text: str, size: int) -> Optional[str]:
+        """Find a size-length [0-9a-g] token (case-insensitive) in text.
+
+        Prefers the last standalone occurrence; a second pass strips common
+        separators (spaces, commas, hyphens) to rescue answers written as
+        "1 9 4 c ...". Returns the token lowercased, or None.
+        """
+        if not text or not size:
+            return None
+        pattern = r'(?<![0-9A-Za-z])[0-9a-gA-G]{%d}(?![0-9A-Za-z])' % size
+        matches = re.findall(pattern, text)
+        if matches:
+            return matches[-1].lower()
+        compact = re.sub(r'[\s,\-]+', '', text)
+        matches = re.findall(pattern, compact)
+        if matches:
+            return matches[-1].lower()
+        return None
 
     def _parse_answer(self, response: str, puzzle: Dict) -> Optional[str]:
         """Extract number sequence from LLM response."""
@@ -57,8 +99,22 @@ Answer: <왼쪽에서 오른쪽>
         size = puzzle.get("size", 0)
         answer_text = self._extract_final_answer_text(response) or response
         if not size and expected_answer:
-            nums = re.findall(r'\d+', expected_answer)
-            size = len(nums) if len(nums) > 1 else len(expected_answer)
+            size = self._infer_size(expected_answer)
+
+        uses_letters = bool(
+            re.fullmatch(r'[0-9a-g]+', str(expected_answer), re.IGNORECASE)
+            and re.search(r'[a-g]', str(expected_answer), re.IGNORECASE)
+        )
+        if uses_letters and size:
+            token = self._extract_letter_token(answer_text, size)
+            if token is None:
+                tail = response[-200:] if len(response) > 200 else response
+                token = self._extract_letter_token(tail, size)
+            if token is not None:
+                return token
+            # fall through: the model may have used space-separated numbers,
+            # which the digit-based logic below (with the corrected size)
+            # can still recover and _check_answer can grade.
 
         patterns = [
             r'Answer:\s*([\d\s]+)',
@@ -96,9 +152,18 @@ Answer: <왼쪽에서 오른쪽>
         return None
 
     def _to_int_list(self, s: str, size: int):
-        """Convert answer string to list of ints, handling both formats."""
+        """Convert answer string to list of ints, handling all formats:
+        letter notation (a=10 ... g=16), concatenated digits, and
+        space-separated numbers."""
         if not s:
             return []
+        s = str(s).strip()
+        low = s.lower()
+        if re.fullmatch(r'[0-9a-g]+', low) and re.search(r'[a-g]', low):
+            return [
+                int(ch) if ch.isdigit() else ord(ch) - ord('a') + 10
+                for ch in low
+            ]
         nums = re.findall(r'\d+', s)
         if len(nums) == 1 and len(nums[0]) == size and size <= 9:
             return [int(d) for d in nums[0]]
@@ -165,9 +230,7 @@ Answer: <왼쪽에서 오른쪽>
         if predicted is None:
             return False, 0.0
 
-        size = len(re.findall(r'\d+', str(expected)))
-        if size <= 1:
-            size = len(str(expected))
+        size = self._infer_size(str(expected))
 
         expected_list = self._to_int_list(str(expected), size)
         predicted_list = self._to_int_list(str(predicted), size)
@@ -227,3 +290,4 @@ Answer: <왼쪽에서 오른쪽>
                 puzzle, response, latency_ms, str(e),
                 finish_reason=usage.get("finish_reason") or "error",
             )
+# changed

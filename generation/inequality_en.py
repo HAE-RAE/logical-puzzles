@@ -934,9 +934,9 @@ def build_futoshiki_solution(p: FutoshikiPuzzle) -> str:
 # easy: 1D chains. Two size bands; small band hides one inequality, large band
 # is fully revealed and uses the base-36 answer encoding.
 EASY_CHAIN_BANDS = [
-    {"weight": 0.35, "sizes": [8, 9], "num_to_hide": 0},
-    {"weight": 0.50, "sizes": [8, 9], "num_to_hide": 1},
-    {"weight": 0.15, "sizes": [16], "num_to_hide": 0},
+    {"weight": 0.30, "sizes": [12, 13, 14], "num_to_hide": 1},
+    {"weight": 0.45, "sizes": [16], "num_to_hide": 1},
+    {"weight": 0.25, "sizes": [16], "num_to_hide": 2},
 ]
 
 # medium / hard: Futoshiki. grid-size weights + the fraction of puzzles that

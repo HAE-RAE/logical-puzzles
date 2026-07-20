@@ -909,9 +909,9 @@ def build_futoshiki_solution(p: FutoshikiPuzzle) -> str:
 # easy: 1D 체인. 두 크기 밴드; 소규모 밴드는 부등호 1개 숨김, 대규모 밴드는
 # 전부 공개하고 base-36 답 인코딩 사용.
 EASY_CHAIN_BANDS = [
-    {"weight": 0.35, "sizes": [8, 9], "num_to_hide": 0},
-    {"weight": 0.50, "sizes": [8, 9], "num_to_hide": 1},
-    {"weight": 0.15, "sizes": [16], "num_to_hide": 0},
+    {"weight": 0.30, "sizes": [12, 13, 14], "num_to_hide": 1},
+    {"weight": 0.45, "sizes": [16], "num_to_hide": 1},
+    {"weight": 0.25, "sizes": [16], "num_to_hide": 2},
 ]
 
 # medium / hard: Futoshiki. 격자 크기 가중치 + 역추적이 실제로 필요한 퍼즐 비율
