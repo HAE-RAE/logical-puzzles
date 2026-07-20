@@ -1,0 +1,33 @@
+{
+  "metadata": {
+    "task": "jamo_ko_medium",
+    "model": "openrouter/deepseek/deepseek-v4-flash",
+    "timestamp": "2026-07-19T16-43-29",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "temperature": 1.0,
+      "top_p": 1.0,
+      "max_tokens": 32768
+    },
+    "gen_kwargs_cli": "temperature=1.0,top_p=1.0,max_tokens=32768"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.1,
+      "correct_count": 10,
+      "total_count": 100,
+      "avg_latency_ms": 71758.93144607544,
+      "finish_reason_counts": {
+        "stop": 95,
+        "length": 5
+      }
+    },
+    "by_difficulty": {
+      "medium": {
+        "total": 100,
+        "correct": 10,
+        "accuracy": 0.1
+      }
+    }
+  }
+}

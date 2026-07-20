@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "task": "number_baseball_en_easy",
+    "model": "openrouter/qwen/qwen3.5-27b",
+    "timestamp": "2026-07-18T21-00-31",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "temperature": 0.6,
+      "top_p": 0.95,
+      "top_k": 20,
+      "max_tokens": 32768
+    },
+    "gen_kwargs_cli": "temperature=0.6,top_p=0.95,top_k=20,max_tokens=32768"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.81,
+      "correct_count": 81,
+      "total_count": 100,
+      "avg_latency_ms": 449027.2867846489,
+      "finish_reason_counts": {
+        "stop": 93,
+        "length": 7
+      }
+    },
+    "by_difficulty": {
+      "easy": {
+        "total": 100,
+        "correct": 81,
+        "accuracy": 0.81
+      }
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "task": "sudoku_ko_medium",
+    "model": "openrouter/qwen/qwen3.5-27b",
+    "timestamp": "2026-07-19T05-06-24",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "temperature": 0.6,
+      "top_p": 0.95,
+      "top_k": 20,
+      "max_tokens": 32768
+    },
+    "gen_kwargs_cli": "temperature=0.6,top_p=0.95,top_k=20,max_tokens=32768"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.87,
+      "correct_count": 87,
+      "total_count": 100,
+      "avg_latency_ms": 331263.3414578438,
+      "finish_reason_counts": {
+        "stop": 92,
+        "length": 8
+      }
+    },
+    "by_difficulty": {
+      "medium": {
+        "total": 100,
+        "correct": 87,
+        "accuracy": 0.87
+      }
+    }
+  }
+}
