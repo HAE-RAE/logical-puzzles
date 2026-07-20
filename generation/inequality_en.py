@@ -931,25 +931,25 @@ def build_futoshiki_solution(p: FutoshikiPuzzle) -> str:
 # Tier configuration (calibrated to the reference dataset)
 # --------------------------------------------------------------------------- #
 
-# easy: 1D chains. Two size bands; small band hides one inequality, large band
-# is fully revealed and uses the base-36 answer encoding.
-EASY_CHAIN_BANDS = [
-    {"weight": 0.30, "sizes": [12, 13, 14], "num_to_hide": 1},
-    {"weight": 0.45, "sizes": [16], "num_to_hide": 1},
-    {"weight": 0.25, "sizes": [16], "num_to_hide": 2},
-]
-
-# medium / hard: Futoshiki. grid-size weights + the fraction of puzzles that
-# should genuinely require backtracking (vs. be solvable by the limited
-# propagation rules alone), calibrated to the reference set.
+# easy / medium / hard: all Futoshiki. grid-size weights + the fraction of
+# puzzles that should genuinely require backtracking (vs. be solvable by the
+# limited propagation rules alone).
+#
+# easy uses a 4x4 grid that is mostly propagation-solvable, sitting a notch
+# below medium (5x5, mostly backtracking). The former 1D inequality-chain easy
+# tier was retired because strong models solved it near-perfectly regardless of
+# chain length or hidden-inequality count; a smaller Futoshiki grid gives a
+# cleaner, monotone easy < medium < hard difficulty axis.
 FUTOSHIKI_TIERS = {
+    "easy": {"size_weights": {4: 1.0}, "backtrack_ratio": 0.35},
     "medium": {"size_weights": {5: 0.62, 6: 0.38}, "backtrack_ratio": 0.82},
     "hard": {"size_weights": {5: 0.20, 6: 0.80}, "backtrack_ratio": 0.92},
 }
 
 # Givens revealed per grid size (kept small; the minimal constraint set is what
 # makes the puzzle hard). Calibrated to reference medians (5x5 ~4, 6x6 ~5-6).
-FUTOSHIKI_GIVENS_BY_SIZE = {5: (2, 6), 6: (3, 7)}
+# 4x4 easy reveals a slightly higher share of its cells to keep it approachable.
+FUTOSHIKI_GIVENS_BY_SIZE = {4: (3, 5), 5: (2, 6), 6: (3, 7)}
 
 
 def _weighted_choice(weight_map: Dict[int, float]) -> int:
@@ -963,19 +963,9 @@ def _weighted_choice(weight_map: Dict[int, float]) -> int:
 # --------------------------------------------------------------------------- #
 
 def make_easy_record(idx: int, chain_gen: InequalityPuzzleGenerator) -> dict:
-    bands = EASY_CHAIN_BANDS
-    band = random.choices(bands, weights=[b["weight"] for b in bands], k=1)[0]
-    size = random.choice(band["sizes"])
-    puzzle = chain_gen.generate_chain(
-        size=size, num_to_hide=band["num_to_hide"], difficulty=Difficulty.EASY
-    )
-    return {
-        "id": f"inequality_en_easy_{idx:04d}",
-        "question": create_chain_question(puzzle),
-        "answer": puzzle.get_answer_string(),
-        "solution": build_chain_solution(puzzle),
-        "difficulty": "easy",
-    }
+    # easy is now a 4x4 Futoshiki (see FUTOSHIKI_TIERS). The chain_gen argument is
+    # kept for call-site compatibility but is no longer used.
+    return make_futoshiki_record(idx, "easy")
 
 
 def make_futoshiki_record(idx: int, tier: str) -> dict:
