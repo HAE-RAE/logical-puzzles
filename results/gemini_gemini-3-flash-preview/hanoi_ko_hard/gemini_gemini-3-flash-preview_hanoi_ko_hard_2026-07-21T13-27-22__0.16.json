@@ -2,7 +2,7 @@
   "metadata": {
     "task": "hanoi_ko_hard",
     "model": "gemini/gemini-3-flash-preview",
-    "timestamp": "2026-06-07T04-33-20",
+    "timestamp": "2026-07-21T13-27-22",
     "total_puzzles": 100,
     "gen_kwargs": {
       "temperature": 1.0,
@@ -15,16 +15,16 @@
   },
   "summary": {
     "overall": {
-      "accuracy": 0.27,
-      "correct_count": 27,
+      "accuracy": 0.16,
+      "correct_count": 16,
       "total_count": 100,
-      "avg_latency_ms": 52048.36539268494
+      "avg_latency_ms": 86729.44583177567
     },
     "by_difficulty": {
       "hard": {
         "total": 100,
-        "correct": 27,
-        "accuracy": 0.27
+        "correct": 16,
+        "accuracy": 0.16
       }
     }
   }

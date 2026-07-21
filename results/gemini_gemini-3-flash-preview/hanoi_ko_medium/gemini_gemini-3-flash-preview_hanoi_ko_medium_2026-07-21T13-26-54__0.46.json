@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "task": "hanoi_en_medium",
+    "task": "hanoi_ko_medium",
     "model": "gemini/gemini-3-flash-preview",
-    "timestamp": "2026-06-06T19-35-09",
+    "timestamp": "2026-07-21T13-26-54",
     "total_puzzles": 100,
     "gen_kwargs": {
       "temperature": 1.0,
@@ -15,16 +15,16 @@
   },
   "summary": {
     "overall": {
-      "accuracy": 0.5,
-      "correct_count": 50,
+      "accuracy": 0.46,
+      "correct_count": 46,
       "total_count": 100,
-      "avg_latency_ms": 81101.83594703674
+      "avg_latency_ms": 76599.31434392929
     },
     "by_difficulty": {
       "medium": {
         "total": 100,
-        "correct": 50,
-        "accuracy": 0.5
+        "correct": 46,
+        "accuracy": 0.46
       }
     }
   }
