@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "task": "cryptarithmetic_en_medium",
+    "model": "google/gemma-4-31b-it",
+    "timestamp": "2026-07-18T17-08-03",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "temperature": 1.0,
+      "top_p": 0.95,
+      "top_k": 64,
+      "max_tokens": 20000,
+      "enable_thinking": true
+    },
+    "gen_kwargs_cli": "temperature=1.0,top_p=0.95,top_k=64,max_tokens=20000,reasoning=on"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.34,
+      "correct_count": 34,
+      "total_count": 100,
+      "avg_latency_ms": 801616.1311531067,
+      "finish_reason_counts": {
+        "unknown": 100
+      }
+    },
+    "by_difficulty": {
+      "medium": {
+        "total": 100,
+        "correct": 34,
+        "accuracy": 0.34
+      }
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "metadata": {
+    "task": "sat_puzzles_en_hard",
+    "model": "google/gemma-4-31b-it",
+    "timestamp": "2026-07-18T21-14-20",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "temperature": 1.0,
+      "top_p": 0.95,
+      "top_k": 64,
+      "max_tokens": 20000,
+      "enable_thinking": true
+    },
+    "gen_kwargs_cli": "temperature=1.0,top_p=0.95,top_k=64,max_tokens=20000,reasoning=on"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.29,
+      "correct_count": 29,
+      "total_count": 100,
+      "avg_latency_ms": 895515.3670191765,
+      "finish_reason_counts": {
+        "stop": 90,
+        "length": 10
+      }
+    },
+    "by_difficulty": {
+      "hard": {
+        "total": 100,
+        "correct": 29,
+        "accuracy": 0.29
+      }
+    }
+  }
+}
