@@ -79,7 +79,25 @@ def audit_sat():
 # --------------------------------------------------------------------------- #
 # Cryptarithmetic: parse equation -> find_solutions (reuse generator solver)
 # --------------------------------------------------------------------------- #
+def _parse_crypt_en(r, cr):
+    """(단어 리스트, 공개키 token->digit) 반환. 2026-07 재작성판: 유일성은
+    '공개된 부분키' 조건부라 반드시 revealed 를 fixed= 로 넘겨야 한다."""
+    q = r["question"]
+    words = [mm.group(1) for line in q.splitlines()
+             if (mm := re.match(r"^[+=]?\s*([A-Z]{2,})\s*$", line.strip()))]
+    revealed = {}
+    for m in re.finditer(r"\[group [A-Z]-[A-Z]\]\s*(.+)", q):
+        for pair in m.group(1).split(","):
+            mm = re.match(r"([A-Z])=(\d)", pair.strip())
+            if mm:
+                ch, d = mm.group(1), int(mm.group(2))
+                revealed[f"{cr._group_of(ch)}{ch}"] = d
+    return words, revealed
+
+
 def audit_crypt():
+    # 2026-07 재작성(3독립표): 공개키 없이 find_solutions 를 부르면 비유일로
+    # 잘못 보고된다 → 반드시 revealed 를 fixed= 로 넘겨 조건부 유일성을 잰다.
     cr = load_mod("cr", "generation/cryptarithmetic_en.py")
     out = {}
     for t in TIERS:
@@ -89,17 +107,18 @@ def audit_crypt():
         u = m = z = 0
         work = []
         for r in rows:
-            words = [mm.group(1) for line in r["question"].splitlines()
-                     if (mm := re.match(r"^[+=]?\s*([A-Z]{2,})\s*$", line.strip()))]
+            words, revealed = _parse_crypt_en(r, cr)
             if len(words) < 3:
                 continue
             stt = {}
-            sols = cr.find_solutions(tuple(words), max_count=2, _stats=stt)
+            sols = cr.find_solutions(tuple(words), max_count=2,
+                                     fixed=dict(revealed), _stats=stt)
             work.append(stt.get("nodes", 0))
+            ans = str(r.get("answer", "")).strip()
             n_uni = len(sols)
             if n_uni == 0:
                 z += 1
-            elif n_uni == 1:
+            elif n_uni == 1 and sols[0][0] == ans:
                 u += 1
             else:
                 m += 1
