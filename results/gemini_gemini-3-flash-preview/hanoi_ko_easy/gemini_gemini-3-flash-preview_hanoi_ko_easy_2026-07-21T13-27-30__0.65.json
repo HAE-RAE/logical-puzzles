@@ -1,0 +1,31 @@
+{
+  "metadata": {
+    "task": "hanoi_ko_easy",
+    "model": "gemini/gemini-3-flash-preview",
+    "timestamp": "2026-07-21T13-27-30",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "temperature": 1.0,
+      "max_tokens": 32768,
+      "top_p": 0.95,
+      "top_k": 64,
+      "reasoning_effort": "medium"
+    },
+    "gen_kwargs_cli": "temperature=1.0,max_tokens=32768,top_p=0.95,top_k=64,reasoning_effort=medium"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.65,
+      "correct_count": 65,
+      "total_count": 100,
+      "avg_latency_ms": 79619.60487604141
+    },
+    "by_difficulty": {
+      "easy": {
+        "total": 100,
+        "correct": 65,
+        "accuracy": 0.65
+      }
+    }
+  }
+}

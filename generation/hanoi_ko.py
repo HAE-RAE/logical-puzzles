@@ -184,109 +184,25 @@ def _build_templates_medium(ctx, rng):
     ]
 
 
-def _build_templates_hard(ctx, rng):
-    n = ctx["n"]
-    src = ctx["src"]
-    aux = ctx["aux"]
-    dst = ctx["dst"]
-    total = ctx["total_moves"]
-    moves = ctx["moves"]
-
-    lo_k = max(1, int(total * 0.68))
-    hi_k = max(lo_k, total - 5)
-    k = rng.randint(lo_k, hi_k)
-
-    H1 = 0
-    H2 = 0
-    for i, (d, f, t) in enumerate(moves[:k]):
-        step = i + 1
-        H1 = (H1 * 33 + d * step + f) % 1000003
-        H2 = (H2 * 17 + d * t + step) % 1000003
-    ans_len_2 = f"({H1}, {H2})"
-
-    temp_pegs = {0: [], 1: [], 2: []}
-    temp_pegs[src] = list(range(n, 0, -1))
-
-    empty_dst_count = 0
-    odd_size_dst_count = 0
-
-    for i, (d, f, t) in enumerate(moves[:k]):
-        if len(temp_pegs[t]) == 0:
-            empty_dst_count += 1
-        if len(temp_pegs[t]) % 2 != 0:
-            odd_size_dst_count += 1
-
-        temp_pegs[f].pop()
-        temp_pegs[t].append(d)
-
-    sum_sq_0 = sum(x**2 for x in temp_pegs[0])
-    sum_sq_1 = sum(x**2 for x in temp_pegs[1])
-    sum_sq_2 = sum(x**2 for x in temp_pegs[2])
-    ans_len_3 = f"({sum_sq_0}, {sum_sq_1}, {sum_sq_2})"
-
-    c_mult_3 = sum(1 for d, f, t in moves[:k] if d % 3 == 0)
-    ans_len_4 = f"({empty_dst_count}, {odd_size_dst_count}, {c_mult_3}, {k})"
-
-    return [
-        (
-            f"{n}개의 원판이 있는 하노이의 탑 최적 이동 수열 (출발 기둥 {src}, 목적 기둥 {dst}, 보조 기둥 {aux}).\n"
-            f"처음 {k}번의 이동을 1-기반 단계 번호 (i = 1, 2, ..., {k})로 생각합니다.\n"
-            f"각 단계 i에서 D_i, F_i, T_i를 각각 이동한 원판, 출발 기둥, 도착 기둥이라 합니다.\n"
-            f"두 누적 해시 값을 계산합니다. 초기값은 H1 = 0, H2 = 0. 각 단계 i = 1부터 {k}까지 다음과 같이 정확히 갱신합니다:\n"
-            f"(a) H1 = (H1 * 33 + D_i * i + F_i) modulo 1000003.\n"
-            f"(b) H2 = (H2 * 17 + D_i * T_i + i) modulo 1000003.\n"
-            f"정확히 다음 형식으로 답하시오: (H1, H2).",
-            ans_len_2,
-            12,
-            "polynomial_running_hash",
-            f"단계 1: 1-기반 인덱스 i로 처음 {k}번의 이동을 반복합니다.\n"
-            f"단계 2: H1 = (H1 * 33 + D_i * i + F_i) % 1000003 누적 -> {H1}.\n"
-            f"단계 3: H2 = (H2 * 17 + D_i * T_i + i) % 1000003 누적 -> {H2}.\n"
-            f"정답: {ans_len_2}"
-        ),
-        (
-            f"{n}개의 원판이 있는 하노이의 탑 최적 이동 수열 (출발 기둥 {src}, 목적 기둥 {dst}, 보조 기둥 {aux}).\n"
-            f"정확히 {k}번의 이동 후, 각 기둥에 있는 원판 번호의 제곱의 합을 구하시오.\n"
-            f"(예: 기둥에 원판 2와 3이 있으면 2^2 + 3^2 = 13. 기둥이 비어 있으면 0.)\n"
-            f"정확히 다음 형식으로 답하시오: (기둥0_제곱합, 기둥1_제곱합, 기둥2_제곱합).",
-            ans_len_3,
-            6,
-            "sum_of_squares_all_pegs",
-            f"단계 1: 처음 {k}번의 이동을 정확히 시뮬레이션하여 각 기둥의 전체 스택을 파악합니다.\n"
-            f"단계 2: 기둥 0의 제곱합 -> {sum_sq_0}, 기둥 1 -> {sum_sq_1}, 기둥 2 -> {sum_sq_2}.\n"
-            f" {ans_len_3}"
-        ),
-        (
-            f"{n}개의 원판이 있는 하노이의 탑 최적 이동 수열 (출발 기둥 {src}, 목적 기둥 {dst}, 보조 기둥 {aux}).\n"
-            f"처음 {k}번의 이동에서 네 가지 값을 계산하시오:\n"
-            f"(a) 빈_목적_횟수 = 원판이 놓이기 직전에 도착 기둥이 완전히 비어 있었던 이동 횟수.\n"
-            f"(b) 홀수_크기_목적_횟수 = 원판이 놓이기 직전에 도착 기둥의 원판 수가 홀수였던 이동 횟수.\n"
-            f"(c) 3의배수_횟수 = 이동한 원판 번호가 정확히 3의 배수인 이동 횟수.\n"
-            f"(d) k의 정확한 값.\n"
-            f"정확히 다음 형식으로 답하시오: (빈_목적_횟수, 홀수_크기_목적_횟수, 3의배수_횟수, k).",
-            ans_len_4,
-            6,
-            "conditional_state_counts",
-            f"단계 1: 처음 {k}번의 이동을 반복합니다.\n"
-            f"단계 2: 각 이동 전 도착 기둥의 원판 수를 추적합니다.\n"
-            f"단계 3: 빈_목적_횟수 = {empty_dst_count}, 홀수_크기_목적_횟수 = {odd_size_dst_count}, 3의배수_횟수 = {c_mult_3}.\n"
-            f" {ans_len_4}"
-        )
-    ]
-
+# hard 는 easy/medium 과 동일한 롤링 삼중 해시(triple_hash) 빌더를 그대로 사용한다.
+# 난이도 레버는 오직 k (질의 이동 수) — 아래 generate_all_datasets 의 k 범위로만 조절한다.
+# (구 버전은 hard 에만 닫힌형으로 풀리는 "최종상태 제곱합"/"조건부 카운트" 유형을 섞어,
+#  그 지름길을 쓰는 모델에서 hard>medium 역전이 발생 → 단일 유형으로 통일해 제거했다.)
+_build_templates_hard = _build_templates_medium
 
 def generate_all_datasets(num_per_difficulty=100, seed=2025):
     puzzles = []
 
     difficulties = {
-        # 모든 난이도가 삼중 해시(easy/medium) 또는 이중 해시+시뮬레이션(hard) 사용.
-        # 재보정 지수 모델 (k=24→88%): C=0.00541, a=0.1292.
-        # easy:   n=5-7, k=25-30; 86%·60% 실행 이후 중간값.
-        # medium: n=7-9, k=31-37 (avg 34) → 정확도≈56%. 목표: 50%.
-        # hard:   n=12-15, k=총 이동의 68-100% (builder 내부 설정). 목표: 25%.
+        # 전 난이도 동일 유형 = 롤링 삼중 해시(triple_hash). 유일 난이도 레버 = k(질의 이동 수).
+        # 지수 오차 모델 (k=24→88%): C=0.00541, a=0.1292 (flash 기준, 참고용).
+        # easy:   k=25-30 → 정확도≈75%(측정 en 0.79).
+        # medium: k=31-37 (avg 34) → 정확도≈56%(측정 en 0.52). 목표: 50%.
+        # hard:   k=42-48 (avg 45). 목표: ~20%. (실측: k42-47→23%/19%, k42-48→~18% 밴드; 사용자 지정 42-48.)
+        #         (n 은 더 이상 난이도 레버가 아님 — 첫 k 이동은 n 에 거의 무관, question 다양성용.)
         "easy": {"n_weights": ([5, 6, 7], [0.15, 0.45, 0.40]), "builder": _build_templates_easy},
         "medium": {"n_weights": ([7, 8, 9], [0.34, 0.33, 0.33]), "builder": _build_templates_medium},
-        "hard": {"n_weights": ([12, 13, 14, 15], [0.25, 0.25, 0.25, 0.25]), "builder": _build_templates_hard}
+        "hard": {"n_weights": ([8, 9, 10, 11], [0.25, 0.25, 0.25, 0.25]), "builder": _build_templates_hard}
     }
 
     rng = random.Random(seed)
@@ -306,16 +222,17 @@ def generate_all_datasets(num_per_difficulty=100, seed=2025):
             moves = get_hanoi_moves(n, src, aux, dst)
             total_moves = len(moves)
 
-            # 재보정 지수 모델 (k=24→88%): C=0.00541, a=0.1292.
-            # Easy:   k=27-33 (avg 30) → 오차≈26% → 정확도≈74%. 목표: 75%.
-            # Medium: k=31-37 (avg 34) → 오차≈44% → 정확도≈56%. 목표: 50%.
-            # Hard:   k는 _build_templates_hard 내부에서 설정 (총 이동의 68-100%).
+            # 유일 난이도 레버 = k. 세 밴드 모두 동일 triple_hash 유형, k 만 다름 (연속·단조).
+            # 지수 오차 모델 (k=24→88%): C=0.00541, a=0.1292 (flash 기준, 참고용).
+            # Easy:   k=25-30 (avg 27) → 정확도≈75%.
+            # Medium: k=31-37 (avg 34) → 정확도≈56%. 목표: 50%.
+            # Hard:   k=42-48 (avg 45). 목표: ~20% (실측 밴드 ~15-25%; 사용자 지정 42-48).
             if diff == "easy":
                 k = rng.randint(25, min(30, total_moves))
             elif diff == "medium":
                 k = rng.randint(31, min(37, total_moves))
             else:
-                k = rng.randint(1, total_moves)
+                k = rng.randint(42, min(48, total_moves))
             disk_k, from_k, to_k = moves[k - 1]
             pegs_after_k = simulate_pegs(n, src, aux, dst, moves, k)
 
