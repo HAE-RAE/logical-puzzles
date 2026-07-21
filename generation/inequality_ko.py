@@ -906,24 +906,23 @@ def build_futoshiki_solution(p: FutoshikiPuzzle) -> str:
 # 티어 설정 (참조 데이터셋에 맞춰 보정)
 # --------------------------------------------------------------------------- #
 
-# easy: 1D 체인. 두 크기 밴드; 소규모 밴드는 부등호 1개 숨김, 대규모 밴드는
-# 전부 공개하고 base-36 답 인코딩 사용.
-EASY_CHAIN_BANDS = [
-    {"weight": 0.30, "sizes": [12, 13, 14], "num_to_hide": 1},
-    {"weight": 0.45, "sizes": [16], "num_to_hide": 1},
-    {"weight": 0.25, "sizes": [16], "num_to_hide": 2},
-]
-
-# medium / hard: Futoshiki. 격자 크기 가중치 + 역추적이 실제로 필요한 퍼즐 비율
-# (제한된 전파 규칙만으로 풀 수 있는 퍼즐 대비), 참조 세트에 맞춰 보정.
+# easy / medium / hard: 전부 Futoshiki. 격자 크기 가중치 + 역추적이 실제로
+# 필요한 퍼즐 비율 (제한된 전파 규칙만으로 풀 수 있는 퍼즐 대비).
+#
+# easy는 4x4 격자로, 대체로 전파만으로 풀리게 하여 medium(5x5, 대부분 역추적)
+# 바로 아래 난이도에 위치시킴. 기존 1D 부등호 체인 easy는 강한 모델이 체인
+# 길이나 숨김 부등호 수와 무관하게 거의 만점을 내서 폐기했고, 더 작은 Futoshiki
+# 격자로 easy < medium < hard 단조 난이도 축을 확보함.
 FUTOSHIKI_TIERS = {
+    "easy": {"size_weights": {4: 1.0}, "backtrack_ratio": 0.35},
     "medium": {"size_weights": {5: 0.62, 6: 0.38}, "backtrack_ratio": 0.82},
     "hard": {"size_weights": {5: 0.20, 6: 0.80}, "backtrack_ratio": 0.92},
 }
 
 # 격자 크기별 공개 힌트 수 (작게 유지; 최소 제약 집합이 난이도를 만듦).
 # 참조 중앙값에 맞춤 (5x5 ~4, 6x6 ~5-6).
-FUTOSHIKI_GIVENS_BY_SIZE = {5: (2, 6), 6: (3, 7)}
+# 4x4 easy는 접근성을 위해 셀 공개 비율을 약간 높게 잡음.
+FUTOSHIKI_GIVENS_BY_SIZE = {4: (3, 5), 5: (2, 6), 6: (3, 7)}
 
 
 def _weighted_choice(weight_map: Dict[int, float]) -> int:
@@ -937,19 +936,9 @@ def _weighted_choice(weight_map: Dict[int, float]) -> int:
 # --------------------------------------------------------------------------- #
 
 def make_easy_record(idx: int, chain_gen: InequalityPuzzleGenerator) -> dict:
-    bands = EASY_CHAIN_BANDS
-    band = random.choices(bands, weights=[b["weight"] for b in bands], k=1)[0]
-    size = random.choice(band["sizes"])
-    puzzle = chain_gen.generate_chain(
-        size=size, num_to_hide=band["num_to_hide"], difficulty=Difficulty.EASY
-    )
-    return {
-        "id": f"inequality_ko_easy_{idx:04d}",
-        "question": create_chain_question(puzzle),
-        "answer": puzzle.get_answer_string(),
-        "solution": build_chain_solution(puzzle),
-        "difficulty": "easy",
-    }
+    # easy는 이제 4x4 Futoshiki (FUTOSHIKI_TIERS 참조). chain_gen 인자는 호출부
+    # 호환을 위해 남겨두었으나 더 이상 사용하지 않음.
+    return make_futoshiki_record(idx, "easy")
 
 
 def make_futoshiki_record(idx: int, tier: str) -> dict:

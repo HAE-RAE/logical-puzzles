@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "task": "inequality_en_easy",
+    "task": "inequality_en_medium",
     "model": "gemini/gemini-3-flash-preview",
-    "timestamp": "2026-06-06T19-44-11",
+    "timestamp": "2026-07-20T20-28-27",
     "total_puzzles": 100,
     "gen_kwargs": {
       "temperature": 1.0,
@@ -15,16 +15,19 @@
   },
   "summary": {
     "overall": {
-      "accuracy": 0.85,
-      "correct_count": 85,
+      "accuracy": 0.52,
+      "correct_count": 52,
       "total_count": 100,
-      "avg_latency_ms": 20946.899075508118
+      "avg_latency_ms": 49933.02766799927,
+      "finish_reason_counts": {
+        "stop": 100
+      }
     },
     "by_difficulty": {
-      "easy": {
+      "medium": {
         "total": 100,
-        "correct": 85,
-        "accuracy": 0.85
+        "correct": 52,
+        "accuracy": 0.52
       }
     }
   }
