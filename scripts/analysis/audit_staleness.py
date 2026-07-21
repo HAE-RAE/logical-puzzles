@@ -81,10 +81,31 @@ def f_nb_hints_en(r):
     return len(re.findall(r"Guess:", r.get("question", ""))) or None
 
 
-def f_crypt_ops_en(r):
+def f_crypt_wlen_en(r):
+    # 2026-07 재작성판: 피연산자 4 고정이라 operands 는 판별력 없음.
+    # 난이도축 = 피연산자 단어 길이(=자릿수) op_lens 6/7/8.
     w = [m.group(1) for line in r.get("question", "").splitlines()
          if (m := re.match(r"^[+=]?\s*([A-Z]{2,})\s*$", line.strip()))]
-    return len(w) - 1 if len(w) >= 3 else None
+    return len(w[0]) if len(w) >= 3 else None
+
+
+def _hangul_jcount(word):
+    n = 0
+    for c in word:
+        code = ord(c) - 0xAC00
+        if 0 <= code < 11172:
+            n += 2 if (code % 28) == 0 else 3
+    return n
+
+
+def f_crypt_wlen_ko(r):
+    # KO 재작성판: 피연산자 자모 수(=자릿수) op_jcounts 6/7/(7,8).
+    w = []
+    for line in r.get("question", "").splitlines():
+        m = re.match(r"^[+=]?\s*([가-힣]{2,})\s*$", line.strip())
+        if m:
+            w.append(m.group(1))
+    return _hangul_jcount(w[0]) if len(w) >= 3 else None
 
 
 def f_lg_people_en(r):
@@ -144,13 +165,6 @@ def f_nb_hint_ko(r):
             or len(re.findall(r"스트라이크", q)) - 1) or None
 
 
-def f_crypt_ko(r):
-    w = [m.group(1) for l in r.get("question", "").splitlines()
-         if (m := re.match(r"^[+=]?\s*([A-Z]{2,})\s*[이가]?\(?", l.strip()))]
-    w = [x for x in w if x.isalpha()]
-    return len(w) - 1 if len(w) >= 3 else None
-
-
 def f_hanoi_ko(r):
     m = re.search(r"(\d+)개의 원판", r.get("question", ""))
     return int(m.group(1)) if m else None
@@ -196,12 +210,14 @@ def f_af_orders_ko(r):
 SPECS_EN = [
     ("number_baseball_en", "hints",       f_nb_hints_en,   {"easy": (4, 8),   "medium": (4, 9),     "hard": (4, 9)}),
     ("sat_puzzles_en",     "num_vars",    f_sat_vars,      {"easy": (9, 9),   "medium": (11, 11),   "hard": (14, 14)}),
-    ("cryptarithmetic_en", "operands",    f_crypt_ops_en,  {"easy": (2, 2),   "medium": (3, 3),     "hard": (4, 4)}),
+    # 2026-07 재작성: operands 4 고정 → 판별 feature = 피연산자 단어 길이(자릿수) op_lens 6/7/8
+    ("cryptarithmetic_en", "word_len",    f_crypt_wlen_en, {"easy": (6, 6),   "medium": (7, 7),     "hard": (8, 8)}),
     ("sudoku_en",          "givens",      f_sudoku_givens, {"easy": (40, 43), "medium": (37, 39),   "hard": (31, 35)}),
     ("causal_dag_en",      "events",      f_causal_events, {"easy": (25, 31), "medium": (40, 46),   "hard": (46, 58)}),
     ("logic_grid_en",      "people",      f_lg_people_en,  {"easy": (5, 5),   "medium": (6, 6),     "hard": (8, 8)}),
     ("logic_grid_en",      "constraints", f_lg_cons_en,    {"easy": (18, 20), "medium": (18, 20),   "hard": (45, 48)}),
-    ("hanoi_en",           "disks",       f_hanoi_n_en,    {"easy": (5, 7),   "medium": (7, 9),     "hard": (12, 15)}),
+    # 2026-07 hard 단일유형 개정: hard n 12-15 → 8-11 (k 만이 레버, n_weights easy{5,6,7}/med{7,8,9}/hard{8,9,10,11})
+    ("hanoi_en",           "disks",       f_hanoi_n_en,    {"easy": (5, 7),   "medium": (7, 9),     "hard": (8, 11)}),
     ("cipher_en",          "answer_len",  f_cipher_len,    {"easy": (20, 24), "medium": (20, 24),   "hard": (6, 10)}),
     ("ferryman_en",        "distance_km", f_ferry_dist_en, {"easy": (75, 110),"medium": (155, 200), "hard": (380, 460)}),
     # inequality easy = 1D 체인(grid 정규식 미매치 → parse 실패), medium/hard = Futoshiki n∈{5,6}
@@ -216,9 +232,11 @@ SPECS_KO = [
     ("number_baseball_ko", "digits",     f_nb_dig_ko,     {"easy": (7, 7),   "medium": (8, 8),     "hard": (8, 8)}),
     ("number_baseball_ko", "hints",      f_nb_hint_ko,    {"easy": (4, 8),   "medium": (4, 9),     "hard": (4, 9)}),
     ("sat_puzzles_ko",     "num_vars",   f_sat_vars,      {"easy": (9, 9),   "medium": (11, 11),   "hard": (14, 14)}),
-    ("cryptarithmetic_ko", "operands",   f_crypt_ko,      {"easy": (2, 2),   "medium": (3, 3),     "hard": (4, 4)}),
+    # 2026-07 재작성: operands 4 고정 → 판별 feature = 피연산자 자모 수(자릿수) op_jcounts 6/7/(7,8)
+    ("cryptarithmetic_ko", "word_jcount", f_crypt_wlen_ko, {"easy": (6, 6),   "medium": (7, 7),     "hard": (7, 8)}),
     ("sudoku_ko",          "givens",     f_sudoku_givens, {"easy": (40, 43), "medium": (37, 39),   "hard": (31, 35)}),
-    ("hanoi_ko",           "disks",      f_hanoi_ko,      {"easy": (5, 7),   "medium": (7, 9),     "hard": (12, 15)}),
+    # 2026-07 hard 단일유형 개정: hard n 12-15 → 8-11 (EN 동형)
+    ("hanoi_ko",           "disks",      f_hanoi_ko,      {"easy": (5, 7),   "medium": (7, 9),     "hard": (8, 11)}),
     ("causal_dag_ko",      "events",     f_causal_events, {"easy": (25, 31), "medium": (40, 46),   "hard": (46, 58)}),
     ("ferryman_ko",        "dist_km",    f_ferry_ko,      {"easy": (75, 110),"medium": (155, 200), "hard": (380, 460)}),
     ("cipher_ko",          "ans_len",    f_cipher_len,    {"easy": (8, 8),   "medium": (7, 9),     "hard": (8, 10)}),
