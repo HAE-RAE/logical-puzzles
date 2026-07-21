@@ -181,108 +181,27 @@ def _build_templates_medium(ctx, rng):
         )
     ]
 
-def _build_templates_hard(ctx, rng):
-    n = ctx["n"]
-    src = ctx["src"]
-    aux = ctx["aux"]
-    dst = ctx["dst"]
-    total = ctx["total_moves"]
-    moves = ctx["moves"]
-    
-    lo_k = max(1, int(total * 0.68))
-    hi_k = max(lo_k, total - 5)
-    k = rng.randint(lo_k, hi_k)
-
-    H1 = 0
-    H2 = 0
-    for i, (d, f, t) in enumerate(moves[:k]):
-        step = i + 1
-        H1 = (H1 * 33 + d * step + f) % 1000003
-        H2 = (H2 * 17 + d * t + step) % 1000003
-    ans_len_2 = f"({H1}, {H2})"
-
-    temp_pegs = {0: [], 1: [], 2: []}
-    temp_pegs[src] = list(range(n, 0, -1))
-    
-    empty_dst_count = 0
-    odd_size_dst_count = 0
-    
-    for i, (d, f, t) in enumerate(moves[:k]):
-        if len(temp_pegs[t]) == 0:
-            empty_dst_count += 1
-        if len(temp_pegs[t]) % 2 != 0:
-            odd_size_dst_count += 1
-            
-        temp_pegs[f].pop()
-        temp_pegs[t].append(d)
-
-    sum_sq_0 = sum(x**2 for x in temp_pegs[0])
-    sum_sq_1 = sum(x**2 for x in temp_pegs[1])
-    sum_sq_2 = sum(x**2 for x in temp_pegs[2])
-    ans_len_3 = f"({sum_sq_0}, {sum_sq_1}, {sum_sq_2})"
-
-    c_mult_3 = sum(1 for d, f, t in moves[:k] if d % 3 == 0)
-    ans_len_4 = f"({empty_dst_count}, {odd_size_dst_count}, {c_mult_3}, {k})"
-
-    return [
-        (
-            f"In an optimal Tower of Hanoi sequence for {n} disks (start Peg {src}, dest Peg {dst}, aux Peg {aux}).\n"
-            f"Consider the first {k} moves, indexed with 1-based step numbers (i = 1, 2, ..., {k}).\n"
-            f"At each step i, let D_i, F_i, T_i be the disk moved, the from-peg, and the to-peg respectively.\n"
-            f"Compute two running hash values. Initially H1 = 0 and H2 = 0. For each step i from 1 to {k}, update them exactly as follows:\n"
-            f"(a) H1 = (H1 * 33 + D_i * i + F_i) modulo 1000003.\n"
-            f"(b) H2 = (H2 * 17 + D_i * T_i + i) modulo 1000003.\n"
-            f"Provide the answer in the exact format: (H1, H2).",
-            ans_len_2,
-            12,
-            "polynomial_running_hash",
-            f"Step 1: Iterate the first {k} moves with 1-based index i.\n"
-            f"Step 2: Accumulate H1 = (H1 * 33 + D_i * i + F_i) % 1000003 -> {H1}.\n"
-            f"Step 3: Accumulate H2 = (H2 * 17 + D_i * T_i + i) % 1000003 -> {H2}.\n"
-            f"Final answer: {ans_len_2}"
-        ),
-        (
-            f"In an optimal Tower of Hanoi sequence for {n} disks (start Peg {src}, dest Peg {dst}, aux Peg {aux}).\n"
-            f"After exactly {k} moves, compute the sum of the SQUARES of the disk numbers residing on each peg.\n"
-            f"(e.g., if a peg has disks 2 and 3, its value is 2^2 + 3^2 = 13. If a peg is empty, its value is 0).\n"
-            f"Provide the answer in the exact format: (sum_sq_peg0, sum_sq_peg1, sum_sq_peg2).",
-            ans_len_3,
-            6,
-            "sum_of_squares_all_pegs",
-            f"Step 1: Simulate the first {k} moves precisely to get the full stack of each peg.\n"
-            f"Step 2: Calculate sum of squares for Peg 0 -> {sum_sq_0}, Peg 1 -> {sum_sq_1}, Peg 2 -> {sum_sq_2}.\n"
-            f" {ans_len_3}"
-        ),
-        (
-            f"In an optimal Tower of Hanoi sequence for {n} disks (start Peg {src}, dest Peg {dst}, aux Peg {aux}).\n"
-            f"Consider the first {k} moves. Compute four values:\n"
-            f"(a) empty_dst_count = number of moves where the destination peg was COMPLETELY EMPTY immediately before the disk was placed on it.\n"
-            f"(b) odd_size_dst_count = number of moves where the destination peg had an ODD number of disks on it immediately before the disk was placed on it.\n"
-            f"(c) c_mult_3 = number of times the moved disk's number is an exact multiple of 3.\n"
-            f"(d) the exact value of k.\n"
-            f"Provide the answer in the exact format: (empty_dst_count, odd_size_dst_count, c_mult_3, k).",
-            ans_len_4,
-            6,
-            "conditional_state_counts",
-            f"Step 1: Iterate the first {k} moves.\n"
-            f"Step 2: Track the length of the destination peg before each move.\n"
-            f"Step 3: empty_dst_count = {empty_dst_count}, odd_size_dst_count = {odd_size_dst_count}, c_mult_3 = {c_mult_3}.\n"
-            f" {ans_len_4}"
-        )
-    ]
+# hard reuses the exact same running triple-hash builder as easy/medium.
+# The sole difficulty lever is k (query move count) — tuned only via the k range
+# in generate_all_datasets below.
+# (The previous version mixed closed-form-solvable "final-state sum of squares" /
+#  "conditional counts" types into hard only, which caused hard>medium inversion on
+#  models that shortcut those closed-form types → removed by going single-type.)
+_build_templates_hard = _build_templates_medium
 
 def generate_all_datasets(num_per_difficulty=100, seed=2025):
     puzzles = []
     
     difficulties = {
-        # All difficulties use triple-hash (easy/medium) or dual-hash+simulation (hard).
-        # Recalibrated exp model at k=24→88%: C=0.00541, a=0.1292.
-        # easy:   n=5-7, k=25-30; midpoint after the 86% and 60% runs.
-        # medium: n=7-9, k=31-37 (avg 34) → accuracy≈56%. Target: 50%.
-        # hard:   n=12-15, k=68-100% of total (set inside builder). Target: 25%.
+        # All difficulties use the SAME type = running triple-hash. Sole difficulty lever = k.
+        # Exp error model (k=24→88%): C=0.00541, a=0.1292 (flash reference, indicative only).
+        # easy:   k=25-30 → accuracy≈75% (measured en 0.79).
+        # medium: k=31-37 (avg 34) → accuracy≈56% (measured en 0.52). Target: 50%.
+        # hard:   k=42-48 (avg 45). Target: ~20%. (measured: k42-47→23%/19%, k42-48→~18% band; user-set 42-48.)
+        #         (n is no longer a difficulty lever — the first k moves are ~n-independent; n only varies question text.)
         "easy": {"n_weights": ([5, 6, 7], [0.15, 0.45, 0.40]), "builder": _build_templates_easy},
         "medium": {"n_weights": ([7, 8, 9], [0.34, 0.33, 0.33]), "builder": _build_templates_medium},
-        "hard": {"n_weights": ([12, 13, 14, 15], [0.25, 0.25, 0.25, 0.25]), "builder": _build_templates_hard}
+        "hard": {"n_weights": ([8, 9, 10, 11], [0.25, 0.25, 0.25, 0.25]), "builder": _build_templates_hard}
     }
 
     rng = random.Random(seed)
@@ -302,16 +221,17 @@ def generate_all_datasets(num_per_difficulty=100, seed=2025):
             moves = get_hanoi_moves(n, src, aux, dst)
             total_moves = len(moves)
 
-            # Recalibrated exp model at k=24→88%: C=0.00541, a=0.1292.
-            # Easy:   k=27-33 (avg 30) → error≈26% → accuracy≈74%. Target: 75%.
-            # Medium: k=31-37 (avg 34) → error≈44% → accuracy≈56%. Target: 50%.
-            # Hard:   k set inside _build_templates_hard (68-100% of total).
+            # Sole difficulty lever = k. All three bands use the same triple_hash type, k only (monotonic).
+            # Exp error model (k=24→88%): C=0.00541, a=0.1292 (flash reference, indicative only).
+            # Easy:   k=25-30 (avg 27) → accuracy≈75%.
+            # Medium: k=31-37 (avg 34) → accuracy≈56%. Target: 50%.
+            # Hard:   k=42-48 (avg 45). Target: ~20% (measured band ~15-25%; user-set 42-48).
             if diff == "easy":
                 k = rng.randint(25, min(30, total_moves))
             elif diff == "medium":
                 k = rng.randint(31, min(37, total_moves))
             else:
-                k = rng.randint(1, total_moves)
+                k = rng.randint(42, min(48, total_moves))
             disk_k, from_k, to_k = moves[k - 1]
             pegs_after_k = simulate_pegs(n, src, aux, dst, moves, k)
 
