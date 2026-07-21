@@ -1,34 +1,32 @@
-"""부등호 / Futoshiki 퍼즐 생성기 (KO)
+"""부등식 / Futoshiki(부등호) 퍼즐 생성기 (KO)
 
-세 가지 난이도 티어로 구성된 혼합 논리 퍼즐 데이터셋을 생성하며,
-각 티어는 별도 JSONL 파일과 하나의 통합 CSV에 기록됩니다:
+이 생성기는 세 개의 난이도 계층으로 나뉘는 *혼합형* 논리 퍼즐 데이터셋을 만들며,
+각 계층은 개별 JSONL 파일로 저장되고 하나의 통합 CSV도 함께 생성됩니다:
 
-    easy   -> 1D 부등호 체인 퍼즐   (inequality_ko_easy.jsonl)
-    medium -> 2D Futoshiki 격자 퍼즐  (inequality_ko_medium.jsonl)
-    hard   -> 2D Futoshiki 격자 퍼즐  (inequality_ko_hard.jsonl)
-    (통합)  -------------------------  inequality_ko.csv
+    easy(쉬움)   -> 1차원 부등식 사슬 퍼즐   (inequality_ko_easy.jsonl)
+    medium(보통) -> 2차원 Futoshiki 격자 퍼즐 (inequality_ko_medium.jsonl)
+    hard(어려움) -> 2차원 Futoshiki 격자 퍼즐 (inequality_ko_hard.jsonl)
+    (통합) ----------------------------------- inequality_ko.csv
 
-레코드 스키마 (모든 티어 동일, CSV == 연결된 JSONL):
+레코드 스키마(모든 계층에서 동일하므로 CSV == JSONL 이어붙임):
     id, question, answer, solution, difficulty
 
-설계 참고
-------------
-* 데이터셋은 체인 전용 생성기에서 이 혼합 형식으로 이전되었습니다.
-  체인 분기는 원래의 구성적 알고리즘(해가 유일해질 때까지 점진적 힌트 추가,
-  visible 유일성을 유지하며 탐욕적으로 부등호 숨기기)과 동일한 SFT
-  teacher-trace 형식을 유지합니다.
-* 긴 체인(size > 9)은 퍼즐 문자열과 답에 컴팩트한 base-36 단일 문자
-  인코딩(a=10, b=11, ...)을 사용합니다. 공백 구분 값은 채점이 모호하고
-  장황하기 때문입니다. solution의 "Solution vector" / "Givens" 줄은
-  가독성을 위해 원시 정수를 그대로 사용합니다.
-* Futoshiki 분기는 무작위 라틴 방진을 생성하고, 여기서 직교 부등호 제약을
-  파생한 뒤, 셀 일부를 힌트로 공개하고 유일해를 보장하는 최소 제약만
-  추가합니다. 각 퍼즐은 순수 제약 전파로 풀 수 있는지, 아니면 경우 분석
-  (역추적)이 필요한지 분류되며, teacher trace 문구도 그에 맞게 작성됩니다.
-* 티어 크기/구조 분포는 참조 데이터셋에 맞춰 보정되었습니다
-  (아래 SIZE/GIVEN 범위 참고). 퍼즐은 무작위 생성되므로 이 파일을 실행하면
-  동일 형식의 새 데이터셋이 만들어지며, 이전 실행과 바이트 단위로 동일하지
-  않습니다.
+설계 노트
+--------
+* 이 데이터셋은 사슬 전용 생성기에서 이 혼합형 형식으로 이전되었습니다.
+  사슬 분기는 원래의 구성 알고리즘(해가 유일해질 때까지 힌트를 점진적으로 추가한 뒤,
+  *보이는* 유일성을 유지하면서 부등식을 탐욕적으로 숨김)과 동일한 SFT 교사 추론
+  형식을 유지합니다.
+* 긴 사슬(크기 > 9)은 퍼즐 문자열과 정답에 대해 콤팩트한 base-36 단일 문자 인코딩을
+  사용합니다(a=10, b=11, ...). 공백으로 구분된 값은 채점이 모호하고 장황하기 때문입니다.
+  해설의 "해 벡터" / "주어진 값" 줄은 가독성을 위해 여전히 정수를 그대로 사용합니다.
+* Futoshiki 분기는 무작위 라틴 방진을 생성하고, 그로부터 인접(상하좌우) 부등식 제약을
+  도출하며, 일부 칸을 주어진 값으로 공개한 뒤, 해가 유일해지도록 필요한 만큼의 제약만
+  추가합니다. 각 퍼즐은 순수한 제약 전파만으로 풀 수 있는지, 아니면 경우의 수 분석
+  (백트래킹)이 필요한지로 분류되며, 교사 추론 문장도 그에 맞게 서술됩니다.
+* 계층별 크기/구조 분포는 기준 데이터셋에 맞춰 보정되어 있습니다(아래 SIZE/GIVEN 범위 참고).
+  퍼즐이 무작위로 생성되므로 이 파일을 실행하면 동일한 형식의 *새로운* 데이터셋이
+  만들어지며, 이전 실행을 바이트 단위로 재현하지는 않습니다.
 
 실행:  python inequality_ko.py --num 300 --seed 0 --outdir ./out
 """
@@ -44,16 +42,20 @@ from typing import Dict, List, Optional, Tuple
 
 
 # --------------------------------------------------------------------------- #
-# 공유
+# Shared
 # --------------------------------------------------------------------------- #
 
 SFT_SOLUTION_RUBRIC_KO = (
-    "STEP0=문제 메타 · STEP1=주어진 조건 · STEP2=풀이 전개 · STEP3=답·검산"
+    "STEP0=메타정보 · STEP1=주어진 조건 · STEP2=풀이 과정 · "
+    "STEP3=정답 및 검증"
 )
+
+# 난이도 계층 키 -> 한국어 표기
+DIFFICULTY_KO = {"easy": "쉬움", "medium": "보통", "hard": "어려움"}
 
 
 def encode_val(v: int) -> str:
-    """1..9 -> 숫자; 10.. -> 소문자 한 자리 (a=10, b=11, ...)."""
+    """1..9 -> digit; 10.. -> single lowercase letter (a=10, b=11, ...)."""
     if v <= 9:
         return str(v)
     return chr(ord("a") + v - 10)
@@ -66,7 +68,7 @@ class Difficulty(Enum):
 
 
 # --------------------------------------------------------------------------- #
-# 1D 부등호 체인 퍼즐  (easy 티어)
+# 1D inequality-chain puzzles  (easy tier)
 # --------------------------------------------------------------------------- #
 
 @dataclass
@@ -94,16 +96,16 @@ class InequalityPuzzle:
         return " ".join(parts)
 
     def get_answer_string(self) -> str:
-        """컴팩트 단일 문자 인코딩 (모든 크기, 공백 없음)."""
+        """Compact single-character encoding, no spaces, for every size."""
         return "".join(encode_val(v) for v in self.solution)
 
 
 class InequalityPuzzleGenerator:
-    """이중 추적 (전체 + visible) 유일성을 갖춘 구성적 체인 생성기."""
+    """Constructive chain generator with dual-track (full + visible) uniqueness."""
 
     MAX_SOLUTIONS = 1
 
-    # ---- domain-minimization 순서의 백트래킹 솔버 ---- #
+    # ---- backtracking solver with domain-minimization ordering ---- #
     def _find_solutions(
         self,
         size: int,
@@ -255,9 +257,9 @@ class InequalityPuzzleGenerator:
         given_numbers: Dict[int, int],
         num_to_hide: int,
     ) -> Optional[set]:
-        """visible 유일성을 유지하는 인덱스 중, visible 솔버 노드 수 최댓값의
-        70% 이상(상위 티어)에서 무작위 샘플링하여 숨김이 '어렵게' 유지되도록 함.
-        동점은 확률적으로 깨뜨림. 선택 불가 시 None 반환."""
+        """Among indices preserving visible uniqueness, sample from the top tier
+        (>= 70% of max visible solver-nodes) so hiding stays 'hard' but ties are
+        broken stochastically. Returns None if no feasible choice."""
         hidden: set = set()
         total_ineqs = len(inequalities)
         for _ in range(num_to_hide):
@@ -311,8 +313,8 @@ class InequalityPuzzleGenerator:
         min_hints: int = 1,
         max_retries: int = 400,
     ) -> InequalityPuzzle:
-        """유일 해를 갖는 크기 `size` 체인을 생성하며, 정확히 `num_to_hide` 개의
-        부등호를 숨기되 visible 퍼즐은 유일 해를 유지합니다."""
+        """Build a uniquely-solvable chain of `size`, hiding exactly `num_to_hide`
+        inequalities while keeping the visible puzzle uniquely solvable."""
         for _ in range(max_retries):
             base_solution = list(range(1, size + 1))
             random.shuffle(base_solution)
@@ -385,7 +387,8 @@ class InequalityPuzzleGenerator:
             )
 
         raise RuntimeError(
-            f"size={size} 체인 (hide {num_to_hide}) 생성에 {max_retries}번 재시도 후 실패"
+            f"크기 {size} 사슬(숨김 {num_to_hide})을 "
+            f"{max_retries}회 재시도 후에도 해가 정확히 1개가 되도록 생성하지 못했습니다"
         )
 
 
@@ -394,35 +397,37 @@ def create_chain_question(puzzle: InequalityPuzzle) -> str:
     n = puzzle.size
 
     rules = [
-        "- '_'는 채워야 할 빈 위치를 나타냅니다",
-        "- '<'는 왼쪽 숫자가 오른쪽 숫자보다 작음을 의미합니다",
-        "- '>'는 왼쪽 숫자가 오른쪽 숫자보다 큼을 의미합니다",
-        f"- 1부터 {n}까지의 각 숫자는 정확히 한 번만 사용됩니다",
-        "- '?'는 부등호가 알려지지 않았음을 의미합니다 (< 또는 > 가능)",
+        "- '_'는 채워야 할 빈 자리를 나타냅니다",
+        "- '<'는 왼쪽 숫자가 오른쪽 숫자보다 작다는 뜻입니다",
+        "- '>'는 왼쪽 숫자가 오른쪽 숫자보다 크다는 뜻입니다",
+        f"- 1부터 {n}까지의 각 숫자는 정확히 한 번씩만 나타납니다",
+        "- '?'는 부등호를 알 수 없다는 뜻입니다(< 또는 > 일 수 있음)",
     ]
     if n > 9:
         rules.append(
-            "- 10 이상의 값은 소문자 한 글자로 표기합니다: a=10, b=11, c=12, ... "
-            "(예: 'a'는 10을 의미하고 '_ > c'는 빈칸이 12보다 큼을 의미합니다)"
+            "- 10 이상의 값은 단일 문자로 표기합니다: a=10, b=11, "
+            "c=12, ... (즉 'a'는 10을 의미하며, '_ > c'는 빈칸이 12보다 "
+            "크다는 뜻입니다)"
         )
         answer_format = (
-            f"답을 {n}개의 단일 문자로 공백 없이 순서대로 제출하세요. "
-            f"1-9는 숫자, 10 이상은 소문자 (a=10, b=11, ...)로 표기합니다."
+            f"정답은 순서대로 {n}개의 단일 문자로, 공백 없이 제시하시오. "
+            f"1-9는 숫자로, 10 이상은 문자로 표기합니다"
+            f"(a=10, b=11, ...)."
         )
-        answer_example = "Answer: " + "".join(encode_val(i) for i in range(1, n + 1))
+        answer_example = "정답: " + "".join(encode_val(i) for i in range(1, n + 1))
     else:
-        answer_format = f"답을 {n}자리 숫자열로 제출하세요 (공백 없이)."
-        answer_example = "Answer: " + "".join(str(i) for i in range(1, n + 1))
+        answer_format = f"정답은 {n}자리 숫자열로(공백 없이) 제시하시오."
+        answer_example = "정답: " + "".join(str(i) for i in range(1, n + 1))
 
     rules_block = "\n".join(rules)
     return (
-        f"이 부등호 퍼즐을 푸세요. 1부터 {n}까지의 숫자로 빈칸을 채우세요.\n\n"
-        f"1부터 {n}까지의 각 숫자는 정확히 한 번만 사용해야 합니다.\n"
-        f"위치 사이의 부등호 기호 (< 또는 >)를 반드시 만족해야 합니다.\n\n"
+        f"다음 부등식 퍼즐을 푸시오. 빈칸을 1부터 {n}까지의 숫자로 채우시오.\n\n"
+        f"1부터 {n}까지의 각 숫자는 정확히 한 번씩 사용해야 합니다.\n"
+        f"각 자리 사이의 부등호(< 또는 >)는 모두 만족되어야 합니다.\n\n"
         f"퍼즐: {problem_str}\n\n"
         f"규칙:\n{rules_block}\n\n"
         f"{answer_format}\n\n"
-        f"답 형식 예시:\n{answer_example}"
+        f"예시 형식:\n{answer_example}"
     )
 
 
@@ -438,51 +443,54 @@ def build_chain_solution(puzzle: InequalityPuzzle) -> str:
 
     lines: List[str] = [
         SFT_SOLUTION_RUBRIC_KO,
-        "[STEP 0] 문제 메타",
-        f"  - 난이도: {puzzle.difficulty.name.lower()}",
-        f"  - 격자 크기: {size} (1~{size}의 순열)",
-        f"  - 주어진 숫자: {len(givens)}개 · 보이는 부등호: {visible_cnt} · 숨겨진 부등호: {len(hidden)}",
-        "  - 최종 답은 [STEP 3]에서 확정",
+        "[STEP 0] 문제 메타정보",
+        f"  - 난이도: {DIFFICULTY_KO.get(puzzle.difficulty.name.lower(), puzzle.difficulty.name.lower())}",
+        f"  - 격자 크기: {size} (1..{size}의 순열)",
+        f"  - 주어진 값: {len(givens)}개 · 보이는 부등식: {visible_cnt}개 · 숨김: {len(hidden)}개",
+        "  - 최종 정답은 [STEP 3]에서 확인합니다.",
         "[STEP 1] 주어진 조건",
         f"  - 퍼즐: {problem_str}",
-        f"  - 힌트(위치: 값): {', '.join(f'{p}:{v}' for p, v in sorted(givens.items())) or '(없음)'}",
-        "[STEP 2] 풀이 전개",
-        f"  · 요약: 1~{size} 순열에서 힌트·부등호 전파 → 유일해 확정 · "
-        f"부등호 {len(ineqs)}개(가시 {visible_cnt}/숨김 {len(hidden)}) · "
-        f"SEG {len(ineqs)}개",
+        f"  - 주어진 값 (자리:값): "
+        f"{', '.join(f'{p}:{v}' for p, v in sorted(givens.items())) or '(없음)'}",
+        "[STEP 2] 풀이 과정",
+        f"  · 요약: 1..{size}의 순열 + 힌트/부등식 전파 -> "
+        f"유일해 · 부등식 {len(ineqs)}개 "
+        f"(보임 {visible_cnt} / 숨김 {len(hidden)}) · SEG {len(ineqs)}개",
         f"  · 해 벡터: [{', '.join(str(v) for v in solution)}]",
     ]
     for i, op in enumerate(ineqs):
         left, right = solution[i], solution[i + 1]
-        hidden_flag = "숨김" if i in hidden else "가시"
+        hidden_flag = "숨김" if i in hidden else "보임"
         if op == "<":
             ok = left < right
         elif op == ">":
             ok = left > right
         else:
             ok = None
-        status = "성립" if ok else ("불일치" if ok is False else "확인 필요")
+        status = "성립" if ok else ("불성립" if ok is False else "확인")
         lines.append(
-            f"    [SEG {i + 1}] 자리 {i}↔{i + 1} ({hidden_flag}): {left} {op} {right} → {status}"
+            f"    [SEG {i + 1}] 자리 {i}<->{i + 1} ({hidden_flag}): "
+            f"{left} {op} {right} -> {status}"
         )
     lines.extend(
         [
-            "[STEP 3] 답·검산",
-            f"  - 최종 답: {ans_str}",
-            f"  - 1~{size}의 각 숫자가 정확히 한 번 사용됨: "
+            "[STEP 3] 정답 및 검증",
+            f"  - 최종 정답: {ans_str}",
+            f"  - 1..{size}가 각각 정확히 한 번씩 사용됨: "
             f"{'OK' if sorted(solution) == list(range(1, size + 1)) else 'FAIL'}",
-            "  - 힌트 위치의 값 일치 및 모든 부등호(가시+숨김)가 [SEG]에서 확인됨.",
+            "  - 주어진 값이 일치하며, [SEG] 추론에서 보인 대로 모든 부등식"
+            "(보임 + 숨김)이 성립합니다.",
         ]
     )
     return "\n".join(lines)
 
 
 # --------------------------------------------------------------------------- #
-# 2D Futoshiki 퍼즐  (medium / hard 티어)
+# 2D Futoshiki puzzles  (medium / hard tiers)
 # --------------------------------------------------------------------------- #
 
 Cell = Tuple[int, int]
-Constraint = Tuple[Cell, Cell, str]  # (cell_a, cell_b, op) 의미: a op b
+Constraint = Tuple[Cell, Cell, str]  # (cell_a, cell_b, op) meaning a op b
 
 
 @dataclass
@@ -490,7 +498,7 @@ class FutoshikiPuzzle:
     n: int
     solution: List[List[int]]
     givens: Dict[Cell, int]
-    constraints: List[Constraint]  # 읽기 순서로 정렬
+    constraints: List[Constraint]  # sorted in reading order
     difficulty: Difficulty
     mode: str = "backtrack"  # "propagation" | "backtrack"
     branch_points: int = 0
@@ -505,17 +513,17 @@ class FutoshikiGenerator:
     @staticmethod
     def random_latin_square(n: int) -> List[List[int]]:
         base = [[(i + j) % n + 1 for j in range(n)] for i in range(n)]
-        random.shuffle(base)
+        random.shuffle(base)  # permute rows
         cols = list(range(n))
         random.shuffle(cols)
-        base = [[row[c] for c in cols] for row in base]
+        base = [[row[c] for c in cols] for row in base]  # permute columns
         perm = list(range(1, n + 1))
         random.shuffle(perm)
-        return [[perm[v - 1] for v in row] for row in base]
+        return [[perm[v - 1] for v in row] for row in base]  # relabel symbols
 
     @staticmethod
     def all_adjacent_constraints(sol: List[List[int]]) -> List[Constraint]:
-        """모든 직교 인접 제약 (작은 읽기 순서 셀이 앞에)."""
+        """All orthogonally-adjacent constraints, smaller-reading-order cell first."""
         n = len(sol)
         cons: List[Constraint] = []
         for r in range(n):
@@ -532,7 +540,7 @@ class FutoshikiGenerator:
     def sort_constraints(cons: List[Constraint]) -> List[Constraint]:
         return sorted(cons, key=lambda x: (x[0][0], x[0][1], x[1][0], x[1][1]))
 
-    # ---- 해 개수 세기 (역추적, 상한) ---- #
+    # ---- solution counting (backtracking, capped) ---- #
     @staticmethod
     def count_solutions(
         n: int, givens: Dict[Cell, int], constraints: List[Constraint], cap: int = 2
@@ -590,18 +598,20 @@ class FutoshikiGenerator:
         bt(0)
         return count
 
-    # ---- 고정점까지 제약 전파 ---- #
+    # ---- constraint propagation to a fixpoint ---- #
     @staticmethod
     def _propagate(
         cand: List[List[set]], n: int, constraints: List[Constraint]
     ) -> bool:
-        """`cand`를 in-place 수정. 모순 시 False, 아니면 True(고정점).
+        """Mutates `cand`. Returns False on contradiction, else True (fixpoint).
 
-        전파 강도는 teacher trace가 주장하는 범위로 의도적으로 제한됩니다 —
-        행/열 all-different 규칙(naked singles + peer elimination)과
-        부등호 경계 가지치기뿐입니다. hidden singles 같은 더 강한 기법은
-        의도적으로 적용하지 않으므로, 이 기본 규칙만으로 끝낼 때만
-        "전파로 풀 수 있음"으로 분류하고, 나머지는 역추적 탐색이 필요합니다."""
+        Propagation strength is deliberately limited to exactly what the teacher
+        trace claims it does -- the row/column all-different rule (naked singles +
+        peer elimination) and inequality-bound pruning. Stronger techniques such
+        as hidden singles are intentionally NOT applied, so a puzzle is classified
+        "propagation-solvable" only when these basic rules alone finish it; the
+        rest legitimately require backtracking search.
+        """
         changed = True
         while changed:
             changed = False
@@ -667,7 +677,8 @@ class FutoshikiGenerator:
     def branch_points(
         cls, n: int, givens: Dict[Cell, int], constraints: List[Constraint]
     ) -> int:
-        """첫 해에 이르는 경로에서 추측 횟수 (전파로 강제 셀을 처리 후)."""
+        """Number of guesses on the path to the first solution, with propagation
+        collapsing forced cells after each guess."""
 
         def solve(cand: List[List[set]]) -> Optional[int]:
             cand = copy.deepcopy(cand)
@@ -680,7 +691,7 @@ class FutoshikiGenerator:
                         if best is None or len(cand[r][c]) < len(cand[best[0]][best[1]]):
                             best = (r, c)
             if best is None:
-                return 0  # 추가 추측 없이 해결됨
+                return 0  # solved with no further guesses
             r, c = best
             for v in sorted(cand[r][c]):
                 trial = copy.deepcopy(cand)
@@ -693,28 +704,31 @@ class FutoshikiGenerator:
         res = solve(cls._initial_candidates(n, givens))
         return res if res is not None else 0
 
-    # ---- 퍼즐 조립 ---- #
+    # ---- puzzle assembly ---- #
     MIN_CONSTRAINTS = 3
+    # extra givens the uniqueness auto-boost may add on top of target_givens
+    GIVENS_AUTOBOOST_SLACK = 2
 
     @classmethod
     def generate(
         cls, n: int, target_givens: int, target_mode: str = "backtrack",
         max_tries: int = 200,
     ) -> FutoshikiPuzzle:
-        """참조 프로필에 맞는 유일 해 Futoshiki 생성.
+        """Build a uniquely-solvable Futoshiki matching the reference profile.
 
-        소수의 힌트를 공개하고 격자를 고정하는 전체 직교 부등호 제약 집합에서
-        시작합니다. 그다음 유일성을 깨지 않으며 제약을 하나씩 제거하고,
-        타겟 인식 중단 규칙을 적용합니다:
+        Reveal a small number of givens and start from the full set of orthogonal
+        inequality constraints (which pin the grid). Then remove constraints one at
+        a time, never breaking uniqueness, with a target-aware stopping rule:
 
-        * backtrack 타겟 — 제한된 전파 규칙만으로는 더 이상 격자를 끝낼 수
-          없을 때까지(즉 탐색이 실제로 필요해질 때까지) 계속 제거.
-        * propagation 타겟 — 전파만으로 여전히 풀리는 동안에만 제약 제거하여
-          간결한 전파-풀이 퍼즐을 만듦.
+        * backtrack target -- keep removing until the limited propagation rules can
+          no longer finish the grid, i.e. the puzzle now genuinely requires search.
+        * propagation target -- remove a constraint only while the grid still solves
+          by propagation alone, yielding a lean propagation-solvable puzzle.
 
-        희소 힌트 + 간결한 제약 집합이 참조의 역추적 중심 성격을 재현합니다.
-        티어별 비율이 어떤 타겟을 요청할지 결정하며, 재시도 예산 안에
-        요청 모드를 맞추기 어려우면 유일한 fallback을 반환합니다.
+        Sparse givens + a lean constraint set reproduce the reference's
+        backtracking-heavy character; the per-tier ratio drives which target is
+        requested. A unique fallback is returned if the requested mode proves hard
+        to hit within the retry budget.
         """
         fallback: Optional[FutoshikiPuzzle] = None
 
@@ -734,31 +748,34 @@ class FutoshikiGenerator:
             def unique(cons) -> bool:
                 return cls.count_solutions(n, givens, cons, 2) == 1
 
-            # 전체 제약 집합이 여러 라틴 방진을 허용할 수 있으면,
-            # 해가 유일해질 때까지 힌트를 더 공개
-            while gi < len(cells) and not unique(chosen):
+            # the full constraint set may still admit several Latin squares; if so,
+            # reveal more givens until the solution is unique
+            givens_cap = min(len(cells), g + cls.GIVENS_AUTOBOOST_SLACK)
+            while gi < givens_cap and not unique(chosen):
                 cell = cells[gi]
                 givens[cell] = sol[cell[0]][cell[1]]
                 gi += 1
             if not unique(chosen):
                 continue
 
-            # 타겟 인식 제약 제거 (매 단계 유일성 유지)
-            #   backtrack 타겟 -> 최대한 제거(참조처럼 간결한 제약 집합);
-            #     실제 탐색 필요 여부는 아래에서 확인하고 재시도/fallback이 고름.
-            #   propagation 타겟 -> 전파만으로 여전히 풀리는 동안에만 제거.
+            # target-aware constraint removal (uniqueness preserved at every step)
+            #   backtrack target -> minimize fully (lean constraint set, like the
+            #     reference); whether it ends up needing search is checked below and
+            #     the retry/fallback loop selects the ones that do.
+            #   propagation target -> remove a constraint only while the grid still
+            #     solves by propagation alone.
             for con in list(chosen):
                 trial = [c for c in chosen if c != con]
                 if not unique(trial):
-                    continue  # 유일성에 필요한 제약; 유지
+                    continue  # this constraint is needed for uniqueness; keep it
                 if target_mode == "backtrack":
                     chosen = trial
                 else:  # propagation target
                     if cls.propagation_solves(n, givens, trial) is not None:
-                        chosen = trial  # 전파-풀이 가능 유지
+                        chosen = trial  # stay propagation-solvable
 
             if len(chosen) < cls.MIN_CONSTRAINTS:
-                continue  # 퇴화된 (거의) 무제약 퍼즐 방지
+                continue  # avoid degenerate (near-)constraint-free puzzles
 
             chosen = cls.sort_constraints(chosen)
             prop = cls.propagation_solves(n, givens, chosen)
@@ -773,17 +790,17 @@ class FutoshikiGenerator:
                 solution=sol,
                 givens=givens,
                 constraints=chosen,
-                difficulty=Difficulty.HARD,
+                difficulty=Difficulty.HARD,  # overwritten by caller's tier
                 mode=mode,
                 branch_points=bp,
             )
             if mode == target_mode:
                 return puzzle
-            fallback = puzzle
+            fallback = puzzle  # remember a valid puzzle of the other mode
 
         if fallback is not None:
             return fallback
-        raise RuntimeError(f"유일한 {n}x{n} Futoshiki 퍼즐 생성 실패")
+        raise RuntimeError(f"유일한 {n}x{n} Futoshiki 퍼즐을 생성하지 못했습니다")
 
 
 def _grid_lines(n: int, value_at, indent: str) -> List[str]:
@@ -808,18 +825,23 @@ def create_futoshiki_question(p: FutoshikiPuzzle) -> str:
     example = " ".join(str(v) for _ in range(n) for v in range(1, n + 1))
 
     return (
-        f"{n}x{n} 격자에서 Futoshiki 퍼즐을 푸세요.\n\n"
+        f"{n}x{n} 격자에서 다음 Futoshiki(부등호) 퍼즐을 푸시오.\n\n"
         f"규칙:\n"
-        f"- 격자를 채워 모든 행과 열에 1부터 {n}까지의 숫자가 각각 한 번씩 등장하도록 합니다 (라틴 방진).\n"
+        f"- 모든 행과 모든 열에 1부터 {n}까지의 숫자가 각각 정확히 한 번씩 들어가도록 "
+        f"격자를 채우시오(라틴 방진).\n"
         f"- '_'는 채워야 할 빈 칸을 나타냅니다.\n"
-        f"- 아래 나열된 모든 부등호 제약을 만족해야 합니다. 각 제약은 두 직교 인접 셀을 비교하며 "
-        f"1-기반 인덱스인 (행, 열)로 표기합니다 (행 1 = 맨 위, 열 1 = 맨 왼쪽).\n"
-        f"- '(a) < (b)'는 셀 a의 숫자가 셀 b보다 작음을, '(a) > (b)'는 더 큼을 의미합니다.\n\n"
-        f"주어진 격자 (위에서 아래로):\n{grid_block}\n\n"
-        f"부등호 제약:\n{con_block}\n\n"
-        f"완성된 격자를 답으로 제출하세요: {n * n}개 숫자를 공백으로 구분하여 행 순서로 나열 "
-        f"(행 1 왼쪽부터 오른쪽, 그 다음 행 2, 순서대로).\n\n"
-        f"형식 예시 (길이와 순서만 보여주는 예, 유효한 풀이가 아닙니다):\nAnswer: {example}"
+        f"- 아래에 나열된 모든 부등식 제약을 만족해야 합니다. 각 제약은 상하좌우로 "
+        f"인접한 두 칸을 비교하며, (행, 열) 형식의 1부터 시작하는 인덱스로 "
+        f"표기됩니다(행 1은 맨 위 행, 열 1은 맨 왼쪽 열).\n"
+        f"- '(a) < (b)'는 칸 a의 숫자가 칸 b의 숫자보다 작다는 뜻이고, "
+        f"'(a) > (b)'는 더 크다는 뜻입니다.\n\n"
+        f"주어진 격자(위에서 아래 행 순서):\n{grid_block}\n\n"
+        f"부등식 제약:\n{con_block}\n\n"
+        f"완성된 격자를 정답으로 제시하시오: 공백으로 구분된 {n * n}개의 숫자를 "
+        f"행 순서대로(1행을 왼쪽에서 오른쪽으로 모두, 그다음 2행, 이런 식으로) "
+        f"적으시오.\n\n"
+        f"예시 형식(길이와 순서만 나타낸 것이며 유효한 정답은 아님):\n"
+        f"정답: {example}"
     )
 
 
@@ -829,23 +851,25 @@ def build_futoshiki_solution(p: FutoshikiPuzzle) -> str:
 
     if p.mode == "propagation":
         mode_line = (
-            "  - 이 퍼즐은 제약 전파만으로 풀 수 있습니다 "
-            "(행/열 all-different 규칙과 부등호를 반복 적용; 추측 불필요)."
+            "  - 이 퍼즐은 제약 전파만으로 풀 수 있습니다"
+            "(행/열 서로 다름 규칙과 부등식을 반복 적용). "
+            "추측(경우의 수 분기)이 필요 없습니다."
         )
         approach_line = (
-            "  · 접근: 라틴 방진(행/열 all-different) 규칙과 부등호 제약을 반복 적용하여 "
-            "강제 셀을 채워 나갑니다; 각 단계에서 하나의 값만 가능한 셀부터 결정하여 "
-            "격자 전체를 완성합니다."
+            "  · 접근법: 라틴 방진(행/열 서로 다름) 규칙과 부등식 제약을 반복 "
+            "적용하여 값이 강제되는 칸을 채웁니다. 각 단계에서 한 칸에 남는 값이 "
+            "하나뿐이며, 격자 전체가 결정될 때까지 진행합니다."
         )
     else:
         mode_line = (
-            "  - 제약 전파만으로는 이 퍼즐을 완성할 수 없습니다; "
-            "경우 분석(역추적 탐색)이 필요합니다."
+            "  - 제약 전파만으로는 이 퍼즐이 완성되지 않습니다. 유일한 해를 "
+            "확정하려면 경우의 수 분석(백트래킹 탐색)이 필요합니다."
         )
         approach_line = (
-            "  · 접근: 라틴 방진(행/열 all-different) 규칙과 부등호로 각 셀의 후보를 좁힌 뒤, "
-            "가장 제약이 강한 셀에서 가정하고 모순 발생 시 역추적하여 유일한 격자를 찾습니다 "
-            f"(탐색 크기 약 {p.branch_points}개 분기점)."
+            "  · 접근법: 라틴 방진(행/열 서로 다름) 규칙과 부등식으로 각 칸의 "
+            "후보를 줄인 뒤, 가장 제약이 많은 칸에서 분기하고 모순이 생기면 "
+            "되돌아가며(백트래킹), 일관된 격자가 하나만 남을 때까지 탐색합니다"
+            f"(탐색 규모 ~{p.branch_points}개 분기점)."
         )
 
     def given_at(r, c):
@@ -856,36 +880,37 @@ def build_futoshiki_solution(p: FutoshikiPuzzle) -> str:
 
     lines: List[str] = [
         SFT_SOLUTION_RUBRIC_KO,
-        "[STEP 0] 문제 메타",
-        f"  - 난이도: {p.difficulty.name.lower()}",
-        f"  - 퍼즐: {n}x{n} Futoshiki (부등호 제약이 있는 라틴 방진)",
-        f"  - 주어진 수: {len(p.givens)}개 · 부등호 제약: {len(p.constraints)}개",
+        "[STEP 0] 문제 메타정보",
+        f"  - 난이도: {DIFFICULTY_KO.get(p.difficulty.name.lower(), p.difficulty.name.lower())}",
+        f"  - 퍼즐: {n}x{n} Futoshiki (부등식 제약이 있는 라틴 방진)",
+        f"  - 주어진 값: {len(p.givens)}개 · 부등식 제약: {len(p.constraints)}개",
         mode_line,
-        "  - 셀은 1-인덱스 (행 1 = 맨 위, 열 1 = 맨 왼쪽). 최종 답은 [STEP 3]에서 확정",
+        "  - 칸은 1부터 인덱싱합니다(행 1 = 맨 위, 열 1 = 맨 왼쪽). 최종 정답은 "
+        "[STEP 3]에서 확인합니다.",
         "[STEP 1] 주어진 조건",
         "  - 주어진 격자:",
     ]
     lines += _grid_lines(n, given_at, "      ")
-    lines.append("  - 부등호 제약:")
+    lines.append("  - 부등식 제약:")
     lines += [
         f"      ({a[0] + 1},{a[1] + 1}) {op} ({b[0] + 1},{b[1] + 1})"
         for (a, b, op) in p.constraints
     ]
 
-    lines.append("[STEP 2] 풀이 전개")
+    lines.append("[STEP 2] 풀이 과정")
     lines.append(approach_line)
     lines.append("  · 완성된 격자:")
     lines += _grid_lines(n, sol_at, "      ")
 
-    lines.append(f"  · 검산 — 모든 행이 1~{n}의 순열:")
+    lines.append(f"  · 검증 — 모든 행이 1..{n}의 순열입니다:")
     for r in range(n):
         row = ", ".join(str(sol[r][c]) for c in range(n))
         lines.append(f"      행 {r + 1}: {{{row}}} -> OK")
-    lines.append(f"  · 검산 — 모든 열이 1~{n}의 순열:")
+    lines.append(f"  · 검증 — 모든 열이 1..{n}의 순열입니다:")
     for c in range(n):
         col = ", ".join(str(sol[r][c]) for r in range(n))
         lines.append(f"      열 {c + 1}: {{{col}}} -> OK")
-    lines.append("  · 검산 — 모든 부등호 성립:")
+    lines.append("  · 검증 — 모든 부등식이 성립합니다:")
     for (a, b, op) in p.constraints:
         av, bv = sol[a[0]][a[1]], sol[b[0]][b[1]]
         lines.append(
@@ -894,35 +919,37 @@ def build_futoshiki_solution(p: FutoshikiPuzzle) -> str:
         )
 
     lines += [
-        "[STEP 3] 답·검산",
-        f"  - 최종 답 (격자를 행 순서로 일렬 나열): {p.flat_answer()}",
-        f"  - 각 행과 열이 1~{n}의 순열: OK",
-        "  - 모든 부등호 제약 성립 및 주어진 수 일치 (위 [SEG] 추적 확인).",
+        "[STEP 3] 정답 및 검증",
+        f"  - 최종 정답(행 순서로 펼친 격자): {p.flat_answer()}",
+        f"  - 각 행과 각 열이 1..{n}의 순열임: OK",
+        "  - 위에서 보인 대로 모든 부등식 제약이 성립하며, 주어진 값과도 일치합니다.",
     ]
     return "\n".join(lines)
 
 
 # --------------------------------------------------------------------------- #
-# 티어 설정 (참조 데이터셋에 맞춰 보정)
+# Tier configuration (calibrated to the reference dataset)
 # --------------------------------------------------------------------------- #
 
-# easy / medium / hard: 전부 Futoshiki. 격자 크기 가중치 + 역추적이 실제로
-# 필요한 퍼즐 비율 (제한된 전파 규칙만으로 풀 수 있는 퍼즐 대비).
+# easy / medium / hard: all Futoshiki. grid-size weights + the fraction of
+# puzzles that should genuinely require backtracking (vs. be solvable by the
+# limited propagation rules alone).
 #
-# easy는 4x4 격자로, 대체로 전파만으로 풀리게 하여 medium(5x5, 대부분 역추적)
-# 바로 아래 난이도에 위치시킴. 기존 1D 부등호 체인 easy는 강한 모델이 체인
-# 길이나 숨김 부등호 수와 무관하게 거의 만점을 내서 폐기했고, 더 작은 Futoshiki
-# 격자로 easy < medium < hard 단조 난이도 축을 확보함.
+# easy uses a 4x4 grid that is mostly propagation-solvable, sitting a notch
+# below medium (5x5, mostly backtracking). The former 1D inequality-chain easy
+# tier was retired because strong models solved it near-perfectly regardless of
+# chain length or hidden-inequality count; a smaller Futoshiki grid gives a
+# cleaner, monotone easy < medium < hard difficulty axis.
 FUTOSHIKI_TIERS = {
     "easy": {"size_weights": {4: 1.0}, "backtrack_ratio": 0.35},
     "medium": {"size_weights": {5: 0.62, 6: 0.38}, "backtrack_ratio": 0.82},
     "hard": {"size_weights": {5: 0.20, 6: 0.80}, "backtrack_ratio": 0.92},
 }
 
-# 격자 크기별 공개 힌트 수 (작게 유지; 최소 제약 집합이 난이도를 만듦).
-# 참조 중앙값에 맞춤 (5x5 ~4, 6x6 ~5-6).
-# 4x4 easy는 접근성을 위해 셀 공개 비율을 약간 높게 잡음.
-FUTOSHIKI_GIVENS_BY_SIZE = {4: (3, 5), 5: (2, 6), 6: (3, 7)}
+# Givens revealed per grid size (kept small; the minimal constraint set is what
+# makes the puzzle hard). Calibrated to reference medians (5x5 ~4, 6x6 ~5-6).
+# 4x4 easy reveals a slightly higher share of its cells to keep it approachable.
+FUTOSHIKI_GIVENS_BY_SIZE = {4: (3, 5), 5: (2, 6), 6: (3, 5)}
 
 
 def _weighted_choice(weight_map: Dict[int, float]) -> int:
@@ -932,12 +959,12 @@ def _weighted_choice(weight_map: Dict[int, float]) -> int:
 
 
 # --------------------------------------------------------------------------- #
-# 레코드 빌더
+# Record builders
 # --------------------------------------------------------------------------- #
 
 def make_easy_record(idx: int, chain_gen: InequalityPuzzleGenerator) -> dict:
-    # easy는 이제 4x4 Futoshiki (FUTOSHIKI_TIERS 참조). chain_gen 인자는 호출부
-    # 호환을 위해 남겨두었으나 더 이상 사용하지 않음.
+    # easy is now a 4x4 Futoshiki (see FUTOSHIKI_TIERS). The chain_gen argument is
+    # kept for call-site compatibility but is no longer used.
     return make_futoshiki_record(idx, "easy")
 
 
@@ -958,11 +985,11 @@ def make_futoshiki_record(idx: int, tier: str) -> dict:
 
 
 # --------------------------------------------------------------------------- #
-# 오케스트레이션
+# Orchestration
 # --------------------------------------------------------------------------- #
 
 def create_dataset_files(num_questions: int, outdir: Path) -> Dict[str, List[dict]]:
-    """세 가지 티어를 생성하고 티어별 JSONL + 통합 CSV 파일을 작성합니다."""
+    """Generate the three tiers, write per-tier JSONL files + one combined CSV."""
     import pandas as pd
 
     tiers = ["easy", "medium", "hard"]
@@ -977,7 +1004,7 @@ def create_dataset_files(num_questions: int, outdir: Path) -> Dict[str, List[dic
 
     for i, tier in enumerate(tiers):
         count = per_tier + (1 if i < remainder else 0)
-        print(f"\n=== {tier} 티어 생성 중 ({count}개) ===")
+        print(f"\n=== {tier} 생성 중 ({count}개) ===")
         records: List[dict] = []
         seen = set()
         produced = 0
@@ -1002,7 +1029,7 @@ def create_dataset_files(num_questions: int, outdir: Path) -> Dict[str, List[dic
                 print(f"  [{produced}/{count}]")
 
         if produced < count:
-            print(f"  ⚠️ {tier} 에서 {produced}/{count} 만 생성됨")
+            print(f"  ⚠️ {tier}: {count}개 중 {produced}개만 생성됨")
 
         by_tier[tier] = records
         all_records.extend(records)
@@ -1013,19 +1040,19 @@ def create_dataset_files(num_questions: int, outdir: Path) -> Dict[str, List[dic
                 fh.write(json.dumps(rec, ensure_ascii=False) + "\n")
         print(f"  JSONL: {jsonl_path}")
 
-    # 통합 CSV (동일 열 순서; CSV == 연결된 JSONL)
+    # combined CSV (same column order; CSV == concatenated JSONL)
     df = pd.DataFrame(all_records, columns=["id", "question", "answer", "solution", "difficulty"])
     csv_path = outdir / "inequality_ko.csv"
     df.to_csv(csv_path, index=False, encoding="utf-8-sig")
-    print(f"\nCSV: {csv_path}  ({len(df)}행)")
+    print(f"\nCSV: {csv_path}  ({len(df)} rows)")
 
     return by_tier
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="부등호 / Futoshiki 퍼즐 생성기 (한국어)")
-    parser.add_argument("--num", type=int, default=300, help="총 퍼즐 수 (3 티어로 분배)")
-    parser.add_argument("--seed", type=int, default=None, help="재현성을 위한 랜덤 시드")
+    parser = argparse.ArgumentParser(description="부등식 / Futoshiki 퍼즐 생성기")
+    parser.add_argument("--num", type=int, default=300, help="전체 퍼즐 수(3개 계층으로 분할)")
+    parser.add_argument("--seed", type=int, default=None, help="재현성을 위한 난수 시드")
     parser.add_argument("--outdir", type=str, default="out", help="출력 디렉터리")
     args = parser.parse_args()
 
@@ -1033,6 +1060,6 @@ if __name__ == "__main__":
         random.seed(args.seed)
 
     print("=" * 50)
-    print("부등호 / Futoshiki 퍼즐 생성기 (한국어)")
+    print("부등식 / Futoshiki 퍼즐 생성기")
     print("=" * 50)
     create_dataset_files(num_questions=args.num, outdir=Path(args.outdir))
