@@ -1,0 +1,33 @@
+{
+  "metadata": {
+    "task": "number_baseball_en_medium",
+    "model": "upstage/Solar-Open-100B",
+    "timestamp": "2026-07-21T21-45-34",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "temperature": 0.8,
+      "top_p": 0.95,
+      "max_tokens": 32768
+    },
+    "gen_kwargs_cli": "temperature=0.8,top_p=0.95,max_tokens=32768"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.05,
+      "correct_count": 5,
+      "total_count": 100,
+      "avg_latency_ms": 535748.949804306,
+      "finish_reason_counts": {
+        "stop": 92,
+        "length": 8
+      }
+    },
+    "by_difficulty": {
+      "medium": {
+        "total": 100,
+        "correct": 5,
+        "accuracy": 0.05
+      }
+    }
+  }
+}

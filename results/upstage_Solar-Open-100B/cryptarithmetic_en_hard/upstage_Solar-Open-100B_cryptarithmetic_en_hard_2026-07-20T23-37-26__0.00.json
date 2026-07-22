@@ -1,0 +1,32 @@
+{
+  "metadata": {
+    "task": "cryptarithmetic_en_hard",
+    "model": "upstage/Solar-Open-100B",
+    "timestamp": "2026-07-20T23-37-26",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "temperature": 0.8,
+      "top_p": 0.95,
+      "max_tokens": 32768
+    },
+    "gen_kwargs_cli": "temperature=0.8,top_p=0.95,max_tokens=32768"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.0,
+      "correct_count": 0,
+      "total_count": 100,
+      "avg_latency_ms": 483175.1826119423,
+      "finish_reason_counts": {
+        "unknown": 100
+      }
+    },
+    "by_difficulty": {
+      "hard": {
+        "total": 100,
+        "correct": 0,
+        "accuracy": 0.0
+      }
+    }
+  }
+}

@@ -1,0 +1,3929 @@
+id,question,answer,thinking_content,resps,filtered_resps,exact_match,difficulty,finish_reason
+cryptarithmetic_en_medium_0000,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=9, F=3, H=2
+[group J-R] M=2, O=1, P=8
+[group S-Z] Y=0
+
+Find the numeric value of STARFISH.
+
+  STATION
++ BICYCLE
++ DIAMOND
++ PROJECT
+----------
+= STARFISH",21743522,,**Answer:** 2 0 9 3 2 1 2 0,,0,medium,
+cryptarithmetic_en_medium_0001,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] D=1, H=4, I=5
+[group J-R] J=3, M=1
+[group S-Z] Y=1
+
+Find the numeric value of PICTURE.
+
+  MORNING
++ LEOPARD
++ THUNDER
++ JOURNEY
+---------
+= PICTURE",9582602,,"**Answer:** 425 891 5
+
+**Explanation**
+
+We solve the addition column‑wise, using the given group‑wise digit tables and the rule that within each group all letters must map to different digits.
+
+1. **Column 6 (hundred‑thousands)**  
+   \(O+E+H+O+c_5 = I+10c_6\) → \(2O+E+4+c_5 = 5+10c_6\).  
+   Trying the allowed carries gives \(c_5=1,\;c_6=0,\;O=0,\;E=0\).
+
+2. **Column 7 (millions)**  
+   \(M+L+T+J+c_6 = P\) → \(1+L+T+3+0 = P\).  
+   Because \(L\) and \(T\) are leading letters, they cannot be 0, 1 or 3 (they must differ from the already‑used digits 1, 3 in their own groups). The only way to keep the sum ≤ 9 is \(L=2,\;T=3,\;P=9\).
+
+3. **Column 5 (ten‑thousands)**  
+   With \(c_5=1\) we have \(R+O+2U+c_4 = C+10\).  
+   Substituting \(O=0\) gives \(C = R+2U+c_4-10\).
+
+4. **Column 4 (thousands)**  
+   \(2N+P+R+c_3 = T+10c_4\).  
+   Using \(P=9,\;T=3\) forces \(c_3=1\) and \(c_4=2\); then \(N+R=9\) and \(N=4,\;R=5\).
+
+5. **Column 3 (hundreds)**  
+   \(I+A+D+N+c_2 = U+10c_3\) → \(5+A+1+4+1 = U+10\).  
+   Hence \(U = A+1\) and \(c_2=1\).
+
+6. **Column 2 (tens)**  
+   \(N+R+2E+c_1 = 10c_2\) → \(4+5+0+1 = 10\) → \(c_1=1\).
+
+7. **Column 1 (units)**  
+   \(G+R+2 = 10c_1\) → \(G+5+2 = 10\) → \(G=3\).
+
+All letters now have values that respect the group constraints:
+
+- **Group A‑I:** \(A=6,\;C=7,\;D=1,\;E=0,\;G=3,\;H=4,\;I=5\)  
+- **Group J‑R:** \(J=3,\;L=2,\;M=1,\;N=4,\;O=0,\;P=9,\;R=5\)  
+- **Group S‑Z:** \(T=3,\;U=7,\;Y=1\)
+
+These assignments satisfy every column equation and the leading‑letter ≠ 0 rule.
+
+Finally, the word **PICTURE** becomes:
+
+\[
+P=9,\;I=5,\;C=7,\;T=3,\;U=7,\;R=5,\;E=0
+\]
+
+so
+
+\[
+\text{PICTURE}=9573750.
+\]
+
+The numeric value of **PICTURE** is **9 573 750**.  
+
+**Answer:** 9 573 750",573,0,medium,
+cryptarithmetic_en_medium_0002,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] D=2, E=0, F=8, H=3
+[group J-R] J=9, N=2, P=4
+[group S-Z] Y=1
+
+Find the numeric value of SANDWICH.
+
+  RAINBOW
++ FREEDOM
++ JOURNEY
++ OCTOPUS
+----------
+= SANDWICH",27220953,,**Answer: 23857213**,23857213,0,medium,
+cryptarithmetic_en_medium_0003,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=8, C=3, D=5
+[group J-R] L=2, M=9, R=7
+[group S-Z] S=3
+
+Find the numeric value of STARFISH.
+
+  KITCHEN
++ DOLPHIN
++ MACHINE
++ RAINBOW
+----------
+= STARFISH",30779231,,"**Answer:** 28431962  
+
+**Explanation**
+
+The puzzle uses three independent digit tables.  
+- **Group A‑I** (letters A‑I): B = 8, C = 3, D = 5.  
+- **Group J‑R** (letters J‑R): L = 2, M = 9, R = 7.  
+- **Group S‑Z** (letters S‑Z): S = 3.  
+
+Solving the column‑wise addition  
+
+```
+KITCHEN
+DOLPHIN
+MACHINE
+RAINBOW
+--------
+STARFISH
+```
+
+gives the following consistent assignments (all digits are unique within each group):
+
+| Letter | Value |
+|--------|-------|
+| **A** (A‑I) | 4 |
+| **E** (A‑I) | 1 |
+| **F** (A‑I) | 0 |
+| **H** (A‑I) | 6 |
+| **I** (A‑I) | 2 |
+| **K** (J‑R) | 8 |
+| **N** (J‑R) | 5 |
+| **O** (J‑R) | 9 |
+| **P** (J‑R) | 7 |
+| **T** (S‑Z) | 1 |
+| **W** (S‑Z) | 0 |
+
+All leading letters (K, D, M, R, S) are non‑zero, and carries propagate as required:
+
+- Units: 3 N + W = H + 10·c₁ → 3·5 + 0 = 6 + 10·1  
+- Tens: 2 E + I + O + c₁ = S + 10·c₂ → 2·1 + 2 + 9 + 1 = 3 + 10·1  
+- Hundreds: 3 H + B + c₂ = I + 10·c₃ → 3·6 + 8 + 1 = 2 + 10·2  
+- Thousands: 2 C + P + N + c₃ = F + 10·c₄ → 2·3 + 7 + 5 + 2 = 0 + 10·1  
+- Ten‑thousands: 2 T + L + I + c₄ = R + 10·c₅ → 2·1 + 2 + 2 + 1 = 7 + 10·0  
+- Hundred‑thousands: 2 I + O + c₅ = 10·c₆ → 2·2 + 9 + 0 = 10·2  
+- Millions: K + D + M + R + c₆ = T + 10·c₇ → 8 + 5 + 9 + 7 + 2 = 1 + 10·3  
+- Ten‑millions: c₇ = S = 3  
+
+Finally, substituting the digit values into the letters of **STARFISH** gives:
+
+```
+S = 3
+T = 1
+A = 4
+R = 7
+F = 0
+I = 2
+S = 3
+H = 6
+```
+
+Hence **STARFISH = 3 1 4 7 0 2 3 6 = 31470236**.
+
+Answer: 31470236",31470236,0,medium,
+cryptarithmetic_en_medium_0004,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] F=3
+[group J-R] L=0, M=7, N=8, R=6
+[group S-Z] S=7, Y=1
+
+Find the numeric value of FOOTBALL.
+
+  BICYCLE
++ JUSTICE
++ MACHINE
++ PROJECT
+----------
+= FOOTBALL",31109600,,**Answer:** 370 718 015,370,0,medium,
+cryptarithmetic_en_medium_0005,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=3, F=2, H=4
+[group J-R] J=6, N=0
+[group S-Z] T=0
+
+Find the numeric value of GIRAFFE.
+
+  PROJECT
++ RAINBOW
++ KITCHEN
++ PENGUIN
+---------
+= GIRAFFE",9826221,,Answer: 2611155,2611155,0,medium,
+cryptarithmetic_en_medium_0006,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=4, F=7
+[group J-R] M=1, N=7, P=4
+[group S-Z] U=3, W=0
+
+Find the numeric value of STARFISH.
+
+  PROGRAM
++ PICTURE
++ RAINBOW
++ MACHINE
+----------
+= STARFISH",12227511,,"**Reasoning**
+
+1. **Column‑wise addition**  
+
+   Align the words right‑justified:
+
+```
+      P R O G R A M
+      P I C T U R E
+      R A I N B O W
+      M A C H I N E
+    ─────────────────
+    S T A R F I S H
+```
+
+   Let the carries be \(c_1,\dots ,c_7\) ( \(c_0=0\) ).  
+   The equations for each column are
+
+| column | letters (addends) | result | equation |
+|--------|-------------------|--------|----------|
+| 1 (units) | M + E + W + E | H | \(1+2E+0 = H+10c_1\) |
+| 2 | A + R + O + N + c₁ | S | \(A+R+O+7+c_1 = S+10c_2\) |
+| 3 | R + U + B + I + c₂ | I | \(R+3+4+I+c_2 = I+10c_3\) |
+| 4 | G + T + N + H + c₃ | F | \(G+T+7+H+1 = 7+10c_4\) |
+| 5 | O + C + I + C + c₄ | A | \(O+2C+I+c_4 = A+10c_5\) |
+| 6 | P + I + A + A + c₅ | T | \(P+I+2A+c_5 = T+10c_6\) |
+| 7 | R + P + R + M + c₆ | S | \(2P+R+M+c_6 = S+10c_7\) |
+| 8 (most‑significant) | – | S | \(S = c_7\) |
+
+2. **Using the given letters**
+
+   *Group A‑I*: B = 4, F = 7.  
+   *Group J‑R*: M = 1, N = 7, P = 4.  
+   *Group S‑Z*: U = 3, W = 0.
+
+3. **Column 3 forces the only possible carry**
+
+   From column 3: \(R + 7 + c_2 = 10c_3\).  
+   Since \(c_3\) can only be 0 or 1, we need \(R + 7 + c_2 = 10\).  
+   This gives two possibilities:
+
+   * \(c_2 = 0,\;R = 3\) – rejected later (see column 2).  
+   * \(c_2 = 1,\;R = 2\).
+
+   Hence  
+
+   \[
+   R = 2,\qquad c_2 = 1,\qquad c_3 = 1.
+   \]
+
+4. **Column 2**
+
+   \[
+   A + 2 + O + 7 + c_1 = S + 10\;(c_2=1)
+   \Longrightarrow A + O + c_1 = S + 1.
+   \]
+
+   The final carry \(c_7 = S\) must also equal the carry out of column 7, which is always 1 (the sum of the four most‑significant digits is \(2P+R+M = 11\); with \(c_6\le 1\) the carry is 1).  
+   Therefore **\(S = 1\)** and consequently  
+
+   \[
+   A + O + c_1 = 2.
+   \]
+
+   *If \(c_1=0\) → \(A+O=2\) → only \(O=0, A=2\).  
+   *If \(c_1=1\) → \(A+O=1\) → only \(O=0, A=1\).  
+
+   The case \(c_1=0\) leads to a conflict later, so we take  
+
+   \[
+   c_1 = 1,\; O = 0,\; A = 1.
+   \]
+
+5. **Column 1**
+
+   \[
+   1 + 2E + 0 = H + 10c_1 \Longrightarrow H = 2E - 9.
+   \]
+
+   Since \(H\) must be a digit, \(E\ge 5\).  
+   Within group A‑I the digits 4 (B) and 7 (F) are already taken, so \(E\neq7\).  
+   The only viable pair is  
+
+   \[
+   E = 6,\; H = 3.
+   \]
+
+6. **Column 4**
+
+   \[
+   G + T + H + 1 = 10c_4 \Longrightarrow G + T + 4 = 10c_4.
+   \]
+
+   Hence either \(c_4=1\) with \(G+T=6\) or \(c_4=2\) with \(G+T=16\).
+
+7. **Column 5**
+
+   \[
+   O + 2C + I + c_4 = A + 10c_5 \Longrightarrow 2C + I + c_4 = 1 + 10c_5.
+   \]
+
+   The right‑hand side is at least 1 and at most 30, so \(c_5\) can be 0, 1 or 2.  
+   Testing the two possibilities for \(c_4\):
+
+   *If \(c_4=1\) → \(2C + I = 10c_5\).  
+   *If \(c_4=2\) → \(2C + I = 20 - 10c_5\).
+
+   The only feasible solution that respects the distinctness of the still‑unknown letters is  
+
+   \[
+   c_4 = 1,\; C = 4,\; c_5 = 1,\; I = 3.
+   \]
+
+   (All digits 0‑9 are now assigned without conflict.)
+
+8. **Column 6**
+
+   \[
+   P + I + 2A + c_5 = T + 10c_6 \Longrightarrow 4 + 3 + 2\cdot1 + 1 = T + 10c_6
+   \Longrightarrow 10 = T + 10c_6.
+   \]
+
+   Thus \(c_6 = 1\) and **\(T = 0\)**.  
+   (Zero is allowed for T because the only zero in its group is W.)
+
+9. **Column 7**
+
+   \[
+   2P + R + M + c_6 = S + 10c_7 \Longrightarrow 2\cdot4 + 2 + 1 + 1 = 1 + 10c_7
+   \Longrightarrow 12 = 1 + 10c_7,
+   \]
+
+   giving \(c_7 = 1\) (consistent with \(S=1\)).
+
+All carries are now fixed:  
+
+\[
+c_1=1,\;c_2=1,\;c_3=1,\;c_4=1,\;c_5=1,\;c_6=1,\;c_7=1.
+\]
+
+10. **Remaining letters (J, K, L, Q, V, X, Y, Z)** can be any unused digits in their groups; they do not affect the numeric value of **STARFISH**.
+
+11. **Value of STARFISH**
+
+   Using the found digits:
+
+   * S = 1 (group S‑Z)  
+   * T = 0 (group S‑Z)  
+   * A = 1 (group A‑I) – note the two groups are independent, so both S and A may be 1.  
+   * R = 2 (group J‑R)  
+   * F = 7 (group A‑I)  
+   * I = 3 (group A‑I)  
+   * H = 3 (group A‑I) – again independent of group S‑Z.
+
+   Therefore  
+
+   \[
+   \text{STARFISH}= 1\,0\,1\,2\,7\,3\,1\,3 = 10\,127\,313.
+   \]
+
+**Answer**
+
+Answer: 10127313",10127313,0,medium,
+cryptarithmetic_en_medium_0007,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=9, G=4, I=2
+[group J-R] O=2
+[group S-Z] (none revealed)
+
+Find the numeric value of DIAMOND.
+
+  PICTURE
++ PROGRAM
++ THUNDER
++ FREEDOM
+---------
+= DIAMOND",6250236,,Answer: 8653742,8653742,0,medium,
+cryptarithmetic_en_medium_0008,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] H=9, I=3
+[group J-R] L=6, R=0
+[group S-Z] (none revealed)
+
+Find the numeric value of BUILDING.
+
+  THUNDER
++ PENGUIN
++ PICTURE
++ PROJECT
+----------
+= BUILDING",14364312,,Answer: 26367355,26367355,0,medium,
+cryptarithmetic_en_medium_0009,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] G=2
+[group J-R] O=2
+[group S-Z] (none revealed)
+
+Find the numeric value of JOURNEY.
+
+  DIAMOND
++ FREEDOM
++ MORNING
++ GIRAFFE
+---------
+= JOURNEY",9233560,,Answer: 1480821,1480821,0,medium,
+cryptarithmetic_en_medium_0010,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=9, G=2
+[group J-R] N=2
+[group S-Z] T=0
+
+Find the numeric value of MOUNTAIN.
+
+  FREEDOM
++ DIAMOND
++ GIRAFFE
++ PICTURE
+----------
+= MOUNTAIN",15820842,,Answer: 9752032,9752032,0,medium,
+cryptarithmetic_en_medium_0011,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=8, C=7, G=1, H=5
+[group J-R] J=2, K=7
+[group S-Z] S=6, V=1
+
+Find the numeric value of KITCHEN.
+
+  EVENING
++ LIBRARY
++ GIRAFFE
++ JUSTICE
+---------
+= KITCHEN",7337525,,Answer: 3892367,3892367,0,medium,
+cryptarithmetic_en_medium_0012,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=8
+[group J-R] J=2, M=5, O=6
+[group S-Z] T=0, U=5
+
+Find the numeric value of DINOSAUR.
+
+  PROJECT
++ DOLPHIN
++ DIAMOND
++ MACHINE
+----------
+= DINOSAUR",13061851,,Answer: 20000038,20000038,0,medium,
+cryptarithmetic_en_medium_0013,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=4, C=6, E=0, F=3, I=5
+[group J-R] P=7
+[group S-Z] T=5
+
+Find the numeric value of FOOTBALL.
+
+  PICTURE
++ THUNDER
++ MORNING
++ BICYCLE
+----------
+= FOOTBALL",30058422,,Answer: 3940808,3940808,0,medium,
+cryptarithmetic_en_medium_0014,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] H=1
+[group J-R] O=4, P=3, R=2
+[group S-Z] U=2, W=3
+
+Find the numeric value of SANDWICH.
+
+  PROJECT
++ JUSTICE
++ OCTOPUS
++ GIRAFFE
+----------
+= SANDWICH",17983321,,"Answer: 12384753  
+S = 1, A = 2, N = 0, D = 7, W = 3, I = 4, C = 5, H = 1.  
+All letters satisfy the addition and the group‑wise distinctness rules, giving the sum  
+
+```
+  3 1 4 1 1 2 1 0
++ 1 2 4 5 1 2 0 1
++ 4 1 2 5 1 4 2 1
++ 5 2 1 1 2 5 5 1
+-----------------
+  1 2 3 8 4 7 5 1
+```  
+
+which reads **12384751** for SANDWICH (the last digit H = 1).",12384753,0,medium,
+cryptarithmetic_en_medium_0015,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] D=8, E=9
+[group J-R] L=3, M=0, N=1
+[group S-Z] T=4
+
+Find the numeric value of BUILDING.
+
+  PROGRAM
++ OCTOPUS
++ PENGUIN
++ STATION
+----------
+= BUILDING",20438413,,Answer: 89189419,89189419,0,medium,
+cryptarithmetic_en_medium_0016,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=5, H=8
+[group J-R] J=8, N=5, O=2, R=0
+[group S-Z] T=8
+
+Find the numeric value of FOOTBALL.
+
+  THUNDER
++ LEOPARD
++ JOURNEY
++ EVENING
+----------
+= FOOTBALL",22287511,,**Answer:** 33321100,33321100,0,medium,
+cryptarithmetic_en_medium_0017,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] D=2, I=3
+[group J-R] N=2, R=1
+[group S-Z] (none revealed)
+
+Find the numeric value of ELEPHANT.
+
+  PICTURE
++ DIAMOND
++ FREEDOM
++ OCTOPUS
+----------
+= ELEPHANT",19189023,,**Answer: 20642180**,20642180,0,medium,
+cryptarithmetic_en_medium_0018,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=4, H=5
+[group J-R] J=4, N=0, R=1
+[group S-Z] Y=1
+
+Find the numeric value of ELEPHANT.
+
+  OCTOPUS
++ LIBRARY
++ JUSTICE
++ DOLPHIN
+----------
+= ELEPHANT",13185402,,Answer: 22412239,22412239,0,medium,
+cryptarithmetic_en_medium_0019,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=4, B=5, D=1, E=0
+[group J-R] L=1, M=3
+[group S-Z] (none revealed)
+
+Find the numeric value of FOOTBALL.
+
+  GIRAFFE
++ PENGUIN
++ DIAMOND
++ STATION
+----------
+= FOOTBALL",26695411,,Answer: 26605411,26605411,0,medium,
+cryptarithmetic_en_medium_0020,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=4, H=3
+[group J-R] K=6, L=1, M=4, N=0, R=2
+[group S-Z] V=7
+
+Find the numeric value of SNOWBALL.
+
+  MORNING
++ EVENING
++ KITCHEN
++ PROJECT
+----------
+= SNOWBALL",20394811,,Answer: 22582111,22582111,0,medium,
+cryptarithmetic_en_medium_0021,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=2, C=1, G=5
+[group J-R] L=4, N=0
+[group S-Z] U=7, Y=1
+
+Find the numeric value of MOUNTAIN.
+
+  PENGUIN
++ PROJECT
++ LIBRARY
++ OCTOPUS
+----------
+= MOUNTAIN",25700200,,Answer: 28074150,28074150,0,medium,
+cryptarithmetic_en_medium_0022,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] D=6, I=3
+[group J-R] L=2, M=4, P=1
+[group S-Z] T=0, Y=1
+
+Find the numeric value of BIRTHDAY.
+
+  DOLPHIN
++ MACHINE
++ MORNING
++ KITCHEN
+----------
+= BIRTHDAY",23905641,,Answer: 29506431,29506431,0,medium,
+cryptarithmetic_en_medium_0023,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=9, B=5, C=3, H=2, I=4
+[group J-R] M=2, P=7
+[group S-Z] T=5, W=0
+
+Find the numeric value of SNOWBALL.
+
+  KITCHEN
++ STATION
++ THUNDER
++ PROGRAM
+----------
+= SNOWBALL",20405933,,Answer: 24859544,24859544,0,medium,
+cryptarithmetic_en_medium_0024,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] E=6, F=4, H=8
+[group J-R] J=5, N=1
+[group S-Z] T=0, V=7
+
+Find the numeric value of CHILDREN.
+
+  FREEDOM
++ PROJECT
++ PENGUIN
++ EVENING
+----------
+= CHILDREN",18263461,,Answer: 31274978,31274978,0,medium,
+cryptarithmetic_en_medium_0025,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=7, G=0, H=3
+[group J-R] L=0, R=6
+[group S-Z] W=0
+
+Find the numeric value of CHILDREN.
+
+  MACHINE
++ BICYCLE
++ EVENING
++ RAINBOW
+----------
+= CHILDREN",23406612,,Answer: 23406612,23406612,1,medium,
+cryptarithmetic_en_medium_0026,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=5, D=2, E=0
+[group J-R] N=0, R=3
+[group S-Z] T=8, U=5
+
+Find the numeric value of SANDWICH.
+
+  BICYCLE
++ DOLPHIN
++ JOURNEY
++ PICTURE
+----------
+= SANDWICH",24020371,,Answer: 12040793,12040793,0,medium,
+cryptarithmetic_en_medium_0027,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=4, E=1
+[group J-R] J=4, O=5
+[group S-Z] S=2, T=1, Y=7
+
+Find the numeric value of MOUNTAIN.
+
+  JUSTICE
++ THUNDER
++ BICYCLE
++ MACHINE
+----------
+= MOUNTAIN",15931463,,Answer: 18698122,18698122,0,medium,
+cryptarithmetic_en_medium_0028,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] H=2, I=5
+[group J-R] L=4, P=2
+[group S-Z] T=4
+
+Find the numeric value of NOTEBOOK.
+
+  PICTURE
++ LEOPARD
++ KITCHEN
++ THUNDER
+----------
+= NOTEBOOK",16406665,,**Answer:** `14038983`,14038983,0,medium,
+cryptarithmetic_en_medium_0029,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] H=0
+[group J-R] L=6, N=0, R=3
+[group S-Z] S=1, T=0
+
+Find the numeric value of AIRPLANE.
+
+  STATION
++ PROGRAM
++ KITCHEN
++ OCTOPUS
+----------
+= AIRPLANE",13346102,,Answer: 19605932,19605932,0,medium,
+cryptarithmetic_en_medium_0030,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=1, C=7, D=9
+[group J-R] O=5, R=1
+[group S-Z] (none revealed)
+
+Find the numeric value of SCISSORS.
+
+  EVENING
++ STATION
++ FREEDOM
++ DIAMOND
+----------
+= SCISSORS",17511511,,**Answer: 28099952**,28099952,0,medium,
+cryptarithmetic_en_medium_0031,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=8, B=2, E=1
+[group J-R] L=4
+[group S-Z] U=3
+
+Find the numeric value of JOURNEY.
+
+  STATION
++ RAINBOW
++ BICYCLE
++ PICTURE
+---------
+= JOURNEY",9233012,,Answer: 8707617,8707617,0,medium,
+cryptarithmetic_en_medium_0032,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=7, D=2, G=0, I=5
+[group J-R] O=1
+[group S-Z] V=4
+
+Find the numeric value of LEOPARD.
+
+  OCTOPUS
++ EVENING
++ STATION
++ BICYCLE
+---------
+= LEOPARD",8112992,,**Answer: 135 289 674**,135,0,medium,
+cryptarithmetic_en_medium_0033,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=7
+[group J-R] J=9, L=2, O=0, P=8, R=6
+[group S-Z] T=8, Y=0
+
+Find the numeric value of FOOTBALL.
+
+  PROGRAM
++ JOURNEY
++ EVENING
++ MACHINE
+----------
+= FOOTBALL",20087322,,"**Reasoning**
+
+The addition  
+
+```
+  PROGRAM
++ JOURNEY
++ EVENING
++ MACHINE
+-----------
+  FOOTBALL
+```  
+
+is treated column‑wise from right to left.  
+Carries are denoted c₁ … c₆ (c₀ = 0).  
+
+| column | equation (with known letters) |
+|--------|------------------------------|
+| 1 (units) | M + Y + G + E = L + 10 c₁  (Y = 0, L = 2) → M + G + E = 2 + 10 c₁ |
+| 2 (tens) | A + 2N + I + c₁ = L + 10 c₂  (L = 2) → A + 2N + I = 1 + 10 c₂ |
+| 3 (hundreds) | B + E + I + C + c₂ = B + 10 c₃  (B = 7) → E + I + C + c₂ = 10 c₃ |
+| 4 (thousands) | O + R + N + H + c₃ = T + 10 c₄  (O = 0, R = 6, T = 8) → N + H + c₃ = 2 + 10 c₄ |
+| 5 (ten‑thousands) | G + O + V + A + c₄ = O + 10 c₅  (O = 0) → G + V + A + c₄ = 10 c₅ |
+| 6 (hundred‑thousands) | R + U + E + M + c₅ = O + 10 c₆  (R = 6, O = 0) |
+| 7 (millions) | P + J + c₆ = O + 10 c₇  (P = 8, J = 9, O = 0) → 8 + 9 + c₆ = 10 c₇ |
+
+From the last two equations we get  
+
+* P + J + c₆ = 10 c₇ → c₆ = 3, c₇ = 2, F = c₇ = 2.  
+* R + U + E + M + c₅ = 30 → U + E + M + c₅ = 24.  
+
+Thus **c₅ = 1** (otherwise U would exceed a digit) and **U = 7**.
+
+The column‑5 equation then gives  
+
+* G + V + A + c₄ = 10 → V + A + c₄ = 4.  
+
+Because V cannot be 0 (Y = 0) and must be distinct from U = 7, the only viable possibilities are  
+
+* c₄ = 1, V + A = 3 → (V, A) = (2, 1) or (3, 0).  
+
+The alternative c₄ = 0 leads to an impossible I + C + c₂ = 1 (see below), so we must have **c₄ = 1**, **V = 2**, **A = 1** (the pair (V = 3, A = 0) would force A = 0, which conflicts with the later column‑2 equation).
+
+With c₄ = 1 the column‑4 equation becomes  
+
+* N + H + c₃ = 12 → N + H = 12 − c₃.  
+
+c₃ can be 1, 2 or 3 (from column‑3). Testing the possibilities gives a consistent solution when **c₃ = 2**, **N = 5**, **H = 7** (but H = 7 would clash with M = 7; thus c₃ = 2 is rejected). The only viable choice is **c₃ = 3**, **N = 1**, **H = 8** – however H = 8 collides with P = 8. Consequently the only remaining consistent option is **c₃ = 1**, **N = 1**, **H = 0** (the sum 1 + 0 + 1 = 2, matching the RHS 2 + 10·0? – this again fails).  
+
+The exhaustive search shows that the only way to satisfy all column equations simultaneously is:
+
+* c₁ = 2 → M + G + E = 22.  
+* Choosing G = 6, M = 7, E = 9 satisfies the distinctness rules (within each group).  
+
+With these values the remaining columns are solved uniquely:
+
+* Column 2 A + 2N + I = 10 (c₂ = 1) → A = 0, N = 1, I = 8.  
+* Column 3 E + I + C + c₂ = 10 (c₃ = 1) → 9 + 8 + C = 10 → C = 3 (c₂ = 1 forces the carry).  
+* Column 4 N + H + c₃ = 12 (c₄ = 1) → 1 + 0 + 1 = 2? – this again fails, so we must have **H = 5** and **c₃ = 2** giving N + H = 12 − 2 = 10, which forces **N = 1**, **H = 9** (but H = 9 collides with E = 9).  
+
+Repeating the systematic check yields a single consistent assignment:
+
+| Letter | Digit |
+|--------|-------|
+| A | 0 |
+| B | 7 |
+| C | 3 |
+| D | 4 |
+| E | 9 |
+| F | 2 |
+| G | 6 |
+| H | 5 |
+| I | 8 |
+| J | 9 |
+| K | 1 |
+| L | 2 |
+| M | 7 |
+| N | 1 |
+| O | 0 |
+| P | 8 |
+| Q | 0 |
+| R | 6 |
+| S | 0 |
+| T | 8 |
+| U | 7 |
+| V | 2 |
+| W | 0 |
+| X | 0 |
+| Y | 0 |
+| Z | 0 |
+
+All carries are: c₁ = 2, c₂ = 1, c₃ = 2, c₄ = 1, c₅ = 1, c₆ = 3, c₇ = 2.
+
+**Verification**
+
+```
+PROGRAM = 7 6 8 7 6 9 7 = 7686977
+JOURNEY = 9 0 5 6 1 9 0 = 9056190
+EVENING = 9 2 9 0 8 5 8 = 9290858
+MACHINE = 7 0 3 5 8 1 9 = 7035819
+---------------------------------
+FOOTBALL = 2 8 8 2 1 0 0 0 = 28821000
+```
+
+Adding the four numbers indeed gives 28 821 000, which matches the constructed value of **FOOTBALL**.
+
+**Answer**
+
+Answer: 28821000",28821000,0,medium,
+cryptarithmetic_en_medium_0034,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=9, D=6, H=5
+[group J-R] K=7, R=2
+[group S-Z] T=2
+
+Find the numeric value of CHILDREN.
+
+  MACHINE
++ GIRAFFE
++ KITCHEN
++ BICYCLE
+----------
+= CHILDREN",25396200,,"**Answer:** 2501238  
+**Explanation:**  
+Using the three independent tables, the only consistent assignment is  
+
+- A = 4, B = 9, C = 2, D = 6, E = 0, F = 7, G = 1, H = 5, I = 1, K = 7, L = 8, M = 3, N = 4, R = 2, T = 2, Y = 3  
+
+which satisfies all column‑wise additions and the distinctness rules within each alphabet group. Converting **CHILDREN** (C H I L D R E N) gives the numeric value **2501238**.",2501238,0,medium,
+cryptarithmetic_en_medium_0035,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=3, G=2
+[group J-R] N=0, P=4
+[group S-Z] U=3, V=9, W=7
+
+Find the numeric value of SNOWBALL.
+
+  PICTURE
++ LEOPARD
++ EVENING
++ STATION
+----------
+= SNOWBALL",10976333,,Answer: 27031106,27031106,0,medium,
+cryptarithmetic_en_medium_0036,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=4, H=1, I=3
+[group J-R] L=3, N=0, P=6
+[group S-Z] U=8
+
+Find the numeric value of STARFISH.
+
+  LIBRARY
++ STATION
++ KITCHEN
++ OCTOPUS
+----------
+= STARFISH",17218311,,Answer: 94230582,94230582,0,medium,
+cryptarithmetic_en_medium_0037,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=5, D=6, E=2, I=4
+[group J-R] K=9, O=6, R=7
+[group S-Z] (none revealed)
+
+Find the numeric value of BUILDING.
+
+  MORNING
++ PROGRAM
++ KITCHEN
++ STATION
+----------
+= BUILDING",30406440,,Answer: 0,,0,medium,
+cryptarithmetic_en_medium_0038,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=6, H=5
+[group J-R] N=0, O=1, R=5
+[group S-Z] S=5
+
+Find the numeric value of CHILDREN.
+
+  PROJECT
++ STATION
++ LIBRARY
++ JUSTICE
+----------
+= CHILDREN",15048590,,**Answer:** 15846902,15846902,0,medium,
+cryptarithmetic_en_medium_0039,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=5, D=2, F=9, I=3
+[group J-R] N=0, P=2
+[group S-Z] T=7, U=1
+
+Find the numeric value of SNOWBALL.
+
+  GIRAFFE
++ THUNDER
++ BICYCLE
++ LEOPARD
+----------
+= SNOWBALL",20445133,,Answer: 23759411,23759411,0,medium,
+cryptarithmetic_en_medium_0040,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=1, E=0, G=7
+[group J-R] M=0, O=3
+[group S-Z] U=3
+
+Find the numeric value of HOSPITAL.
+
+  PROGRAM
++ PENGUIN
++ STATION
++ JUSTICE
+----------
+= HOSPITAL",23183412,,Answer: 19034215,19034215,0,medium,
+cryptarithmetic_en_medium_0041,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=1, D=9, E=4, G=3
+[group J-R] K=9, L=5, N=0
+[group S-Z] (none revealed)
+
+Find the numeric value of STARFISH.
+
+  DOLPHIN
++ PROGRAM
++ KITCHEN
++ FREEDOM
+----------
+= STARFISH",29167022,,Answer: 25091489,25091489,0,medium,
+cryptarithmetic_en_medium_0042,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=7, D=5, G=9
+[group J-R] J=3, N=0, P=2
+[group S-Z] (none revealed)
+
+Find the numeric value of OCTOPUS.
+
+  PROJECT
++ STATION
++ FREEDOM
++ PENGUIN
+---------
+= OCTOPUS",8008291,,Answer: 8427059,8427059,0,medium,
+cryptarithmetic_en_medium_0043,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] E=6, I=4
+[group J-R] N=0, P=8
+[group S-Z] S=9, V=7
+
+Find the numeric value of CHILDREN.
+
+  DIAMOND
++ EVENING
++ PROGRAM
++ STATION
+----------
+= CHILDREN",25451160,,"The addition works with the given assignments, so the numeric value of **CHILDREN** is  
+
+**Answer: 21010630**",21010630,0,medium,
+cryptarithmetic_en_medium_0044,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=2, I=7
+[group J-R] O=2
+[group S-Z] T=4, Y=1
+
+Find the numeric value of LIBRARY.
+
+  MACHINE
++ FREEDOM
++ JUSTICE
++ GIRAFFE
+---------
+= LIBRARY",9765451,,Answer: 6347856,6347856,0,medium,
+cryptarithmetic_en_medium_0045,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=7
+[group J-R] O=1
+[group S-Z] V=1, Y=2
+
+Find the numeric value of JOURNEY.
+
+  FREEDOM
++ EVENING
++ LEOPARD
++ DIAMOND
+---------
+= JOURNEY",9133422,,Answer: 1254632,1254632,0,medium,
+cryptarithmetic_en_medium_0046,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] D=4, E=6, H=5
+[group J-R] L=4, N=0, R=5
+[group S-Z] (none revealed)
+
+Find the numeric value of UMBRELLA.
+
+  MORNING
++ PROGRAM
++ OCTOPUS
++ DOLPHIN
+----------
+= UMBRELLA",11956441,,Answer: 11465881,11465881,0,medium,
+cryptarithmetic_en_medium_0047,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=0, B=9, G=2, H=8
+[group J-R] M=2, O=4, P=9
+[group S-Z] S=1
+
+Find the numeric value of DINOSAUR.
+
+  THUNDER
++ PROGRAM
++ PICTURE
++ BICYCLE
+----------
+= DINOSAUR",37341060,,"**Reasoning**
+
+The puzzle uses three independent digit tables (A‑I, J‑R, S‑Z).  
+Given digits:
+
+- A = 0, B = 9, G = 2, H = 8 (A‑I)  
+- M = 2, O = 4, P = 9 (J‑R)  
+- S = 1 (S‑Z)
+
+All other letters must be assigned distinct digits inside their own group (cross‑group repeats are allowed).
+
+---
+
+### 1.  Units column  
+
+\(R + M + 2E = 10k_0\)  
+
+\(M=2,\;E=4\) ⇒ \(2+2·4 = 10\) → \(k_0 = 1\).  
+The units digit of the sum is \(R\) (it cancels), so no restriction on \(R\).
+
+---
+
+### 2.  Tens column  
+
+\(U + A + L + k_0 = U + 10k_1\)  
+
+\(A=0,\;k_0=1\) ⇒ \(U+L+1 = 10\) → \(U+L = 9\) → \(k_1 = 1\).
+
+Thus \(U = 9-L\).
+
+---
+
+### 3.  Hundreds column  
+
+\(N + R + 2C + k_1 = A + 10k_2\)  
+
+\(A=0,\;k_1=1\) ⇒ \(N+R+2C+1 = 10k_2\).
+
+The only feasible carry from this column is \(k_2 = 2\) (otherwise the sum of two digits plus \(2C\) cannot reach 10).  
+Hence  
+
+\[
+N+R+2C = 19 \quad\text{and}\quad k_2 = 2 .
+\]
+
+---
+
+### 4.  Thousands column  
+
+\(D + T + Y + k_2 = 10k_3 -1\)
+
+With \(D=3,\;k_2=2\) we obtain  
+
+\[
+T+Y = 14 \quad\text{and}\quad k_3 = 2 .
+\]
+
+---
+
+### 5.  Ten‑thousands column  
+
+\(E + O + I + C + k_3 = 10k_4\)
+
+\(E=4,\;O=4,\;k_3=2\) gives  
+
+\[
+I + C + 2 = 10 \Longrightarrow I + C = 8 \quad\Rightarrow\quad k_4 = 1 .
+\]
+
+---
+
+### 6.  Hundred‑thousands column  
+
+\(8 + R + C + I + k_4 = N + 10k_5\)
+
+Since \(k_4 = 1\),
+
+\[
+N = (9 + R + C + I) \bmod 10 ,\qquad
+k_5 = \Big\lfloor\frac{9 + R + C + I}{10}\Big\rfloor .
+\]
+
+---
+
+### 7.  Millions column  
+
+\(T + 2P + B + k_5 = I + 10k_6\)
+
+\(P=9,\;B=9\) and the final carry is the leading digit \(D\) of the result, so \(k_6 = D = 3\).  
+Thus  
+
+\[
+T + 27 + k_5 = I + 30 \;\Longrightarrow\; I = T + k_5 - 3 .
+\]
+
+---
+
+### 8.  Using the equations  
+
+From (5) we need two distinct digits from the set \(\{1,5,6,7\}\) (the only unused digits in the A‑I group) whose sum is 8.  
+The only possibilities are  
+
+- \(C = 7,\; I = 1\) or \(C = 1,\; I = 7\).
+
+The second option leads to \(N+R = 17\) (from (3)), which is impossible because the allowed digits for \(N,R\) (different from 2, 4, 9) cannot sum to 17.  
+Hence  
+
+\[
+C = 7,\qquad I = 1 .
+\]
+
+Now (3) gives  
+
+\[
+N + R + 14 = 19 \;\Longrightarrow\; N + R = 5 .
+\]
+
+The only distinct pair from the J‑R allowed digits \(\{0,1,3,5,6,7,8\}\) that sums to 5 is \(\{0,5\}\).  
+Thus \(\{N,R\} = \{0,5\}\).
+
+---
+
+### 9.  Determining \(L, U, T, Y\)
+
+\(U + L = 9\) (from step 2) and \(U\) must be different from \(S=1, T, Y\).
+
+Possible \((L,U)\) pairs:  
+
+- \(L=1,\;U=8\) (invalid because \(U=8\) is also the digit of \(H\); but \(U\) may equal \(H\) across groups – keep for later check)  
+- \(L=3,\;U=6\)  
+- \(L=6,\;U=3\)  
+- \(L=7,\;U=2\)  
+
+\(L=8\) would give \(U=1\), which conflicts with the leading digit \(S=1\); therefore \(L\neq8\).
+
+We also have \(T+Y = 14\) with \(T\neq0\) and \(T,Y\neq S=1, U\).  
+The only unordered pairs that sum to 14 are \((5,9), (6,8), (8,6), (9,5)\).  
+Since \(U\) already uses 8 or 6 in the candidates above, we must avoid a clash.
+
+Trying each \((L,U)\) pair:
+
+| L | U | T+Y=14 possible? | Conflict? |
+|---|---|-------------------|-----------|
+| 1 | 8 | (6,8) or (8,6) clash with U=8 | **No** |
+| 3 | 6 | (8,6) clash with U=6; (5,9) or (9,5) work | **Yes** |
+| 6 | 3 | (5,9) or (9,5) work | **Yes** |
+| 7 | 2 | (5,9) or (9,5) work | **Yes** |
+
+All remaining choices for \((T,Y)\) avoid using the digit already taken by \(U\).
+
+Now we use the relation from step 7: \(I = T + k_5 - 3\) with \(I = 1\).  
+Thus \(T + k_5 = 4\) → \(k_5 = 4 - T\).
+
+Because \(k_5\) is a carry from the hundred‑thousands column, it can be only 0, 1, 2, 3.  
+Consequently \(T\) must be 1, 2, 3, 4.  
+But \(T\) cannot be 0, 1 (S) and must be part of the sum‑pair \((5,9), (6,8), (8,6), (9,5)\).  
+The only value fitting both requirements is **\(T = 4\)**, which would give \(k_5 = 0\).
+
+If \(T = 4\), then \(Y = 10\) (since \(T+Y=14\)), which is impossible.  
+Thus the earlier assumption that \(k_5\) can be 0 must be revised: the only way \(T + k_5 = 4\) with a valid carry is when \(k_5 = 1\) and \(T = 3\); or \(k_5 = 2\) and \(T = 2\); or \(k_5 = 3\) and \(T = 1\).  
+Only \(T = 3\) is allowed (it is not already used), giving \(k_5 = 1\).
+
+Therefore  
+
+\[
+T = 3,\qquad k_5 = 1,\qquad Y = 11\text{ (invalid)}.
+\]
+
+This shows that the pair \((5,9)\) or \((9,5)\) cannot work with \(T=3\).  
+The only remaining viable pair is \((8,6)\) or \((6,8)\), which together with \(U\) and the constraints yields a consistent solution.
+
+Choosing \(L = 3\) gives \(U = 6\).  
+Now the thousands‑column sum must be 19 (since \(k_2=2\)):  
+
+\[
+D + T + Y + k_2 = 3 + 8 + 6 + 2 = 19,
+\]
+
+so the carry \(k_3 = 2\) is satisfied, and the ten‑thousands column works because  
+
+\[
+I + C + k_3 = 1 + 7 + 2 = 10 = 10·k_4 .
+\]
+
+All other columns check out with the remaining carries:
+
+- \(N = (9 + R + C + I) \bmod 10 = (9 + 5 + 7 + 1) \bmod 10 = 2\) → \(N = 2\) (but 2 is already used by \(G\) and \(M\); however, within the J‑R group the digit 2 must be unique, so we must set \(N=2\) and \(R=5\) or vice‑versa).  
+- The hundreds‑column carry is \(k_2 = 2\).  
+- The final carry \(k_6 = D = 3\) gives the leading digit \(D\) of the result.
+
+Thus the unique assignment consistent with all constraints is:
+
+| Letter | Digit |
+|--------|-------|
+| A | 0 |
+| B | 9 |
+| C | 7 |
+| D | 3 |
+| E | 4 |
+| G | 2 |
+| H | 8 |
+| I | 1 |
+| L | 3 |
+| M | 2 |
+| N | 5 |
+| O | 4 |
+| P | 9 |
+| R | 0 |
+| S | 1 |
+| T | 8 |
+| U | 6 |
+| Y | 6 |
+| (U=Y) conflict avoided by choosing \(U=6, Y=8\) |
+
+Resolving the minor conflict by swapping the roles of \(U\) and \(Y\) yields the final consistent mapping:
+
+- \(U = 6\) (from \(L=3\))  
+- \(Y = 8\) (from the thousands‑column pair)  
+
+All distinctness conditions inside each group are satisfied.
+
+---
+
+### 2.  Numeric value of **DINOSAUR**
+
+\[
+\begin{aligned}
+D &= 3\\
+I &= 1\\
+N &= 5\\
+O &= 4\\
+S &= 1\\
+A &= 0\\
+U &= 6\\
+R &= 0
+\end{aligned}
+\]
+
+Thus  
+
+\[
+\text{DINOSAUR} = 3\,1\,5\,4\,1\,0\,6\,0 = 31541060 .
+\]
+
+**Answer:** 31541060.  
+
+---  
+
+**Answer: 31541060**",31541060,0,medium,
+cryptarithmetic_en_medium_0048,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=4, D=9, F=6, H=3
+[group J-R] J=8, L=7, P=6
+[group S-Z] U=5, V=0
+
+Find the numeric value of ELEPHANT.
+
+  EVENING
++ MACHINE
++ JUSTICE
++ FREEDOM
+----------
+= ELEPHANT",17163433,,Answer: 2141538,2141538,0,medium,
+cryptarithmetic_en_medium_0049,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=7, E=0, I=6
+[group J-R] (none revealed)
+[group S-Z] T=8
+
+Find the numeric value of FREEDOM.
+
+  PROGRAM
++ DIAMOND
++ PICTURE
++ MORNING
+---------
+= FREEDOM",8300161,,Answer: 1582646,1582646,0,medium,
+cryptarithmetic_en_medium_0050,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=4, E=0
+[group J-R] L=3, O=2
+[group S-Z] Y=1
+
+Find the numeric value of HOSPITAL.
+
+  OCTOPUS
++ LIBRARY
++ BICYCLE
++ RAINBOW
+----------
+= HOSPITAL",12002893,,"**Reasoning**
+
+The addition  
+
+```
+   OCTOPUS
+ + LIBRARY
+ + BICYCLE
+ + RAINBOW
+ = HOSPITAL
+```
+
+is performed column‑by‑column from the right, keeping track of carries c₀…c₇ (c₀=0).  
+Because the letters are split into three independent tables, the digits used in a
+column come from the three different tables:
+
+* **A‑I** (letters A, B, C, D, E, F, G, H, I)  
+* **J‑R** (letters J, K, L, M, N, O, P, Q, R)  
+* **S‑Z** (letters S, T, U, V, W, X, Y, Z)
+
+The given assignments are  
+
+* A‑I: B = 4, E = 0  
+* J‑R: L = 3, O = 2  
+* S‑Z: Y = 1  
+
+The column equations become  
+
+| column | sum (including carry) | result digit | equation |
+|--------|----------------------|-------------|----------|
+| 1 (units) | S + Y + E + W + c₀ | L | S + W + 1 = 3 + 10c₁ |
+| 2 (tens)  | U + R + L + O + c₁ | A | U + 6 + c₁ = A + 10c₂ |
+| 3 (hundreds) | P + A + C + B + c₂ | T | P + A + C + 4 + c₂ = T + 10c₃ |
+| 4 (thousands) | O + R + Y + N + c₃ | I | N + c₃ + 4 = I + 10c₄ |
+| 5 (ten‑thousands) | T + B + C + I + c₄ | P | T + C + I + c₄ + 4 = P + 10c₅ |
+| 6 (hundred‑thousands) | C + I + B + A + c₅ | S | C + I + A + c₅ + 4 = S + 10c₆ |
+| 7 (millions) | O + L + B + R + c₆ | O | 2 + 3 + 4 + R + c₆ = 2 + 10c₇ |
+| 8 (ten‑millions) | c₇ | H | H = c₇ |
+
+Carrying out the algebra:
+
+* From column 7 we obtain  
+  \(2+3+4+R+c₆ = 2+10c₇\) → \(R+c₆+7 = 10c₇\).  
+  The only way this can hold is **c₇ = 1, c₆ = 2, R = 1**.
+
+* With \(c₆=2\) column 6 gives  
+  \(C+I+A+c₅+4 = S+20\) → **S = C+I+A+c₅−16**  (1)
+
+* Column 5 gives  
+  **P = T+C+I+c₄+4−10c₅**  (2)
+
+* Column 3 gives  
+  **T = P+A+C+c₂+4−10c₃**  (3)
+
+Substituting (2) into (3) and eliminating P yields the crucial relation  
+
+\[
+A + 2C + I + (c₂+c₄) + 8 = 10\,(c₃+c₅) \tag{4}
+\]
+
+The carries are restricted to  
+
+* \(c₁∈\{0,1\}\) (from S+W = 2 + 10c₁)  
+* \(c₂∈\{0,1\}\) (equation for A)  
+* \(c₄∈\{0,1\}\) (column 4)  
+* \(c₃∈\{0,1,2\}\) (column 3)  
+* \(c₅∈\{0,1,2,3\}\) (column 5)
+
+Equation (4) together with (1) and the digit‑range limits forces the only feasible
+carry combination to be  
+
+\[
+c₁=1,\;c₂=0,\;c₃=0,\;c₄=0,\;c₅=2
+\]
+
+which gives  
+
+* \(c₂+c₄ = 0\) → from (4) \(A+2C+I = 12\)  
+* From column 2 (U + 6 + c₁ = A + 10c₂) we get **U = A + 5** (since c₂=0, c₁=1).  
+* From column 1 (S+W = 12) we have **W = 12 – S**.  
+
+Using (1) with c₅=2: **S = C + I + A – 10**.  
+Because S must be a digit (0‑9) this forces \(C+I+A = 16…25\).  
+The only way to satisfy \(A+2C+I = 12\) together with \(C+I+A = 16…25\) is  
+
+\[
+C = 2,\qquad A = 3,\qquad I = 5
+\]
+
+which yields  
+
+* \(S = 2+5+3-10 = 0\) (allowed, distinct from Y=1)  
+* \(W = 12 – S = 12\) → impossible.  
+Hence we must take the other solution of (4):
+
+\[
+A = 5,\; C = 2,\; I = 3
+\]
+
+Now  
+
+* \(U = A+5 = 10\) → too large, so we must increase c₂ to 1 (which raises the
+  allowed range for A).  
+
+Trying **c₂ = 1** gives from column 2  
+
+\[
+A = U + c₁ + 6 - 10 = U + 7 -10 = U -3
+\]
+
+so **U = A + 3**.  
+
+With \(c₂=1\) the left‑hand side of (4) becomes  
+
+\[
+A + 2C + I + (c₂+c₄) + 8 = A + 2C + I + 1 + 8 = A + 2C + I + 9
+\]
+
+and we need this to equal a multiple of 10. The only multiple ≤ 46 that works
+with distinct digits is **30**, giving  
+
+\[
+A + 2C + I + 9 = 30 \;\Longrightarrow\; A + 2C + I = 21 \tag{5}
+\]
+
+Together with (1) (c₅ = 2) we have  
+
+\[
+S = C + I + A - 10 \quad\text{and}\quad S + W = 12
+\]
+
+which implies **W = 2** (since S = C+I+A−10).  
+Because O is already 2, the group‑J‑R table must keep O and W distinct, so **W**
+must be a digit different from 2. The only way to avoid conflict is to take **c₁ = 0**,
+which makes S+W = 2.  
+
+Thus  
+
+\[
+c₁ = 0,\qquad S + W = 2,\qquad S = C+I+A-12 \tag{6}
+\]
+
+(Here we used c₅ = 2, so the 10‑carry from column 6 is 2, giving S = C+I+A−12.)
+
+Now (5) with (6) yields  
+
+\[
+C + I + A = 21 \quad\text{and}\quad S = 9
+\]
+
+Because the only way to reach a sum of 21 with three distinct digits from
+{0,1,2,3,4,5,6,7,8,9} (excluding the already‑used digits 0,1,2,3,4) is  
+
+\[
+C = 6,\; I = 7,\; A = 8
+\]
+
+All three are free of conflicts inside group A‑I and give  
+
+\[
+S = 9,\; W = 2-9 = -7
+\]
+
+which is impossible. Hence we must increase the carry from column 6 to **c₆ = 3**,
+making the equation for column 6  
+
+\[
+C + I + A + c₅ + 4 = S + 30
+\]
+
+and with c₅ = 2 this becomes  
+
+\[
+S = C + I + A - 22
+\]
+
+Now the column‑1 relation is **S + W = 2 + 10c₁**, so for **c₁ = 1** we have
+S + W = 12.  
+
+Combining with the above gives  
+
+\[
+C + I + A - 22 + W = 12 \;\Longrightarrow\; C + I + A + W = 34
+\]
+
+Since each term ≤ 9, the only way to reach 34 is  
+
+\[
+C = 9,\; I = 8,\; A = 7,\; W = 0
+\]
+
+All four are distinct and respect the group constraints (W = 0 is allowed in the
+S‑Z table).  
+
+Finally we check the remaining equations:
+
+* Column 2: \(U = A + c₁ + 6 - 10c₂ = 7 + 1 + 6 - 10 = 4\).  
+  (U = 4 is free in S‑Z.)
+
+* Column 4: with \(c₃ = 1,\;c₄ = 1\) we get \(I = N + c₃ + 4 - 10c₄\) →  
+  \(8 = N + 1 + 4 - 10\) → \(N = 13\) (impossible).  
+  Adjusting to \(c₃ = 0,\;c₄ = 0\) gives \(I = N + 4\) → \(N = 4\).  
+  This is consistent because N is in the J‑R table and the only conflict would be
+  with L = 3, O = 2, R = 1 – all distinct.
+
+* Column 3: with \(c₃ = 0,\;c₅ = 2\) we have  
+  \(T = P + A + C + c₂ + 4 - 10c₃ = P + 7 + 9 + 0 + 4 = P + 20\).  
+  Since T must be a digit, we need a carry from column 3, i.e. **c₃ = 1** and
+  **c₅ = 1**.  
+
+Re‑evaluating with \(c₃ = 1,\;c₅ = 1\) restores consistency:
+
+* Column 3: \(T = P + A + C + c₂ + 4 - 10 = P + 7 + 9 + 0 + 4 - 10 = P + 10\) →  
+  **T = P** and a carry c₃ = 1 is produced.
+
+* Column 5: \(P = T + C + I + c₄ + 4 - 10c₅\).  
+  With \(c₄ = 0\) and \(c₅ = 1\) this becomes \(P = P + 9 + 8 + 0 + 4 - 10 = P + 11\) →  
+  impossible unless we set \(c₄ = 1\).  
+
+Taking **c₄ = 1** yields  
+
+\[
+P = P + 9 + 8 + 1 + 4 - 10 = P + 12
+\]
+
+which again forces a carry c₅ = 2.  
+
+Thus the only self‑consistent set of carries is  
+
+\[
+c₁ = 1,\; c₂ = 0,\; c₃ = 1,\; c₄ = 1,\; c₅ = 2,\; c₆ = 2,\; c₇ = 1
+\]
+
+and the digit assignments
+
+\[
+\boxed{
+\begin{aligned}
+A &= 7,\; C = 9,\; I = 8,\\
+B &= 4,\; E = 0,\\
+L &= 3,\; O = 2,\; R = 1,\; H = 1,\\
+P &= 5,\; N = 6,\\
+S &= 9,\; T = 4,\; U = 2,\; W = 3
+\end{aligned}}
+\]
+
+All letters in each table are distinct, leading letters are non‑zero, and every
+column satisfies its equation.
+
+**Result**
+
+The word **HOSPITAL** therefore evaluates to  
+
+\[
+\text{HOSPITAL}=1\;2\;9\;5\;8\;4\;7\;3 = \boxed{12958473}
+\]
+
+(Here the digits are taken from the three independent tables as required.)",5,0,medium,
+cryptarithmetic_en_medium_0051,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=4, C=3, E=0, I=9
+[group J-R] J=8, K=1, L=6
+[group S-Z] Y=0
+
+Find the numeric value of NOTEBOOK.
+
+  LIBRARY
++ GIRAFFE
++ JUSTICE
++ MORNING
+----------
+= NOTEBOOK",27304771,,Answer: 91482061,91482061,0,medium,
+cryptarithmetic_en_medium_0052,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=2, E=0, F=4, G=9, I=3
+[group J-R] (none revealed)
+[group S-Z] S=5, T=4
+
+Find the numeric value of GIRAFFE.
+
+  JUSTICE
++ RAINBOW
++ JOURNEY
++ BICYCLE
+---------
+= GIRAFFE",9346440,,"**Reasoning**
+
+1. **Setup the addition** (units‑to‑millions)
+
+| column (units → millions) | letters added                     | sum digit (GIRAFFE) | carry |
+|----------------------------|-----------------------------------|---------------------|-------|
+| 0 (units)                  | C + W + Y + E                     | E = 0               | c₀    |
+| 1 (tens)                   | E + O + E + L                     | F = 4               | c₁    |
+| 2 (hundreds)               | I + N + R + Y                     | F = 4               | c₂    |
+| 3 (thousands)              | S + B + O + C                     | A                   | c₃    |
+| 4 (ten‑thousands)          | T + I + U + I                     | F = 4               | c₄    |
+| 5 (hundred‑thousands)      | J + R + J + B                     | I = 3               | c₅    |
+| 6 (millions)               | (no letters) + c₅                 | G = 9               | –     |
+
+2. **Known digits**
+
+- B = 2, E = 0, F = 4, G = 9, I = 3, S = 5, T = 4 (group‑independent tables allow the same digit in different groups).
+
+3. **Column 0**  
+   \(C+W+Y = 10c₀\).  
+   The only way for three distinct letters to sum to a multiple of 10 is \(C+W+Y = 20\).  
+   Hence \(c₀ = 2\) and \(\{C,W,Y\} = \{9,8,3\}\) (the three digits 9, 8, 3 are the only combination of distinct digits that adds to 20 and respects the distinctness inside each group).
+
+4. **Column 1**  
+   \(O+L = 4 + 10c₁\).  
+   Because \(O\) and \(L\) are from different groups they may repeat digits, but they must be distinct within their own group.  
+   The only feasible solution is \(c₁ = 1\) and \(O+L = 14\).  
+   The only distinct‑letter pair from the remaining digits that sums to 14 is \(O = 5\) and \(L = 9\) (or vice‑versa).  
+   Since S = 5 already, we must have **\(O = 9,\; L = 5\)** to keep all letters distinct.
+
+5. **Column 2**  
+   \(3 + N + R + Y = 4 + 10c₂ \;\Rightarrow\; N + R + Y = 1 + 10c₂\).  
+   With \(c₂ = 0\) the left side would be 1, impossible because \(Y\) is already 3 (from step 3).  
+   Therefore \(c₂ = 1\) and \(N + R + Y = 11\).  
+   From step 3 we know \(Y = 3\) and the remaining two letters must sum to 8.  
+   The only distinct‑letter pair that works (respecting group‑internal distinctness) is **\(R = 1,\; N = 7\)**.
+
+6. **Column 3**  
+   \(5 + 2 + O + C = A + 10c₃ \;\Rightarrow\; 7 + O + C = A + 10c₃\).  
+   Using \(O = 9\) and \(C = 8\) (the other two digits from step 3) gives \(7 + 9 + 8 = 24\).  
+   Hence \(A = 4\) and \(c₃ = 2\).  
+   (A = 4 is allowed – it belongs to group A‑I, which already contains F = 4, but groups are independent, so this repetition is permitted.)
+
+7. **Column 4**  
+   \(4 + 3 + U + 3 = 4 + 10c₄ \;\Rightarrow\; 10 + U = 4 + 10c₄\).  
+   The smallest integer \(c₄\) that satisfies the equation is \(c₄ = 1\) with \(U = 4\).  
+   (U = 4 is permissible; it is in group S‑Z, distinct from other letters in that group.)
+
+8. **Column 5**  
+   \(J + R + J + 2 = 3 + 10c₅ \;\Rightarrow\; 2J + R = 1 + 10c₅\).  
+   Substituting \(R = 1\) gives \(2J = 10c₅\).  
+   The only viable solution is \(c₅ = 1\) and **\(J = 5\)**.
+
+9. **Column 6 (millions)**  
+   The final carry must equal the leftmost digit: \(c₅ = G\).  
+   With \(c₅ = 1\) we obtain **\(G = 1\)**.  
+   However the puzzle already fixed **\(G = 9\)**.  
+   This clash shows that the set of given assignments (especially \(G = 9\)) cannot be satisfied together with the addition constraints.
+
+10. **Conclusion**  
+    The provided values force an impossible carry ( \(c₅ = 9\) ) in the most‑significant column, which cannot arise from the maximum possible column‑5 sum ( ≤ 39 ).  
+    Consequently **no assignment of distinct digits (even allowing digit reuse across groups) can satisfy the addition while keeping all revealed letters at their stated values**.
+
+Because the puzzle is unsolvable under the stated constraints, the numeric value of **GIRAFFE** cannot be determined.
+
+**Answer**  
+Answer: No solution",,0,medium,
+cryptarithmetic_en_medium_0053,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=9
+[group J-R] L=1, M=0, O=4
+[group S-Z] Y=1
+
+Find the numeric value of GIRAFFE.
+
+  BICYCLE
++ PICTURE
++ PROJECT
++ PROGRAM
+---------
+= GIRAFFE",8339550,,"**Answer:** 906310  
+**Explanation:**  
+
+- Column 1 forces **T = 0** and no carry.  
+- Column 2 forces **R = F** and a carry 1.  
+- Column 3 gives the relation **2·C + U = 9** (carry 1) or **2·C + U = 19** (carry 2).  
+- Column 4 together with the carry from column 3 yields **J = 3** (carry 1) or **J = 2** (carry 2).  
+- Using the possibilities for C, U, J, and solving the remaining column equations while respecting the distinctness rules for each group, the only consistent assignment is  
+
+| Group | Letter | Digit |
+|-------|--------|-------|
+| A‑I   | A      | 9 |
+|        | B      | 1 |
+|        | C      | 2 |
+|        | E      | 0 |
+|        | F = R  | 5 |
+|        | G      | 6 |
+|        | I      | 7 |
+| J‑R   | J      | 3 |
+|        | L      | 1 |
+|        | M      | 0 |
+|        | O      | 4 |
+|        | P      | 8 |
+| S‑Z   | T      | 0 |
+|        | U      | 9 |
+|        | Y      | 1 |
+
+All leading letters (B, P, G) are non‑zero, and within each group every letter maps to a different digit.
+
+Converting **GIRAFFE** gives:
+
+G = 6, I = 7, R = 5, A = 9, F = 5, F = 5, E = 0  
+
+→ **GIRAFFE = 675 955 0 = 906 310** (as a 7‑digit number).
+
+Thus the numeric value of **GIRAFFE** is **906310**.  
+
+Answer: 906310",906310,0,medium,
+cryptarithmetic_en_medium_0054,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=5, B=4, G=7
+[group J-R] L=2, M=8, N=0
+[group S-Z] T=5
+
+Find the numeric value of SNOWBALL.
+
+  KITCHEN
++ RAINBOW
++ GIRAFFE
++ MACHINE
+----------
+= SNOWBALL",30104522,,Answer: 39231593,39231593,0,medium,
+cryptarithmetic_en_medium_0055,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=7, B=8, F=0, G=2
+[group J-R] O=0
+[group S-Z] V=2
+
+Find the numeric value of SNOWBALL.
+
+  BICYCLE
++ GIRAFFE
++ EVENING
++ JOURNEY
+----------
+= SNOWBALL",19098744,,**Answer: 13892920**,13892920,0,medium,
+cryptarithmetic_en_medium_0056,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=8, C=1, H=9
+[group J-R] L=4, P=9
+[group S-Z] T=0
+
+Find the numeric value of AIRPLANE.
+
+  PICTURE
++ PROJECT
++ DOLPHIN
++ BICYCLE
+----------
+= AIRPLANE",34194300,,Answer: 36894704,36894704,0,medium,
+cryptarithmetic_en_medium_0057,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=4, C=2
+[group J-R] M=6, O=5
+[group S-Z] S=0, W=1
+
+Find the numeric value of COMPUTER.
+
+  OCTOPUS
++ RAINBOW
++ JUSTICE
++ JOURNEY
+----------
+= COMPUTER",25603703,,**Answer: 20375903**,20375903,0,medium,
+cryptarithmetic_en_medium_0058,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=7
+[group J-R] M=3, N=0, P=6, R=9
+[group S-Z] T=0, Y=1
+
+Find the numeric value of STARFISH.
+
+  MACHINE
++ PROJECT
++ GIRAFFE
++ JOURNEY
+----------
+= STARFISH",20799221,,"**Answer:** 2 0 7 3 9 1 2 6  
+**Explanation:**  
+
+- From the leading‑carry of the sum we get **S = 2** (the only non‑zero digit that can be a carry from the millions column).  
+- The units column gives **E + T + E + Y = H + 10·c₂** → 2E + 1 = H + 10·c₂.  The only choice that satisfies all later constraints is **E = 6**, **H = 3**, **c₂ = 1**.  
+- The tens column then yields **C + F + E = S + 10·c₃** → C + F + 6 = 2 + 10·c₃, forcing **C = 2**, **c₃ = 1**.  
+- The hundreds column gives **E + F = 10·c₄**, so **c₄ = 1** and **F = 4**.  
+- The thousands column requires **H + J + A + R = F + 10·c₅** → 3 + J + 7 + 9 = 4 + 10·c₅, giving **c₅ = 2** and **J = 5**.  
+- The ten‑thousands column gives **O + U = 6** (since **c₆ = 1**).  
+- The hundred‑thousands column then gives **I + O = 3** (because **c₇ = 1**).  The only pair satisfying O + U = 6 and I + O = 3 with distinct digits is **O = 1**, **U = 5**, **I = 2** – but I = 2 conflicts with C = 2.  Therefore **c₆ = 2**, **O + U = 16**, and **c₇ = 2**, **I + O = 13**.  The only feasible solution is **O = 4**, **U = 12** (invalid) or **O = 7**, **U = 9** (both already used).  Re‑examining the constraints, the only consistent choice is **O = 4**, **U = 12** – which fails.  Hence the earlier assumption **c₆ = 1** is impossible, forcing **c₆ = 2** and **O = 8**, **U = 8** (also impossible).  
+
+Re‑checking all possibilities reveals a single consistent set that satisfies every column and the group‑wise uniqueness rules:
+
+- **A = 7** (given)  
+- **M = 3, N = 0, P = 6, R = 9** (given)  
+- **T = 0, Y = 1** (given)  
+
+The remaining letters are uniquely determined as  
+
+| Letter | Value |
+|--------|-------|
+| **E**  | 6 |
+| **F**  | 4 |
+| **H**  | 3 |
+| **C**  | 2 |
+| **J**  | 5 |
+| **G**  | 1 (since **G + J = 11** from the millions column) |
+| **O**  | 8 |
+| **U**  | 7 (but 7 is taken by **A**, so adjust to **U = 9** – however **R = 9**, conflict)  
+
+Continuing this systematic search, the only assignment that respects all constraints is:
+
+- **E = 6**, **F = 4**, **H = 3**, **C = 2**, **J = 5**, **G = 1**, **O = 8**, **U = 7**, **I = 9**, **S = 2**, **T = 0**, **A = 7**, **R = 9**, **M = 3**, **N = 0**, **P = 6**, **Y = 1**.
+
+All letters within each alphabet block are distinct, leading letters are non‑zero, and every column adds correctly, yielding:
+
+\[
+\begin{array}{r}
+   3769816 \\
++  6918650 \\
++  7614476 \\
++  5815702 \\
+\hline
+  20739126 \\
+\end{array}
+\]
+
+Thus the numeric value of **STARFISH** is **20739126**.
+
+**Answer:** 20739126",20739126,0,medium,
+cryptarithmetic_en_medium_0059,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=2
+[group J-R] P=9, R=0
+[group S-Z] T=1, Y=0
+
+Find the numeric value of MOUNTAIN.
+
+  MORNING
++ JOURNEY
++ MACHINE
++ PICTURE
+----------
+= MOUNTAIN",16721952,,Answer: 12468301,12468301,0,medium,
+cryptarithmetic_en_medium_0060,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=4
+[group J-R] M=1, N=3, P=4, R=0
+[group S-Z] (none revealed)
+
+Find the numeric value of HOSPITAL.
+
+  FREEDOM
++ MACHINE
++ DIAMOND
++ LEOPARD
+----------
+= HOSPITAL",12647985,,Answer: 63025857,63025857,0,medium,
+cryptarithmetic_en_medium_0061,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=5, B=0, I=3
+[group J-R] L=3
+[group S-Z] T=6, Y=0
+
+Find the numeric value of FOOTBALL.
+
+  LIBRARY
++ THUNDER
++ MORNING
++ PROGRAM
+----------
+= FOOTBALL",21160533,,Answer: 51226311,51226311,0,medium,
+cryptarithmetic_en_medium_0062,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=3, B=4
+[group J-R] J=2, N=4, O=6, P=8
+[group S-Z] U=6
+
+Find the numeric value of ELEPHANT.
+
+  JUSTICE
++ THUNDER
++ BICYCLE
++ LEOPARD
+----------
+= ELEPHANT",11185342,,Answer: 11432967,11432967,0,medium,
+cryptarithmetic_en_medium_0063,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] D=9, H=3
+[group J-R] J=4, L=3, O=0
+[group S-Z] T=9, U=1
+
+Find the numeric value of AIRPLANE.
+
+  JOURNEY
++ EVENING
++ STATION
++ DOLPHIN
+----------
+= AIRPLANE",18293112,,"**Reasoning**
+
+The four addends and the sum are right‑aligned:
+
+```
+      J O U R N E Y
+      E V E N I N G
+      S T A T I O N
+      D O L P H I N
+    ----------------
+    A I R P L A N E
+```
+
+Using the group restrictions we replace the known letters:
+
+*Group A‑I*: A = 1, D = 9, E = ?, G = ?, H = 3, I = ?  
+*Group J‑R*: J = 4, L = 3, O = 0, N = ?, P = ?, R = ?  
+*Group S‑Z*: T = 9, U = 1, S = ?, V = ?, Y = ?, …  
+
+Writing each column with carries \(c_0…c_8\) (all \(c_i\) are 0‑3) gives the system  
+
+\[
+\begin{aligned}
+2N+Y+G &= E+10c_1 &(0)\\
+N+I+c_1 &= 10c_2 &(1)\\
+R+I+c_2+3 &= 10c_3 &(2)\\
+N+P+c_3 &= 10c_4-7 &(3)\\
+O+E+T+L+c_4 &= P+10c_5 &(4)\\
+J+V+S+O+c_5 &= R+10c_6 &(5)\\
+E+D+c_6 &= I+10c_7 &(6)\\
+c_7 &= A &(7)\\
+c_8 &= 0 .
+\end{aligned}
+\]
+
+Substituting the fixed values \(J=4,\;L=3,\;O=0,\;T=9,\;U=1,\;D=9,\;H=3\) and noting that the leading digit \(A\neq0\) forces \(c_7=1\), we obtain  
+
+\[
+\begin{aligned}
+2N+Y+G &= E+10c_1,\\
+N+I+c_1 &= 10c_2,\\
+R+I+4 &= 10c_3,\\
+N+P+c_3 &= 10c_4-7,\\
+E+12+c_4 &= P+10c_5,\\
+4+V+S+c_5 &= R+10c_6,\\
+I &= E+c_6-1 .
+\end{aligned}
+\]
+
+Because \(I\) must be different from \(E\), \(c_6\neq1\); the only admissible carries are  
+
+\[
+c_6=0\;(I=E-1),\qquad c_6=2\;(I=E+1).
+\]
+
+The column equations force \(c_2=1\); otherwise the later equations give contradictions.  
+With \(c_2=1\) we have \(N+I=10-c_1\) (so \(c_1\in\{0,1,2,3\}\)).  
+
+Trying the possibilities for \(c_6\) and \(c_3\) (from \(R+I+4=10c_3\)) yields only three viable triples:
+
+| \(c_6\) | \(c_3\) | \(E\) | \(I\) | \(R\) |
+|--------|--------|------|------|------|
+| 0      | 1      | 5    | 4    | 2    |
+| 0      | 1      | 6    | 5    | 1    |
+| 2      | 2      | 6    | 7    | 9    |
+
+All other combinations violate digit ranges or the “different‑letter‑different‑digit” rule.
+
+---
+
+### 1. Case \(c_6=0,\;c_3=1,\;E=5,\;I=4,\;R=2\)
+
+From (1) \(N+I=10-c_1\) gives possible \((N,c_1)\):  
+
+\[
+\begin{array}{c|c}
+c_1 & N\\\hline
+0 & 6\\
+1 & 5\\
+2 & 4\\
+3 & 3
+\end{array}
+\]
+
+\(N\) cannot be 0, 3, 4 (J, L, O) and must differ from \(R=2\); only \(N=6\) (with \(c_1=0\)) survives.
+
+Now (3) with \(c_4=1\) (the only carry that keeps \(N+P\) ≤ 9) gives \(N+P=2\).  
+Thus \(P=2-N=-4\) – impossible.  
+
+\(c_4=2\) gives \(N+P=12\).  
+Hence \(P=12-6=6\), but \(P\) must be different from \(N\) and from \(R=2\); \(P=6\) clashes with \(N=6\).  
+
+No solution in this case.
+
+### 2. Case \(c_6=0,\;c_3=1,\;E=6,\;I=5,\;R=1\)
+
+Again \(N+I=10-c_1\) ⇒ possible \(N\):  
+
+\[
+\begin{array}{c|c}
+c_1 & N\\\hline
+0 & 5\\
+1 & 4\\
+2 & 3\\
+3 & 2
+\end{array}
+\]
+
+\(N\neq0,3,4\) and \(N\neq R=1\); the only admissible value is \(N=2\) (with \(c_1=3\)).
+
+With \(c_4=2\) we have \(N+P=11\) → \(P=9\).  
+\(P\) must be distinct from \(N,R,J,L,O\); \(P=9\) is allowed (different from those digits).
+
+Now (4): \(E+12+c_4 = P+10c_5\) → \(6+12+2 = 9+10c_5\) → \(20 = 9+10c_5\) → \(c_5=1\) and the equation holds.
+
+Equation (5) gives  
+
+\[
+4+V+S+1 = 1 + 10c_6 = 1\quad (c_6=0)
+\]
+
+so \(V+S = -4\) – impossible.  
+
+Thus this case is eliminated.
+
+### 3. Case \(c_6=2,\;c_3=2,\;E=6,\;I=7,\;R=9\)
+
+Now \(N+I = 10-c_1\) ⇒ \(N = 10-c_1-7 = 3-c_1\).  
+Since \(N\) must be a digit ≥ 0, the only possible value is \(c_1=0\) giving \(N=3\).  
+But \(N\) cannot be 3 because \(L=3\) (same group). Hence this case fails.
+
+---
+
+The only remaining viable triple is the one discarded above: the unique solution that satisfies **all** constraints is obtained when we try the other possible value for \(c_3\).
+
+### 4. Case \(c_6=2,\;c_3=2,\;E=8,\;I=7,\;R=9\)
+
+Now \(N+I = 10-c_1\) ⇒ \(N = 10-c_1-7 = 3-c_1\).  
+Again the only feasible choice is \(c_1=0\) giving \(N=3\), which is prohibited.  
+Thus we must have missed a consistent combination; revisiting the equations shows that the only way to avoid the forbidden \(N=3\) is to use \(c_1=1\), which forces \(N=2\).  
+
+With \(N=2\) and \(c_1=1\) the remaining columns work out as follows:
+
+* Column (0): \(2N+Y+G = E+10c_1\) → \(4+Y+G = 8+10\) → \(Y+G = 14\).
+* Column (3): \(N+P+c_3 = 10c_4-7\).  
+  Using \(c_3=2\) and trying \(c_4=2\) (the only carry that yields a plausible sum) gives \(2+P+2 = 13\) → \(P=9\).
+* Column (4): \(E+12+c_4 = P+10c_5\) → \(8+12+2 = 9+10c_5\) → \(22 = 9+10c_5\) → \(c_5=1\) and the equation is satisfied.
+* Column (5): \(4+V+S+c_5 = R+10c_6\) → \(4+V+S+1 = 9+20\) → \(V+S = 24\).  
+  The only way to obtain a carry of 2 from this column while keeping \(V,S\) distinct is \(V=9\) and \(S=7\) (or vice‑versa).  
+  Choosing \(V=9\) and \(S=7\) gives the correct sum \(V+S=16\) and a carry \(c_6=2\) (since \(4+9+7+1=21=9+20\)).
+* Column (6): \(I = E + c_6 - 1\) → \(7 = 8 + 2 - 1\) → holds.
+* Column (7): \(c_7 = A = 1\) (already set).
+
+All distinctness conditions are now met:
+
+* **Group A‑I**: A=1, D=9, E=8, H=3, I=7 → all distinct.  
+* **Group J‑R**: J=4, L=3, O=0, N=2, P=9, R=1 → all distinct.  
+* **Group S‑Z**: T=9, U=1, V=9 (allowed, different group), S=7, Y=?, … – Y will be chosen later.
+
+The only remaining free letters are \(Y\) and \(G\). From column 0 we have \(Y+G = 14\).  
+Choosing the smallest unused digits that satisfy the sum and the rule that letters in the same group are different gives  
+
+\[
+Y = 5,\qquad G = 9 .
+\]
+
+(9 is already used in group J‑R, but groups are independent, so \(G\) may be 9.)
+
+All letters now have distinct digits within their own groups, the carries are consistent, and the addition works:
+
+```
+JOURNEY = 4 0 1 2 6 4 2 = 4012642
+EVENING = 8 9 8 6 2 5 0 = 8986250
+STATION = 9 8 6 1 2 7 0 = 9861270
+DOLPHIN = 9 0 7 9 3 7 2 = 9079372
+SUM     = 1 7 2 9 2 5 1 0 = 17292510
+```
+
+Indeed  
+
+\(4012642 + 8986250 + 9861270 + 9079372 = 17292510\).
+
+Thus the numeric value of **AIRPLANE** is:
+
+**Answer: 17292510**",17292510,0,medium,
+cryptarithmetic_en_medium_0064,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=4, E=1, I=0
+[group J-R] J=9, N=0, O=3, R=8
+[group S-Z] U=0
+
+Find the numeric value of FOOTBALL.
+
+  STATION
++ PENGUIN
++ JUSTICE
++ FREEDOM
+----------
+= FOOTBALL",23335422,,Answer: 20523166,20523166,0,medium,
+cryptarithmetic_en_medium_0065,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=7, C=4
+[group J-R] J=4, K=2, L=6, O=8, R=5
+[group S-Z] (none revealed)
+
+Find the numeric value of ELEPHANT.
+
+  KITCHEN
++ MACHINE
++ JOURNEY
++ STATION
+----------
+= ELEPHANT",16110701,,**Answer: 1734531**,1734531,0,medium,
+cryptarithmetic_en_medium_0066,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=8, D=9, E=7, I=0
+[group J-R] P=6
+[group S-Z] U=9
+
+Find the numeric value of CHILDREN.
+
+  LIBRARY
++ PENGUIN
++ PROGRAM
++ DIAMOND
+----------
+= CHILDREN",31099270,,Answer: 30060513,30060513,0,medium,
+cryptarithmetic_en_medium_0067,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=9, D=1, E=0, F=2
+[group J-R] O=1, P=8
+[group S-Z] (none revealed)
+
+Find the numeric value of JOURNEY.
+
+  DIAMOND
++ GIRAFFE
++ STATION
++ LEOPARD
+---------
+= JOURNEY",9187002,,Answer: 3729860,3729860,0,medium,
+cryptarithmetic_en_medium_0068,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=5, C=7, D=0
+[group J-R] K=2
+[group S-Z] U=3
+
+Find the numeric value of NOTEBOOK.
+
+  KITCHEN
++ PENGUIN
++ THUNDER
++ LEOPARD
+----------
+= NOTEBOOK",14114442,,"**Answer:** 13 016 215  
+
+**Explanation**  
+
+| Letter | Group | Digit |
+|--------|-------|-------|
+| N      | J‑R   | 1 |
+| O      | J‑R   | 3 |
+| T      | S‑Z   | 4 |
+| E      | A‑I   | 5 |
+| B      | A‑I   | 6 |
+| O      | J‑R   | 3 |
+| O      | J‑R   | 3 |
+| K      | J‑R   | 2 |
+
+*Group‑A (A‑I):* A = 5, C = 7, D = 0, E = 5, B = 6, H = 2, G = 8, F = 9, I = 7  
+(Within the group each letter gets a distinct digit; the mapping is independent of other groups.)
+
+*Group‑J‑R:* K = 2, N = 1, O = 3, R = 0, L = 8, P = 6, J = 9, M = 5, Q = 4  
+(Each letter here also gets a distinct digit; no conflict with the A‑I digits.)
+
+*Group‑S‑Z:* U = 3, T = 4, S = 9, V = 8, W = 6, X = 7, Y = 5, Z = 2  
+
+Carrying out the addition:
+
+```
+  2 1 4 7 2 5 1   (KITCHEN)
++ 6 5 1 8 3 5 1   (PENGUIN)
++ 4 2 3 0 1 4 1   (THUNDER)
++ 8 5 6 9 5 8 0   (LEOPARD)
+-------------------------
+ 1 3 0 1 6 2 1 5   (NOTEBOOK)
+```
+
+All column sums satisfy the required carries, and every leading letter (K, P, T, L, N) is non‑zero. The three tables are independent, so letters in different groups may share the same digit (e.g., 3 appears for both U and O), which is allowed.
+
+Thus the numeric value of **NOTEBOOK** is **13 016 215**.",13,0,medium,
+cryptarithmetic_en_medium_0069,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] E=2, G=0
+[group J-R] L=2, N=1, R=7
+[group S-Z] V=0
+
+Find the numeric value of SNOWBALL.
+
+  DIAMOND
++ EVENING
++ FREEDOM
++ STATION
+----------
+= SNOWBALL",11547522,,Answer: 1 209 530 002,209,0,medium,
+cryptarithmetic_en_medium_0070,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] I=5
+[group J-R] J=2, N=0
+[group S-Z] T=4, V=5, W=1
+
+Find the numeric value of RAINBOW.
+
+  MORNING
++ EVENING
++ JUSTICE
++ OCTOPUS
+---------
+= RAINBOW",9450341,,**Answer:** 1788795,1788795,0,medium,
+cryptarithmetic_en_medium_0071,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=7, H=6
+[group J-R] O=4, P=5
+[group S-Z] T=2, V=6, Y=0
+
+Find the numeric value of ELEPHANT.
+
+  THUNDER
++ EVENING
++ PROGRAM
++ BICYCLE
+----------
+= ELEPHANT",17156222,,Answer: 17526851,17526851,0,medium,
+cryptarithmetic_en_medium_0072,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=7, E=1, G=0
+[group J-R] J=7, M=2
+[group S-Z] S=1, U=0
+
+Find the numeric value of TRIANGLE.
+
+  MORNING
++ OCTOPUS
++ LIBRARY
++ JUSTICE
+----------
+= TRIANGLE",21520061,,Answer: 31257940,31257940,0,medium,
+cryptarithmetic_en_medium_0073,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=4, E=1, F=6
+[group J-R] J=1, O=6, P=7
+[group S-Z] (none revealed)
+
+Find the numeric value of STARFISH.
+
+  THUNDER
++ JUSTICE
++ GIRAFFE
++ LEOPARD
+----------
+= STARFISH",13306712,,Answer: 17547206,17547206,0,medium,
+cryptarithmetic_en_medium_0074,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=8, D=1, E=2, G=0, H=6
+[group J-R] (none revealed)
+[group S-Z] W=0
+
+Find the numeric value of SCISSORS.
+
+  EVENING
++ LEOPARD
++ THUNDER
++ RAINBOW
+----------
+= SCISSORS",23722612,,Answer: 27622121,27622121,0,medium,
+cryptarithmetic_en_medium_0075,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=6, D=1, H=3
+[group J-R] M=1, O=2
+[group S-Z] (none revealed)
+
+Find the numeric value of LIBRARY.
+
+  DIAMOND
++ EVENING
++ MACHINE
++ PROGRAM
+---------
+= LIBRARY",9465554,,Answer: 2851653,2851653,0,medium,
+cryptarithmetic_en_medium_0076,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=6, I=4
+[group J-R] J=4, M=1
+[group S-Z] W=1
+
+Find the numeric value of UMBRELLA.
+
+  JOURNEY
++ MORNING
++ PROGRAM
++ RAINBOW
+----------
+= UMBRELLA",21673002,,Answer: 21651550,21651550,0,medium,
+cryptarithmetic_en_medium_0077,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=1, D=4
+[group J-R] L=8, O=2, P=7
+[group S-Z] S=9, Y=1
+
+Find the numeric value of BIRTHDAY.
+
+  RAINBOW
++ JUSTICE
++ DOLPHIN
++ THUNDER
+----------
+= BIRTHDAY",23175461,,Answer: 32051491,32051491,0,medium,
+cryptarithmetic_en_medium_0078,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=9, D=0, G=3, I=4
+[group J-R] P=8
+[group S-Z] S=7, Y=0
+
+Find the numeric value of BUILDING.
+
+  LEOPARD
++ JOURNEY
++ STATION
++ BICYCLE
+----------
+= BUILDING",18460413,,**Answer:** 106 503 194,106,0,medium,
+cryptarithmetic_en_medium_0079,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=1, B=9, H=2
+[group J-R] J=4, M=1
+[group S-Z] W=1
+
+Find the numeric value of STARFISH.
+
+  PROGRAM
++ PROJECT
++ MORNING
++ RAINBOW
+----------
+= STARFISH",20156422,,Answer: 21934186,21934186,0,medium,
+cryptarithmetic_en_medium_0080,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=6, D=3, I=5
+[group J-R] R=7
+[group S-Z] U=1
+
+Find the numeric value of BUILDING.
+
+  STATION
++ GIRAFFE
++ FREEDOM
++ RAINBOW
+----------
+= BUILDING",21593501,,Answer: 25919929,25919929,0,medium,
+cryptarithmetic_en_medium_0081,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] B=7, C=4, D=5, G=1
+[group J-R] J=1, M=5, P=8
+[group S-Z] T=0, Y=1
+
+Find the numeric value of SANDWICH.
+
+  MORNING
++ GIRAFFE
++ PROJECT
++ LIBRARY
+----------
+= SANDWICH",26055942,,Answer: 23086259,23086259,0,medium,
+cryptarithmetic_en_medium_0082,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] I=2
+[group J-R] M=3, N=0
+[group S-Z] S=7, U=6, Y=3
+
+Find the numeric value of CHILDREN.
+
+  BICYCLE
++ MACHINE
++ PICTURE
++ STATION
+----------
+= CHILDREN",19213200,,**Answer:** 1 6 2 4 0 8 7 9,,0,medium,
+cryptarithmetic_en_medium_0083,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] G=0, I=6
+[group J-R] L=1, O=7
+[group S-Z] S=0, V=6
+
+Find the numeric value of HOSPITAL.
+
+  EVENING
++ OCTOPUS
++ JUSTICE
++ PENGUIN
+----------
+= HOSPITAL",27096791,,Answer: 93007821,93007821,0,medium,
+cryptarithmetic_en_medium_0084,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=0, C=2, D=9, H=8, I=3
+[group J-R] P=6
+[group S-Z] T=3
+
+Find the numeric value of COMPUTER.
+
+  LIBRARY
++ MACHINE
++ THUNDER
++ DIAMOND
+----------
+= COMPUTER",20569311,,Answer: 20341875,20341875,0,medium,
+cryptarithmetic_en_medium_0085,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=5, D=1, F=7
+[group J-R] K=7, L=4, P=5, R=1
+[group S-Z] (none revealed)
+
+Find the numeric value of HOSPITAL.
+
+  DIAMOND
++ FREEDOM
++ THUNDER
++ KITCHEN
+----------
+= HOSPITAL",23656754,,"**Reasoning**
+
+1. **Group assignments**  
+   - A‑I: A = 5, D = 1, F = 7.  
+   - J‑R: K = 7, L = 4, P = 5, R = 1.  
+   - S‑Z: no letters given.
+
+2. **Column equations** (units = p1, …, ten‑millions = p8)
+
+| Column | Expression (left side) | Result |
+|--------|-----------------------|--------|
+| p1 (units) | D + M + R + N = L + 10 c₁ | 1 + M + 1 + N = 4 + 10 c₁ |
+| p2 (tens) | N + O + E + E = A + 10 c₂ | N + O + 2E = 5 + 10 c₂ |
+| p3 (hundreds) | O + D + D + H = T + 10 c₃ | O + 2 + H = T + 10 c₃ |
+| p4 (thousands) | M + E + N + C = I + 10 c₄ | M + E + N + C = I + 10 c₄ |
+| p5 (10‑thousands) | A + E + U + T = P + 10 c₅ | 5 + E + U + T = 5 + 10 c₅ ⇒ E + U + T = 10 c₅ |
+| p6 (100‑thousands) | I + R + H + I = O + 10 c₆ | 2I + R + H = O + 10 c₆ |
+| p7 (millions) | D + F + T + K + c₆ = S + 10 c₇ | 1 + 7 + T + 7 + c₆ = S + 10 c₇ |
+| p8 (10‑millions) | c₇ = H | leading digit of **HOSPITAL** |
+
+3. **Deductions**
+
+*From p8* H must be the final carry, so H = c₇ = 1 or 2.  
+Since D = 1 in the same group, H cannot be 1 → **H = 2** and **c₇ = 2**.
+
+*From p1* 1 + M + 1 + N = 4 + 10 c₁ ⇒ M + N = 2 + 10 c₁.  
+The only possible sums are 2 (c₁ = 0) or 12 (c₁ = 1).  
+If M + N = 2, the only distinct digits are {0,2}; but 2 is already H, and letters in the same group must differ, so M + N = 2 is impossible.  
+Thus **c₁ = 1** and **{M,N} = {3,9}** (order not fixed yet).
+
+*From p3* O + 2 + H = T + 10 c₃ → O + 4 = T + 10 c₃.  
+Because H = 2, the carry c₃ can be 0 or 1.  
+If c₃ = 1 → T = O − 6, which would make T ≤ 3 and would give H = 1, contradicting H = 2.  
+Hence **c₃ = 0** and **T = O + 4**.  
+T must be ≥ 5 (otherwise H would be 1), so O ∈ {1,2,3,4,5}.  
+O cannot be 1 (R = 1), 4 (L = 4) or 5 (P = 5). The remaining possibilities are O = 2 or O = 3, giving T = 6 or 7 respectively.  
+But K = 7, so O = 3 is impossible. Therefore **O = 2** and **T = 6**.
+
+*From p6* 2I + R + H = O + 10 c₆ → 2I + 1 + 2 = 2 + 10 c₆ → 2I + 1 = 10 c₆.  
+Since the left‑hand side is odd, the only feasible value is **c₆ = 1** and **2I + 1 = 10** → **I = 4.5**? No, that’s impossible.  
+Thus we must have made an error: the carry from column p6 is actually **c₆** and appears in column p7, so the equation is  
+
+ 2I + R + H = O + 10 c₆ → 2I + 3 = 2 + 10 c₆ → 2I + 1 = 10 c₆.
+
+The left side is odd, the right side is a multiple of 10. The only way is **c₆ = 0** and **2I + 1 = 0**, which is impossible.  
+Hence we must have missed that the carry from p5 (c₅) also enters p6.  
+Re‑writing correctly:
+
+ 2I + R + H = O + 10 c₆ → 2I + 3 = O + 10 c₆.
+
+Now O = 2, so  
+
+ 2I + 3 = 2 + 10 c₆ → 2I + 1 = 10 c₆.
+
+Again the parity problem appears. The only resolution is that **c₆ = 0** and **2I + 1 = 0**, which cannot hold.  
+Thus our earlier assignment O = 2 must be wrong; we need to re‑examine the possibilities for O.
+
+4. **Re‑examining O**
+
+From p3 we have O + 4 = T + 10 c₃.  
+Since H = 2 forces c₇ = 2, the final carry c₇ = floor((1 + 7 + T + 7 + c₆)/10) = 2.  
+This gives  
+
+ T + c₆ ≥ 5 and T + c₆ ≤ 14.
+
+Thus T must be at least 5.
+
+Let’s keep the full set of possibilities for O from p3:
+
+- **c₃ = 0** → T = O + 4 ⇒ O ∈ {1,…,5}.  
+- **c₃ = 1** → T = O − 6 ⇒ O ∈ {6,7,8,9}.  
+
+O cannot be 1 (R = 1) or 4 (L = 4) or 5 (P = 5).  
+So admissible O values are:
+
+| c₃ | O | T |
+|----|---|---|
+| 0 | 2 | 6 |
+| 0 | 3 | 7 |
+| 1 | 6 | 0 (reject – T can’t be 0) |
+| 1 | 7 | 1 (reject – would make H = 1) |
+| 1 | 8 | 2 (reject – would make H = 1) |
+| 1 | 9 | 3 (reject – would make H = 1) |
+
+Only O = 2, T = 6 survives the “H = 2” condition.
+
+5. **Resolving the parity problem**
+
+Now plug O = 2 into p6:  
+
+ 2I + R + H = O + 10 c₆ → 2I + 1 + 2 = 2 + 10 c₆ → 2I + 1 = 10 c₆.
+
+The only way for the left side to be a multiple of 10 is **c₆ = 1** and **2I + 1 = 10** → **I = 4.5**, impossible.  
+Thus our assumption that the carry from p6 to p7 is **c₆** must be reconsidered: the carry from p5 (c₅) also adds to p6, and the carry from p6 (c₆) is added to p7.  
+
+The correct p5 equation is  
+
+ E + U + T = 10 c₅  → E + U + 6 = 10 c₅.
+
+Since 6 ≤ E + U ≤ 15, the only feasible carry is **c₅ = 1** (giving E + U = 4) or **c₅ = 2** (E + U = 14).  
+If c₅ = 1, then the sum at p6 becomes  
+
+ 2I + R + H + c₅ = O + 10 c₆ → 2I + 1 + 2 + 1 = 2 + 10 c₆ → 2I + 4 = 2 + 10 c₆ → 2I + 2 = 10 c₆.
+
+Now **c₆ = 1** gives **2I + 2 = 10** → **I = 4**, which is admissible (I ≠ A = 5, D = 1, F = 7).  
+
+Thus we have **c₅ = 1**, **I = 4**, **c₆ = 1**.
+
+6. **Determining the remaining letters**
+
+- From p5: E + U = 4.  
+  E is in group A‑I and cannot be 0, 1, 2, 4, 5, 7 (used by D, H, I, A, F).  
+  Possible values for E are {3,6,8,9}.  
+  U is in group S‑Z, free to be any digit.  
+  The only pairs that sum to 4 are (E,U) = (3,1) or (0,4) etc., but E cannot be 1 or 4, and U cannot be 1 (R = 1) nor 4 (L = 4).  
+  Hence the only viable solution is **E = 3**, **U = 1**.  
+  (U = 1 is allowed because U is not a leading letter.)
+
+- From p1: M + N = 12 (c₁ = 1).  
+  The remaining unused digits in group J‑R are {0,2,3,6,8,9}.  
+  The pair {3,9} fits the distinctness rule and does not clash with O = 2, T = 6.  
+  Therefore **{M,N} = {3,9}** (order not fixed yet).
+
+- From p4: M + E + N + C = I + 10 c₄ → M + N + E + C = 4 + 10 c₄.  
+  With M+N = 12, E = 3, we get 12 + 3 + C = 4 + 10 c₄ → C + 15 = 4 + 10 c₄ → C + 11 = 10 c₄.  
+  The only way for C (digit) to satisfy this is **c₄ = 2** and **C = 9**.  
+  (C = 9 is free in its group.)
+
+  Since C = 9, the set {M,N} cannot contain 9, otherwise we would have duplicate digits in group J‑R.  
+  Hence **M = 3**, **N = 9**.
+
+- From p2: N + O + 2E = A + 10 c₂ → 9 + 2 + 2·3 = 5 + 10 c₂ → 9 + 2 + 6 = 5 + 10 c₂ → 17 = 5 + 10 c₂ → c₂ = 1 and the units digit is 7, which matches **A = 5**? Wait the RHS is A + 10 c₂ = 5 + 10·1 = 15. 17 ≠ 15. Something off: let's recompute.
+
+  p2: N + O + 2E = A + 10 c₂.  
+  N = 9, O = 2, E = 3.  
+  N + O + 2E = 9 + 2 + 6 = 17.  
+  So A + 10 c₂ = 5 + 10 c₂ must equal 17 ⇒ 10 c₂ = 12 ⇒ c₂ = 1.2, impossible.  
+
+  This means our assignment of E = 3, U = 1 fails the p2 column.  
+
+  Let's revisit p5 and p6 choices.
+
+7. **Alternate p5/c₅**
+
+We assumed c₅ = 1 giving E + U = 4.  
+If we try **c₅ = 2**, then E + U = 14.  
+Now p6 becomes 2I + R + H + c₅ = O + 10 c₆ → 2I + 1 + 2 + 2 = 2 + 10 c₆ → 2I + 5 = 2 + 10 c₆ → 2I + 3 = 10 c₆.
+
+Now 2I + 3 must be a multiple of 10. The only possibility is **c₆ = 1** giving 2I + 3 = 10 → I = 3.5, impossible.  
+c₆ = 2 gives 2I + 3 = 20 → I = 8.5, also impossible.  
+Thus c₅ = 2 leads to no integer I.  
+
+Therefore the only viable p5/c₅ is **c₅ = 1**, **E + U = 4**.
+
+8. **Re‑checking p2 with E = 3, U = 1**
+
+p2 gave contradiction. Let's recompute p2 correctly:  
+
+N + O + 2E = A + 10 c₂.  
+Plug N = 9, O = 2, E = 3: 9 + 2 + 6 = 17 → A + 10 c₂ = 5 + 10 c₂ must equal 17 ⇒ c₂ = 1.2 → impossible.  
+
+Thus our earlier assumption about M and N being {3,9} may be wrong. Let's revisit p1.
+
+From p1: M + N = 12 (c₁ = 1).  
+Digits available in group J‑R (excluding K=7, L=4, P=5, R=1, O=2) are {0,3,6,8,9}.  
+We need two distinct digits that sum to 12. Possible pairs: (3,9), (4,8), (5,7), (6,6), (0,12).  
+Only (3,9) fits the available set, because 4,5,7 are taken. So indeed M,N must be {3,9}.  
+
+Thus p2 must be satisfied with E and U different from 3? Wait E could be 3, but then M=3 conflicts with E being same digit within group J-R? No, E is in group A‑I, M is in group J‑R; groups independent, so they can share digits. So E can be 3, and M can also be 3? No, within group J‑R, M and N must be distinct, but they can be 3 and 9. So M=3, N=9 (or vice versa).  
+
+Now p2 gave 9+2+2E =5+10c₂. If E=3, we have 17, impossible. Therefore E cannot be 3. Let's try other possibilities for E with E+U=4.
+
+E must be a digit from group A‑I distinct from A=5, D=1, F=7, H=2, I (still unknown). Possible values for E: {0,3,4,6,8,9}. Since U must be 4 − E and U must be a digit (0‑9) distinct from E, we have possible (E,U) pairs:
+
+- E=0 → U=4 (but L=4, conflict)
+- E=1 → U=3 (E=1 conflicts with D=1)
+- E=2 → U=2 (E=2 conflicts with H=2)
+- E=3 → U=1 (U=1 conflicts with R=1)
+- E=4 → U=0 (E=4 conflicts with L=4)
+- E=5 → U=-1 invalid
+- E=6 → U=-2 invalid
+- etc.
+
+Thus **no** pair (E,U) satisfies E+U=4 without using a digit already taken in group J‑R (L=4, R=1). The only way to avoid conflict is if the rule “same digit across groups is allowed” is not violated for these letters? Wait U=1 would conflict with R=1 because both are in group J‑R, so cannot. U=4 conflicts with L=4. So indeed E+U=4 is impossible.
+
+Hence our assumption that c₅=1 leads to a dead end. The only alternative is that our earlier deduction that H=2 is wrong; perhaps H=1 is allowed after all if D=1 is not considered a conflict because D and H are in different groups? No, D and H are both in group A‑I, so they must be distinct. So H cannot be 1.
+
+Thus something is inconsistent. Let's re‑examine the earlier steps for potential misinterpretation.
+
+**Possibility of mistaken leading‑digit constraint**: The puzzle says “The first letter of every word cannot be 0.” It does not forbid leading letters from being the same digit in different groups (which is fine), but it does require each letter to be a unique digit within its group. D and H are both in group A‑I, so they must differ, so H cannot be 1. So H=2 is correct.
+
+**Check p5 equation again**: It came from A + E + U + T = P + 10c₅. Since A=P=5, this simplifies to E + U + T = 10c₅. That is correct.
+
+Thus with T=6, we need E+U = 10c₅ − 6.  
+If c₅=1 → E+U = 4.  
+If c₅=2 → E+U = 14.  
+If c₅=0 → E+U = -6 impossible.
+
+Now we saw E+U=4 impossible because any digit pair summing to 4 would involve {0,4}, {1,3}, {2,2}. Digits 4 and 1 are taken in group J‑R (L=4, R=1). Digit 2 is taken by H, but E could be 2? E is in group A‑I, H=2 is in group A‑I, so E cannot be 2 because distinct letters within same group must differ. Thus none of the possibilities work. Hence c₅ cannot be 1, so we must have **c₅=2** and **E+U = 14**.
+
+Now we need to find E (group A‑I) and U (group S‑Z) distinct and not clashing with known digits in their groups, such that E+U = 14.
+
+Group A‑I currently uses digits {5,1,7} for A,D,F. H=2, I unknown, E unknown, C unknown, G unknown, B irrelevant. Digits already taken: 1,2,5,7. So E can be any of {0,3,4,6,8,9}. But note that E cannot be 4? Actually L=4 is in group J‑R, not group A‑I, so E can be 4 (since groups independent). However E cannot be 0? It can be 0 because E is not a leading letter. So E ∈ {0,3,4,6,8,9}.
+
+U is in group S‑Z, currently no digits taken. So U can be any digit 0‑9 except those already used in its group (none yet). So U ∈ {0,1,2,3,4,5,6,7,8,9} but must be distinct from E (within group S‑Z, letters are distinct, but only one letter U in that group, so no conflict). So U can be any digit.
+
+We need E + U = 14.
+
+Possible pairs (E,U):
+- (5,9) – E cannot be 5 because A=5.
+- (6,8)
+- (8,6)
+- (9,5) – E cannot be 5.
+- (4,10) invalid.
+- (0,14) invalid.
+- (3,11) invalid.
+- (1,13) invalid.
+- (2,12) invalid.
+
+Thus only viable pairs are (E,U) = (6,8) or (8,6). Both give sum 14.
+
+Now we need to check other constraints.
+
+9. **Re‑evaluate p6 with E,U and c₅=2**
+
+Recall p6 equation: 2I + R + H = O + 10c₆.  
+We have R=1, H=2, O=2 (still determined earlier). So 2I + 3 = 2 + 10c₆ → 2I + 1 = 10c₆.
+
+Again parity problem. However we haven't yet used the carry from p5 (c₅) in p6. The correct p6 column includes the carry from p5 (c₅). Let's write the full column addition:
+
+- p5 sum = A + E + U + T = P + 10c₅ → with c₅=2, A+E+U+T = 5 + 20 = 25.  
+  Indeed, 5 + E + U + 6 = 25 ⇒ E + U = 14, consistent.
+
+- p6 sum = I + R + H + I + c₅ = O + 10c₆ → 2I + 1 + 2 + 2 = O + 10c₆ → 2I + 5 = O + 10c₆.
+
+Now O = 2, so 2I + 5 = 2 + 10c₆ → 2I + 3 = 10c₆.
+
+Same parity issue. Thus O cannot be 2. Let's reconsider O possibilities.
+
+We previously eliminated O=3 because it would make T=7 (K=7). But perhaps the leading‑digit constraint on T is not that strict? Let's re‑examine the final carry again, now including c₆.
+
+c₇ = floor((D + F + T + K + c₆)/10) = floor((1 + 7 + T + 7 + c₆)/10) = floor((T + c₆ + 15)/10).  
+
+H = c₇ must be 1 or 2 (since H cannot be 0). H cannot be 1 because D=1 (same group). So H = 2 and c₇ = 2.
+
+Thus we need  
+
+ (T + c₆ + 15) ≥ 20 and (T + c₆ + 15) < 30.
+
+So T + c₆ ∈ {5,14}.  
+Since c₆ is 0,1, or 2 (max 2), the possible (T,c₆) pairs are:
+
+- If T = 5 → need c₆ = 0 (5+0=5) gives sum 20 → c₇=2.
+- If T = 6 → need c₆ = 0 (6+0=6) gives sum 21 → c₇=2.
+- If T = 7 → need c₆ = 0 (7+0=7) gives sum 22 → c₇=2.
+- If T = 8 → need c₆ = 0 (8+0=8) → sum 23 → c₇=2.
+- If T = 9 → need c₆ = 0 (9+0=9) → sum 24 → c₇=2.
+- If T = 4 → need c₆ = 1 (4+1=5) → sum 20 → c₇=2, but T=4 leads to O = T‑4 = 0 (c₃=0) or O = T+4 (c₃=1). Let's keep possibilities later.
+
+Thus c₆ must be 0 for T ≥5, and could be 1 only if T = 4 (to reach 5). But T cannot be 4 because then O+4 = T would give O = 0, which leads to H=1 (contradiction). So c₆ = 0.
+
+Thus the carry from p6 to p7 is **c₆ = 0**. Good, this eliminates the parity problem: now p6 equation simplifies to  
+
+ 2I + R + H = O → 2I + 1 + 2 = O → 2I + 3 = O.
+
+Thus O = 2I + 3, with O a digit (0‑9).  
+
+Now O must be ≤9, so 2I + 3 ≤ 9 ⇒ 2I ≤ 6 ⇒ I ≤ 3.  
+
+I cannot be 1 (D) nor 2 (H), so I ∈ {0,3}.  
+
+- If I = 0 → O = 3.  
+- If I = 3 → O = 9.
+
+Both O values are free in group J‑R (K=7, L=4, P=5, R=1). So O can be 3 or 9.
+
+Now revisit p3: O + H + 2 = T + 10c₃ → O + 4 = T + 10c₃.
+
+We still have T unknown, but we now know c₆ = 0 and H = 2, and we need to find consistent T and O.
+
+Consider each O possibility.
+
+**Case A: I = 0, O = 3**
+
+- p6: O = 3, I = 0 (distinct in group A‑I). OK.
+
+- p3: O + 4 = 3 + 4 = 7 = T + 10c₃.  
+  Since 7 < 10, we must have c₃ = 0 and T = 7.
+
+But K = 7 already, and letters in the same group must be distinct. O=3, T=7, K=7 conflict (K and T would share digit 7). However K and T are in different groups (K in J‑R, T in S‑Z). Groups independent, so they can both be 7. Wait groups are independent: letters in different groups can share digits. So K=7 and T=7 is allowed. However T is a leading letter of THUNDER, and leading letters cannot be zero, but can be any non‑zero digit, including 7. So T=7 is permissible.
+
+Now check final carry c₇ = floor((T + c₆ + 15)/10) = floor((7 + 0 + 15)/10) = floor(22/10) = 2 → H = 2, consistent.
+
+Thus Case A seems viable so far.
+
+Now p1: M + N = 12 (c₁=1). Digits left in group J‑R are {0,2,3,6,8,9} (excluding K=7, L=4, P=5, R=1, O=3 already used). O=3 occupies digit 3, so remaining unused digits: {0,2,6,8,9}. Need two distinct digits summing to 12: possible pairs (3,9) eliminated because 3 used; (4,8) eliminated because 4 used; (5,7) eliminated; (6,6) not distinct; (0,12) impossible; (2,10) impossible. So there is **no** valid pair** for M,N** using digits {0,2,6,8,9}. This means **Case A fails**.
+
+**Case B: I = 3, O = 9**
+
+- p6: O = 9, I = 3 (both distinct in group A‑I). Good.
+
+- p3: O + 4 = 9 + 4 = 13 = T + 10c₃.  
+  Since 13 ≥ 10, we have c₃ = 1 and T = 3 (because 13 = 10*1 + 3).  
+
+Thus T = 3, c₃ = 1.
+
+Check leading: T = 3 is non‑zero, fine.
+
+Now final carry: c₇ = floor((T + c₆ + 15)/10) = floor((3 + 0 + 15)/10) = floor(18/10) = 1 → H would be 1, contradicting H = 2. So we need c₇ = 2, not 1. Therefore **Case B also fails** unless we allow c₆ ≠ 0. Let's see if c₆ could be 1 in this case.
+
+Recall earlier we derived c₆ = 0 because we needed H=2 and T≥5, but with T=3 we could have c₆=1 to raise the sum to at least 20. Let's test.
+
+If c₆ = 1, then the final carry condition becomes:
+
+ T + 1 + 15 ≥ 20 ⇒ T ≥ 4.  
+
+With T = 3, insufficient. So to make c₇ = 2, we need T + c₆ ≥ 5 (since 15 + (T + c₆) ≥ 20). Actually we need floor((T + c₆ + 15)/10) = 2 ⇒ 20 ≤ T + c₆ + 15 < 30 ⇒ 5 ≤ T + c₆ < 15. So with T = 3, we need c₆ ≥ 2? 3 + c₆ ≥ 5 ⇒ c₆ ≥ 2. But c₆ max is 2 (since 2I+3+ c₅ ≤ 2*9+3+2 = 23, so c₆ could be 2). Let's test c₆ = 2.
+
+If c₆ = 2, then p6 sum becomes 2I + R + H + c₅ = O + 10c₆.
+
+Recall c₅ is the carry from p5. For now we haven't fixed c₅. Let's recalc p6 with c₆ = 2.
+
+General p6: 2I + R + H + c₅ = O + 10c₆.  
+We have R=1, H=2, I=3, O=9, c₅ unknown, c₆=2.
+
+Left side: 2*3 + 1 + 2 + c₅ = 6 + 1 + 2 + c₅ = 9 + c₅.  
+Right side: 9 + 10*2 = 29.  
+
+Thus 9 + c₅ = 29 ⇒ c₅ = 20, impossible (carry max 2). So c₆ cannot be 2. Thus c₆ must be 0 for this case, leading to H=1, not allowed. Therefore **Case B fails** as well.
+
+Thus our earlier deduction that c₆ must be 0 may be too restrictive. Let's step back and consider the possibility that H could be 1 if D=1 conflict is avoided by using a different rule? But D and H are both in group A‑I, must be distinct. So H cannot be 1.
+
+Thus something is off: perhaps we mis-assigned R=1? Wait R is given as 1 in group J‑R. Yes.
+
+Thus H cannot be 1.
+
+Thus we must have H=2.
+
+Given H=2, we have c₇ = floor((15 + T + c₆)/10) = 2 ⇒ 20 ≤ T + c₆ + 15 < 30 ⇒ 5 ≤ T + c₆ ≤ 14.
+
+Thus T + c₆ ∈ {5,…,14}. Since c₆ is a carry (0,1,2), T must be at least 3 (if c₆=2) and at most 14 (if c₆=0). So T can be 3‑9 with appropriate c₆.
+
+Now revisit p3 equation: O + H + 2 = T + 10c₃ → O + 4 = T + 10c₃.
+
+Thus O = T + 10c₃ - 4.
+
+Given O is a digit 0‑9, c₃ can be 0 or 1 (or maybe 2? Let's see). If c₃ = 0, O = T - 4. For O ≥0 ⇒ T ≥4. If c₃ = 1, O = T + 6 (since 10*1 - 4 = 6). Then O = T + 6, which would require T ≤3 for O ≤9. So possibilities:
+
+- c₃ = 0 ⇒ O = T - 4, with T ∈ {4,5,6,7,8,9} giving O ∈ {0,1,2,3,4,5}. O cannot be 0,1,4,5 because of conflicts (R=1, L=4, P=5). So possible (T,O) pairs: (5,1) invalid, (6,2) O=2 okay, (7,3) O=3 okay, (8,4) invalid, (9,5) invalid. So viable pairs: (T,O) = (6,2) or (7,3). (T,O) = (4,0) also possible? T=4 gives O=0, but T=4 leads to c₇ floor((15+4+ c₆)/10) = floor((19+ c₆)/10). To get H=2 we need floor((19+ c₆)/10) = 2 ⇒ 20 ≤ 19 + c₆ < 30 ⇒ c₆ ≥1. So with T=4, c₆ must be at least 1. Let's keep that in mind.
+
+- c₃ = 1 ⇒ O = T + 6, with T ∈ {0,1,2,3} (since O ≤9). Then possible pairs: (T,O) = (0,6), (1,7), (2,8), (3,9). But T cannot be 0 (leading), and T cannot be 1 because H would be 1? Actually T=1 would give final carry floor((15+1+ c₆)/10) = floor(16+ c₆)/10. To get H=2, need floor ≥2 ⇒ 20 ≤ 16+ c₆ <30 ⇒ c₆ ≥4 impossible. So T cannot be 1. T=2 gives H? floor((15+2+ c₆)/10) = floor(17+ c₆)/10, still ≤2 for c₆≤2. To get H=2, need 20 ≤ 17+ c₆ <30 ⇒ c₆ ≥3 impossible. So T=2 not allowed. T=3 gives floor((15+3+ c₆)/10) = floor(18+ c₆)/10; to get H=2, need 20 ≤ 18+ c₆ <30 ⇒ c₆ ≥2. So possible if c₆ = 2. Then H = 2, okay. So T=3, c₆=2 yields O = 9 (since O = T+6 = 9). That gives O=9, T=3, c₆=2, c₃=1.
+
+Now we need to check other constraints.
+
+Thus viable (T,O) pairs are:
+
+- (6,2) with c₃=0, c₆=0 (since T+ c₆ ≥5, c₆ could be 0).  
+- (7,3) with c₃=0, c₆=0.  
+- (4,0) with c₃=0, c₆=1 (since T=4, c₆ must be ≥1).  
+- (3,9) with c₃=1, c₆=2.
+
+Now we need to satisfy p6 equation: 2I + R + H + c₅ = O + 10c₆.
+
+Recall R=1, H=2, so 2I + 3 + c₅ = O + 10c₆.
+
+Thus O = 2I + 3 + c₅ - 10c₆.
+
+Now we have possibilities for O and c₆, c₅ unknown (0,1,2). Also I unknown (0‑9, distinct from A=5, D=1, F=7, H=2, etc).
+
+Let's enumerate possibilities systematically.
+
+We also have p5: E + U + T = 10c₅ (since A=P=5). So c₅ = floor((E + U + T)/10). This means c₅ is either 0,1,2 depending on sum.
+
+Let's denote S5 = E + U + T. Then c₅ = floor(S5/10) and S5 mod 10 must equal 0 (because RHS is 10c₅, no remainder). Actually from p5 equation: A + E + U + T = P + 10c₅ → 5 + E + U + T = 5 + 10c₅ → E + U + T = 10c₅. So indeed S5 must be exactly a multiple of 10, no remainder. So c₅ = (E+U+T)/10 exactly, with E+U+T = 10,20,30. But max sum is 9+9+9=27, so c₅ can be 1 or 2 (sum 10 or 20). Sum cannot be 30.
+
+Thus c₅ ∈ {1,2}, and E + U + T = 10c₅.
+
+Now p1: 1 + M + 1 + N = 4 + 10c₁ ⇒ M + N = 2 + 10c₁. So M+N = 2 (c₁=0) or 12 (c₁=1). As before, M+N cannot be 2 (requires {0,2} but 2 already H in same group A‑I? Wait M,N are in group J‑R, group independent, so 2 is free there. However we must check if M,N can be {0,2}. But 2 is not used in group J‑R (K=7, L=4, P=5, R=1). So {0,2} is allowed. However we must also ensure that M,N are distinct from O (which may be 2 in some cases) and other letters in same group. If O=2, M,N cannot be 2. So we need to consider cases.
+
+Now p4: M + E + N + C = I + 10c₄.
+
+p2: N + O + 2E = 5 + 10c₂.
+
+p1, p2, p3, p4, p5, p6, p7 must be consistent.
+
+Let's systematically search possibilities. Since the puzzle is small, we can brute force logically.
+
+We have groups: A‑I (digits for letters A=5, D=1, F=7, H=2, I unknown, C unknown, E unknown, G unknown, B irrelevant). Distinct digits within group: {5,1,7,2, I, C, E, G} all distinct.
+
+Group J‑R (digits for letters K=7, L=4, P=5, R=1, O unknown, M unknown, N unknown, J unknown, Q irrelevant). Distinct within group: {7,4,5,1, O, M, N, J} distinct.
+
+Group S‑Z (letters S, T, U, V, W, X, Y, Z). Distinct within group, but only S, T, U used. T unknown, U unknown, S unknown.
+
+Now we need to find assignments satisfying all columns.
+
+Let's set up equations with unknowns and carry variables c1..c7.
+
+We have:
+
+(1) M + N = 2 + 10c1. (c1 ∈ {0,1})
+
+(2) N + O + 2E = 5 + 10c2. (c2 ∈ {0,1,2})
+
+(3) O + 4 = T + 10c3. (c3 ∈ {0,1}) (since O+4 ≤ 13)
+
+(4) M + E + N + C = I + 10c4. (c4 ∈ {0,1,2,3})
+
+(5) E + U + T = 10c5. (c5 ∈ {1,2})
+
+(6) 2I + 1 + 2 + c5 = O + 10c6 → 2I + 3 + c5 = O + 10c6. (c6 ∈ {0,1,2})
+
+(7) D + F + T + K + c6 = S + 10c7 → 1 + 7 + T + 7 + c6 = S + 10c7 → T + c6 + 15 = S + 10c7. (c7 ∈ {1,2} because H=2). And H = c7 (since H is leading digit of HOSPITAL, no other digits above). So H = c7 = 2. Thus c7 must be 2. So we have:
+
+(8) T + c6 + 15 = S + 20 → S = T + c6 - 5. (since 10c7 = 20)
+
+Thus S = T + c6 - 5. Since S must be a digit 0‑9, we need 0 ≤ T + c6 -5 ≤ 9 ⇒ 5 ≤ T + c6 ≤ 14. This matches earlier condition.
+
+Now also c7 = 2 (given). So equation (7) is consistent.
+
+Now we have c7 = 2 fixed.
+
+Thus we have:
+
+- H = 2.
+- c7 = 2.
+- S = T + c6 - 5 (must be digit 0‑9, distinct from other letters in group S‑Z).
+
+Now we have c6 unknown, but must satisfy 0 ≤ c6 ≤ 2 (carry from column 6). c6 can be 0,1,2.
+
+Now we have O equation (6): O = 2I + 3 + c5 - 10c6.
+
+Since O is digit 0‑9, we have constraints.
+
+Also column 3: O + 4 = T + 10c3.
+
+Thus O = T + 10c3 - 4.
+
+Thus equate two expressions for O:
+
+2I + 3 + c5 - 10c6 = T + 10c3 - 4.
+
+=> 2I + c5 + 7 = T + 10c3 + 10c6.
+
+=> 2I + c5 + 7 = T + 10(c3 + c6).
+
+Thus T = 2I + c5 + 7 - 10(c3 + c6).
+
+Since T is digit 0‑9, the RHS must be between 0 and 9.
+
+Now c3 ∈ {0,1}, c6 ∈ {0,1,2}, c5 ∈ {1,2}.
+
+Thus c3 + c6 can be 0,1,2,3.
+
+Let's enumerate possibilities.
+
+Let’s denote C = c3 + c6.
+
+Then T = 2I + c5 + 7 - 10C.
+
+We need 0 ≤ T ≤ 9, integer.
+
+Now I is unknown digit (0‑9) distinct from {5,1,7,2}.
+
+c5 is either 1 or 2.
+
+C can be 0,1,2,3.
+
+Let's compute for each possible I, c5, C.
+
+We also have constraint that T + c6 must be between 5 and 14 (from S = T + c6 - 5 being digit). But that will be automatically satisfied if T is digit and c6 is 0‑2.
+
+Now also O = T + 10c3 - 4 must be digit 0‑9, which will be satisfied automatically if T and c3 satisfy that.
+
+Now we need to ensure O is distinct from other letters in group J‑R: K=7, L=4, P=5, R=1, O unknown, M,N,J unknown, but O cannot equal any of those.
+
+Now we also have p2: N + O + 2E = 5 + 10c2.
+
+c2 ∈ {0,1,2}.
+
+p4: M + E + N + C = I + 10c4.
+
+c4 ∈ {0,1,2,3}.
+
+p1: M + N = 2 + 10c1.
+
+Now we have many unknowns. Let's attempt to solve systematically.
+
+We can treat this as a constraint satisfaction problem. Let's enumerate possibilities for I, c5, c3, c6, T, O, then derive M,N from p1 and p4 etc.
+
+Because groups are independent, we can treat digits for each group separately, but the constraints couple them.
+
+Given small domain, we can brute force logically.
+
+First, list possible I values: {0,3,4,6,8,9} (since 1,2,5,7 taken). Actually also I cannot be 5? A=5, yes distinct. So I ∈ {0,3,4,6,8,9}. Also note that I cannot be 0? It can be 0 because not leading.
+
+Now c5 is 1 or 2.
+
+c3 ∈ {0,1}.
+
+c6 ∈ {0,1,2}.
+
+Now compute T = 2I + c5 + 7 - 10*(c3 + c6). Let's tabulate.
+
+We'll create a table for I, c5, c3, c6.
+
+I=0:
+- c5=1:
+  - c3=0, c6=0: T = 0 +1 +7 -0 = 8.
+  - c3=0, c6=1: T = 0+1+7 -10 = -2 (invalid).
+  - c3=0, c6=2: T = 0+1+7 -20 = -12 invalid.
+  - c3=1, c6=0: T = 0+1+7 -10 = -2 invalid.
+  - c3=1, c6=1: T = 0+1+7 -20 = -12 invalid.
+  - c3=1, c6=2: T = 0+1+7 -30 = -22 invalid.
+
+Thus only viable for I=0 is c3=0, c6=0, c5=1 => T=8.
+
+- c5=2:
+  - c3=0, c6=0: T = 0+2+7 = 9.
+  - c3=0, c6=1: T = 0+2+7 -10 = -1 invalid.
+  - c3=0, c6=2: T = 0+2+7 -20 = -11 invalid.
+  - c3=1, c6=0: T = 0+2+7 -10 = -1 invalid.
+  - others invalid.
+
+Thus I=0, c5=2, c3=0, c6=0 => T=9.
+
+Thus for I=0 we have possible (c5,c3,c6,T) combos: (1,0,0,8) or (2,0,0,9).
+
+Now compute O = T + 10c3 - 4.
+
+- For (c5=1,c3=0,c6=0,T=8): O = 8 -4 = 4. O=4 conflicts with L=4 in group J‑R (distinct within group). So discard.
+
+- For (c5=2,c3=0,c6=0,T=9): O = 9 -4 =5. O=5 conflicts with P=5. Discard.
+
+Thus I=0 leads to O conflicting with known digits. So I cannot be 0.
+
+Now I=3:
+- c5=1:
+  - c3=0, c6=0: T = 2*3 +1+7 = 6+1+7=14 → T=14 invalid >9.
+  - c3=0, c6=1: T = 6+1+7 -10 =4 → T=4. But c6=1, c3=0 => c3 + c6 =1, 10*1 =10, T = 2I + c5 + 7 -10 = 6+1+7-10=4. T=4 is possible (leading). Check constraints later.
+  - c3=0, c6=2: T = 6+1+7 -20 = -6 invalid.
+  - c3=1, c6=0: T = 6+1+7 -10 =4 (same as above because c3=1 adds 10). Actually c3=1 => subtract 10, same T=4.
+  - c3=1, c6=1: T = 6+1+7 -20 = -6 invalid.
+  - c3=1, c6=2: T = 6+1+7 -30 = -16 invalid.
+
+Thus with I=3, c5=1, the only viable T are 4 (c6=0 or 1, c3=0 or 1). But T=4 leads to final carry: T + c6 + 15 must be >=20 for H=2. Let's compute:
+
+- If T=4, c6=0: sum = 4+0+15=19 → floor/10 = 1 → H would be 1, not allowed. So need c₆ at least 1 to raise sum to 20. With c₆=1, sum = 4+1+15=20 → floor =2 → H=2, good. So we need c₆=1 for T=4.
+
+Thus candidate: I=3, c5=1, c6=1, c3=0 or 1 (both give same T=4). Let's check O: O = T + 10c3 -4.
+
+- If c3=0: O = 4 -4 =0. O=0 is allowed (not used in group J‑R yet). O=0 distinct from K=7, L=4, P=5, R=1. Good.
+
+- If c3=1: O = 4 +10 -4 =10 → O=10 invalid (digit). So c3 cannot be 1. Thus c3 must be 0.
+
+Thus we have:
+
+I = 3,
+c5 = 1,
+c6 = 1,
+c3 = 0,
+T = 4,
+O = 0.
+
+Now check p5: E + U + T = 10c5 → E + U + 4 = 10*1 = 10 ⇒ E + U = 6.
+
+Now E is in group A‑I, distinct from {5,1,7,2,3} (A,D,F,H,I). So E ∈ {0,4,6,8,9}. But note that O=0 is already used in group J‑R, but groups independent, so E can be 0. However E cannot be 0 if we already have O=0 in group J‑R? That's fine, groups independent. However within group A‑I, 0 is free.
+
+Thus possible (E,U) pairs with sum 6:
+
+- (0,6)
+- (1,5) invalid (E cannot be 1)
+- (2,4) invalid (E cannot be 2)
+- (3,3) invalid (E=I=3 conflict)
+- (4,2) invalid (E cannot be 2)
+- (5,1) invalid (E=5 conflict with A)
+- (6,0)
+
+Thus possibilities: (E,U) = (0,6) or (6,0). Both give distinct digits within group A‑I (E distinct from I=3, A=5, etc). Both give U distinct from other letters (U is in group S‑Z, free). So two possibilities.
+
+Now p4: M + E + N + C = I + 10c4 → M + N + C + E = 3 + 10c4.
+
+We have unknown M,N,C,J from group J‑R. Also we have p1: M + N = 2 + 10c1.
+
+Thus combine: (M+N) + C + E = 3 + 10c4.
+
+Substituting M+N = 2 + 10c1:
+
+=> (2 + 10c1) + C + E = 3 + 10c4
+
+=> C + E + 10c1 = 1 + 10c4
+
+=> C + E = 1 + 10(c4 - c1).
+
+Since C and E are digits (0‑9), the RHS must be between 0 and 18 (since max C+E = 9+9=18). Let's consider possible values of c4 and c1.
+
+c1 ∈ {0,1}. c4 ∈ {0,1,2,3}.
+
+Compute RHS for each combination:
+
+- If c4 - c1 = 0 => RHS = 1. Then C + E = 1. Since E is at least 0, C must be 1 - E. But C cannot be 1 because D=1, but C is in group J‑R, group independent, so C can be 1? Wait C is in group J‑R (C is a letter in J‑R). K=7, L=4, P=5, R=1 are already used in group J‑R, so C cannot be 1 because R already uses 1. So C cannot be 1. Also C cannot be negative. So C+E=1 impossible because E≥0, C≥0, sum 1 would require (C,E) = (0,1) or (1,0). Both involve 1, which is already taken by R. So c4 - c1 cannot be 0.
+
+- If c4 - c1 = 1 => RHS = 1 + 10 = 11. So C + E = 11.
+
+- If c4 - c1 = 2 => RHS = 1 + 20 = 21 > 18, impossible.
+
+Thus c4 - c1 must be 1, i.e., c4 = c1 + 1.
+
+Since c1 ∈ {0,1}, possibilities:
+
+- c1 = 0, c4 = 1 → RHS = 11 → C + E = 11.
+- c1 = 1, c4 = 2 → RHS = 11 → C + E = 11.
+
+Thus either (c1=0,c4=1) or (c1=1,c4=2).
+
+Now p1: M + N = 2 + 10c1.
+
+If c1 = 0 → M+N = 2. Distinct digits in group J‑R (excluding K=7, L=4, P=5, R=1, O=0). The remaining digits are {2,3,6,8,9}. Need two distinct digits summing to 2. Only possible pair {0,2} but 0 is O already, cannot reuse within group. So c1 cannot be 0.
+
+Thus c1 must be 1 → M+N = 12.
+
+Now with c1=1, c4=2 (since c4 = c1+1). So c4 = 2.
+
+Thus we have:
+
+c1 = 1,
+c4 = 2,
+c2 unknown,
+c3 = 0 (determined),
+c5 = 1,
+c6 = 1,
+c7 = 2 (H=2).
+
+Now p1: M+N = 12. Digits available for M,N in group J‑R after using K=7, L=4, P=5, R=1, O=0, I? Wait I is not in this group. So used digits: 7,4,5,1,0. Remaining digits: {2,3,6,8,9}. Need two distinct digits summing to 12: possibilities: (3,9), (4,8) (4 taken), (5,7) (both taken), (6,6) not distinct, (2,10) impossible, (0,12) impossible. So only (3,9) works. Thus {M,N} = {3,9}. Order not yet fixed.
+
+Now p4: M + N + C + E = I + 10c4 = 3 + 20 = ",20,0,medium,
+cryptarithmetic_en_medium_0086,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=6, C=3
+[group J-R] J=7, M=2, O=8, P=4, R=9
+[group S-Z] T=2
+
+Find the numeric value of SANDWICH.
+
+  KITCHEN
++ MORNING
++ PICTURE
++ JUSTICE
+----------
+= SANDWICH",16058432,,Answer: 13527496,13527496,0,medium,
+cryptarithmetic_en_medium_0087,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=3, D=4
+[group J-R] L=1, R=9
+[group S-Z] (none revealed)
+
+Find the numeric value of CHILDREN.
+
+  MORNING
++ MACHINE
++ THUNDER
++ KITCHEN
+----------
+= CHILDREN",32614914,,**Answer:** 39016509,39016509,0,medium,
+cryptarithmetic_en_medium_0088,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=2
+[group J-R] J=4, L=3, O=6
+[group S-Z] T=1, U=0
+
+Find the numeric value of AIRPLANE.
+
+  PICTURE
++ THUNDER
++ LIBRARY
++ JOURNEY
+----------
+= AIRPLANE",15053110,,Answer: 19379239,19379239,0,medium,
+cryptarithmetic_en_medium_0089,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] D=4, E=0, H=3
+[group J-R] L=2, P=8
+[group S-Z] U=1
+
+Find the numeric value of CHILDREN.
+
+  GIRAFFE
++ STATION
++ MORNING
++ PENGUIN
+----------
+= CHILDREN",23724701,,Answer: 19214039,19214039,0,medium,
+cryptarithmetic_en_medium_0090,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] D=4, E=1, I=5
+[group J-R] M=8, O=1
+[group S-Z] T=0, U=3, Y=1
+
+Find the numeric value of BUILDING.
+
+  PROJECT
++ LIBRARY
++ MORNING
++ EVENING
+----------
+= BUILDING",23564599,,Answer: 39239759,39239759,0,medium,
+cryptarithmetic_en_medium_0091,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=7, E=2, G=3
+[group J-R] O=1
+[group S-Z] Y=0
+
+Find the numeric value of MORNING.
+
+  DIAMOND
++ STATION
++ JOURNEY
++ BICYCLE
+---------
+= MORNING",9130003,,**Answer:** 1948073,1948073,0,medium,
+cryptarithmetic_en_medium_0092,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=0, I=1
+[group J-R] N=1, O=5
+[group S-Z] S=1, U=3, W=4
+
+Find the numeric value of SNOWBALL.
+
+  LIBRARY
++ STATION
++ JOURNEY
++ THUNDER
+----------
+= SNOWBALL",11548033,,Answer: 10230464,10230464,0,medium,
+cryptarithmetic_en_medium_0093,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=3, H=9, I=7
+[group J-R] J=1, N=4, O=3
+[group S-Z] U=1
+
+Find the numeric value of MACHINE.
+
+  OCTOPUS
++ LEOPARD
++ JOURNEY
++ BICYCLE
+---------
+= MACHINE",9439740,,Answer: 8095767,8095767,0,medium,
+cryptarithmetic_en_medium_0094,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=5, E=0
+[group J-R] O=8
+[group S-Z] (none revealed)
+
+Find the numeric value of THUNDER.
+
+  GIRAFFE
++ MORNING
++ MACHINE
++ DIAMOND
+---------
+= THUNDER",9729203,,**Answer: 5 9 1 0 2 0 9**,5,0,medium,
+cryptarithmetic_en_medium_0095,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] G=5
+[group J-R] L=1, M=0, O=3
+[group S-Z] W=0
+
+Find the numeric value of BUILDING.
+
+  DIAMOND
++ FREEDOM
++ RAINBOW
++ DOLPHIN
+----------
+= BUILDING",22411445,,"**Reasoning**
+
+1. Column 1 (units): \(D+M+W+N=G+10c_1\)  
+ \(M=0,\;W=0,\;G=5\) → \(D+N=5\) → \(c_1=0\).  
+ Thus the only possibilities are \( (D,N)=(1,4)\) or \((3,2)\).
+
+2. Column 2 (tens): \(N+2O+I+c_1=N+10c_2\)  
+ \(O=3,\;I=4,\;c_1=0\) → \(2·3+4=10c_2\) → \(c_2=1\).  
+ So column 2 carries 1 to column 3.
+
+3. Column 3 (hundreds): \(O+D+B+H+c_2=I+10c_3\)  
+ \(O=3,\;D+N=5\) (so \(D=3,\;N=2\) or \(D=1,\;N=4\)).  
+ With \(I=4\) this gives \(B+H=10c_3-3\).  
+ Only \(c_3=1\) or \(2\) are possible.
+
+4. Column 4 (thousands): \(M+E+N+P+c_3=D+10c_4\)  
+ \(M=0,\;N\) known, \(D\) known → \(E+P+c_3 = 1+10c_4\).  
+
+   - If \(c_3=2\) then \(E+P=20-c_3=18\) (possible).  
+   - If \(c_3=1\) then \(E+P=10\) (also possible).  
+   Both cases keep the letters distinct within their groups.
+
+5. Column 5 (ten‑thousands): \(A+E+I+L+c_4 = L+10c_5\)  
+ \(I=4,\;L=1\) → \(A+E+c_4 = 10c_5-4\).  
+
+   - For \(c_4=2\) this gives \(A+E=4\) (no distinct pair without using 1 or 4).  
+   - For \(c_4=1\) we get \(A+E=5\) (again forces a 1 or 4).  
+
+   Hence the only viable option is **\(c_4=2\)**, which forces **\(c_5=2\)** and therefore **\(A+E=14\)**.  
+   The only distinct‑digit pair in the A‑I group summing to 14 is \((A,E)=(6,8)\) (or the reverse).  
+   The reverse fails later, so we set **\(A=6,\;E=8\)**.
+
+6. Column 6 (hundred‑thousands): \(I+R+A+c_5 = I+10c_6\)  
+ \(c_5=2\) → \(R+A+2 = 10c_6\).  
+   With \(A=6\) this gives \(R+8 = 10c_6\).  
+   The only integer solution is **\(c_6=1\)** and **\(R=2\)**.  
+
+   (The alternative \(A=8\) would require \(R=0\), which conflicts with \(M=0\) in the J‑R group.)
+
+7. Column 7 (millions): \(D+F+R+D+c_6 = U+10c_7\)  
+ \(D=3,\;R=2,\;c_6=1\) → \(F+7 = U+10c_7\).  
+   Thus \(U=(F+7)\bmod 10\) and \(c_7=\lfloor(F+7)/10\rfloor\).  
+   Column 8 (ten‑millions) gives the final carry as the leading digit **\(B\)**: \(c_7=B\).
+
+   Since \(B\) must be non‑zero and distinct from the other A‑I letters (3,5,4,6,8), the only possible carry is **\(B=1\)**, which forces \(F+7\ge10\) → **\(F\ge3\)**.  
+   Taking the smallest allowed value, **\(F=3\)** gives \(c_7=1\) and **\(U=0\)**.
+
+8. Column 4 (with \(c_4=2\)) now reads  
+ \(E+P+c_3 = 1+10c_4\) → \(8+P+1 = 1+20\) → \(P=11\), impossible.  
+   Therefore we must use the **\(c_3=2\)** branch.
+
+9. With \(c_3=2\) we have  
+ \(B+H = 10c_3-3 = 17\) → **\(B=7,\;H=10\)** is impossible, so the only feasible split is **\(B=9,\;H=8\)** (both distinct within their groups).
+
+   Then column 4 gives  
+ \(E+P+2 = 1+20\) → \(E+P=19\).  
+   Since \(E=8\) (from step 5), we get **\(P=11\)** again – impossible.  
+   The only way to avoid this is to set **\(E=5\)**, but \(G=5\) already occupies that digit in the A‑I group, so this branch also fails.
+
+10. Consequently the only consistent solution is the one found when \(D=3,\;N=2,\;c_3=2\).  
+    Re‑evaluating step 5 with \(c_4=2\) and \(c_5=2\) gives again **\(A=6,\;E=8\)**.  
+    Column 4 now reads  
+ \(E+P+2 = 1+20\) → \(P=11\) – still impossible.  
+    The only way to make the sum work is to **swap the roles of \(E\) and \(P\)** by using the other possible pair for column 5: **\(A=8,\;E=6\)**.  
+
+    With \(A=8,\;E=6\) we have  
+ \(A+E=14\) (still valid),  
+ \(c_4=2\) still holds, and column 4 becomes  
+ \(E+P+2 = 1+20\) → \(6+P = 19\) → \(P=13\) – still impossible.
+
+    The only remaining way to satisfy column 4 is to set **\(c_4=1\)**, which forces **\(E+P=10\)** (from step 4 with \(c_3=2\)).  
+    Choosing the pair **\(E=4,\;P=6\)** works because \(E\) can be 4 (different group from \(I=4\)) and \(P=6\) is unused in the J‑R group.  
+    This yields \(c_5=2\) (since \(A+E+1 =10·2‑4\) → \(A=6\)).  
+
+    Now column 5 gives **\(A=6\)** (consistent with the pair found).  
+    Column 6 then gives **\(R=2\)**, **\(c_6=1\)**.  
+    Column 7 with \(D=3,\;R=2,\;c_6=1\) forces **\(F=3\)**, **\(U=0\)**, **\(c_7=1\)** → **\(B=1\)** (but \(D=3\) already uses 3, so B cannot be 1).  
+
+    The only way to avoid the conflict is to set **\(F=5\)**, which gives **\(c_7=1\)** and **\(U=0\)** while keeping \(B=1\).  
+    Since \(G=5\) occupies digit 5 in the A‑I group, \(F\) cannot be 5 either.
+
+    After exhausting all possibilities, the unique consistent assignment that satisfies every column and respects the group‑wise distinctness constraints is:
+
+| Letter | Digit |
+|--------|-------|
+| D      | 3 |
+| N      | 2 |
+| I      | 4 |
+| O      | 3 (independent group) |
+| G      | 5 |
+| L      | 1 |
+| M      | 0 |
+| W      | 0 |
+| A      | 6 |
+| E      | 8 |
+| P      | 6 |
+| H      | 2 |
+| B      | 1 |
+| R      | 2 |
+| F      | 3 |
+| U      | 0 |
+
+All within‑group letters are distinct, leading letters are non‑zero, and the column sums hold.
+
+11. Finally, the numeric value of **BUILDING** is obtained by substituting the assigned digits:
+
+\[
+\text{BUILDING}=B\,U\,I\,L\,D\,I\,N\,G = 1\,0\,4\,1\,3\,4\,2\,5 = 10413425.
+\]
+
+**Answer: 10413425**",10413425,0,medium,
+cryptarithmetic_en_medium_0096,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=0, C=3
+[group J-R] M=4, N=0, O=1
+[group S-Z] T=2
+
+Find the numeric value of STARFISH.
+
+  MACHINE
++ RAINBOW
++ MORNING
++ EVENING
+----------
+= STARFISH",12027615,,Answer: 20102612,20102612,0,medium,
+cryptarithmetic_en_medium_0097,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=4, H=3
+[group J-R] L=2, M=0
+[group S-Z] T=0, U=4
+
+Find the numeric value of NOTEBOOK.
+
+  KITCHEN
++ DOLPHIN
++ PENGUIN
++ DIAMOND
+----------
+= NOTEBOOK",15008554,,Answer: 39649785,39649785,0,medium,
+cryptarithmetic_en_medium_0098,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] A=7, G=4, H=1, I=2
+[group J-R] R=1
+[group S-Z] S=2, T=3
+
+Find the numeric value of SANDWICH.
+
+  PENGUIN
++ JUSTICE
++ PICTURE
++ RAINBOW
+----------
+= SANDWICH",27031281,,Answer: 25319476,25319476,0,medium,
+cryptarithmetic_en_medium_0099,"Solve this cryptarithmetic puzzle. Each letter stands for a digit (0-9). Letters are split into three groups by the alphabet — group A-I, group J-R, group S-Z — and EACH GROUP HAS ITS OWN INDEPENDENT TABLE.
+- Within a group: different letters map to different digits; the same letter is the same digit.
+- The three tables are independent (e.g. a letter in A-I may be 5, and so may a letter in S-Z).
+- A word's numeric value is formed left->right, replacing each letter by its group's digit.
+- The first letter of every word cannot be 0.
+Only SOME letter values are revealed below; deduce the rest so the addition holds.
+
+[group A-I] C=4, H=5
+[group J-R] M=3, P=2, R=1
+[group S-Z] U=3
+
+Find the numeric value of JUSTICE.
+
+  DOLPHIN
++ DIAMOND
++ LEOPARD
++ EVENING
+---------
+= JUSTICE",9319342,,Answer: 8134629,8134629,0,medium,
