@@ -117,18 +117,22 @@ Answer: <왼쪽에서 오른쪽>
             # can still recover and _check_answer can grade.
 
         patterns = [
-            r'Answer:\s*([\d\s]+)',
-            r'answer:\s*([\d\s]+)',
+            r'Answer\s*[:：]\s*([\d\s]+)',
+            r'answer\s*[:：]\s*([\d\s]+)',
+            r'정답\s*[:：]\s*([\d\s]+)',
             r'solution[:\s]+([\d\s]+)',
             r'sequence[:\s]+([\d\s]+)',
         ]
 
         def _normalize(nums):
-            if len(nums) == 1 and size <= 9 and len(nums[0]) == size:
-                return ''.join(nums[0])
+            # Single concatenated run whose length == cell count -> single-digit
+            # grid (e.g. size 25 "2514..."); _to_int_list splits it char-by-char.
+            if len(nums) == 1 and size and len(nums[0]) == size:
+                return nums[0]
+            # Space-separated cells: keep exactly `size` of them; _to_int_list
+            # parses either spaced or concatenated forms downstream.
             if len(nums) >= size:
-                nums = nums[:size]
-                return ' '.join(nums) if size > 9 else ''.join(nums)
+                return ' '.join(nums[:size])
             return None
 
         for pattern in patterns:
@@ -142,12 +146,12 @@ Answer: <왼쪽에서 오른쪽>
 
         last_part = answer_text[-200:] if len(answer_text) > 200 else answer_text
         all_nums = re.findall(r'\d+', last_part)
-        if size <= 9:
-            for cand in reversed(all_nums):
-                if len(cand) == size:
-                    return cand
+        # Concatenated single-digit grid: a run whose length == cell count.
+        for cand in reversed(all_nums):
+            if size and len(cand) == size:
+                return cand
         if len(all_nums) >= size:
-            return ' '.join(all_nums[-size:]) if size > 9 else ''.join(all_nums[-size:])
+            return ' '.join(all_nums[-size:])
 
         return None
 
@@ -165,7 +169,10 @@ Answer: <왼쪽에서 오른쪽>
                 for ch in low
             ]
         nums = re.findall(r'\d+', s)
-        if len(nums) == 1 and len(nums[0]) == size and size <= 9:
+        # Single concatenated run of single-digit cells (len == cell count),
+        # e.g. a 5x5 grid answered as "2514314532423153125453421" (size 25).
+        # (No size<=9 restriction: grid answers have size = number of cells.)
+        if len(nums) == 1 and size and len(nums[0]) == size:
             return [int(d) for d in nums[0]]
         return [int(n) for n in nums]
 
