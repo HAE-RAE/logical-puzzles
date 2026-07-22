@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "task": "inequality_en_easy",
+    "task": "inequality_ko_easy",
     "model": "gemini/gemini-3-flash-preview",
-    "timestamp": "2026-07-20T20-23-55",
+    "timestamp": "2026-07-23T01-03-03",
     "total_puzzles": 100,
     "gen_kwargs": {
       "temperature": 1.0,
@@ -15,10 +15,10 @@
   },
   "summary": {
     "overall": {
-      "accuracy": 0.72,
-      "correct_count": 72,
+      "accuracy": 0.73,
+      "correct_count": 73,
       "total_count": 100,
-      "avg_latency_ms": 24265.33062696457,
+      "avg_latency_ms": 51304.44055080414,
       "finish_reason_counts": {
         "stop": 100
       }
@@ -26,8 +26,8 @@
     "by_difficulty": {
       "easy": {
         "total": 100,
-        "correct": 72,
-        "accuracy": 0.72
+        "correct": 73,
+        "accuracy": 0.73
       }
     }
   }

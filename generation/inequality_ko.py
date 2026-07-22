@@ -941,7 +941,7 @@ def build_futoshiki_solution(p: FutoshikiPuzzle) -> str:
 # chain length or hidden-inequality count; a smaller Futoshiki grid gives a
 # cleaner, monotone easy < medium < hard difficulty axis.
 FUTOSHIKI_TIERS = {
-    "easy": {"size_weights": {4: 1.0}, "backtrack_ratio": 0.35},
+    "easy": {"size_weights": {5: 1.0}, "backtrack_ratio": 1.0, "givens_override": (2, 6)},
     "medium": {"size_weights": {5: 0.62, 6: 0.38}, "backtrack_ratio": 0.82},
     "hard": {"size_weights": {5: 0.20, 6: 0.80}, "backtrack_ratio": 0.92},
 }
@@ -971,7 +971,12 @@ def make_easy_record(idx: int, chain_gen: InequalityPuzzleGenerator) -> dict:
 def make_futoshiki_record(idx: int, tier: str) -> dict:
     cfg = FUTOSHIKI_TIERS[tier]
     n = _weighted_choice(cfg["size_weights"])
-    target_givens = random.randint(*FUTOSHIKI_GIVENS_BY_SIZE[n])
+    # tier-specific givens override takes precedence over the by-size defaults,
+    # so tuning easy's given count never touches medium/hard (which share sizes).
+    if "givens_override" in cfg:
+        target_givens = random.randint(*cfg["givens_override"])
+    else:
+        target_givens = random.randint(*FUTOSHIKI_GIVENS_BY_SIZE[n])
     target_mode = "backtrack" if random.random() < cfg["backtrack_ratio"] else "propagation"
     p = FutoshikiGenerator.generate(n, target_givens, target_mode)
     p.difficulty = Difficulty[tier.upper()]
