@@ -1,0 +1,17 @@
+model,family,tasks,n,accuracy_native32k,length_32kcap,errors
+upstage_Solar-Open-100B,array_formula,6,600,0.0717,3,0
+upstage_Solar-Open-100B,causal_dag,6,600,0.1367,3,0
+upstage_Solar-Open-100B,cipher,6,600,0.1067,23,0
+upstage_Solar-Open-100B,cryptarithmetic,6,600,0.0283,0,0
+upstage_Solar-Open-100B,hanoi,6,600,0.0033,2,0
+upstage_Solar-Open-100B,inequality,6,600,0.4600,0,0
+upstage_Solar-Open-100B,jamo,3,300,0.0367,2,0
+upstage_Solar-Open-100B,kinship,3,300,0.0433,0,0
+upstage_Solar-Open-100B,korean_units,3,300,0.1567,0,0
+upstage_Solar-Open-100B,minesweeper,6,600,0.0833,95,0
+upstage_Solar-Open-100B,number_baseball,6,600,0.1200,12,0
+upstage_Solar-Open-100B,saju,3,300,0.0633,0,0
+upstage_Solar-Open-100B,sat_puzzles,6,600,0.0617,0,0
+upstage_Solar-Open-100B,sudoku,6,600,0.3050,124,0
+upstage_Solar-Open-100B,time,3,300,0.3733,0,0
+upstage_Solar-Open-100B,yacht_dice,6,600,0.2517,0,0

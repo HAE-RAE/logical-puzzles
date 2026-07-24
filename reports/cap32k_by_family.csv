@@ -3,8 +3,8 @@ google_gemma-4-31b-it,array_formula,6,600,0.4050,0.4050,+0.0000,0,0
 google_gemma-4-31b-it,causal_dag,6,600,0.5100,0.5100,+0.0000,0,0
 google_gemma-4-31b-it,cipher,6,600,0.3467,0.3467,+0.0000,0,0
 google_gemma-4-31b-it,cryptarithmetic,6,600,0.4250,0.4250,+0.0000,0,0
-google_gemma-4-31b-it,hanoi,6,600,0.3317,0.3317,+0.0000,0,0
-google_gemma-4-31b-it,inequality,6,600,0.6500,0.6500,+0.0000,0,0
+google_gemma-4-31b-it,hanoi,6,600,0.2567,0.2567,+0.0000,0,0
+google_gemma-4-31b-it,inequality,6,600,0.6550,0.6550,+0.0000,0,0
 google_gemma-4-31b-it,jamo,3,300,0.1367,0.1367,+0.0000,0,0
 google_gemma-4-31b-it,kinship,3,300,0.3467,0.3467,+0.0000,0,0
 google_gemma-4-31b-it,korean_units,3,300,0.0333,0.0333,+0.0000,0,0
@@ -19,8 +19,8 @@ openai_gpt-oss-120b,array_formula,6,600,0.3367,0.3367,+0.0000,0,0
 openai_gpt-oss-120b,causal_dag,6,600,0.4200,0.4200,+0.0000,0,0
 openai_gpt-oss-120b,cipher,6,600,0.2817,0.2817,+0.0000,0,0
 openai_gpt-oss-120b,cryptarithmetic,6,600,0.3183,0.3183,+0.0000,0,0
-openai_gpt-oss-120b,hanoi,6,600,0.4033,0.4033,+0.0000,0,0
-openai_gpt-oss-120b,inequality,6,600,0.6117,0.6100,-0.0017,16,1
+openai_gpt-oss-120b,hanoi,6,600,0.4533,0.4533,+0.0000,1,0
+openai_gpt-oss-120b,inequality,6,600,0.6733,0.6700,-0.0033,36,2
 openai_gpt-oss-120b,jamo,3,300,0.0867,0.0867,+0.0000,0,0
 openai_gpt-oss-120b,kinship,3,300,0.0700,0.0700,+0.0000,0,0
 openai_gpt-oss-120b,korean_units,3,300,0.8467,0.8467,+0.0000,0,0
