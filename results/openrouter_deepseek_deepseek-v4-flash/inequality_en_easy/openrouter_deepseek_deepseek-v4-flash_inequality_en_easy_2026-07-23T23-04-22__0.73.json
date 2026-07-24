@@ -1,0 +1,33 @@
+{
+  "metadata": {
+    "task": "inequality_en_easy",
+    "model": "openrouter/deepseek/deepseek-v4-flash",
+    "timestamp": "2026-07-23T23-04-22",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "temperature": 1.0,
+      "top_p": 1.0,
+      "max_tokens": 32768
+    },
+    "gen_kwargs_cli": "temperature=1.0,top_p=1.0,max_tokens=32768"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.73,
+      "correct_count": 73,
+      "total_count": 100,
+      "avg_latency_ms": 282744.0954256058,
+      "finish_reason_counts": {
+        "stop": 95,
+        "length": 5
+      }
+    },
+    "by_difficulty": {
+      "easy": {
+        "total": 100,
+        "correct": 73,
+        "accuracy": 0.73
+      }
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "metadata": {
+    "task": "kinship_ko_medium",
+    "model": "openrouter/deepseek/deepseek-v4-flash",
+    "timestamp": "2026-07-23T17-36-45",
+    "total_puzzles": 100,
+    "gen_kwargs": {
+      "temperature": 1.0,
+      "top_p": 1.0,
+      "max_tokens": 32768
+    },
+    "gen_kwargs_cli": "temperature=1.0,top_p=1.0,max_tokens=32768"
+  },
+  "summary": {
+    "overall": {
+      "accuracy": 0.2,
+      "correct_count": 20,
+      "total_count": 100,
+      "avg_latency_ms": 306471.1263871193,
+      "finish_reason_counts": {
+        "stop": 91,
+        "length": 9
+      }
+    },
+    "by_difficulty": {
+      "medium": {
+        "total": 100,
+        "correct": 20,
+        "accuracy": 0.2
+      }
+    }
+  }
+}
